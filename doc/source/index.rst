@@ -82,8 +82,6 @@ Module Summary
 	mrv.automation.qa
 	mrv.cmd.base
 	mrv.cmd.startup
-	mrv.install.lib.python2.6.site-packages.mrv.maya.undo
-	mrv.install.lib.python2.6.site-packages.mrv.maya.nt.persistence
 
 Indices and tables
 ==================
