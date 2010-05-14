@@ -1,0 +1,46 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""This module can run standalone, within the native project directory, or with
+mrv available in the python path. It can be imported in order to provide common 
+functionality"""
+import sys
+import os
+
+__docformat__ = "restructuredtext"
+
+#{ Initialization
+
+def prepare_mrv_syspath():
+	"""Make sure mrv is in the python path, and manipulate sys.path if required
+	in order to assure that.
+	
+	:raise ImportError: If mrv could not be found in this interpreter"""
+	try:
+		import mrv
+	except ImportError:
+		# manipulate the import path - first we may be within the mrv structurure
+		# or alternatively within /usr/bin/, that is outside of the structure.
+		# In the latter case we can't do anything though
+		ospd = os.path.dirname
+		sys.path.append(ospd(ospd(ospd(os.path.realpath(os.path.abspath(__file__))))))
+		try:
+			import mrv
+		except ImportError, e:
+			del(sys.path[-1])
+			raise ImportError("Failed to import MRV as it could not be found in your syspath, nor could it be deduced: %s" % str(e)); 
+		# END second attempt exception handling
+	# END import exception handling
+
+def mrvmain(args, args_modifier=lambda a, v, m: a):
+	"""Prepare the path and redirect the call to the actual library module"""
+	prepare_mrv_syspath()
+	import mrv.cmd.startup as startup
+	startup.mrv(args, args_modifier)
+	
+#} END initialization
+
+
+if __name__ == "__main__":
+	# ignore first arg which is the executable
+	mrvmain(sys.argv[1:])
+# END initialization
