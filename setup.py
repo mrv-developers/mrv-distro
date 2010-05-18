@@ -5,7 +5,7 @@ import __builtin__
 
 from distutils.core import setup
 from distutils.dist import Distribution as BaseDistribution
-from distutils import log
+from distutils import log, dir_util
 
 
 import distutils.command
@@ -16,7 +16,6 @@ from distutils.command.build_py import build_py
 from distutils.command.build_scripts import build_scripts
 from distutils.command.sdist import sdist
 from distutils.util import convert_path
-
 from itertools import chain
 import subprocess
 import fnmatch
@@ -445,9 +444,85 @@ class _GitMixin(object):
 		
 	
 	#} END interface 
+
+
+class _RegressionMixin(object):
+	"""Provides a simple interface allowing to perform a regression test"""
+	
+	def __init__(self, *args, **kwargs):
+		self.post_testing = list()
+	
+	
+	#{ Configuration
+	# directory containing the actual tests.
+	# This information can be used by subclasses to limit the amount of located 
+	# files
+	test_sub_dir = 'test'
+	#} END configuration
+	
+	#{ Interface 
+	
+	@classmethod
+	def adjust_user_options(cls, user_options):
+		user_options.append(('post-testing=', 't', "Specifies the maya version(s) with which post-build testing will be performed"))
+		
+	def finalize_options(self):
+		self.post_testing = self.distribution.fixed_list_arg(self.post_testing)
+		
+	def _find_test_modules(self, root_dir):
+		"""
+		:return: list of files within the root_dir which appear to be containing tests.
+			Explicit selection is required if we are byte-compiling modules, nose skips .pyc
+			even if there is no .py file ;)"""
+		if not os.path.isdir(root_dir):
+			return list()
+		# END handle non-existing directory
+		test_modules = list()
+		seen_paths = set()
+		for root, dirs, files in os.walk(root_dir):
+			for f in files:
+				fpath = os.path.join(root, f)
+				bpath, ext = os.path.splitext(fpath)
+				if bpath in seen_paths:
+					continue
+				# END handle py/pyc extension
+				seen_paths.add(bpath)
+				if os.path.basename(bpath).startswith('test_'):
+					test_modules.append(fpath)
+				# END pick path
+			# END for each file
+		# END while walking
+		return test_modules
+		
+	def post_regression_test(self, testexecutable, test_root_dir):
+		"""Perform a regression test for the maya version's the user supplied.
+		:param testexecutable: path to the tmrv-compatible executable - it is 
+			expected to be inside a tree which allows the project to put itself into the path.
+		:param root_dir: root directory under which tests can be found
+		:raise EnvironmentError: if started process returned non-0"""
+		if not self.post_testing:
+			return 
+		# END early abort
+		
+		# need explicit test modules
+		test_modules = tuple(self._find_test_modules(test_root_dir))
+		if not test_modules:
+			return 
+		
+		# select everything which looks like a test for it as nose officially 
+		# ignores compiled files
+		for maya_version_str in self.post_testing:
+			args = (testexecutable, maya_version_str ) + test_modules
+			if self.distribution.spawn_python_interpreter(args).wait():
+				raise EnvironmentError("Post-Operation test failed")
+			# END call test program
+		# END for each maya version
+		
+	#} END interface
+	
 	
 
-class BuildPython(_GitMixin, build_py):
+class BuildPython(_GitMixin, _RegressionMixin, build_py):
 	"""Customize the command preparing python modules in order to skip copying 
 	original py files if compile is specified. Additionally we allow the python 
 	interpreter to be specified as the bytecode is incompatible between the versions"""
@@ -470,6 +545,7 @@ class BuildPython(_GitMixin, build_py):
 									)
 	
 	_GitMixin.adjust_user_options(build_py.user_options)
+	_RegressionMixin.adjust_user_options(build_py.user_options)
 	#} END configuration 
 	
 	#{ Internals
@@ -506,6 +582,25 @@ class BuildPython(_GitMixin, build_py):
 		
 	#} END internals
 	
+	#{ Paths
+	
+	def _build_dir(self):
+		""":return: directory into which all files will be put"""
+		# this works ... checked their code which seems hacky, so we continue with the 
+		# hackiness
+		return os.path.join(self.build_lib, self.distribution.pinfo.root_package)
+		
+	def _test_abspath(self):
+		"""
+		:return: First the executable in our build dir, then the one our distro
+			deems best"""
+		build_exec = os.path.join(self._build_dir(), self.distribution._test_relapath())
+		if os.path.isfile(build_exec):
+			return build_exec
+		return self.distribution._test_relapath()
+		
+	#} END paths
+	
 	#{ Overridden Methods 
 	
 	def initialize_options(self):
@@ -519,6 +614,7 @@ class BuildPython(_GitMixin, build_py):
 	def finalize_options(self):
 		build_py.finalize_options(self)
 		_GitMixin.finalize_options(self)
+		_RegressionMixin.finalize_options(self)
 		
 		self.maya_version = self.distribution.maya_version
 		self.py_version = self.distribution.py_version
@@ -537,6 +633,10 @@ class BuildPython(_GitMixin, build_py):
 		
 		# HANDLE BRANCH SUFFIX
 		if self.needs_compilation:
+			# force recompilation, its important in case of files which might
+			# just have been compiled by a different python version, and hence
+			# don't need recompilation when just regarding the timestamp
+			self.force = True
 			self.branch_suffix = '-py'+sys.version[:3]
 		else:
 			self.branch_suffix = '-pyany'
@@ -581,7 +681,13 @@ class BuildPython(_GitMixin, build_py):
 			# reason 
 			for py_file in (f for f in files if f.endswith('.py')):
 				log.debug("Removing original file after byte compile: %s" % py_file)
-				os.remove(py_file)
+				try:
+					os.remove(py_file)
+				except OSError:
+					# it can happen that the file gets deleted by the conversion 
+					# script itself ... don't fully understand it though.
+					pass
+				# END handle file doesn't exist anymore
 				
 				if self.rename_pyo_to_pyc:
 					base, ext = os.path.splitext(py_file)
@@ -702,18 +808,16 @@ class BuildPython(_GitMixin, build_py):
 		
 		BuildScripts.handle_scripts(scripts_abs, self.needs_compilation)
 		
-		
-	def _build_dir(self):
-		""":return: directory into which all files will be put"""
-		# this works ... checked their code which seems hacky, so we continue with the 
-		# hackiness
-		return os.path.join(self.build_lib, self.distribution.pinfo.root_package)
-		
 	def run(self):
 		"""Perform the main operation, and handle git afterwards
 		:note: It is done at a point where the py modules as well as the executables
 		are available. In case there are c-modules, these wouldn't be availble here."""
 		build_py.run(self)
+		
+		# POST REGRESSION TESTING
+		#########################
+		test_root = os.path.join(self._build_dir(), self.test_sub_dir)
+		self.post_regression_test(self._test_abspath(), test_root)
 		
 		# FIX SCRIPTS
 		##############
@@ -873,14 +977,31 @@ class InstallCommand(install):
 		install.run(self)
 
 
-class GitSourceDistribution(_GitMixin, sdist):
+class GitSourceDistribution(_GitMixin, _RegressionMixin, sdist):
 	"""Instead of creating an archive, we put the source tree into a git repository"""
 	#{ Configuration 
 	branch_suffix = '-src'
 	#} END configuration
 	
 	_GitMixin.adjust_user_options(sdist.user_options)
+	_RegressionMixin.adjust_user_options(sdist.user_options)
+
+
+	def __init__(self, *args, **kwargs):
+		# special solution to temporarily override the default distribution directory
+		self._alternate_sdist_directory = None
+
+	#{ Paths 
+	def _sdist_directory(self):
+		""":return: direcory containing the source distribution
+		:note: there is no official function for this ... its just in the code ..."""
+		if self._alternate_sdist_directory:
+			return self._alternate_sdist_directory
+		# END handle alternates
+		return self.distribution.get_fullname()
 	
+	#} END paths
+
 	#{ Overridden Functions
 	
 	def finalize_options(self):
@@ -888,15 +1009,86 @@ class GitSourceDistribution(_GitMixin, sdist):
 		we have to forward to the call manually to our bases ... """
 		sdist.finalize_options(self)
 		_GitMixin.finalize_options(self)
+		_RegressionMixin.finalize_options(self)
 	
 	def make_archive(self, base_name, format, root_dir=None, base_dir=None):
 		self.update_git(base_dir)
 		super(_GitMixin, self).make_archive(base_name, format, root_dir, base_dir)
 		
+	def make_distribution(self):
+		"""Make s source distribution, but set it up to allow post-testing if desired"""
+		# prevent deletion before test possibly ran
+		keep_tmp = self.keep_temp
+		self.keep_temp = True
+		sdist.make_distribution(self)
+		self.keep_temp = keep_tmp
+		
+		base_dir = self._sdist_directory()
+		
+		# If our root package is directly in the root folder, we have to rename
+		# the basedir to match the root package name ( temporarily )
+		package_dir = self.distribution.package_dir.get(self.distribution.pinfo.root_package)
+		prev_base_dir = None
+		inbetween_dir = 'sdist_tmp'
+		if package_dir == '':	# if we have a root package in our root folder
+			# special case: mrv tries to import itself to see whether it is in the 
+			# path natively. This would work if we would just rename 
+			# the folder to the root package name, causing lots of trouble down
+			# the road. Hence we create a subdirectory to prevent this from 
+			# happening.
+			if not os.path.isdir(inbetween_dir):
+				os.mkdir(inbetween_dir)
+			# END handle dir creation
+			
+			target_dir = os.path.join(inbetween_dir, self.distribution.pinfo.root_package)
+			os.rename(base_dir, target_dir)
+			prev_base_dir = base_dir
+			base_dir = target_dir
+		# END rename base-dir 
+		
+		# RUN REGRESSION TEST
+		#######################
+		# will only actually run if it is enabled - we need the preprartion to
+		# build the docs anyway
+		testexec = os.path.join(base_dir, self.distribution._test_relapath())
+		test_root = os.path.join(base_dir, self.test_sub_dir)
+		self.post_regression_test(testexec, test_root)
+		
+		# HOOK IN DOC DISTRO
+		####################
+		# The makedoc tool can only with our altered directory structure - hence
+		# we must trigger the documentation generation now.
+		if DocDistro.cmdname in self.distribution.commands: 
+			dcmd = self.distribution.get_command_obj(DocDistro.cmdname, create=True)
+			if dcmd is not None:
+				self._alternate_sdist_directory = base_dir
+				dcmd.ensure_finalized()
+				try:
+					dcmd.run()
+				finally:
+					self._alternate_sdist_directory = None
+				# END build docs
+			# END handle dcmd
+		# END if docdist was set on commandline
+		
+		# finally clear the temp directory if requested
+		if not self.keep_temp:
+			dir_util.remove_tree(base_dir, dry_run=self.dry_run)
+		else:
+			# possibly rename the directory back to what it was
+			if prev_base_dir is not None:
+				os.rename(base_dir, prev_base_dir)
+			# END handle rename 
+		# END clean temp directory
+		
+		if os.path.isdir(inbetween_dir):
+			os.rmdir(inbetween_dir)
+		# END handle inbetween dir
+		
 	#} END overridden functions
 
 
-class DocCommand(_GitMixin, Command):
+class DocDistro(_GitMixin, Command):
 	"""Build the documentation, and include everything into the git repository if 
 	required."""
 	
@@ -904,10 +1096,14 @@ class DocCommand(_GitMixin, Command):
 	
 	#{ Configuration
 	user_options = [ 
-					('zip-archive', 'z', "If set, a zip archive will be created")
+					('zip-archive', 'z', "If set, a zip archive will be created"),
+					('from-build-version', 'b', "If set, the documentation will be built from the recent build_py or sdist version")
 					]
 					
 	branch_suffix = '-doc'
+	
+	# directory name containing the documentation
+	doc_dir = 'doc'
 	
 	_GitMixin.adjust_user_options(user_options)
 	#} END configuration
@@ -916,6 +1112,8 @@ class DocCommand(_GitMixin, Command):
 		self.docgen = None
 		self.dist_dir = None
 		self.zip_archive = False
+		self.from_build_version = False
+		self.handled_docs = False
 	
 	def initialize_options(self):
 		# this needs to be here or we get an error because of the bitchy base class
@@ -935,6 +1133,12 @@ class DocCommand(_GitMixin, Command):
 		# END assert config
 		
 		html_out_dir, was_built = self.build_documentation()
+		
+		# skip it if it does not exist anymore - in a previous invocation it could
+		# have been handled already
+		if not os.path.isdir(html_out_dir):
+			return
+		# END early abort
 		
 		if self.zip_archive:
 			self.create_zip_archive(html_out_dir)
@@ -959,14 +1163,22 @@ class DocCommand(_GitMixin, Command):
 	def build_documentation(self):
 		"""Build the documentation with our current version tag - this allows
 		it to be included in the release as it has been updated
+		
 		:return: tuple(html_base, Bool) tuple with base directory containing all html
-		files ( possibly with subdirectories ), and a boolean which is True if 
-		the documentation was build, False if it was still uptodate """
-		base_dir = self._init_doc_generator()
+			files ( possibly with subdirectories ), and a boolean which is True if 
+			the documentation was build, False if it was still uptodate """
+		# reinit the generator, which will update its base dir as well
+		docgen = self._init_doc_generator()
+		if self.handled_docs:
+			return (self.docgen.html_output_dir(), False)
+		# END handle multiple calls
+		self.handled_docs = True
+		
+		doc_dir = docgen.base_dir()
 		
 		# CHECK IF BUILD IS REQUIRED
 		############################
-		html_out_dir = self.docgen.html_output_dir()
+		html_out_dir = docgen.html_output_dir()
 		index_file = html_out_dir / 'index.html'
 		needs_build = True
 		if index_file.isfile():
@@ -974,7 +1186,7 @@ class DocCommand(_GitMixin, Command):
 			# version file for sphinx really should exist at least, its the main 
 			# documentation no matter what
 			st = 'sphinx'
-			if not self.docgen.version_file_name(st, basedir=base_dir).isfile():
+			if not docgen.version_file_name(st, basedir=doc_dir).isfile():
 				needs_build = True
 			# END check existing version info
 			
@@ -982,7 +1194,7 @@ class DocCommand(_GitMixin, Command):
 				for token in ('coverage', 'epydoc', st):
 					# check if the docs need to be rebuild
 					try:
-						self.docgen.check_version('release', token)
+						docgen.check_version('release', token)
 					except EnvironmentError:
 						needs_build = True
 					# END docs don't need to be build
@@ -995,14 +1207,12 @@ class DocCommand(_GitMixin, Command):
 			return (html_out_dir, False)
 		# END skip build
 		
-		# when actually creating the docs, we start the respective script as it 
-		# might as well be re-implemented in a derived project, and is probably 
-		# safest to do
-		import mrv.cmd.base
-		makedocpath = mrv.cmd.base.find_mrv_script('makedoc')
+		# when actually creating the docs, we start the respective script as found
+		# in our project info
+		makedocpath = self.distribution._makedoc_relapath()
 		
-		# makedoc must be started from the doc directory - adjust makedoc
-		p = self.distribution.spawn_python_interpreter((makedocpath.basename(), ), cwd=base_dir)
+		# makedoc must be started from the doc directory
+		p = self.distribution.spawn_python_interpreter((makedocpath, ), cwd=doc_dir)
 		if p.wait():
 			raise ValueError("Building of Documentation failed")
 		# END wait for build to complete
@@ -1010,14 +1220,46 @@ class DocCommand(_GitMixin, Command):
 		return (html_out_dir, True)
 	#} END interface 
 	
+	#{ Paths
+	
+	def _doc_directory(self):
+		"""
+		:return: path to the doc directory which (usually) contains the makedoc 
+			executable"""
+		doc_dir = self.doc_dir
+		if self.from_build_version:
+			base_dir = None
+			
+			# try build_py - sdist handles us directly
+			cmds = self.distribution.commands
+			if 'sdist' in cmds:
+				scmd = self.get_finalized_command('sdist', create=True)
+				base_dir = scmd._sdist_directory()
+			elif 'build_py' in cmds or 'build' in cmds:
+				bcmd = self.get_finalized_command('build_py', create=True)
+				base_dir = bcmd._build_dir()
+			# END handle build_py
+			
+			if base_dir is None:
+				raise EnvironmentError("Could not determine valid documentation directory")
+			# END handle error
+			doc_dir = os.path.join(base_dir, doc_dir)
+		# END handle build version docs generation
+		
+		return doc_dir
+		
+	#} END paths
+	
 	#{ Internal
+	
 	def _init_doc_generator(self):
-		"""initialize the docgen instance, and return the base_dir at which 
-		it operates"""
-		base_dir = os.path.join('.', 'doc')
+		"""initialize the docgen instance, and return it"""
+		doc_dir = self._doc_directory()
 		if self.docgen is not None:
-			return base_dir
-		# END handle duplicate calls 
+			# assure the base_dir is still pointing to the right location - it 
+			# may change during runtime
+			return self.docgen.set_base_dir(doc_dir)
+		# END handle duplicate calls
 		
 		# try to use an overriden docgenerator, then our own one
 		GenCls = None
@@ -1029,12 +1271,12 @@ class DocCommand(_GitMixin, Command):
 			GenCls = docbase.DocGenerator
 		# END get doc generator class
 		
-		if not os.path.isdir(base_dir):
-			raise EnvironmentError("Cannot build documentation as '%s' directory does not exist" % base_dir)
+		if not os.path.isdir(doc_dir):
+			raise EnvironmentError("Cannot build documentation as '%s' directory does not exist" % doc_dir)
 		# END check doc dir exists
 		
-		self.docgen = GenCls(base_dir=base_dir)
-		return base_dir
+		self.docgen = GenCls(base_dir=doc_dir)
+		return self.docgen
 	
 	#} END internal
 
@@ -1063,6 +1305,9 @@ class Distribution(object, BaseDistribution):
 	
 	# directory to which all of our comamnds will store their distribution data
 	dist_dir = 'dist'
+	
+	# directory containing all external packages
+	ext_dir = 'ext'
 	#} END configuration
 	
 	
@@ -1356,12 +1601,13 @@ Would you like to adjust your version info or abort ?
 		:param cwd: if not None, it will be set for the childs working directory
 		:return: Spawned Process
 		:note: All output channels of our process will be connected to the output channels 
-		of the spawned one"""
+			of the spawned one"""
 		import mrv.cmd.base
 		py_executable = mrv.cmd.base.python_executable()
 		
 		actual_args = (py_executable, ) + tuple(args)
-		log.info("Spawning: %s" % ' '.join(actual_args))
+		cwdinfo = (cwd and " at %r" % cwd) or ''
+		log.info("Spawning%s: %s" % (cwdinfo, ' '.join(actual_args)))
 		proc = subprocess.Popen(actual_args, stdout=sys.stdout, stderr=sys.stderr, cwd=cwd)
 		return proc
 		
@@ -1369,7 +1615,7 @@ Would you like to adjust your version info or abort ?
 		"""Run regression tests and fail with a report if one of the regression 
 		test fails""" 
 		import mrv.cmd.base
-		tmrvrpath = mrv.cmd.base.find_mrv_script('tmrvr')
+		tmrvrpath = self._regressiontest_relapath()
 		
 		p = self.spawn_python_interpreter((tmrvrpath, ))
 		if p.wait():
@@ -1384,7 +1630,19 @@ Would you like to adjust your version info or abort ?
 		""":return: path to the root of the rootpackage, which includes all modules
 		and subpackages directly"""
 		return ospd(os.path.abspath(self.pinfo.__file__)) 
-	
+
+	def _test_relapath(self):
+		""":return: tmrv compatible test executable"""
+		return self.pinfo.nosetest_exec
+		
+	def _regressiontest_relapath(self):
+		""":return: tmrvr compatible test executable relative to the project root"""
+		return self.pinfo.regression_test_exec
+
+	def _makedoc_relapath(self):
+		""":return: relative path to makedoc executable"""
+		return self.pinfo.makedoc_exec
+		
 	#} END path generators
 
 	
@@ -1443,7 +1701,7 @@ Would you like to adjust your version info or abort ?
 		
 		# add external packages - just pretent its a package even though it it just 
 		# a path in external
-		ext_path = os.path.join('.', 'ext')
+		ext_path = self.ext_dir
 		
 		# try to get an iterator - followlinks is not supported in the easy_install
 		# pseudosandbox ...
@@ -1455,9 +1713,10 @@ Would you like to adjust your version info or abort ?
 		
 		if self.include_external and os.path.isdir(ext_path):
 			for root, dirs, files in dirwalker:
-				# remove hidden paths
+				# remove hidden paths, or paths with a '.' in them as they cannot 
+				# be handled properly
 				for dir in dirs[:]:
-					if not dir.startswith('.'):
+					if '.' not in dir:
 						continue
 					try:
 						dirs.remove(dir)
@@ -1468,7 +1727,8 @@ Would you like to adjust your version info or abort ?
 				
 				# process paths
 				for dir in dirs:
-					base_packages.append(self.pinfo.root_package+"."+os.path.join(root, dir).replace(os.sep, '.'))
+					dirpath = os.path.join(root, dir)
+					base_packages.append(self.pinfo.root_package+"."+dirpath.replace(os.sep, '.'))
 				# END for each remaining valid directory
 			# END walking external dir
 		# END if external directory exists
@@ -1511,7 +1771,7 @@ Would you like to adjust your version info or abort ?
 		self.cmdclass[install_lib.__name__] = InstallLibCommand
 		self.cmdclass[install.__name__] = InstallCommand
 		
-		self.cmdclass[DocCommand.cmdname] = DocCommand
+		self.cmdclass[DocDistro.cmdname] = DocDistro
 		
 		# well, here it comes: For some reason, the superclass dynamically attaches
 		# access methods from the distmetadata class onto itself. Its amazing, 

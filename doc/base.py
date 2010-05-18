@@ -247,6 +247,17 @@ output: html"""
 	#} END public interface
 	
 	#{ Paths
+	
+	def base_dir(self):
+		""":return: Path containing all documentation sources and output files"""
+		return self._base_dir
+		
+	def set_base_dir(self, base_dir):
+		"""Set the base directory to the given value
+		:return: self"""
+		self._base_dir = Path(base_dir)
+		return self
+		
 	def index_rst_path(self):
 		""":return: Path to index rst file"""
 		return self._base_dir / self.source_dir / "index.rst"
@@ -336,12 +347,19 @@ output: html"""
 			raise EnvironmentError("Project information module %r could not be imported:" % pinfo_package)
 		# END handle import
 		
+		# APPLY DOC-CONFIG 
+		###################
+		dcon = getattr(cls.pinfo, 'doc_config', dict())
+		for k,v in dcon.items():
+			if k.startswith('epydoc'):
+				setattr(cls, k, v)
+		# END apply project info 
+		
 		cls.epydoc_cfg = cls.epydoc_cfg % (cls.pinfo.project_name, 
 											cls.pinfo.url, 
 											cls.epydoc_show_source,
 											cls.epydoc_modules, 
 											cls.epydoc_exclude)
-		
 
 	def _make_sphinx_index(self):
 		"""Generate the index.rst file according to the modules and packages we

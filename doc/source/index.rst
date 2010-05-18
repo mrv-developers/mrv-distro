@@ -33,17 +33,12 @@ Module Summary
 	:toctree: generated/
 	
 	mrv.exc
-	mrv.dgfe
-	mrv.batch
 	mrv.path
-	mrv.conf
 	mrv.enum
-	mrv.mdp
 	mrv.util
 	mrv.mdepparse
 	mrv.setup
 	mrv.interface
-	mrv.dge
 	mrv.info
 	mrv.maya.mdb
 	mrv.maya.util
@@ -53,7 +48,6 @@ Module Summary
 	mrv.maya.scene
 	mrv.maya.undo
 	mrv.maya.env
-	mrv.maya.automation.qa
 	mrv.maya.ui.layout
 	mrv.maya.ui.editor
 	mrv.maya.ui.base
@@ -74,12 +68,6 @@ Module Summary
 	mrv.maya.nt.util
 	mrv.maya.nt.storage
 	mrv.maya.nt.geometry
-	mrv.automation.process
-	mrv.automation.base
-	mrv.automation.report
-	mrv.automation.workflow
-	mrv.automation.attributes
-	mrv.automation.qa
 	mrv.cmd.base
 	mrv.cmd.startup
 
