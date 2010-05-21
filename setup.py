@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import os
 ospd = os.path.dirname
 import sys
@@ -19,8 +20,10 @@ from distutils.util import convert_path
 from itertools import chain
 import subprocess
 import fnmatch
+import shutil
 import new
 import re
+
 
 try:
 	from setuptools import find_packages
@@ -64,6 +67,10 @@ class _GitMixin(object):
 	# name of symbolic reference which keeps the previous reference name to which 
 	# HEAD pointed before we changed HEAD
 	prev_head_name = 'DIST_ORIG_HEAD'
+	
+	# Variable holding the commit sha of the source repository at the time of the 
+	# distribution creation
+	commit_sha_var_name = 'src_commit_sha'
 	
 	branch_suffix = None
 	#} END configuration 
@@ -299,6 +306,68 @@ class _GitMixin(object):
 			print "Done"
 		# END for each remote to push to
 
+	def _adjust_commit_sha(self, root_commit, root_dir):
+		"""Write the src_commit_sha in the info.py file to the value in root_commit
+		or skip it if the file is not available"""
+		info_module_path = os.path.join(root_dir, 'info.py')
+		if not os.path.isfile(info_module_path):
+			log.warn("Couldn't write the %s value as the info module at did not exist" % (self.commit_sha_var_name, info_module_path))
+			return
+		# END handle file existence
+		
+		# BREAK HARD LINKS
+		##################
+		# if the file is hard-linked, which is the default for source distributions, 
+		# copy the file into place
+		stat = os.stat(info_module_path)
+		if stat.st_nlink > 1:
+			info_module_source_path = os.path.splitext(self.distribution.pinfo.__file__)[0] + ".py"
+			if not os.path.isfile(info_module_source_path):
+				log.error("Couldn't remove hardlink of info file as the file's source did not exist at %r" % info_module_source_path)
+				return
+			# END handle source doesn't exist
+			os.remove(info_module_path)
+			shutil.copyfile(info_module_source_path, info_module_path)
+		# END remove hard link
+		
+		# MAKE REPLACEMENT
+		# parse the file, find our line, expect it unaltered
+		adjusted = False
+		lines = open(info_module_path, 'r').readlines()
+		fexc = ValueError("Line could not be parsed, expecting: %s = '0'*40|SHA" % self.commit_sha_var_name)
+		
+		for ln, line in enumerate(lines):
+			if not line.strip().startswith(self.commit_sha_var_name):
+				continue
+			# END skip if not our line
+			
+			try:
+				var_name, value = [ t.strip() for t in line.split('=') ]
+			except ValueError:
+				log.error(line)
+				raise fexc
+			# END handle parsing errors
+			
+			if len(value) > 40:
+				log.info("Skipping adjustment of line %r as commit value was already set" % line)
+				return
+			# END handle commit already set
+			
+			# rewrite the line with the sha
+			lines[ln] = "%s = %r\n" % (self.commit_sha_var_name, root_commit.sha)
+			adjusted = True
+			break
+		# END for each line
+		
+		# WRITE CHANGES
+		if adjusted:
+			open(info_module_path, 'w').writelines(lines)
+			log.info("Adjusted line with %s of info module at %r" % (self.commit_sha_var_name, info_module_path))
+		else:
+			log.info("Didn't find line with %s in info module at %r" % ( self.commit_sha_var_name, info_module_path))
+		# END write changes
+		
+		
 	def add_files_and_commit(self, root_repo, repo, root_dir, root_tag):
 		"""
 		Add all files recursively to the index as found below root_dir and commit the
@@ -308,6 +377,9 @@ class _GitMixin(object):
 		to the root directory, even though the git repository might be on another level.
 		It also sports a simple way to determine whether the commit already exists, 
 		so it will not recommit data that has just been committed.
+		
+		Additionally we will try to find the info.py file and adjust its commit_sha
+		to the actual sha of our root_repo's original branch.
 		
 		:param root_repo: Repository containing the data of the main project
 		:param repo: dedicated repository containing the distribution data
@@ -356,6 +428,11 @@ class _GitMixin(object):
 			prev_root_head = root_repo.head
 		# END get actual commit reference
 		root_commit = prev_root_head.commit
+		
+		# important to associate the build with the source
+		###############################################
+		self._adjust_commit_sha(root_commit, root_dir)
+		###############################################
 		
 		if root_repo.is_dirty(index=False, working_tree=True, untracked_files=False):
 			suffix = "-dirty"
@@ -449,22 +526,24 @@ class _GitMixin(object):
 class _RegressionMixin(object):
 	"""Provides a simple interface allowing to perform a regression test"""
 	
+	#{ Configuration
+	# default directory containing the actual tests.
+	# Specifying subdirectories may limit the amount of tests run
+	test_dir_default = 'test'
+	#} END configuration
+	
+	
 	def __init__(self, *args, **kwargs):
 		self.post_testing = list()
+		self.test_dir = self.test_dir_default
 	
-	
-	#{ Configuration
-	# directory containing the actual tests.
-	# This information can be used by subclasses to limit the amount of located 
-	# files
-	test_sub_dir = 'test'
-	#} END configuration
 	
 	#{ Interface 
 	
 	@classmethod
 	def adjust_user_options(cls, user_options):
 		user_options.append(('post-testing=', 't', "Specifies the maya version(s) with which post-build testing will be performed"))
+		user_options.append(('test-dir=', 'd', "Specifies directory containing test modules, relative to the distribution"))
 		
 	def finalize_options(self):
 		self.post_testing = self.distribution.fixed_list_arg(self.post_testing)
@@ -517,7 +596,7 @@ class _RegressionMixin(object):
 				raise EnvironmentError("Post-Operation test failed")
 			# END call test program
 		# END for each maya version
-		
+		raise Exception("stop here")
 	#} END interface
 	
 	
@@ -530,6 +609,10 @@ class BuildPython(_GitMixin, _RegressionMixin, build_py):
 	description="Implements byte-compilation with different python interpreter versions"
 	
 	#{ Configuration
+	# If True, the source module will be deleted ( in the build directory ) 
+	# after it was compiled to byte code
+	remove_py_after_byte_compile = True
+	
 	# if set, pyo will be renamed to pyc, for some reason the pyo extension is not
 	# common and not properly supported by python itself
 	rename_pyo_to_pyc = True
@@ -680,14 +763,16 @@ class BuildPython(_GitMixin, _RegressionMixin, build_py):
 			# as if it was a totally separate case and duplicates code for whichever 
 			# reason 
 			for py_file in (f for f in files if f.endswith('.py')):
-				log.debug("Removing original file after byte compile: %s" % py_file)
-				try:
-					os.remove(py_file)
-				except OSError:
-					# it can happen that the file gets deleted by the conversion 
-					# script itself ... don't fully understand it though.
-					pass
-				# END handle file doesn't exist anymore
+				if self.remove_py_after_byte_compile:
+					try:
+						os.remove(py_file)
+						log.debug("Removed original file after byte compile: %s" % py_file)
+					except OSError:
+						# it can happen that the file gets deleted by the conversion 
+						# script itself ... don't fully understand it though.
+						pass
+					# END handle file doesn't exist anymore
+				# END if remove py after byte compile
 				
 				if self.rename_pyo_to_pyc:
 					base, ext = os.path.splitext(py_file)
@@ -816,7 +901,7 @@ class BuildPython(_GitMixin, _RegressionMixin, build_py):
 		
 		# POST REGRESSION TESTING
 		#########################
-		test_root = os.path.join(self._build_dir(), self.test_sub_dir)
+		test_root = os.path.join(self._build_dir(), self.test_dir)
 		self.post_regression_test(self._test_abspath(), test_root)
 		
 		# FIX SCRIPTS
@@ -1051,7 +1136,7 @@ class GitSourceDistribution(_GitMixin, _RegressionMixin, sdist):
 		# will only actually run if it is enabled - we need the preprartion to
 		# build the docs anyway
 		testexec = os.path.join(base_dir, self.distribution._test_relapath())
-		test_root = os.path.join(base_dir, self.test_sub_dir)
+		test_root = os.path.join(base_dir, self.test_dir)
 		self.post_regression_test(testexec, test_root)
 		
 		# HOOK IN DOC DISTRO
@@ -1293,17 +1378,9 @@ class Distribution(object, BaseDistribution):
 	# for this class to work
 	rootpackage = None
 	
-	# if True, every package in the 'ext' folder will be included in the distribution as well
-	# .git repository data will be pruned
-	include_external = True
-	
-	
-	# requires map - lists additional includes for different distribution outputs
-	requires_map = dict(	sdist = [ 'nose', 'epydoc', 'sphinx', 'gitpython' ], 
-							bdist = list() ) 
-	
-	
 	# directory to which all of our comamnds will store their distribution data
+	# Please note that other subcommands that are not overridden by us redefined
+	# this value privately, hence it is not recommended to change this here.
 	dist_dir = 'dist'
 	
 	# directory containing all external packages
@@ -1318,7 +1395,9 @@ class Distribution(object, BaseDistribution):
 		( ('%s=' % opt_maya_version, 'm', "Specify the maya version to operate on"),
 		  ('regression-tests=', 't', "If set (default), the regression tests will be executed, distribution fails if one test fails"),
 		  ('use-git=', 'g', "If set (default), the build results will be put into a git repository"),
-		  ('force-git-tag', 'f', "If set, the corresponding git tag will be moved to your current root repository commit"),)
+		  ('force-git-tag', 'f', "If set, the corresponding git tag will be moved to your current root repository commit"),
+		  ('add-requires=', 'r', "Specifies a comma separated list of 'requires' ids to be added to ones given to setup()"),
+		  ('package-search-dirs=', 'p', "If set, defaults to 'ext', packages within the given directories will be distributed as well"),)
 	)
 	
 	
@@ -1357,31 +1436,6 @@ class Distribution(object, BaseDistribution):
 			basename += "-py%s" % sys.version[:3]
 		# END make names dependent on the actual version if bytecode is used
 		return basename
-		
-	def postprocess_metadata(self):
-		"""Called after the commandline has been parsed. With all information available
-		we can decide whether additional dependencies need to be specified"""
-		
-		# HANDLE DEPENDENCIES
-		num_dist_commands = 0
-		for key in sorted(self.requires_map.keys()):
-			if key in self.commands:
-				if self.metadata.requires is None:
-					self.metadata.requires = list()
-				# END assure we have a list
-				
-				# assign unique depends
-				rlist = self.requires_map[key]
-				self.metadata.set_requires(sorted(list(set(self.metadata.requires) | set(rlist)))) 
-				num_dist_commands += 1
-			# END if we have requirements for a command
-		# END for each distribution command
-		
-		# for now, we can only handle one dist command at a time !
-		# this could be improved though 
-		if num_dist_commands > 1:
-			raise AssertionError("Currently we can only process one distribution target per invocation")
-		# END assure only one dist command per invocation
 		
 	def _query_user_token(self, tokens):
 		"""Read tokens from user and finally return a token he picked
@@ -1445,7 +1499,7 @@ class Distribution(object, BaseDistribution):
 		If the version was already tagged before, help the user to adjust his 
 		version string in the root module, make a commit, and finally create 
 		the tag we were so desperate for. The main idea is to enforce a unique 
-		version each time we make a release, and to make that easy
+		version each time we make a release, and to make that easy.
 		
 		:return: TagReference object created
 		:raise EnvironmentError: if we could not get a valid tag"""
@@ -1698,20 +1752,21 @@ Would you like to adjust your version info or abort ?
 	def get_packages(self):
 		""":return: list of all packages in rootpackage in __import__ compatible form"""
 		base_packages = [self.pinfo.root_package] + [ self.pinfo.root_package + '.' + pkg for pkg in find_packages(self._rootpath())]
-		
-		# add external packages - just pretent its a package even though it it just 
-		# a path in external
-		ext_path = self.ext_dir
-		
-		# try to get an iterator - followlinks is not supported in the easy_install
-		# pseudosandbox ...
-		try:
-			dirwalker = os.walk(ext_path, followlinks=True)
-		except TypeError:
-			dirwalker = os.walk(ext_path)
-		# END handle sandbox
-		
-		if self.include_external and os.path.isdir(ext_path):
+
+		for search_path in self.package_search_dirs:
+			if not os.path.isdir(search_path):
+				log.debug("package search path %r did not exist" % search_path)
+				continue
+			# END skip non-existing
+			
+			# try to get an iterator - followlinks is not supported in the easy_install
+			# pseudosandbox ...
+			try:
+				dirwalker = os.walk(search_path, followlinks=True)
+			except TypeError:
+				dirwalker = os.walk(search_path)
+			# END handle sandbox
+			
 			for root, dirs, files in dirwalker:
 				# remove hidden paths, or paths with a '.' in them as they cannot 
 				# be handled properly
@@ -1731,7 +1786,7 @@ Would you like to adjust your version info or abort ?
 					base_packages.append(self.pinfo.root_package+"."+dirpath.replace(os.sep, '.'))
 				# END for each remaining valid directory
 			# END walking external dir
-		# END if external directory exists
+		# END for each search dir
 		return base_packages
 		
 	#} END interface 
@@ -1755,14 +1810,12 @@ Would you like to adjust your version info or abort ?
 		# at this point, the options have not yet been parsed
 		self.py_version = float(sys.version[:3])
 		self.maya_version = None
-		self.regression_tests = True
-		self.use_git = True
+		self.regression_tests = False
+		self.use_git = False
 		self.root_repo = None
 		self.force_git_tag = 0
-		
-		if not self.packages:
-			self.packages = self.get_packages()
-		# END auto-generate packages if not explicitly set
+		self.add_requires = list()
+		self.package_search_dirs = None
 		
 		# Override Commands
 		self.cmdclass[build_py.__name__] = BuildPython
@@ -1789,6 +1842,17 @@ Would you like to adjust your version info or abort ?
 	def parse_command_line(self):
 		"""Handle our custom options"""
 		rval = BaseDistribution.parse_command_line(self)
+		
+		if self.package_search_dirs is None:
+			self.package_search_dirs = [self.ext_dir]
+		else:
+			self.package_search_dirs = self.fixed_list_arg(self.package_search_dirs)
+		# END handle package search dirs
+		
+		# handle packages
+		if not self.packages:
+			self.packages = self.get_packages()
+		# END auto-generate packages if not explicitly set
 		
 		# handle evil types - the underlying systems puts strings into the variables
 		# ... how can you ?
@@ -1829,7 +1893,18 @@ Would you like to adjust your version info or abort ?
 		# END handle python version
 		
 		
-		self.postprocess_metadata()
+		if isinstance(self.add_requires, basestring):
+			# well, lets parse the requires addition manually, metadata cannot 
+			# be set by the commandline, but only queried ... so we have to make 
+			# it a special case, yipeee.
+			if self.metadata.requires is None:
+				self.metadata.requires = list()
+			# END assure we have a list
+			
+			# assign unique depends
+			self.add_requires = self.fixed_list_arg(self.add_requires)
+			self.metadata.set_requires(sorted(list(set(self.metadata.requires) | set(self.add_requires)))) 
+		# END process requires
 		
 		
 		# setup git if required
