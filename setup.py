@@ -10,6 +10,8 @@ from distutils import log, dir_util
 
 
 import distutils.command
+import distutils.sysconfig
+from distutils.sysconfig import get_makefile_filename, get_python_lib
 from distutils.cmd import Command
 from distutils.command.install_lib import install_lib
 from distutils.command.install import install
@@ -23,15 +25,6 @@ import fnmatch
 import shutil
 import new
 import re
-
-
-try:
-	from setuptools import find_packages
-except ImportError:
-	from ez_setup import use_setuptools
-	use_setuptools()
-	from setuptools import find_packages
-# END get find_packages
 
 
 #{ Distutils Fixes 
@@ -52,6 +45,70 @@ def __init__(self, dist):
 	self.finalized = 0
 
 distutils.cmd.Command.__init__ = __init__
+
+def find_packages(where='.', exclude=()):
+	"""
+	NOTE: This method is not easily available which is a problem for us. Hence
+	we just put it here, duplicating code from the setup tools.
+	
+	Return a list all Python packages found within directory 'where'
+
+	'where' should be supplied as a "cross-platform" (i.e. URL-style) path; it
+	will be converted to the appropriate local path syntax.	 'exclude' is a
+	sequence of package names to exclude; '*' can be used as a wildcard in the
+	names, such that 'foo.*' will exclude all subpackages of 'foo' (but not
+	'foo' itself).
+	"""
+	out = []
+	stack=[(convert_path(where), '')]
+	while stack:
+		where,prefix = stack.pop(0)
+		for name in os.listdir(where):
+			fn = os.path.join(where,name)
+			if ('.' not in name and os.path.isdir(fn) and
+				os.path.isfile(os.path.join(fn,'__init__.py'))
+			):
+				out.append(prefix+name); stack.append((fn,prefix+name+'.'))
+	for pat in list(exclude)+['ez_setup']:
+		from fnmatch import fnmatchcase
+		out = [item for item in out if not fnmatchcase(item,pat)]
+	return out
+
+
+def zipcompatible_get_makefile_filename():
+	"""The maya installation of python 2.5 on linux is incomplete, that is the Makefile
+	is not physically present on disk, but is instead to be found in a zip archive.
+	We will detect that, and extract a temporary file instead that we will pass
+	on to the parser.
+	
+	note: the temp file is not currently being deleted"""
+	makefilepath = get_makefile_filename()
+	if os.path.isfile(makefilepath):
+		return makefilepath
+	# END all fine
+	
+	# try to extract it from zip file
+	zipfilepath = os.path.join(ospd(ospd(sys.executable)), 'lib', 'python%s%s.zip' % sys.version_info[:2])
+	if not os.path.exists(zipfilepath):
+		raise OSError("Could not find zipfile containing makefile at %r" % zipfilepath)
+	# END handle zip file doesn't exist
+	
+	import tempfile
+	import zipfile
+	zf = zipfile.ZipFile(zipfilepath)
+	
+	libdir = get_python_lib(plat_specific=1, standard_lib=1)
+	zipmakefilepath = makefilepath.replace(libdir + os.path.sep, '')
+	data = zf.read(zipmakefilepath)
+	tfp, tfn = tempfile.mkstemp('makefile')
+	os.write(tfp, data)
+	os.close(tfp)
+	
+	return tfn
+	
+	
+distutils.sysconfig.get_makefile_filename = zipcompatible_get_makefile_filename 
+	
 
 #} END Distutils fixes
 
@@ -596,7 +653,6 @@ class _RegressionMixin(object):
 				raise EnvironmentError("Post-Operation test failed")
 			# END call test program
 		# END for each maya version
-		raise Exception("stop here")
 	#} END interface
 	
 	
@@ -742,9 +798,11 @@ class BuildPython(_GitMixin, _RegressionMixin, build_py):
 		
 		# assure we byte-compile in a standalone interpreter, manipulating the 
 		# sys.executable as it will be used later
+		# During installation, we can use this interpreter as it is the one for which 
+		# we install
 		prev_debug = __debug__
 		prev_executable = sys.executable
-		if self.needs_compilation:
+		if self.needs_compilation and 'install' not in self.distribution.commands:
 			# this forces to use a standalone process
 			__builtin__.__debug__ = False
 			
@@ -788,6 +846,36 @@ class BuildPython(_GitMixin, _RegressionMixin, build_py):
 		
 		
 		return rval
+		
+	def get_data_files(self):
+		"""Can you feel the pain ? So, in python2.5 and python2.4 coming with maya, 
+		the line dealing with the ``plen`` has a bug which causes it to truncate too much.
+		It is fixed in the system interpreters as they receive patches, and shows how
+		bad it is if something doesn't have proper unittests.
+		The code here is a plain copy of the python2.6 version which works for all.
+		
+		Generate list of '(package,src_dir,build_dir,filenames)' tuples"""
+		data = []
+		if not self.packages:
+			return data
+		for package in self.packages:
+			# Locate package source directory
+			src_dir = self.get_package_dir(package)
+
+			# Compute package build directory
+			build_dir = os.path.join(*([self.build_lib] + package.split('.')))
+
+			# Length of path to strip from found files
+			plen = 0
+			if src_dir:
+				plen = len(src_dir)+1
+
+			# Strip directory from globbed filenames
+			filenames = [
+				file[plen:] for file in self.find_data_files(package, src_dir)
+				]
+			data.append((package, src_dir, build_dir, filenames))
+		return data
 	
 	def find_data_files(self, package, src_dir):
 		"""Fixes the underlying method by allowing to specify whole directories
@@ -842,7 +930,6 @@ class BuildPython(_GitMixin, _RegressionMixin, build_py):
 				files.remove(f)
 			# END remove directories
 		# END for each file
-		
 		return files + add_files
 		
 	def _filtered_module_list(self, modules):
@@ -935,6 +1022,12 @@ class BuildScripts(build_scripts):
 		self.exclude_scripts = self.distribution.fixed_list_arg(self.exclude_scripts)
 	
 	#{ Interface 
+	
+	@classmethod
+	def uses_mayapy(cls):
+		""":return: True if the executable is mayapy"""
+		return ('%smaya' % os.path.sep) in sys.executable.lower()
+	
 	@classmethod
 	def handle_scripts(cls, scripts, adjust_first_line, suffix=''):
 		"""Handle the given scripts to work for later installation
@@ -947,7 +1040,14 @@ class BuildScripts(build_scripts):
 			the string ourselves.
 			The suffix is assumed to be appended to all input script files, revealing the 
 			original script basename if the suffix is removed. The latter one is searched for 
-			in the script."""
+			in the script.
+			
+			Note: The suffix cannot be used if we are running in mayapy. In that case the first 
+			line will point to our current executable directly as mayapy can only be used for maya anyway."""
+		if cls.uses_mayapy() and suffix:
+			raise Exception("Suffixes may not be specified in mayapy mode: %s" % suffix)
+		# END handle suffix in mayapy mode 
+		
 		re_includefile_path = None
 		if suffix:
 			basenames = [ os.path.basename(s)[:-len(suffix)] for s in scripts ]
@@ -964,7 +1064,23 @@ class BuildScripts(build_scripts):
 				changed = False
 				m = cls.re_script_first_line.match(lines[0])
 				if m:
-					lines[0] = "%s%s%s\n" % (m.group(1), sys.version[:3], m.group(2) or '')
+					if not cls.uses_mayapy():
+						lines[0] = "%s%s%s\n" % (m.group(1), sys.version[:3], m.group(2) or '')
+					else:
+						# important: On posix, which is the only platform where this matters anyway, 
+						# mayapy just prepares the environment and startsup python.
+						# Hence we just force mayapy into the path, OSX compatible !
+						exec_path = sys.executable
+						if os.name == "posix":
+							exec_path = os.path.join(sys.executable[:sys.executable.find('/bin/')], 'bin/mayapy')
+							# on OSX though, mayapy is just a shell script that wants to be started with the
+							# shell to actually work :)
+							if sys.platform == 'darwin':
+								exec_path = "/bin/sh %s" % exec_path
+							# END OSX special handling
+						# END adjust exec path
+						lines[0] = "#!%s\n" % exec_path
+					# END handle mayapy specifically
 					changed=True
 				# END handle shebang line
 				
@@ -1007,6 +1123,9 @@ class BuildScripts(build_scripts):
 		self.mkpath(self.build_dir)
 		outfiles = list()
 		suffix = sys.version[:3]
+		if self.uses_mayapy():
+			suffix = ''
+		# END no suffix for mayapy
 		
 		# on windows, we don't process scripts as they end up in distinctive
 		# python installation directories
@@ -1929,6 +2048,13 @@ Would you like to adjust your version info or abort ?
 		if self.regression_tests:
 			self.perform_regression_tests()
 		# END regression tests
+		
+		# safety check: do make sure we don't get confused with the interpreter 
+		# version, verify that building and installation are separate steps
+		if 'install' in self.commands and \
+			('sdist' in self.commands or len([c for c in self.commands if c.startswith('build')])):
+			raise ValueError("Cannot create build or sdist distribution in the same run as installing them. Please separate the calls")
+		# END handle special case
 		
 		BaseDistribution.run_commands(self)
 		
