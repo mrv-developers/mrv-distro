@@ -368,7 +368,7 @@ class _GitMixin(object):
 		or skip it if the file is not available"""
 		info_module_path = os.path.join(root_dir, 'info.py')
 		if not os.path.isfile(info_module_path):
-			log.warn("Couldn't write the %s value as the info module at did not exist" % (self.commit_sha_var_name, info_module_path))
+			log.warn("Couldn't write the %s value as the info module at %r did not exist" % (self.commit_sha_var_name, info_module_path))
 			return
 		# END handle file existence
 		
