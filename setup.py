@@ -139,7 +139,7 @@ class _GitMixin(object):
 			self.args = args
 			
 		def __hash__(self):
-			return hash(self.args)
+			return hash(tuple(self.args))
 			
 		def __eq__(self, rhs):
 			return hash(self) == hash(other)
