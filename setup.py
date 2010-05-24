@@ -136,13 +136,13 @@ class _GitMixin(object):
 		"""Functor representing a hashable push call to a remote"""
 		def __init__(self, inst, *args):
 			self.inst = inst
-			self.args = args
+			self.args = tuple(args)
 			
 		def __hash__(self):
-			return hash(tuple(self.args))
+			return hash(self.args)
 			
 		def __eq__(self, rhs):
-			return hash(self) == hash(other)
+			return hash(self) == hash(rhs)
 		
 		def __call__(self):
 			return self.inst._push_to_remotes(*self.args)
@@ -292,7 +292,7 @@ class _GitMixin(object):
 	def push_to_remotes(self, repo, heads=list(), remotes=list()):
 		"""For the actual documentation, please see ``_push_to_remotes``
 		This method stores the call for later execution"""
-		self.distribution.push_queue.append(self.RemotePush(self, repo, heads, remotes))
+		self.distribution.push_queue.append(self.RemotePush(self, repo, tuple(heads), tuple(remotes)))
 	
 	def _push_to_remotes(self, repo, heads=list(), remotes=list()):
 		"""Push the given branchs to the given remotes.
