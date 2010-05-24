@@ -32,43 +32,6 @@ Module Summary
 	:nosignatures:
 	:toctree: generated/
 	
-	mrv.exc
-	mrv.path
-	mrv.enum
-	mrv.util
-	mrv.mdepparse
-	mrv.setup
-	mrv.interface
-	mrv.info
-	mrv.maya.mdb
-	mrv.maya.util
-	mrv.maya.ref
-	mrv.maya.all
-	mrv.maya.ns
-	mrv.maya.scene
-	mrv.maya.undo
-	mrv.maya.env
-	mrv.maya.ui.layout
-	mrv.maya.ui.editor
-	mrv.maya.ui.base
-	mrv.maya.ui.typ
-	mrv.maya.ui.set
-	mrv.maya.ui.panel
-	mrv.maya.ui.dialog
-	mrv.maya.ui.util
-	mrv.maya.ui.control
-	mrv.maya.nt.base
-	mrv.maya.nt.it
-	mrv.maya.nt.typ
-	mrv.maya.nt.set
-	mrv.maya.nt.persistence
-	mrv.maya.nt.apipatch
-	mrv.maya.nt.anim
-	mrv.maya.nt.util
-	mrv.maya.nt.storage
-	mrv.maya.nt.geometry
-	mrv.cmd.base
-	mrv.cmd.startup
 
 Indices and tables
 ==================

@@ -272,7 +272,12 @@ class _GitMixin(object):
 		
 		return items
 	
-	def push_to_remotes(self, repo, heads=list(), remotes=list()):
+	def push_to_remotes(self, *args, **kwargs):
+		"""For the actual documentation, please see ``_push_to_remotes``
+		This method stores the call for later execution"""
+		self.distribution.push_calls.append(lambda : self._push_to_remotes(*args, **kwargs))
+	
+	def _push_to_remotes(self, repo, heads=list(), remotes=list()):
 		"""Push the given branchs to the given remotes.
 		If one of the lists is empty, it the respective items 
 		will be queried from the user"""
@@ -1938,6 +1943,7 @@ Would you like to adjust your version info or abort ?
 		self.force_git_tag = 0
 		self.add_requires = list()
 		self.package_search_dirs = None
+		self.push_calls = list()
 		
 		# Override Commands
 		self.cmdclass[build_py.__name__] = BuildPython
@@ -2060,6 +2066,13 @@ Would you like to adjust your version info or abort ?
 		# END handle special case
 		
 		BaseDistribution.run_commands(self)
+		
+		# once everything worked, push to remotes if something is on the stack
+		for pcall in self.push_calls:
+			pcall()
+		# END for each call
+		
+		del(self.push_calls[:])
 		
 	
 	#} END overridden methods
