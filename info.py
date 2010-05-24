@@ -38,7 +38,7 @@ license = "BSD License"
 
 # The sha belonging to the commit which created this release.
 # Will only be set in actual release versions, and must never be set manually
-src_commit_sha = 'c701de3468e198e1257a544e04a7551898b8f041'
+src_commit_sha = '293bf4c9470253e2e5988afba2a35fab2e87fe51'
 
 
 # PATH INFORMATION
