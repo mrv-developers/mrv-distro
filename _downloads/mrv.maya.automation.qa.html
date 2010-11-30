@@ -1,0 +1,223 @@
+<html>
+<head>
+<title>mrv.maya.automation.qa</title>
+</head>
+<body>
+mrv.maya.automation.qa
+<style>
+.coverage pre {float: left; margin: 0px 1em; border: none;
+               padding: 0px; }
+.num pre { margin: 0px }
+.nocov, .nocov pre {background-color: #faa}
+.cov, .cov pre {background-color: #cfc}
+div.coverage div { clear: both; height: 1.1em}
+</style>
+<div class="stats">
+Covered: 125 lines<br/>
+Missed: 7 lines<br/>
+Skipped 66 lines<br/>
+Percent: 94 %<br/>
+
+</div>
+<div class="coverage">
+<div class="skip"><span class="num"><pre>  1</pre></span><pre># -*- coding: utf-8 -*-</pre></div>
+<div class="cov"><span class="num"><pre>  2</pre></span><pre>&quot;&quot;&quot;Specialization of workflow to allow checks to be natively implemented in MEL &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  3</pre></span><pre>__docformat__ = &quot;restructuredtext&quot;</pre></div>
+<div class="skip"><span class="num"><pre>  4</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  5</pre></span><pre>from mrv.automation.qa import QACheck, QACheckAttribute, QACheckResult</pre></div>
+<div class="cov"><span class="num"><pre>  6</pre></span><pre>from mrv.maya.util import Mel</pre></div>
+<div class="cov"><span class="num"><pre>  7</pre></span><pre>from mrv.dge import _NodeBaseCheckMeta</pre></div>
+<div class="cov"><span class="num"><pre>  8</pre></span><pre>import sys</pre></div>
+<div class="cov"><span class="num"><pre>  9</pre></span><pre>import logging</pre></div>
+<div class="cov"><span class="num"><pre> 10</pre></span><pre>log = logging.getLogger(&quot;mrv.maya.automation.qa&quot;)</pre></div>
+<div class="skip"><span class="num"><pre> 11</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 12</pre></span><pre>__all__ = (&quot;QAMELCheckAttribute&quot;, &quot;QAMELCheck&quot;, &quot;QAMetaMel&quot;, &quot;QAMELMixin&quot;)</pre></div>
+<div class="skip"><span class="num"><pre> 13</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 14</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 15</pre></span><pre>class QAMELCheckAttribute( QACheckAttribute ):</pre></div>
+<div class="cov"><span class="num"><pre> 16</pre></span><pre>	&quot;&quot;&quot;Attribute identifying a MEL check carrying additional mel specific attributes&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 17</pre></span><pre>	pass</pre></div>
+<div class="skip"><span class="num"><pre> 18</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 19</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 20</pre></span><pre>class QAMELCheck( QACheck ):</pre></div>
+<div class="cov"><span class="num"><pre> 21</pre></span><pre>	&quot;&quot;&quot;Specialized version of the QACheck allowing to use our own MEL attribute</pre></div>
+<div class="cov"><span class="num"><pre> 22</pre></span><pre>	contianiing more information&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 23</pre></span><pre>	check_attribute_cls = QAMELCheckAttribute</pre></div>
+<div class="skip"><span class="num"><pre> 24</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 25</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 26</pre></span><pre>class QAMetaMel( _NodeBaseCheckMeta ):</pre></div>
+<div class="cov"><span class="num"><pre> 27</pre></span><pre>	&quot;&quot;&quot;Metaclass allowing to create plugs based on a MEL implementation, allowing</pre></div>
+<div class="cov"><span class="num"><pre> 28</pre></span><pre>	to decide whether checks are Python or MEL implemented, but still running natively</pre></div>
+<div class="cov"><span class="num"><pre> 29</pre></span><pre>	in python&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 30</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre> 31</pre></span><pre>	def _getMelChecks( metacls, index_proc, check_cls ):</pre></div>
+<div class="cov"><span class="num"><pre> 32</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 33</pre></span><pre>		:return: list( checkInstance, ... ) list of checkinstances represeting</pre></div>
+<div class="cov"><span class="num"><pre> 34</pre></span><pre>			mel based checkes</pre></div>
+<div class="cov"><span class="num"><pre> 35</pre></span><pre>		:param index_proc: method returning the index declaring the tests</pre></div>
+<div class="cov"><span class="num"><pre> 36</pre></span><pre>		:param check_cls: class used to instance new checks&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 37</pre></span><pre>		output = list()</pre></div>
+<div class="cov"><span class="num"><pre> 38</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre> 39</pre></span><pre>			index = Mel.call( index_proc )</pre></div>
+<div class="nocov"><span class="num"><pre> 40</pre></span><pre>		except RuntimeError, e:</pre></div>
+<div class="nocov"><span class="num"><pre> 41</pre></span><pre>			log.warn( str( e ) )</pre></div>
+<div class="cov"><span class="num"><pre> 42</pre></span><pre>		else:</pre></div>
+<div class="skip"><span class="num"><pre> 43</pre></span><pre>			# assure its working , never fail here</pre></div>
+<div class="cov"><span class="num"><pre> 44</pre></span><pre>			if len( index ) % 3 == 0:</pre></div>
+<div class="cov"><span class="num"><pre> 45</pre></span><pre>				iindex = iter( index )</pre></div>
+<div class="cov"><span class="num"><pre> 46</pre></span><pre>				for checkname, description, can_fix in zip( iindex, iindex, iindex ):</pre></div>
+<div class="skip"><span class="num"><pre> 47</pre></span><pre>					# check name - it may not contain spaces for now</pre></div>
+<div class="cov"><span class="num"><pre> 48</pre></span><pre>					if &quot; &quot; in checkname:</pre></div>
+<div class="nocov"><span class="num"><pre> 49</pre></span><pre>						log.warn( &quot;Invalid name: %s - it may not contain spaces, use CamelCase or underscores&quot; % checkname )</pre></div>
+<div class="nocov"><span class="num"><pre> 50</pre></span><pre>						continue</pre></div>
+<div class="skip"><span class="num"><pre> 51</pre></span><pre>					# END name check</pre></div>
+<div class="skip"><span class="num"><pre> 52</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 53</pre></span><pre>					plug = check_cls( annotation = description, has_fix = int( can_fix ) )</pre></div>
+<div class="cov"><span class="num"><pre> 54</pre></span><pre>					plug.setName( checkname )</pre></div>
+<div class="cov"><span class="num"><pre> 55</pre></span><pre>					output.append( plug )</pre></div>
+<div class="skip"><span class="num"><pre> 56</pre></span><pre>				# END for each information tuple</pre></div>
+<div class="skip"><span class="num"><pre> 57</pre></span><pre>			# END if index is valid</pre></div>
+<div class="nocov"><span class="num"><pre> 58</pre></span><pre>			else:</pre></div>
+<div class="nocov"><span class="num"><pre> 59</pre></span><pre>				log.warn( &quot;Invalid proc index returned by %s&quot; % index_proc )</pre></div>
+<div class="skip"><span class="num"><pre> 60</pre></span><pre>			# END index has valid format</pre></div>
+<div class="skip"><span class="num"><pre> 61</pre></span><pre>		# END index could be retrieved</pre></div>
+<div class="skip"><span class="num"><pre> 62</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 63</pre></span><pre>		return output</pre></div>
+<div class="skip"><span class="num"><pre> 64</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 65</pre></span><pre>	def __new__( metacls, name, bases, clsdict ):</pre></div>
+<div class="cov"><span class="num"><pre> 66</pre></span><pre>		&quot;&quot;&quot;Search for configuration attributes allowing to auto-generate plugs</pre></div>
+<div class="cov"><span class="num"><pre> 67</pre></span><pre>		referring to the respective mel implementation&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 68</pre></span><pre>		index_proc = clsdict.get( &quot;mel_index_proc&quot;, None )</pre></div>
+<div class="cov"><span class="num"><pre> 69</pre></span><pre>		check_cls = clsdict.get( &quot;check_plug_cls&quot;, QAMELCheck )</pre></div>
+<div class="cov"><span class="num"><pre> 70</pre></span><pre>		static_plugs = clsdict.get( &quot;static_mel_plugs&quot;, True )</pre></div>
+<div class="skip"><span class="num"><pre> 71</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 72</pre></span><pre>		if static_plugs and index_proc and check_cls is not None:</pre></div>
+<div class="cov"><span class="num"><pre> 73</pre></span><pre>			check_list = metacls._getMelChecks( index_proc, check_cls )</pre></div>
+<div class="cov"><span class="num"><pre> 74</pre></span><pre>			for check in check_list:</pre></div>
+<div class="cov"><span class="num"><pre> 75</pre></span><pre>				clsdict[ check.name() ] = check</pre></div>
+<div class="skip"><span class="num"><pre> 76</pre></span><pre>		# END create plugs</pre></div>
+<div class="skip"><span class="num"><pre> 77</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 78</pre></span><pre>		# finally create the class</pre></div>
+<div class="cov"><span class="num"><pre> 79</pre></span><pre>		newcls = super( QAMetaMel, metacls ).__new__( metacls, name, bases, clsdict )</pre></div>
+<div class="cov"><span class="num"><pre> 80</pre></span><pre>		return newcls</pre></div>
+<div class="skip"><span class="num"><pre> 81</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 82</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 83</pre></span><pre>class QAMELMixin( object ):</pre></div>
+<div class="cov"><span class="num"><pre> 84</pre></span><pre>	&quot;&quot;&quot;Base class allowing to process MEL baesd plugs as created by our metaclass</pre></div>
+<div class="skip"><span class="num"><pre> 85</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 86</pre></span><pre>	:note: this class assumes it is used on a process</pre></div>
+<div class="skip"><span class="num"><pre> 87</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 88</pre></span><pre>	**Configuration**:</pre></div>
+<div class="cov"><span class="num"><pre> 89</pre></span><pre>		The following variables MUST be used to setup this class once you have derived</pre></div>
+<div class="cov"><span class="num"><pre> 90</pre></span><pre>		from it:</pre></div>
+<div class="skip"><span class="num"><pre> 91</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 92</pre></span><pre>		 * mel_index_proc:</pre></div>
+<div class="cov"><span class="num"><pre> 93</pre></span><pre>		  	produdure name with signature func( ) returning string array in following format:</pre></div>
+<div class="cov"><span class="num"><pre> 94</pre></span><pre>				[n*3+0] = checkname : the name of the check, use CamelCase names or names_with_underscore</pre></div>
+<div class="cov"><span class="num"><pre> 95</pre></span><pre>				The checkname is also used as id to identify the check lateron</pre></div>
+<div class="cov"><span class="num"><pre> 96</pre></span><pre>				[n*3+1] = description: Single sentence desciption of the check targeted at the end user</pre></div>
+<div class="cov"><span class="num"><pre> 97</pre></span><pre>				[n*3+2] = can_fix: 	Boolean value indicating whether the check can also fix the issue</pre></div>
+<div class="skip"><span class="num"><pre> 98</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 99</pre></span><pre>		 * mel_check_proc:</pre></div>
+<div class="cov"><span class="num"><pre>100</pre></span><pre>		 	procedure called to actually process the given check, signature is:</pre></div>
+<div class="cov"><span class="num"><pre>101</pre></span><pre>				func( check_name, should_fix )</pre></div>
+<div class="cov"><span class="num"><pre>102</pre></span><pre>				returning list of strings as follows:</pre></div>
+<div class="skip"><span class="num"><pre>103</pre></span><pre>				</pre></div>
+<div class="cov"><span class="num"><pre>104</pre></span><pre>					[0] = x number of fixed items</pre></div>
+<div class="cov"><span class="num"><pre>105</pre></span><pre>					[1] = header</pre></div>
+<div class="cov"><span class="num"><pre>106</pre></span><pre>					[1:1+x] = x fixed items</pre></div>
+<div class="cov"><span class="num"><pre>107</pre></span><pre>					[2+x:n] = n invalid items</pre></div>
+<div class="skip"><span class="num"><pre>108</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre>109</pre></span><pre>			items are either objects or in general anything you check for. The check is</pre></div>
+<div class="cov"><span class="num"><pre>110</pre></span><pre>			considered to be failed if there is at least one invalid item.</pre></div>
+<div class="skip"><span class="num"><pre>111</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre>112</pre></span><pre>			If you fixed items, all previously failed items should now be returned as</pre></div>
+<div class="cov"><span class="num"><pre>113</pre></span><pre>			valid items</pre></div>
+<div class="skip"><span class="num"><pre>114</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>115</pre></span><pre>		static_mel_plugs:</pre></div>
+<div class="cov"><span class="num"><pre>116</pre></span><pre>			Please note that your class must implemnent plugs and extend the super class</pre></div>
+<div class="cov"><span class="num"><pre>117</pre></span><pre>			result by the result of `listMELChecks` to dynamically retrieve the available</pre></div>
+<div class="cov"><span class="num"><pre>118</pre></span><pre>			checks</pre></div>
+<div class="cov"><span class="num"><pre>119</pre></span><pre>	&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>120</pre></span><pre>	__metaclass__ = QAMetaMel</pre></div>
+<div class="skip"><span class="num"><pre>121</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>122</pre></span><pre>	#{ Configuration</pre></div>
+<div class="skip"><span class="num"><pre>123</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>124</pre></span><pre>	# see class docs</pre></div>
+<div class="cov"><span class="num"><pre>125</pre></span><pre>	mel_index_proc = None</pre></div>
+<div class="skip"><span class="num"><pre>126</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>127</pre></span><pre>	# see class docs</pre></div>
+<div class="cov"><span class="num"><pre>128</pre></span><pre>	mel_check_proc = None</pre></div>
+<div class="skip"><span class="num"><pre>129</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>130</pre></span><pre>	# if True, the mel based checks will be created as class members upon class</pre></div>
+<div class="skip"><span class="num"><pre>131</pre></span><pre>	# creation. If False, they will be retrieved on demand whenever plugs are</pre></div>
+<div class="skip"><span class="num"><pre>132</pre></span><pre>	# queried. The latter one can be slow, but might be required if the indices</pre></div>
+<div class="skip"><span class="num"><pre>133</pre></span><pre>	# are dynamically generated</pre></div>
+<div class="cov"><span class="num"><pre>134</pre></span><pre>	static_mel_plugs = True</pre></div>
+<div class="skip"><span class="num"><pre>135</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>136</pre></span><pre>	# qa check result compatible class to be used as container for MEL return values</pre></div>
+<div class="cov"><span class="num"><pre>137</pre></span><pre>	check_result_cls = QACheckResult</pre></div>
+<div class="skip"><span class="num"><pre>138</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>139</pre></span><pre>	# qa check plug class to use for the plugs to be created - it will always default</pre></div>
+<div class="skip"><span class="num"><pre>140</pre></span><pre>	# to QACheck</pre></div>
+<div class="cov"><span class="num"><pre>141</pre></span><pre>	check_plug_cls = QAMELCheck</pre></div>
+<div class="skip"><span class="num"><pre>142</pre></span><pre>	#} END configuration</pre></div>
+<div class="skip"><span class="num"><pre>143</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>144</pre></span><pre>	def listMELChecks( self ):</pre></div>
+<div class="cov"><span class="num"><pre>145</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>146</pre></span><pre>		:return: list all checks ( Plugs ) available on this class that are implemented</pre></div>
+<div class="cov"><span class="num"><pre>147</pre></span><pre>			in MEL&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>148</pre></span><pre>		return self.listChecks( predicate = lambda p: isinstance( p.attr , QAMELCheckAttribute ) )</pre></div>
+<div class="skip"><span class="num"><pre>149</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>150</pre></span><pre>	def isMELCheck( self, check ):</pre></div>
+<div class="cov"><span class="num"><pre>151</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>152</pre></span><pre>		:return: True if the given check plug is implemented in MEL and can be handled</pre></div>
+<div class="cov"><span class="num"><pre>153</pre></span><pre>			there accordingly&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>154</pre></span><pre>		plug = check</pre></div>
+<div class="cov"><span class="num"><pre>155</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre>156</pre></span><pre>			plug = check.plug</pre></div>
+<div class="cov"><span class="num"><pre>157</pre></span><pre>		except AttributeError:</pre></div>
+<div class="cov"><span class="num"><pre>158</pre></span><pre>			pass</pre></div>
+<div class="skip"><span class="num"><pre>159</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>160</pre></span><pre>		return isinstance( plug.attr, QAMELCheckAttribute )</pre></div>
+<div class="skip"><span class="num"><pre>161</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>162</pre></span><pre>	def _rval_to_checkResult( self, string_array, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>163</pre></span><pre>		&quot;&quot;&quot;:return: check result as parsed fom string array</pre></div>
+<div class="cov"><span class="num"><pre>164</pre></span><pre>		:param kwargs: will be given to initializer of check result instance&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>165</pre></span><pre>		if not string_array:</pre></div>
+<div class="nocov"><span class="num"><pre>166</pre></span><pre>			return self.check_result_cls( **kwargs )</pre></div>
+<div class="skip"><span class="num"><pre>167</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>168</pre></span><pre>		assert len( string_array ) &gt; 1	# need a header at least</pre></div>
+<div class="skip"><span class="num"><pre>169</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>170</pre></span><pre>		num_fixed = int( string_array[0] )</pre></div>
+<div class="cov"><span class="num"><pre>171</pre></span><pre>		end_num_fixed = 2 + num_fixed</pre></div>
+<div class="skip"><span class="num"><pre>172</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>173</pre></span><pre>		kwargs[ 'header' ] = string_array[1]</pre></div>
+<div class="cov"><span class="num"><pre>174</pre></span><pre>		kwargs[ 'fixed_items' ] = string_array[ 2 : end_num_fixed ]</pre></div>
+<div class="cov"><span class="num"><pre>175</pre></span><pre>		kwargs[ 'failed_items' ] = string_array[ end_num_fixed : ]</pre></div>
+<div class="skip"><span class="num"><pre>176</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>177</pre></span><pre>		return self.check_result_cls( **kwargs )</pre></div>
+<div class="skip"><span class="num"><pre>178</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>179</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>180</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre>181</pre></span><pre>	def melChecks( cls, predicate = lambda p: True ):</pre></div>
+<div class="cov"><span class="num"><pre>182</pre></span><pre>		&quot;&quot;&quot;:return: list of MEL checks ( plugs ) representing checks defined by MEL</pre></div>
+<div class="cov"><span class="num"><pre>183</pre></span><pre>		:param predicate: only return plug if predicate( item ) yield True&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>184</pre></span><pre>		return [ c for c in QAMetaMel._getMelChecks( cls.mel_index_proc, cls.check_plug_cls ) if predicate( c ) ]</pre></div>
+<div class="skip"><span class="num"><pre>185</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>186</pre></span><pre>	def handleMELCheck( self, check, mode ):</pre></div>
+<div class="cov"><span class="num"><pre>187</pre></span><pre>		&quot;&quot;&quot;Called to handle the given check in the given mode</pre></div>
+<div class="skip"><span class="num"><pre>188</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>189</pre></span><pre>		:raise RuntimeError: If MEL throws an error</pre></div>
+<div class="cov"><span class="num"><pre>190</pre></span><pre>		:return: QACheckResult of the result generated by MEL&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>191</pre></span><pre>		assert self.mel_check_proc</pre></div>
+<div class="cov"><span class="num"><pre>192</pre></span><pre>		assert isinstance( check.attr, QAMELCheckAttribute )</pre></div>
+<div class="skip"><span class="num"><pre>193</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>194</pre></span><pre>		rval = Mel.call( self.mel_check_proc, check.name(), int( mode == self.eMode.fix ) )</pre></div>
+<div class="skip"><span class="num"><pre>195</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>196</pre></span><pre>		return self._rval_to_checkResult( rval )</pre></div>
+<div class="skip"><span class="num"><pre>197</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>198</pre></span><pre></pre></div>
+</div>
+</body>
+</html>

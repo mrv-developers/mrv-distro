@@ -1,0 +1,3267 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>mrv.dgfe &mdash; mrv v1.0.1-develop documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.1-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="mrv v1.0.1-develop documentation" href="../index.html" />
+    <link rel="next" title="mrv.batch" href="mrv.batch.html" />
+    <link rel="prev" title="mrv.exc" href="mrv.exc.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.batch.html" title="mrv.batch"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mrv.exc.html" title="mrv.exc"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-mrv.dgfe">
+<h1><tt class="xref docutils literal"><span class="pre">mrv.dgfe</span></tt><a class="headerlink" href="#module-mrv.dgfe" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="api/mrv.dgfe-module.html">Epydoc: mrv.dgfe</a></p>
+<p>Contains nodes supporting facading within a dependency graph  - this can be used
+for container tyoes or nodes containing their own subgraph even</p>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="api/mrv.dgfe-module.html#Attribute">Epydoc: mrv.dgfe</a></p>
+<dl class="class">
+<dt id="mrv.dgfe.Attribute">
+<em class="property">class </em><tt class="descclassname">mrv.dgfe.</tt><tt class="descname">Attribute</tt><big>(</big><em>typeClass</em>, <em>flags</em>, <em>default=None</em><big>)</big><a class="headerlink" href="#mrv.dgfe.Attribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>Simple class defining the type of a plug and several flags that
+affect it. Additionally it can determine how well suited another attribute is</p>
+<dl class="docutils">
+<dt><strong>Flags</strong>:</dt>
+<dd>exact_type: if True, derived classes of our typecls are not considered to be a valid type.
+i.e: basestring could be stored in a str attr if exact type is false - its less than we need, but
+still something.
+Putting a str into a basestring attribute will always work though, as it would be more than we need
+readonly: if True, the attribute&#8217;s plug cannot be written to. Read-only attributes can be used
+as storage that the user can read, but not write.
+You can write read-only plugs by directly setting its cache - this of course - is only
+for the node itself, but will never be done by the framework</dd>
+<dt><strong>computable</strong>:</dt>
+<dd><p class="first">Nodes are automatically computable if they are affected by another plug.
+If this is not the case, they are marked input only and are not computed.
+If this flag is true, even unaffeted plugs are computable.
+Plugs that affect something are automatically input plugs and will not be computed.
+If the plug does not affect anything and this flag is False, they are seen as input plugs
+anyway.</p>
+<p>The system does not allow plugs to be input and output plugs at the same time, thus your compute
+cannot be triggered by your own compute</p>
+<p class="last">cls: if True, the plug requires classes to be set ( instances of &#8216;type&#8217; ) , but no instances of these classes
+uncached: if False, computed values may be cached, otherwise they will always be recomputed.
+unconnectable: if True, the node cannot be the destination of a connection
+check_passing_values: check each value as it flows through a connection - usually compatability is only checked
+on connection and once values are set, but not if they flow through an existing connection</p>
+</dd>
+<dt><strong>Default Values</strong>:</dt>
+<dd>Although default values can be simple primitives are classes, a callable is specifically supported.
+It allows you to get a callback whenever a default value is required.
+The same result could be achieved by connected the plug in question, but dynamic defaults are a quick
+way to achive that.
+Your returned value will be type-checked against the required type if check_passing_values is set.</dd>
+</dl>
+<dl class="method">
+<dt id="mrv.dgfe.Attribute.affinity">
+<tt class="descname">affinity</tt><big>(</big><em>otherattr</em><big>)</big><a class="headerlink" href="#mrv.dgfe.Attribute.affinity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute affinity for otherattr.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">rating from 0 to 255 defining how good the attribtues match each
+other in general - how good can we store values of otherattr ? 
+Thus this comparison is directed.</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">for checking connections, use <cite>connectionAffinity</cite></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.Attribute.compatabilityRate">
+<tt class="descname">compatabilityRate</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#mrv.dgfe.Attribute.compatabilityRate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute value&#8217;s compatability rate</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">value between 0 and 255, 0 means no compatability, 255 a perfect match. 
+if larger than 0, the plug can hold the value ( assumed the flags are set correctly ).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.Attribute.connectionAffinity">
+<tt class="descname">connectionAffinity</tt><big>(</big><em>destinationattr</em><big>)</big><a class="headerlink" href="#mrv.dgfe.Attribute.connectionAffinity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute connection affinity for given destination attribute</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">rating from 0 to 255 defining the quality of the connection to
+otherplug. an affinity of 0 mean connection is not possible, 255 mean the connection
+is perfectly suited.
+The connection is a directed one from self -&gt; otherplug</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.Attribute.default">
+<tt class="descname">default</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.Attribute.default" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">default value stored for this attribute, or raise</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">handles dynamic defaults, so you should not directly access the default member variable</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises MissingDefaultValueError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if attribute does not have a default value</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises TypeError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if value returned by dynamic attribute has incorrect type</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.dgfe-module.html#DiGraph">Epydoc: mrv.dgfe</a></p>
+<dl class="class">
+<dt id="mrv.dgfe.DiGraph">
+<em class="property">class </em><tt class="descclassname">mrv.dgfe.</tt><tt class="descname">DiGraph</tt><big>(</big><em>data=None</em>, <em>name=''</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">networkx.classes.graph.Graph</span></tt></p>
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.add_cycle">
+<tt class="descname">add_cycle</tt><big>(</big><em>nlist</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.add_cycle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.add_edge">
+<tt class="descname">add_edge</tt><big>(</big><em>u</em>, <em>v</em>, <em>attr_dict=None</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.add_edge" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.add_edges_from">
+<tt class="descname">add_edges_from</tt><big>(</big><em>ebunch</em>, <em>attr_dict=None</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.add_edges_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.add_node">
+<tt class="descname">add_node</tt><big>(</big><em>n</em>, <em>attr_dict=None</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.add_node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.add_nodes_from">
+<tt class="descname">add_nodes_from</tt><big>(</big><em>nodes</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.add_nodes_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.add_path">
+<tt class="descname">add_path</tt><big>(</big><em>nlist</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.add_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.add_star">
+<tt class="descname">add_star</tt><big>(</big><em>nlist</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.add_star" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.add_weighted_edges_from">
+<tt class="descname">add_weighted_edges_from</tt><big>(</big><em>ebunch</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.add_weighted_edges_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.adjacency_iter">
+<tt class="descname">adjacency_iter</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.adjacency_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.adjacency_list">
+<tt class="descname">adjacency_list</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.adjacency_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.clear">
+<tt class="descname">clear</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.clear" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.copy">
+<tt class="descname">copy</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.copy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.degree">
+<tt class="descname">degree</tt><big>(</big><em>nbunch=None</em>, <em>with_labels=False</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.degree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.degree_iter">
+<tt class="descname">degree_iter</tt><big>(</big><em>nbunch=None</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.degree_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.edges">
+<tt class="descname">edges</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.edges_iter">
+<tt class="descname">edges_iter</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.edges_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.get_edge_data">
+<tt class="descname">get_edge_data</tt><big>(</big><em>u</em>, <em>v</em>, <em>default=None</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.get_edge_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.has_edge">
+<tt class="descname">has_edge</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.has_edge" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.has_node">
+<tt class="descname">has_node</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.has_node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.has_predecessor">
+<tt class="descname">has_predecessor</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.has_predecessor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.has_successor">
+<tt class="descname">has_successor</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.has_successor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.in_degree">
+<tt class="descname">in_degree</tt><big>(</big><em>nbunch=None</em>, <em>with_labels=False</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.in_degree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.in_degree_iter">
+<tt class="descname">in_degree_iter</tt><big>(</big><em>nbunch=None</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.in_degree_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.in_edges">
+<tt class="descname">in_edges</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.in_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.in_edges_iter">
+<tt class="descname">in_edges_iter</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.in_edges_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.is_directed">
+<tt class="descname">is_directed</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.is_directed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.is_multigraph">
+<tt class="descname">is_multigraph</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.is_multigraph" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.nbunch_iter">
+<tt class="descname">nbunch_iter</tt><big>(</big><em>nbunch=None</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.nbunch_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.neighbors">
+<tt class="descname">neighbors</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.neighbors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.neighbors_iter">
+<tt class="descname">neighbors_iter</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.neighbors_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.nodes">
+<tt class="descname">nodes</tt><big>(</big><em>data=False</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.nodes_iter">
+<tt class="descname">nodes_iter</tt><big>(</big><em>data=False</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.nodes_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.nodes_with_selfloops">
+<tt class="descname">nodes_with_selfloops</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.nodes_with_selfloops" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.number_of_edges">
+<tt class="descname">number_of_edges</tt><big>(</big><em>u=None</em>, <em>v=None</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.number_of_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.number_of_nodes">
+<tt class="descname">number_of_nodes</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.number_of_nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.number_of_selfloops">
+<tt class="descname">number_of_selfloops</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.number_of_selfloops" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.order">
+<tt class="descname">order</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.order" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.out_degree">
+<tt class="descname">out_degree</tt><big>(</big><em>nbunch=None</em>, <em>with_labels=False</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.out_degree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.out_degree_iter">
+<tt class="descname">out_degree_iter</tt><big>(</big><em>nbunch=None</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.out_degree_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.out_edges">
+<tt class="descname">out_edges</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.out_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.out_edges_iter">
+<tt class="descname">out_edges_iter</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.out_edges_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.predecessors">
+<tt class="descname">predecessors</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.predecessors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.predecessors_iter">
+<tt class="descname">predecessors_iter</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.predecessors_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.remove_edge">
+<tt class="descname">remove_edge</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.remove_edge" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.remove_edges_from">
+<tt class="descname">remove_edges_from</tt><big>(</big><em>ebunch</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.remove_edges_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.remove_node">
+<tt class="descname">remove_node</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.remove_node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.remove_nodes_from">
+<tt class="descname">remove_nodes_from</tt><big>(</big><em>nbunch</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.remove_nodes_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.reverse">
+<tt class="descname">reverse</tt><big>(</big><em>copy=True</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.reverse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.selfloop_edges">
+<tt class="descname">selfloop_edges</tt><big>(</big><em>data=False</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.selfloop_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.size">
+<tt class="descname">size</tt><big>(</big><em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.subgraph">
+<tt class="descname">subgraph</tt><big>(</big><em>nbunch</em>, <em>copy=True</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.subgraph" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.successors">
+<tt class="descname">successors</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.successors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.successors_iter">
+<tt class="descname">successors_iter</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.successors_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.to_directed">
+<tt class="descname">to_directed</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.to_directed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.DiGraph.to_undirected">
+<tt class="descname">to_undirected</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.DiGraph.to_undirected" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.dgfe.FacadeNodeBase-class.html">Epydoc: mrv.dgfe.FacadeNodeBase</a></p>
+<dl class="class">
+<dt id="mrv.dgfe.FacadeNodeBase">
+<em class="property">class </em><tt class="descclassname">mrv.dgfe.</tt><tt class="descname">FacadeNodeBase</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe.FacadeNodeBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.dge.NodeBase" class="reference external" href="mrv.dge.html#mrv.dge.NodeBase"><tt class="xref docutils literal"><span class="pre">mrv.dge.NodeBase</span></tt></a></p>
+<p>Node having no own plugs, but retrieves them by querying other other nodes
+and claiming its his own ones.</p>
+<p>Using a non-default shell it is possibly to guide all calls through to the
+virtual PlugShell.</p>
+<p>Derived classes must override _plugshells which will be queried when
+plugs or plugshells are requested. This node will cache the result and do
+everything required to integrate itself.</p>
+<p>It lies in the nature of this class that the plugs are dependent on a specific instance
+of this node, thus classmethods of NodeBase have been overridden with instance versions
+of it.</p>
+<p>The facade node keeps a plug map allowing it to map plug-shells it got from
+you back to the original shell respectively. If the map has been missed,
+your node will be asked for information.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">facades are intrusive for the nodes they are facading - thus the nodes
+returned by <cite>_getNodePlugs</cite> will be altered. Namely the instance will get a
+shellcls and plug override to allow us to hook into the callchain. Thus you should have
+your own instance of the node - otherwise things might behave differently for
+others using your nodes from another angle</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">this class could also be used for facades Container nodes that provide
+an interface to their internal nodes</td>
+</tr>
+</tbody>
+</table>
+<dl class="classmethod">
+<dt id="mrv.dgfe.FacadeNodeBase.addSep">
+<em class="property">classmethod </em><tt class="descname">addSep</tt><big>(</big><em>item</em>, <em>sep</em><big>)</big><a class="headerlink" href="#mrv.dgfe.FacadeNodeBase.addSep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">item with separator added to it ( just once )</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">operates best on strings</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>item</em> &#8211; item to add separator to</li>
+<li><em>sep</em> &#8211; the separator</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.FacadeNodeBase.basename">
+<tt class="descname">basename</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.FacadeNodeBase.basename" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">basename of this path, &#8216;/hello/world&#8217; -&gt; &#8216;world&#8217;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.FacadeNodeBase.children">
+<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee848&gt;</em><big>)</big><a class="headerlink" href="#mrv.dgfe.FacadeNodeBase.children" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of intermediate children of path, [ child1 , child2 ]</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; return True to include x in result</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">the child objects returned are supposed to be valid paths, not just relative paths</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.FacadeNodeBase.childrenDeep">
+<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee668&gt;</em><big>)</big><a class="headerlink" href="#mrv.dgfe.FacadeNodeBase.childrenDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of all children of path, [ child1 , child2 ]</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>order</em> &#8211; order enumeration</li>
+<li><em>predicate</em> &#8211; returns true if x may be returned</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">the child objects returned are supposed to be valid paths, not just relative paths</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.FacadeNodeBase.clearCache">
+<tt class="descname">clearCache</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.FacadeNodeBase.clearCache" title="Permalink to this definition">¶</a></dt>
+<dd>Clear the cache of all plugs on this node - this basically forces it
+to recompute the next time an output plug is being queried</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.FacadeNodeBase.clearPlugCache">
+<tt class="descname">clearPlugCache</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.FacadeNodeBase.clearPlugCache" title="Permalink to this definition">¶</a></dt>
+<dd><p>if a cache has been build as caching is enabled, this method clears
+the cache forcing it to be updated on the next demand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">this could be more efficient by just deleting plugs that are
+not required anymore, but probably this method can expect the whole
+cache to be deleted right away ... so its fine</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.FacadeNodeBase.compute">
+<tt class="descname">compute</tt><big>(</big><em>plug</em>, <em>mode</em><big>)</big><a class="headerlink" href="#mrv.dgfe.FacadeNodeBase.compute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called whenever a plug needs computation as the value its value is not
+cached or marked dirty ( as one of the inputs changed )</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>plug</em> &#8211; the static plug instance that requested which requested the computation.
+It is the instance you defined on the class</li>
+<li><em>mode</em> &#8211; the mode of operation. Its completely up to the superclasses how that
+attribute is going to be used</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">to be implemented by superclass</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.FacadeNodeBase.connections">
+<tt class="descname">connections</tt><big>(</big><em>inpt</em>, <em>output</em><big>)</big><a class="headerlink" href="#mrv.dgfe.FacadeNodeBase.connections" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Tuples of input shells defining a connection of the given type from
+tuple( InputNodeOuptutShell, OurNodeInputShell ) for input connections and
+tuple( OurNodeOuptutShell, OutputNodeInputShell )</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>inpt</em> &#8211; include input connections to this node</li>
+<li><em>output</em> &#8211; include output connections ( from this node to others )</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.FacadeNodeBase.copyFrom">
+<tt class="descname">copyFrom</tt><big>(</big><em>other</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe.FacadeNodeBase.copyFrom" title="Permalink to this definition">¶</a></dt>
+<dd>Actually, it does nothing because our plugs are linked to the internal
+nodes in a quite complex way. The good thing is that this is just a cache that
+will be updated once someone queries connections again.
+Basically it comes down to the graph duplicating itself using node and plug
+methods instead of just doing his &#8216;internal&#8217; magic</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.FacadeNodeBase.copyTo">
+<tt class="descname">copyTo</tt><big>(</big><em>instance</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe.FacadeNodeBase.copyTo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy the values of ourselves onto the given instance which must be an
+instance of our class to be compatible.
+Only the common classes will be copied to instance</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">altered instance</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">instance will be altered during the process</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.FacadeNodeBase.copyToOther">
+<tt class="descname">copyToOther</tt><big>(</big><em>instance</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe.FacadeNodeBase.copyToOther" title="Permalink to this definition">¶</a></dt>
+<dd>As <cite>copyTo</cite>, but does only require the objects to have a common base.
+It will match the actually compatible base classes and call <cite>copyFrom</cite>
+if possible.
+As more checking is performed, this method performs worse than <cite>copyTo</cite></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.FacadeNodeBase.createInstance">
+<tt class="descname">createInstance</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe.FacadeNodeBase.createInstance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a copy of self and return it</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">override by subclass  - the __init__ methods shuld do the rest</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.FacadeNodeBase.duplicate">
+<tt class="descname">duplicate</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe.FacadeNodeBase.duplicate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements a c-style copy constructor by creating a new instance of self
+and applying the <cite>copyFrom</cite> methods from base to all classes implementing the copyfrom
+method. Thus we will call the method directly on the class</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>args</em> &#8211; passed to <cite>copyFrom</cite> and <cite>createInstance</cite> method to give additional directions</li>
+<li><em>kwargs</em> &#8211; see param args</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.dgfe.FacadeNodeBase.filterCompatiblePlugs">
+<em class="property">classmethod </em><tt class="descname">filterCompatiblePlugs</tt><big>(</big><em>plugs</em>, <em>attrOrValue</em>, <em>raise_on_ambiguity=False</em>, <em>attr_affinity=False</em>, <em>attr_as_source=True</em><big>)</big><a class="headerlink" href="#mrv.dgfe.FacadeNodeBase.filterCompatiblePlugs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">sorted list of (rate,plug) tuples suitable to deal with the given attribute.
+Thus they could connect to it as well as get their value set.
+Most suitable plug comes first.
+Incompatible plugs will be pruned.</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>attrOrValue</em> &#8211; either an attribute or the value you would like to set to the
+attr at the plug in question.</li>
+<li><em>raise_on_ambiguity</em> &#8211; if True, the method raises if a plug has the same
+rating as another plug already on the output list, thus it&#8217;s not clear anymore
+which plug should handle a request</li>
+<li><em>attr_affinity</em> &#8211; if True, it will not check connection affinity, but attribute
+affinity only. It checks how compatible the attributes of the plugs are, disregarding
+whether they can be connected or not
+Only valid if attrOrValue is an attribute</li>
+<li><em>attr_as_source</em> &#8211; if True, attrOrValue will be treated as the source of a connection or
+each plug would need to take its values.
+if False, attrOrValue is the destination of a connection and it needs to take values of the given plugs
+or they would connect to it. Only used if attrOrValue is an attribute.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises TypeError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">if ambiguous input was found</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.FacadeNodeBase.fullChildName">
+<tt class="descname">fullChildName</tt><big>(</big><em>childname</em><big>)</big><a class="headerlink" href="#mrv.dgfe.FacadeNodeBase.fullChildName" title="Permalink to this definition">¶</a></dt>
+<dd>Add the given name to the string version of our instance
+:return: string with childname added like name _sep childname</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.FacadeNodeBase.id">
+<tt class="descname">id</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.FacadeNodeBase.id" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">ID of this instance</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.FacadeNodeBase.inputPlugs">
+<tt class="descname">inputPlugs</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe.FacadeNodeBase.inputPlugs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of plugs suitable as input</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">convenience method</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.dgfe.FacadeNodeBase.inputPlugsStatic">
+<em class="property">classmethod </em><tt class="descname">inputPlugsStatic</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe.FacadeNodeBase.inputPlugsStatic" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of static plugs suitable as input</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">convenience method</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.FacadeNodeBase.isPartOf">
+<tt class="descname">isPartOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.dgfe.FacadeNodeBase.isPartOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if self is a part of other, and thus can be found in other</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings only</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.FacadeNodeBase.isRoot">
+<tt class="descname">isRoot</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.FacadeNodeBase.isRoot" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this path is the root of the DAG</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.FacadeNodeBase.isRootOf">
+<tt class="descname">isRootOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.dgfe.FacadeNodeBase.isRootOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True other starts with self</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">we assume other has the same type as self, thus the same separator</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.FacadeNodeBase.iterParents">
+<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee2a8&gt;</em><big>)</big><a class="headerlink" href="#mrv.dgfe.FacadeNodeBase.iterParents" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">generator retrieving all parents up to the root</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; returns True for all x that you want to be returned</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.FacadeNodeBase.outputPlugs">
+<tt class="descname">outputPlugs</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe.FacadeNodeBase.outputPlugs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of plugs suitable to deliver output</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">convenience method</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.dgfe.FacadeNodeBase.outputPlugsStatic">
+<em class="property">classmethod </em><tt class="descname">outputPlugsStatic</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe.FacadeNodeBase.outputPlugsStatic" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of static plugs suitable to deliver output</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">convenience method</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.FacadeNodeBase.parent">
+<tt class="descname">parent</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.FacadeNodeBase.parent" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">parent of this path, &#8216;/hello/world&#8217; -&gt; &#8216;/hello&#8217; or None if this path
+is the dag&#8217;s root</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.FacadeNodeBase.parentDeep">
+<tt class="descname">parentDeep</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.FacadeNodeBase.parentDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">all parents of this path, &#8216;/hello/my/world&#8217; -&gt; [ &#8216;/hello/my&#8217;,&#8217;/hello&#8217; ]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.FacadeNodeBase.plugs">
+<tt class="descname">plugs</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe.FacadeNodeBase.plugs" title="Permalink to this definition">¶</a></dt>
+<dd>Calls <cite>_getNodePlugs</cite> method to ask you to actuallly return your
+actual nodes and plugs or shells.
+We prepare the returned value to assure we are being called in certain occasion,
+which actually glues outside and inside worlds together</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.dgfe.FacadeNodeBase.plugsStatic">
+<em class="property">classmethod </em><tt class="descname">plugsStatic</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x32756e0&gt;</em><big>)</big><a class="headerlink" href="#mrv.dgfe.FacadeNodeBase.plugsStatic" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of static plugs as defined on this node - they are class members</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; return static plug only if predicate is true</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Use this method only if you do not have an instance - there are nodes
+that actually have no static plug information, but will dynamically generate them.
+For this to work, they need an instance - thus the plugs method is an instance
+method and is meant to be the most commonly used one.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.FacadeNodeBase.root">
+<tt class="descname">root</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.FacadeNodeBase.root" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the root of the DAG - it has no further parents</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.FacadeNodeBase.setID">
+<tt class="descname">setID</tt><big>(</big><em>newID</em><big>)</big><a class="headerlink" href="#mrv.dgfe.FacadeNodeBase.setID" title="Permalink to this definition">¶</a></dt>
+<dd>Set id of this node to newiD
+:return: previously assigned id</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dgfe.FacadeNodeBase.shellcls">
+<tt class="descname">shellcls</tt><a class="headerlink" href="#mrv.dgfe.FacadeNodeBase.shellcls" title="Permalink to this definition">¶</a></dt>
+<dd>alias of <a title="mrv.dgfe._OIShell" class="reference internal" href="#mrv.dgfe._OIShell"><tt class="xref docutils literal"><span class="pre">_OIShell</span></tt></a></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.FacadeNodeBase.supports">
+<tt class="descname">supports</tt><big>(</big><em>interface_type</em><big>)</big><a class="headerlink" href="#mrv.dgfe.FacadeNodeBase.supports" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this instance supports the interface of the given type</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>interface_type</em> &#8211; Type of the interface you require this instance 
+to support</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Must be used in case you only have a weak reference of your interface
+instance or proxy which is a case where the ordinary isinstance( obj, iInterface )
+will not work</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.FacadeNodeBase.toShell">
+<tt class="descname">toShell</tt><big>(</big><em>plug</em><big>)</big><a class="headerlink" href="#mrv.dgfe.FacadeNodeBase.toShell" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">a plugshell as suitable to for this class</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.FacadeNodeBase.toShells">
+<tt class="descname">toShells</tt><big>(</big><em>plugs</em><big>)</big><a class="headerlink" href="#mrv.dgfe.FacadeNodeBase.toShells" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of shells made from plugs and our node</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.dgfe.GraphNodeBase-class.html">Epydoc: mrv.dgfe.GraphNodeBase</a></p>
+<dl class="class">
+<dt id="mrv.dgfe.GraphNodeBase">
+<em class="property">class </em><tt class="descclassname">mrv.dgfe.</tt><tt class="descname">GraphNodeBase</tt><big>(</big><em>wrappedGraph</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe.GraphNodeBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.dgfe.FacadeNodeBase" class="reference internal" href="#mrv.dgfe.FacadeNodeBase"><tt class="xref docutils literal"><span class="pre">mrv.dgfe.FacadeNodeBase</span></tt></a></p>
+<p>A node wrapping a graph, allowing it to be nested within the node
+All inputs and outputs on this node are purely virtual, thus they internally connect
+to the wrapped graph.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Todo:</th><td class="field-body">tests deletion of graphnodes and see whether they are being garbage collected.
+It should work with the new collector as it can handle cyclic references - these
+strong cycles we have a lot in this structure. Weakrefs will not work for nested
+facade nodes as they are tuples not allowing weak refs.</td>
+</tr>
+</tbody>
+</table>
+<dl class="classmethod">
+<dt id="mrv.dgfe.GraphNodeBase.addSep">
+<em class="property">classmethod </em><tt class="descname">addSep</tt><big>(</big><em>item</em>, <em>sep</em><big>)</big><a class="headerlink" href="#mrv.dgfe.GraphNodeBase.addSep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">item with separator added to it ( just once )</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">operates best on strings</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>item</em> &#8211; item to add separator to</li>
+<li><em>sep</em> &#8211; the separator</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.GraphNodeBase.basename">
+<tt class="descname">basename</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.GraphNodeBase.basename" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">basename of this path, &#8216;/hello/world&#8217; -&gt; &#8216;world&#8217;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.GraphNodeBase.children">
+<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee848&gt;</em><big>)</big><a class="headerlink" href="#mrv.dgfe.GraphNodeBase.children" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of intermediate children of path, [ child1 , child2 ]</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; return True to include x in result</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">the child objects returned are supposed to be valid paths, not just relative paths</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.GraphNodeBase.childrenDeep">
+<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee668&gt;</em><big>)</big><a class="headerlink" href="#mrv.dgfe.GraphNodeBase.childrenDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of all children of path, [ child1 , child2 ]</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>order</em> &#8211; order enumeration</li>
+<li><em>predicate</em> &#8211; returns true if x may be returned</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">the child objects returned are supposed to be valid paths, not just relative paths</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.GraphNodeBase.clearCache">
+<tt class="descname">clearCache</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.GraphNodeBase.clearCache" title="Permalink to this definition">¶</a></dt>
+<dd>Clear the cache of all plugs on this node - this basically forces it
+to recompute the next time an output plug is being queried</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.GraphNodeBase.clearPlugCache">
+<tt class="descname">clearPlugCache</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.GraphNodeBase.clearPlugCache" title="Permalink to this definition">¶</a></dt>
+<dd><p>if a cache has been build as caching is enabled, this method clears
+the cache forcing it to be updated on the next demand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">this could be more efficient by just deleting plugs that are
+not required anymore, but probably this method can expect the whole
+cache to be deleted right away ... so its fine</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.GraphNodeBase.compute">
+<tt class="descname">compute</tt><big>(</big><em>plug</em>, <em>mode</em><big>)</big><a class="headerlink" href="#mrv.dgfe.GraphNodeBase.compute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called whenever a plug needs computation as the value its value is not
+cached or marked dirty ( as one of the inputs changed )</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>plug</em> &#8211; the static plug instance that requested which requested the computation.
+It is the instance you defined on the class</li>
+<li><em>mode</em> &#8211; the mode of operation. Its completely up to the superclasses how that
+attribute is going to be used</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">to be implemented by superclass</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.GraphNodeBase.connections">
+<tt class="descname">connections</tt><big>(</big><em>inpt</em>, <em>output</em><big>)</big><a class="headerlink" href="#mrv.dgfe.GraphNodeBase.connections" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Tuples of input shells defining a connection of the given type from
+tuple( InputNodeOuptutShell, OurNodeInputShell ) for input connections and
+tuple( OurNodeOuptutShell, OutputNodeInputShell )</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>inpt</em> &#8211; include input connections to this node</li>
+<li><em>output</em> &#8211; include output connections ( from this node to others )</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.GraphNodeBase.copyFrom">
+<tt class="descname">copyFrom</tt><big>(</big><em>other</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe.GraphNodeBase.copyFrom" title="Permalink to this definition">¶</a></dt>
+<dd>Actually, it does nothing because our plugs are linked to the internal
+nodes in a quite complex way. The good thing is that this is just a cache that
+will be updated once someone queries connections again.
+Basically it comes down to the graph duplicating itself using node and plug
+methods instead of just doing his &#8216;internal&#8217; magic</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.GraphNodeBase.copyTo">
+<tt class="descname">copyTo</tt><big>(</big><em>instance</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe.GraphNodeBase.copyTo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy the values of ourselves onto the given instance which must be an
+instance of our class to be compatible.
+Only the common classes will be copied to instance</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">altered instance</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">instance will be altered during the process</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.GraphNodeBase.copyToOther">
+<tt class="descname">copyToOther</tt><big>(</big><em>instance</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe.GraphNodeBase.copyToOther" title="Permalink to this definition">¶</a></dt>
+<dd>As <cite>copyTo</cite>, but does only require the objects to have a common base.
+It will match the actually compatible base classes and call <cite>copyFrom</cite>
+if possible.
+As more checking is performed, this method performs worse than <cite>copyTo</cite></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.GraphNodeBase.createInstance">
+<tt class="descname">createInstance</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe.GraphNodeBase.createInstance" title="Permalink to this definition">¶</a></dt>
+<dd>Create a copy of self and return it</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.GraphNodeBase.duplicate">
+<tt class="descname">duplicate</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe.GraphNodeBase.duplicate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements a c-style copy constructor by creating a new instance of self
+and applying the <cite>copyFrom</cite> methods from base to all classes implementing the copyfrom
+method. Thus we will call the method directly on the class</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>args</em> &#8211; passed to <cite>copyFrom</cite> and <cite>createInstance</cite> method to give additional directions</li>
+<li><em>kwargs</em> &#8211; see param args</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.dgfe.GraphNodeBase.filterCompatiblePlugs">
+<em class="property">classmethod </em><tt class="descname">filterCompatiblePlugs</tt><big>(</big><em>plugs</em>, <em>attrOrValue</em>, <em>raise_on_ambiguity=False</em>, <em>attr_affinity=False</em>, <em>attr_as_source=True</em><big>)</big><a class="headerlink" href="#mrv.dgfe.GraphNodeBase.filterCompatiblePlugs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">sorted list of (rate,plug) tuples suitable to deal with the given attribute.
+Thus they could connect to it as well as get their value set.
+Most suitable plug comes first.
+Incompatible plugs will be pruned.</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>attrOrValue</em> &#8211; either an attribute or the value you would like to set to the
+attr at the plug in question.</li>
+<li><em>raise_on_ambiguity</em> &#8211; if True, the method raises if a plug has the same
+rating as another plug already on the output list, thus it&#8217;s not clear anymore
+which plug should handle a request</li>
+<li><em>attr_affinity</em> &#8211; if True, it will not check connection affinity, but attribute
+affinity only. It checks how compatible the attributes of the plugs are, disregarding
+whether they can be connected or not
+Only valid if attrOrValue is an attribute</li>
+<li><em>attr_as_source</em> &#8211; if True, attrOrValue will be treated as the source of a connection or
+each plug would need to take its values.
+if False, attrOrValue is the destination of a connection and it needs to take values of the given plugs
+or they would connect to it. Only used if attrOrValue is an attribute.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises TypeError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">if ambiguous input was found</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.GraphNodeBase.fullChildName">
+<tt class="descname">fullChildName</tt><big>(</big><em>childname</em><big>)</big><a class="headerlink" href="#mrv.dgfe.GraphNodeBase.fullChildName" title="Permalink to this definition">¶</a></dt>
+<dd>Add the given name to the string version of our instance
+:return: string with childname added like name _sep childname</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.GraphNodeBase.id">
+<tt class="descname">id</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.GraphNodeBase.id" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">ID of this instance</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.GraphNodeBase.inputPlugs">
+<tt class="descname">inputPlugs</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe.GraphNodeBase.inputPlugs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of plugs suitable as input</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">convenience method</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.dgfe.GraphNodeBase.inputPlugsStatic">
+<em class="property">classmethod </em><tt class="descname">inputPlugsStatic</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe.GraphNodeBase.inputPlugsStatic" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of static plugs suitable as input</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">convenience method</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.GraphNodeBase.isPartOf">
+<tt class="descname">isPartOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.dgfe.GraphNodeBase.isPartOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if self is a part of other, and thus can be found in other</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings only</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.GraphNodeBase.isRoot">
+<tt class="descname">isRoot</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.GraphNodeBase.isRoot" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this path is the root of the DAG</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.GraphNodeBase.isRootOf">
+<tt class="descname">isRootOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.dgfe.GraphNodeBase.isRootOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True other starts with self</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">we assume other has the same type as self, thus the same separator</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.GraphNodeBase.iterParents">
+<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee2a8&gt;</em><big>)</big><a class="headerlink" href="#mrv.dgfe.GraphNodeBase.iterParents" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">generator retrieving all parents up to the root</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; returns True for all x that you want to be returned</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.GraphNodeBase.outputPlugs">
+<tt class="descname">outputPlugs</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe.GraphNodeBase.outputPlugs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of plugs suitable to deliver output</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">convenience method</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.dgfe.GraphNodeBase.outputPlugsStatic">
+<em class="property">classmethod </em><tt class="descname">outputPlugsStatic</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe.GraphNodeBase.outputPlugsStatic" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of static plugs suitable to deliver output</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">convenience method</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.GraphNodeBase.parent">
+<tt class="descname">parent</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.GraphNodeBase.parent" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">parent of this path, &#8216;/hello/world&#8217; -&gt; &#8216;/hello&#8217; or None if this path
+is the dag&#8217;s root</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.GraphNodeBase.parentDeep">
+<tt class="descname">parentDeep</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.GraphNodeBase.parentDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">all parents of this path, &#8216;/hello/my/world&#8217; -&gt; [ &#8216;/hello/my&#8217;,&#8217;/hello&#8217; ]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.GraphNodeBase.plugs">
+<tt class="descname">plugs</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe.GraphNodeBase.plugs" title="Permalink to this definition">¶</a></dt>
+<dd>Calls <cite>_getNodePlugs</cite> method to ask you to actuallly return your
+actual nodes and plugs or shells.
+We prepare the returned value to assure we are being called in certain occasion,
+which actually glues outside and inside worlds together</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.dgfe.GraphNodeBase.plugsStatic">
+<em class="property">classmethod </em><tt class="descname">plugsStatic</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x32756e0&gt;</em><big>)</big><a class="headerlink" href="#mrv.dgfe.GraphNodeBase.plugsStatic" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of static plugs as defined on this node - they are class members</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; return static plug only if predicate is true</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Use this method only if you do not have an instance - there are nodes
+that actually have no static plug information, but will dynamically generate them.
+For this to work, they need an instance - thus the plugs method is an instance
+method and is meant to be the most commonly used one.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.GraphNodeBase.root">
+<tt class="descname">root</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.GraphNodeBase.root" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the root of the DAG - it has no further parents</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.GraphNodeBase.setID">
+<tt class="descname">setID</tt><big>(</big><em>newID</em><big>)</big><a class="headerlink" href="#mrv.dgfe.GraphNodeBase.setID" title="Permalink to this definition">¶</a></dt>
+<dd>Set id of this node to newiD
+:return: previously assigned id</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dgfe.GraphNodeBase.shellcls">
+<tt class="descname">shellcls</tt><a class="headerlink" href="#mrv.dgfe.GraphNodeBase.shellcls" title="Permalink to this definition">¶</a></dt>
+<dd>alias of <a title="mrv.dgfe._OIShell" class="reference internal" href="#mrv.dgfe._OIShell"><tt class="xref docutils literal"><span class="pre">_OIShell</span></tt></a></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.GraphNodeBase.supports">
+<tt class="descname">supports</tt><big>(</big><em>interface_type</em><big>)</big><a class="headerlink" href="#mrv.dgfe.GraphNodeBase.supports" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this instance supports the interface of the given type</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>interface_type</em> &#8211; Type of the interface you require this instance 
+to support</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Must be used in case you only have a weak reference of your interface
+instance or proxy which is a case where the ordinary isinstance( obj, iInterface )
+will not work</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.GraphNodeBase.toShell">
+<tt class="descname">toShell</tt><big>(</big><em>plug</em><big>)</big><a class="headerlink" href="#mrv.dgfe.GraphNodeBase.toShell" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">a plugshell as suitable to for this class</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.GraphNodeBase.toShells">
+<tt class="descname">toShells</tt><big>(</big><em>plugs</em><big>)</big><a class="headerlink" href="#mrv.dgfe.GraphNodeBase.toShells" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of shells made from plugs and our node</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.dgfe-module.html#NodeBase">Epydoc: mrv.dgfe</a></p>
+<dl class="class">
+<dt id="mrv.dgfe.NodeBase">
+<em class="property">class </em><tt class="descclassname">mrv.dgfe.</tt><tt class="descname">NodeBase</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe.NodeBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.interface.iDuplicatable" class="reference external" href="mrv.interface.html#mrv.interface.iDuplicatable"><tt class="xref docutils literal"><span class="pre">mrv.interface.iDuplicatable</span></tt></a></p>
+<p>Base class that provides support for plugs to the superclass.
+It will create some simple tracking attriubtes required for the plug system
+to work</p>
+<p>Nodes can compute values of their plugs if these do not have a cache.</p>
+<p>Nodes are identified by an ID - the default graph implementation though will
+be okay with just having instances.
+It is also being used for string representations of this node</p>
+<dl class="classmethod">
+<dt id="mrv.dgfe.NodeBase.addSep">
+<em class="property">classmethod </em><tt class="descname">addSep</tt><big>(</big><em>item</em>, <em>sep</em><big>)</big><a class="headerlink" href="#mrv.dgfe.NodeBase.addSep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">item with separator added to it ( just once )</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">operates best on strings</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>item</em> &#8211; item to add separator to</li>
+<li><em>sep</em> &#8211; the separator</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.NodeBase.basename">
+<tt class="descname">basename</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.NodeBase.basename" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">basename of this path, &#8216;/hello/world&#8217; -&gt; &#8216;world&#8217;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.NodeBase.children">
+<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee848&gt;</em><big>)</big><a class="headerlink" href="#mrv.dgfe.NodeBase.children" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of intermediate children of path, [ child1 , child2 ]</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; return True to include x in result</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">the child objects returned are supposed to be valid paths, not just relative paths</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.NodeBase.childrenDeep">
+<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee668&gt;</em><big>)</big><a class="headerlink" href="#mrv.dgfe.NodeBase.childrenDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of all children of path, [ child1 , child2 ]</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>order</em> &#8211; order enumeration</li>
+<li><em>predicate</em> &#8211; returns true if x may be returned</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">the child objects returned are supposed to be valid paths, not just relative paths</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.NodeBase.clearCache">
+<tt class="descname">clearCache</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.NodeBase.clearCache" title="Permalink to this definition">¶</a></dt>
+<dd>Clear the cache of all plugs on this node - this basically forces it
+to recompute the next time an output plug is being queried</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.NodeBase.compute">
+<tt class="descname">compute</tt><big>(</big><em>plug</em>, <em>mode</em><big>)</big><a class="headerlink" href="#mrv.dgfe.NodeBase.compute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called whenever a plug needs computation as the value its value is not
+cached or marked dirty ( as one of the inputs changed )</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>plug</em> &#8211; the static plug instance that requested which requested the computation.
+It is the instance you defined on the class</li>
+<li><em>mode</em> &#8211; the mode of operation. Its completely up to the superclasses how that
+attribute is going to be used</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">to be implemented by superclass</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.NodeBase.connections">
+<tt class="descname">connections</tt><big>(</big><em>inpt</em>, <em>output</em><big>)</big><a class="headerlink" href="#mrv.dgfe.NodeBase.connections" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Tuples of input shells defining a connection of the given type from
+tuple( InputNodeOuptutShell, OurNodeInputShell ) for input connections and
+tuple( OurNodeOuptutShell, OutputNodeInputShell )</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>inpt</em> &#8211; include input connections to this node</li>
+<li><em>output</em> &#8211; include output connections ( from this node to others )</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.NodeBase.copyFrom">
+<tt class="descname">copyFrom</tt><big>(</big><em>other</em>, <em>add_to_graph=True</em><big>)</big><a class="headerlink" href="#mrv.dgfe.NodeBase.copyFrom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Just take the graph from other, but do not ( never ) duplicate it</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>add_to_graph</em> &#8211; if true, the new node instance will be added to the graph of</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">default implementation does not copy plug caches ( which are stored in
+the node dict - this is because a reevaluate is usually required on the
+duplicated node</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.NodeBase.copyTo">
+<tt class="descname">copyTo</tt><big>(</big><em>instance</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe.NodeBase.copyTo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy the values of ourselves onto the given instance which must be an
+instance of our class to be compatible.
+Only the common classes will be copied to instance</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">altered instance</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">instance will be altered during the process</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.NodeBase.copyToOther">
+<tt class="descname">copyToOther</tt><big>(</big><em>instance</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe.NodeBase.copyToOther" title="Permalink to this definition">¶</a></dt>
+<dd>As <cite>copyTo</cite>, but does only require the objects to have a common base.
+It will match the actually compatible base classes and call <cite>copyFrom</cite>
+if possible.
+As more checking is performed, this method performs worse than <cite>copyTo</cite></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.NodeBase.createInstance">
+<tt class="descname">createInstance</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe.NodeBase.createInstance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a copy of self and return it</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">override by subclass  - the __init__ methods shuld do the rest</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.NodeBase.duplicate">
+<tt class="descname">duplicate</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe.NodeBase.duplicate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements a c-style copy constructor by creating a new instance of self
+and applying the <cite>copyFrom</cite> methods from base to all classes implementing the copyfrom
+method. Thus we will call the method directly on the class</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>args</em> &#8211; passed to <cite>copyFrom</cite> and <cite>createInstance</cite> method to give additional directions</li>
+<li><em>kwargs</em> &#8211; see param args</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.dgfe.NodeBase.filterCompatiblePlugs">
+<em class="property">classmethod </em><tt class="descname">filterCompatiblePlugs</tt><big>(</big><em>plugs</em>, <em>attrOrValue</em>, <em>raise_on_ambiguity=False</em>, <em>attr_affinity=False</em>, <em>attr_as_source=True</em><big>)</big><a class="headerlink" href="#mrv.dgfe.NodeBase.filterCompatiblePlugs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">sorted list of (rate,plug) tuples suitable to deal with the given attribute.
+Thus they could connect to it as well as get their value set.
+Most suitable plug comes first.
+Incompatible plugs will be pruned.</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>attrOrValue</em> &#8211; either an attribute or the value you would like to set to the
+attr at the plug in question.</li>
+<li><em>raise_on_ambiguity</em> &#8211; if True, the method raises if a plug has the same
+rating as another plug already on the output list, thus it&#8217;s not clear anymore
+which plug should handle a request</li>
+<li><em>attr_affinity</em> &#8211; if True, it will not check connection affinity, but attribute
+affinity only. It checks how compatible the attributes of the plugs are, disregarding
+whether they can be connected or not
+Only valid if attrOrValue is an attribute</li>
+<li><em>attr_as_source</em> &#8211; if True, attrOrValue will be treated as the source of a connection or
+each plug would need to take its values.
+if False, attrOrValue is the destination of a connection and it needs to take values of the given plugs
+or they would connect to it. Only used if attrOrValue is an attribute.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises TypeError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">if ambiguous input was found</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.NodeBase.fullChildName">
+<tt class="descname">fullChildName</tt><big>(</big><em>childname</em><big>)</big><a class="headerlink" href="#mrv.dgfe.NodeBase.fullChildName" title="Permalink to this definition">¶</a></dt>
+<dd>Add the given name to the string version of our instance
+:return: string with childname added like name _sep childname</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.NodeBase.id">
+<tt class="descname">id</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.NodeBase.id" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">ID of this instance</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.NodeBase.inputPlugs">
+<tt class="descname">inputPlugs</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe.NodeBase.inputPlugs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of plugs suitable as input</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">convenience method</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.dgfe.NodeBase.inputPlugsStatic">
+<em class="property">classmethod </em><tt class="descname">inputPlugsStatic</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe.NodeBase.inputPlugsStatic" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of static plugs suitable as input</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">convenience method</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.NodeBase.isPartOf">
+<tt class="descname">isPartOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.dgfe.NodeBase.isPartOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if self is a part of other, and thus can be found in other</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings only</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.NodeBase.isRoot">
+<tt class="descname">isRoot</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.NodeBase.isRoot" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this path is the root of the DAG</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.NodeBase.isRootOf">
+<tt class="descname">isRootOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.dgfe.NodeBase.isRootOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True other starts with self</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">we assume other has the same type as self, thus the same separator</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.NodeBase.iterParents">
+<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee2a8&gt;</em><big>)</big><a class="headerlink" href="#mrv.dgfe.NodeBase.iterParents" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">generator retrieving all parents up to the root</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; returns True for all x that you want to be returned</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.NodeBase.outputPlugs">
+<tt class="descname">outputPlugs</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe.NodeBase.outputPlugs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of plugs suitable to deliver output</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">convenience method</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.dgfe.NodeBase.outputPlugsStatic">
+<em class="property">classmethod </em><tt class="descname">outputPlugsStatic</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe.NodeBase.outputPlugsStatic" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of static plugs suitable to deliver output</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">convenience method</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.NodeBase.parent">
+<tt class="descname">parent</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.NodeBase.parent" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">parent of this path, &#8216;/hello/world&#8217; -&gt; &#8216;/hello&#8217; or None if this path
+is the dag&#8217;s root</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.NodeBase.parentDeep">
+<tt class="descname">parentDeep</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.NodeBase.parentDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">all parents of this path, &#8216;/hello/my/world&#8217; -&gt; [ &#8216;/hello/my&#8217;,&#8217;/hello&#8217; ]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.NodeBase.plugs">
+<tt class="descname">plugs</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x32757d0&gt;</em><big>)</big><a class="headerlink" href="#mrv.dgfe.NodeBase.plugs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of dynamic plugs as defined on this node - they are usually retrieved
+on class level, but may be overridden on instance level</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; return static plug only if predicate is true</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.dgfe.NodeBase.plugsStatic">
+<em class="property">classmethod </em><tt class="descname">plugsStatic</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x32756e0&gt;</em><big>)</big><a class="headerlink" href="#mrv.dgfe.NodeBase.plugsStatic" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of static plugs as defined on this node - they are class members</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; return static plug only if predicate is true</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Use this method only if you do not have an instance - there are nodes
+that actually have no static plug information, but will dynamically generate them.
+For this to work, they need an instance - thus the plugs method is an instance
+method and is meant to be the most commonly used one.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.NodeBase.root">
+<tt class="descname">root</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.NodeBase.root" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the root of the DAG - it has no further parents</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.NodeBase.setID">
+<tt class="descname">setID</tt><big>(</big><em>newID</em><big>)</big><a class="headerlink" href="#mrv.dgfe.NodeBase.setID" title="Permalink to this definition">¶</a></dt>
+<dd>Set id of this node to newiD
+:return: previously assigned id</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dgfe.NodeBase.shellcls">
+<tt class="descname">shellcls</tt><a class="headerlink" href="#mrv.dgfe.NodeBase.shellcls" title="Permalink to this definition">¶</a></dt>
+<dd>alias of <a title="mrv.dgfe._PlugShell" class="reference internal" href="#mrv.dgfe._PlugShell"><tt class="xref docutils literal"><span class="pre">_PlugShell</span></tt></a></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.NodeBase.supports">
+<tt class="descname">supports</tt><big>(</big><em>interface_type</em><big>)</big><a class="headerlink" href="#mrv.dgfe.NodeBase.supports" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this instance supports the interface of the given type</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>interface_type</em> &#8211; Type of the interface you require this instance 
+to support</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Must be used in case you only have a weak reference of your interface
+instance or proxy which is a case where the ordinary isinstance( obj, iInterface )
+will not work</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.NodeBase.toShell">
+<tt class="descname">toShell</tt><big>(</big><em>plug</em><big>)</big><a class="headerlink" href="#mrv.dgfe.NodeBase.toShell" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">a plugshell as suitable to for this class</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.NodeBase.toShells">
+<tt class="descname">toShells</tt><big>(</big><em>plugs</em><big>)</big><a class="headerlink" href="#mrv.dgfe.NodeBase.toShells" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of shells made from plugs and our node</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.dgfe.OIFacadePlug-class.html">Epydoc: mrv.dgfe.OIFacadePlug</a></p>
+<dl class="class">
+<dt id="mrv.dgfe.OIFacadePlug">
+<em class="property">class </em><tt class="descclassname">mrv.dgfe.</tt><tt class="descname">OIFacadePlug</tt><a class="headerlink" href="#mrv.dgfe.OIFacadePlug" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">tuple</span></tt>, <a title="mrv.dge.iPlug" class="reference external" href="mrv.dge.html#mrv.dge.iPlug"><tt class="xref docutils literal"><span class="pre">mrv.dge.iPlug</span></tt></a></p>
+<p>Facade Plugs are meant to be stored on instance level overriding the respective
+class level plug descriptor.
+If used directly, it will facade the internal affects relationships and just return
+what really is affected on the facade node</p>
+<p>Additionally they are associated to a node instance, and can thus be used to
+find the original node once the plug is used in an OI facacde shell</p>
+<p>Its a tuple as it will be more memory efficient that way. Additionally one
+automatically has a proper hash and comparison if the same objects come together</p>
+<dl class="method">
+<dt id="mrv.dgfe.OIFacadePlug.affected">
+<tt class="descname">affected</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.OIFacadePlug.affected" title="Permalink to this definition">¶</a></dt>
+<dd><p>Walk the internal affects using an internal plugshell</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">only output plugs can be affected - this is a rule followed throughout the system</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">tuple containing affected plugs ( plugs that are affected by our value )</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.OIFacadePlug.affectedBy">
+<tt class="descname">affectedBy</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.OIFacadePlug.affectedBy" title="Permalink to this definition">¶</a></dt>
+<dd>Walk the graph upwards and return all input plugs that are being facaded
+:return: tuple containing plugs that affect us ( plugs affecting our value )</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.OIFacadePlug.affects">
+<tt class="descname">affects</tt><big>(</big><em>otherplug</em><big>)</big><a class="headerlink" href="#mrv.dgfe.OIFacadePlug.affects" title="Permalink to this definition">¶</a></dt>
+<dd>Affects relationships will be set on the original plug only</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dgfe.OIFacadePlug.count">
+<tt class="descname">count</tt><a class="headerlink" href="#mrv.dgfe.OIFacadePlug.count" title="Permalink to this definition">¶</a></dt>
+<dd>T.count(value) -&gt; integer &#8211; return number of occurrences of value</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dgfe.OIFacadePlug.index">
+<tt class="descname">index</tt><a class="headerlink" href="#mrv.dgfe.OIFacadePlug.index" title="Permalink to this definition">¶</a></dt>
+<dd>T.index(value, [start, [stop]]) -&gt; integer &#8211; return first index of value.
+Raises ValueError if the value is not present.</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.OIFacadePlug.name">
+<tt class="descname">name</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.OIFacadePlug.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get name of facade plug</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">name of (internal) plug - must be a unique key, unique enough
+to allow connections to several nodes of the same type</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.OIFacadePlug.providesInput">
+<tt class="descname">providesInput</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.OIFacadePlug.providesInput" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this is an input plug that will never cause computations</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.OIFacadePlug.providesOutput">
+<tt class="descname">providesOutput</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.OIFacadePlug.providesOutput" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this is an output plug that can trigger computations</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.dgfe._IOShell-class.html">Epydoc: mrv.dgfe._IOShell</a></p>
+<dl class="class">
+<dt id="mrv.dgfe._IOShell">
+<em class="property">class </em><tt class="descclassname">mrv.dgfe.</tt><tt class="descname">_IOShell</tt><big>(</big><em>*args</em><big>)</big><a class="headerlink" href="#mrv.dgfe._IOShell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.dge._PlugShell" class="reference external" href="mrv.dge.html#mrv.dge._PlugShell"><tt class="xref docutils literal"><span class="pre">mrv.dge._PlugShell</span></tt></a></p>
+<p>This callable class, when called, will create a IOShell using the
+actual facade node, not the one given as input. This allows it to have the
+facade system handle the plugshell, or simply satisfy the original request</p>
+<dl class="method">
+<dt id="mrv.dgfe._IOShell.cache">
+<tt class="descname">cache</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe._IOShell.cache" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe._IOShell.clearCache">
+<tt class="descname">clearCache</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe._IOShell.clearCache" title="Permalink to this definition">¶</a></dt>
+<dd>Clear caches of all output plugs as well</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe._IOShell.compatabilityRate">
+<tt class="descname">compatabilityRate</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#mrv.dgfe._IOShell.compatabilityRate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute compatability rate for teh given value</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">value between 0 and 255, 0 means no compatability, 255 a perfect match
+if larger than 0, the plug can hold the value ( assumed the flags are set correctly )</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe._IOShell.connect">
+<tt class="descname">connect</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe._IOShell.connect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe._IOShell.connections">
+<tt class="descname">connections</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe._IOShell.connections" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dgfe._IOShell.count">
+<tt class="descname">count</tt><a class="headerlink" href="#mrv.dgfe._IOShell.count" title="Permalink to this definition">¶</a></dt>
+<dd>T.count(value) -&gt; integer &#8211; return number of occurrences of value</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe._IOShell.disconnect">
+<tt class="descname">disconnect</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe._IOShell.disconnect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe._IOShell.get">
+<tt class="descname">get</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe._IOShell.get" title="Permalink to this definition">¶</a></dt>
+<dd>apply to the input shell</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe._IOShell.hasCache">
+<tt class="descname">hasCache</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe._IOShell.hasCache" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dgfe._IOShell.index">
+<tt class="descname">index</tt><a class="headerlink" href="#mrv.dgfe._IOShell.index" title="Permalink to this definition">¶</a></dt>
+<dd>T.index(value, [start, [stop]]) -&gt; integer &#8211; return first index of value.
+Raises ValueError if the value is not present.</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe._IOShell.input">
+<tt class="descname">input</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe._IOShell.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe._IOShell.isConnected">
+<tt class="descname">isConnected</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe._IOShell.isConnected" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True, if the shell is connected as source or as destination of a connection</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe._IOShell.iterShells">
+<tt class="descname">iterShells</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe._IOShell.iterShells" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe._IOShell.outputs">
+<tt class="descname">outputs</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe._IOShell.outputs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe._IOShell.set">
+<tt class="descname">set</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe._IOShell.set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe._IOShell.setCache">
+<tt class="descname">setCache</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe._IOShell.setCache" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.dgfe._IOShellMeta-class.html">Epydoc: mrv.dgfe._IOShellMeta</a></p>
+<dl class="class">
+<dt id="mrv.dgfe._IOShellMeta">
+<em class="property">class </em><tt class="descclassname">mrv.dgfe.</tt><tt class="descname">_IOShellMeta</tt><a class="headerlink" href="#mrv.dgfe._IOShellMeta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.dgfe._OIShellMeta" class="reference internal" href="#mrv.dgfe._OIShellMeta"><tt class="xref docutils literal"><span class="pre">mrv.dgfe._OIShellMeta</span></tt></a></p>
+<p>Metaclass wrapping all unfacade attributes on the plugshell trying
+to get an input connection</p>
+<dl class="classmethod">
+<dt id="mrv.dgfe._IOShellMeta.createFacadeMethod">
+<em class="property">classmethod </em><tt class="descname">createFacadeMethod</tt><big>(</big><em>funcname</em><big>)</big><a class="headerlink" href="#mrv.dgfe._IOShellMeta.createFacadeMethod" title="Permalink to this definition">¶</a></dt>
+<dd>Call the main shell&#8217;s function</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.dgfe._IOShellMeta.createMethod">
+<em class="property">classmethod </em><tt class="descname">createMethod</tt><big>(</big><em>funcname</em>, <em>facadetype</em><big>)</big><a class="headerlink" href="#mrv.dgfe._IOShellMeta.createMethod" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.dgfe._IOShellMeta.createUnfacadeMethod">
+<em class="property">classmethod </em><tt class="descname">createUnfacadeMethod</tt><big>(</big><em>funcname</em><big>)</big><a class="headerlink" href="#mrv.dgfe._IOShellMeta.createUnfacadeMethod" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">wrapper method for funcname</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dgfe._IOShellMeta.mro">
+<tt class="descname">mro</tt><a class="headerlink" href="#mrv.dgfe._IOShellMeta.mro" title="Permalink to this definition">¶</a></dt>
+<dd>mro() -&gt; list
+return a type&#8217;s method resolution order</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.dgfe._OIShell-class.html">Epydoc: mrv.dgfe._OIShell</a></p>
+<dl class="class">
+<dt id="mrv.dgfe._OIShell">
+<em class="property">class </em><tt class="descclassname">mrv.dgfe.</tt><tt class="descname">_OIShell</tt><big>(</big><em>*args</em><big>)</big><a class="headerlink" href="#mrv.dgfe._OIShell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.dge._PlugShell" class="reference external" href="mrv.dge.html#mrv.dge._PlugShell"><tt class="xref docutils literal"><span class="pre">mrv.dge._PlugShell</span></tt></a></p>
+<p>All connections from and to the FacadeNode must actually start and end there.
+Iteration over internal plugShells is not allowed.
+Thus we override only the methods that matter and assure that the call is handed
+to the acutal internal plugshell.
+We know everything we require as we have been fed with an oiplug</p>
+<blockquote>
+<ul class="simple">
+<li>node = facacde node</li>
+<li>plug = oiplug containing inode and iplug ( internal node and internal plug )</li>
+<li>The internal node allows us to hand in calls to the native internal shell</li>
+</ul>
+</blockquote>
+<dl class="method">
+<dt id="mrv.dgfe._OIShell.cache">
+<tt class="descname">cache</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe._OIShell.cache" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe._OIShell.clearCache">
+<tt class="descname">clearCache</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe._OIShell.clearCache" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe._OIShell.compatabilityRate">
+<tt class="descname">compatabilityRate</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#mrv.dgfe._OIShell.compatabilityRate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute compatability rate for teh given value</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">value between 0 and 255, 0 means no compatability, 255 a perfect match
+if larger than 0, the plug can hold the value ( assumed the flags are set correctly )</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe._OIShell.connect">
+<tt class="descname">connect</tt><big>(</big><em>otherplugshell</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe._OIShell.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect this plug to otherplugshell such that otherplugshell is an input plug for our output</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>kwargs</em> &#8211; everything supported by <cite>Graph.connect</cite></td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">self on success, allows chained connections</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises PlugAlreadyConnected:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if otherplugshell is connected and force is False</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises PlugIncompatible:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if otherplugshell does not appear to be compatible to this one</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe._OIShell.connections">
+<tt class="descname">connections</tt><big>(</big><em>inpt</em>, <em>output</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x32711b8&gt;</em><big>)</big><a class="headerlink" href="#mrv.dgfe._OIShell.connections" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">get all input and or output connections from this shell
+or to this shell as edges ( sourceshell, destinationshell )</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; return true for each destination shell that you can except in the
+returned edge or the sourceshell where your shell is the destination.</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Use this method to get edges read for connection/disconnection</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dgfe._OIShell.count">
+<tt class="descname">count</tt><a class="headerlink" href="#mrv.dgfe._OIShell.count" title="Permalink to this definition">¶</a></dt>
+<dd>T.count(value) -&gt; integer &#8211; return number of occurrences of value</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe._OIShell.disconnect">
+<tt class="descname">disconnect</tt><big>(</big><em>otherplugshell</em><big>)</big><a class="headerlink" href="#mrv.dgfe._OIShell.disconnect" title="Permalink to this definition">¶</a></dt>
+<dd>Remove the connection to otherplugshell if we are connected to it.
+:note: does not raise if no connection is present</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe._OIShell.get">
+<tt class="descname">get</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe._OIShell.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe._OIShell.hasCache">
+<tt class="descname">hasCache</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe._OIShell.hasCache" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dgfe._OIShell.index">
+<tt class="descname">index</tt><a class="headerlink" href="#mrv.dgfe._OIShell.index" title="Permalink to this definition">¶</a></dt>
+<dd>T.index(value, [start, [stop]]) -&gt; integer &#8211; return first index of value.
+Raises ValueError if the value is not present.</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe._OIShell.input">
+<tt class="descname">input</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x3270f50&gt;</em><big>)</big><a class="headerlink" href="#mrv.dgfe._OIShell.input" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the connected input plug or None if there is no such connection</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; plug will only be returned if predicate is true for it</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">input plugs have on plug at most, output plugs can have more than one
+connected plug</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe._OIShell.isConnected">
+<tt class="descname">isConnected</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe._OIShell.isConnected" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True, if the shell is connected as source or as destination of a connection</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe._OIShell.iterShells">
+<tt class="descname">iterShells</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe._OIShell.iterShells" title="Permalink to this definition">¶</a></dt>
+<dd>Iterate plugs and their connections starting at this plug
+:return: generator for plug shells
+:note: supports all options of <cite>iterShells</cite>, this method allows syntax like:
+node.outAttribute.iterShells( )</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe._OIShell.outputs">
+<tt class="descname">outputs</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x32710c8&gt;</em><big>)</big><a class="headerlink" href="#mrv.dgfe._OIShell.outputs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">a list of plugs being the destination of the connection</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; plug will only be returned if predicate is true for it - shells will be passed in</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe._OIShell.set">
+<tt class="descname">set</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe._OIShell.set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe._OIShell.setCache">
+<tt class="descname">setCache</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe._OIShell.setCache" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.dgfe._OIShellMeta-class.html">Epydoc: mrv.dgfe._OIShellMeta</a></p>
+<dl class="class">
+<dt id="mrv.dgfe._OIShellMeta">
+<em class="property">class </em><tt class="descclassname">mrv.dgfe.</tt><tt class="descname">_OIShellMeta</tt><a class="headerlink" href="#mrv.dgfe._OIShellMeta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">type</span></tt></p>
+<p>Metaclass building the method wrappers for the _FacadeShell class - not
+all methods should be overridden, just the ones important to use</p>
+<dl class="classmethod">
+<dt id="mrv.dgfe._OIShellMeta.createFacadeMethod">
+<em class="property">classmethod </em><tt class="descname">createFacadeMethod</tt><big>(</big><em>funcname</em><big>)</big><a class="headerlink" href="#mrv.dgfe._OIShellMeta.createFacadeMethod" title="Permalink to this definition">¶</a></dt>
+<dd>in our case, connections just are handled by our own OI plug, staying
+in the main graph</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.dgfe._OIShellMeta.createMethod">
+<em class="property">classmethod </em><tt class="descname">createMethod</tt><big>(</big><em>funcname</em>, <em>facadetype</em><big>)</big><a class="headerlink" href="#mrv.dgfe._OIShellMeta.createMethod" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.dgfe._OIShellMeta.createUnfacadeMethod">
+<em class="property">classmethod </em><tt class="descname">createUnfacadeMethod</tt><big>(</big><em>funcname</em><big>)</big><a class="headerlink" href="#mrv.dgfe._OIShellMeta.createUnfacadeMethod" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dgfe._OIShellMeta.mro">
+<tt class="descname">mro</tt><a class="headerlink" href="#mrv.dgfe._OIShellMeta.mro" title="Permalink to this definition">¶</a></dt>
+<dd>mro() -&gt; list
+return a type&#8217;s method resolution order</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.dgfe-module.html#_PlugShell">Epydoc: mrv.dgfe</a></p>
+<dl class="class">
+<dt id="mrv.dgfe._PlugShell">
+<em class="property">class </em><tt class="descclassname">mrv.dgfe.</tt><tt class="descname">_PlugShell</tt><a class="headerlink" href="#mrv.dgfe._PlugShell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">tuple</span></tt></p>
+<p>Handles per-node-instance plug connection setup and storage. As plugs are
+descriptors and thus an instance of the class, per-node-instance information needs
+special treatment.
+This class is being returned whenever the descriptors get and set methods are called,
+it contains information about the node and the plug being involved, allowing to track
+connection info directly using the node dict</p>
+<p>This allows plugs to be connected, and information to flow through the dependency graph.
+Plugs never act alone since they always belong to a parent node that will be asked for
+value computations if the value is not yet cached.
+:note: Do not instantiate this class youself, it must be created by the node as different
+node types can use different versions of this shell</p>
+<dl class="method">
+<dt id="mrv.dgfe._PlugShell.cache">
+<tt class="descname">cache</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe._PlugShell.cache" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the cached value or raise</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises ValueError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe._PlugShell.clearCache">
+<tt class="descname">clearCache</tt><big>(</big><em>clear_affected=False</em>, <em>cleared_shells_set=None</em><big>)</big><a class="headerlink" href="#mrv.dgfe._PlugShell.clearCache" title="Permalink to this definition">¶</a></dt>
+<dd>Empty the cache of our plug
+:param clear_affected: if True, the caches of our affected plugs ( connections
+or affects relations ) will also be cleared
+This operation is recursive, and needs to be as different shells on different nodes
+might do things differently.
+:param cleared_shells_set: if set, it can be used to track which plugs have already been dirtied to
+prevent recursive loops
+Propagation will happen even if we do not have a cache to clear ourselves</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe._PlugShell.compatabilityRate">
+<tt class="descname">compatabilityRate</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#mrv.dgfe._PlugShell.compatabilityRate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute compatability rate for teh given value</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">value between 0 and 255, 0 means no compatability, 255 a perfect match
+if larger than 0, the plug can hold the value ( assumed the flags are set correctly )</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe._PlugShell.connect">
+<tt class="descname">connect</tt><big>(</big><em>otherplugshell</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe._PlugShell.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect this plug to otherplugshell such that otherplugshell is an input plug for our output</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>kwargs</em> &#8211; everything supported by <cite>Graph.connect</cite></td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">self on success, allows chained connections</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises PlugAlreadyConnected:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if otherplugshell is connected and force is False</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises PlugIncompatible:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if otherplugshell does not appear to be compatible to this one</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe._PlugShell.connections">
+<tt class="descname">connections</tt><big>(</big><em>inpt</em>, <em>output</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x32711b8&gt;</em><big>)</big><a class="headerlink" href="#mrv.dgfe._PlugShell.connections" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">get all input and or output connections from this shell
+or to this shell as edges ( sourceshell, destinationshell )</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; return true for each destination shell that you can except in the
+returned edge or the sourceshell where your shell is the destination.</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Use this method to get edges read for connection/disconnection</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dgfe._PlugShell.count">
+<tt class="descname">count</tt><a class="headerlink" href="#mrv.dgfe._PlugShell.count" title="Permalink to this definition">¶</a></dt>
+<dd>T.count(value) -&gt; integer &#8211; return number of occurrences of value</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe._PlugShell.disconnect">
+<tt class="descname">disconnect</tt><big>(</big><em>otherplugshell</em><big>)</big><a class="headerlink" href="#mrv.dgfe._PlugShell.disconnect" title="Permalink to this definition">¶</a></dt>
+<dd>Remove the connection to otherplugshell if we are connected to it.
+:note: does not raise if no connection is present</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe._PlugShell.get">
+<tt class="descname">get</tt><big>(</big><em>mode=None</em><big>)</big><a class="headerlink" href="#mrv.dgfe._PlugShell.get" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">value of the plug</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>mode</em> &#8211; optional arbitary value specifying the mode of the get attempt</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe._PlugShell.hasCache">
+<tt class="descname">hasCache</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe._PlugShell.hasCache" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if currently store a cached value</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dgfe._PlugShell.index">
+<tt class="descname">index</tt><a class="headerlink" href="#mrv.dgfe._PlugShell.index" title="Permalink to this definition">¶</a></dt>
+<dd>T.index(value, [start, [stop]]) -&gt; integer &#8211; return first index of value.
+Raises ValueError if the value is not present.</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe._PlugShell.input">
+<tt class="descname">input</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x3270f50&gt;</em><big>)</big><a class="headerlink" href="#mrv.dgfe._PlugShell.input" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the connected input plug or None if there is no such connection</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; plug will only be returned if predicate is true for it</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">input plugs have on plug at most, output plugs can have more than one
+connected plug</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe._PlugShell.isConnected">
+<tt class="descname">isConnected</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe._PlugShell.isConnected" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True, if the shell is connected as source or as destination of a connection</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe._PlugShell.iterShells">
+<tt class="descname">iterShells</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe._PlugShell.iterShells" title="Permalink to this definition">¶</a></dt>
+<dd>Iterate plugs and their connections starting at this plug
+:return: generator for plug shells
+:note: supports all options of <cite>iterShells</cite>, this method allows syntax like:
+node.outAttribute.iterShells( )</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe._PlugShell.outputs">
+<tt class="descname">outputs</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x32710c8&gt;</em><big>)</big><a class="headerlink" href="#mrv.dgfe._PlugShell.outputs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">a list of plugs being the destination of the connection</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; plug will only be returned if predicate is true for it - shells will be passed in</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe._PlugShell.set">
+<tt class="descname">set</tt><big>(</big><em>value</em>, <em>ignore_connection=False</em><big>)</big><a class="headerlink" href="#mrv.dgfe._PlugShell.set" title="Permalink to this definition">¶</a></dt>
+<dd>Set the given value to be used in our plug
+:param ignore_connection: if True, the plug can be destination of a connection and
+will still get its value set - usually it would be overwritten by the value form the
+connection. The set value will be cleared if something upstream in it&#8217;s connection chain
+changes.
+:raise AssertionError: the respective attribute must be cached, otherwise
+the value will be lost</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe._PlugShell.setCache">
+<tt class="descname">setCache</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#mrv.dgfe._PlugShell.setCache" title="Permalink to this definition">¶</a></dt>
+<dd>Set the given value to be stored in our cache
+:raise: TypeError if the value is not compatible to our defined type</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.dgfe-module.html#deque">Epydoc: mrv.dgfe</a></p>
+<dl class="class">
+<dt id="mrv.dgfe.deque">
+<em class="property">class </em><tt class="descclassname">mrv.dgfe.</tt><tt class="descname">deque</tt><a class="headerlink" href="#mrv.dgfe.deque" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>deque(iterable[, maxlen]) &#8211;&gt; deque object</p>
+<p>Build an ordered collection accessible from endpoints only.</p>
+<dl class="attribute">
+<dt id="mrv.dgfe.deque.append">
+<tt class="descname">append</tt><a class="headerlink" href="#mrv.dgfe.deque.append" title="Permalink to this definition">¶</a></dt>
+<dd>Add an element to the right side of the deque.</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dgfe.deque.appendleft">
+<tt class="descname">appendleft</tt><a class="headerlink" href="#mrv.dgfe.deque.appendleft" title="Permalink to this definition">¶</a></dt>
+<dd>Add an element to the left side of the deque.</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dgfe.deque.clear">
+<tt class="descname">clear</tt><a class="headerlink" href="#mrv.dgfe.deque.clear" title="Permalink to this definition">¶</a></dt>
+<dd>Remove all elements from the deque.</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dgfe.deque.extend">
+<tt class="descname">extend</tt><a class="headerlink" href="#mrv.dgfe.deque.extend" title="Permalink to this definition">¶</a></dt>
+<dd>Extend the right side of the deque with elements from the iterable</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dgfe.deque.extendleft">
+<tt class="descname">extendleft</tt><a class="headerlink" href="#mrv.dgfe.deque.extendleft" title="Permalink to this definition">¶</a></dt>
+<dd>Extend the left side of the deque with elements from the iterable</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dgfe.deque.pop">
+<tt class="descname">pop</tt><a class="headerlink" href="#mrv.dgfe.deque.pop" title="Permalink to this definition">¶</a></dt>
+<dd>Remove and return the rightmost element.</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dgfe.deque.popleft">
+<tt class="descname">popleft</tt><a class="headerlink" href="#mrv.dgfe.deque.popleft" title="Permalink to this definition">¶</a></dt>
+<dd>Remove and return the leftmost element.</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dgfe.deque.remove">
+<tt class="descname">remove</tt><a class="headerlink" href="#mrv.dgfe.deque.remove" title="Permalink to this definition">¶</a></dt>
+<dd>D.remove(value) &#8211; remove first occurrence of value.</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dgfe.deque.rotate">
+<tt class="descname">rotate</tt><a class="headerlink" href="#mrv.dgfe.deque.rotate" title="Permalink to this definition">¶</a></dt>
+<dd>Rotate the deque n steps to the right (default n=1).  If n is negative, rotates left.</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.dgfe-module.html#iDuplicatable">Epydoc: mrv.dgfe</a></p>
+<dl class="class">
+<dt id="mrv.dgfe.iDuplicatable">
+<em class="property">class </em><tt class="descclassname">mrv.dgfe.</tt><tt class="descname">iDuplicatable</tt><a class="headerlink" href="#mrv.dgfe.iDuplicatable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.interface.Interface" class="reference external" href="mrv.interface.html#mrv.interface.Interface"><tt class="xref docutils literal"><span class="pre">mrv.interface.Interface</span></tt></a></p>
+<p>Simple interface allowing any class to be properly duplicated</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">to implement this interface, implement <cite>createInstance</cite> and
+<cite>copyFrom</cite> in your class</td>
+</tr>
+</tbody>
+</table>
+<dl class="classmethod">
+<dt id="mrv.dgfe.iDuplicatable.addSep">
+<em class="property">classmethod </em><tt class="descname">addSep</tt><big>(</big><em>item</em>, <em>sep</em><big>)</big><a class="headerlink" href="#mrv.dgfe.iDuplicatable.addSep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">item with separator added to it ( just once )</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">operates best on strings</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>item</em> &#8211; item to add separator to</li>
+<li><em>sep</em> &#8211; the separator</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.iDuplicatable.basename">
+<tt class="descname">basename</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.iDuplicatable.basename" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">basename of this path, &#8216;/hello/world&#8217; -&gt; &#8216;world&#8217;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.iDuplicatable.children">
+<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee848&gt;</em><big>)</big><a class="headerlink" href="#mrv.dgfe.iDuplicatable.children" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of intermediate children of path, [ child1 , child2 ]</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; return True to include x in result</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">the child objects returned are supposed to be valid paths, not just relative paths</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.iDuplicatable.childrenDeep">
+<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee668&gt;</em><big>)</big><a class="headerlink" href="#mrv.dgfe.iDuplicatable.childrenDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of all children of path, [ child1 , child2 ]</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>order</em> &#8211; order enumeration</li>
+<li><em>predicate</em> &#8211; returns true if x may be returned</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">the child objects returned are supposed to be valid paths, not just relative paths</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.iDuplicatable.copyFrom">
+<tt class="descname">copyFrom</tt><big>(</big><em>other</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe.iDuplicatable.copyFrom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy the data from other into self as good as possible
+Only copy the data that is unique to your specific class - the data of other
+classes will be taken care of by them !</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">you must support <tt class="docutils literal"><span class="pre">args</span></tt> and <tt class="docutils literal"><span class="pre">kwargs</span></tt> if one of your iDuplicate bases does</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.iDuplicatable.copyTo">
+<tt class="descname">copyTo</tt><big>(</big><em>instance</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe.iDuplicatable.copyTo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy the values of ourselves onto the given instance which must be an
+instance of our class to be compatible.
+Only the common classes will be copied to instance</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">altered instance</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">instance will be altered during the process</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.iDuplicatable.copyToOther">
+<tt class="descname">copyToOther</tt><big>(</big><em>instance</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe.iDuplicatable.copyToOther" title="Permalink to this definition">¶</a></dt>
+<dd>As <cite>copyTo</cite>, but does only require the objects to have a common base.
+It will match the actually compatible base classes and call <cite>copyFrom</cite>
+if possible.
+As more checking is performed, this method performs worse than <cite>copyTo</cite></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.iDuplicatable.createInstance">
+<tt class="descname">createInstance</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe.iDuplicatable.createInstance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create and Initialize an instance of self.__class__( ... ) based on your own data</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">new instance of self</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">using self.__class__ instead of an explicit class allows derived
+classes that do not have anything to duplicate just to use your implementeation</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">you must support <tt class="docutils literal"><span class="pre">args</span></tt> and <tt class="docutils literal"><span class="pre">kwargs</span></tt> if one of your iDuplicate bases does</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.iDuplicatable.duplicate">
+<tt class="descname">duplicate</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dgfe.iDuplicatable.duplicate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements a c-style copy constructor by creating a new instance of self
+and applying the <cite>copyFrom</cite> methods from base to all classes implementing the copyfrom
+method. Thus we will call the method directly on the class</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>args</em> &#8211; passed to <cite>copyFrom</cite> and <cite>createInstance</cite> method to give additional directions</li>
+<li><em>kwargs</em> &#8211; see param args</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.iDuplicatable.fullChildName">
+<tt class="descname">fullChildName</tt><big>(</big><em>childname</em><big>)</big><a class="headerlink" href="#mrv.dgfe.iDuplicatable.fullChildName" title="Permalink to this definition">¶</a></dt>
+<dd>Add the given name to the string version of our instance
+:return: string with childname added like name _sep childname</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.iDuplicatable.isPartOf">
+<tt class="descname">isPartOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.dgfe.iDuplicatable.isPartOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if self is a part of other, and thus can be found in other</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings only</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.iDuplicatable.isRoot">
+<tt class="descname">isRoot</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.iDuplicatable.isRoot" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this path is the root of the DAG</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.iDuplicatable.isRootOf">
+<tt class="descname">isRootOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.dgfe.iDuplicatable.isRootOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True other starts with self</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">we assume other has the same type as self, thus the same separator</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.iDuplicatable.iterParents">
+<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee2a8&gt;</em><big>)</big><a class="headerlink" href="#mrv.dgfe.iDuplicatable.iterParents" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">generator retrieving all parents up to the root</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; returns True for all x that you want to be returned</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.iDuplicatable.parent">
+<tt class="descname">parent</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.iDuplicatable.parent" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">parent of this path, &#8216;/hello/world&#8217; -&gt; &#8216;/hello&#8217; or None if this path
+is the dag&#8217;s root</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.iDuplicatable.parentDeep">
+<tt class="descname">parentDeep</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.iDuplicatable.parentDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">all parents of this path, &#8216;/hello/my/world&#8217; -&gt; [ &#8216;/hello/my&#8217;,&#8217;/hello&#8217; ]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.iDuplicatable.root">
+<tt class="descname">root</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.iDuplicatable.root" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the root of the DAG - it has no further parents</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.iDuplicatable.supports">
+<tt class="descname">supports</tt><big>(</big><em>interface_type</em><big>)</big><a class="headerlink" href="#mrv.dgfe.iDuplicatable.supports" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this instance supports the interface of the given type</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>interface_type</em> &#8211; Type of the interface you require this instance 
+to support</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Must be used in case you only have a weak reference of your interface
+instance or proxy which is a case where the ordinary isinstance( obj, iInterface )
+will not work</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.dgfe-module.html#iPlug">Epydoc: mrv.dgfe</a></p>
+<dl class="class">
+<dt id="mrv.dgfe.iPlug">
+<em class="property">class </em><tt class="descclassname">mrv.dgfe.</tt><tt class="descname">iPlug</tt><a class="headerlink" href="#mrv.dgfe.iPlug" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>Defines an interface allowing to compare compatabilies according to types.</p>
+<p>Plugs can either be input plugs or output plugs - output plugs affect no other
+plug on a node, but are affected by 0 or more plugs .</p>
+<p>By convention, a plug has a name - that name must also be the name of the
+member attribute that stores the plag. Plugs, possibly different instances of it,
+need to be re-retrieved on freshly duplicated nodes to allow graph duplication to
+be done properly</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">if your plug class supports the <tt class="docutils literal"><span class="pre">setName</span></tt> method, a metaclass will
+adjust the name of your plug to match the name it has in the parent class</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mrv.dgfe.iPlug.affected">
+<tt class="descname">affected</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.iPlug.affected" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">tuple containing affected plugs ( plugs that are affected by our value )</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.iPlug.affectedBy">
+<tt class="descname">affectedBy</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.iPlug.affectedBy" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">tuple containing plugs that affect us ( plugs affecting our value )</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.iPlug.affects">
+<tt class="descname">affects</tt><big>(</big><em>otherplug</em><big>)</big><a class="headerlink" href="#mrv.dgfe.iPlug.affects" title="Permalink to this definition">¶</a></dt>
+<dd>Set an affects relation ship between this plug and otherplug, saying
+that this plug affects otherplug.</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.iPlug.name">
+<tt class="descname">name</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.iPlug.name" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">name of the plug ( the name that identifies it on the node</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.iPlug.providesInput">
+<tt class="descname">providesInput</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.iPlug.providesInput" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this is an input plug that will never cause computations</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dgfe.iPlug.providesOutput">
+<tt class="descname">providesOutput</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dgfe.iPlug.providesOutput" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this is an output plug that can trigger computations</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="exceptions">
+<h2>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="api/mrv.dgfe-module.html#NetworkXError">Epydoc: mrv.dgfe</a></p>
+<dl class="class">
+<dt id="mrv.dgfe.NetworkXError">
+<em class="property">class </em><tt class="descclassname">mrv.dgfe.</tt><tt class="descname">NetworkXError</tt><a class="headerlink" href="#mrv.dgfe.NetworkXError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">networkx.exception.NetworkXException</span></tt></p>
+<p>Exception for a serious error in NetworkX</p>
+<dl class="attribute">
+<dt id="mrv.dgfe.NetworkXError.args">
+<tt class="descname">args</tt><a class="headerlink" href="#mrv.dgfe.NetworkXError.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dgfe.NetworkXError.message">
+<tt class="descname">message</tt><a class="headerlink" href="#mrv.dgfe.NetworkXError.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="../index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#"><tt class="docutils literal"><span class="pre">mrv.dgfe</span></tt></a><ul>
+<li><a class="reference external" href="#classes">Classes</a></li>
+<li><a class="reference external" href="#exceptions">Exceptions</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="mrv.exc.html"
+                                  title="previous chapter"><tt class="docutils literal"><span class="pre">mrv.exc</span></tt></a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="mrv.batch.html"
+                                  title="next chapter"><tt class="docutils literal docutils literal"><span class="pre">mrv.batch</span></tt></a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/generated/mrv.dgfe.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.batch.html" title="mrv.batch"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mrv.exc.html" title="mrv.exc"
+             >previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Nov 30, 2010.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

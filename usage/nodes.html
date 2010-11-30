@@ -1,0 +1,468 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Nodes &mdash; mrv v1.0.1-develop documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.1-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="mrv v1.0.1-develop documentation" href="../index.html" />
+    <link rel="up" title="Usage" href="index.html" />
+    <link rel="next" title="Plugs and Attributes" href="plugs.html" />
+    <link rel="prev" title="Usage" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="plugs.html" title="Plugs and Attributes"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Usage"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Usage</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="nodes">
+<h1>Nodes<a class="headerlink" href="#nodes" title="Permalink to this headline">¶</a></h1>
+<p>The term <em>Node</em> means any Dependency Node or DagNode which has been wrapped for convenient use. It is derived from <tt class="docutils literal"><span class="pre">mrv.maya.nt.base.Node</span></tt>.</p>
+<p>A Node wraps an underlying <em>MObject</em> or an <em>MDagPath</em>, and it can be retrieved either by iteration, by using one of the various methods of the MRV library or by manually wrapping a maya node whose name is known:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">mrv.maya.nt</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="c"># wrap a node by name</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s">&quot;persp&quot;</span><span class="p">)</span>
+<span class="n">Transform</span><span class="p">(</span><span class="s">&quot;|persp&quot;</span><span class="p">)</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s">&quot;time1&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The Node p now represents the transform named &#8216;persp&#8217; within the maya scene. You can interact with it natively. It will behave properly within sets and when being compared:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">assert</span> <span class="n">p</span> <span class="o">==</span> <span class="n">p</span>
+<span class="k">assert</span> <span class="n">p</span> <span class="o">!=</span> <span class="n">t</span>
+<span class="k">assert</span> <span class="n">p</span> <span class="ow">in</span> <span class="p">[</span><span class="n">p</span><span class="p">]</span>
+
+<span class="n">s</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+<span class="n">s</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">s</span> <span class="ow">and</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">s</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span> <span class="o">|</span> <span class="n">s</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+</pre></div>
+</div>
+<p>As initially stated, a Node wraps the respective API object, which is either of type <em>MDagPath</em> or <em>MObject</em>. These objects can be retrieved from the Node afterwards:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># apiObject returns the api object which represents the underlying maya node best</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">apiObject</span><span class="p">(),</span> <span class="n">api</span><span class="o">.</span><span class="n">MDagPath</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">apiObject</span><span class="p">(),</span> <span class="n">api</span><span class="o">.</span><span class="n">MObject</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can query the MObject or the MDagPath specifically:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">dagPath</span><span class="p">(),</span> <span class="n">api</span><span class="o">.</span><span class="n">MDagPath</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">object</span><span class="p">(),</span> <span class="n">api</span><span class="o">.</span><span class="n">MObject</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Although each wrapped node has a python type, which is its capitalized maya type, you may easily query the MayaAPI type representation, being a member of the <tt class="docutils literal"><span class="pre">MFn.k...</span></tt> enumeration:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">Transform</span><span class="p">)</span> <span class="ow">and</span> <span class="n">p</span><span class="o">.</span><span class="n">apiType</span><span class="p">()</span> <span class="o">==</span> <span class="n">api</span><span class="o">.</span><span class="n">MFn</span><span class="o">.</span><span class="n">kTransform</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">Time</span><span class="p">)</span> <span class="ow">and</span> <span class="n">t</span><span class="o">.</span><span class="n">apiType</span><span class="p">()</span> <span class="o">==</span> <span class="n">api</span><span class="o">.</span><span class="n">MFn</span><span class="o">.</span><span class="n">kTime</span>
+<span class="k">assert</span> <span class="n">p</span><span class="o">.</span><span class="n">hasFn</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">apiType</span><span class="p">())</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">object</span><span class="p">(),</span> <span class="n">api</span><span class="o">.</span><span class="n">MObject</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">object</span><span class="p">(),</span> <span class="n">api</span><span class="o">.</span><span class="n">MObject</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Do not keep Nodes cached, but prefer to re-retrieve them on demand as they may become invalid in the meanwhile depending on the operations performed in Maya.</p>
+</div>
+<div class="section" id="method-lookup">
+<h2>Method Lookup<a class="headerlink" href="#method-lookup" title="Permalink to this headline">¶</a></h2>
+<p>Nodes represent their respective maya api object, and make all matching MFnFunctionSet methods available directly.
+Calling these methods involves nothing special, you just make the call on your node. Its important to know which methods are available and the order in which they are looked up. Lets study the method resolution by checking the first case, a non-existing method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># this will raise an AttributeError</span>
+<span class="n">p</span><span class="o">.</span><span class="n">doesnt_exist</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>MRV looks up the name in the following order:</dt>
+<dd><ol class="first last arabic simple">
+<li>Find a method on the instance itself. This would succeed if the method has been implemented on the respective python type or one of its base types, in order to make it easier to use for instance, or to work around limitations.</li>
+<li>Find the method name on the topmost MFnFunction set, and resort to more general function sets if the name could not be found. If a Node wraps a mesh for example, it would try to find the Method in MFnMesh, then in MFnDagNode.</li>
+<li>Try to find a MPlug with the given name, internally using <tt class="docutils literal"><span class="pre">MFnDependencyNode.findPlug(name)</span></tt> to achieve this.</li>
+</ol>
+</dd>
+</dl>
+<p>This implies that functions will be found <em>before</em> an attribute of the same name. If you need the plug instead, use its short attribute name.</p>
+<p>It would be quite expensive to make any call if the shown lookup would be performed anytime, but in fact it will only be done once per node type, afterwards the type will know that you are looking for a method, or an MPlug respectively, and return the requested object right away. MRV types learn what they need to know at runtime.</p>
+<p>Even in tight loops, this convenient calling convention may be used without overwhelming performance loss, but if you are interested in optimizing this, have a look at the <a class="reference external" href="../develop/performance.html#performance-docs-label"><em>Performance and Memory Considerations</em></a> paragraph.</p>
+</div>
+<div class="section" id="mfnfunction-aliases">
+<h2>MFnFunction Aliases<a class="headerlink" href="#mfnfunction-aliases" title="Permalink to this headline">¶</a></h2>
+<p>Methods that map to MFnFunctionSet functions may be aliased such that they better fit or are faster to type. Hence they can be accessed either by their original name or by their alias. For example, (MFnDependencyNode).isFromReferencedFile can also be retrieved using .isReferenced:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">assert</span> <span class="n">p</span><span class="o">.</span><span class="n">isFromReferencedFile</span><span class="p">()</span> <span class="o">==</span> <span class="n">p</span><span class="o">.</span><span class="n">isReferenced</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>If you are interested in knowing which MFnFunction sets your node supports, call the <tt class="docutils literal"><span class="pre">getMFnClasses</span></tt> method:</p>
+<div class="highlight-python"><pre>p.getMFnClasses()
+[&lt;class 'maya.OpenMaya.MFnTransform'&gt;,
+ &lt;class 'maya.OpenMaya.MFnDagNode'&gt;,
+ &lt;class 'maya.OpenMaya.MFnDependencyNode'&gt;,
+ &lt;class 'maya.OpenMaya.MFnDependencyNode'&gt;]</pre>
+</div>
+<p>If you want to learn more about the MFnFunctionSet method aliases, see <a class="reference external" href="../extend.html#mfnmethodmutator-label"><em>MFn Database Files</em></a></p>
+</div>
+<div class="section" id="static-mfn-functions">
+<h2>Static MFn Functions<a class="headerlink" href="#static-mfn-functions" title="Permalink to this headline">¶</a></h2>
+<p>Static functions on function sets may be accessed through the actual node type natively:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">assert</span> <span class="n">DependNode</span><span class="o">.</span><span class="n">classification</span><span class="p">(</span><span class="s">&#39;lambert&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">api</span><span class="o">.</span><span class="n">MFnDependencyNode</span><span class="o">.</span><span class="n">classification</span><span class="p">(</span><span class="s">&#39;lambert&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Return values of static methods are wrapped as well if possible:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">maya.OpenMayaRender</span> <span class="kn">as</span> <span class="nn">apirender</span>
+<span class="n">rnl</span> <span class="o">=</span> <span class="n">RenderLayer</span><span class="o">.</span><span class="n">currentLayer</span><span class="p">()</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rnl</span><span class="p">,</span> <span class="n">Node</span><span class="p">)</span>
+<span class="n">rnlobj</span> <span class="o">=</span> <span class="n">apirender</span><span class="o">.</span><span class="n">MFnRenderLayer</span><span class="o">.</span><span class="n">currentLayer</span><span class="p">()</span>
+<span class="k">assert</span> <span class="n">rnl</span> <span class="o">==</span> <span class="n">rnlobj</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rnlobj</span><span class="p">,</span> <span class="n">api</span><span class="o">.</span><span class="n">MObject</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="enumerations">
+<h2>Enumerations<a class="headerlink" href="#enumerations" title="Permalink to this headline">¶</a></h2>
+<p>If a MFnFunctionSet associated with a <tt class="docutils literal"><span class="pre">NodeType</span></tt>, <tt class="docutils literal"><span class="pre">DataType</span></tt> or <tt class="docutils literal"><span class="pre">AttributeType</span></tt> has enumerations, these are statically available on the type by the name used in the MayaAPI documentation. A utility function allows to map enumeration values back to their name:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">assert</span> <span class="n">Node</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">kMesh</span> <span class="o">==</span> <span class="n">api</span><span class="o">.</span><span class="n">MFn</span><span class="o">.</span><span class="n">kMesh</span>
+<span class="k">assert</span> <span class="n">Attribute</span><span class="o">.</span><span class="n">DisconnectBehavior</span><span class="o">.</span><span class="n">kReset</span> <span class="o">==</span> <span class="n">api</span><span class="o">.</span><span class="n">MFnAttribute</span><span class="o">.</span><span class="n">kReset</span>
+<span class="k">assert</span> <span class="n">Data</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">kPlugin</span> <span class="o">==</span> <span class="n">api</span><span class="o">.</span><span class="n">MFnData</span><span class="o">.</span><span class="n">kPlugin</span>
+
+<span class="k">assert</span> <span class="n">Node</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">nameByValue</span><span class="p">(</span><span class="n">api</span><span class="o">.</span><span class="n">MFn</span><span class="o">.</span><span class="n">kMesh</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;kMesh&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="dag-navigation">
+<h2>DAG-Navigation<a class="headerlink" href="#dag-navigation" title="Permalink to this headline">¶</a></h2>
+<p>DAG objects are organized in a hierarchy which can be walked and traversed at will. The following example also uses a very handy shortcut, allowing you to access the children and parent nodes by index:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ps</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">children</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">assert</span> <span class="n">ps</span> <span class="o">==</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">assert</span> <span class="n">ps</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">p</span>
+<span class="k">assert</span> <span class="n">ps</span> <span class="o">==</span> <span class="n">p</span><span class="o">.</span><span class="n">children</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Sometimes its required to use filters, only listing shape nodes or transforms are the most common cases and supported specifically:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">assert</span> <span class="n">ps</span> <span class="o">==</span> <span class="n">p</span><span class="o">.</span><span class="n">shapes</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">assert</span> <span class="n">ps</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span> <span class="o">==</span> <span class="n">p</span> <span class="o">==</span> <span class="n">ps</span><span class="o">.</span><span class="n">transform</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>More specialized filters can be applied as well:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">childrenByType</span><span class="p">(</span><span class="n">Transform</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span>
+<span class="k">assert</span> <span class="n">p</span><span class="o">.</span><span class="n">childrenByType</span><span class="p">(</span><span class="n">Camera</span><span class="p">)</span> <span class="o">==</span> <span class="n">p</span><span class="o">.</span><span class="n">childrenByType</span><span class="p">(</span><span class="n">Shape</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">p</span><span class="o">.</span><span class="n">children</span><span class="p">(</span><span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="n">n</span><span class="o">.</span><span class="n">apiType</span><span class="p">()</span><span class="o">==</span><span class="n">api</span><span class="o">.</span><span class="n">MFn</span><span class="o">.</span><span class="n">kCamera</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">ps</span>
+</pre></div>
+</div>
+<p>Generally, all items that are organized in a hierarchy support the  <tt class="docutils literal"><span class="pre">mrv.interface.iDagItem</span></tt> interface which provides methods for traversal and query:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">assert</span> <span class="n">ps</span><span class="o">.</span><span class="n">iterParents</span><span class="p">()</span><span class="o">.</span><span class="n">next</span><span class="p">()</span> <span class="o">==</span> <span class="n">p</span> <span class="o">==</span> <span class="n">ps</span><span class="o">.</span><span class="n">getRoot</span><span class="p">()</span>
+<span class="k">assert</span> <span class="n">ps</span><span class="o">.</span><span class="n">parentDeep</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">p</span>
+<span class="k">assert</span> <span class="n">p</span><span class="o">.</span><span class="n">childrenDeep</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">ps</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="node-creation">
+<h2>Node Creation<a class="headerlink" href="#node-creation" title="Permalink to this headline">¶</a></h2>
+<p>Creating nodes in MRV is simple and maybe a bit slow as you can only create about 1200 to 2500 Nodes per second. There is only one method to accomplish this with plenty of functionality built-in, <tt class="docutils literal"><span class="pre">mrv.maya.nt.base.createNode</span></tt>. This shall only be a brief example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">cs</span> <span class="o">=</span> <span class="n">createNode</span><span class="p">(</span><span class="s">&quot;namespace:subspace:group|other:camera|other:cameraShape&quot;</span><span class="p">,</span> <span class="s">&quot;camera&quot;</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">cs</span><span class="o">.</span><span class="n">parentsDeep</span><span class="p">())</span> <span class="o">==</span> <span class="mi">2</span>
+</pre></div>
+</div>
+<p>The short and more convenient way to create nodes is to use the NodeType() call signature, whose <tt class="docutils literal"><span class="pre">**kwargs</span></tt> will be passed to the <tt class="docutils literal"><span class="pre">createNode</span></tt> function:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">m</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">()</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">Mesh</span><span class="p">)</span> <span class="ow">and</span> <span class="n">m</span><span class="o">.</span><span class="n">isValid</span><span class="p">()</span>
+
+<span class="k">assert</span> <span class="n">m</span> <span class="o">==</span> <span class="n">Mesh</span><span class="p">(</span><span class="n">forceNewLeaf</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="node-duplication">
+<h2>Node Duplication<a class="headerlink" href="#node-duplication" title="Permalink to this headline">¶</a></h2>
+<p>Node duplication is an interesting problem as it might involve many secondary tasks, such as maintaining light-links or shading assignments.</p>
+<p>When using the blank duplicate function as provided by the MayaAPI, one will only get a bare copy of the input node, without any connections. Its safe to state that the MayaAPI duplicate is far behind the MEL implementation, as it can take care of much more. Lets just call it a design mistake that they implement functionality in a MEL command instead of in a library so that it can be made accessible in the MayaAPI <em>and</em> in MEL.</p>
+<p>MRV tackles the problem by providing an interface called <tt class="docutils literal"><span class="pre">mrv.interface.iDuplicatable</span></tt>. It works much like a c++ copy constructor, and anything implementing it correctly is able to be duplicated properly. Node-derived types may implement special duplication routines to assure their are duplicated correctly:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># this duplicated tweaks, set and shader assignments as well</span>
+<span class="n">md</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">duplicate</span><span class="p">()</span>
+<span class="k">assert</span> <span class="n">md</span> <span class="o">!=</span> <span class="n">m</span>
+</pre></div>
+</div>
+<p>If you ever miss anything to be duplicated on a certain node-type, you only need to implement it in the <tt class="docutils literal"><span class="pre">copyFrom</span></tt> method in the respective type or the most appropriate of its base types.</p>
+</div>
+<div class="section" id="namespaces">
+<h2>Namespaces<a class="headerlink" href="#namespaces" title="Permalink to this headline">¶</a></h2>
+<p>Namespaces in MRV are objects which may create a hierarchy, hence they support the <tt class="docutils literal"><span class="pre">mrv.interface.iDagItem</span></tt> interface:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ons</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">namespace</span><span class="p">()</span>
+<span class="k">assert</span> <span class="n">ons</span> <span class="o">==</span> <span class="n">cs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">namespace</span><span class="p">()</span>        <span class="c"># namespace of parent node</span>
+
+<span class="n">sns</span> <span class="o">=</span> <span class="n">cs</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">namespace</span><span class="p">()</span>
+<span class="k">assert</span> <span class="n">sns</span> <span class="o">!=</span> <span class="n">ons</span>
+
+<span class="n">pns</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span>
+<span class="k">assert</span> <span class="n">pns</span><span class="o">.</span><span class="n">children</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">sns</span>
+
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">sns</span><span class="o">.</span><span class="n">iterNodes</span><span class="p">()))</span> <span class="o">==</span> <span class="mi">1</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">pns</span><span class="o">.</span><span class="n">iterNodes</span><span class="p">()))</span> <span class="o">==</span> <span class="mi">0</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">pns</span><span class="o">.</span><span class="n">iterNodes</span><span class="p">(</span><span class="n">depth</span><span class="o">=</span><span class="mi">1</span><span class="p">)))</span> <span class="o">==</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="dag-manipulation-and-instancing">
+<h2>DAG-Manipulation and Instancing<a class="headerlink" href="#dag-manipulation-and-instancing" title="Permalink to this headline">¶</a></h2>
+<p>Change the structure of the DAG, adjust parent-child relation ships and handle instances. DAG manipulation is an interesting topic as it is implemented using the MayaAPI, but it provides a new programming interface unique to MRV in order to be more intuitive and as a workaround to many issues that can occur when using the MayaAPI natively.</p>
+<p>Transforms can be parented under the world&#8217;s root, which is the root of the Directed Acyclic Graph, and under other transforms. Shape nodes may be parented under transforms only. Some special nodes may appear parented under Shape nodes, which effectively puts them into the Shape&#8217;s <tt class="docutils literal"><span class="pre">underworld</span></tt>.</p>
+<p>As long as Transforms and Shapes have only one parent, there is only one DAGPath leading up to the object in question. If you add more parents to them, there are more DAGPaths leading to the same object, which is called <tt class="docutils literal"><span class="pre">instancing</span></tt> in Maya.</p>
+<p>The MRV DAG manipulation API provides multiple methods to adjust the number of children and parents of the individual items, including undo support:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">csp</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">transform</span><span class="p">()</span>
+<span class="n">cs</span><span class="o">.</span><span class="n">setParent</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">cs</span><span class="o">.</span><span class="n">instanceCount</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+<span class="n">csi</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">addParent</span><span class="p">(</span><span class="n">csp</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="n">csi</span><span class="o">.</span><span class="n">isInstanced</span><span class="p">()</span> <span class="ow">and</span> <span class="n">cs</span><span class="o">.</span><span class="n">instanceCount</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+<span class="k">assert</span> <span class="n">csi</span> <span class="o">!=</span> <span class="n">cs</span>
+<span class="k">assert</span> <span class="n">csi</span><span class="o">.</span><span class="n">object</span><span class="p">()</span> <span class="o">==</span> <span class="n">cs</span><span class="o">.</span><span class="n">object</span><span class="p">()</span>
+
+<span class="k">assert</span> <span class="n">cs</span><span class="o">.</span><span class="n">parentAtIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="n">p</span>
+<span class="k">assert</span> <span class="n">cs</span><span class="o">.</span><span class="n">parentAtIndex</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">csp</span>
+
+<span class="n">p</span><span class="o">.</span><span class="n">removeChild</span><span class="p">(</span><span class="n">csi</span><span class="p">)</span>
+<span class="k">assert</span> <span class="ow">not</span> <span class="n">cs</span><span class="o">.</span><span class="n">isValid</span><span class="p">()</span> <span class="ow">and</span> <span class="n">csi</span><span class="o">.</span><span class="n">isValid</span><span class="p">()</span>
+<span class="k">assert</span> <span class="ow">not</span> <span class="n">csi</span><span class="o">.</span><span class="n">isInstanced</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>It is worth noting that the only &#8216;real&#8217; methods are <tt class="docutils literal"><span class="pre">addChild</span></tt> and <tt class="docutils literal"><span class="pre">removeChild</span></tt>. All others, such as <tt class="docutils literal"><span class="pre">addParent</span></tt>, <tt class="docutils literal"><span class="pre">removeParent</span></tt>, <tt class="docutils literal"><span class="pre">setParent</span></tt> and <tt class="docutils literal"><span class="pre">addInstancedChild</span></tt> are only variations of them.</p>
+<p><tt class="docutils literal"><span class="pre">reparent</span></tt> and <tt class="docutils literal"><span class="pre">unparent</span></tt> are different operations than the instance-aware ones presented in the previous section, as they will not only ignore instances, but also force the object into a single DAGPath. This effectively removes all instances:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">cspp</span> <span class="o">=</span> <span class="n">csp</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">csi</span><span class="o">.</span><span class="n">reparent</span><span class="p">(</span><span class="n">cspp</span><span class="p">)</span>
+
+<span class="n">csp</span><span class="o">.</span><span class="n">unparent</span><span class="p">()</span>
+<span class="k">assert</span> <span class="n">csp</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">csp</span><span class="o">.</span><span class="n">children</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">cspp</span><span class="o">.</span><span class="n">children</span><span class="p">())</span> <span class="o">==</span> <span class="mi">1</span>
+<span class="k">assert</span> <span class="n">csi</span><span class="o">.</span><span class="n">instanceCount</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>The MayaAPI provides methods to handle instances and to accomplish fundamental re-parenting, MRV makes them more usable by providing own methods. Nonetheless, the general feeling of inconsistency remains as these sets of functions are slightly opposing each other, some are instance aware, some are not.</p>
+<p>As a general advice, you should be aware of instances and the methods to use to safely operate on them. <tt class="docutils literal"><span class="pre">reparent</span></tt> and <tt class="docutils literal"><span class="pre">unparent</span></tt> in MRV can be used safely as well as they will raise by default if instances would be destroyed otherwise.</p>
+</div>
+<div class="section" id="node-and-graph-iteration">
+<h2>Node- and Graph-Iteration<a class="headerlink" href="#node-and-graph-iteration" title="Permalink to this headline">¶</a></h2>
+<p>The fastest way to retrieve Nodes is by iterating them. There are three major areas to iterate: DAG Nodes only, DG Nodes ( which includes DAG Nodes ), or the dependency graph which is defined by plug connections between DG Nodes.</p>
+<p>MRV iterators are built around their MayaAPI counterparts, but provide a more intuitive and pythonic interface:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">for</span> <span class="n">dagnode</span> <span class="ow">in</span> <span class="n">it</span><span class="o">.</span><span class="n">iterDagNodes</span><span class="p">():</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dagnode</span><span class="p">,</span> <span class="n">DagNode</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">dg_or_dagnode</span> <span class="ow">in</span> <span class="n">it</span><span class="o">.</span><span class="n">iterDgNodes</span><span class="p">():</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dg_or_dagnode</span><span class="p">,</span> <span class="n">DependNode</span><span class="p">)</span>
+
+<span class="n">rlm</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s">&quot;renderLayerManager&quot;</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">it</span><span class="o">.</span><span class="n">iterGraph</span><span class="p">(</span><span class="n">rlm</span><span class="p">)))</span> <span class="o">==</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="handling-selections-with-selectionlists">
+<h2>Handling Selections with SelectionLists<a class="headerlink" href="#handling-selections-with-selectionlists" title="Permalink to this headline">¶</a></h2>
+<p>Many methods within the MayaAPI and within MRV will take MSelectionLists as input or return them. An MSelectionList is an ordered heterogeneous list which keeps MObjects, MDagPaths, MPlugs as well as ComponentLists. Although the name may suggest it, <tt class="docutils literal"><span class="pre">MSelectionList</span></tt> instances have nothing to do with Maya&#8217;s active selection.</p>
+<p>MSelectionLists can easily be created using the <tt class="docutils literal"><span class="pre">mrv.maya.nt.base.toSelectionList</span></tt> function, or the monkey-patched creator functions. Conversion functions come in several variants, some are more specialized, but faster, than others. Its safe and usually fast enough to use the general version though:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">nl</span> <span class="o">=</span> <span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">rlm</span><span class="p">)</span>
+<span class="n">sl</span> <span class="o">=</span> <span class="n">toSelectionList</span><span class="p">(</span><span class="n">nl</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sl</span><span class="p">,</span> <span class="n">api</span><span class="o">.</span><span class="n">MSelectionList</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">sl</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span>
+
+<span class="n">sl2</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">MSelectionList</span><span class="o">.</span><span class="n">mfromList</span><span class="p">(</span><span class="n">nl</span><span class="p">)</span>
+<span class="n">sl3</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">MSelectionList</span><span class="o">.</span><span class="n">mfromStrings</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nl</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Adjust maya&#8217;s selection or retrieve it using the <tt class="docutils literal"><span class="pre">mrv.maya.nt.base.select</span></tt> and <tt class="docutils literal"><span class="pre">mrv.maya.nt.base.selection</span></tt> functions:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">osl</span> <span class="o">=</span> <span class="n">selection</span><span class="p">()</span>
+<span class="n">select</span><span class="p">(</span><span class="n">sl</span><span class="p">)</span>
+<span class="n">select</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+
+<span class="c"># clear the selection</span>
+<span class="n">select</span><span class="p">()</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">selection</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>Please be aware of the fact that <tt class="docutils literal"><span class="pre">selection</span></tt> as well as <tt class="docutils literal"><span class="pre">select</span></tt> are high-level functions that emphasize convenience over performance. If this matters, use the respective functions in MGlobal instead.</p>
+<p>SelectionLists can be iterated natively, or can explicitly be converted into lists:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">sl</span><span class="o">.</span><span class="n">mtoIter</span><span class="p">():</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">DependNode</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="nb">list</span><span class="p">(</span><span class="n">sl</span><span class="o">.</span><span class="n">mtoIter</span><span class="p">())</span> <span class="o">==</span> <span class="n">sl</span><span class="o">.</span><span class="n">mtoList</span><span class="p">()</span>
+<span class="k">assert</span> <span class="nb">list</span><span class="p">(</span><span class="n">sl</span><span class="o">.</span><span class="n">mtoIter</span><span class="p">())</span> <span class="o">==</span> <span class="nb">list</span><span class="p">(</span><span class="n">it</span><span class="o">.</span><span class="n">iterSelectionList</span><span class="p">(</span><span class="n">sl</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="objectsets-and-partitions">
+<h2>ObjectSets and Partitions<a class="headerlink" href="#objectsets-and-partitions" title="Permalink to this headline">¶</a></h2>
+<p>Sets and Partitions are a major feature of Maya, which uses ObjectSets and their derivatives in many locations of the program. Partitions allow to enforce exclusive membership among sets.</p>
+<p>ObjectSets in MRV can be controlled much like ordinary python sets, but they in fact correspond to an ObjectSet compatible node with your scene:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">objset</span> <span class="o">=</span> <span class="n">ObjectSet</span><span class="p">()</span>
+<span class="n">aobjset</span> <span class="o">=</span> <span class="n">ObjectSet</span><span class="p">()</span>
+<span class="n">partition</span> <span class="o">=</span> <span class="n">Partition</span><span class="p">()</span>
+
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">objset</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+<span class="n">objset</span><span class="o">.</span><span class="n">addMembers</span><span class="p">(</span><span class="n">sl</span><span class="p">)</span>
+<span class="n">objset</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">csp</span><span class="p">)</span>
+<span class="n">aobjset</span><span class="o">.</span><span class="n">addMember</span><span class="p">(</span><span class="n">csi</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">objset</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">sl</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">aobjset</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+<span class="k">assert</span> <span class="n">csp</span> <span class="ow">in</span> <span class="n">objset</span>
+
+<span class="n">partition</span><span class="o">.</span><span class="n">addSets</span><span class="p">([</span><span class="n">objset</span><span class="p">,</span> <span class="n">aobjset</span><span class="p">])</span>
+<span class="k">assert</span> <span class="n">objset</span> <span class="ow">in</span> <span class="n">partition</span> <span class="ow">and</span> <span class="n">aobjset</span> <span class="ow">in</span> <span class="n">partition</span>
+<span class="n">partition</span><span class="o">.</span><span class="n">discard</span><span class="p">(</span><span class="n">aobjset</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">aobjset</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">partition</span>
+
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">objset</span> <span class="o">+</span> <span class="n">aobjset</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">objset</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">aobjset</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">objset</span> <span class="o">&amp;</span> <span class="n">aobjset</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+<span class="n">aobjset</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">aobjset</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">aobjset</span> <span class="o">&amp;</span> <span class="n">objset</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">aobjset</span> <span class="o">-</span> <span class="n">objset</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">aobjset</span><span class="o">.</span><span class="n">clear</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>ShadingEngines work the same, except that they are attached to the renderParition by default.</p>
+</div>
+<div class="section" id="components-and-component-level-shader-assignments">
+<h2>Components and Component-Level Shader Assignments<a class="headerlink" href="#components-and-component-level-shader-assignments" title="Permalink to this headline">¶</a></h2>
+<p>The following examples operate on a simple mesh, representing a polygonal cube with 6 faces, 8 vertices and 12 edges:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">isb</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s">&quot;initialShadingGroup&quot;</span><span class="p">)</span>
+<span class="n">pc</span> <span class="o">=</span> <span class="n">PolyCube</span><span class="p">()</span>
+<span class="n">pc</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">mconnectTo</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">inMesh</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">m</span><span class="o">.</span><span class="n">numVertices</span><span class="p">()</span> <span class="o">==</span> <span class="mi">8</span>
+<span class="k">assert</span> <span class="n">m</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">isb</span>                         <span class="c"># it has no shaders on object level</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">componentAssignments</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span>   <span class="c"># nor on component leveld</span>
+</pre></div>
+</div>
+<p>Shader assignments on object level can simply be created and broken by adding or removing items from the respective shading group:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">m</span><span class="o">.</span><span class="n">addTo</span><span class="p">(</span><span class="n">isb</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">isb</span>
+</pre></div>
+</div>
+<p>Component Assignments are mutually exclusive to the object level assignments, but maya will just allow the object level assignments to take priority. If you want component level assignments to become effective, make sure you have no object level assignments left:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">assert</span> <span class="n">m</span><span class="o">.</span><span class="n">sets</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">fSetsRenderable</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">isb</span>
+<span class="n">m</span><span class="o">.</span><span class="n">removeFrom</span><span class="p">(</span><span class="n">isb</span><span class="p">)</span>
+<span class="k">assert</span> <span class="ow">not</span> <span class="n">m</span><span class="o">.</span><span class="n">isMemberOf</span><span class="p">(</span><span class="n">isb</span><span class="p">)</span>
+
+<span class="n">isb</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">cf</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">2</span><span class="p">)])</span>     <span class="c"># add every second face</span>
+<span class="n">isb</span><span class="o">.</span><span class="n">discard</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">cf</span><span class="p">[:])</span>            <span class="c"># remove all component assignments</span>
+
+<span class="n">isb</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">cf</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>                            <span class="c"># add faces 0 to 2</span>
+<span class="n">isb</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">cf</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>                                     <span class="c"># add single face 3</span>
+<span class="n">isb</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">cf</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>                           <span class="c"># add remaining faces</span>
+</pre></div>
+</div>
+<p>To query component assignments, use the <tt class="docutils literal"><span class="pre">mrv.maya.nt.base.Shape.componentAssignments</span></tt> function:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">se</span><span class="p">,</span> <span class="n">comp</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">componentAssignments</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">assert</span> <span class="n">se</span> <span class="o">==</span> <span class="n">isb</span>
+<span class="n">e</span> <span class="o">=</span> <span class="n">comp</span><span class="o">.</span><span class="n">elements</span><span class="p">()</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="o">==</span> <span class="mi">6</span>                                      <span class="c"># we have added all 6 faces</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="../index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#">Nodes</a><ul>
+<li><a class="reference external" href="#method-lookup">Method Lookup</a></li>
+<li><a class="reference external" href="#mfnfunction-aliases">MFnFunction Aliases</a></li>
+<li><a class="reference external" href="#static-mfn-functions">Static MFn Functions</a></li>
+<li><a class="reference external" href="#enumerations">Enumerations</a></li>
+<li><a class="reference external" href="#dag-navigation">DAG-Navigation</a></li>
+<li><a class="reference external" href="#node-creation">Node Creation</a></li>
+<li><a class="reference external" href="#node-duplication">Node Duplication</a></li>
+<li><a class="reference external" href="#namespaces">Namespaces</a></li>
+<li><a class="reference external" href="#dag-manipulation-and-instancing">DAG-Manipulation and Instancing</a></li>
+<li><a class="reference external" href="#node-and-graph-iteration">Node- and Graph-Iteration</a></li>
+<li><a class="reference external" href="#handling-selections-with-selectionlists">Handling Selections with SelectionLists</a></li>
+<li><a class="reference external" href="#objectsets-and-partitions">ObjectSets and Partitions</a></li>
+<li><a class="reference external" href="#components-and-component-level-shader-assignments">Components and Component-Level Shader Assignments</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="index.html"
+                                  title="previous chapter">Usage</a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="plugs.html"
+                                  title="next chapter">Plugs and Attributes</a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/usage/nodes.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="plugs.html" title="Plugs and Attributes"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Usage"
+             >previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li>
+          <li><a href="index.html" >Usage</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Nov 30, 2010.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

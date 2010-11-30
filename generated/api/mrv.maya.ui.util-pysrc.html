@@ -1,0 +1,775 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>mrv.maya.ui.util</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="mrv-module.html">Package&nbsp;mrv</a> ::
+        <a href="mrv.maya-module.html">Package&nbsp;maya</a> ::
+        <a href="mrv.maya.ui-module.html">Package&nbsp;ui</a> ::
+        Module&nbsp;util
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="mrv.maya.ui.util-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="mrv.maya.ui.util-module.html">Module mrv.maya.ui.util</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment"># -*- coding: utf-8 -*-</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-docstring">Utilities and classes useful for user interfaces</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-name">__docformat__</tt> <tt class="py-op">=</tt> <tt class="py-string">"restructuredtext"</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package mrv=mrv-module.html,Function mrv.cmd.startup.mrv()=mrv.cmd.startup-module.html#mrv"><a title="mrv
+mrv.cmd.startup.mrv" class="py-name" href="#" onclick="return doclink('link-0', 'mrv', 'link-0');">mrv</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Module mrv.maya.nt.util=mrv.maya.nt.util-module.html,Module mrv.maya.ui.browse.util=mrv.maya.ui.browse.util-module.html,Module mrv.maya.ui.util=mrv.maya.ui.util-module.html,Module mrv.maya.util=mrv.maya.util-module.html,Module mrv.util=mrv.util-module.html"><a title="mrv.maya.nt.util
+mrv.maya.ui.browse.util
+mrv.maya.ui.util
+mrv.maya.util
+mrv.util" class="py-name" href="#" onclick="return doclink('link-1', 'util', 'link-1');">util</a></tt> <tt class="py-keyword">import</tt> <tt id="link-2" class="py-name" targets="Class mrv.util.EventSender=mrv.util.EventSender-class.html"><a title="mrv.util.EventSender" class="py-name" href="#" onclick="return doclink('link-2', 'EventSender', 'link-2');">EventSender</a></tt><tt class="py-op">,</tt> <tt id="link-3" class="py-name" targets="Class mrv.util.Event=mrv.util.Event-class.html"><a title="mrv.util.Event" class="py-name" href="#" onclick="return doclink('link-3', 'Event', 'link-3');">Event</a></tt><tt class="py-op">,</tt> <tt id="link-4" class="py-name" targets="Class mrv.util.Call=mrv.util.Call-class.html"><a title="mrv.util.Call" class="py-name" href="#" onclick="return doclink('link-4', 'Call', 'link-4');">Call</a></tt><tt class="py-op">,</tt> <tt id="link-5" class="py-name" targets="Class mrv.util.WeakInstFunction=mrv.util.WeakInstFunction-class.html"><a title="mrv.util.WeakInstFunction" class="py-name" href="#" onclick="return doclink('link-5', 'WeakInstFunction', 'link-5');">WeakInstFunction</a></tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-6" class="py-name" targets="Package mrv.maya=mrv.maya-module.html"><a title="mrv.maya" class="py-name" href="#" onclick="return doclink('link-6', 'maya', 'link-6');">maya</a></tt><tt class="py-op">.</tt><tt class="py-name">cmds</tt> <tt class="py-keyword">as</tt> <tt class="py-name">cmds</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-7" class="py-name"><a title="mrv
+mrv.cmd.startup.mrv" class="py-name" href="#" onclick="return doclink('link-7', 'mrv', 'link-0');">mrv</a></tt><tt class="py-op">.</tt><tt id="link-8" class="py-name" targets="Module mrv.enum=mrv.enum-module.html"><a title="mrv.enum" class="py-name" href="#" onclick="return doclink('link-8', 'enum', 'link-8');">enum</a></tt> <tt class="py-keyword">import</tt> <tt id="link-9" class="py-name" targets="Function mrv.enum.create()=mrv.enum-module.html#create,Class Method mrv.maya.ns.Namespace.create()=mrv.maya.ns.Namespace-class.html#create,Class Method mrv.maya.nt.base.Attribute.create()=mrv.maya.nt.base.Attribute-class.html#create,Class Method mrv.maya.nt.base.Component.create()=mrv.maya.nt.base.Component-class.html#create,Class Method mrv.maya.nt.base.Data.create()=mrv.maya.nt.base.Data-class.html#create,Class Method mrv.maya.ref.FileReference.create()=mrv.maya.ref.FileReference-class.html#create,Class Method mrv.maya.util.MEnumeration.create()=mrv.maya.util.MEnumeration-class.html#create"><a title="mrv.enum.create
+mrv.maya.ns.Namespace.create
+mrv.maya.nt.base.Attribute.create
+mrv.maya.nt.base.Component.create
+mrv.maya.nt.base.Data.create
+mrv.maya.ref.FileReference.create
+mrv.maya.util.MEnumeration.create" class="py-name" href="#" onclick="return doclink('link-9', 'create', 'link-9');">create</a></tt> <tt class="py-keyword">as</tt> <tt id="link-10" class="py-name"><a title="mrv.enum" class="py-name" href="#" onclick="return doclink('link-10', 'enum', 'link-8');">enum</a></tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">weakref</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-comment">#{ MEL Function Wrappers</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"> </tt>
+<a name="makeEditOrQueryMethod"></a><div id="makeEditOrQueryMethod-def"><a name="L14"></a><tt class="py-lineno"> 14</tt> <a class="py-toggle" href="#" id="makeEditOrQueryMethod-toggle" onclick="return toggle('makeEditOrQueryMethod');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.util-module.html#makeEditOrQueryMethod">makeEditOrQueryMethod</a><tt class="py-op">(</tt> <tt class="py-param">flag</tt><tt class="py-op">,</tt> <tt class="py-param">isEdit</tt><tt class="py-op">=</tt><tt class="py-name">False</tt><tt class="py-op">,</tt> <tt class="py-param">methodName</tt><tt class="py-op">=</tt><tt class="py-name">None</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="makeEditOrQueryMethod-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="makeEditOrQueryMethod-expanded"><a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line">        <tt class="py-docstring">"""Create a function calling inFunc with an edit or query flag set.</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-docstring">        :note: only works on mrv wrapped ui elements</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-docstring">        :note: THIS IS MOSTLY A DUPLICATION OF PROVEN CODE FROM ``mrv.maya.util`` !</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-docstring">        :param flag: name of the query or edit flag</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-docstring">        :param isEdit: If not False, the method returned will be an edit function</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-docstring">        :param methodName: the name of the method returned, defaults to inCmd name"""</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line">        <tt id="link-11" class="py-name" targets="Variable mrv.util.Call.func=mrv.util.Call-class.html#func"><a title="mrv.util.Call.func" class="py-name" href="#" onclick="return doclink('link-11', 'func', 'link-11');">func</a></tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">isEdit</tt><tt class="py-op">:</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line">                <tt class="py-keyword">def</tt> <tt class="py-def-name">editFunc</tt><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">val</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line">                        <tt id="link-12" class="py-name" targets="Variable mrv.util.Call.kwargs=mrv.util.Call-class.html#kwargs"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-12', 'kwargs', 'link-12');">kwargs</a></tt><tt class="py-op">[</tt> <tt class="py-string">'edit'</tt> <tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line">                        <tt id="link-13" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-13', 'kwargs', 'link-12');">kwargs</a></tt><tt class="py-op">[</tt> <tt class="py-name">flag</tt> <tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">val</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line">                        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-14" class="py-name" targets="Variable mrv.maya.ui.base.BaseUI.__melcmd__=mrv.maya.ui.base.BaseUI-class.html#__melcmd__"><a title="mrv.maya.ui.base.BaseUI.__melcmd__" class="py-name" href="#" onclick="return doclink('link-14', '__melcmd__', 'link-14');">__melcmd__</a></tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt id="link-15" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-15', 'kwargs', 'link-12');">kwargs</a></tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line">                <tt id="link-16" class="py-name"><a title="mrv.util.Call.func" class="py-name" href="#" onclick="return doclink('link-16', 'func', 'link-11');">func</a></tt> <tt class="py-op">=</tt> <tt class="py-name">editFunc</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">        <tt class="py-comment"># END if edit</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line">                <tt class="py-keyword">def</tt> <tt class="py-def-name">queryFunc</tt><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line">                        <tt id="link-17" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-17', 'kwargs', 'link-12');">kwargs</a></tt><tt class="py-op">[</tt> <tt class="py-string">'query'</tt> <tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line">                        <tt id="link-18" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-18', 'kwargs', 'link-12');">kwargs</a></tt><tt class="py-op">[</tt> <tt class="py-name">flag</tt> <tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line">                        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-19" class="py-name"><a title="mrv.maya.ui.base.BaseUI.__melcmd__" class="py-name" href="#" onclick="return doclink('link-19', '__melcmd__', 'link-14');">__melcmd__</a></tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt id="link-20" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-20', 'kwargs', 'link-12');">kwargs</a></tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line">                <tt id="link-21" class="py-name"><a title="mrv.util.Call.func" class="py-name" href="#" onclick="return doclink('link-21', 'func', 'link-11');">func</a></tt> <tt class="py-op">=</tt> <tt class="py-name">queryFunc</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line">        <tt class="py-comment"># END if query</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">methodName</tt><tt class="py-op">:</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line">                <tt class="py-name">methodName</tt> <tt class="py-op">=</tt> <tt class="py-name">flag</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line">        <tt id="link-22" class="py-name"><a title="mrv.util.Call.func" class="py-name" href="#" onclick="return doclink('link-22', 'func', 'link-11');">func</a></tt><tt class="py-op">.</tt><tt class="py-name">__name__</tt> <tt class="py-op">=</tt> <tt class="py-name">methodName</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-23" class="py-name"><a title="mrv.util.Call.func" class="py-name" href="#" onclick="return doclink('link-23', 'func', 'link-11');">func</a></tt> </tt>
+</div><a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line"> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line"> </tt>
+<a name="queryMethod"></a><div id="queryMethod-def"><a name="L48"></a><tt class="py-lineno"> 48</tt> <a class="py-toggle" href="#" id="queryMethod-toggle" onclick="return toggle('queryMethod');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.util-module.html#queryMethod">queryMethod</a><tt class="py-op">(</tt> <tt class="py-param">flag</tt><tt class="py-op">,</tt> <tt class="py-param">methodName</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="queryMethod-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="queryMethod-expanded"><a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">        <tt class="py-docstring">""" Shorthand query version of makeEditOrQueryMethod """</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-24" class="py-name" targets="Function mrv.maya.util.makeEditOrQueryMethod()=mrv.maya.util-module.html#makeEditOrQueryMethod"><a title="mrv.maya.util.makeEditOrQueryMethod" class="py-name" href="#" onclick="return doclink('link-24', 'makeEditOrQueryMethod', 'link-24');">makeEditOrQueryMethod</a></tt><tt class="py-op">(</tt> <tt class="py-name">flag</tt><tt class="py-op">,</tt> <tt class="py-name">isEdit</tt><tt class="py-op">=</tt><tt class="py-name">False</tt><tt class="py-op">,</tt> <tt class="py-name">methodName</tt><tt class="py-op">=</tt><tt class="py-name">methodName</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line"> </tt>
+<a name="editMethod"></a><div id="editMethod-def"><a name="L52"></a><tt class="py-lineno"> 52</tt> <a class="py-toggle" href="#" id="editMethod-toggle" onclick="return toggle('editMethod');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.util-module.html#editMethod">editMethod</a><tt class="py-op">(</tt> <tt class="py-param">flag</tt><tt class="py-op">,</tt> <tt class="py-param">methodName</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="editMethod-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="editMethod-expanded"><a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">        <tt class="py-docstring">""" Shorthand edit version of makeEditOrQueryMethod """</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-25" class="py-name"><a title="mrv.maya.util.makeEditOrQueryMethod" class="py-name" href="#" onclick="return doclink('link-25', 'makeEditOrQueryMethod', 'link-24');">makeEditOrQueryMethod</a></tt><tt class="py-op">(</tt> <tt class="py-name">flag</tt><tt class="py-op">,</tt> <tt class="py-name">isEdit</tt><tt class="py-op">=</tt><tt class="py-name">True</tt><tt class="py-op">,</tt> <tt class="py-name">methodName</tt><tt class="py-op">=</tt><tt class="py-name">methodName</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line"> </tt>
+<a name="propertyQE"></a><div id="propertyQE-def"><a name="L56"></a><tt class="py-lineno"> 56</tt> <a class="py-toggle" href="#" id="propertyQE-toggle" onclick="return toggle('propertyQE');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.util-module.html#propertyQE">propertyQE</a><tt class="py-op">(</tt> <tt class="py-param">flag</tt><tt class="py-op">,</tt> <tt class="py-param">methodName</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="propertyQE-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="propertyQE-expanded"><a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line">        <tt class="py-docstring">""" Shorthand for simple query and edit properties """</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">        <tt class="py-name">editFunc</tt> <tt class="py-op">=</tt> <tt id="link-26" class="py-name" targets="Function mrv.maya.util.editMethod()=mrv.maya.util-module.html#editMethod"><a title="mrv.maya.util.editMethod" class="py-name" href="#" onclick="return doclink('link-26', 'editMethod', 'link-26');">editMethod</a></tt><tt class="py-op">(</tt> <tt class="py-name">flag</tt><tt class="py-op">,</tt> <tt class="py-name">methodName</tt> <tt class="py-op">=</tt> <tt class="py-name">methodName</tt> <tt class="py-op">)</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">        <tt class="py-name">queryFunc</tt> <tt class="py-op">=</tt> <tt id="link-27" class="py-name" targets="Function mrv.maya.util.queryMethod()=mrv.maya.util-module.html#queryMethod"><a title="mrv.maya.util.queryMethod" class="py-name" href="#" onclick="return doclink('link-27', 'queryMethod', 'link-27');">queryMethod</a></tt><tt class="py-op">(</tt> <tt class="py-name">flag</tt><tt class="py-op">,</tt> <tt class="py-name">methodName</tt> <tt class="py-op">=</tt> <tt class="py-name">methodName</tt> <tt class="py-op">)</tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">property</tt><tt class="py-op">(</tt> <tt class="py-name">queryFunc</tt><tt class="py-op">,</tt> <tt class="py-name">editFunc</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line"> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line"><tt class="py-comment">#}</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line"> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line"> </tt>
+<a name="Signal"></a><div id="Signal-def"><a name="L65"></a><tt class="py-lineno"> 65</tt> <a class="py-toggle" href="#" id="Signal-toggle" onclick="return toggle('Signal');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.util.Signal-class.html">Signal</a><tt class="py-op">(</tt> <tt class="py-base-class">Event</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Signal-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Signal-expanded"><a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">        <tt class="py-docstring">"""User interface signal which keeps assigned functions as strong reference to</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line"><tt class="py-docstring">        assure we can always call it. This implies that we may leave many dangling objects</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line"><tt class="py-docstring">        unless we are being properly cleaned up on deletion.</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line"><tt class="py-docstring">        Calls generated from this event will not put the sender as first argument, but </tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line"><tt class="py-docstring">        you may retrieve it using ``self.sender()``."""</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">        <tt class="py-comment">#{ Configuration </tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">        <tt id="link-28" class="py-name" targets="Variable mrv.maya.scene._SceneEvent.use_weakref=mrv.maya.scene._SceneEvent-class.html#use_weakref,Variable mrv.maya.ui.util.EventSenderUI._UIEvent.use_weakref=mrv.maya.ui.util.EventSenderUI._UIEvent-class.html#use_weakref,Variable mrv.maya.ui.util.Signal.use_weakref=mrv.maya.ui.util.Signal-class.html#use_weakref,Variable mrv.util.Event.use_weakref=mrv.util.Event-class.html#use_weakref"><a title="mrv.maya.scene._SceneEvent.use_weakref
+mrv.maya.ui.util.EventSenderUI._UIEvent.use_weakref
+mrv.maya.ui.util.Signal.use_weakref
+mrv.util.Event.use_weakref" class="py-name" href="#" onclick="return doclink('link-28', 'use_weakref', 'link-28');">use_weakref</a></tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">        <tt id="link-29" class="py-name" targets="Variable mrv.maya.scene._SceneEvent.remove_on_error=mrv.maya.scene._SceneEvent-class.html#remove_on_error,Variable mrv.maya.ui.util.EventSenderUI._UIEvent.remove_on_error=mrv.maya.ui.util.EventSenderUI._UIEvent-class.html#remove_on_error,Variable mrv.maya.ui.util.Signal.remove_on_error=mrv.maya.ui.util.Signal-class.html#remove_on_error,Variable mrv.util.Event.remove_on_error=mrv.util.Event-class.html#remove_on_error"><a title="mrv.maya.scene._SceneEvent.remove_on_error
+mrv.maya.ui.util.EventSenderUI._UIEvent.remove_on_error
+mrv.maya.ui.util.Signal.remove_on_error
+mrv.util.Event.remove_on_error" class="py-name" href="#" onclick="return doclink('link-29', 'remove_on_error', 'link-29');">remove_on_error</a></tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">        <tt id="link-30" class="py-name" targets="Variable mrv.automation.qa.QAWorkflow.sender_as_argument=mrv.automation.qa.QAWorkflow-class.html#sender_as_argument,Variable mrv.maya.scene.Scene.sender_as_argument=mrv.maya.scene.Scene-class.html#sender_as_argument,Variable mrv.maya.ui.util.EventSenderUI.sender_as_argument=mrv.maya.ui.util.EventSenderUI-class.html#sender_as_argument,Variable mrv.maya.ui.util.Signal.sender_as_argument=mrv.maya.ui.util.Signal-class.html#sender_as_argument,Variable mrv.util.Event.sender_as_argument=mrv.util.Event-class.html#sender_as_argument,Variable mrv.util.EventSender.sender_as_argument=mrv.util.EventSender-class.html#sender_as_argument"><a title="mrv.automation.qa.QAWorkflow.sender_as_argument
+mrv.maya.scene.Scene.sender_as_argument
+mrv.maya.ui.util.EventSenderUI.sender_as_argument
+mrv.maya.ui.util.Signal.sender_as_argument
+mrv.util.Event.sender_as_argument
+mrv.util.EventSender.sender_as_argument" class="py-name" href="#" onclick="return doclink('link-30', 'sender_as_argument', 'link-30');">sender_as_argument</a></tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+</div><a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">        <tt class="py-comment">#} END configuration </tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line"> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line"> </tt>
+<a name="EventSenderUI"></a><div id="EventSenderUI-def"><a name="L79"></a><tt class="py-lineno"> 79</tt> <a class="py-toggle" href="#" id="EventSenderUI-toggle" onclick="return toggle('EventSenderUI');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.util.EventSenderUI-class.html">EventSenderUI</a><tt class="py-op">(</tt> <tt class="py-base-class">EventSender</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="EventSenderUI-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="EventSenderUI-expanded"><a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">        <tt class="py-docstring">"""Allows registration of a typical UI callback</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line"><tt class="py-docstring">        It basically streamlines the registration for a callback such that any</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line"><tt class="py-docstring">        number of listeners can be called when an event occours - this works by</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line"><tt class="py-docstring">        keeping an own list of callbacks registered for a specific event, and calling them</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line"><tt class="py-docstring">        whenever the maya ui callback has been triggered</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line"><tt class="py-docstring">        To use this class , see the documentation of ``EventSender``, but use the Event</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line"><tt class="py-docstring">        instead.</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line"><tt class="py-docstring">        If you want to add your own events, use your own ``Signal`` s.</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line"><tt class="py-docstring">        The class does NOT use weakreferences for the main callbacks to make it easier to use.</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line"><tt class="py-docstring">        Use the ``WeakFunction`` to properly and weakly bind an instance function</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line"><tt class="py-docstring">        When registered for an event, the sender will be provided to each callback as first</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line"><tt class="py-docstring">        argument.</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">        <tt class="py-comment">#( Configuration</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">        <tt class="py-comment"># we are to be put as first arguemnt, allowing listeners to do something</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">        <tt class="py-comment"># with the sender when handling the event</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">        <tt id="link-31" class="py-name"><a title="mrv.automation.qa.QAWorkflow.sender_as_argument
+mrv.maya.scene.Scene.sender_as_argument
+mrv.maya.ui.util.EventSenderUI.sender_as_argument
+mrv.maya.ui.util.Signal.sender_as_argument
+mrv.util.Event.sender_as_argument
+mrv.util.EventSender.sender_as_argument" class="py-name" href="#" onclick="return doclink('link-31', 'sender_as_argument', 'link-30');">sender_as_argument</a></tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">        <tt id="link-32" class="py-name" targets="Variable mrv.maya.ui.util.EventSenderUI.reraise_on_error=mrv.maya.ui.util.EventSenderUI-class.html#reraise_on_error,Variable mrv.util.EventSender.reraise_on_error=mrv.util.EventSender-class.html#reraise_on_error"><a title="mrv.maya.ui.util.EventSenderUI.reraise_on_error
+mrv.util.EventSender.reraise_on_error" class="py-name" href="#" onclick="return doclink('link-32', 'reraise_on_error', 'link-32');">reraise_on_error</a></tt>  <tt class="py-op">=</tt><tt class="py-name">True</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line">        <tt class="py-comment">#} END configuration</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line"> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">                 </tt>
+<a name="EventSenderUI._UIEvent"></a><div id="EventSenderUI._UIEvent-def"><a name="L104"></a><tt class="py-lineno">104</tt> <a class="py-toggle" href="#" id="EventSenderUI._UIEvent-toggle" onclick="return toggle('EventSenderUI._UIEvent');">-</a><tt class="py-line">        <tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.util.EventSenderUI._UIEvent-class.html">_UIEvent</a><tt class="py-op">(</tt> <tt class="py-base-class">Event</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="EventSenderUI._UIEvent-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="EventSenderUI._UIEvent-expanded"><a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">                <tt class="py-docstring">"""Event suitable to deal with user interface callback"""</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">                <tt class="py-comment">#( Configuration</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">                <tt id="link-33" class="py-name"><a title="mrv.maya.scene._SceneEvent.use_weakref
+mrv.maya.ui.util.EventSenderUI._UIEvent.use_weakref
+mrv.maya.ui.util.Signal.use_weakref
+mrv.util.Event.use_weakref" class="py-name" href="#" onclick="return doclink('link-33', 'use_weakref', 'link-28');">use_weakref</a></tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line">                <tt id="link-34" class="py-name"><a title="mrv.maya.scene._SceneEvent.remove_on_error
+mrv.maya.ui.util.EventSenderUI._UIEvent.remove_on_error
+mrv.maya.ui.util.Signal.remove_on_error
+mrv.util.Event.remove_on_error" class="py-name" href="#" onclick="return doclink('link-34', 'remove_on_error', 'link-29');">remove_on_error</a></tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">                <tt class="py-comment">#) END configuration</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">         </tt>
+<a name="EventSenderUI._UIEvent.__init__"></a><div id="EventSenderUI._UIEvent.__init__-def"><a name="L111"></a><tt class="py-lineno">111</tt> <a class="py-toggle" href="#" id="EventSenderUI._UIEvent.__init__-toggle" onclick="return toggle('EventSenderUI._UIEvent.__init__');">-</a><tt class="py-line">                <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.util.EventSenderUI._UIEvent-class.html#__init__">__init__</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">eventname</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="EventSenderUI._UIEvent.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++++++++++++++++++++++"></div><div id="EventSenderUI._UIEvent.__init__-expanded"><a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">                        <tt class="py-docstring">"""Allows to set additional arguments to be given when a callback</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line"><tt class="py-docstring">                        is actually set"""</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">                        <tt class="py-name">super</tt><tt class="py-op">(</tt> <tt id="link-35" class="py-name" targets="Class mrv.maya.ui.util.EventSenderUI=mrv.maya.ui.util.EventSenderUI-class.html"><a title="mrv.maya.ui.util.EventSenderUI" class="py-name" href="#" onclick="return doclink('link-35', 'EventSenderUI', 'link-35');">EventSenderUI</a></tt><tt class="py-op">.</tt><tt id="link-36" class="py-name" targets="Class mrv.maya.ui.util.EventSenderUI._UIEvent=mrv.maya.ui.util.EventSenderUI._UIEvent-class.html"><a title="mrv.maya.ui.util.EventSenderUI._UIEvent" class="py-name" href="#" onclick="return doclink('link-36', '_UIEvent', 'link-36');">_UIEvent</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt> <tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-37" class="py-name" targets="Method mrv.automation.attributes.RegexStringAttr.__init__()=mrv.automation.attributes.RegexStringAttr-class.html#__init__,Method mrv.automation.process.ProcessBase.__init__()=mrv.automation.process.ProcessBase-class.html#__init__,Method mrv.automation.process.WorkflowProcessBase.__init__()=mrv.automation.process.WorkflowProcessBase-class.html#__init__,Method mrv.automation.qa.QACheck.__init__()=mrv.automation.qa.QACheck-class.html#__init__,Method mrv.automation.qa.QACheckAttribute.__init__()=mrv.automation.qa.QACheckAttribute-class.html#__init__,Method mrv.automation.qa.QACheckResult.__init__()=mrv.automation.qa.QACheckResult-class.html#__init__,Method mrv.automation.qa.QAWorkflow.__init__()=mrv.automation.qa.QAWorkflow-class.html#__init__,Method mrv.automation.report.ReportBase.__init__()=mrv.automation.report.ReportBase-class.html#__init__,Method mrv.automation.workflow.DirtyException.__init__()=mrv.automation.workflow.DirtyException-class.html#__init__,Method mrv.automation.workflow.Workflow.CallGraph.__init__()=mrv.automation.workflow.Workflow.CallGraph-class.html#__init__,Method mrv.automation.workflow.Workflow.ProcessData.__init__()=mrv.automation.workflow.Workflow.ProcessData-class.html#__init__,Method mrv.automation.workflow.Workflow.__init__()=mrv.automation.workflow.Workflow-class.html#__init__,Method mrv.cmd.base.SpawnedCommand.__init__()=mrv.cmd.base.SpawnedCommand-class.html#__init__,Method mrv.cmd.base.SpawnedOptionParser.__init__()=mrv.cmd.base.SpawnedOptionParser-class.html#__init__,Method mrv.conf.ConfigAccessor.__init__()=mrv.conf.ConfigAccessor-class.html#__init__,Method mrv.conf.ConfigChain.__init__()=mrv.conf.ConfigChain-class.html#__init__,Method mrv.conf.ConfigFile.__init__()=mrv.conf.ConfigFile-class.html#__init__,Method mrv.conf.ConfigManager.__init__()=mrv.conf.ConfigManager-class.html#__init__,Method mrv.conf.ConfigNode.__init__()=mrv.conf.ConfigNode-class.html#__init__,Method mrv.conf.DictToINIFile.__init__()=mrv.conf.DictToINIFile-class.html#__init__,Method mrv.conf.DiffData.__init__()=mrv.conf.DiffData-class.html#__init__,Method mrv.conf.Key.__init__()=mrv.conf.Key-class.html#__init__,Method mrv.conf.Section.__init__()=mrv.conf.Section-class.html#__init__,Method mrv.conf._PropertyHolderBase.__init__()=mrv.conf._PropertyHolderBase-class.html#__init__,Method mrv.dge.Attribute.__init__()=mrv.dge.Attribute-class.html#__init__,Method mrv.dge.Graph.__init__()=mrv.dge.Graph-class.html#__init__,Method mrv.dge.NodeBase.__init__()=mrv.dge.NodeBase-class.html#__init__,Method mrv.dge.plug.__init__()=mrv.dge.plug-class.html#__init__,Method mrv.dgfe.FacadeNodeBase.__init__()=mrv.dgfe.FacadeNodeBase-class.html#__init__,Method mrv.dgfe.GraphNodeBase.__init__()=mrv.dgfe.GraphNodeBase-class.html#__init__,Method mrv.dgfe._IOShell.__init__()=mrv.dgfe._IOShell-class.html#__init__,Method mrv.dgfe._OIShell.__init__()=mrv.dgfe._OIShell-class.html#__init__,Method mrv.doc.base.DocGenerator.__init__()=mrv.doc.base.DocGenerator-class.html#__init__,Method mrv.enum.Element.__init__()=mrv.enum.Element-class.html#__init__,Method mrv.enum.Enumeration.__init__()=mrv.enum.Enumeration-class.html#__init__,Method mrv.exc.MRVError.__init__()=mrv.exc.MRVError-class.html#__init__,Method mrv.interface.iChoiceDialog.__init__()=mrv.interface.iChoiceDialog-class.html#__init__,Method mrv.interface.iProgressIndicator.__init__()=mrv.interface.iProgressIndicator-class.html#__init__,Method mrv.interface.iPrompt.__init__()=mrv.interface.iPrompt-class.html#__init__,Method mrv.maya.mdb.MEnumDescriptor.__init__()=mrv.maya.mdb.MEnumDescriptor-class.html#__init__,Method mrv.maya.mdb.MFnCodeGeneratorBase.__init__()=mrv.maya.mdb.MFnCodeGeneratorBase-class.html#__init__,Method mrv.maya.mdb.MMemberMap.__init__()=mrv.maya.mdb.MMemberMap-class.html#__init__,Method mrv.maya.mdb.MMethodDescriptor.__init__()=mrv.maya.mdb.MMethodDescriptor-class.html#__init__,Method mrv.maya.nt.PluginDB.__init__()=mrv.maya.nt.PluginDB-class.html#__init__,Method mrv.maya.nt.geometry._SingleIndexedComponentGenerator.__init__()=mrv.maya.nt.geometry._SingleIndexedComponentGenerator-class.html#__init__,Method mrv.maya.nt.persistence.PyPickleData.__init__()=mrv.maya.nt.persistence.PyPickleData-class.html#__init__,Method mrv.maya.nt.persistence.StoragePluginNode.__init__()=mrv.maya.nt.persistence.StoragePluginNode-class.html#__init__,Method mrv.maya.nt.set.ObjectSet._TmpSet.__init__()=mrv.maya.nt.set.ObjectSet._TmpSet-class.html#__init__,Method mrv.maya.nt.storage.StorageBase.PyPickleValue.__init__()=mrv.maya.nt.storage.StorageBase.PyPickleValue-class.html#__init__,Method mrv.maya.nt.storage.StorageBase.__init__()=mrv.maya.nt.storage.StorageBase-class.html#__init__,Method mrv.maya.nt.storage.StorageNode.__init__()=mrv.maya.nt.storage.StorageNode-class.html#__init__,Method mrv.maya.ref.FileReference.__init__()=mrv.maya.ref.FileReference-class.html#__init__,Method mrv.maya.ui.base.BaseUI.__init__()=mrv.maya.ui.base.BaseUI-class.html#__init__,Method mrv.maya.ui.base.NamedUI.__init__()=mrv.maya.ui.base.NamedUI-class.html#__init__,Method mrv.maya.ui.browse.control.BookmarkControl.__init__()=mrv.maya.ui.browse.control.BookmarkControl-class.html#__init__,Method mrv.maya.ui.browse.control.FilePathControlEditable.__init__()=mrv.maya.ui.browse.control.FilePathControlEditable-class.html#__init__,Method mrv.maya.ui.browse.control.FileProvider.__init__()=mrv.maya.ui.browse.control.FileProvider-class.html#__init__,Method mrv.maya.ui.browse.control.FileRootSelectorControl.__init__()=mrv.maya.ui.browse.control.FileRootSelectorControl-class.html#__init__,Method mrv.maya.ui.browse.control.StackControlBase.__init__()=mrv.maya.ui.browse.control.StackControlBase-class.html#__init__,Method mrv.maya.ui.browse.finder.Finder.__init__()=mrv.maya.ui.browse.finder.Finder-class.html#__init__,Method mrv.maya.ui.browse.interface.iFinderProvider.__init__()=mrv.maya.ui.browse.interface.iFinderProvider-class.html#__init__,Method mrv.maya.ui.browse.layout.FileOpenFinder.__init__()=mrv.maya.ui.browse.layout.FileOpenFinder-class.html#__init__,Method mrv.maya.ui.browse.layout.FileReferenceFinder.__init__()=mrv.maya.ui.browse.layout.FileReferenceFinder-class.html#__init__,Method mrv.maya.ui.browse.layout.FileSaveFinder.__init__()=mrv.maya.ui.browse.layout.FileSaveFinder-class.html#__init__,Method mrv.maya.ui.browse.layout.FinderLayout.__init__()=mrv.maya.ui.browse.layout.FinderLayout-class.html#__init__,Method mrv.maya.ui.browse.option.FileOpenOptions.__init__()=mrv.maya.ui.browse.option.FileOpenOptions-class.html#__init__,Method mrv.maya.ui.dialog.ProgressWindow.__init__()=mrv.maya.ui.dialog.ProgressWindow-class.html#__init__,Method mrv.maya.ui.dialog.PromptDialog.__init__()=mrv.maya.ui.dialog.PromptDialog-class.html#__init__,Method mrv.maya.ui.layout.Layout.__init__()=mrv.maya.ui.layout.Layout-class.html#__init__,Method mrv.maya.ui.qa.QACheckLayout.__init__()=mrv.maya.ui.qa.QACheckLayout-class.html#__init__,Method mrv.maya.ui.qa.QALayout.__init__()=mrv.maya.ui.qa.QALayout-class.html#__init__,Method mrv.maya.ui.util.EventSenderUI._UIEvent.__init__()=mrv.maya.ui.util.EventSenderUI._UIEvent-class.html#__init__,Method mrv.maya.ui.util.UIContainerBase.__init__()=mrv.maya.ui.util.UIContainerBase-class.html#__init__,Method mrv.maya.undo.DGModifier.__init__()=mrv.maya.undo.DGModifier-class.html#__init__,Method mrv.maya.undo.GenericOperation.__init__()=mrv.maya.undo.GenericOperation-class.html#__init__,Method mrv.maya.undo.GenericOperationStack.__init__()=mrv.maya.undo.GenericOperationStack-class.html#__init__,Method mrv.maya.undo.MuteUndo.__init__()=mrv.maya.undo.MuteUndo-class.html#__init__,Method mrv.maya.undo.Operation.__init__()=mrv.maya.undo.Operation-class.html#__init__,Method mrv.maya.undo.StartUndo.__init__()=mrv.maya.undo.StartUndo-class.html#__init__,Method mrv.maya.undo.UndoCmd.__init__()=mrv.maya.undo.UndoCmd-class.html#__init__,Method mrv.maya.undo.UndoRecorder.__init__()=mrv.maya.undo.UndoRecorder-class.html#__init__,Method mrv.maya.util.CallbackEventBase.CBStorageFunction.__init__()=mrv.maya.util.CallbackEventBase.CBStorageFunction-class.html#__init__,Method mrv.maya.util.CallbackEventBase.__init__()=mrv.maya.util.CallbackEventBase-class.html#__init__,Method mrv.maya.util.StandinClass.__init__()=mrv.maya.util.StandinClass-class.html#__init__,Method mrv.thread.TerminatableThread.__init__()=mrv.thread.TerminatableThread-class.html#__init__,Method mrv.thread.WorkerThread.__init__()=mrv.thread.WorkerThread-class.html#__init__,Method mrv.util.And.__init__()=mrv.util.And-class.html#__init__,Method mrv.util.Call.__init__()=mrv.util.Call-class.html#__init__,Method mrv.util.CallAdv.__init__()=mrv.util.CallAdv-class.html#__init__,Method mrv.util.CallOnDeletion.__init__()=mrv.util.CallOnDeletion-class.html#__init__,Method mrv.util.Event.__init__()=mrv.util.Event-class.html#__init__,Method mrv.util.InterfaceMaster.InterfaceBase.__init__()=mrv.util.InterfaceMaster.InterfaceBase-class.html#__init__,Method mrv.util.InterfaceMaster.InterfaceDescriptor.__init__()=mrv.util.InterfaceMaster.InterfaceDescriptor-class.html#__init__,Method mrv.util.InterfaceMaster._InterfaceHandler.__init__()=mrv.util.InterfaceMaster._InterfaceHandler-class.html#__init__,Method mrv.util.InterfaceMaster.__init__()=mrv.util.InterfaceMaster-class.html#__init__,Method mrv.util.Or.__init__()=mrv.util.Or-class.html#__init__,Method mrv.util.PipeSeparatedFile.__init__()=mrv.util.PipeSeparatedFile-class.html#__init__,Method mrv.util.WeakInstFunction.__init__()=mrv.util.WeakInstFunction-class.html#__init__,Method unittest.FunctionTestCase.__init__()=unittest.FunctionTestCase-class.html#__init__,Method unittest.TestCase.__init__()=unittest.TestCase-class.html#__init__,Method unittest.TestProgram.__init__()=unittest.TestProgram-class.html#__init__,Method unittest.TestResult.__init__()=unittest.TestResult-class.html#__init__,Method unittest.TestSuite.__init__()=unittest.TestSuite-class.html#__init__,Method unittest.TextTestRunner.__init__()=unittest.TextTestRunner-class.html#__init__,Method unittest._TextTestResult.__init__()=unittest._TextTestResult-class.html#__init__,Method unittest._WritelnDecorator.__init__()=unittest._WritelnDecorator-class.html#__init__"><a title="mrv.automation.attributes.RegexStringAttr.__init__
+mrv.automation.process.ProcessBase.__init__
+mrv.automation.process.WorkflowProcessBase.__init__
+mrv.automation.qa.QACheck.__init__
+mrv.automation.qa.QACheckAttribute.__init__
+mrv.automation.qa.QACheckResult.__init__
+mrv.automation.qa.QAWorkflow.__init__
+mrv.automation.report.ReportBase.__init__
+mrv.automation.workflow.DirtyException.__init__
+mrv.automation.workflow.Workflow.CallGraph.__init__
+mrv.automation.workflow.Workflow.ProcessData.__init__
+mrv.automation.workflow.Workflow.__init__
+mrv.cmd.base.SpawnedCommand.__init__
+mrv.cmd.base.SpawnedOptionParser.__init__
+mrv.conf.ConfigAccessor.__init__
+mrv.conf.ConfigChain.__init__
+mrv.conf.ConfigFile.__init__
+mrv.conf.ConfigManager.__init__
+mrv.conf.ConfigNode.__init__
+mrv.conf.DictToINIFile.__init__
+mrv.conf.DiffData.__init__
+mrv.conf.Key.__init__
+mrv.conf.Section.__init__
+mrv.conf._PropertyHolderBase.__init__
+mrv.dge.Attribute.__init__
+mrv.dge.Graph.__init__
+mrv.dge.NodeBase.__init__
+mrv.dge.plug.__init__
+mrv.dgfe.FacadeNodeBase.__init__
+mrv.dgfe.GraphNodeBase.__init__
+mrv.dgfe._IOShell.__init__
+mrv.dgfe._OIShell.__init__
+mrv.doc.base.DocGenerator.__init__
+mrv.enum.Element.__init__
+mrv.enum.Enumeration.__init__
+mrv.exc.MRVError.__init__
+mrv.interface.iChoiceDialog.__init__
+mrv.interface.iProgressIndicator.__init__
+mrv.interface.iPrompt.__init__
+mrv.maya.mdb.MEnumDescriptor.__init__
+mrv.maya.mdb.MFnCodeGeneratorBase.__init__
+mrv.maya.mdb.MMemberMap.__init__
+mrv.maya.mdb.MMethodDescriptor.__init__
+mrv.maya.nt.PluginDB.__init__
+mrv.maya.nt.geometry._SingleIndexedComponentGenerator.__init__
+mrv.maya.nt.persistence.PyPickleData.__init__
+mrv.maya.nt.persistence.StoragePluginNode.__init__
+mrv.maya.nt.set.ObjectSet._TmpSet.__init__
+mrv.maya.nt.storage.StorageBase.PyPickleValue.__init__
+mrv.maya.nt.storage.StorageBase.__init__
+mrv.maya.nt.storage.StorageNode.__init__
+mrv.maya.ref.FileReference.__init__
+mrv.maya.ui.base.BaseUI.__init__
+mrv.maya.ui.base.NamedUI.__init__
+mrv.maya.ui.browse.control.BookmarkControl.__init__
+mrv.maya.ui.browse.control.FilePathControlEditable.__init__
+mrv.maya.ui.browse.control.FileProvider.__init__
+mrv.maya.ui.browse.control.FileRootSelectorControl.__init__
+mrv.maya.ui.browse.control.StackControlBase.__init__
+mrv.maya.ui.browse.finder.Finder.__init__
+mrv.maya.ui.browse.interface.iFinderProvider.__init__
+mrv.maya.ui.browse.layout.FileOpenFinder.__init__
+mrv.maya.ui.browse.layout.FileReferenceFinder.__init__
+mrv.maya.ui.browse.layout.FileSaveFinder.__init__
+mrv.maya.ui.browse.layout.FinderLayout.__init__
+mrv.maya.ui.browse.option.FileOpenOptions.__init__
+mrv.maya.ui.dialog.ProgressWindow.__init__
+mrv.maya.ui.dialog.PromptDialog.__init__
+mrv.maya.ui.layout.Layout.__init__
+mrv.maya.ui.qa.QACheckLayout.__init__
+mrv.maya.ui.qa.QALayout.__init__
+mrv.maya.ui.util.EventSenderUI._UIEvent.__init__
+mrv.maya.ui.util.UIContainerBase.__init__
+mrv.maya.undo.DGModifier.__init__
+mrv.maya.undo.GenericOperation.__init__
+mrv.maya.undo.GenericOperationStack.__init__
+mrv.maya.undo.MuteUndo.__init__
+mrv.maya.undo.Operation.__init__
+mrv.maya.undo.StartUndo.__init__
+mrv.maya.undo.UndoCmd.__init__
+mrv.maya.undo.UndoRecorder.__init__
+mrv.maya.util.CallbackEventBase.CBStorageFunction.__init__
+mrv.maya.util.CallbackEventBase.__init__
+mrv.maya.util.StandinClass.__init__
+mrv.thread.TerminatableThread.__init__
+mrv.thread.WorkerThread.__init__
+mrv.util.And.__init__
+mrv.util.Call.__init__
+mrv.util.CallAdv.__init__
+mrv.util.CallOnDeletion.__init__
+mrv.util.Event.__init__
+mrv.util.InterfaceMaster.InterfaceBase.__init__
+mrv.util.InterfaceMaster.InterfaceDescriptor.__init__
+mrv.util.InterfaceMaster._InterfaceHandler.__init__
+mrv.util.InterfaceMaster.__init__
+mrv.util.Or.__init__
+mrv.util.PipeSeparatedFile.__init__
+mrv.util.WeakInstFunction.__init__
+unittest.FunctionTestCase.__init__
+unittest.TestCase.__init__
+unittest.TestProgram.__init__
+unittest.TestResult.__init__
+unittest.TestSuite.__init__
+unittest.TextTestRunner.__init__
+unittest._TextTestResult.__init__
+unittest._WritelnDecorator.__init__" class="py-name" href="#" onclick="return doclink('link-37', '__init__', 'link-37');">__init__</a></tt><tt class="py-op">(</tt> <tt class="py-op">**</tt><tt id="link-38" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-38', 'kwargs', 'link-12');">kwargs</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">                        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-39" class="py-name" targets="Variable mrv.conf.Key._name=mrv.conf.Key-class.html#_name,Variable mrv.conf.Section._name=mrv.conf.Section-class.html#_name"><a title="mrv.conf.Key._name
+mrv.conf.Section._name" class="py-name" href="#" onclick="return doclink('link-39', '_name', 'link-39');">_name</a></tt> <tt class="py-op">=</tt><tt class="py-name">eventname</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">                        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_kwargs</tt> <tt class="py-op">=</tt> <tt id="link-40" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-40', 'kwargs', 'link-12');">kwargs</a></tt> </tt>
+</div><a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">         </tt>
+<a name="EventSenderUI._UIEvent.send"></a><div id="EventSenderUI._UIEvent.send-def"><a name="L118"></a><tt class="py-lineno">118</tt> <a class="py-toggle" href="#" id="EventSenderUI._UIEvent.send-toggle" onclick="return toggle('EventSenderUI._UIEvent.send');">-</a><tt class="py-line">                <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.util.EventSenderUI._UIEvent-class.html#send">send</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">inst</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="EventSenderUI._UIEvent.send-collapsed" style="display:none;" pad="+++" indent="++++++++++++++++++++++++++++"></div><div id="EventSenderUI._UIEvent.send-expanded"><a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line">                        <tt class="py-docstring">"""Sets our instance prior to calling the super class"""</tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line">                        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_last_inst_ref</tt> <tt class="py-op">=</tt> <tt class="py-name">weakref</tt><tt class="py-op">.</tt><tt id="link-41" class="py-name" targets="Module mrv.maya.ref=mrv.maya.ref-module.html"><a title="mrv.maya.ref" class="py-name" href="#" onclick="return doclink('link-41', 'ref', 'link-41');">ref</a></tt><tt class="py-op">(</tt><tt class="py-name">inst</tt><tt class="py-op">)</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line">                        <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-42" class="py-name"><a title="mrv.maya.ui.util.EventSenderUI" class="py-name" href="#" onclick="return doclink('link-42', 'EventSenderUI', 'link-35');">EventSenderUI</a></tt><tt class="py-op">.</tt><tt id="link-43" class="py-name"><a title="mrv.maya.ui.util.EventSenderUI._UIEvent" class="py-name" href="#" onclick="return doclink('link-43', '_UIEvent', 'link-36');">_UIEvent</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-44" class="py-name" targets="Method mrv.maya.ui.util.EventSenderUI._UIEvent.send()=mrv.maya.ui.util.EventSenderUI._UIEvent-class.html#send,Method mrv.maya.util.CallbackEventBase.send()=mrv.maya.util.CallbackEventBase-class.html#send,Method mrv.util.Event.send()=mrv.util.Event-class.html#send"><a title="mrv.maya.ui.util.EventSenderUI._UIEvent.send
+mrv.maya.util.CallbackEventBase.send
+mrv.util.Event.send" class="py-name" href="#" onclick="return doclink('link-44', 'send', 'link-44');">send</a></tt><tt class="py-op">(</tt><tt class="py-op">*</tt><tt id="link-45" class="py-name" targets="Variable mrv.util.Call.args=mrv.util.Call-class.html#args"><a title="mrv.util.Call.args" class="py-name" href="#" onclick="return doclink('link-45', 'args', 'link-45');">args</a></tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt id="link-46" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-46', 'kwargs', 'link-12');">kwargs</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">         </tt>
+<a name="EventSenderUI._UIEvent.__set__"></a><div id="EventSenderUI._UIEvent.__set__-def"><a name="L123"></a><tt class="py-lineno">123</tt> <a class="py-toggle" href="#" id="EventSenderUI._UIEvent.__set__-toggle" onclick="return toggle('EventSenderUI._UIEvent.__set__');">-</a><tt class="py-line">                <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.util.EventSenderUI._UIEvent-class.html#__set__">__set__</a><tt class="py-op">(</tt>  <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">inst</tt><tt class="py-op">,</tt> <tt class="py-param">eventfunc</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="EventSenderUI._UIEvent.__set__-collapsed" style="display:none;" pad="+++" indent="++++++++++++++++++++++++++++"></div><div id="EventSenderUI._UIEvent.__set__-expanded"><a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line">                        <tt class="py-docstring">"""Set the given event to be called when this event is being triggered"""</tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">                        <tt class="py-name">eventset</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-47" class="py-name" targets="Method mrv.util.Event._getFunctionSet()=mrv.util.Event-class.html#_getFunctionSet"><a title="mrv.util.Event._getFunctionSet" class="py-name" href="#" onclick="return doclink('link-47', '_getFunctionSet', 'link-47');">_getFunctionSet</a></tt><tt class="py-op">(</tt> <tt class="py-name">inst</tt> <tt class="py-op">)</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line">         </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line">                        <tt class="py-comment"># REGISTER TO MEL IF THIS IS THE FIRST EVENT</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line">                        <tt class="py-comment"># do we have to register the callback ?</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line">                        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">eventset</tt><tt class="py-op">:</tt> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line">                                <tt id="link-48" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-48', 'kwargs', 'link-12');">kwargs</a></tt> <tt class="py-op">=</tt> <tt class="py-name">dict</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line">                                <tt class="py-comment"># generic call that will receive maya's own arguments and pass them on</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line">                                <tt class="py-name">dyncall</tt> <tt class="py-op">=</tt> <tt class="py-keyword">lambda</tt> <tt class="py-op">*</tt><tt id="link-49" class="py-name"><a title="mrv.util.Call.args" class="py-name" href="#" onclick="return doclink('link-49', 'args', 'link-45');">args</a></tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt id="link-50" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-50', 'kwargs', 'link-12');">kwargs</a></tt><tt class="py-op">:</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-51" class="py-name"><a title="mrv.maya.ui.util.EventSenderUI._UIEvent.send
+mrv.maya.util.CallbackEventBase.send
+mrv.util.Event.send" class="py-name" href="#" onclick="return doclink('link-51', 'send', 'link-44');">send</a></tt><tt class="py-op">(</tt><tt class="py-name">inst</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt id="link-52" class="py-name"><a title="mrv.util.Call.args" class="py-name" href="#" onclick="return doclink('link-52', 'args', 'link-45');">args</a></tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt id="link-53" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-53', 'kwargs', 'link-12');">kwargs</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line">         </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line">                                <tt id="link-54" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-54', 'kwargs', 'link-12');">kwargs</a></tt><tt class="py-op">[</tt> <tt class="py-string">'e'</tt> <tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-number">1</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line">                                <tt id="link-55" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-55', 'kwargs', 'link-12');">kwargs</a></tt><tt class="py-op">[</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-56" class="py-name"><a title="mrv.conf.Key._name
+mrv.conf.Section._name" class="py-name" href="#" onclick="return doclink('link-56', '_name', 'link-39');">_name</a></tt> <tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">dyncall</tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line">                                <tt id="link-57" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-57', 'kwargs', 'link-12');">kwargs</a></tt><tt class="py-op">.</tt><tt id="link-58" class="py-name" targets="Method mrv.maya.ui.qa.QACheckLayout.update()=mrv.maya.ui.qa.QACheckLayout-class.html#update"><a title="mrv.maya.ui.qa.QACheckLayout.update" class="py-name" href="#" onclick="return doclink('link-58', 'update', 'link-58');">update</a></tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_kwargs</tt> <tt class="py-op">)</tt>           <tt class="py-comment"># allow user kwargs</tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">                                <tt class="py-name">inst</tt><tt class="py-op">.</tt><tt id="link-59" class="py-name"><a title="mrv.maya.ui.base.BaseUI.__melcmd__" class="py-name" href="#" onclick="return doclink('link-59', '__melcmd__', 'link-14');">__melcmd__</a></tt><tt class="py-op">(</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt> <tt class="py-name">inst</tt> <tt class="py-op">)</tt> <tt class="py-op">,</tt> <tt class="py-op">**</tt><tt id="link-60" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-60', 'kwargs', 'link-12');">kwargs</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line">                        <tt class="py-comment"># END create event</tt> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line">         </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line">                        <tt class="py-name">super</tt><tt class="py-op">(</tt> <tt id="link-61" class="py-name"><a title="mrv.maya.ui.util.EventSenderUI" class="py-name" href="#" onclick="return doclink('link-61', 'EventSenderUI', 'link-35');">EventSenderUI</a></tt><tt class="py-op">.</tt><tt id="link-62" class="py-name"><a title="mrv.maya.ui.util.EventSenderUI._UIEvent" class="py-name" href="#" onclick="return doclink('link-62', '_UIEvent', 'link-36');">_UIEvent</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt> <tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-63" class="py-name" targets="Method mrv.maya.ui.util.EventSenderUI._UIEvent.__set__()=mrv.maya.ui.util.EventSenderUI._UIEvent-class.html#__set__,Method mrv.maya.util.CallbackEventBase.__set__()=mrv.maya.util.CallbackEventBase-class.html#__set__,Method mrv.util.Event.__set__()=mrv.util.Event-class.html#__set__,Method mrv.util.InterfaceMaster.InterfaceDescriptor.__set__()=mrv.util.InterfaceMaster.InterfaceDescriptor-class.html#__set__"><a title="mrv.maya.ui.util.EventSenderUI._UIEvent.__set__
+mrv.maya.util.CallbackEventBase.__set__
+mrv.util.Event.__set__
+mrv.util.InterfaceMaster.InterfaceDescriptor.__set__" class="py-name" href="#" onclick="return doclink('link-63', '__set__', 'link-63');">__set__</a></tt><tt class="py-op">(</tt> <tt class="py-name">inst</tt><tt class="py-op">,</tt> <tt class="py-name">eventfunc</tt> <tt class="py-op">)</tt> </tt>
+</div></div></div><a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line">        <tt class="py-comment"># END _UIEvent</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line"> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line"> </tt>
+<a name="UIContainerBase"></a><div id="UIContainerBase-def"><a name="L144"></a><tt class="py-lineno">144</tt> <a class="py-toggle" href="#" id="UIContainerBase-toggle" onclick="return toggle('UIContainerBase');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.util.UIContainerBase-class.html">UIContainerBase</a><tt class="py-op">(</tt> <tt class="py-base-class">object</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="UIContainerBase-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="UIContainerBase-expanded"><a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line">        <tt class="py-docstring">"""A ui container is a base for all classes that can have child controls or</tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line"><tt class="py-docstring">        other containers.</tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line"><tt class="py-docstring">        This class is just supposed to keep references to it's children so that additional</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line"><tt class="py-docstring">        information stored in python will not get lost</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line"><tt class="py-docstring">        Child-Instances are always unique, thus adding them several times will not</tt> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line"><tt class="py-docstring">        keep them several times , but just once"""</tt> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line"> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line"> </tt>
+<a name="UIContainerBase.__init__"></a><div id="UIContainerBase.__init__-def"><a name="L155"></a><tt class="py-lineno">155</tt> <a class="py-toggle" href="#" id="UIContainerBase.__init__-toggle" onclick="return toggle('UIContainerBase.__init__');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.util.UIContainerBase-class.html#__init__">__init__</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="UIContainerBase.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="UIContainerBase.__init__-expanded"><a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_children</tt> <tt class="py-op">=</tt> <tt class="py-name">list</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line">                <tt class="py-name">super</tt><tt class="py-op">(</tt> <tt id="link-64" class="py-name" targets="Class mrv.maya.ui.util.UIContainerBase=mrv.maya.ui.util.UIContainerBase-class.html"><a title="mrv.maya.ui.util.UIContainerBase" class="py-name" href="#" onclick="return doclink('link-64', 'UIContainerBase', 'link-64');">UIContainerBase</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt> <tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-65" class="py-name"><a title="mrv.automation.attributes.RegexStringAttr.__init__
+mrv.automation.process.ProcessBase.__init__
+mrv.automation.process.WorkflowProcessBase.__init__
+mrv.automation.qa.QACheck.__init__
+mrv.automation.qa.QACheckAttribute.__init__
+mrv.automation.qa.QACheckResult.__init__
+mrv.automation.qa.QAWorkflow.__init__
+mrv.automation.report.ReportBase.__init__
+mrv.automation.workflow.DirtyException.__init__
+mrv.automation.workflow.Workflow.CallGraph.__init__
+mrv.automation.workflow.Workflow.ProcessData.__init__
+mrv.automation.workflow.Workflow.__init__
+mrv.cmd.base.SpawnedCommand.__init__
+mrv.cmd.base.SpawnedOptionParser.__init__
+mrv.conf.ConfigAccessor.__init__
+mrv.conf.ConfigChain.__init__
+mrv.conf.ConfigFile.__init__
+mrv.conf.ConfigManager.__init__
+mrv.conf.ConfigNode.__init__
+mrv.conf.DictToINIFile.__init__
+mrv.conf.DiffData.__init__
+mrv.conf.Key.__init__
+mrv.conf.Section.__init__
+mrv.conf._PropertyHolderBase.__init__
+mrv.dge.Attribute.__init__
+mrv.dge.Graph.__init__
+mrv.dge.NodeBase.__init__
+mrv.dge.plug.__init__
+mrv.dgfe.FacadeNodeBase.__init__
+mrv.dgfe.GraphNodeBase.__init__
+mrv.dgfe._IOShell.__init__
+mrv.dgfe._OIShell.__init__
+mrv.doc.base.DocGenerator.__init__
+mrv.enum.Element.__init__
+mrv.enum.Enumeration.__init__
+mrv.exc.MRVError.__init__
+mrv.interface.iChoiceDialog.__init__
+mrv.interface.iProgressIndicator.__init__
+mrv.interface.iPrompt.__init__
+mrv.maya.mdb.MEnumDescriptor.__init__
+mrv.maya.mdb.MFnCodeGeneratorBase.__init__
+mrv.maya.mdb.MMemberMap.__init__
+mrv.maya.mdb.MMethodDescriptor.__init__
+mrv.maya.nt.PluginDB.__init__
+mrv.maya.nt.geometry._SingleIndexedComponentGenerator.__init__
+mrv.maya.nt.persistence.PyPickleData.__init__
+mrv.maya.nt.persistence.StoragePluginNode.__init__
+mrv.maya.nt.set.ObjectSet._TmpSet.__init__
+mrv.maya.nt.storage.StorageBase.PyPickleValue.__init__
+mrv.maya.nt.storage.StorageBase.__init__
+mrv.maya.nt.storage.StorageNode.__init__
+mrv.maya.ref.FileReference.__init__
+mrv.maya.ui.base.BaseUI.__init__
+mrv.maya.ui.base.NamedUI.__init__
+mrv.maya.ui.browse.control.BookmarkControl.__init__
+mrv.maya.ui.browse.control.FilePathControlEditable.__init__
+mrv.maya.ui.browse.control.FileProvider.__init__
+mrv.maya.ui.browse.control.FileRootSelectorControl.__init__
+mrv.maya.ui.browse.control.StackControlBase.__init__
+mrv.maya.ui.browse.finder.Finder.__init__
+mrv.maya.ui.browse.interface.iFinderProvider.__init__
+mrv.maya.ui.browse.layout.FileOpenFinder.__init__
+mrv.maya.ui.browse.layout.FileReferenceFinder.__init__
+mrv.maya.ui.browse.layout.FileSaveFinder.__init__
+mrv.maya.ui.browse.layout.FinderLayout.__init__
+mrv.maya.ui.browse.option.FileOpenOptions.__init__
+mrv.maya.ui.dialog.ProgressWindow.__init__
+mrv.maya.ui.dialog.PromptDialog.__init__
+mrv.maya.ui.layout.Layout.__init__
+mrv.maya.ui.qa.QACheckLayout.__init__
+mrv.maya.ui.qa.QALayout.__init__
+mrv.maya.ui.util.EventSenderUI._UIEvent.__init__
+mrv.maya.ui.util.UIContainerBase.__init__
+mrv.maya.undo.DGModifier.__init__
+mrv.maya.undo.GenericOperation.__init__
+mrv.maya.undo.GenericOperationStack.__init__
+mrv.maya.undo.MuteUndo.__init__
+mrv.maya.undo.Operation.__init__
+mrv.maya.undo.StartUndo.__init__
+mrv.maya.undo.UndoCmd.__init__
+mrv.maya.undo.UndoRecorder.__init__
+mrv.maya.util.CallbackEventBase.CBStorageFunction.__init__
+mrv.maya.util.CallbackEventBase.__init__
+mrv.maya.util.StandinClass.__init__
+mrv.thread.TerminatableThread.__init__
+mrv.thread.WorkerThread.__init__
+mrv.util.And.__init__
+mrv.util.Call.__init__
+mrv.util.CallAdv.__init__
+mrv.util.CallOnDeletion.__init__
+mrv.util.Event.__init__
+mrv.util.InterfaceMaster.InterfaceBase.__init__
+mrv.util.InterfaceMaster.InterfaceDescriptor.__init__
+mrv.util.InterfaceMaster._InterfaceHandler.__init__
+mrv.util.InterfaceMaster.__init__
+mrv.util.Or.__init__
+mrv.util.PipeSeparatedFile.__init__
+mrv.util.WeakInstFunction.__init__
+unittest.FunctionTestCase.__init__
+unittest.TestCase.__init__
+unittest.TestProgram.__init__
+unittest.TestResult.__init__
+unittest.TestSuite.__init__
+unittest.TextTestRunner.__init__
+unittest._TextTestResult.__init__
+unittest._WritelnDecorator.__init__" class="py-name" href="#" onclick="return doclink('link-65', '__init__', 'link-37');">__init__</a></tt><tt class="py-op">(</tt> <tt class="py-op">*</tt><tt id="link-66" class="py-name"><a title="mrv.util.Call.args" class="py-name" href="#" onclick="return doclink('link-66', 'args', 'link-45');">args</a></tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt id="link-67" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-67', 'kwargs', 'link-12');">kwargs</a></tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line"> </tt>
+<a name="UIContainerBase.__getitem__"></a><div id="UIContainerBase.__getitem__-def"><a name="L159"></a><tt class="py-lineno">159</tt> <a class="py-toggle" href="#" id="UIContainerBase.__getitem__-toggle" onclick="return toggle('UIContainerBase.__getitem__');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.util.UIContainerBase-class.html#__getitem__">__getitem__</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">key</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="UIContainerBase.__getitem__-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="UIContainerBase.__getitem__-expanded"><a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line">                <tt class="py-docstring">"""</tt> </tt>
+<a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line"><tt class="py-docstring">                :return: the child with the given name, see `childByName`</tt> </tt>
+<a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line"><tt class="py-docstring">                :param key: if integer, will return the given list index, if string, the child</tt> </tt>
+<a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line"><tt class="py-docstring">                        matching the id"""</tt> </tt>
+<a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt id="link-68" class="py-name" targets="Function unittest.isinstance()=unittest-module.html#isinstance"><a title="unittest.isinstance" class="py-name" href="#" onclick="return doclink('link-68', 'isinstance', 'link-68');">isinstance</a></tt><tt class="py-op">(</tt> <tt id="link-69" class="py-name" targets="Method mrv.conf.Section.key()=mrv.conf.Section-class.html#key"><a title="mrv.conf.Section.key" class="py-name" href="#" onclick="return doclink('link-69', 'key', 'link-69');">key</a></tt><tt class="py-op">,</tt> <tt id="link-70" class="py-name" targets="Variable mrv.path.basestring=mrv.path-module.html#basestring"><a title="mrv.path.basestring" class="py-name" href="#" onclick="return doclink('link-70', 'basestring', 'link-70');">basestring</a></tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L165"></a><tt class="py-lineno">165</tt>  <tt class="py-line">                        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-71" class="py-name" targets="Method mrv.maya.ui.util.UIContainerBase.childByName()=mrv.maya.ui.util.UIContainerBase-class.html#childByName"><a title="mrv.maya.ui.util.UIContainerBase.childByName" class="py-name" href="#" onclick="return doclink('link-71', 'childByName', 'link-71');">childByName</a></tt><tt class="py-op">(</tt> <tt id="link-72" class="py-name"><a title="mrv.conf.Section.key" class="py-name" href="#" onclick="return doclink('link-72', 'key', 'link-69');">key</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L166"></a><tt class="py-lineno">166</tt>  <tt class="py-line">                <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line">                        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_children</tt><tt class="py-op">[</tt> <tt id="link-73" class="py-name"><a title="mrv.conf.Section.key" class="py-name" href="#" onclick="return doclink('link-73', 'key', 'link-69');">key</a></tt> <tt class="py-op">]</tt> </tt>
+</div><a name="L168"></a><tt class="py-lineno">168</tt>  <tt class="py-line"> </tt>
+<a name="UIContainerBase.__enter__"></a><div id="UIContainerBase.__enter__-def"><a name="L169"></a><tt class="py-lineno">169</tt> <a class="py-toggle" href="#" id="UIContainerBase.__enter__-toggle" onclick="return toggle('UIContainerBase.__enter__');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.util.UIContainerBase-class.html#__enter__">__enter__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="UIContainerBase.__enter__-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="UIContainerBase.__enter__-expanded"><a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">self</tt> </tt>
+</div><a name="L171"></a><tt class="py-lineno">171</tt>  <tt class="py-line">                 </tt>
+<a name="UIContainerBase.__exit__"></a><div id="UIContainerBase.__exit__-def"><a name="L172"></a><tt class="py-lineno">172</tt> <a class="py-toggle" href="#" id="UIContainerBase.__exit__-toggle" onclick="return toggle('UIContainerBase.__exit__');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.util.UIContainerBase-class.html#__exit__">__exit__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">type</tt><tt class="py-op">,</tt> <tt class="py-param">value</tt><tt class="py-op">,</tt> <tt class="py-param">traceback</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="UIContainerBase.__exit__-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="UIContainerBase.__exit__-expanded"><a name="L173"></a><tt class="py-lineno">173</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt id="link-74" class="py-name" targets="Method mrv.maya.ui.base.NamedUI.type()=mrv.maya.ui.base.NamedUI-class.html#type"><a title="mrv.maya.ui.base.NamedUI.type" class="py-name" href="#" onclick="return doclink('link-74', 'type', 'link-74');">type</a></tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt> <tt class="py-keyword">and</tt> <tt class="py-name">hasattr</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-string">'setParentActive'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L174"></a><tt class="py-lineno">174</tt>  <tt class="py-line">                        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-75" class="py-name" targets="Method mrv.maya.ui.base.ContainerMenuBase.setParentActive()=mrv.maya.ui.base.ContainerMenuBase-class.html#setParentActive,Method mrv.maya.ui.control.OptionMenuGrp.setParentActive()=mrv.maya.ui.control.OptionMenuGrp-class.html#setParentActive,Method mrv.maya.ui.layout.Layout.setParentActive()=mrv.maya.ui.layout.Layout-class.html#setParentActive"><a title="mrv.maya.ui.base.ContainerMenuBase.setParentActive
+mrv.maya.ui.control.OptionMenuGrp.setParentActive
+mrv.maya.ui.layout.Layout.setParentActive" class="py-name" href="#" onclick="return doclink('link-75', 'setParentActive', 'link-75');">setParentActive</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L175"></a><tt class="py-lineno">175</tt>  <tt class="py-line">                <tt class="py-comment"># END only undo parenting if there is no exception</tt> </tt>
+<a name="L176"></a><tt class="py-lineno">176</tt>  <tt class="py-line"> </tt>
+<a name="UIContainerBase.add"></a><div id="UIContainerBase.add-def"><a name="L177"></a><tt class="py-lineno">177</tt> <a class="py-toggle" href="#" id="UIContainerBase.add-toggle" onclick="return toggle('UIContainerBase.add');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.util.UIContainerBase-class.html#add">add</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">child</tt><tt class="py-op">,</tt> <tt class="py-param">set_self_active</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt><tt class="py-op">,</tt> <tt class="py-param">revert_to_previous_parent</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="UIContainerBase.add-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="UIContainerBase.add-expanded"><a name="L178"></a><tt class="py-lineno">178</tt>  <tt class="py-line">                <tt class="py-docstring">"""Add the given child UI item to our list of children</tt> </tt>
+<a name="L179"></a><tt class="py-lineno">179</tt>  <tt class="py-line"><tt class="py-docstring">                </tt> </tt>
+<a name="L180"></a><tt class="py-lineno">180</tt>  <tt class="py-line"><tt class="py-docstring">                :param set_self_active: if True, we explicitly make ourselves the current parent</tt> </tt>
+<a name="L181"></a><tt class="py-lineno">181</tt>  <tt class="py-line"><tt class="py-docstring">                        for newly created UI elements</tt> </tt>
+<a name="L182"></a><tt class="py-lineno">182</tt>  <tt class="py-line"><tt class="py-docstring">                :param revert_to_previous_parent: if True, the previous parent will be restored</tt> </tt>
+<a name="L183"></a><tt class="py-lineno">183</tt>  <tt class="py-line"><tt class="py-docstring">                        once we are done, if False we keep the parent - only effective if set_self_active is True</tt> </tt>
+<a name="L184"></a><tt class="py-lineno">184</tt>  <tt class="py-line"><tt class="py-docstring">                :return: the newly added child, allowing contructs like</tt> </tt>
+<a name="L185"></a><tt class="py-lineno">185</tt>  <tt class="py-line"><tt class="py-docstring">                        button = layout.addChild( Button( ) )"""</tt> </tt>
+<a name="L186"></a><tt class="py-lineno">186</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt id="link-76" class="py-name" targets="Method mrv.maya.nt.base.DagNode.child()=mrv.maya.nt.base.DagNode-class.html#child"><a title="mrv.maya.nt.base.DagNode.child" class="py-name" href="#" onclick="return doclink('link-76', 'child', 'link-76');">child</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_children</tt><tt class="py-op">:</tt> </tt>
+<a name="L187"></a><tt class="py-lineno">187</tt>  <tt class="py-line">                        <tt class="py-keyword">return</tt> <tt id="link-77" class="py-name"><a title="mrv.maya.nt.base.DagNode.child" class="py-name" href="#" onclick="return doclink('link-77', 'child', 'link-76');">child</a></tt> </tt>
+<a name="L188"></a><tt class="py-lineno">188</tt>  <tt class="py-line"> </tt>
+<a name="L189"></a><tt class="py-lineno">189</tt>  <tt class="py-line">                <tt class="py-name">prevparent</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L190"></a><tt class="py-lineno">190</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">set_self_active</tt><tt class="py-op">:</tt> </tt>
+<a name="L191"></a><tt class="py-lineno">191</tt>  <tt class="py-line">                        <tt class="py-name">prevparent</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-78" class="py-name" targets="Class Method mrv.maya.ui.base.NamedUI.activeParent()=mrv.maya.ui.base.NamedUI-class.html#activeParent"><a title="mrv.maya.ui.base.NamedUI.activeParent" class="py-name" href="#" onclick="return doclink('link-78', 'activeParent', 'link-78');">activeParent</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L192"></a><tt class="py-lineno">192</tt>  <tt class="py-line">                        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-79" class="py-name" targets="Method mrv.maya.ui.base.ContainerMenuBase.setActive()=mrv.maya.ui.base.ContainerMenuBase-class.html#setActive,Method mrv.maya.ui.control.OptionMenuGrp.setActive()=mrv.maya.ui.control.OptionMenuGrp-class.html#setActive,Method mrv.maya.ui.util.UIContainerBase.setActive()=mrv.maya.ui.util.UIContainerBase-class.html#setActive"><a title="mrv.maya.ui.base.ContainerMenuBase.setActive
+mrv.maya.ui.control.OptionMenuGrp.setActive
+mrv.maya.ui.util.UIContainerBase.setActive" class="py-name" href="#" onclick="return doclink('link-79', 'setActive', 'link-79');">setActive</a></tt><tt class="py-op">(</tt> <tt class="py-op">)</tt> </tt>
+<a name="L193"></a><tt class="py-lineno">193</tt>  <tt class="py-line">                <tt class="py-comment"># END set active handling</tt> </tt>
+<a name="L194"></a><tt class="py-lineno">194</tt>  <tt class="py-line"> </tt>
+<a name="L195"></a><tt class="py-lineno">195</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_children</tt><tt class="py-op">.</tt><tt id="link-80" class="py-name" targets="Method mrv.conf.ConfigChain.append()=mrv.conf.ConfigChain-class.html#append"><a title="mrv.conf.ConfigChain.append" class="py-name" href="#" onclick="return doclink('link-80', 'append', 'link-80');">append</a></tt><tt class="py-op">(</tt> <tt id="link-81" class="py-name"><a title="mrv.maya.nt.base.DagNode.child" class="py-name" href="#" onclick="return doclink('link-81', 'child', 'link-76');">child</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L196"></a><tt class="py-lineno">196</tt>  <tt class="py-line"> </tt>
+<a name="L197"></a><tt class="py-lineno">197</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">revert_to_previous_parent</tt> <tt class="py-keyword">and</tt> <tt class="py-name">prevparent</tt><tt class="py-op">:</tt> </tt>
+<a name="L198"></a><tt class="py-lineno">198</tt>  <tt class="py-line">                        <tt class="py-name">prevparent</tt><tt class="py-op">.</tt><tt id="link-82" class="py-name"><a title="mrv.maya.ui.base.ContainerMenuBase.setActive
+mrv.maya.ui.control.OptionMenuGrp.setActive
+mrv.maya.ui.util.UIContainerBase.setActive" class="py-name" href="#" onclick="return doclink('link-82', 'setActive', 'link-79');">setActive</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L199"></a><tt class="py-lineno">199</tt>  <tt class="py-line"> </tt>
+<a name="L200"></a><tt class="py-lineno">200</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt id="link-83" class="py-name"><a title="mrv.maya.nt.base.DagNode.child" class="py-name" href="#" onclick="return doclink('link-83', 'child', 'link-76');">child</a></tt> </tt>
+</div><a name="L201"></a><tt class="py-lineno">201</tt>  <tt class="py-line"> </tt>
+<a name="UIContainerBase.removeChild"></a><div id="UIContainerBase.removeChild-def"><a name="L202"></a><tt class="py-lineno">202</tt> <a class="py-toggle" href="#" id="UIContainerBase.removeChild-toggle" onclick="return toggle('UIContainerBase.removeChild');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.util.UIContainerBase-class.html#removeChild">removeChild</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">child</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="UIContainerBase.removeChild-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="UIContainerBase.removeChild-expanded"><a name="L203"></a><tt class="py-lineno">203</tt>  <tt class="py-line">                <tt class="py-docstring">"""Remove the given child from our list</tt> </tt>
+<a name="L204"></a><tt class="py-lineno">204</tt>  <tt class="py-line"><tt class="py-docstring">                </tt> </tt>
+<a name="L205"></a><tt class="py-lineno">205</tt>  <tt class="py-line"><tt class="py-docstring">                :return: True if the child was found and has been removed, False otherwise"""</tt> </tt>
+<a name="L206"></a><tt class="py-lineno">206</tt>  <tt class="py-line">                <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L207"></a><tt class="py-lineno">207</tt>  <tt class="py-line">                        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_children</tt><tt class="py-op">.</tt><tt id="link-84" class="py-name" targets="Method mrv.maya.ref.FileReference.remove()=mrv.maya.ref.FileReference-class.html#remove,Method mrv.maya.util.CallbackEventBase.remove()=mrv.maya.util.CallbackEventBase-class.html#remove,Method mrv.path.Path.remove()=mrv.path.Path-class.html#remove,Method mrv.util.Event.remove()=mrv.util.Event-class.html#remove"><a title="mrv.maya.ref.FileReference.remove
+mrv.maya.util.CallbackEventBase.remove
+mrv.path.Path.remove
+mrv.util.Event.remove" class="py-name" href="#" onclick="return doclink('link-84', 'remove', 'link-84');">remove</a></tt><tt class="py-op">(</tt> <tt id="link-85" class="py-name"><a title="mrv.maya.nt.base.DagNode.child" class="py-name" href="#" onclick="return doclink('link-85', 'child', 'link-76');">child</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L208"></a><tt class="py-lineno">208</tt>  <tt class="py-line">                        <tt class="py-keyword">return</tt> <tt class="py-name">True</tt> </tt>
+<a name="L209"></a><tt class="py-lineno">209</tt>  <tt class="py-line">                <tt class="py-keyword">except</tt> <tt class="py-name">ValueError</tt><tt class="py-op">:</tt> </tt>
+<a name="L210"></a><tt class="py-lineno">210</tt>  <tt class="py-line">                        <tt class="py-keyword">return</tt> <tt class="py-name">False</tt> </tt>
+</div><a name="L211"></a><tt class="py-lineno">211</tt>  <tt class="py-line"> </tt>
+<a name="UIContainerBase.deleteChild"></a><div id="UIContainerBase.deleteChild-def"><a name="L212"></a><tt class="py-lineno">212</tt> <a class="py-toggle" href="#" id="UIContainerBase.deleteChild-toggle" onclick="return toggle('UIContainerBase.deleteChild');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.util.UIContainerBase-class.html#deleteChild">deleteChild</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">child</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="UIContainerBase.deleteChild-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="UIContainerBase.deleteChild-expanded"><a name="L213"></a><tt class="py-lineno">213</tt>  <tt class="py-line">                <tt class="py-docstring">"""Delete the given child ui physically so it will not be shown anymore</tt> </tt>
+<a name="L214"></a><tt class="py-lineno">214</tt>  <tt class="py-line"><tt class="py-docstring">                after removing it from our list of children"""</tt> </tt>
+<a name="L215"></a><tt class="py-lineno">215</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-86" class="py-name" targets="Method mrv.maya.nt.base.DagNode.removeChild()=mrv.maya.nt.base.DagNode-class.html#removeChild,Method mrv.maya.ui.util.UIContainerBase.removeChild()=mrv.maya.ui.util.UIContainerBase-class.html#removeChild"><a title="mrv.maya.nt.base.DagNode.removeChild
+mrv.maya.ui.util.UIContainerBase.removeChild" class="py-name" href="#" onclick="return doclink('link-86', 'removeChild', 'link-86');">removeChild</a></tt><tt class="py-op">(</tt> <tt id="link-87" class="py-name"><a title="mrv.maya.nt.base.DagNode.child" class="py-name" href="#" onclick="return doclink('link-87', 'child', 'link-76');">child</a></tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L216"></a><tt class="py-lineno">216</tt>  <tt class="py-line">                        <tt id="link-88" class="py-name"><a title="mrv.maya.nt.base.DagNode.child" class="py-name" href="#" onclick="return doclink('link-88', 'child', 'link-76');">child</a></tt><tt class="py-op">.</tt><tt id="link-89" class="py-name" targets="Method mrv.maya.ns.Namespace.delete()=mrv.maya.ns.Namespace-class.html#delete,Method mrv.maya.nt.base.DagNode.delete()=mrv.maya.nt.base.DagNode-class.html#delete,Method mrv.maya.nt.base.DependNode.delete()=mrv.maya.nt.base.DependNode-class.html#delete,Function mrv.maya.nt.base.delete()=mrv.maya.nt.base-module.html#delete,Method mrv.maya.ui.base.NamedUI.delete()=mrv.maya.ui.base.NamedUI-class.html#delete"><a title="mrv.maya.ns.Namespace.delete
+mrv.maya.nt.base.DagNode.delete
+mrv.maya.nt.base.DependNode.delete
+mrv.maya.nt.base.delete
+mrv.maya.ui.base.NamedUI.delete" class="py-name" href="#" onclick="return doclink('link-89', 'delete', 'link-89');">delete</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L217"></a><tt class="py-lineno">217</tt>  <tt class="py-line"> </tt>
+<a name="UIContainerBase.listChildren"></a><div id="UIContainerBase.listChildren-def"><a name="L218"></a><tt class="py-lineno">218</tt> <a class="py-toggle" href="#" id="UIContainerBase.listChildren-toggle" onclick="return toggle('UIContainerBase.listChildren');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.util.UIContainerBase-class.html#listChildren">listChildren</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">predicate</tt> <tt class="py-op">=</tt> <tt class="py-keyword">lambda</tt> <tt class="py-name">c</tt><tt class="py-op">:</tt> <tt class="py-name">True</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="UIContainerBase.listChildren-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="UIContainerBase.listChildren-expanded"><a name="L219"></a><tt class="py-lineno">219</tt>  <tt class="py-line">                <tt class="py-docstring">"""</tt> </tt>
+<a name="L220"></a><tt class="py-lineno">220</tt>  <tt class="py-line"><tt class="py-docstring">                :return: list with our child instances</tt> </tt>
+<a name="L221"></a><tt class="py-lineno">221</tt>  <tt class="py-line"><tt class="py-docstring">                :param predicate: function returning True for each child to include in result,</tt> </tt>
+<a name="L222"></a><tt class="py-lineno">222</tt>  <tt class="py-line"><tt class="py-docstring">                        allows to easily filter children</tt> </tt>
+<a name="L223"></a><tt class="py-lineno">223</tt>  <tt class="py-line"><tt class="py-docstring">                :note: it's a copy, so you can freely act on the list</tt> </tt>
+<a name="L224"></a><tt class="py-lineno">224</tt>  <tt class="py-line"><tt class="py-docstring">                :note: children will be returned in the order in which they have been added"""</tt> </tt>
+<a name="L225"></a><tt class="py-lineno">225</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-op">[</tt> <tt class="py-name">c</tt> <tt class="py-keyword">for</tt> <tt class="py-name">c</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_children</tt> <tt class="py-keyword">if</tt> <tt class="py-name">predicate</tt><tt class="py-op">(</tt> <tt class="py-name">c</tt> <tt class="py-op">)</tt> <tt class="py-op">]</tt> </tt>
+</div><a name="L226"></a><tt class="py-lineno">226</tt>  <tt class="py-line"> </tt>
+<a name="UIContainerBase.childByName"></a><div id="UIContainerBase.childByName-def"><a name="L227"></a><tt class="py-lineno">227</tt> <a class="py-toggle" href="#" id="UIContainerBase.childByName-toggle" onclick="return toggle('UIContainerBase.childByName');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.util.UIContainerBase-class.html#childByName">childByName</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">childname</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="UIContainerBase.childByName-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="UIContainerBase.childByName-expanded"><a name="L228"></a><tt class="py-lineno">228</tt>  <tt class="py-line">                <tt class="py-docstring">"""</tt> </tt>
+<a name="L229"></a><tt class="py-lineno">229</tt>  <tt class="py-line"><tt class="py-docstring">                :return: stored child instance, specified either as short name ( without pipes )</tt> </tt>
+<a name="L230"></a><tt class="py-lineno">230</tt>  <tt class="py-line"><tt class="py-docstring">                        or fully qualified ( i.e. mychild or parent|subparent|mychild" )</tt> </tt>
+<a name="L231"></a><tt class="py-lineno">231</tt>  <tt class="py-line"><tt class="py-docstring">                :raise KeyError: if a child with that name does not exist"""</tt> </tt>
+<a name="L232"></a><tt class="py-lineno">232</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-string">"|"</tt> <tt class="py-keyword">in</tt> <tt class="py-name">childname</tt><tt class="py-op">:</tt> </tt>
+<a name="L233"></a><tt class="py-lineno">233</tt>  <tt class="py-line">                        <tt class="py-keyword">for</tt> <tt id="link-90" class="py-name"><a title="mrv.maya.nt.base.DagNode.child" class="py-name" href="#" onclick="return doclink('link-90', 'child', 'link-76');">child</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_children</tt><tt class="py-op">:</tt> </tt>
+<a name="L234"></a><tt class="py-lineno">234</tt>  <tt class="py-line">                                <tt class="py-keyword">if</tt> <tt id="link-91" class="py-name"><a title="mrv.maya.nt.base.DagNode.child" class="py-name" href="#" onclick="return doclink('link-91', 'child', 'link-76');">child</a></tt> <tt class="py-op">==</tt> <tt class="py-name">childname</tt><tt class="py-op">:</tt> </tt>
+<a name="L235"></a><tt class="py-lineno">235</tt>  <tt class="py-line">                                        <tt class="py-keyword">return</tt> <tt id="link-92" class="py-name"><a title="mrv.maya.nt.base.DagNode.child" class="py-name" href="#" onclick="return doclink('link-92', 'child', 'link-76');">child</a></tt> </tt>
+<a name="L236"></a><tt class="py-lineno">236</tt>  <tt class="py-line">                        <tt class="py-comment"># END for each chld</tt> </tt>
+<a name="L237"></a><tt class="py-lineno">237</tt>  <tt class="py-line">                <tt class="py-comment"># END fqn handling</tt> </tt>
+<a name="L238"></a><tt class="py-lineno">238</tt>  <tt class="py-line"> </tt>
+<a name="L239"></a><tt class="py-lineno">239</tt>  <tt class="py-line">                <tt class="py-name">childname</tt> <tt class="py-op">=</tt> <tt class="py-name">childname</tt><tt class="py-op">.</tt><tt class="py-name">split</tt><tt class="py-op">(</tt> <tt class="py-string">'|'</tt> <tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-op">-</tt><tt class="py-number">1</tt><tt class="py-op">]</tt>          <tt class="py-comment"># |hello|world -&gt; world</tt> </tt>
+<a name="L240"></a><tt class="py-lineno">240</tt>  <tt class="py-line">                <tt class="py-keyword">for</tt> <tt id="link-93" class="py-name"><a title="mrv.maya.nt.base.DagNode.child" class="py-name" href="#" onclick="return doclink('link-93', 'child', 'link-76');">child</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_children</tt><tt class="py-op">:</tt> </tt>
+<a name="L241"></a><tt class="py-lineno">241</tt>  <tt class="py-line">                        <tt class="py-keyword">if</tt> <tt id="link-94" class="py-name"><a title="mrv.maya.nt.base.DagNode.child" class="py-name" href="#" onclick="return doclink('link-94', 'child', 'link-76');">child</a></tt><tt class="py-op">.</tt><tt id="link-95" class="py-name" targets="Method mrv.interface.iDagItem.basename()=mrv.interface.iDagItem-class.html#basename,Method mrv.maya.nt.base.DependNode.basename()=mrv.maya.nt.base.DependNode-class.html#basename,Method mrv.path.ConversionPath.basename()=mrv.path.ConversionPath-class.html#basename"><a title="mrv.interface.iDagItem.basename
+mrv.maya.nt.base.DependNode.basename
+mrv.path.ConversionPath.basename" class="py-name" href="#" onclick="return doclink('link-95', 'basename', 'link-95');">basename</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-name">childname</tt><tt class="py-op">:</tt> </tt>
+<a name="L242"></a><tt class="py-lineno">242</tt>  <tt class="py-line">                                <tt class="py-keyword">return</tt> <tt id="link-96" class="py-name"><a title="mrv.maya.nt.base.DagNode.child" class="py-name" href="#" onclick="return doclink('link-96', 'child', 'link-76');">child</a></tt> </tt>
+<a name="L243"></a><tt class="py-lineno">243</tt>  <tt class="py-line">                <tt class="py-comment"># END non- fqn handling</tt> </tt>
+<a name="L244"></a><tt class="py-lineno">244</tt>  <tt class="py-line"> </tt>
+<a name="L245"></a><tt class="py-lineno">245</tt>  <tt class="py-line">                <tt class="py-keyword">raise</tt> <tt class="py-name">KeyError</tt><tt class="py-op">(</tt> <tt class="py-string">"Child named %s could not be found below %s"</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt> <tt class="py-name">childname</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L246"></a><tt class="py-lineno">246</tt>  <tt class="py-line"> </tt>
+<a name="UIContainerBase.setActive"></a><div id="UIContainerBase.setActive-def"><a name="L247"></a><tt class="py-lineno">247</tt> <a class="py-toggle" href="#" id="UIContainerBase.setActive-toggle" onclick="return toggle('UIContainerBase.setActive');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.util.UIContainerBase-class.html#setActive">setActive</a><tt class="py-op">(</tt> <tt class="py-param">self</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="UIContainerBase.setActive-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="UIContainerBase.setActive-expanded"><a name="L248"></a><tt class="py-lineno">248</tt>  <tt class="py-line">                <tt class="py-docstring">"""Set this container active, such that newly created items will be children</tt> </tt>
+<a name="L249"></a><tt class="py-lineno">249</tt>  <tt class="py-line"><tt class="py-docstring">                of this layout</tt> </tt>
+<a name="L250"></a><tt class="py-lineno">250</tt>  <tt class="py-line"><tt class="py-docstring">                </tt> </tt>
+<a name="L251"></a><tt class="py-lineno">251</tt>  <tt class="py-line"><tt class="py-docstring">                :return: self</tt> </tt>
+<a name="L252"></a><tt class="py-lineno">252</tt>  <tt class="py-line"><tt class="py-docstring">                :note: always use the addChild function to add the children !"""</tt> </tt>
+<a name="L253"></a><tt class="py-lineno">253</tt>  <tt class="py-line">                <tt class="py-name">cmds</tt><tt class="py-op">.</tt><tt id="link-97" class="py-name" targets="Method mrv.maya.nt.base.DagNode.setParent()=mrv.maya.nt.base.DagNode-class.html#setParent"><a title="mrv.maya.nt.base.DagNode.setParent" class="py-name" href="#" onclick="return doclink('link-97', 'setParent', 'link-97');">setParent</a></tt><tt class="py-op">(</tt> <tt class="py-name">self</tt> <tt class="py-op">)</tt> </tt>
+<a name="L254"></a><tt class="py-lineno">254</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">self</tt> </tt>
+</div><a name="L255"></a><tt class="py-lineno">255</tt>  <tt class="py-line"> </tt>
+<a name="UIContainerBase.clearChildren"></a><div id="UIContainerBase.clearChildren-def"><a name="L256"></a><tt class="py-lineno">256</tt> <a class="py-toggle" href="#" id="UIContainerBase.clearChildren-toggle" onclick="return toggle('UIContainerBase.clearChildren');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.util.UIContainerBase-class.html#clearChildren">clearChildren</a><tt class="py-op">(</tt> <tt class="py-param">self</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="UIContainerBase.clearChildren-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="UIContainerBase.clearChildren-expanded"><a name="L257"></a><tt class="py-lineno">257</tt>  <tt class="py-line">                <tt class="py-docstring">"""Clear our child arrays to quickly forget about our children"""</tt> </tt>
+<a name="L258"></a><tt class="py-lineno">258</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_children</tt> <tt class="py-op">=</tt> <tt class="py-name">list</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L259"></a><tt class="py-lineno">259</tt>  <tt class="py-line"> </tt>
+<a name="L260"></a><tt class="py-lineno">260</tt>  <tt class="py-line"> </tt>
+<a name="iItemSet"></a><div id="iItemSet-def"><a name="L261"></a><tt class="py-lineno">261</tt> <a class="py-toggle" href="#" id="iItemSet-toggle" onclick="return toggle('iItemSet');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.util.iItemSet-class.html">iItemSet</a><tt class="py-op">(</tt> <tt class="py-base-class">object</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="iItemSet-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="iItemSet-expanded"><a name="L262"></a><tt class="py-lineno">262</tt>  <tt class="py-line">        <tt class="py-docstring">"""Interface allowing to dynamically add, update and remove items to a layout</tt> </tt>
+<a name="L263"></a><tt class="py-lineno">263</tt>  <tt class="py-line"><tt class="py-docstring">        to match a given input set of item ids.</tt> </tt>
+<a name="L264"></a><tt class="py-lineno">264</tt>  <tt class="py-line"><tt class="py-docstring">        Its abstacted to be implemented by subclasses"""</tt> </tt>
+<a name="L265"></a><tt class="py-lineno">265</tt>  <tt class="py-line"> </tt>
+<a name="L266"></a><tt class="py-lineno">266</tt>  <tt class="py-line">        <tt class="py-comment"># identify the type of event to handle as called during setItems</tt> </tt>
+<a name="L267"></a><tt class="py-lineno">267</tt>  <tt class="py-line">        <tt id="link-98" class="py-name" targets="Variable mrv.maya.ui.util.iItemSet.eSetItemCBID=mrv.maya.ui.util.iItemSet-class.html#eSetItemCBID"><a title="mrv.maya.ui.util.iItemSet.eSetItemCBID" class="py-name" href="#" onclick="return doclink('link-98', 'eSetItemCBID', 'link-98');">eSetItemCBID</a></tt> <tt class="py-op">=</tt> <tt id="link-99" class="py-name"><a title="mrv.enum" class="py-name" href="#" onclick="return doclink('link-99', 'enum', 'link-8');">enum</a></tt><tt class="py-op">(</tt> <tt class="py-string">"preCreate"</tt><tt class="py-op">,</tt> <tt class="py-string">"preUpdate"</tt><tt class="py-op">,</tt> <tt class="py-string">"preRemove"</tt><tt class="py-op">,</tt> <tt class="py-string">"postCreate"</tt><tt class="py-op">,</tt> <tt class="py-string">"postUpdate"</tt><tt class="py-op">,</tt> <tt class="py-string">"postRemove"</tt> <tt class="py-op">)</tt> </tt>
+<a name="L268"></a><tt class="py-lineno">268</tt>  <tt class="py-line"> </tt>
+<a name="L269"></a><tt class="py-lineno">269</tt>  <tt class="py-line">        <tt class="py-comment">#{ Interface</tt> </tt>
+<a name="iItemSet.setItems"></a><div id="iItemSet.setItems-def"><a name="L270"></a><tt class="py-lineno">270</tt> <a class="py-toggle" href="#" id="iItemSet.setItems-toggle" onclick="return toggle('iItemSet.setItems');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.util.iItemSet-class.html#setItems">setItems</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">item_ids</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="iItemSet.setItems-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="iItemSet.setItems-expanded"><a name="L271"></a><tt class="py-lineno">271</tt>  <tt class="py-line">                <tt class="py-docstring">"""Set the UI to display items identified by the given item_ids</tt> </tt>
+<a name="L272"></a><tt class="py-lineno">272</tt>  <tt class="py-line"><tt class="py-docstring">                </tt> </tt>
+<a name="L273"></a><tt class="py-lineno">273</tt>  <tt class="py-line"><tt class="py-docstring">                :param item_ids: ids behaving appropriately if put into a set</tt> </tt>
+<a name="L274"></a><tt class="py-lineno">274</tt>  <tt class="py-line"><tt class="py-docstring">                :param kwargs: passed on to the handler methods ( which are implemented by the subclass ).</tt> </tt>
+<a name="L275"></a><tt class="py-lineno">275</tt>  <tt class="py-line"><tt class="py-docstring">                        Use these to pass on additional data that you might want to use to keep additional information about</tt> </tt>
+<a name="L276"></a><tt class="py-lineno">276</tt>  <tt class="py-line"><tt class="py-docstring">                        your item ids</tt> </tt>
+<a name="L277"></a><tt class="py-lineno">277</tt>  <tt class="py-line"><tt class="py-docstring">                :note: you are responsible for generating a list of item_ids and call this</tt> </tt>
+<a name="L278"></a><tt class="py-lineno">278</tt>  <tt class="py-line"><tt class="py-docstring">                        method to trigger the update</tt> </tt>
+<a name="L279"></a><tt class="py-lineno">279</tt>  <tt class="py-line"><tt class="py-docstring">                :return: tuple( SetOfDeletedItemIds, SetOfCreatedItemIds ) """</tt> </tt>
+<a name="L280"></a><tt class="py-lineno">280</tt>  <tt class="py-line">                <tt class="py-name">existing_items</tt> <tt class="py-op">=</tt> <tt id="link-100" class="py-name" targets="Method mrv.dge._PlugShell.set()=mrv.dge._PlugShell-class.html#set,Method mrv.dgfe._IOShell.set()=mrv.dgfe._IOShell-class.html#set,Method mrv.dgfe._OIShell.set()=mrv.dgfe._OIShell-class.html#set,Method mrv.interface.iProgressIndicator.set()=mrv.interface.iProgressIndicator-class.html#set,Method mrv.maya.nt.base.Transform.set()=mrv.maya.nt.base.Transform-class.html#set,Module mrv.maya.nt.set=mrv.maya.nt.set-module.html,Variable mrv.maya.nt.set=mrv.maya.nt-module.html#set,Module mrv.maya.ui.set=mrv.maya.ui.set-module.html"><a title="mrv.dge._PlugShell.set
+mrv.dgfe._IOShell.set
+mrv.dgfe._OIShell.set
+mrv.interface.iProgressIndicator.set
+mrv.maya.nt.base.Transform.set
+mrv.maya.nt.set
+mrv.maya.nt.set
+mrv.maya.ui.set" class="py-name" href="#" onclick="return doclink('link-100', 'set', 'link-100');">set</a></tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-101" class="py-name" targets="Method mrv.maya.ui.qa.QALayout.currentItemIds()=mrv.maya.ui.qa.QALayout-class.html#currentItemIds,Method mrv.maya.ui.util.iItemSet.currentItemIds()=mrv.maya.ui.util.iItemSet-class.html#currentItemIds"><a title="mrv.maya.ui.qa.QALayout.currentItemIds
+mrv.maya.ui.util.iItemSet.currentItemIds" class="py-name" href="#" onclick="return doclink('link-101', 'currentItemIds', 'link-101');">currentItemIds</a></tt><tt class="py-op">(</tt> <tt class="py-op">**</tt><tt id="link-102" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-102', 'kwargs', 'link-12');">kwargs</a></tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+<a name="L281"></a><tt class="py-lineno">281</tt>  <tt class="py-line">                <tt class="py-name">todo_items</tt> <tt class="py-op">=</tt> <tt id="link-103" class="py-name"><a title="mrv.dge._PlugShell.set
+mrv.dgfe._IOShell.set
+mrv.dgfe._OIShell.set
+mrv.interface.iProgressIndicator.set
+mrv.maya.nt.base.Transform.set
+mrv.maya.nt.set
+mrv.maya.nt.set
+mrv.maya.ui.set" class="py-name" href="#" onclick="return doclink('link-103', 'set', 'link-100');">set</a></tt><tt class="py-op">(</tt> <tt class="py-name">item_ids</tt> <tt class="py-op">)</tt> </tt>
+<a name="L282"></a><tt class="py-lineno">282</tt>  <tt class="py-line"> </tt>
+<a name="L283"></a><tt class="py-lineno">283</tt>  <tt class="py-line">                <tt class="py-name">items_to_create</tt> <tt class="py-op">=</tt> <tt class="py-name">todo_items</tt> <tt class="py-op">-</tt> <tt class="py-name">existing_items</tt> </tt>
+<a name="L284"></a><tt class="py-lineno">284</tt>  <tt class="py-line">                <tt class="py-name">items_to_remove</tt> <tt class="py-op">=</tt> <tt class="py-name">existing_items</tt> <tt class="py-op">-</tt> <tt class="py-name">todo_items</tt> </tt>
+<a name="L285"></a><tt class="py-lineno">285</tt>  <tt class="py-line"> </tt>
+<a name="L286"></a><tt class="py-lineno">286</tt>  <tt class="py-line">                <tt class="py-comment"># REMOVE OBSOLETE</tt> </tt>
+<a name="L287"></a><tt class="py-lineno">287</tt>  <tt class="py-line">                <tt class="py-comment">##################</tt> </tt>
+<a name="L288"></a><tt class="py-lineno">288</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">items_to_remove</tt><tt class="py-op">:</tt> </tt>
+<a name="L289"></a><tt class="py-lineno">289</tt>  <tt class="py-line">                        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-104" class="py-name" targets="Method mrv.maya.ui.qa.QALayout.handleEvent()=mrv.maya.ui.qa.QALayout-class.html#handleEvent,Method mrv.maya.ui.util.iItemSet.handleEvent()=mrv.maya.ui.util.iItemSet-class.html#handleEvent"><a title="mrv.maya.ui.qa.QALayout.handleEvent
+mrv.maya.ui.util.iItemSet.handleEvent" class="py-name" href="#" onclick="return doclink('link-104', 'handleEvent', 'link-104');">handleEvent</a></tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-105" class="py-name"><a title="mrv.maya.ui.util.iItemSet.eSetItemCBID" class="py-name" href="#" onclick="return doclink('link-105', 'eSetItemCBID', 'link-98');">eSetItemCBID</a></tt><tt class="py-op">.</tt><tt class="py-name">preRemove</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt id="link-106" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-106', 'kwargs', 'link-12');">kwargs</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L290"></a><tt class="py-lineno">290</tt>  <tt class="py-line">                        <tt class="py-keyword">for</tt> <tt class="py-name">item</tt> <tt class="py-keyword">in</tt> <tt class="py-name">items_to_remove</tt><tt class="py-op">:</tt> </tt>
+<a name="L291"></a><tt class="py-lineno">291</tt>  <tt class="py-line">                                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-107" class="py-name" targets="Method mrv.maya.ui.browse.control.BookmarkControl.removeItem()=mrv.maya.ui.browse.control.BookmarkControl-class.html#removeItem,Method mrv.maya.ui.browse.control.FileRootSelectorControl.removeItem()=mrv.maya.ui.browse.control.FileRootSelectorControl-class.html#removeItem,Method mrv.maya.ui.browse.control.StackControlBase.removeItem()=mrv.maya.ui.browse.control.StackControlBase-class.html#removeItem,Method mrv.maya.ui.control.TextScrollList.removeItem()=mrv.maya.ui.control.TextScrollList-class.html#removeItem,Method mrv.maya.ui.qa.QALayout.removeItem()=mrv.maya.ui.qa.QALayout-class.html#removeItem,Method mrv.maya.ui.util.iItemSet.removeItem()=mrv.maya.ui.util.iItemSet-class.html#removeItem"><a title="mrv.maya.ui.browse.control.BookmarkControl.removeItem
+mrv.maya.ui.browse.control.FileRootSelectorControl.removeItem
+mrv.maya.ui.browse.control.StackControlBase.removeItem
+mrv.maya.ui.control.TextScrollList.removeItem
+mrv.maya.ui.qa.QALayout.removeItem
+mrv.maya.ui.util.iItemSet.removeItem" class="py-name" href="#" onclick="return doclink('link-107', 'removeItem', 'link-107');">removeItem</a></tt><tt class="py-op">(</tt> <tt class="py-name">item</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt id="link-108" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-108', 'kwargs', 'link-12');">kwargs</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L292"></a><tt class="py-lineno">292</tt>  <tt class="py-line">                        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-109" class="py-name"><a title="mrv.maya.ui.qa.QALayout.handleEvent
+mrv.maya.ui.util.iItemSet.handleEvent" class="py-name" href="#" onclick="return doclink('link-109', 'handleEvent', 'link-104');">handleEvent</a></tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-110" class="py-name"><a title="mrv.maya.ui.util.iItemSet.eSetItemCBID" class="py-name" href="#" onclick="return doclink('link-110', 'eSetItemCBID', 'link-98');">eSetItemCBID</a></tt><tt class="py-op">.</tt><tt class="py-name">postRemove</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt id="link-111" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-111', 'kwargs', 'link-12');">kwargs</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L293"></a><tt class="py-lineno">293</tt>  <tt class="py-line">                <tt class="py-comment"># END if there are items to remove</tt> </tt>
+<a name="L294"></a><tt class="py-lineno">294</tt>  <tt class="py-line"> </tt>
+<a name="L295"></a><tt class="py-lineno">295</tt>  <tt class="py-line">                <tt class="py-comment"># CREATE NEW</tt> </tt>
+<a name="L296"></a><tt class="py-lineno">296</tt>  <tt class="py-line">                <tt class="py-comment">##############</tt> </tt>
+<a name="L297"></a><tt class="py-lineno">297</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">items_to_create</tt><tt class="py-op">:</tt> </tt>
+<a name="L298"></a><tt class="py-lineno">298</tt>  <tt class="py-line">                        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-112" class="py-name"><a title="mrv.maya.ui.qa.QALayout.handleEvent
+mrv.maya.ui.util.iItemSet.handleEvent" class="py-name" href="#" onclick="return doclink('link-112', 'handleEvent', 'link-104');">handleEvent</a></tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-113" class="py-name"><a title="mrv.maya.ui.util.iItemSet.eSetItemCBID" class="py-name" href="#" onclick="return doclink('link-113', 'eSetItemCBID', 'link-98');">eSetItemCBID</a></tt><tt class="py-op">.</tt><tt class="py-name">preCreate</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt id="link-114" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-114', 'kwargs', 'link-12');">kwargs</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L299"></a><tt class="py-lineno">299</tt>  <tt class="py-line">                        <tt class="py-keyword">for</tt> <tt class="py-name">item</tt> <tt class="py-keyword">in</tt> <tt class="py-name">items_to_create</tt><tt class="py-op">:</tt> </tt>
+<a name="L300"></a><tt class="py-lineno">300</tt>  <tt class="py-line">                                <tt id="link-115" class="py-name" targets="Method mrv.automation.workflow.Workflow.ProcessData.result()=mrv.automation.workflow.Workflow.ProcessData-class.html#result"><a title="mrv.automation.workflow.Workflow.ProcessData.result" class="py-name" href="#" onclick="return doclink('link-115', 'result', 'link-115');">result</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-116" class="py-name" targets="Method mrv.maya.ui.qa.QALayout.createItem()=mrv.maya.ui.qa.QALayout-class.html#createItem,Method mrv.maya.ui.util.iItemSet.createItem()=mrv.maya.ui.util.iItemSet-class.html#createItem"><a title="mrv.maya.ui.qa.QALayout.createItem
+mrv.maya.ui.util.iItemSet.createItem" class="py-name" href="#" onclick="return doclink('link-116', 'createItem', 'link-116');">createItem</a></tt><tt class="py-op">(</tt> <tt class="py-name">item</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt id="link-117" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-117', 'kwargs', 'link-12');">kwargs</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L301"></a><tt class="py-lineno">301</tt>  <tt class="py-line">                                <tt class="py-comment"># something didnt work, assure we do not proceed with this one</tt> </tt>
+<a name="L302"></a><tt class="py-lineno">302</tt>  <tt class="py-line">                                <tt class="py-keyword">if</tt> <tt id="link-118" class="py-name"><a title="mrv.automation.workflow.Workflow.ProcessData.result" class="py-name" href="#" onclick="return doclink('link-118', 'result', 'link-115');">result</a></tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L303"></a><tt class="py-lineno">303</tt>  <tt class="py-line">                                        <tt class="py-name">todo_items</tt><tt class="py-op">.</tt><tt id="link-119" class="py-name"><a title="mrv.maya.ref.FileReference.remove
+mrv.maya.util.CallbackEventBase.remove
+mrv.path.Path.remove
+mrv.util.Event.remove" class="py-name" href="#" onclick="return doclink('link-119', 'remove', 'link-84');">remove</a></tt><tt class="py-op">(</tt> <tt class="py-name">item</tt> <tt class="py-op">)</tt> </tt>
+<a name="L304"></a><tt class="py-lineno">304</tt>  <tt class="py-line">                        <tt class="py-comment"># END for each item to create</tt> </tt>
+<a name="L305"></a><tt class="py-lineno">305</tt>  <tt class="py-line">                        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-120" class="py-name"><a title="mrv.maya.ui.qa.QALayout.handleEvent
+mrv.maya.ui.util.iItemSet.handleEvent" class="py-name" href="#" onclick="return doclink('link-120', 'handleEvent', 'link-104');">handleEvent</a></tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-121" class="py-name"><a title="mrv.maya.ui.util.iItemSet.eSetItemCBID" class="py-name" href="#" onclick="return doclink('link-121', 'eSetItemCBID', 'link-98');">eSetItemCBID</a></tt><tt class="py-op">.</tt><tt class="py-name">postCreate</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt id="link-122" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-122', 'kwargs', 'link-12');">kwargs</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L306"></a><tt class="py-lineno">306</tt>  <tt class="py-line">                <tt class="py-comment"># END if there are items to create</tt> </tt>
+<a name="L307"></a><tt class="py-lineno">307</tt>  <tt class="py-line"> </tt>
+<a name="L308"></a><tt class="py-lineno">308</tt>  <tt class="py-line">                <tt class="py-comment"># UPDATE EXISTING</tt> </tt>
+<a name="L309"></a><tt class="py-lineno">309</tt>  <tt class="py-line">                <tt class="py-comment">##################</tt> </tt>
+<a name="L310"></a><tt class="py-lineno">310</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">todo_items</tt><tt class="py-op">:</tt> </tt>
+<a name="L311"></a><tt class="py-lineno">311</tt>  <tt class="py-line">                        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-123" class="py-name"><a title="mrv.maya.ui.qa.QALayout.handleEvent
+mrv.maya.ui.util.iItemSet.handleEvent" class="py-name" href="#" onclick="return doclink('link-123', 'handleEvent', 'link-104');">handleEvent</a></tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-124" class="py-name"><a title="mrv.maya.ui.util.iItemSet.eSetItemCBID" class="py-name" href="#" onclick="return doclink('link-124', 'eSetItemCBID', 'link-98');">eSetItemCBID</a></tt><tt class="py-op">.</tt><tt class="py-name">preUpdate</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt id="link-125" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-125', 'kwargs', 'link-12');">kwargs</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L312"></a><tt class="py-lineno">312</tt>  <tt class="py-line">                        <tt class="py-keyword">for</tt> <tt class="py-name">item</tt> <tt class="py-keyword">in</tt> <tt class="py-name">todo_items</tt><tt class="py-op">:</tt> </tt>
+<a name="L313"></a><tt class="py-lineno">313</tt>  <tt class="py-line">                                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-126" class="py-name" targets="Method mrv.maya.ui.qa.QALayout.updateItem()=mrv.maya.ui.qa.QALayout-class.html#updateItem,Method mrv.maya.ui.util.iItemSet.updateItem()=mrv.maya.ui.util.iItemSet-class.html#updateItem"><a title="mrv.maya.ui.qa.QALayout.updateItem
+mrv.maya.ui.util.iItemSet.updateItem" class="py-name" href="#" onclick="return doclink('link-126', 'updateItem', 'link-126');">updateItem</a></tt><tt class="py-op">(</tt> <tt class="py-name">item</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt id="link-127" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-127', 'kwargs', 'link-12');">kwargs</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L314"></a><tt class="py-lineno">314</tt>  <tt class="py-line">                        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-128" class="py-name"><a title="mrv.maya.ui.qa.QALayout.handleEvent
+mrv.maya.ui.util.iItemSet.handleEvent" class="py-name" href="#" onclick="return doclink('link-128', 'handleEvent', 'link-104');">handleEvent</a></tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-129" class="py-name"><a title="mrv.maya.ui.util.iItemSet.eSetItemCBID" class="py-name" href="#" onclick="return doclink('link-129', 'eSetItemCBID', 'link-98');">eSetItemCBID</a></tt><tt class="py-op">.</tt><tt class="py-name">postUpdate</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt id="link-130" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-130', 'kwargs', 'link-12');">kwargs</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L315"></a><tt class="py-lineno">315</tt>  <tt class="py-line">                <tt class="py-comment"># END if there are items to update</tt> </tt>
+<a name="L316"></a><tt class="py-lineno">316</tt>  <tt class="py-line"> </tt>
+<a name="L317"></a><tt class="py-lineno">317</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-op">(</tt> <tt class="py-name">items_to_remove</tt><tt class="py-op">,</tt> <tt class="py-name">items_to_create</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L318"></a><tt class="py-lineno">318</tt>  <tt class="py-line"> </tt>
+<a name="L319"></a><tt class="py-lineno">319</tt>  <tt class="py-line">        <tt class="py-comment">#} END interace</tt> </tt>
+<a name="L320"></a><tt class="py-lineno">320</tt>  <tt class="py-line"> </tt>
+<a name="L321"></a><tt class="py-lineno">321</tt>  <tt class="py-line">        <tt class="py-comment">#{ SubClass Implementation</tt> </tt>
+<a name="L322"></a><tt class="py-lineno">322</tt>  <tt class="py-line"> </tt>
+<a name="iItemSet.currentItemIds"></a><div id="iItemSet.currentItemIds-def"><a name="L323"></a><tt class="py-lineno">323</tt> <a class="py-toggle" href="#" id="iItemSet.currentItemIds-toggle" onclick="return toggle('iItemSet.currentItemIds');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.util.iItemSet-class.html#currentItemIds">currentItemIds</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="iItemSet.currentItemIds-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="iItemSet.currentItemIds-expanded"><a name="L324"></a><tt class="py-lineno">324</tt>  <tt class="py-line">                <tt class="py-docstring">"""</tt> </tt>
+<a name="L325"></a><tt class="py-lineno">325</tt>  <tt class="py-line"><tt class="py-docstring">                :return: list of item ids that are currently available in your layout.</tt> </tt>
+<a name="L326"></a><tt class="py-lineno">326</tt>  <tt class="py-line"><tt class="py-docstring">                        They will be passed around to the `createItem`, `updateItem` and`removeItem`</tt> </tt>
+<a name="L327"></a><tt class="py-lineno">327</tt>  <tt class="py-line"><tt class="py-docstring">                        methods and is the foundation of the `setItems` method. Ids returned here</tt> </tt>
+<a name="L328"></a><tt class="py-lineno">328</tt>  <tt class="py-line"><tt class="py-docstring">                        must be compatible to the ids passed in to `setItems`"""</tt> </tt>
+<a name="L329"></a><tt class="py-lineno">329</tt>  <tt class="py-line">                <tt class="py-keyword">raise</tt> <tt class="py-name">NotImplementedError</tt><tt class="py-op">(</tt> <tt class="py-string">"To be implemented by subClass"</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L330"></a><tt class="py-lineno">330</tt>  <tt class="py-line"> </tt>
+<a name="iItemSet.handleEvent"></a><div id="iItemSet.handleEvent-def"><a name="L331"></a><tt class="py-lineno">331</tt> <a class="py-toggle" href="#" id="iItemSet.handleEvent-toggle" onclick="return toggle('iItemSet.handleEvent');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.util.iItemSet-class.html#handleEvent">handleEvent</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">eventid</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="iItemSet.handleEvent-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="iItemSet.handleEvent-expanded"><a name="L332"></a><tt class="py-lineno">332</tt>  <tt class="py-line">                <tt class="py-docstring">"""Called whenever a block of items is being handled for an operation identified</tt> </tt>
+<a name="L333"></a><tt class="py-lineno">333</tt>  <tt class="py-line"><tt class="py-docstring">                by eventid, allowing you to prepare for such a block or finish it</tt> </tt>
+<a name="L334"></a><tt class="py-lineno">334</tt>  <tt class="py-line"><tt class="py-docstring">                </tt> </tt>
+<a name="L335"></a><tt class="py-lineno">335</tt>  <tt class="py-line"><tt class="py-docstring">                :param eventid: eSetItemCBID identifying the event to handle"""</tt> </tt>
+<a name="L336"></a><tt class="py-lineno">336</tt>  <tt class="py-line">                <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L337"></a><tt class="py-lineno">337</tt>  <tt class="py-line"> </tt>
+<a name="iItemSet.createItem"></a><div id="iItemSet.createItem-def"><a name="L338"></a><tt class="py-lineno">338</tt> <a class="py-toggle" href="#" id="iItemSet.createItem-toggle" onclick="return toggle('iItemSet.createItem');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.util.iItemSet-class.html#createItem">createItem</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">itemid</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="iItemSet.createItem-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="iItemSet.createItem-expanded"><a name="L339"></a><tt class="py-lineno">339</tt>  <tt class="py-line">                <tt class="py-docstring">"""Create an item identified by the given itemid and add it to your layout</tt> </tt>
+<a name="L340"></a><tt class="py-lineno">340</tt>  <tt class="py-line"><tt class="py-docstring">                </tt> </tt>
+<a name="L341"></a><tt class="py-lineno">341</tt>  <tt class="py-line"><tt class="py-docstring">                :return: created item or None to indicate error. On error, the item will not</tt> </tt>
+<a name="L342"></a><tt class="py-lineno">342</tt>  <tt class="py-line"><tt class="py-docstring">                        be updated anymore"""</tt> </tt>
+<a name="L343"></a><tt class="py-lineno">343</tt>  <tt class="py-line">                <tt class="py-keyword">raise</tt> <tt class="py-name">NotImplementedError</tt><tt class="py-op">(</tt> <tt class="py-string">"To be implemented by subClass"</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L344"></a><tt class="py-lineno">344</tt>  <tt class="py-line"> </tt>
+<a name="iItemSet.updateItem"></a><div id="iItemSet.updateItem-def"><a name="L345"></a><tt class="py-lineno">345</tt> <a class="py-toggle" href="#" id="iItemSet.updateItem-toggle" onclick="return toggle('iItemSet.updateItem');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.util.iItemSet-class.html#updateItem">updateItem</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">itemid</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="iItemSet.updateItem-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="iItemSet.updateItem-expanded"><a name="L346"></a><tt class="py-lineno">346</tt>  <tt class="py-line">                <tt class="py-docstring">"""Update the item identified by the given itemid so that it represents the</tt> </tt>
+<a name="L347"></a><tt class="py-lineno">347</tt>  <tt class="py-line"><tt class="py-docstring">                current state of the application"""</tt> </tt>
+<a name="L348"></a><tt class="py-lineno">348</tt>  <tt class="py-line">                <tt class="py-keyword">raise</tt> <tt class="py-name">NotImplementedError</tt><tt class="py-op">(</tt> <tt class="py-string">"To be implemented by subClass"</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L349"></a><tt class="py-lineno">349</tt>  <tt class="py-line"> </tt>
+<a name="iItemSet.removeItem"></a><div id="iItemSet.removeItem-def"><a name="L350"></a><tt class="py-lineno">350</tt> <a class="py-toggle" href="#" id="iItemSet.removeItem-toggle" onclick="return toggle('iItemSet.removeItem');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.util.iItemSet-class.html#removeItem">removeItem</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">itemid</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="iItemSet.removeItem-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="iItemSet.removeItem-expanded"><a name="L351"></a><tt class="py-lineno">351</tt>  <tt class="py-line">                <tt class="py-docstring">"""Remove the given item identified by itemid so it does not show up in this</tt> </tt>
+<a name="L352"></a><tt class="py-lineno">352</tt>  <tt class="py-line"><tt class="py-docstring">                layout anymore</tt> </tt>
+<a name="L353"></a><tt class="py-lineno">353</tt>  <tt class="py-line"><tt class="py-docstring">                </tt> </tt>
+<a name="L354"></a><tt class="py-lineno">354</tt>  <tt class="py-line"><tt class="py-docstring">                :note: its up to you how you remove the item, as long as it is not visible anymore"""</tt> </tt>
+<a name="L355"></a><tt class="py-lineno">355</tt>  <tt class="py-line">                <tt class="py-keyword">raise</tt> <tt class="py-name">NotImplementedError</tt><tt class="py-op">(</tt> <tt class="py-string">"To be implemented by subClass"</tt> <tt class="py-op">)</tt> </tt>
+</div></div><a name="L356"></a><tt class="py-lineno">356</tt>  <tt class="py-line"> </tt>
+<a name="L357"></a><tt class="py-lineno">357</tt>  <tt class="py-line">        <tt class="py-comment">#} END subclass implementation</tt> </tt>
+<a name="L358"></a><tt class="py-lineno">358</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Nov 30 14:48:44 2010
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

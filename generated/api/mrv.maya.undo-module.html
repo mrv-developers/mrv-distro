@@ -1,0 +1,798 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>mrv.maya.undo</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="mrv-module.html">Package&nbsp;mrv</a> ::
+        <a href="mrv.maya-module.html">Package&nbsp;maya</a> ::
+        Module&nbsp;undo
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="mrv.maya.undo-module.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== MODULE DESCRIPTION ==================== -->
+<h1 class="epydoc">Module undo</h1><p class="nomargin-top"><span class="codelink"><a href="mrv.maya.undo-pysrc.html">source&nbsp;code</a></span></p>
+<p>Contains the undo engine allowing to adjust the scene with api commands while
+providing full undo and redo support.</p>
+<div class="rst-section" id="rst-features">
+<h1 class="heading">Features</h1>
+<blockquote>
+<ul class="rst-simple">
+<li>modify dag or dg using the undo-enabled DG and DAG modifiers</li>
+<li>modify values using Nodes and their plugs ( as the plugs are overridden
+to store undo information )</li>
+</ul>
+</blockquote>
+</div>
+<div class="rst-section" id="rst-limitations">
+<h1 class="heading">Limitations</h1>
+<blockquote>
+<ul class="rst-simple">
+<li>You cannot mix mel and API proprely unless you use an MDGModifier.commandToExecute</li>
+<li>Calling operations that flush the undo queue from within an undoable method
+causes the internal python undo stack not to be flushed, leaving dangling objects
+that might crash maya once they are undon.</li>
+</ul>
+<blockquote>
+<ul class="rst-simple">
+<li>WORKAROUND: Mark these methods with &#64;notundoable and assure they are not
+called by an undoable method</li>
+</ul>
+</blockquote>
+<ul class="rst-simple">
+<li>calling MFn methods on a node usually means that undo is not supported for it.</li>
+</ul>
+</blockquote>
+</div>
+<div class="rst-section" id="rst-configuration">
+<h1 class="heading">Configuration</h1>
+<p>To globally disable the undo queue using cmds.undo will disable tracking of opeartions, but will
+still call the mel command.</p>
+<p>Disable the 'undoable' decorator effectively remove the surrounding mel script calls
+by setting the <tt class="rst-docutils literal">MRV_UNDO_ENABLED</tt> environment variable to 0 ( default 1 ).
+Additionally it will turn off the maya undo queue as a convenience.</p>
+<p>If the mrv undo queue is disabled, MPlugs will not store undo information anymore
+and do not incur any overhead.</p>
+</div>
+<div class="rst-section" id="rst-implementing-an-undoable-method">
+<h1 class="heading">Implementing an undoable method</h1>
+<blockquote>
+<ul class="rst-simple">
+<li>decorate with &#64;undoable</li>
+<li>minimize probability that your operation will fail before creating an operation ( for efficiency )</li>
+<li>only use operation's doIt() method to apply your changes</li>
+<li>if you raise, you should not have created an undo operation</li>
+</ul>
+</blockquote>
+</div>
+
+<!-- ==================== CLASSES ==================== -->
+<a name="section-Classes"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Classes</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Classes"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="mrv.maya.undo.UndoCmd-class.html" class="summary-name" onclick="show_private();">UndoCmd</a>
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Utilities</th></tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="mrv.maya.undo.MuteUndo-class.html" class="summary-name" onclick="show_private();">MuteUndo</a><br />
+      Instantiate this class to disable the maya undo queue - on deletion, the
+previous state will be restored
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="mrv.maya.undo.StartUndo-class.html" class="summary-name">StartUndo</a><br />
+      Utility class that will push the undo stack on __init__ and pop it on __del__
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="mrv.maya.undo.UndoRecorder-class.html" class="summary-name">UndoRecorder</a><br />
+      Utility class allowing to undo and redo operations on the python command
+stack so far to be undone and redone separately and independently of maya's
+undo queue.
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Operations</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="mrv.maya.undo.Operation-class.html" class="summary-name">Operation</a><br />
+      Simple command class as base for all operations
+All undoable/redoable operation must support it
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="mrv.maya.undo.GenericOperation-class.html" class="summary-name">GenericOperation</a><br />
+      Simple oeration allowing to use a generic doit and untoit call to be accessed
+using the operation interface.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="mrv.maya.undo.GenericOperationStack-class.html" class="summary-name">GenericOperationStack</a><br />
+      Operation able to undo generic callable commands ( one or multiple ).
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="mrv.maya.undo.DGModifier-class.html" class="summary-name">DGModifier</a><br />
+      Undo-aware DG Modifier - using it will automatically put it onto the API undo queue
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="mrv.maya.undo.DagModifier-class.html" class="summary-name">DagModifier</a><br />
+      undo-aware DAG modifier, copying all extra functions from DGModifier
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTIONS ==================== -->
+<a name="section-Functions"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Functions</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Functions"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="initializePlugin"></a><span class="summary-sig-name">initializePlugin</span>(<span class="summary-sig-arg">mobject</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.undo-pysrc.html#initializePlugin">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="uninitializePlugin"></a><span class="summary-sig-name">uninitializePlugin</span>(<span class="summary-sig-arg">mobject</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.undo-pysrc.html#uninitializePlugin">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8"  class="private">
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Initialization</th></tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.undo-module.html#__initialize" class="summary-sig-name" onclick="show_private();">__initialize</a>()</span><br />
+      Assure our plugin is loaded - called during module intialization</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.undo-pysrc.html#__initialize">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Utilities</th></tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_incrStack"></a><span class="summary-sig-name">_incrStack</span>()</span><br />
+      Indicate that a new method level was reached</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.undo-pysrc.html#_incrStack">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_decrStack"></a><span class="summary-sig-name">_decrStack</span>(<span class="summary-sig-arg">name</span>=<span class="summary-sig-default">&quot;unnamed&quot;</span>)</span><br />
+      Indicate that a method level was exitted - and cause the
+undo queue to be stored on the command if appropriate
+We try to call the command only if needed</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.undo-pysrc.html#_decrStack">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.undo-module.html#startUndo" class="summary-sig-name" onclick="show_private();">startUndo</a>()</span><br />
+      Call before you start undoable operations</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.undo-pysrc.html#startUndo">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.undo-module.html#endUndo" class="summary-sig-name">endUndo</a>()</span><br />
+      Call before your function with undoable operations ends</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.undo-pysrc.html#endUndo">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.undo-module.html#undoAndClear" class="summary-sig-name">undoAndClear</a>()</span><br />
+      Undo all operations on the undo stack and clear it afterwards.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.undo-pysrc.html#undoAndClear">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Decorators</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.undo-module.html#undoable" class="summary-sig-name">undoable</a>(<span class="summary-sig-arg">func</span>)</span><br />
+      Decorator wrapping func so that it will start undo when it begins and end undo
+when it ends.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.undo-pysrc.html#undoable">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.undo-module.html#forceundoable" class="summary-sig-name">forceundoable</a>(<span class="summary-sig-arg">func</span>)</span><br />
+      As undoable, but will enable the undo queue if it is currently disabled.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.undo-pysrc.html#forceundoable">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.undo-module.html#notundoable" class="summary-sig-name">notundoable</a>(<span class="summary-sig-arg">func</span>)</span><br />
+      Decorator wrapping a function into a muteUndo call, thus all undoable operations
+called from this method will not enter the UndoRecorder and thus pollute it.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.undo-pysrc.html#notundoable">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== VARIABLES ==================== -->
+<a name="section-Variables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Variables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_undo_enabled_envvar"></a><span class="summary-name">_undo_enabled_envvar</span> = <code title="&quot;MRV_UNDO_ENABLED&quot;">&quot;MRV_UNDO_ENABLED&quot;</code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="mrv.maya.undo-module.html#_should_initialize_plugin" class="summary-name" onclick="show_private();">_should_initialize_plugin</a> = <code title="int(os.environ.get(_undo_enabled_envvar, True))">int(os.environ.get(_undo_enabled_e<code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8"  class="private">
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Undo Plugin</th></tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="isUndoing"></a><span class="summary-name">isUndoing</span> = <code title="api.MGlobal.isUndoing">api.MGlobal.isUndoing</code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="undoInfo"></a><span class="summary-name">undoInfo</span> = <code title="cmds.undoInfo">cmds.undoInfo</code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="mrv.maya.undo-module.html#_maya_undo_enabled" class="summary-name" onclick="show_private();">_maya_undo_enabled</a> = <code title="int(os.environ.get(_undo_enabled_envvar, True))">int(os.environ.get(_undo_enabled_envvar, <code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTION DETAILS ==================== -->
+<a name="section-FunctionDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Function Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-FunctionDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__initialize"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__initialize</span>()</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.undo-pysrc.html#__initialize">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Assure our plugin is loaded - called during module intialization
+  <dl class="fields">
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        will only load the plugin if the undo system is not disabled
+      </p>
+</div></td></tr></table>
+</div>
+<a name="startUndo"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">startUndo</span>()</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.undo-pysrc.html#startUndo">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Call before you start undoable operations
+  <dl class="fields">
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        prefer the &#64;undoable decorator
+      </p>
+</div></td></tr></table>
+</div>
+<a name="endUndo"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">endUndo</span>()</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.undo-pysrc.html#endUndo">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Call before your function with undoable operations ends
+  <dl class="fields">
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        prefer the &#64;undoable decorator
+      </p>
+</div></td></tr></table>
+</div>
+<a name="undoAndClear"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">undoAndClear</span>()</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.undo-pysrc.html#undoAndClear">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Undo all operations on the undo stack and clear it afterwards. The respective
+undo command will do nothing once undo, but would undo all future operations.
+The state of the undoqueue is well defined afterwards, but callers may stop functioning
+if their changes have been undone.
+  <dl class="fields">
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        can be used if you need control over undo in very specific operations and in
+a well defined context
+      </p>
+</div></td></tr></table>
+</div>
+<a name="undoable"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">undoable</span>(<span class="sig-arg">func</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.undo-pysrc.html#undoable">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Decorator wrapping func so that it will start undo when it begins and end undo
+when it ends. It assures that only toplevel undoable functions will actually produce
+an undo event
+To mark a function undoable, decorate it:</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span>@undoable
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">def</span> <span class="py-defname">func</span>( ):
+<span class="py-prompt">&gt;&gt;&gt; </span>    <span class="py-keyword">pass</span></pre>
+  <dl class="fields">
+  </dl>
+<div class="fields">      <strong>Notes:</strong>
+      <ul class="nomargin-top">
+        <li>
+        Using decorated functions appears to be only FASTER  than implementing it
+manually, thus using these is will greatly improve code readability
+        </li>
+        <li>
+        if you use undoable functions, you should mark yourself undoable too - otherwise the
+functions you call will create individual undo steps
+        </li>
+        <li>
+        if the undo queue is disabled, the decorator does nothing
+        </li>
+      </ul>
+</div></td></tr></table>
+</div>
+<a name="forceundoable"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">forceundoable</span>(<span class="sig-arg">func</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.undo-pysrc.html#forceundoable">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  As undoable, but will enable the undo queue if it is currently disabled. It will
+forcibly enable maya's undo queue.
+  <dl class="fields">
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        can only be employed reasonably if used in conjunction with <a href="mrv.maya.undo-module.html#undoAndClear" class="link">undoAndClear</a>
+as it will restore the old state of the undoqueue afterwards, which might be off, thus
+rendering attempts to undo impossible
+      </p>
+</div></td></tr></table>
+</div>
+<a name="notundoable"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">notundoable</span>(<span class="sig-arg">func</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.undo-pysrc.html#notundoable">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Decorator wrapping a function into a muteUndo call, thus all undoable operations
+called from this method will not enter the UndoRecorder and thus pollute it.
+  <dl class="fields">
+  </dl>
+<div class="fields">      <strong>Notes:</strong>
+      <ul class="nomargin-top">
+        <li>
+        use it if your method cannot support undo, butcalls undoable operations itself
+        </li>
+        <li>
+        all functions using a notundoable should be notundoable themselves
+        </li>
+        <li>
+        does nothing if the undo queue is globally disabled
+        </li>
+      </ul>
+</div></td></tr></table>
+</div>
+<br />
+<!-- ==================== VARIABLES DETAILS ==================== -->
+<a name="section-VariablesDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Variables Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-VariablesDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="_should_initialize_plugin"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">_should_initialize_plugin</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+int(os.environ.get(_undo_enabled_envvar, True))
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_maya_undo_enabled"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">_maya_undo_enabled</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+int(os.environ.get(_undo_enabled_envvar, True))
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Nov 30 14:48:31 2010
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

@@ -1,0 +1,587 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>mrv.maya.automation.qa.QAMELMixin</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="mrv-module.html">Package&nbsp;mrv</a> ::
+        <a href="mrv.maya-module.html">Package&nbsp;maya</a> ::
+        <a href="mrv.maya.automation-module.html">Package&nbsp;automation</a> ::
+        <a href="mrv.maya.automation.qa-module.html">Module&nbsp;qa</a> ::
+        Class&nbsp;QAMELMixin
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="mrv.maya.automation.qa.QAMELMixin-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class QAMELMixin</h1><p class="nomargin-top"><span class="codelink"><a href="mrv.maya.automation.qa-pysrc.html#QAMELMixin">source&nbsp;code</a></span></p>
+<pre class="base-tree">
+object --+
+         |
+        <strong class="uidshort">QAMELMixin</strong>
+</pre>
+
+<hr />
+<p>Base class allowing to process MEL baesd plugs as created by our metaclass</p>
+<dl class="rst-docutils">
+<dt><strong>Configuration</strong>:</dt>
+<dd><p class="rst-first">The following variables MUST be used to setup this class once you have derived
+from it:</p>
+<blockquote>
+<ul>
+<li><dl class="rst-first rst-docutils">
+<dt>mel_index_proc:</dt>
+<dd><dl class="rst-first rst-last rst-docutils">
+<dt>produdure name with signature func( ) returning string array in following format:</dt>
+<dd><p class="rst-first rst-last">[n*3+0] = checkname : the name of the check, use CamelCase names or names_with_underscore
+The checkname is also used as id to identify the check lateron
+[n*3+1] = description: Single sentence desciption of the check targeted at the end user
+[n*3+2] = can_fix:      Boolean value indicating whether the check can also fix the issue</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</li>
+<li><dl class="rst-first rst-docutils">
+<dt>mel_check_proc:</dt>
+<dd><dl class="rst-first rst-docutils">
+<dt>procedure called to actually process the given check, signature is:</dt>
+<dd><p class="rst-first">func( check_name, should_fix )
+returning list of strings as follows:</p>
+<blockquote class="rst-last">
+<p>[0] = x number of fixed items
+[1] = header
+[1:1+x] = x fixed items
+[2+x:n] = n invalid items</p>
+</blockquote>
+</dd>
+</dl>
+<p>items are either objects or in general anything you check for. The check is
+considered to be failed if there is at least one invalid item.</p>
+<p class="rst-last">If you fixed items, all previously failed items should now be returned as
+valid items</p>
+</dd>
+</dl>
+</li>
+</ul>
+</blockquote>
+<dl class="rst-last rst-docutils">
+<dt>static_mel_plugs:</dt>
+<dd>Please note that your class must implemnent plugs and extend the super class
+result by the result of <a href="mrv.maya.automation.qa.QAMELMixin-class.html#listMELChecks" class="link">listMELChecks</a> to dynamically retrieve the available
+checks</dd>
+</dl>
+</dd>
+</dl>
+
+<hr />
+<div class="fields">      <p><strong>Note:</strong>
+        this class assumes it is used on a process
+      </p>
+</div><!-- ==================== NESTED CLASSES ==================== -->
+<a name="section-NestedClasses"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Nested Classes</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-NestedClasses"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="mrv.maya.automation.qa.QAMetaMel-class.html" class="summary-name">__metaclass__</a><br />
+      Metaclass allowing to create plugs based on a MEL implementation, allowing
+to decide whether checks are Python or MEL implemented, but still running natively
+in python
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Configuration</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="mrv.maya.automation.qa.QAMELCheck-class.html" class="summary-name">check_plug_cls</a><br />
+      Specialized version of the QACheck allowing to use our own MEL attribute
+contianiing more information
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.automation.qa.QAMELMixin-class.html#listMELChecks" class="summary-sig-name">listMELChecks</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns:
+list all checks ( Plugs ) available on this class that are implemented
+in MEL</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.automation.qa-pysrc.html#QAMELMixin.listMELChecks">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.automation.qa.QAMELMixin-class.html#isMELCheck" class="summary-sig-name">isMELCheck</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">check</span>)</span><br />
+      Returns:
+True if the given check plug is implemented in MEL and can be handled
+there accordingly</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.automation.qa-pysrc.html#QAMELMixin.isMELCheck">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.automation.qa.QAMELMixin-class.html#_rval_to_checkResult" class="summary-sig-name" onclick="show_private();">_rval_to_checkResult</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">string_array</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Returns:
+check result as parsed fom string array</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.automation.qa-pysrc.html#QAMELMixin._rval_to_checkResult">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.automation.qa.QAMELMixin-class.html#handleMELCheck" class="summary-sig-name">handleMELCheck</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">check</span>,
+        <span class="summary-sig-arg">mode</span>)</span><br />
+      Called to handle the given check in the given mode</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.automation.qa-pysrc.html#QAMELMixin.handleMELCheck">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__init__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__str__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS METHODS ==================== -->
+<a name="section-ClassMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.automation.qa.QAMELMixin-class.html#melChecks" class="summary-sig-name">melChecks</a>(<span class="summary-sig-arg">cls</span>,
+        <span class="summary-sig-arg">predicate</span>=<span class="summary-sig-default">lambda p: True</span>)</span><br />
+      Returns:
+list of MEL checks ( plugs ) representing checks defined by MEL</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.automation.qa-pysrc.html#QAMELMixin.melChecks">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Configuration</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="mel_index_proc"></a><span class="summary-name">mel_index_proc</span> = <code title="None">None</code><br />
+      hash(x)
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="mel_check_proc"></a><span class="summary-name">mel_check_proc</span> = <code title="None">None</code><br />
+      hash(x)
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="static_mel_plugs"></a><span class="summary-name">static_mel_plugs</span> = <code title="True">True</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="check_result_cls"></a><span class="summary-name">check_result_cls</span> = <code title="QACheckResult">QACheckResult</code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="listMELChecks"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">listMELChecks</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.automation.qa-pysrc.html#QAMELMixin.listMELChecks">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>list all checks ( Plugs ) available on this class that are implemented
+in MEL</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="isMELCheck"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">isMELCheck</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">check</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.automation.qa-pysrc.html#QAMELMixin.isMELCheck">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>True if the given check plug is implemented in MEL and can be handled
+there accordingly</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_rval_to_checkResult"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_rval_to_checkResult</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">string_array</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.automation.qa-pysrc.html#QAMELMixin._rval_to_checkResult">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>kwargs</code></strong> - will be given to initializer of check result instance</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>check result as parsed fom string array</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="melChecks"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">melChecks</span>(<span class="sig-arg">cls</span>,
+        <span class="sig-arg">predicate</span>=<span class="sig-default">lambda p: True</span>)</span>
+    <br /><em class="fname">Class Method</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.automation.qa-pysrc.html#QAMELMixin.melChecks">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>predicate</code></strong> - only return plug if predicate( item ) yield True</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>list of MEL checks ( plugs ) representing checks defined by MEL</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="handleMELCheck"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">handleMELCheck</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">check</span>,
+        <span class="sig-arg">mode</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.automation.qa-pysrc.html#QAMELMixin.handleMELCheck">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Called to handle the given check in the given mode
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>QACheckResult of the result generated by MEL</dd>
+    <dt>Raises:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code><strong class='fraise'>RuntimeError</strong></code> - If MEL throws an error</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Nov 30 14:48:32 2010
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

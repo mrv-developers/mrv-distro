@@ -1,0 +1,1032 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>mrv.dge._PlugShell</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="mrv-module.html">Package&nbsp;mrv</a> ::
+        <a href="mrv.dge-module.html">Module&nbsp;dge</a> ::
+        Class&nbsp;_PlugShell
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="mrv.dge._PlugShell-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class _PlugShell</h1><p class="nomargin-top"><span class="codelink"><a href="mrv.dge-pysrc.html#_PlugShell">source&nbsp;code</a></span></p>
+<pre class="base-tree">
+object --+    
+         |    
+     tuple --+
+             |
+            <strong class="uidshort">_PlugShell</strong>
+</pre>
+
+<dl><dt>Known Subclasses:</dt>
+<dd>
+      <ul class="subclass-list">
+<li class="private"><a href="mrv.dgfe._OIShell-class.html" onclick="show_private();">dgfe._OIShell</a></li><li class="private">, <a href="mrv.dgfe._IOShell-class.html" onclick="show_private();">dgfe._IOShell</a></li>  </ul>
+</dd></dl>
+
+<hr />
+<p>Handles per-node-instance plug connection setup and storage. As plugs are
+descriptors and thus an instance of the class, per-node-instance information needs
+special treatment.
+This class is being returned whenever the descriptors get and set methods are called,
+it contains information about the node and the plug being involved, allowing to track
+connection info directly using the node dict</p>
+<p>This allows plugs to be connected, and information to flow through the dependency graph.
+Plugs never act alone since they always belong to a parent node that will be asked for
+value computations if the value is not yet cached.
+:note: Do not instantiate this class youself, it must be created by the node as different
+node types can use different versions of this shell</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>tuple</code></b>:
+      <code>__add__</code>,
+      <code>__contains__</code>,
+      <code>__eq__</code>,
+      <code>__ge__</code>,
+      <code>__getattribute__</code>,
+      <code>__getitem__</code>,
+      <code>__getnewargs__</code>,
+      <code>__getslice__</code>,
+      <code>__gt__</code>,
+      <code>__hash__</code>,
+      <code>__iter__</code>,
+      <code>__le__</code>,
+      <code>__len__</code>,
+      <code>__lt__</code>,
+      <code>__mul__</code>,
+      <code>__ne__</code>,
+      <code>__rmul__</code>,
+      <code>__sizeof__</code>,
+      <code>count</code>,
+      <code>index</code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__init__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__setattr__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Object Overrides</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__getattr__"></a><span class="summary-sig-name">__getattr__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">attr</span>)</span><br />
+      Allow easy attribute access while staying memory efficient</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dge-pysrc.html#_PlugShell.__getattr__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dge._PlugShell-class.html#__repr__" class="summary-sig-name">__repr__</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      repr(x)</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dge-pysrc.html#_PlugShell.__repr__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dge._PlugShell-class.html#__str__" class="summary-sig-name">__str__</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      str(x)</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dge-pysrc.html#_PlugShell.__str__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Values</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dge._PlugShell-class.html#get" class="summary-sig-name">get</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">mode</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Returns:
+value of the plug</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dge-pysrc.html#_PlugShell.get">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dge._PlugShell-class.html#set" class="summary-sig-name">set</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">value</span>,
+        <span class="summary-sig-arg">ignore_connection</span>=<span class="summary-sig-default">False</span>)</span><br />
+      Set the given value to be used in our plug
+:param ignore_connection: if True, the plug can be destination of a connection and
+will still get its value set - usually it would be overwritten by the value form the
+connection.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dge-pysrc.html#_PlugShell.set">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dge._PlugShell-class.html#compatabilityRate" class="summary-sig-name">compatabilityRate</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">value</span>)</span><br />
+      Compute compatability rate for teh given value</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dge-pysrc.html#_PlugShell.compatabilityRate">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Connections</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dge._PlugShell-class.html#connect" class="summary-sig-name">connect</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">otherplugshell</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Connect this plug to otherplugshell such that otherplugshell is an input plug for our output</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dge-pysrc.html#_PlugShell.connect">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dge._PlugShell-class.html#disconnect" class="summary-sig-name">disconnect</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">otherplugshell</span>)</span><br />
+      Remove the connection to otherplugshell if we are connected to it.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dge-pysrc.html#_PlugShell.disconnect">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dge._PlugShell-class.html#input" class="summary-sig-name">input</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">predicate</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2344668&gt;</span>)</span><br />
+      Returns:
+the connected input plug or None if there is no such connection</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dge-pysrc.html#_PlugShell.input">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dge._PlugShell-class.html#outputs" class="summary-sig-name">outputs</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">predicate</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2344758&gt;</span>)</span><br />
+      Returns:
+a list of plugs being the destination of the connection</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dge-pysrc.html#_PlugShell.outputs">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dge._PlugShell-class.html#connections" class="summary-sig-name">connections</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">inpt</span>,
+        <span class="summary-sig-arg">output</span>,
+        <span class="summary-sig-arg">predicate</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2344848&gt;</span>)</span><br />
+      Returns:
+get all input and or output connections from this shell
+or to this shell as edges ( sourceshell, destinationshell )</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dge-pysrc.html#_PlugShell.connections">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dge._PlugShell-class.html#isConnected" class="summary-sig-name">isConnected</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns:
+True, if the shell is connected as source or as destination of a connection</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dge-pysrc.html#_PlugShell.isConnected">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="iterShells"></a><span class="summary-sig-name">iterShells</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Iterate plugs and their connections starting at this plug
+:return: generator for plug shells
+:note: supports all options of <a href="mrv.dge._PlugShell-class.html#iterShells" class="link">iterShells</a>, this method allows syntax like:
+node.outAttribute.iterShells( )</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dge-pysrc.html#_PlugShell.iterShells">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Caching</th></tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_cachename"></a><span class="summary-sig-name">_cachename</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dge-pysrc.html#_PlugShell._cachename">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dge._PlugShell-class.html#hasCache" class="summary-sig-name">hasCache</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns:
+True if currently store a cached value</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dge-pysrc.html#_PlugShell.hasCache">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setCache"></a><span class="summary-sig-name">setCache</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">value</span>)</span><br />
+      Set the given value to be stored in our cache
+:raise: TypeError if the value is not compatible to our defined type</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dge-pysrc.html#_PlugShell.setCache">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dge._PlugShell-class.html#cache" class="summary-sig-name">cache</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns:
+the cached value or raise</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dge-pysrc.html#_PlugShell.cache">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dge._PlugShell-class.html#clearCache" class="summary-sig-name">clearCache</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">clear_affected</span>=<span class="summary-sig-default">False</span>,
+        <span class="summary-sig-arg">cleared_shells_set</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Empty the cache of our plug
+:param clear_affected: if True, the caches of our affected plugs ( connections
+or affects relations ) will also be cleared
+This operation is recursive, and needs to be as different shells on different nodes
+might do things differently.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dge-pysrc.html#_PlugShell.clearCache">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Name Overrides</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__rshift__"></a><span class="summary-sig-name">__rshift__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>)</span><br />
+      force</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dge-pysrc.html#_PlugShell.__rshift__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== STATIC METHODS ==================== -->
+<a name="section-StaticMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Static Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-StaticMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Object Overrides</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">a new object with type S, a subtype of T</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dge._PlugShell-class.html#__new__" class="summary-sig-name">__new__</a>(<span class="summary-sig-arg">cls</span>,
+        <span class="summary-sig-arg">*args</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dge-pysrc.html#_PlugShell.__new__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__new__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__new__</span>(<span class="sig-arg">cls</span>,
+        <span class="sig-arg">*args</span>)</span>
+    <br /><em class="fname">Static Method</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dge-pysrc.html#_PlugShell.__new__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns: a new object with type S, a subtype of T</dt>
+    <dt>Overrides:
+        object.__new__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__repr__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__repr__</span>(<span class="sig-arg">self</span>)</span>
+    <br /><em class="fname">(Representation operator)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dge-pysrc.html#_PlugShell.__repr__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>repr(x)</p>
+  <dl class="fields">
+    <dt>Overrides:
+        object.__repr__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__str__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__str__</span>(<span class="sig-arg">self</span>)</span>
+    <br /><em class="fname">(Informal representation operator)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dge-pysrc.html#_PlugShell.__str__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>str(x)</p>
+  <dl class="fields">
+    <dt>Overrides:
+        object.__str__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">mode</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dge-pysrc.html#_PlugShell.get">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>mode</code></strong> - optional arbitary value specifying the mode of the get attempt</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>value of the plug</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="set"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">value</span>,
+        <span class="sig-arg">ignore_connection</span>=<span class="sig-default">False</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dge-pysrc.html#_PlugShell.set">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Set the given value to be used in our plug
+:param ignore_connection: if True, the plug can be destination of a connection and
+will still get its value set - usually it would be overwritten by the value form the
+connection. The set value will be cleared if something upstream in it's connection chain
+changes.
+:raise AssertionError: the respective attribute must be cached, otherwise
+the value will be lost
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="compatabilityRate"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">compatabilityRate</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">value</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dge-pysrc.html#_PlugShell.compatabilityRate">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Compute compatability rate for teh given value
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>value between 0 and 255, 0 means no compatability, 255 a perfect match
+if larger than 0, the plug can hold the value ( assumed the flags are set correctly )</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="connect"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">connect</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">otherplugshell</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dge-pysrc.html#_PlugShell.connect">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Connect this plug to otherplugshell such that otherplugshell is an input plug for our output
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>kwargs</code></strong> - everything supported by <a href="mrv.dge.Graph-class.html#connect" class="link">Graph.connect</a></li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>self on success, allows chained connections</dd>
+    <dt>Raises:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code><strong class='fraise'><a href="mrv.dge.PlugAlreadyConnected-class.html">PlugAlreadyConnected</a></strong></code> - if otherplugshell is connected and force is False</li>
+        <li><code><strong class='fraise'><a href="mrv.dge.PlugIncompatible-class.html">PlugIncompatible</a></strong></code> - if otherplugshell does not appear to be compatible to this one</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="disconnect"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">disconnect</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">otherplugshell</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dge-pysrc.html#_PlugShell.disconnect">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Remove the connection to otherplugshell if we are connected to it.
+:note: does not raise if no connection is present
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="input"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">input</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">predicate</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2344668&gt;</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dge-pysrc.html#_PlugShell.input">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>predicate</code></strong> - plug will only be returned if predicate is true for it</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>the connected input plug or None if there is no such connection</dd>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        input plugs have on plug at most, output plugs can have more than one
+connected plug
+      </p>
+</div></td></tr></table>
+</div>
+<a name="outputs"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">outputs</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">predicate</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2344758&gt;</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dge-pysrc.html#_PlugShell.outputs">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>predicate</code></strong> - plug will only be returned if predicate is true for it - shells will be passed in</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>a list of plugs being the destination of the connection</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="connections"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">connections</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">inpt</span>,
+        <span class="sig-arg">output</span>,
+        <span class="sig-arg">predicate</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2344848&gt;</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dge-pysrc.html#_PlugShell.connections">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>predicate</code></strong> - return true for each destination shell that you can except in the
+returned edge or the sourceshell where your shell is the destination.</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>get all input and or output connections from this shell
+or to this shell as edges ( sourceshell, destinationshell )</dd>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        Use this method to get edges read for connection/disconnection
+      </p>
+</div></td></tr></table>
+</div>
+<a name="isConnected"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">isConnected</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dge-pysrc.html#_PlugShell.isConnected">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>True, if the shell is connected as source or as destination of a connection</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="hasCache"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">hasCache</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dge-pysrc.html#_PlugShell.hasCache">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>True if currently store a cached value</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="cache"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">cache</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dge-pysrc.html#_PlugShell.cache">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>the cached value or raise</dd>
+    <dt>Raises:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code><strong class='fraise'>ValueError</strong></code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="clearCache"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">clearCache</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">clear_affected</span>=<span class="sig-default">False</span>,
+        <span class="sig-arg">cleared_shells_set</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dge-pysrc.html#_PlugShell.clearCache">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Empty the cache of our plug
+:param clear_affected: if True, the caches of our affected plugs ( connections
+or affects relations ) will also be cleared
+This operation is recursive, and needs to be as different shells on different nodes
+might do things differently.
+:param cleared_shells_set: if set, it can be used to track which plugs have already been dirtied to
+prevent recursive loops
+Propagation will happen even if we do not have a cache to clear ourselves
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Nov 30 14:48:32 2010
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

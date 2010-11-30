@@ -1,0 +1,387 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>mrv.maya.nt.typ &mdash; mrv v1.0.1-develop documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.1-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="mrv v1.0.1-develop documentation" href="../index.html" />
+    <link rel="next" title="mrv.maya.nt.set" href="mrv.maya.nt.set.html" />
+    <link rel="prev" title="mrv.maya.nt.it" href="mrv.maya.nt.it.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.nt.set.html" title="mrv.maya.nt.set"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.nt.it.html" title="mrv.maya.nt.it"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-mrv.maya.nt.typ">
+<h1><tt class="xref docutils literal"><span class="pre">mrv.maya.nt.typ</span></tt><a class="headerlink" href="#module-mrv.maya.nt.typ" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="api/mrv.maya.nt.typ-module.html">Epydoc: mrv.maya.nt.typ</a></p>
+<p>Houses the MetaClass able to setup new types to work within the system. This can 
+be considered the heart of the node wrapping engine, but it plays together with 
+the implementation in the <cite>base</cite> module.</p>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mrv.maya.nt.typ._addCustomType">
+<tt class="descclassname">mrv.maya.nt.typ.</tt><tt class="descname">_addCustomType</tt><big>(</big><em>targetmoduledict</em>, <em>parentclsname</em>, <em>newclsname</em>, <em>metaclass=&lt;class 'mrv.maya.nt.typ.MetaClassCreatorNodes'&gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.typ._addCustomType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a custom type to the system such that a node with the given type will
+automatically be wrapped with the corresponding class name</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>targetmoduledict</em> &#8211; the module&#8217;s dict to which standin classes are supposed to be added</li>
+<li><em>parentclsname</em> &#8211; the name of the parent node type - if your new class
+has several parents, you have to add the new types beginning at the first exsiting parent
+as written in the maya/cache/nodeHierarchy.html file</li>
+<li><em>newclsname</em> &#8211; the new name of your class - it must exist targetmodule</li>
+<li><em>metaclass</em> &#8211; meta class object to be called to modify your type upon creation
+It will not be called if the class already exist in targetModule. Its recommended to derive it
+from the metaclass given as default value.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises KeyError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">if the parentclsname does not exist</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.nt.typ._addCustomTypeFromDagtree">
+<tt class="descclassname">mrv.maya.nt.typ.</tt><tt class="descname">_addCustomTypeFromDagtree</tt><big>(</big><em>targetmoduledict</em>, <em>dagtree</em>, <em>metaclass=&lt;class 'mrv.maya.nt.typ.MetaClassCreatorNodes'&gt;</em>, <em>force_creation=False</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.typ._addCustomTypeFromDagtree" title="Permalink to this definition">¶</a></dt>
+<dd><p>As <cite>_addCustomType</cite>, but allows to enter the type relations using a
+<cite>mrv.util.DAGTree</cite> instead of individual names. Thus multiple edges can be added at once</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">special care is being taken to make force_creation work - first all the standind classes
+are needed, then we can create them - just iterating the nodes in undefined order will not work
+as a parent node might not be created yet</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">node names in dagtree must be uncapitalized</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.nt.typ._removeCustomType">
+<tt class="descclassname">mrv.maya.nt.typ.</tt><tt class="descname">_removeCustomType</tt><big>(</big><em>targetmoduledict</em>, <em>customTypeName</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.typ._removeCustomType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the given typename from the given target module&#8217;s dictionary as 
+well as from internal caches</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">does nothing if the type does not exist</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>targetmoduledict</em> &#8211; dict of your module to remove the type from</li>
+<li><em>customTypeName</em> &#8211; name of the type to be removed, its expected
+to be capitalized</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.nt.typ.capitalize">
+<tt class="descclassname">mrv.maya.nt.typ.</tt><tt class="descname">capitalize</tt><big>(</big><em>s</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.typ.capitalize" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">s with first letter capitalized</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.nt.typ.initNodeHierarchy">
+<tt class="descclassname">mrv.maya.nt.typ.</tt><tt class="descname">initNodeHierarchy</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.typ.initNodeHierarchy" title="Permalink to this definition">¶</a></dt>
+<dd>Initialize the global tree of types, providing a hierarchical relationship between 
+the node typename strings</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.nt.typ.initTypeNameToMfnClsMap">
+<tt class="descclassname">mrv.maya.nt.typ.</tt><tt class="descname">initTypeNameToMfnClsMap</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.typ.initTypeNameToMfnClsMap" title="Permalink to this definition">¶</a></dt>
+<dd>Fill the cache map supplying additional information about the MFNClass to use
+when creating the classes</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.nt.typ.initWrappers">
+<tt class="descclassname">mrv.maya.nt.typ.</tt><tt class="descname">initWrappers</tt><big>(</big><em>targetmoduledict</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.typ.initWrappers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create Standin Classes that will delay the creation of the actual class till
+the first instance is requested</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>targetmoduledict</em> &#8211; the module&#8217;s dictionary (globals()) to which to put the wrappers</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.nt.typ.prefetchMFnMethods">
+<tt class="descclassname">mrv.maya.nt.typ.</tt><tt class="descname">prefetchMFnMethods</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.typ.prefetchMFnMethods" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch and install all mfn methods on all types supporting a function set.
+This should only be done to help interactive mode, but makes absolutely no 
+sense in the default mode of operation when everything is produced on demand.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Attaches docstrings as well</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">integer representing the number of generated methods</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.nt.typ.uncapitalize">
+<tt class="descclassname">mrv.maya.nt.typ.</tt><tt class="descname">uncapitalize</tt><big>(</big><em>s</em>, <em>preserveAcronymns=False</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.typ.uncapitalize" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal"><span class="pre">s</span></tt> with first letter lower case</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>preserveAcronymns</em> &#8211; enabled ensures that &#8216;NTSC&#8217; does not become &#8216;nTSC&#8217;</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">from pymel</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="api/mrv.maya.nt.typ-module.html#MEnumeration">Epydoc: mrv.maya.nt.typ</a></p>
+<dl class="class">
+<dt id="mrv.maya.nt.typ.MEnumeration">
+<em class="property">class </em><tt class="descclassname">mrv.maya.nt.typ.</tt><tt class="descname">MEnumeration</tt><a class="headerlink" href="#mrv.maya.nt.typ.MEnumeration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">tuple</span></tt></p>
+<p>Simple enumeration class which allows access to its enumeration using 
+getattr access. 
+As it is a tuple as well, one can access the enumeration values in the right sequencial
+order</p>
+<dl class="attribute">
+<dt id="mrv.maya.nt.typ.MEnumeration.count">
+<tt class="descname">count</tt><a class="headerlink" href="#mrv.maya.nt.typ.MEnumeration.count" title="Permalink to this definition">¶</a></dt>
+<dd>T.count(value) -&gt; integer &#8211; return number of occurrences of value</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.maya.nt.typ.MEnumeration.create">
+<em class="property">classmethod </em><tt class="descname">create</tt><big>(</big><em>ed</em>, <em>mfncls</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.typ.MEnumeration.create" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">new instance of this type as initialized from the EnumDescriptor ed and 
+the mfncls</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.nt.typ.MEnumeration.index">
+<tt class="descname">index</tt><a class="headerlink" href="#mrv.maya.nt.typ.MEnumeration.index" title="Permalink to this definition">¶</a></dt>
+<dd>T.index(value, [start, [stop]]) -&gt; integer &#8211; return first index of value.
+Raises ValueError if the value is not present.</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.typ.MEnumeration.nameByValue">
+<tt class="descname">nameByValue</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.typ.MEnumeration.nameByValue" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">name string with the given integer value</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>value</em> &#8211; integer value of this enumeration</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises ValueError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if value is not in the enumeration</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.nt.typ-module.html#MetaClassCreator">Epydoc: mrv.maya.nt.typ</a></p>
+<dl class="class">
+<dt id="mrv.maya.nt.typ.MetaClassCreator">
+<em class="property">class </em><tt class="descclassname">mrv.maya.nt.typ.</tt><tt class="descname">MetaClassCreator</tt><a class="headerlink" href="#mrv.maya.nt.typ.MetaClassCreator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">type</span></tt></p>
+<p>Builds the base hierarchy for the given classname based on our
+typetree</p>
+<dl class="attribute">
+<dt id="mrv.maya.nt.typ.MetaClassCreator.mro">
+<tt class="descname">mro</tt><a class="headerlink" href="#mrv.maya.nt.typ.MetaClassCreator.mro" title="Permalink to this definition">¶</a></dt>
+<dd>mro() -&gt; list
+return a type&#8217;s method resolution order</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.nt.typ.MetaClassCreatorNodes-class.html">Epydoc: mrv.maya.nt.typ.MetaClassCreatorNodes</a></p>
+<dl class="class">
+<dt id="mrv.maya.nt.typ.MetaClassCreatorNodes">
+<em class="property">class </em><tt class="descclassname">mrv.maya.nt.typ.</tt><tt class="descname">MetaClassCreatorNodes</tt><a class="headerlink" href="#mrv.maya.nt.typ.MetaClassCreatorNodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.maya.util.MetaClassCreator" class="reference external" href="mrv.maya.util.html#mrv.maya.util.MetaClassCreator"><tt class="xref docutils literal"><span class="pre">mrv.maya.util.MetaClassCreator</span></tt></a></p>
+<p>Builds the base hierarchy for the given classname based on our typetree
+:todo: build classes with slots only as members are pretermined</p>
+<dl class="attribute">
+<dt id="mrv.maya.nt.typ.MetaClassCreatorNodes.mro">
+<tt class="descname">mro</tt><a class="headerlink" href="#mrv.maya.nt.typ.MetaClassCreatorNodes.mro" title="Permalink to this definition">¶</a></dt>
+<dd>mro() -&gt; list
+return a type&#8217;s method resolution order</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.nt.typ-module.html#instancemethod">Epydoc: mrv.maya.nt.typ</a></p>
+<dl class="class">
+<dt id="mrv.maya.nt.typ.instancemethod">
+<em class="property">class </em><tt class="descclassname">mrv.maya.nt.typ.</tt><tt class="descname">instancemethod</tt><a class="headerlink" href="#mrv.maya.nt.typ.instancemethod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>instancemethod(function, instance, class)</p>
+<p>Create an instance method object.</p>
+<dl class="attribute">
+<dt id="mrv.maya.nt.typ.instancemethod.im_class">
+<tt class="descname">im_class</tt><a class="headerlink" href="#mrv.maya.nt.typ.instancemethod.im_class" title="Permalink to this definition">¶</a></dt>
+<dd>the class associated with a method</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.nt.typ.instancemethod.im_func">
+<tt class="descname">im_func</tt><a class="headerlink" href="#mrv.maya.nt.typ.instancemethod.im_func" title="Permalink to this definition">¶</a></dt>
+<dd>the function (or other callable) implementing a method</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.nt.typ.instancemethod.im_self">
+<tt class="descname">im_self</tt><a class="headerlink" href="#mrv.maya.nt.typ.instancemethod.im_self" title="Permalink to this definition">¶</a></dt>
+<dd>the instance to which a method is bound; None for unbound methods</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="../index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#"><tt class="docutils literal"><span class="pre">mrv.maya.nt.typ</span></tt></a><ul>
+<li><a class="reference external" href="#functions">Functions</a></li>
+<li><a class="reference external" href="#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="mrv.maya.nt.it.html"
+                                  title="previous chapter"><tt class="docutils literal docutils literal docutils literal"><span class="pre">mrv.maya.nt.it</span></tt></a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="mrv.maya.nt.set.html"
+                                  title="next chapter">mrv.maya.nt.set</a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/generated/mrv.maya.nt.typ.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.nt.set.html" title="mrv.maya.nt.set"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.nt.it.html" title="mrv.maya.nt.it"
+             >previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Nov 30, 2010.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

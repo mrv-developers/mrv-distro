@@ -1,0 +1,227 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Configuration &mdash; mrv v1.0.1-develop documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '#',
+        VERSION:     '1.0.1-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="top" title="mrv v1.0.1-develop documentation" href="index.html" />
+    <link rel="next" title="Development" href="develop/index.html" />
+    <link rel="prev" title="Graphical User Interfaces" href="gui.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="develop/index.html" title="Development"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="gui.html" title="Graphical User Interfaces"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">mrv v1.0.1-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="configuration">
+<h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
+<p>The framework can be configured using environment variables which have sensible defaults. A full listing can be found here, but specialized articles will reference them as well where they see it fit.</p>
+<div class="section" id="environment-variables">
+<h2>Environment Variables<a class="headerlink" href="#environment-variables" title="Permalink to this headline">¶</a></h2>
+<p>The notation used is: NAME_OF_VARIABLE (=default value). Variables with <em>_STANDALONE_</em> in their name indicate that the configuration flag will only apply if MRV is run in a standalone python interpreter, like cpython or mayapy, but has no effect if run in maya interactive mode.</p>
+<ul class="simple">
+<li><em>MRV_UNDO_ENABLED</em> (=1)</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>If enabled, the undo plugin will be loaded automatically. The undo related decorators will produce a wrapper method dealing with the undo stack which adds slight overhead. The <tt class="docutils literal"><span class="pre">MPlug.msetX</span></tt> methods will put their changes onto the undo queue as well, which requires them to query the value before its being set.</li>
+<li>If disabled, the plugin will not be loaded automatically. The most undo related decorators will just return the original method, hence no undo-related overhead occurs at runtime. Calling <tt class="docutils literal"><span class="pre">MPlug.msetX</span></tt> will be exactly the same as calling <tt class="docutils literal"><span class="pre">MPlug.setX</span></tt>.</li>
+</ul>
+</blockquote>
+<ul class="simple">
+<li><em>MRV_PERSISTENCE_ENABLED</em> (=0)</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>If enabled, the persistence module will initialize itself and load the respective plugin, which enables the <tt class="docutils literal"><span class="pre">StorageNode</span></tt> to be used.</li>
+<li>If disabled, the plugin will not be loaded automatically. In case your plugin or tool relies on the availability of persistence, call <tt class="docutils literal"><span class="pre">mrv.maya.nt.enforcePersistence</span></tt>.</li>
+</ul>
+</blockquote>
+<ul class="simple">
+<li><em>MRV_LOGGING_INI</em> (=&lt;not set&gt;)</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>If set to a path, may include environment variables, the logging module will be initialized according to the information provided in the given configuration file. The file matches the logging configuration file format described in the <a class="reference external" href="http://docs.python.org/library/logging.html#configuration">python documentation</a>.</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>An example configuration file can be <a href="_downloads/logging.cfg"><strong class="xref">downloaded here</strong></a>.</li>
+</ul>
+</blockquote>
+</blockquote>
+<ul class="simple">
+<li><em>MRV_APIPATCH_APPLY_GLOBALLY</em> (=0)</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>If enabled, the patched methods of global api classes such as the ones of <tt class="docutils literal"><span class="pre">MPlug</span></tt>, which reside in the &#8216;m&#8217; namespace, will additionally be copied into the global namespace. This makes them available as <tt class="docutils literal"><span class="pre">MPlug.msetFloat</span></tt> as well as <tt class="docutils literal"><span class="pre">MPlug.setFloat</span></tt>, possibly overriding the existing ones. Use this setting if you would like to use MRV&#8217;s enhancements more naturally when typing, but only if you can control the environment in which your program is running, within a studio for example.</li>
+<li>If disabled, all patched additions to MayaAPI types provided by MRV will reside in the &#8216;m&#8217; namespace unless they only make the type more pythonic in a general and optimized way. This is the default to assure MRV does not interfere with existing setups. All software meant for use in uncontrolled environments must use the &#8216;m&#8217; namespace methods, otherwise proper behavior is not guaranteed.</li>
+</ul>
+</blockquote>
+<ul class="simple">
+<li><em>MRV_DEBUG_MPLUG_SETX</em> (=0)</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>If enabled, all calls to <tt class="docutils literal"><span class="pre">MPlug.setX</span></tt> will raise an AssertionError. This helps to assure that you do not accidentally put in bugs related to incorrect undo by using the non-mrv, non-undoable <tt class="docutils literal"><span class="pre">MPlug.setX</span></tt> methods directly, instead of using the <tt class="docutils literal"><span class="pre">MPlug.msetX</span></tt> methods. Its adivsed to only turn this mode on for individual runs or if a bug of that kind is suspected, as the performance loss will be noticeable !</li>
+</ul>
+</blockquote>
+<ul class="simple">
+<li><em>MRV_STANDALONE_INIT_OPTIONVARS</em> (=0)</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>If enabled, MRV will assure the  optionVar database is initialized and filled with previously saved values. These are part of the user preferences.</li>
+</ul>
+</blockquote>
+<ul class="simple">
+<li><em>MRV_STANDALONE_AUTOLOAD_PLUGINS</em> (=0)</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>If enabled, plugins setup for automatic loading at startup will be loaded by MRV.</li>
+<li>Unless you can assure the computer you run on will auto-load the plugins you require, its good practice not to rely on any plugin to be auto-loaded.</li>
+</ul>
+</blockquote>
+<ul class="simple">
+<li><em>MRV_STANDALONE_RUN_USER_SETUP</em> (=0)</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>If enabled, MRV runs the userSetup.(mel|py) at the very end of its initialization routine.</li>
+</ul>
+</blockquote>
+<ul class="simple">
+<li><em>MRV_INFO_DIR</em></li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>If set, it points to one or more paths which are to contain the <em>info</em> module used by the mrv executable to allow the initial import of it.</li>
+<li>Overrides all other paths which may contain the info module, which makes it a good way to be explicit about how to configure your sub-project.</li>
+</ul>
+</blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Environment variables are only effective if they are set before the respective mrv modules are imported, hence it is not possible to alter the behavior after the import in most cases.</p>
+</div>
+</div>
+<div class="section" id="logging">
+<h2>Logging<a class="headerlink" href="#logging" title="Permalink to this headline">¶</a></h2>
+<p>MRV&#8217;s logging facility is based on the <a class="reference external" href="http://docs.python.org/library/logging.html#">built-in logging module</a> provided by the python runtime.</p>
+<p>By default, python&#8217;s logging is not initialized which is why no messages will be output at all during normal operation.</p>
+<p>If you like to change this easily, you may initialize the logging module prior to importing mrv using:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">logging</span>
+<span class="c"># INFO level shows only the most important information, as well as errors and warnings</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>MRV&#8217;s unittest framework automatically initializes the logging module on DEBUG level.</p>
+<p>If you like to have more precise control over the logging, namely which parts of MRV should log, and at which verbosity level and format, please see the <em>MRV_LOGGING_INI</em> environment variable above.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#">Configuration</a><ul>
+<li><a class="reference external" href="#environment-variables">Environment Variables</a></li>
+<li><a class="reference external" href="#logging">Logging</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="gui.html"
+                                  title="previous chapter">Graphical User Interfaces</a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="develop/index.html"
+                                  title="next chapter">Development</a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="_sources/conf.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="develop/index.html" title="Development"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="gui.html" title="Graphical User Interfaces"
+             >previous</a> |</li>
+        <li><a href="index.html">mrv v1.0.1-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Nov 30, 2010.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

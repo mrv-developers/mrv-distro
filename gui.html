@@ -1,0 +1,296 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Graphical User Interfaces &mdash; mrv v1.0.1-develop documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '#',
+        VERSION:     '1.0.1-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="top" title="mrv v1.0.1-develop documentation" href="index.html" />
+    <link rel="next" title="Configuration" href="conf.html" />
+    <link rel="prev" title="About Methods and Types" href="usage/types.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="conf.html" title="Configuration"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="usage/types.html" title="About Methods and Types"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">mrv v1.0.1-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="graphical-user-interfaces">
+<h1>Graphical User Interfaces<a class="headerlink" href="#graphical-user-interfaces" title="Permalink to this headline">¶</a></h1>
+<p>MRV wraps all ( maybe most ) user interface commands into python classes and places these into a hierarchy to allow polymorphic behaviour through inheritance. This inheritance becomes evident when studying the corresponding MEL commands, which indeed share their flags in a well defined manner.</p>
+<p>The <tt class="docutils literal"><span class="pre">ColumnLayout</span></tt> for example, is a <tt class="docutils literal"><span class="pre">Layout</span></tt>, a <tt class="docutils literal"><span class="pre">UIContainer</span></tt>, a <tt class="docutils literal"><span class="pre">SizedControl</span></tt> and a <tt class="docutils literal"><span class="pre">NamedUI</span></tt>, inheriting functionality from all its bases.</p>
+<p>All user interface classes live in the <tt class="docutils literal"><span class="pre">mrv.maya.ui</span></tt> package, and are implemented in descriptive subpackages such as <tt class="docutils literal"><span class="pre">ui.layout</span></tt>, <tt class="docutils literal"><span class="pre">ui.control</span></tt>, <tt class="docutils literal"><span class="pre">ui.panel</span></tt> and <tt class="docutils literal"><span class="pre">ui.editor</span></tt>.</p>
+<div class="section" id="instantiation">
+<h2>Instantiation<a class="headerlink" href="#instantiation" title="Permalink to this headline">¶</a></h2>
+<p>Creating new interface elements is straightforward, and the fact that all user interface elements call MEL in the background becomes obvious when looking at the way they are created:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">mrv.maya.ui</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="n">win</span> <span class="o">=</span> <span class="n">Window</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s">&quot;demo&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>All keyword arguments passed to the <tt class="docutils literal"><span class="pre">Window</span></tt> class are exactly the same as if they would have been passed to window MEL command, in that case <tt class="docutils literal"><span class="pre">window</span> <span class="pre">-title</span> <span class="pre">&quot;demo&quot;</span></tt>. The returned instance though will be an instance of type <tt class="docutils literal"><span class="pre">Window</span></tt> which is also a string:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">win</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="properties">
+<h2>Properties<a class="headerlink" href="#properties" title="Permalink to this headline">¶</a></h2>
+<p>In this example, we have set the title of the Window to &#8216;demo&#8217;. In MEL it would be quite easy to query or to change this, just call <tt class="docutils literal"><span class="pre">window</span> <span class="pre">-q</span> <span class="pre">-title</span> <span class="pre">$win</span></tt> or <tt class="docutils literal"><span class="pre">window</span> <span class="pre">-e</span> <span class="pre">-title</span> <span class="pre">&quot;property</span> <span class="pre">demo&quot;</span> <span class="pre">$win</span></tt> respectively.</p>
+<p>In MRV, everything that is <em>at least</em> queryable is a property. Properties are prefixed with <em>p_</em> and hence live in their own namespace. The name of the properties follow the capitalization of the MEL flag which they represent.
+Some properties can only be queried, and you will get an AttributeError if you try to set them:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">assert</span> <span class="s">&quot;demo&quot;</span> <span class="o">==</span> <span class="n">win</span><span class="o">.</span><span class="n">p_title</span>
+<span class="n">win</span><span class="o">.</span><span class="n">p_title</span> <span class="o">=</span> <span class="s">&quot;property demo&quot;</span>
+<span class="k">assert</span> <span class="s">&quot;property demo&quot;</span> <span class="o">==</span> <span class="n">win</span><span class="o">.</span><span class="n">p_title</span>
+<span class="c"># win.p_numberOfMenus = 3 # raises AttributeError</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="layouts">
+<h2>Layouts<a class="headerlink" href="#layouts" title="Permalink to this headline">¶</a></h2>
+<p>Layouts behave like containers as they will keep other user interface elements. Additionally they define their spatial arrangement.</p>
+<p>They will only receive newly created interface elements if they are set to be the active parent, newly created Layouts and Windows will automatically set the parent to themselves.</p>
+<p>In MRV you may either set a specific container active using <tt class="docutils literal"><span class="pre">container.setActive()</span></tt> or the container&#8217;s parent using <tt class="docutils literal"><span class="pre">container.setParentActive()</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">form</span> <span class="o">=</span> <span class="n">FormLayout</span><span class="p">(</span> <span class="p">)</span>        <span class="c"># an empty form layout</span>
+<span class="n">win</span><span class="o">.</span><span class="n">setActive</span><span class="p">()</span>
+
+<span class="n">col</span> <span class="o">=</span> <span class="n">ColumnLayout</span><span class="p">(</span><span class="n">adj</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>   <span class="c"># put two buttons into the layout</span>
+<span class="n">b1</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s">&quot;one&quot;</span><span class="p">)</span>
+<span class="n">b2</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s">&quot;two&quot;</span><span class="p">)</span>
+<span class="n">col</span><span class="o">.</span><span class="n">setParentActive</span><span class="p">()</span>       <span class="c"># set the window to be the active parent</span>
+</pre></div>
+</div>
+<p>If you use Maya2008 and later, you may also use the <tt class="docutils literal"><span class="pre">with</span></tt> statement, which takes care of the current parent automatically. The previous part creating the column layout could be rewritten like that:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">with</span> <span class="n">ColumnLayout</span><span class="p">(</span><span class="n">adj</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="k">as</span> <span class="n">col</span><span class="p">:</span>
+        <span class="o">...</span>
+<span class="c"># implicit setParentActive()</span>
+</pre></div>
+</div>
+<p>Please note that using the <tt class="docutils literal"><span class="pre">with</span></tt> statement is not very portable as it is only natively available in maya 2010 or newer, or python 2.6 respectively.</p>
+<p>As it is practical to indicate the hierarchical level using indentations, you may also consider the following writing style:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">col</span> <span class="o">=</span> <span class="n">ColumnLayout</span><span class="p">()</span>
+<span class="k">if</span> <span class="n">col</span><span class="p">:</span>
+        <span class="n">b1</span> <span class="o">=</span> <span class="n">Button</span><span class="p">()</span>
+        <span class="n">col</span><span class="o">.</span><span class="n">setParentActive</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>In case you are interested to keep the actual child instances that you create,  its good to know that Layouts inherit from <tt class="docutils literal"><span class="pre">UIContainerBase</span></tt> which provides just that functionality:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">col</span> <span class="o">=</span> <span class="n">ColumnLayout</span><span class="p">()</span>
+<span class="k">if</span> <span class="n">col</span><span class="p">:</span>
+        <span class="n">b1</span> <span class="o">=</span> <span class="n">col</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Button</span><span class="p">())</span>
+        <span class="k">assert</span> <span class="n">b1</span> <span class="ow">is</span> <span class="n">col</span><span class="o">.</span><span class="n">listChildren</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">col</span><span class="o">.</span><span class="n">setParentActive</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="events">
+<h2>Events<a class="headerlink" href="#events" title="Permalink to this headline">¶</a></h2>
+<p>To make interface elements respond to user interaction like mouse clicks and keyboard inputs, one must assure that the own code gets called when these events happen.</p>
+<p>The Maya UI System provides simple string or python callbacks which will be executed when the event occurs. This has the inherent disadvantage that there may be only listener for each event - workarounds have to be implemented manually.</p>
+<p>With MRV, events are properties of the class prefixed with <em>e_</em>. You can assign any amount of callable objects to them. Any MEL command flag ending with <em>somethingCommand</em> is available under the name with the &#8216;Command&#8217; portion removed, i.e. <em>e_something</em>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">adjust_button</span><span class="p">(</span> <span class="n">sender</span> <span class="p">):</span>
+        <span class="n">sender</span><span class="o">.</span><span class="n">p_label</span> <span class="o">=</span> <span class="s">&quot;pressed&quot;</span>
+        <span class="n">b2</span><span class="o">.</span><span class="n">p_label</span> <span class="o">=</span> <span class="s">&quot;affected&quot;</span>
+<span class="c"># END call</span>
+
+<span class="n">b1</span><span class="o">.</span><span class="n">e_released</span> <span class="o">=</span> <span class="n">adjust_button</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>Show the window to see a simple UI with two vertically arranged buttons, if &#8216;one&#8217; is pressed, &#8216;two&#8217; will be affected::</dt>
+<dd>win.show()</dd>
+</dl>
+</div>
+<div class="section" id="signals">
+<span id="signals-label"></span><h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<p>Signals are custom events which are named after the <a class="reference external" href="http://doc.trolltech.com/4.6/signalsandslots.html">Signals and Slots</a> mechanism introduced by QT.</p>
+<p>Signals help to write truly modular user interface elements which can be combined flexibly. The way they respond to each other is solely defined by Signals send to receivers which provide methods to be called.</p>
+<p>Signals can be used just like any other event predefined by the system - the only difference is that you may call them yourself, and that the sender of the Signal will not automatically be sent to the receiver as first method argument, as it is the case with Events:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Sensor</span><span class="p">(</span><span class="n">Button</span><span class="p">):</span>
+        <span class="n">e_pushed</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">()</span>             <span class="c"># pushedWith(pressure)</span>
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">e_pressed</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">e_pushed</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">p_label</span> <span class="o">=</span> <span class="s">&quot;Pressure Sensor&quot;</span>
+
+<span class="k">class</span> <span class="nc">Receiver</span><span class="p">(</span><span class="n">TextField</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">pushedWith</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pressure</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">p_text</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s"> pressure is </span><span class="si">%i</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sender</span><span class="p">()</span><span class="o">.</span><span class="n">basename</span><span class="p">(),</span> <span class="n">pressure</span><span class="p">)</span>
+
+<span class="n">win</span> <span class="o">=</span> <span class="n">Window</span><span class="p">()</span>
+<span class="n">ColumnLayout</span><span class="p">(</span><span class="n">adj</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">Sensor</span><span class="p">()</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">Receiver</span><span class="p">()</span>
+<span class="n">s</span><span class="o">.</span><span class="n">e_pushed</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">pushedWith</span>
+<span class="n">win</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>In this example, the Sensor is a button which reacts to its own button-pressed events. Whenever this event occours, it sends out a custom Signal with a pressure level. The Receiver is a TextField which can receive a pressure level, and displays it together with the sender, as retrieved using the <tt class="docutils literal"><span class="pre">sender()</span></tt> method which is shared by all MRV user interface elements.</p>
+<p>The Signal gets connected to the corresponding method using a simple assignment: <tt class="docutils literal"><span class="pre">s.e_pushed</span> <span class="pre">=</span> <span class="pre">r.pushedWith</span></tt>.</p>
+<p>Its important that both interfaces in fact do not know each other, and don&#8217;t need to know each other - this way they stay self-contained and care about nothing else than implementing their interface correctly.</p>
+<p>Even though the underpinnings of the UI Wrap are still based on MEL ( until and including Maya 2010 ), you are enabled to program much more advanced, independent modules that are easier to reuse, and are based on more maintainable code.</p>
+</div>
+<div class="section" id="managing-instance-lifetime">
+<h2>Managing Instance Lifetime<a class="headerlink" href="#managing-instance-lifetime" title="Permalink to this headline">¶</a></h2>
+<p>The user interface elements created from within python are only wrappers, hence they are not linked to the lifetime of the actual UI element by default.</p>
+<p>This implies that they will be destroyed once they go out of scope as the pyhton reference count reaches zero.</p>
+<p>In conjunction with events, this can be fatal as the event receiver might just have been deleted. To prevent this, all <tt class="docutils literal"><span class="pre">e_eventName</span></tt> events will strongly bind their event receivers, keeping the wrapper objects alive. This is possible by passing a strong reference of the event sender object to the maya event, which will then dispatch the event to all strongly bound event receivers.</p>
+<p>Once the UI gets deleted though, maya does <em>not</em> properly destroy the callback objects which binds the event sender, hence it would never go out of scope, as well as its event receivers will keep floating around.</p>
+<p>A partial aid is implemented with the <tt class="docutils literal"><span class="pre">uiDeleted</span></tt> callback. If overridden, it should be used to unregister own events and to remove own event receivers.
+Nonetheless, your own instance is unlikely to ever be deleted as the callback registered to maya still holds a reference to it, although it will never fire. Its equivalent to a memory leak.</p>
+<p>This means you should refrain yourself from storing large amounts of data on an instance which also registers events using <tt class="docutils literal"><span class="pre">e_eventName</span></tt>, and if so, to implemented the <tt class="docutils literal"><span class="pre">uiDeleted</span></tt> method to release all your memory yourself as good as possible, by deleting your respective member variables.</p>
+</div>
+<div class="section" id="building-modular-user-interfaces">
+<h2>Building Modular User Interfaces<a class="headerlink" href="#building-modular-user-interfaces" title="Permalink to this headline">¶</a></h2>
+<p>With these basics, you are already able to define user interfaces and make them functional. Quickly you will realize that you will always end up with first defining the UI and events, and secondly you define individual controls are supposed to behave on user interaction.</p>
+<p>More complex user interface easily have several layouts in complex hierarchical relationships, updating the user interface properly and efficiently becomes a daunting task.</p>
+<p>The solution is to pack the user interface elements into modules which are not doing anything else than fulfilling a specific task. These modules provide an interface to interact with them, they send <a class="reference internal" href="#signals-label"><em>Signals</em></a> in order for others to respond to them, or they receive Signals of others themselves.</p>
+<p>This way, complex user interfaces can be assembled in a more controllable fashion, events bind the different independent modules together:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Additor</span><span class="p">(</span><span class="n">Button</span><span class="p">):</span>
+        <span class="n">e_added</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">()</span>
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwarg</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base</span><span class="p">,</span> <span class="n">add</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_val</span> <span class="o">=</span> <span class="n">base</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_add</span> <span class="o">=</span> <span class="n">add</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">p_label</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_val</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_val</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">p_label</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_val</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">e_added</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_val</span><span class="p">)</span>
+<span class="c"># END additor</span>
+
+<span class="k">class</span> <span class="nc">Collector</span><span class="p">(</span><span class="n">Text</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">p_label</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+
+<span class="k">def</span> <span class="nf">collect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">p_label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_label</span> <span class="o">+</span> <span class="s">&quot;, </span><span class="si">%i</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">value</span>
+<span class="c"># END collector</span>
+
+<span class="k">class</span> <span class="nc">AdditionWindow</span><span class="p">(</span><span class="n">Window</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+                <span class="n">col</span> <span class="o">=</span> <span class="n">ColumnLayout</span><span class="p">()</span>
+                <span class="n">lb</span> <span class="o">=</span> <span class="n">Additor</span><span class="p">()</span>
+                <span class="n">rb</span> <span class="o">=</span> <span class="n">Additor</span><span class="p">()</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">Collector</span><span class="p">()</span>
+
+                <span class="n">lb</span><span class="o">.</span><span class="n">e_released</span> <span class="o">=</span> <span class="n">rb</span><span class="o">.</span><span class="n">add</span>
+                <span class="n">rb</span><span class="o">.</span><span class="n">e_released</span> <span class="o">=</span> <span class="n">lb</span><span class="o">.</span><span class="n">add</span>
+                <span class="n">lb</span><span class="o">.</span><span class="n">e_added</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">collect</span>
+                <span class="n">rb</span><span class="o">.</span><span class="n">e_added</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">collect</span>
+                <span class="n">col</span><span class="o">.</span><span class="n">setParentActive</span><span class="p">()</span>
+<span class="c"># END addition window</span>
+<span class="n">AdditionWindow</span><span class="p">()</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>You can customize your constructors as well, or constrain and manipulate the way your UI-element is created.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#">Graphical User Interfaces</a><ul>
+<li><a class="reference external" href="#instantiation">Instantiation</a></li>
+<li><a class="reference external" href="#properties">Properties</a></li>
+<li><a class="reference external" href="#layouts">Layouts</a></li>
+<li><a class="reference external" href="#events">Events</a></li>
+<li><a class="reference external" href="#signals">Signals</a></li>
+<li><a class="reference external" href="#managing-instance-lifetime">Managing Instance Lifetime</a></li>
+<li><a class="reference external" href="#building-modular-user-interfaces">Building Modular User Interfaces</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="usage/types.html"
+                                  title="previous chapter">About Methods and Types</a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="conf.html"
+                                  title="next chapter">Configuration</a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="_sources/gui.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="conf.html" title="Configuration"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="usage/types.html" title="About Methods and Types"
+             >previous</a> |</li>
+        <li><a href="index.html">mrv v1.0.1-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Nov 30, 2010.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

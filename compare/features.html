@@ -1,0 +1,632 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Features &mdash; mrv v1.0.1-develop documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.1-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="mrv v1.0.1-develop documentation" href="../index.html" />
+    <link rel="up" title="Comparison to PyMel" href="index.html" />
+    <link rel="next" title="Performance" href="performance.html" />
+    <link rel="prev" title="Comparison to PyMel" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="performance.html" title="Performance"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Comparison to PyMel"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Comparison to PyMel</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="features">
+<h1>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="supported-maya-versions">
+<h2>Supported Maya Versions<a class="headerlink" href="#supported-maya-versions" title="Permalink to this headline">¶</a></h2>
+<p><strong>PyMel</strong>:</p>
+<ol class="arabic simple">
+<li>2008 to 2011</li>
+</ol>
+<ul class="simple">
+<li>Bundled with Maya 2011</li>
+</ul>
+<p><strong>MRV</strong>:</p>
+<ol class="arabic simple">
+<li>8.5 to 2011</li>
+</ol>
+</div>
+<div class="section" id="database">
+<h2>Database<a class="headerlink" href="#database" title="Permalink to this headline">¶</a></h2>
+<p>Both frameworks organize maya&#8217;s Nodetypes hierarchically and attach information about compatible MFnFunctionSets to them. This information is retrieved  automatically, but is stored in a cache to speed up loading and to allow manual edits.</p>
+<dl class="docutils">
+<dt><strong>PyMel</strong>:</dt>
+<dd><ol class="first arabic simple">
+<li>Stored in one compressed file per maya release, which contains multiple pickled files</li>
+<li>Database file is fully () decompressed at startup, not necessarily using all information.</li>
+<li><strong>Stored Information</strong></li>
+</ol>
+<blockquote>
+<ol class="arabic simple">
+<li>Node Type Hierarchy</li>
+<li>MFnFunctionSet to Nodetype Association</li>
+<li><strong>Meta Data</strong></li>
+</ol>
+<blockquote>
+<ol class="arabic simple">
+<li>Method Aliases</li>
+<li>Method Visibility <a class="footnote-reference" href="#mv" id="id1">[1]</a></li>
+<li>Return Value Conversions</li>
+</ol>
+<ul class="simple">
+<li>Choose between MEL or API Methods (, rephrase maybe)</li>
+</ul>
+</blockquote>
+<ul class="simple">
+<li>API Docs</li>
+<li>MEL Docs</li>
+<li>C++ Enumerations</li>
+<li>MFnMethod Signatures</li>
+</ul>
+</blockquote>
+<ol class="arabic simple" start="4">
+<li><strong>Database Editing</strong></li>
+</ol>
+<blockquote class="last">
+<ol class="arabic simple">
+<li>Edit many aspects of the database using a custom tool</li>
+<li>edits by hand are not supported</li>
+</ol>
+</blockquote>
+</dd>
+<dt><strong>MRV</strong>:</dt>
+<dd><ol class="first arabic">
+<li><dl class="first docutils">
+<dt>Stored in multiple <a class="reference external" href="../extend.html#database-label"><em>human readable text files</em></a>.</dt>
+<dd><p class="first last">Additional Information is taken directly from devkit headers located in your
+maya installation directory.</p>
+</dd>
+</dl>
+</li>
+<li><p class="first">Two files loaded at startup, all others are loaded on demand.</p>
+</li>
+<li><p class="first"><strong>Stored Information</strong></p>
+</li>
+</ol>
+<blockquote>
+<ol class="arabic simple">
+<li>Node Type Hierarchy</li>
+<li>MFnFunctionSet to Nodetype Association</li>
+<li><strong>Meta Data</strong></li>
+</ol>
+<blockquote>
+<ol class="arabic simple">
+<li>Method Aliases</li>
+<li>Method Visibility</li>
+<li>Return Value Conversions</li>
+</ol>
+</blockquote>
+</blockquote>
+<ol class="arabic simple" start="4">
+<li><strong>Database Editing</strong></li>
+</ol>
+<blockquote class="last">
+<ol class="arabic simple">
+<li>There is no custom tool to edit the database files</li>
+<li>Database files are edited by hand in a text editor.</li>
+</ol>
+</blockquote>
+</dd>
+</dl>
+</div>
+<div class="section" id="node-types">
+<h2>Node Types<a class="headerlink" href="#node-types" title="Permalink to this headline">¶</a></h2>
+<p>Both frameworks use their node type hierarchy information to pre-generate all default maya node types and place them in a python module.</p>
+<p>Node instances allow access to related methods, either hand-implemented or as  generated from database information.</p>
+<p>Access to a Node instances attributes is supported as well, making code like  <tt class="docutils literal"><span class="pre">node.attributename</span></tt> possible.</p>
+<dl class="docutils">
+<dt><strong>PyMel</strong>:</dt>
+<dd><ol class="first arabic simple">
+<li><strong>Basic Node Type: ``PyNode``</strong></li>
+</ol>
+<blockquote>
+<ol class="arabic simple">
+<li>Create from: StringNames, MObject, MDagPath, MObjectHandle</li>
+<li>PyNodes are (Pseudo)``unicode``-Strings, supporting string methods</li>
+<li>All PyNode types are located in the <tt class="docutils literal"><span class="pre">pymel.core.nodetypes</span></tt> module</li>
+<li>MayaAPI objects are an implementation detail, and are internally accessed through the PyNode&#8217;s <tt class="docutils literal"><span class="pre">.__api*__</span></tt> methods and properties, where applicable. Keeps the most appropriate API Object and an initialized function set as well as an MObjectHandle at all times.</li>
+<li>A PyNode type is provided for any type available in maya, including plugin types. As plugins load and unload, respective types are added and removed.</li>
+<li>Docstrings provide additional information, these are retrieved from the respective MEL command docs if no hand-written doc string exists</li>
+<li>The string name of DagNodes is the node&#8217;s partial name, the shortest unique name.</li>
+<li>PyNodes can be used in PyMel provided versions of MEL commands natively.</li>
+</ol>
+</blockquote>
+<ol class="arabic simple" start="2">
+<li><strong>Methods</strong></li>
+</ol>
+<blockquote>
+<ol class="arabic simple">
+<li>Attributes hide MFnMethods</li>
+<li>MFnMethods are available by only one name which may be aliased, possibly making the original name unavailable. <a class="footnote-reference" href="#mapymel" id="id2">[3]</a></li>
+<li>MFnMethods return PyNodes where applicable</li>
+<li>MFnMethods originally taking MObjects or MDagPaths also take PyNodes, handling the type conversion internally. The type handling is automated.</li>
+<li>MFnMethods normally support undo if a &#8216;setter&#8217; method has a corresponding &#8216;getter&#8217; method. This functionality is automated.</li>
+<li>MFnMethods that would require referenced parameter types which would receive the output of the method are called without them. The output parameters are returned instead <a class="footnote-reference" href="#moppymel" id="id3">[2]</a>. MScriptUtil is never used.</li>
+</ol>
+<blockquote>
+<ol class="arabic simple">
+<li>If there are several overloaded signatures, one of them is choosen using the database editing tool</li>
+</ol>
+</blockquote>
+<ol class="arabic simple" start="7">
+<li>Docstrings correspond to the respective MFnMethod&#8217;s documentation, the documentation of the underlying MEL command, or hand-written documentation if the method was implemented by hand.</li>
+<li>Methods follow the <tt class="docutils literal"><span class="pre">getX</span></tt> and <tt class="docutils literal"><span class="pre">setX</span></tt> conventions. MFnMethods are not altered to fit this convention, but may be renamed to be more intuitive.</li>
+<li>All MFnMethods are attached to the node type when the type is created</li>
+</ol>
+</blockquote>
+<ol class="arabic simple" start="3">
+<li><strong>Plugs/Attributes</strong></li>
+</ol>
+<blockquote class="last">
+<ol class="arabic simple">
+<li><tt class="docutils literal"><span class="pre">node.plugname</span></tt> returns an <tt class="docutils literal"><span class="pre">Attribute</span></tt> instance, a custom PyMel type.</li>
+<li>Attributes can be accessed by their short and long attribute name.</li>
+<li>Attributes will be tried first when looking up name, methods are looked up afterwards. This happens on every access</li>
+<li>There is no differentiation between Plugs and Attributes, MEL semantics are used.</li>
+<li><strong>Data Access</strong></li>
+</ol>
+<blockquote>
+<ol class="arabic simple">
+<li>Access primitive numeric data types and strings.</li>
+<li>Full undo is implemented for all modifying methods.</li>
+</ol>
+</blockquote>
+</blockquote>
+</dd>
+<dt><strong>MRV</strong>:</dt>
+<dd><ol class="first arabic simple">
+<li><strong>Basic Node Type: ``Node``</strong></li>
+</ol>
+<blockquote>
+<ol class="arabic simple">
+<li>Create from: StringNames, MObject, MDagPath</li>
+</ol>
+<blockquote>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">NodeFromObj</span></tt> creates Node instances from API objects only - used internally for performance.</li>
+<li><tt class="docutils literal"><span class="pre">NodeFromStr</span></tt> creates Node instances from strings only</li>
+</ul>
+</blockquote>
+<ol class="arabic simple" start="2">
+<li>Nodes are <tt class="docutils literal"><span class="pre">object</span></tt> s</li>
+<li>All Node types are located in the <tt class="docutils literal"><span class="pre">mrv.maya.nt</span></tt> package</li>
+<li>MayaAPI objects can be retrieved using the <tt class="docutils literal"><span class="pre">.object()</span></tt> and <tt class="docutils literal"><span class="pre">.dagPath()</span></tt> methods, where applicable. The respective MObject and MDagPath instances are permanently stored on the Node. DagNodes store the API object which was used to create them and retrieve their MObject representation on demand.</li>
+<li>A Node type is provided for any type available in maya, including plugin types. As plugins load and unload, respective node types are added and removed.</li>
+<li>Docstrings are handwritten on basic Node types, and do not exist on auto-generated ones.</li>
+<li>The string name of DagNodes is the full absolute path name.</li>
+<li>Nodes require explicit conversion to string before being passed to maya.cmds.</li>
+</ol>
+</blockquote>
+<ol class="arabic simple" start="2">
+<li><strong>Methods</strong></li>
+</ol>
+<blockquote>
+<ol class="arabic simple">
+<li>MFnMethods hide Plugs</li>
+<li>MFnMethods are available by their original name, but may have an alias to make it available under a more intuitive name.</li>
+<li>MFnMethods return Nodes where applicable</li>
+<li>MFnMethods take their original types only, the user must extract the actual MObject or MDagPath explicitly.</li>
+<li>MFnMethods do not support undo if it was not explicitly implemented.</li>
+<li>MFnMethods are called exactly as stated in the MayaAPI documentation. (Referenced) output parameters are maintained. If the use of MScriptUtil is required, there is usually no way around it unless someone has hand-implemented the method in question.</li>
+</ol>
+<blockquote>
+<ol class="arabic simple">
+<li>Overloaded signatures are natively available, as you call the actual MFnMethod effectively.</li>
+</ol>
+</blockquote>
+<ol class="arabic simple" start="7">
+<li>Docstrings are either the name of the original MFnMethod to help you finding the actual documentation in the default maya api docs, or hand-written documentation on hand-written documentation if it was implemented by hand.</li>
+<li>Methods are following the <a class="reference external" href="../develop/conventions.html#naming-conventions-label"><em>&#8216;X&#8217; and &#8216;setX&#8217;</em></a> convention, but keep the current MFnMethodNames unaltered.</li>
+<li>MFnMethods are attached to the node type once it is accessed by the first instance. The lookup will only happen once.</li>
+</ol>
+</blockquote>
+<ol class="arabic simple" start="3">
+<li><strong>Plugs/Attributes</strong></li>
+</ol>
+<blockquote class="last">
+<ol class="arabic simple">
+<li><tt class="docutils literal"><span class="pre">node.plugname</span></tt> returns an <tt class="docutils literal"><span class="pre">MPlug</span></tt> instance which contains additional methods that have been patched into the &#8216;m&#8217; namespace. <a class="footnote-reference" href="#mmnsmrv" id="id4">[4]</a></li>
+<li>Plugs can be accessed by their short and long attribute name.</li>
+<li>As methods are found first, once a name does not correspond to a method but a plug, this information is stored on the type to make the next plug access less costly for all instances of the given type.</li>
+<li>Plugs are not Attributes. Attributes define the type of data and a name for it, Plugs are handles to access the data and to define data flow through connections. MayaAPI semantics are used.</li>
+<li><strong>Data Access</strong></li>
+</ol>
+<blockquote>
+<ol class="arabic simple">
+<li>Access primitive data types and strings, all other data types using the <tt class="docutils literal"><span class="pre">MPlug.asMObject</span></tt> and <tt class="docutils literal"><span class="pre">MPlug.masData</span></tt> methods.</li>
+<li>Full undo is only implemented for the MRV methods which reside in the &#8216;m&#8217; namespace. <a class="footnote-reference" href="#mpmmrv" id="id5">[5]</a></li>
+</ol>
+</blockquote>
+</blockquote>
+</dd>
+</dl>
+</div>
+<div class="section" id="node-iteration-node-listing">
+<h2>Node Iteration/Node Listing<a class="headerlink" href="#node-iteration-node-listing" title="Permalink to this headline">¶</a></h2>
+<p>This section covers the differences in the interface to retrieve nodes.</p>
+<dl class="docutils">
+<dt><strong>PyMel</strong>:</dt>
+<dd><ol class="first last arabic simple">
+<li>Retrieve PyNodes as lists <strong>no iterators ?</strong></li>
+<li>Get all DAG nodes using <tt class="docutils literal"><span class="pre">ls(dag=1)</span></tt></li>
+<li>Get all DG nodes using <tt class="docutils literal"><span class="pre">ls()</span></tt></li>
+<li>List all input or output nodes using <tt class="docutils literal"><span class="pre">node.history</span></tt> and <tt class="docutils literal"><span class="pre">node.future</span></tt>, there no easy way to traverse actual plugs</li>
+</ol>
+</dd>
+<dt><strong>MRV</strong>:</dt>
+<dd><ol class="first last arabic simple">
+<li>Retrieve iterators yielding Nodes (default), MObjects or MDagPaths</li>
+<li>Iterate DAG nodes using <tt class="docutils literal"><span class="pre">iterDagNodes()</span></tt></li>
+<li>Iterate all DG nodes using <tt class="docutils literal"><span class="pre">iterDgNodes()</span></tt></li>
+<li>Iterate the dependency graph using <tt class="docutils literal"><span class="pre">iterGraph()</span></tt>, or <tt class="docutils literal"><span class="pre">MPlug.miterGraph</span></tt>.</li>
+</ol>
+</dd>
+</dl>
+</div>
+<div class="section" id="user-interfaces">
+<h2>User Interfaces<a class="headerlink" href="#user-interfaces" title="Permalink to this headline">¶</a></h2>
+<p>Both frameworks provide wrappers for maya&#8217;s user interface MEL commands, allowing them to be used in an object oriented fashion.</p>
+<dl class="docutils">
+<dt><strong>PyMel</strong>:</dt>
+<dd><ol class="first arabic simple">
+<li><strong>UI Types</strong></li>
+</ol>
+<blockquote>
+<ol class="arabic simple">
+<li>Common base type for all UI elements is <tt class="docutils literal"><span class="pre">PyUI</span></tt>, which is a unicode object.</li>
+<li>PyUI instances can be created from the name of maya&#8217;s UI element. If no name is given, all flags supported by the underlying MEL command can be passed in as keyword argument.</li>
+<li>Each UI MEL comamnd has a corresponding capitalized PyUI type</li>
+<li>PyUI type hierarchy is solely based on the actual type inheritance in the <tt class="docutils literal"><span class="pre">uitypes</span></tt> module.</li>
+<li>PyUI types may inherit from hand-implemented base classes to add custom functionality.</li>
+<li>Fully auto-generated UI types derive from PyUI.</li>
+</ol>
+</blockquote>
+<ol class="arabic simple" start="2">
+<li><strong>Property Access</strong></li>
+</ol>
+<blockquote>
+<ol class="arabic simple">
+<li>Database information is used to provide <tt class="docutils literal"><span class="pre">getX</span></tt> methods for all long MEL command flags <tt class="docutils literal"><span class="pre">X</span></tt> which can be queried, and <tt class="docutils literal"><span class="pre">setX</span></tt>  methods for all long editable command flags <tt class="docutils literal"><span class="pre">X</span></tt> .</li>
+</ol>
+<blockquote>
+<ul class="simple">
+<li>i.e. <tt class="docutils literal"><span class="pre">x,</span> <span class="pre">y</span> <span class="pre">=</span> <span class="pre">win.getWidthHeight()</span></tt> or <tt class="docutils literal"><span class="pre">win.setWidthHeight((x,</span> <span class="pre">y))</span></tt> to get and set the dimension of a window.</li>
+</ul>
+</blockquote>
+</blockquote>
+<ol class="arabic simple" start="3">
+<li><strong>Callback/Event Handling</strong></li>
+</ol>
+<blockquote class="last">
+<ol class="arabic simple">
+<li>Callbacks are set using the respective property, usually named <tt class="docutils literal"><span class="pre">setXCommand</span></tt>.</li>
+</ol>
+<blockquote>
+<ul class="simple">
+<li>i.e. <tt class="docutils literal"><span class="pre">button.setCommand(stringOrCallable)</span></tt> sets the command to be called once a button is pressed.</li>
+</ul>
+</blockquote>
+<ol class="arabic simple" start="2">
+<li>As callbacks correspond to the underlying MEL callback, each one may have zero or one receivers.</li>
+<li>Maya callbacks which provide additional arguments return Python types, not just strings like &#8216;true&#8217;, &#8216;false&#8217; or &#8216;&#8217;.</li>
+</ol>
+</blockquote>
+</dd>
+<dt><strong>MRV</strong>:</dt>
+<dd><ol class="first arabic">
+<li><dl class="first docutils">
+<dt><strong>UI Types</strong></dt>
+<dd><ol class="first last arabic simple">
+<li>Common base type for all UI elements is <tt class="docutils literal"><span class="pre">BaseUI</span></tt>, which is an object. All UI elements with names derive from <tt class="docutils literal"><span class="pre">NamedUI</span></tt>, which is a <tt class="docutils literal"><span class="pre">BaseUI</span></tt>, and a unicode object, among others.</li>
+<li>NamedUI instances can be created from the name of maya&#8217;s UI element. If no name is given, all flags supported by the underlying MEL command can be passed in as keyword argument. BaseUI instances will always instantiate the actual maya UI element ( i.e. modal dialogs ).</li>
+<li>Each UI MEL command has a corresponding capitalized BaseUI type</li>
+<li>The BaseUI type hierarchy is defined in the database according to the commonalities of the flags of the respective MEL commands.</li>
+<li>Types within that hierarchy are hand-implemented to provide common functionality to all derived types. Abstract bases are used as well.</li>
+<li>Fully auto-generated UI types derive from their base type as defined in the database.</li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><p class="first"><strong>Property Access</strong></p>
+</li>
+</ol>
+<blockquote>
+<ol class="arabic simple">
+<li>A list of short and long property names as manually extracted from the MEL command documentation is kept on the respective UI type, which will be used by the type&#8217;s metaclass to generate python properties prefixed with <tt class="docutils literal"><span class="pre">p_</span></tt>. The property can be queried, but may not necessarily be edited, which is when a RuntimeError will be produced.</li>
+</ol>
+<blockquote>
+<ul class="simple">
+<li>i.e. <tt class="docutils literal"><span class="pre">x,</span> <span class="pre">y</span> <span class="pre">=</span> <span class="pre">win.p_wh</span></tt> or <tt class="docutils literal"><span class="pre">x,</span> <span class="pre">y</span> <span class="pre">=</span> <span class="pre">win.p_widthHeight</span></tt>, <tt class="docutils literal"><span class="pre">win.p_wh</span> <span class="pre">=</span> <span class="pre">(x,</span> <span class="pre">y)</span></tt> or <tt class="docutils literal"><span class="pre">win.p_widthHeight</span> <span class="pre">=</span> <span class="pre">(x,</span> <span class="pre">y)</span></tt> to get and set the dimensions of a window.</li>
+</ul>
+</blockquote>
+</blockquote>
+<ol class="arabic simple" start="3">
+<li><strong>Callback Handling</strong></li>
+</ol>
+<blockquote class="last">
+<ol class="arabic simple">
+<li>Callbacks are called Events. A list of short and long event names as manually extracted from the MEL command documentation is kept on the respective UI type, which will be used by the type&#8217;s metaclass to create UIEvent descriptors prefixed with <tt class="docutils literal"><span class="pre">e_</span></tt>.</li>
+</ol>
+<blockquote>
+<ul class="simple">
+<li>i.e. <tt class="docutils literal"><span class="pre">button.e_pressed</span> <span class="pre">=</span> <span class="pre">callable1</span></tt> and <tt class="docutils literal"><span class="pre">button.e_pressed</span> <span class="pre">=</span> <span class="pre">callable2</span></tt> to register two receivers with the button pressed event.</li>
+</ul>
+</blockquote>
+<ol class="arabic simple" start="2">
+<li>An event may have any amount of receivers.</li>
+<li>Maya callbacks with arguments provide them as strings only. The receiver has to deal with it itself. The first argument of each sent event is the  event&#8217;s sender.</li>
+</ol>
+<ul class="simple">
+<li>Custom Signals may be created to facilitate QT-like modular user interfaces.</li>
+</ul>
+</blockquote>
+</dd>
+</dl>
+</div>
+<div class="section" id="regression-testing">
+<h2>Regression Testing<a class="headerlink" href="#regression-testing" title="Permalink to this headline">¶</a></h2>
+<p>Both frameworks feature nose compatible test cases.</p>
+<dl class="docutils">
+<dt><strong>PyMel</strong>:</dt>
+<dd><ol class="first last arabic simple">
+<li>Test modules are organized in a flat list of files</li>
+<li>Tests can be run in the maya version in your PATH.</li>
+<li>There are no utilities to facilitate user interface testing.</li>
+</ol>
+</dd>
+<dt><strong>MRV</strong>:</dt>
+<dd><ol class="first last arabic simple">
+<li>Test modules are organized in a hierarchy, matching the name and hierarchical location of the modules they test.</li>
+<li>Tests can be run easily in all installed maya versions</li>
+<li>User interfaces may be tested by the default nose based test system. Maya will be started in minimal GUI mode and runs the specified UI tests.</li>
+</ol>
+</dd>
+</dl>
+</div>
+<div class="section" id="interfaces-and-utilities">
+<h2>Interfaces and Utilities<a class="headerlink" href="#interfaces-and-utilities" title="Permalink to this headline">¶</a></h2>
+<p>Both frameworks provide additional utilities and interface to handle common problems that arise within maya. The actual implementation varies greatly though, this comparison merely lists the major ones.</p>
+<dl class="docutils">
+<dt><strong>PyMel</strong>:</dt>
+<dd><ol class="first arabic simple">
+<li>File handling through procedural interface</li>
+<li>Reference handling through custom Type ( <tt class="docutils literal"><span class="pre">FileReference</span></tt> )</li>
+<li>Namespace handling through custom Type ( <tt class="docutils literal"><span class="pre">Namespace</span></tt> )</li>
+<li>OptionVar handling through custom dict type ( <tt class="docutils literal"><span class="pre">OptionVarDict</span></tt> )</li>
+</ol>
+<ul class="last simple">
+<li><strong>Probably many more</strong></li>
+</ul>
+</dd>
+<dt><strong>MRV</strong>:</dt>
+<dd><ol class="first last arabic simple">
+<li>File handling though custom Type ( <tt class="docutils literal"><span class="pre">Scene</span></tt> )</li>
+<li>Reference handling through custom Type ( <tt class="docutils literal"><span class="pre">FileReference</span></tt> )</li>
+<li>Namespace handling through custom Type ( <tt class="docutils literal"><span class="pre">Namespace</span></tt> )</li>
+<li>OptionVar handling through custom dict type ( <tt class="docutils literal"><span class="pre">OptionVarDict</span></tt> )</li>
+</ol>
+</dd>
+</dl>
+</div>
+<div class="section" id="standalone-tools">
+<h2>Standalone Tools<a class="headerlink" href="#standalone-tools" title="Permalink to this headline">¶</a></h2>
+<p>Both frameworks offer standalone tools to provide additional functionality. These are listed here by their functionality, including the available platforms.</p>
+<dl class="docutils">
+<dt><strong>PyMel</strong>:</dt>
+<dd><ol class="first arabic simple">
+<li><strong>Tools</strong></li>
+</ol>
+<blockquote>
+<ol class="arabic simple">
+<li>IPython shell with PyMel support, some Maya specific convenience functions like Node name completion and Attribute completion. A dag command lists the scene dag as ascii art. ( <tt class="docutils literal"><span class="pre">ipymel</span></tt>, all platforms )</li>
+</ol>
+<ul class="simple">
+<li>Convert MEL to Python ( <tt class="docutils literal"><span class="pre">mel2py</span></tt>, all platforms )</li>
+</ul>
+</blockquote>
+<ol class="arabic simple" start="2">
+<li><strong>Testing</strong></li>
+</ol>
+<blockquote>
+<ol class="arabic simple">
+<li>Run tests in current maya version ( <tt class="docutils literal"><span class="pre">pymel_test</span></tt>, Linux, OSX )</li>
+</ol>
+</blockquote>
+<ol class="arabic simple" start="3">
+<li><strong>Maintenance</strong></li>
+</ol>
+<blockquote class="last">
+<ol class="arabic simple">
+<li>Compile full documentation  ( <tt class="docutils literal"><span class="pre">make_pymel_docs</span></tt>, linux and osx )</li>
+</ol>
+<ul class="simple">
+<li>Make a new release ( <tt class="docutils literal"><span class="pre">makerelease</span></tt>, linux and OSX )</li>
+<li>Rebuild the database caches ( <tt class="docutils literal"><span class="pre">rebuildcaches.py</span></tt>, OSX )</li>
+</ul>
+</blockquote>
+</dd>
+<dt><strong>MRV</strong>:</dt>
+<dd><ol class="first arabic simple">
+<li><strong>Tools</strong></li>
+</ol>
+<blockquote>
+<ol class="arabic simple">
+<li>IPython shell with MRV support, all MFnFunctions take part in tab completion, but nothing more.</li>
+</ol>
+<ul class="simple">
+<li>Prepare a python standalone interpreter to run MRV and maya ( <tt class="docutils literal"><span class="pre">mrv</span></tt>, All platforms, on windows it uses only the predefined maya version )</li>
+</ul>
+</blockquote>
+<ol class="arabic simple" start="2">
+<li><strong>Testing</strong></li>
+</ol>
+<blockquote>
+<ol class="arabic simple">
+<li>Run tests in current and specified maya versions ( <tt class="docutils literal"><span class="pre">tmrv</span></tt>, all platforms, on windows the same limitations apply as for <tt class="docutils literal"><span class="pre">mrv</span></tt> )</li>
+</ol>
+<ul class="simple">
+<li>Run UI specific tests in a slimmed down maya UI session ( <tt class="docutils literal"><span class="pre">tmrv</span> <span class="pre">--mrv-maya</span> <span class="pre">test/maya/ui</span></tt>, all platforms )</li>
+<li>Retrieve the test coverage as html report for the specified maya version ( <tt class="docutils literal"><span class="pre">tmrv</span> <span class="pre">--tmrv-coverage</span></tt>, linux and osx )</li>
+<li>Full regression testing against all installed maya versions ( <tt class="docutils literal"><span class="pre">tmrvr</span></tt>, linux and osx )</li>
+</ul>
+</blockquote>
+<ol class="arabic simple" start="3">
+<li><strong>Maintenance</strong></li>
+</ol>
+<blockquote class="last">
+<ol class="arabic simple">
+<li>Compile full documentation ( <tt class="docutils literal"><span class="pre">make</span> <span class="pre">clean</span> <span class="pre">html</span></tt>, Linux and OSX )</li>
+</ol>
+</blockquote>
+</dd>
+</dl>
+<hr class="docutils" />
+<table class="docutils footnote" frame="void" id="mv" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Whether a method can be called through a Node or not</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="moppymel" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[2]</a></td><td>MFnCamera.getFilmFrustrum( double distance, MPointArray clipPlanes ) can be called like Camera.getFilmFrustrum( 10.0 ), returning a tuple of 4</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="mapymel" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[3]</a></td><td><tt class="docutils literal"><span class="pre">MFnDagNode::child</span></tt> becomes <tt class="docutils literal"><span class="pre">DagNode.childAtIndex</span></tt>, and is not available under <tt class="docutils literal"><span class="pre">DagNode.child</span></tt>.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="mmnsmrv" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id4">[4]</a></td><td>All patches applied to globally available MayaAPI types, such as MPlug or MSelection list reside in the &#8216;m&#8217; namespace to prevent clashes with possibly existing patched methods.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="mpmmrv" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id5">[5]</a></td><td>This is potentially dangerous as <tt class="docutils literal"><span class="pre">MPlug.msetFloat(...)</span></tt> supports undo, whereas the original MPlug.setFloat(...) does not. There is a debugging environment variable which helps to find these kind of bugs.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="../index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#">Features</a><ul>
+<li><a class="reference external" href="#supported-maya-versions">Supported Maya Versions</a></li>
+<li><a class="reference external" href="#database">Database</a></li>
+<li><a class="reference external" href="#node-types">Node Types</a></li>
+<li><a class="reference external" href="#node-iteration-node-listing">Node Iteration/Node Listing</a></li>
+<li><a class="reference external" href="#user-interfaces">User Interfaces</a></li>
+<li><a class="reference external" href="#regression-testing">Regression Testing</a></li>
+<li><a class="reference external" href="#interfaces-and-utilities">Interfaces and Utilities</a></li>
+<li><a class="reference external" href="#standalone-tools">Standalone Tools</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="index.html"
+                                  title="previous chapter">Comparison to PyMel</a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="performance.html"
+                                  title="next chapter">Performance</a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/compare/features.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="performance.html" title="Performance"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Comparison to PyMel"
+             >previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li>
+          <li><a href="index.html" >Comparison to PyMel</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Nov 30, 2010.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

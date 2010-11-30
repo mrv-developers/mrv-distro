@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Scene Handling &mdash; mrv v1.0.1-develop documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.1-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="mrv v1.0.1-develop documentation" href="../index.html" />
+    <link rel="up" title="Usage" href="index.html" />
+    <link rel="next" title="Undo" href="undo.html" />
+    <link rel="prev" title="References" href="references.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="undo.html" title="Undo"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="references.html" title="References"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Usage</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="scene-handling">
+<h1>Scene Handling<a class="headerlink" href="#scene-handling" title="Permalink to this headline">¶</a></h1>
+<p>The &#8216;Scene&#8217; is a singleton class which may be used to interact with maya&#8217;s currently opened scene and to manage scene messages. It is a mix of functionality from the <tt class="docutils literal"><span class="pre">file</span></tt> MEL command and the <tt class="docutils literal"><span class="pre">MSceneMessage</span></tt> API type. The following example uses utilities and scenes from the test system:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">mrv.maya</span> <span class="kn">as</span> <span class="nn">mrv</span>
+<span class="n">empty_scene</span> <span class="o">=</span> <span class="n">get_maya_file</span><span class="p">(</span><span class="s">&#39;empty.ma&#39;</span><span class="p">)</span>
+<span class="n">mrv</span><span class="o">.</span><span class="n">Scene</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">empty_scene</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">mrv</span><span class="o">.</span><span class="n">Scene</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">==</span> <span class="n">empty_scene</span>
+
+<span class="n">files</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">beforeAndAfterNewCB</span><span class="p">(</span> <span class="n">data</span> <span class="p">):</span>
+        <span class="k">assert</span> <span class="n">data</span> <span class="ow">is</span> <span class="bp">None</span>
+        <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mrv</span><span class="o">.</span><span class="n">Scene</span><span class="o">.</span><span class="n">name</span><span class="p">())</span>
+
+<span class="n">mrv</span><span class="o">.</span><span class="n">Scene</span><span class="o">.</span><span class="n">beforeNew</span> <span class="o">=</span> <span class="n">beforeAndAfterNewCB</span>
+<span class="n">mrv</span><span class="o">.</span><span class="n">Scene</span><span class="o">.</span><span class="n">afterNew</span> <span class="o">=</span> <span class="n">beforeAndAfterNewCB</span>
+
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+<span class="n">mrv</span><span class="o">.</span><span class="n">Scene</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+<span class="k">assert</span> <span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">empty_scene</span>
+</pre></div>
+</div>
+<p>It is important to remove callbacks once you are done with them to allow the corresponding maya callbacks to be cleaned up properly:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">mrv</span><span class="o">.</span><span class="n">Scene</span><span class="o">.</span><span class="n">beforeNew</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">beforeAndAfterNewCB</span><span class="p">)</span>
+<span class="n">mrv</span><span class="o">.</span><span class="n">Scene</span><span class="o">.</span><span class="n">afterNew</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">beforeAndAfterNewCB</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="references.html"
+                                  title="previous chapter">References</a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="undo.html"
+                                  title="next chapter">Undo</a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/usage/scenes.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="undo.html" title="Undo"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="references.html" title="References"
+             >previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li>
+          <li><a href="index.html" >Usage</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Nov 30, 2010.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

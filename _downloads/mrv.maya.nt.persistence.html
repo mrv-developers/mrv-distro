@@ -1,0 +1,287 @@
+<html>
+<head>
+<title>mrv.maya.nt.persistence</title>
+</head>
+<body>
+mrv.maya.nt.persistence
+<style>
+.coverage pre {float: left; margin: 0px 1em; border: none;
+               padding: 0px; }
+.num pre { margin: 0px }
+.nocov, .nocov pre {background-color: #faa}
+.cov, .cov pre {background-color: #cfc}
+div.coverage div { clear: both; height: 1.1em}
+</style>
+<div class="stats">
+Covered: 160 lines<br/>
+Missed: 6 lines<br/>
+Skipped 96 lines<br/>
+Percent: 96 %<br/>
+
+</div>
+<div class="coverage">
+<div class="skip"><span class="num"><pre>  1</pre></span><pre># -*- coding: utf-8 -*-</pre></div>
+<div class="cov"><span class="num"><pre>  2</pre></span><pre>&quot;&quot;&quot;generic python style persitance plugin</pre></div>
+<div class="cov"><span class="num"><pre>  3</pre></span><pre>This module contains a storage interface able to easily handle python-style</pre></div>
+<div class="cov"><span class="num"><pre>  4</pre></span><pre>data within maya scenes. </pre></div>
+<div class="cov"><span class="num"><pre>  5</pre></span><pre>&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  6</pre></span><pre>__docformat__ = &quot;restructuredtext&quot;</pre></div>
+<div class="skip"><span class="num"><pre>  7</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  8</pre></span><pre>import os</pre></div>
+<div class="cov"><span class="num"><pre>  9</pre></span><pre>import sys</pre></div>
+<div class="cov"><span class="num"><pre> 10</pre></span><pre>import cPickle</pre></div>
+<div class="cov"><span class="num"><pre> 11</pre></span><pre>import cStringIO</pre></div>
+<div class="cov"><span class="num"><pre> 12</pre></span><pre>import binascii</pre></div>
+<div class="cov"><span class="num"><pre> 13</pre></span><pre>import logging</pre></div>
+<div class="cov"><span class="num"><pre> 14</pre></span><pre>log = logging.getLogger('mrv.maya.nt.persistence')</pre></div>
+<div class="skip"><span class="num"><pre> 15</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 16</pre></span><pre>import maya.OpenMaya as api</pre></div>
+<div class="cov"><span class="num"><pre> 17</pre></span><pre>import maya.OpenMayaMPx as mpx</pre></div>
+<div class="skip"><span class="num"><pre> 18</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 19</pre></span><pre>persistence_enabled_envvar = &quot;MRV_PERSISTENCE_ENABLED&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 20</pre></span><pre>_should_initialize_plugin = int(os.environ.get(persistence_enabled_envvar, False))</pre></div>
+<div class="skip"><span class="num"><pre> 21</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 22</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 23</pre></span><pre>__all__ = ('persistence_enabled_envvar', 'PyPickleData', 'createStorageAttribute')</pre></div>
+<div class="skip"><span class="num"><pre> 24</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 25</pre></span><pre>#{ Initialization</pre></div>
+<div class="skip"><span class="num"><pre> 26</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 27</pre></span><pre>def __initialize( nodes_module ):</pre></div>
+<div class="cov"><span class="num"><pre> 28</pre></span><pre>	&quot;&quot;&quot;Assure our plugin is loaded - called during module intialization.</pre></div>
+<div class="cov"><span class="num"><pre> 29</pre></span><pre>	Its a tough time to run, it feels more like bootstrapping as we initialize</pre></div>
+<div class="cov"><span class="num"><pre> 30</pre></span><pre>	ourselves although the system is not quite there yet.&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 31</pre></span><pre>	import maya.cmds as cmds	# late import</pre></div>
+<div class="cov"><span class="num"><pre> 32</pre></span><pre>	pluginpath = os.path.splitext( __file__ )[0] + &quot;.py&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 33</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 34</pre></span><pre>	if _should_initialize_plugin and not cmds.pluginInfo( pluginpath, q=1, loaded=1 ):</pre></div>
+<div class="cov"><span class="num"><pre> 35</pre></span><pre>		cmds.loadPlugin( pluginpath )</pre></div>
+<div class="cov"><span class="num"><pre> 36</pre></span><pre>	return _should_initialize_plugin</pre></div>
+<div class="skip"><span class="num"><pre> 37</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 38</pre></span><pre>#} END initialization</pre></div>
+<div class="skip"><span class="num"><pre> 39</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 40</pre></span><pre>#{ Storage Plugin</pre></div>
+<div class="skip"><span class="num"><pre> 41</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 42</pre></span><pre># GLOBAL PERSITENCE TRACKING DICT</pre></div>
+<div class="skip"><span class="num"><pre> 43</pre></span><pre># assure we only have it once</pre></div>
+<div class="cov"><span class="num"><pre> 44</pre></span><pre>if not hasattr( sys, &quot;_maya_pyPickleData_trackingDict&quot; ):</pre></div>
+<div class="cov"><span class="num"><pre> 45</pre></span><pre>	sys._maya_pyPickleData_trackingDict = dict()</pre></div>
+<div class="skip"><span class="num"><pre> 46</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 47</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 48</pre></span><pre># NOTE: We do not prevent the code to be executed if we are not to load as, </pre></div>
+<div class="skip"><span class="num"><pre> 49</pre></span><pre># at this point, openMayaAnim has been initialized already which in fact </pre></div>
+<div class="skip"><span class="num"><pre> 50</pre></span><pre># loads OpenMayaMPx that we would try to delay. </pre></div>
+<div class="skip"><span class="num"><pre> 51</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 52</pre></span><pre>def createStorageAttribute( dataType ):</pre></div>
+<div class="cov"><span class="num"><pre> 53</pre></span><pre>	&quot;&quot;&quot; This method creates an Attribute in a configuration suitable to be used</pre></div>
+<div class="cov"><span class="num"><pre> 54</pre></span><pre>	with the ``StorageBase`` interface. </pre></div>
+<div class="skip"><span class="num"><pre> 55</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 56</pre></span><pre>	:note: this allows your own plugin node to receive storage compatibility</pre></div>
+<div class="cov"><span class="num"><pre> 57</pre></span><pre>	:param dataType: the type of the typed attribute - either MTypeID or MFnData enumeration</pre></div>
+<div class="cov"><span class="num"><pre> 58</pre></span><pre>		An MTypeID must point to a valid and already registered plugin data.</pre></div>
+<div class="cov"><span class="num"><pre> 59</pre></span><pre>		In order for the ``StorageBase`` interface to work, it must by ``PyPickleData.kPluginDataId``. </pre></div>
+<div class="cov"><span class="num"><pre> 60</pre></span><pre>	:return: attribute api object of its master compound attribute&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 61</pre></span><pre>	tAttr = api.MFnTypedAttribute()</pre></div>
+<div class="cov"><span class="num"><pre> 62</pre></span><pre>	mAttr = api.MFnMessageAttribute()</pre></div>
+<div class="cov"><span class="num"><pre> 63</pre></span><pre>	cAttr = api.MFnCompoundAttribute()</pre></div>
+<div class="cov"><span class="num"><pre> 64</pre></span><pre>	nAttr = api.MFnNumericAttribute()</pre></div>
+<div class="skip"><span class="num"><pre> 65</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 66</pre></span><pre>	aData = cAttr.create( &quot;data&quot;, &quot;dta&quot; )					# connect to instance transforms</pre></div>
+<div class="cov"><span class="num"><pre> 67</pre></span><pre>	if True:</pre></div>
+<div class="cov"><span class="num"><pre> 68</pre></span><pre>		dataID = tAttr.create( &quot;dataId&quot;, &quot;id&quot;, api.MFnData.kString )</pre></div>
+<div class="skip"><span class="num"><pre> 69</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 70</pre></span><pre>		typeInfo = nAttr.create( &quot;dataType&quot;, &quot;type&quot;, api.MFnNumericData.kInt )	# can be used for additional type info</pre></div>
+<div class="skip"><span class="num"><pre> 71</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 72</pre></span><pre>		typedData = tAttr.create( &quot;value&quot;, &quot;dval&quot;, dataType )</pre></div>
+<div class="skip"><span class="num"><pre> 73</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 74</pre></span><pre>		# even though its a child attribute, we cannot use 'message' as it is already</pre></div>
+<div class="skip"><span class="num"><pre> 75</pre></span><pre>		# taken on the DependNode</pre></div>
+<div class="cov"><span class="num"><pre> 76</pre></span><pre>		messageData = mAttr.create( &quot;mmessage&quot;, &quot;dmsg&quot; )</pre></div>
+<div class="cov"><span class="num"><pre> 77</pre></span><pre>		mAttr.setArray( True )</pre></div>
+<div class="skip"><span class="num"><pre> 78</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 79</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 80</pre></span><pre>		cAttr.addChild( dataID )</pre></div>
+<div class="cov"><span class="num"><pre> 81</pre></span><pre>		cAttr.addChild( typeInfo )</pre></div>
+<div class="cov"><span class="num"><pre> 82</pre></span><pre>		cAttr.addChild( typedData )</pre></div>
+<div class="cov"><span class="num"><pre> 83</pre></span><pre>		cAttr.addChild( messageData )</pre></div>
+<div class="skip"><span class="num"><pre> 84</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 85</pre></span><pre>	# END COMPOUND ATTRIBUTE</pre></div>
+<div class="cov"><span class="num"><pre> 86</pre></span><pre>	cAttr.setArray( True )</pre></div>
+<div class="skip"><span class="num"><pre> 87</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 88</pre></span><pre>	# copy attribute, just to be sure we don't loose the object when cAttr goes out</pre></div>
+<div class="skip"><span class="num"><pre> 89</pre></span><pre>	# of scope</pre></div>
+<div class="cov"><span class="num"><pre> 90</pre></span><pre>	return api.MObject(aData)</pre></div>
+<div class="skip"><span class="num"><pre> 91</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 92</pre></span><pre>class StoragePluginNode( mpx.MPxNode ):</pre></div>
+<div class="cov"><span class="num"><pre> 93</pre></span><pre>	&quot;&quot;&quot; Base Class defining the storage node data interfaces  &quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 94</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 95</pre></span><pre>	# The ID used here has been assigned by the autodesk support and is globally unique !</pre></div>
+<div class="cov"><span class="num"><pre> 96</pre></span><pre>	kPluginNodeTypeName = &quot;storageNode&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 97</pre></span><pre>	kPluginNodeId = api.MTypeId( 0x0010D134 )</pre></div>
+<div class="skip"><span class="num"><pre> 98</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 99</pre></span><pre>	aData = api.MObject()</pre></div>
+<div class="skip"><span class="num"><pre>100</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>101</pre></span><pre>	def __init__( self ):</pre></div>
+<div class="cov"><span class="num"><pre>102</pre></span><pre>		return mpx.MPxNode.__init__( self )</pre></div>
+<div class="skip"><span class="num"><pre>103</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>104</pre></span><pre>	@staticmethod</pre></div>
+<div class="cov"><span class="num"><pre>105</pre></span><pre>	def creator( ):</pre></div>
+<div class="cov"><span class="num"><pre>106</pre></span><pre>		return mpx.asMPxPtr( StoragePluginNode() )</pre></div>
+<div class="skip"><span class="num"><pre>107</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>108</pre></span><pre>def initStoragePluginNodeAttrs( ):</pre></div>
+<div class="cov"><span class="num"><pre>109</pre></span><pre>	&quot;&quot;&quot;Called to initialize the attributes of the storage node&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>110</pre></span><pre>	StoragePluginNode.aData = createStorageAttribute( PyPickleData.kPluginDataId )</pre></div>
+<div class="cov"><span class="num"><pre>111</pre></span><pre>	StoragePluginNode.addAttribute( StoragePluginNode.aData )</pre></div>
+<div class="skip"><span class="num"><pre>112</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>113</pre></span><pre>class PyPickleData( mpx.MPxData ):</pre></div>
+<div class="cov"><span class="num"><pre>114</pre></span><pre>	&quot;&quot;&quot;Allows to access a pickled data object natively within a maya file.</pre></div>
+<div class="cov"><span class="num"><pre>115</pre></span><pre>	In ascii mode, the pickle will be encoded into string data, in binary mode</pre></div>
+<div class="cov"><span class="num"><pre>116</pre></span><pre>	the cPickle will be taken in its original value.</pre></div>
+<div class="skip"><span class="num"><pre>117</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>118</pre></span><pre>	To get the respective dict-references back, we use a tracking dict as proposed</pre></div>
+<div class="cov"><span class="num"><pre>119</pre></span><pre>	by the API Docs</pre></div>
+<div class="skip"><span class="num"><pre>120</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>121</pre></span><pre>	:note: This datatype is copies the data by reference which is why maya always calls</pre></div>
+<div class="cov"><span class="num"><pre>122</pre></span><pre>		the copy constructor, even if you retrieve a const data reference, where this would not be</pre></div>
+<div class="cov"><span class="num"><pre>123</pre></span><pre>		required actually. This is fine for most uses</pre></div>
+<div class="cov"><span class="num"><pre>124</pre></span><pre>	:note: as the datatype is reference based, undo is currently not supported ( or does not</pre></div>
+<div class="cov"><span class="num"><pre>125</pre></span><pre>		work as it is expected to do&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>126</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>127</pre></span><pre>	# The ID used here has been assigned by the autodesk support and is globally unique !</pre></div>
+<div class="cov"><span class="num"><pre>128</pre></span><pre>	kPluginDataId = api.MTypeId( 0x0010D135 )</pre></div>
+<div class="cov"><span class="num"><pre>129</pre></span><pre>	kDataName = &quot;PickleData&quot;</pre></div>
+<div class="skip"><span class="num"><pre>130</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>131</pre></span><pre>	def __init__(self):</pre></div>
+<div class="cov"><span class="num"><pre>132</pre></span><pre>		mpx.MPxData.__init__( self )</pre></div>
+<div class="cov"><span class="num"><pre>133</pre></span><pre>		self.__data = dict()</pre></div>
+<div class="cov"><span class="num"><pre>134</pre></span><pre>		sys._maya_pyPickleData_trackingDict[ mpx.asHashable( self ) ] = self.__data</pre></div>
+<div class="skip"><span class="num"><pre>135</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>136</pre></span><pre>	def __del__( self ):</pre></div>
+<div class="cov"><span class="num"><pre>137</pre></span><pre>		&quot;&quot;&quot;Remove ourselves from the dictionary to prevent flooding</pre></div>
+<div class="skip"><span class="num"><pre>138</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>139</pre></span><pre>		:note: we can be called even if maya is already unloaded or shutting down&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>140</pre></span><pre>		if mpx.asHashable is not None:</pre></div>
+<div class="cov"><span class="num"><pre>141</pre></span><pre>			del( sys._maya_pyPickleData_trackingDict[ mpx.asHashable( self ) ] )</pre></div>
+<div class="skip"><span class="num"><pre>142</pre></span><pre>		# call super just to be on the safe side in future, currently it appears</pre></div>
+<div class="skip"><span class="num"><pre>143</pre></span><pre>		# not to be required</pre></div>
+<div class="cov"><span class="num"><pre>144</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre>145</pre></span><pre>			super( PyPickleData, self ).__del__( )</pre></div>
+<div class="cov"><span class="num"><pre>146</pre></span><pre>		except AttributeError:</pre></div>
+<div class="skip"><span class="num"><pre>147</pre></span><pre>			# Maya 2008 and following do not require this anymore as they</pre></div>
+<div class="skip"><span class="num"><pre>148</pre></span><pre>			# do not have a del method implemented apparently</pre></div>
+<div class="cov"><span class="num"><pre>149</pre></span><pre>			pass</pre></div>
+<div class="skip"><span class="num"><pre>150</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>151</pre></span><pre>	def _writeToStream( self, ostream, asBinary ):</pre></div>
+<div class="cov"><span class="num"><pre>152</pre></span><pre>		&quot;&quot;&quot;Write our data binary or ascii respectively&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>153</pre></span><pre>		sout = cStringIO.StringIO()</pre></div>
+<div class="cov"><span class="num"><pre>154</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre>155</pre></span><pre>			cPickle.dump( self.__data, sout, protocol=2 )</pre></div>
+<div class="nocov"><span class="num"><pre>156</pre></span><pre>		except cPickle.PicklingError, e:</pre></div>
+<div class="nocov"><span class="num"><pre>157</pre></span><pre>			log.error( str( e ) )</pre></div>
+<div class="nocov"><span class="num"><pre>158</pre></span><pre>			return</pre></div>
+<div class="skip"><span class="num"><pre>159</pre></span><pre>		# END pickle error handling</pre></div>
+<div class="skip"><span class="num"><pre>160</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>161</pre></span><pre>		if not asBinary:</pre></div>
+<div class="cov"><span class="num"><pre>162</pre></span><pre>			api.MStreamUtils.writeChar( ostream, '&quot;', asBinary )</pre></div>
+<div class="skip"><span class="num"><pre>163</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>164</pre></span><pre>		# assure number of bytes is a multiple of 4</pre></div>
+<div class="cov"><span class="num"><pre>165</pre></span><pre>		if asBinary:</pre></div>
+<div class="cov"><span class="num"><pre>166</pre></span><pre>			for c in range( sout.tell() % 4 ):</pre></div>
+<div class="cov"><span class="num"><pre>167</pre></span><pre>				sout.write( chr( 0 ) )		# 0 bytes</pre></div>
+<div class="skip"><span class="num"><pre>168</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>169</pre></span><pre>		# NOTE: even binaries will be encoded as this circumvents the 0 byte which terminates the</pre></div>
+<div class="skip"><span class="num"><pre>170</pre></span><pre>		# char byte stream ... can't help it but writing individual bytes</pre></div>
+<div class="skip"><span class="num"><pre>171</pre></span><pre>		# TODO: improve this if it turns out to be too slow</pre></div>
+<div class="cov"><span class="num"><pre>172</pre></span><pre>		api.MStreamUtils.writeCharBuffer( ostream, binascii.b2a_base64( sout.getvalue() ).strip(), asBinary )</pre></div>
+<div class="skip"><span class="num"><pre>173</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>174</pre></span><pre>		if not asBinary:</pre></div>
+<div class="cov"><span class="num"><pre>175</pre></span><pre>			api.MStreamUtils.writeChar( ostream, '&quot;', asBinary )</pre></div>
+<div class="skip"><span class="num"><pre>176</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>177</pre></span><pre>	def writeBinary(self, out):</pre></div>
+<div class="cov"><span class="num"><pre>178</pre></span><pre>		&quot;&quot;&quot;cPickle to cStringIO, write in 4 byte packs using ScriptUtil&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>179</pre></span><pre>		self._writeToStream( out, True )</pre></div>
+<div class="skip"><span class="num"><pre>180</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>181</pre></span><pre>	def readBinary(self, inStream, numBytesToRead ):</pre></div>
+<div class="cov"><span class="num"><pre>182</pre></span><pre>		&quot;&quot;&quot;Read in 4 byte packs to cStringIO, unpickle from there</pre></div>
+<div class="skip"><span class="num"><pre>183</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>184</pre></span><pre>		:note: this method is more complicated than it needs be since asCharPtr does not work !</pre></div>
+<div class="cov"><span class="num"><pre>185</pre></span><pre>			It returns a string of a single char ... which is not the same :) !</pre></div>
+<div class="cov"><span class="num"><pre>186</pre></span><pre>		:note: YES, this is a CUMBERSOME way to deal with bytes ... terrible, thanks maya :), thanks python&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>187</pre></span><pre>		sio = cStringIO.StringIO( )</pre></div>
+<div class="cov"><span class="num"><pre>188</pre></span><pre>		scriptutil = api.MScriptUtil( )</pre></div>
+<div class="cov"><span class="num"><pre>189</pre></span><pre>		scriptutil.createFromInt( 0 )</pre></div>
+<div class="cov"><span class="num"><pre>190</pre></span><pre>		intptr = scriptutil.asIntPtr()</pre></div>
+<div class="skip"><span class="num"><pre>191</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>192</pre></span><pre>		# require multiple of 4 !</pre></div>
+<div class="cov"><span class="num"><pre>193</pre></span><pre>		if numBytesToRead % 4 != 0:</pre></div>
+<div class="nocov"><span class="num"><pre>194</pre></span><pre>			raise AssertionError( &quot;Require multiple of for for number of bytes to be read, but is %i&quot; % numBytesToRead )</pre></div>
+<div class="skip"><span class="num"><pre>195</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>196</pre></span><pre>		bitmask = 255								# mask the lower 8 bit</pre></div>
+<div class="cov"><span class="num"><pre>197</pre></span><pre>		shiftlist = [ 0, 8, 16, 24 ]				# used to shift bits by respective values</pre></div>
+<div class="cov"><span class="num"><pre>198</pre></span><pre>		for i in xrange( numBytesToRead  / 4 ):</pre></div>
+<div class="cov"><span class="num"><pre>199</pre></span><pre>			api.MStreamUtils.readInt( inStream, intptr, True )</pre></div>
+<div class="cov"><span class="num"><pre>200</pre></span><pre>			intval = scriptutil.getInt( intptr )</pre></div>
+<div class="skip"><span class="num"><pre>201</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>202</pre></span><pre>			# convert to chars - endianess should be taken care of by python</pre></div>
+<div class="cov"><span class="num"><pre>203</pre></span><pre>			for shift in shiftlist:</pre></div>
+<div class="cov"><span class="num"><pre>204</pre></span><pre>				sio.write( chr( ( intval &gt;&gt; shift ) &amp; bitmask ) )</pre></div>
+<div class="skip"><span class="num"><pre>205</pre></span><pre>			# END for each byte</pre></div>
+<div class="skip"><span class="num"><pre>206</pre></span><pre>		# END for all 4 bytes to read</pre></div>
+<div class="skip"><span class="num"><pre>207</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>208</pre></span><pre>		self.__data = cPickle.loads( binascii.a2b_base64( sio.getvalue() ) )</pre></div>
+<div class="cov"><span class="num"><pre>209</pre></span><pre>		sys._maya_pyPickleData_trackingDict[ mpx.asHashable( self ) ] = self.__data</pre></div>
+<div class="skip"><span class="num"><pre>210</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>211</pre></span><pre>	def writeASCII(self, out):</pre></div>
+<div class="cov"><span class="num"><pre>212</pre></span><pre>		&quot;&quot;&quot;cPickle to cStringIO, encode with base64 encoding&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>213</pre></span><pre>		self._writeToStream( out, False )</pre></div>
+<div class="skip"><span class="num"><pre>214</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>215</pre></span><pre>	def readASCII(self, args, lastParsedElement ):</pre></div>
+<div class="cov"><span class="num"><pre>216</pre></span><pre>		&quot;&quot;&quot;Read base64 element and decode to cStringIO, then unpickle&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>217</pre></span><pre>		parsedIndex = api.MScriptUtil.getUint( lastParsedElement )</pre></div>
+<div class="cov"><span class="num"><pre>218</pre></span><pre>		base64encodedstring = args.asString( parsedIndex )</pre></div>
+<div class="cov"><span class="num"><pre>219</pre></span><pre>		self.__data = cPickle.loads( binascii.a2b_base64( base64encodedstring ) )</pre></div>
+<div class="skip"><span class="num"><pre>220</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>221</pre></span><pre>		parsedIndex += 1</pre></div>
+<div class="cov"><span class="num"><pre>222</pre></span><pre>		api.MScriptUtil.setUint(lastParsedElement,parsedIndex)	# proceed the index</pre></div>
+<div class="skip"><span class="num"><pre>223</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>224</pre></span><pre>		# update tracking dict</pre></div>
+<div class="cov"><span class="num"><pre>225</pre></span><pre>		sys._maya_pyPickleData_trackingDict[ mpx.asHashable( self ) ] = self.__data</pre></div>
+<div class="skip"><span class="num"><pre>226</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>227</pre></span><pre>	def copy( self, other ):</pre></div>
+<div class="cov"><span class="num"><pre>228</pre></span><pre>		&quot;&quot;&quot;Copy other into self - allows copy pointers as maya copies the data each</pre></div>
+<div class="cov"><span class="num"><pre>229</pre></span><pre>		time you retrieve it&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>230</pre></span><pre>		otherdata = sys._maya_pyPickleData_trackingDict[ mpx.asHashable( other ) ]</pre></div>
+<div class="cov"><span class="num"><pre>231</pre></span><pre>		self.__data = otherdata</pre></div>
+<div class="cov"><span class="num"><pre>232</pre></span><pre>		sys._maya_pyPickleData_trackingDict[ mpx.asHashable( self ) ] = self.__data</pre></div>
+<div class="skip"><span class="num"><pre>233</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>234</pre></span><pre>	@staticmethod</pre></div>
+<div class="cov"><span class="num"><pre>235</pre></span><pre>	def creator( ):</pre></div>
+<div class="cov"><span class="num"><pre>236</pre></span><pre>		return mpx.asMPxPtr( PyPickleData() )</pre></div>
+<div class="skip"><span class="num"><pre>237</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>238</pre></span><pre>	def typeId( self ):</pre></div>
+<div class="nocov"><span class="num"><pre>239</pre></span><pre>		return self.kPluginDataId</pre></div>
+<div class="skip"><span class="num"><pre>240</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>241</pre></span><pre>	def name( self ):</pre></div>
+<div class="nocov"><span class="num"><pre>242</pre></span><pre>		return self.kDataName</pre></div>
+<div class="skip"><span class="num"><pre>243</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>244</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>245</pre></span><pre>def initializePlugin(mobject):</pre></div>
+<div class="cov"><span class="num"><pre>246</pre></span><pre>	import mrv.maya as mrv</pre></div>
+<div class="skip"><span class="num"><pre>247</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>248</pre></span><pre>	mplugin = mpx.MFnPlugin( mobject )</pre></div>
+<div class="cov"><span class="num"><pre>249</pre></span><pre>	mplugin.registerData( PyPickleData.kDataName, PyPickleData.kPluginDataId, PyPickleData.creator )</pre></div>
+<div class="cov"><span class="num"><pre>250</pre></span><pre>	mplugin.registerNode( 	StoragePluginNode.kPluginNodeTypeName, StoragePluginNode.kPluginNodeId, StoragePluginNode.creator, initStoragePluginNodeAttrs, mpx.MPxNode.kDependNode )</pre></div>
+<div class="skip"><span class="num"><pre>251</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>252</pre></span><pre>	# register plugin data in the respective class</pre></div>
+<div class="cov"><span class="num"><pre>253</pre></span><pre>	mrv.registerPluginDataTrackingDict( PyPickleData.kPluginDataId, sys._maya_pyPickleData_trackingDict )</pre></div>
+<div class="skip"><span class="num"><pre>254</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>255</pre></span><pre>def uninitializePlugin( mobject ):</pre></div>
+<div class="cov"><span class="num"><pre>256</pre></span><pre>	mplugin = mpx.MFnPlugin( mobject )</pre></div>
+<div class="cov"><span class="num"><pre>257</pre></span><pre>	mplugin.deregisterData( PyPickleData.kPluginDataId )</pre></div>
+<div class="cov"><span class="num"><pre>258</pre></span><pre>	mplugin.deregisterNode( StoragePluginNode.kPluginNodeId )</pre></div>
+<div class="skip"><span class="num"><pre>259</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>260</pre></span><pre>#} END plugin</pre></div>
+<div class="skip"><span class="num"><pre>261</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>262</pre></span><pre></pre></div>
+</div>
+</body>
+</html>

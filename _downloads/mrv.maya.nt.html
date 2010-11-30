@@ -1,0 +1,392 @@
+<html>
+<head>
+<title>mrv.maya.nt</title>
+</head>
+<body>
+mrv.maya.nt
+<style>
+.coverage pre {float: left; margin: 0px 1em; border: none;
+               padding: 0px; }
+.num pre { margin: 0px }
+.nocov, .nocov pre {background-color: #faa}
+.cov, .cov pre {background-color: #cfc}
+div.coverage div { clear: both; height: 1.1em}
+</style>
+<div class="stats">
+Covered: 212 lines<br/>
+Missed: 19 lines<br/>
+Skipped 136 lines<br/>
+Percent: 91 %<br/>
+
+</div>
+<div class="coverage">
+<div class="skip"><span class="num"><pre>  1</pre></span><pre># -*- coding: utf-8 -*-</pre></div>
+<div class="cov"><span class="num"><pre>  2</pre></span><pre>&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  3</pre></span><pre>All classes required to wrap maya nodes in an object oriented manner into python objects</pre></div>
+<div class="cov"><span class="num"><pre>  4</pre></span><pre>and allow easy handling of them.</pre></div>
+<div class="skip"><span class="num"><pre>  5</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  6</pre></span><pre>These python classes wrap the API representations of their respective nodes - most general</pre></div>
+<div class="cov"><span class="num"><pre>  7</pre></span><pre>commands will be natively working on them.</pre></div>
+<div class="skip"><span class="num"><pre>  8</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  9</pre></span><pre>These classes follow the node hierarchy as supplied by the maya api.</pre></div>
+<div class="skip"><span class="num"><pre> 10</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 11</pre></span><pre>Optionally: Attribute access is as easy as using properties like:</pre></div>
+<div class="skip"><span class="num"><pre> 12</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 13</pre></span><pre>	&gt;&gt;&gt; node.translateX</pre></div>
+<div class="skip"><span class="num"><pre> 14</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 15</pre></span><pre>:note: it is important not to cache these as the underlying obejcts my change over time.</pre></div>
+<div class="cov"><span class="num"><pre> 16</pre></span><pre>	For long-term storage, use handles instead.</pre></div>
+<div class="skip"><span class="num"><pre> 17</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 18</pre></span><pre>Default maya commands will require them to be used as strings instead.</pre></div>
+<div class="cov"><span class="num"><pre> 19</pre></span><pre>&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 20</pre></span><pre>__docformat__ = &quot;restructuredtext&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 21</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 22</pre></span><pre>import mrv.maya as mrvmaya</pre></div>
+<div class="cov"><span class="num"><pre> 23</pre></span><pre>import typ</pre></div>
+<div class="cov"><span class="num"><pre> 24</pre></span><pre>_thismodule = __import__( &quot;mrv.maya.nt&quot;, globals(), locals(), ['nt'] )</pre></div>
+<div class="cov"><span class="num"><pre> 25</pre></span><pre>from mrv.util import capitalize</pre></div>
+<div class="cov"><span class="num"><pre> 26</pre></span><pre>import mrv.maya.env as env</pre></div>
+<div class="cov"><span class="num"><pre> 27</pre></span><pre>import mrv.maya.util as mrvmayautil</pre></div>
+<div class="cov"><span class="num"><pre> 28</pre></span><pre>from mrv import init_modules</pre></div>
+<div class="skip"><span class="num"><pre> 29</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 30</pre></span><pre>import maya.cmds as cmds</pre></div>
+<div class="cov"><span class="num"><pre> 31</pre></span><pre>import maya.OpenMaya as api</pre></div>
+<div class="skip"><span class="num"><pre> 32</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 33</pre></span><pre>import sys</pre></div>
+<div class="cov"><span class="num"><pre> 34</pre></span><pre>import os</pre></div>
+<div class="cov"><span class="num"><pre> 35</pre></span><pre>import logging</pre></div>
+<div class="skip"><span class="num"><pre> 36</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 37</pre></span><pre># May not use all as it will receive all submodules </pre></div>
+<div class="skip"><span class="num"><pre> 38</pre></span><pre># __all__</pre></div>
+<div class="skip"><span class="num"><pre> 39</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 40</pre></span><pre>#{ Globals</pre></div>
+<div class="skip"><span class="num"><pre> 41</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 42</pre></span><pre>pluginDB = None</pre></div>
+<div class="skip"><span class="num"><pre> 43</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 44</pre></span><pre>#} END globals</pre></div>
+<div class="skip"><span class="num"><pre> 45</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 46</pre></span><pre>#{ Common</pre></div>
+<div class="skip"><span class="num"><pre> 47</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 48</pre></span><pre>def addCustomType( newcls, parentClsName=None, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre> 49</pre></span><pre>	&quot;&quot;&quot; Add a custom class to this module - it will be handled like a native type</pre></div>
+<div class="skip"><span class="num"><pre> 50</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 51</pre></span><pre>	:param newcls: new class object if metaclass is None, otherwise string name of the</pre></div>
+<div class="cov"><span class="num"><pre> 52</pre></span><pre>		type name to be created by your metaclass</pre></div>
+<div class="cov"><span class="num"><pre> 53</pre></span><pre>	:param parentClsName: if metaclass is set, the parentclass name ( of a class existing</pre></div>
+<div class="cov"><span class="num"><pre> 54</pre></span><pre>		in the nodeTypeTree ( see /maya/cache/nodeHierarchy.html )</pre></div>
+<div class="cov"><span class="num"><pre> 55</pre></span><pre>		Otherwise, if unset, the parentclassname will be extracted from the newcls object</pre></div>
+<div class="cov"><span class="num"><pre> 56</pre></span><pre>	:param kwargs:</pre></div>
+<div class="cov"><span class="num"><pre> 57</pre></span><pre>		 * force_creation: </pre></div>
+<div class="cov"><span class="num"><pre> 58</pre></span><pre>				if True, default False, the class type will be created immediately. This</pre></div>
+<div class="cov"><span class="num"><pre> 59</pre></span><pre>				can be useful if you wish to use the type for comparison, possibly before it is first being</pre></div>
+<div class="cov"><span class="num"><pre> 60</pre></span><pre>				queried by the system. The latter case would bind the StandinClass instead of the actual type.</pre></div>
+<div class="cov"><span class="num"><pre> 61</pre></span><pre>	:raise KeyError: if the parentClsName does not exist&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 62</pre></span><pre>	newclsname = newcls</pre></div>
+<div class="cov"><span class="num"><pre> 63</pre></span><pre>	newclsobj = None</pre></div>
+<div class="cov"><span class="num"><pre> 64</pre></span><pre>	parentname = parentClsName</pre></div>
+<div class="cov"><span class="num"><pre> 65</pre></span><pre>	if not isinstance( newcls, basestring ):</pre></div>
+<div class="cov"><span class="num"><pre> 66</pre></span><pre>		newclsname = newcls.__name__</pre></div>
+<div class="cov"><span class="num"><pre> 67</pre></span><pre>		newclsobj = newcls</pre></div>
+<div class="cov"><span class="num"><pre> 68</pre></span><pre>		if not parentClsName:</pre></div>
+<div class="cov"><span class="num"><pre> 69</pre></span><pre>			parentname = newcls.__bases__[0].__name__</pre></div>
+<div class="skip"><span class="num"><pre> 70</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 71</pre></span><pre>	# add to hierarchy tree</pre></div>
+<div class="cov"><span class="num"><pre> 72</pre></span><pre>	typ._addCustomType( globals(), parentname, newclsname, **kwargs )</pre></div>
+<div class="skip"><span class="num"><pre> 73</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 74</pre></span><pre>	# add the class to our module if required</pre></div>
+<div class="cov"><span class="num"><pre> 75</pre></span><pre>	if newclsobj:</pre></div>
+<div class="cov"><span class="num"><pre> 76</pre></span><pre>		setattr( _thismodule, newclsname, newclsobj )</pre></div>
+<div class="skip"><span class="num"><pre> 77</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 78</pre></span><pre>def removeCustomType( customType ):</pre></div>
+<div class="cov"><span class="num"><pre> 79</pre></span><pre>	&quot;&quot;&quot;Removes the given type from this module as well as from the type hierarchy.</pre></div>
+<div class="cov"><span class="num"><pre> 80</pre></span><pre>	This makes it unavailble to MRV</pre></div>
+<div class="skip"><span class="num"><pre> 81</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 82</pre></span><pre>	:param customType: either string identifying the type's name or the type itself</pre></div>
+<div class="cov"><span class="num"><pre> 83</pre></span><pre>	:note: does nothing if the type does not exist&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 84</pre></span><pre>	if not isinstance(customType, basestring):</pre></div>
+<div class="cov"><span class="num"><pre> 85</pre></span><pre>		customType = customType.__name__</pre></div>
+<div class="cov"><span class="num"><pre> 86</pre></span><pre>	typ._removeCustomType(globals(), customType)</pre></div>
+<div class="skip"><span class="num"><pre> 87</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 88</pre></span><pre>def addCustomTypeFromFile( hierarchyfile, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre> 89</pre></span><pre>	&quot;&quot;&quot;Add a custom classes as defined by the given tab separated file.</pre></div>
+<div class="cov"><span class="num"><pre> 90</pre></span><pre>	Call addCustomClasses afterwards to register your own base classes to the system</pre></div>
+<div class="cov"><span class="num"><pre> 91</pre></span><pre>	This will be required to assure your own base classes will be used instead of auto-generated</pre></div>
+<div class="cov"><span class="num"><pre> 92</pre></span><pre>	stand-in classes</pre></div>
+<div class="skip"><span class="num"><pre> 93</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 94</pre></span><pre>	:param hierarchyfile: Filepath to file modeling the class hierarchy using tab-indentation.</pre></div>
+<div class="cov"><span class="num"><pre> 95</pre></span><pre>		The root node has no indentation, whereas each child node adds one indentation level using </pre></div>
+<div class="cov"><span class="num"><pre> 96</pre></span><pre>		tabs.</pre></div>
+<div class="cov"><span class="num"><pre> 97</pre></span><pre>	:param kwargs:</pre></div>
+<div class="cov"><span class="num"><pre> 98</pre></span><pre>		 * force_creation: see `addCustomType`</pre></div>
+<div class="cov"><span class="num"><pre> 99</pre></span><pre>	:note: all attributes of `addCustomType` are supported</pre></div>
+<div class="cov"><span class="num"><pre>100</pre></span><pre>	:note: there must be exactly one root type</pre></div>
+<div class="cov"><span class="num"><pre>101</pre></span><pre>	:return: iterator providing all class names that have been added&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>102</pre></span><pre>	dagtree = mrvmaya._dagTreeFromTupleList( mrvmaya._tupleListFromFile( hierarchyfile ) )</pre></div>
+<div class="nocov"><span class="num"><pre>103</pre></span><pre>	typ._addCustomTypeFromDagtree( globals(), dagtree, **kwargs )</pre></div>
+<div class="nocov"><span class="num"><pre>104</pre></span><pre>	return ( capitalize( nodetype ) for nodetype in dagtree.nodes_iter() )</pre></div>
+<div class="skip"><span class="num"><pre>105</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>106</pre></span><pre>def addCustomClasses( clsobjlist ):</pre></div>
+<div class="cov"><span class="num"><pre>107</pre></span><pre>	&quot;&quot;&quot;Add the given classes to the nodes module, making them available to the sytem</pre></div>
+<div class="skip"><span class="num"><pre>108</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>109</pre></span><pre>	:note: first the class hierarchy need to be updated using addCustomTypeFromFile.</pre></div>
+<div class="cov"><span class="num"><pre>110</pre></span><pre>		This must appen before your additional classes are parsed to assure our metaclass creator will not</pre></div>
+<div class="cov"><span class="num"><pre>111</pre></span><pre>		be called before it knows the class hierarchy ( and where to actually put your type ).</pre></div>
+<div class="skip"><span class="num"><pre>112</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>113</pre></span><pre>	:param clsobjlist: list of class objects whose names are mentioned in the dagtree&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>114</pre></span><pre>	# add the classes</pre></div>
+<div class="nocov"><span class="num"><pre>115</pre></span><pre>	for cls in clsobjlist:</pre></div>
+<div class="nocov"><span class="num"><pre>116</pre></span><pre>		setattr( _thismodule, cls.__name__, cls )</pre></div>
+<div class="skip"><span class="num"><pre>117</pre></span><pre>	# END for each class to add</pre></div>
+<div class="skip"><span class="num"><pre>118</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>119</pre></span><pre>def forceClassCreation( typeNameList ):</pre></div>
+<div class="cov"><span class="num"><pre>120</pre></span><pre>	&quot;&quot;&quot;Create the types from standin classes from the given typeName iterable.</pre></div>
+<div class="cov"><span class="num"><pre>121</pre></span><pre>	The typenames must be upper case</pre></div>
+<div class="skip"><span class="num"><pre>122</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>123</pre></span><pre>	:return: List of type instances ( the classes ) that have been created&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>124</pre></span><pre>	outclslist = list()</pre></div>
+<div class="nocov"><span class="num"><pre>125</pre></span><pre>	standincls = mrvmayautil.StandinClass</pre></div>
+<div class="nocov"><span class="num"><pre>126</pre></span><pre>	for typename in typeNameList:</pre></div>
+<div class="nocov"><span class="num"><pre>127</pre></span><pre>		typeCls = getattr( _thismodule, typename )</pre></div>
+<div class="nocov"><span class="num"><pre>128</pre></span><pre>		if isinstance( typeCls, standincls ):</pre></div>
+<div class="nocov"><span class="num"><pre>129</pre></span><pre>			outclslist.append( typeCls.createCls() )</pre></div>
+<div class="skip"><span class="num"><pre>130</pre></span><pre>	# END for each typename</pre></div>
+<div class="nocov"><span class="num"><pre>131</pre></span><pre>	return outclslist</pre></div>
+<div class="skip"><span class="num"><pre>132</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>133</pre></span><pre>def enforcePersistence( ):</pre></div>
+<div class="cov"><span class="num"><pre>134</pre></span><pre>	&quot;&quot;&quot;Call this method to ensure that the persistance plugin is loaded and available.</pre></div>
+<div class="cov"><span class="num"><pre>135</pre></span><pre>	This should by used by plugins which require persitence features but want to </pre></div>
+<div class="cov"><span class="num"><pre>136</pre></span><pre>	be sure it is not disabled on the target system&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>137</pre></span><pre>	import mrv.maya.nt.storage as storage</pre></div>
+<div class="cov"><span class="num"><pre>138</pre></span><pre>	import mrv.maya.nt.persistence as persistence</pre></div>
+<div class="skip"><span class="num"><pre>139</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>140</pre></span><pre>	os.environ[persistence.persistence_enabled_envvar] = &quot;1&quot;</pre></div>
+<div class="cov"><span class="num"><pre>141</pre></span><pre>	reload(persistence)</pre></div>
+<div class="cov"><span class="num"><pre>142</pre></span><pre>	reload(storage)</pre></div>
+<div class="cov"><span class="num"><pre>143</pre></span><pre>	persistence.__initialize( _thismodule )</pre></div>
+<div class="skip"><span class="num"><pre>144</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>145</pre></span><pre>#} END common utilities</pre></div>
+<div class="skip"><span class="num"><pre>146</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>147</pre></span><pre>#{ Initialization </pre></div>
+<div class="skip"><span class="num"><pre>148</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>149</pre></span><pre>def _init_package( ):</pre></div>
+<div class="cov"><span class="num"><pre>150</pre></span><pre>	&quot;&quot;&quot;Do the main initialization of this package&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>151</pre></span><pre>	import mrv.maya.mdb as mdb</pre></div>
+<div class="cov"><span class="num"><pre>152</pre></span><pre>	typ.targetModule = _thismodule			# init metaclass with our module</pre></div>
+<div class="cov"><span class="num"><pre>153</pre></span><pre>	typ._nodesdict = globals()</pre></div>
+<div class="cov"><span class="num"><pre>154</pre></span><pre>	typ.initNodeHierarchy( )</pre></div>
+<div class="cov"><span class="num"><pre>155</pre></span><pre>	typ.initTypeNameToMfnClsMap( )</pre></div>
+<div class="cov"><span class="num"><pre>156</pre></span><pre>	typ.initWrappers( globals() )</pre></div>
+<div class="skip"><span class="num"><pre>157</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>158</pre></span><pre>	# code generator needs an initialized nodes dict to work</pre></div>
+<div class="cov"><span class="num"><pre>159</pre></span><pre>	typ.codegen = mdb.PythonMFnCodeGenerator(typ._nodesdict)</pre></div>
+<div class="skip"><span class="num"><pre>160</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>161</pre></span><pre>	# initialize base module with our global namespace dict</pre></div>
+<div class="cov"><span class="num"><pre>162</pre></span><pre>	import base</pre></div>
+<div class="cov"><span class="num"><pre>163</pre></span><pre>	base._nodesdict = globals()</pre></div>
+<div class="skip"><span class="num"><pre>164</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>165</pre></span><pre>	# must come last as typ needs full initialization first</pre></div>
+<div class="cov"><span class="num"><pre>166</pre></span><pre>	import apipatch</pre></div>
+<div class="cov"><span class="num"><pre>167</pre></span><pre>	apipatch.init_applyPatches( )</pre></div>
+<div class="skip"><span class="num"><pre>168</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>169</pre></span><pre>	# initialize modules</pre></div>
+<div class="cov"><span class="num"><pre>170</pre></span><pre>	init_modules( __file__, &quot;mrv.maya.nt&quot;, self_module = _thismodule )</pre></div>
+<div class="skip"><span class="num"><pre>171</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>172</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>173</pre></span><pre>def _force_type_creation():</pre></div>
+<div class="cov"><span class="num"><pre>174</pre></span><pre>	&quot;&quot;&quot;Enforce the creation of all types - must be called once all custom types </pre></div>
+<div class="cov"><span class="num"><pre>175</pre></span><pre>	were imported&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>176</pre></span><pre>	standincls = mrvmayautil.StandinClass</pre></div>
+<div class="cov"><span class="num"><pre>177</pre></span><pre>	for cls in _thismodule.__dict__.itervalues():</pre></div>
+<div class="cov"><span class="num"><pre>178</pre></span><pre>		if isinstance( cls, standincls ):</pre></div>
+<div class="cov"><span class="num"><pre>179</pre></span><pre>			cls.createCls()</pre></div>
+<div class="skip"><span class="num"><pre>180</pre></span><pre>		# END create type </pre></div>
+<div class="skip"><span class="num"><pre>181</pre></span><pre>	# END for each stored type</pre></div>
+<div class="skip"><span class="num"><pre>182</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>183</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>184</pre></span><pre>def _init_plugin_db():</pre></div>
+<div class="cov"><span class="num"><pre>185</pre></span><pre>	&quot;&quot;&quot;Find loaded plugins and provide dummies for their types - this assures iteration </pre></div>
+<div class="cov"><span class="num"><pre>186</pre></span><pre>	will not stop on these types for instance&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>187</pre></span><pre>	global pluginDB</pre></div>
+<div class="cov"><span class="num"><pre>188</pre></span><pre>	pluginDB = PluginDB()</pre></div>
+<div class="skip"><span class="num"><pre>189</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>190</pre></span><pre>#} END initialization</pre></div>
+<div class="skip"><span class="num"><pre>191</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>192</pre></span><pre>#{ Utility Classes</pre></div>
+<div class="skip"><span class="num"><pre>193</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>194</pre></span><pre>class PluginDB(dict):</pre></div>
+<div class="cov"><span class="num"><pre>195</pre></span><pre>	&quot;&quot;&quot;Simple container keeping information about the loaded plugins, namely the node</pre></div>
+<div class="cov"><span class="num"><pre>196</pre></span><pre>	types they register.</pre></div>
+<div class="skip"><span class="num"><pre>197</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>198</pre></span><pre>	As PyMel code has shown, we cannot rely on pluginLoaded and unloaded callbacks, which </pre></div>
+<div class="cov"><span class="num"><pre>199</pre></span><pre>	is why we just listen to plugin changed events, and figure out the differences ourselves.</pre></div>
+<div class="skip"><span class="num"><pre>200</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>201</pre></span><pre>	Currently we are only interested in the registered node types, which is why we </pre></div>
+<div class="cov"><span class="num"><pre>202</pre></span><pre>	are on ``mrv.maya.nt`` level, not on ``mrv.maya`` level</pre></div>
+<div class="cov"><span class="num"><pre>203</pre></span><pre>	&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>204</pre></span><pre>	__slots__ = 'log'</pre></div>
+<div class="skip"><span class="num"><pre>205</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>206</pre></span><pre>	def __init__(self):</pre></div>
+<div class="cov"><span class="num"><pre>207</pre></span><pre>		&quot;&quot;&quot;Upon initialization, we will parse the currently loaded plugins and </pre></div>
+<div class="cov"><span class="num"><pre>208</pre></span><pre>		register them. Additionally we register our event to stay in the loop </pre></div>
+<div class="cov"><span class="num"><pre>209</pre></span><pre>		if anything changes.&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>210</pre></span><pre>		self.log = logging.getLogger('mrv.maya.nt.%s' % type(self).__name__)</pre></div>
+<div class="skip"><span class="num"><pre>211</pre></span><pre>		# yes, we need a string here, yes, its mel</pre></div>
+<div class="skip"><span class="num"><pre>212</pre></span><pre>		# UPDATE: In maya 2011, a method is alright !</pre></div>
+<div class="cov"><span class="num"><pre>213</pre></span><pre>		melstr = 'python(&quot;import mrv.maya.nt; mrv.maya.nt.pluginDB.plugin_registry_changed()&quot;)'</pre></div>
+<div class="cov"><span class="num"><pre>214</pre></span><pre>		if env.appVersion()[0] &lt; 2011.0:</pre></div>
+<div class="nocov"><span class="num"><pre>215</pre></span><pre>			cmds.pluginInfo(changedCommand=melstr)</pre></div>
+<div class="cov"><span class="num"><pre>216</pre></span><pre>		else:</pre></div>
+<div class="skip"><span class="num"><pre>217</pre></span><pre>			# Okay, if we do this, maya crashes during shutdown, which is why we </pre></div>
+<div class="skip"><span class="num"><pre>218</pre></span><pre>			# use mel then ... nice work, Autodesk ;)</pre></div>
+<div class="skip"><span class="num"><pre>219</pre></span><pre>			# cmds.pluginInfo(changedCommand=self.plugin_registry_changed)</pre></div>
+<div class="cov"><span class="num"><pre>220</pre></span><pre>			mrvmaya.Mel.eval('pluginInfo -changedCommand &quot;%s&quot;' % melstr.replace('&quot;', '\\&quot;'))</pre></div>
+<div class="skip"><span class="num"><pre>221</pre></span><pre>		# END install callback</pre></div>
+<div class="cov"><span class="num"><pre>222</pre></span><pre>		self.plugin_registry_changed()</pre></div>
+<div class="skip"><span class="num"><pre>223</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>224</pre></span><pre>	def plugin_registry_changed(self, *args):</pre></div>
+<div class="cov"><span class="num"><pre>225</pre></span><pre>		&quot;&quot;&quot;Called by maya to indicate something has changed. </pre></div>
+<div class="cov"><span class="num"><pre>226</pre></span><pre>		We will diff the returned plugin information with our own database </pre></div>
+<div class="cov"><span class="num"><pre>227</pre></span><pre>		to determine which plugin was added or removed, to make the appropriate </pre></div>
+<div class="cov"><span class="num"><pre>228</pre></span><pre>		calls&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>229</pre></span><pre>		self.log.debug(&quot;registry changed&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>230</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>231</pre></span><pre>		loaded_plugins = set(cmds.pluginInfo(q=1, listPlugins=1) or list())</pre></div>
+<div class="cov"><span class="num"><pre>232</pre></span><pre>		our_plugins = set(self.keys())</pre></div>
+<div class="skip"><span class="num"><pre>233</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>234</pre></span><pre>		# plugins loaded </pre></div>
+<div class="cov"><span class="num"><pre>235</pre></span><pre>		for pn in loaded_plugins - our_plugins:</pre></div>
+<div class="cov"><span class="num"><pre>236</pre></span><pre>			self.plugin_loaded(pn)</pre></div>
+<div class="skip"><span class="num"><pre>237</pre></span><pre>			</pre></div>
+<div class="skip"><span class="num"><pre>238</pre></span><pre>		# plugins unloded</pre></div>
+<div class="cov"><span class="num"><pre>239</pre></span><pre>		for pn in our_plugins - loaded_plugins:</pre></div>
+<div class="cov"><span class="num"><pre>240</pre></span><pre>			self.plugin_unloaded(pn)</pre></div>
+<div class="skip"><span class="num"><pre>241</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>242</pre></span><pre>	def plugin_loaded(self, pluginName):</pre></div>
+<div class="cov"><span class="num"><pre>243</pre></span><pre>		&quot;&quot;&quot;Retrieve plugin information from a plugin named ``pluginName``, which is </pre></div>
+<div class="cov"><span class="num"><pre>244</pre></span><pre>		assumed to be loaded.</pre></div>
+<div class="cov"><span class="num"><pre>245</pre></span><pre>		Currently the nodetypes found are added to the node-type tree to make them available.</pre></div>
+<div class="cov"><span class="num"><pre>246</pre></span><pre>		The plugin author is free to add specialized types to the tree afterwards, overwriting </pre></div>
+<div class="cov"><span class="num"><pre>247</pre></span><pre>		the default ones.</pre></div>
+<div class="skip"><span class="num"><pre>248</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>249</pre></span><pre>		We loosely determine the inheritance by differentiating them into types suggested</pre></div>
+<div class="cov"><span class="num"><pre>250</pre></span><pre>		by MFn::kPlugin&lt;Name&gt;Node&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>251</pre></span><pre>		import base		# needs late import, TODO: reorganize modules</pre></div>
+<div class="skip"><span class="num"><pre>252</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>253</pre></span><pre>		self.log.debug(&quot;plugin '%s' loaded&quot; % pluginName)</pre></div>
+<div class="skip"><span class="num"><pre>254</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>255</pre></span><pre>		type_names = cmds.pluginInfo(pluginName, q=1, dependNode=1) or list()</pre></div>
+<div class="cov"><span class="num"><pre>256</pre></span><pre>		self[pluginName] = type_names</pre></div>
+<div class="skip"><span class="num"><pre>257</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>258</pre></span><pre>		# register types in the system if possible</pre></div>
+<div class="cov"><span class="num"><pre>259</pre></span><pre>		dgmod = api.MDGModifier()</pre></div>
+<div class="cov"><span class="num"><pre>260</pre></span><pre>		dagmod = api.MDagModifier()</pre></div>
+<div class="cov"><span class="num"><pre>261</pre></span><pre>		transobj = None</pre></div>
+<div class="skip"><span class="num"><pre>262</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>263</pre></span><pre>		nt = globals()</pre></div>
+<div class="cov"><span class="num"><pre>264</pre></span><pre>		for tn in type_names:</pre></div>
+<div class="cov"><span class="num"><pre>265</pre></span><pre>			tnc = capitalize(tn)</pre></div>
+<div class="cov"><span class="num"><pre>266</pre></span><pre>			if tnc in nt:</pre></div>
+<div class="cov"><span class="num"><pre>267</pre></span><pre>				self.log.debug(&quot;Skipped type %s as it did already exist in module&quot; % tnc)</pre></div>
+<div class="cov"><span class="num"><pre>268</pre></span><pre>				continue</pre></div>
+<div class="skip"><span class="num"><pre>269</pre></span><pre>			# END skip existing node types ( probably user created )</pre></div>
+<div class="skip"><span class="num"><pre>270</pre></span><pre>			</pre></div>
+<div class="skip"><span class="num"><pre>271</pre></span><pre>			# get the type id- first try depend node, then dag node. Never actually</pre></div>
+<div class="skip"><span class="num"><pre>272</pre></span><pre>			# create the nodes in the scene, created MObjects will be discarded</pre></div>
+<div class="skip"><span class="num"><pre>273</pre></span><pre>			# once the modifiers go out of scope</pre></div>
+<div class="cov"><span class="num"><pre>274</pre></span><pre>			apitype = None</pre></div>
+<div class="cov"><span class="num"><pre>275</pre></span><pre>			try:</pre></div>
+<div class="cov"><span class="num"><pre>276</pre></span><pre>				apitype = dgmod.createNode(tn).apiType()</pre></div>
+<div class="cov"><span class="num"><pre>277</pre></span><pre>			except RuntimeError:</pre></div>
+<div class="cov"><span class="num"><pre>278</pre></span><pre>				try:</pre></div>
+<div class="skip"><span class="num"><pre>279</pre></span><pre>					# most plugin dag nodes require a transform to be created</pre></div>
+<div class="skip"><span class="num"><pre>280</pre></span><pre>					# We create a dummy for the dagmod, otherwise it would create</pre></div>
+<div class="skip"><span class="num"><pre>281</pre></span><pre>					# it for us and return the parent transform instead, which </pre></div>
+<div class="skip"><span class="num"><pre>282</pre></span><pre>					# has no child officially yet as its not part of the dag</pre></div>
+<div class="skip"><span class="num"><pre>283</pre></span><pre>					# ( so we cannot query the child from there ).</pre></div>
+<div class="cov"><span class="num"><pre>284</pre></span><pre>					if transobj is None:</pre></div>
+<div class="cov"><span class="num"><pre>285</pre></span><pre>						transobj = dagmod.createNode(&quot;transform&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>286</pre></span><pre>					# END assure we have parent </pre></div>
+<div class="skip"><span class="num"><pre>287</pre></span><pre>					</pre></div>
+<div class="cov"><span class="num"><pre>288</pre></span><pre>					apitype = dagmod.createNode(tn, transobj).apiType()</pre></div>
+<div class="nocov"><span class="num"><pre>289</pre></span><pre>				except RuntimeError:</pre></div>
+<div class="nocov"><span class="num"><pre>290</pre></span><pre>					self.log.error(&quot;Failed to retrieve apitype of node type %s - skipped&quot; % tnc)</pre></div>
+<div class="nocov"><span class="num"><pre>291</pre></span><pre>					continue</pre></div>
+<div class="skip"><span class="num"><pre>292</pre></span><pre>				# END dag exception handling</pre></div>
+<div class="skip"><span class="num"><pre>293</pre></span><pre>			# END dg exception handling </pre></div>
+<div class="skip"><span class="num"><pre>294</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre>295</pre></span><pre>			parentclsname = base._plugin_type_to_node_type_name.get(apitype, 'Unknown')</pre></div>
+<div class="cov"><span class="num"><pre>296</pre></span><pre>			typ._addCustomType( nt, parentclsname, tnc, force_creation=True )</pre></div>
+<div class="skip"><span class="num"><pre>297</pre></span><pre>		# END for each type to handle</pre></div>
+<div class="skip"><span class="num"><pre>298</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>299</pre></span><pre>	def plugin_unloaded(self, pluginName):</pre></div>
+<div class="cov"><span class="num"><pre>300</pre></span><pre>		&quot;&quot;&quot;Remove all node types registered by pluginName unless they have been </pre></div>
+<div class="cov"><span class="num"><pre>301</pre></span><pre>		registered by a third party. We cannot assume that they listen to these events, </pre></div>
+<div class="cov"><span class="num"><pre>302</pre></span><pre>		hence we just keep the record as it will not harm.</pre></div>
+<div class="skip"><span class="num"><pre>303</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>304</pre></span><pre>		In any way, we will remove any record of the plugin from our db&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>305</pre></span><pre>		self.log.debug(&quot;plugin '%s' unloaded&quot; % pluginName)</pre></div>
+<div class="skip"><span class="num"><pre>306</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>307</pre></span><pre>		# clear our record</pre></div>
+<div class="cov"><span class="num"><pre>308</pre></span><pre>		installed_type_names = self[pluginName]</pre></div>
+<div class="cov"><span class="num"><pre>309</pre></span><pre>		del(self[pluginName])</pre></div>
+<div class="skip"><span class="num"><pre>310</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>311</pre></span><pre>		# deregister types if possible</pre></div>
+<div class="cov"><span class="num"><pre>312</pre></span><pre>		nt = globals()</pre></div>
+<div class="cov"><span class="num"><pre>313</pre></span><pre>		for tn in installed_type_names:</pre></div>
+<div class="cov"><span class="num"><pre>314</pre></span><pre>			tnc = capitalize(tn)</pre></div>
+<div class="skip"><span class="num"><pre>315</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre>316</pre></span><pre>			try:</pre></div>
+<div class="cov"><span class="num"><pre>317</pre></span><pre>				node_type = nt[tnc]</pre></div>
+<div class="nocov"><span class="num"><pre>318</pre></span><pre>			except KeyError:</pre></div>
+<div class="skip"><span class="num"><pre>319</pre></span><pre>				# wasnt registered anymore ? </pre></div>
+<div class="nocov"><span class="num"><pre>320</pre></span><pre>				self.log.warn(&quot;Type %s of unloaded plugin %s was already de-registered in mrv type system - skipped&quot; % (tnc, pluginName)) </pre></div>
+<div class="nocov"><span class="num"><pre>321</pre></span><pre>				continue</pre></div>
+<div class="skip"><span class="num"><pre>322</pre></span><pre>			# END handle exception</pre></div>
+<div class="skip"><span class="num"><pre>323</pre></span><pre>			</pre></div>
+<div class="skip"><span class="num"><pre>324</pre></span><pre>			# remove the type only if it was one of our unknown default types</pre></div>
+<div class="cov"><span class="num"><pre>325</pre></span><pre>			parentclsname = node_type.__base__.__name__</pre></div>
+<div class="cov"><span class="num"><pre>326</pre></span><pre>			if not parentclsname.startswith('Unknown'):</pre></div>
+<div class="cov"><span class="num"><pre>327</pre></span><pre>				continue</pre></div>
+<div class="skip"><span class="num"><pre>328</pre></span><pre>			# END skip custom nodes</pre></div>
+<div class="skip"><span class="num"><pre>329</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre>330</pre></span><pre>			typ._removeCustomType(nt, tnc)</pre></div>
+<div class="skip"><span class="num"><pre>331</pre></span><pre>		# END for each typename</pre></div>
+<div class="skip"><span class="num"><pre>332</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>333</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>334</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>335</pre></span><pre>#} END utilty classes</pre></div>
+<div class="skip"><span class="num"><pre>336</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>337</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>338</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>339</pre></span><pre>if 'init_done' not in locals():</pre></div>
+<div class="cov"><span class="num"><pre>340</pre></span><pre>	init_done = False</pre></div>
+<div class="skip"><span class="num"><pre>341</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>342</pre></span><pre>if not init_done:</pre></div>
+<div class="skip"><span class="num"><pre>343</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>344</pre></span><pre>	_init_package( )</pre></div>
+<div class="skip"><span class="num"><pre>345</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>346</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>347</pre></span><pre>	# overwrite dummy node bases with hand-implemented ones</pre></div>
+<div class="cov"><span class="num"><pre>348</pre></span><pre>	from base import *</pre></div>
+<div class="cov"><span class="num"><pre>349</pre></span><pre>	from geometry import *</pre></div>
+<div class="cov"><span class="num"><pre>350</pre></span><pre>	from set import *</pre></div>
+<div class="cov"><span class="num"><pre>351</pre></span><pre>	from anim import *</pre></div>
+<div class="cov"><span class="num"><pre>352</pre></span><pre>	from it import *</pre></div>
+<div class="cov"><span class="num"><pre>353</pre></span><pre>	from storage import *</pre></div>
+<div class="skip"><span class="num"><pre>354</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>355</pre></span><pre>	# fix set</pre></div>
+<div class="cov"><span class="num"><pre>356</pre></span><pre>	import __builtin__</pre></div>
+<div class="cov"><span class="num"><pre>357</pre></span><pre>	set = __builtin__.set</pre></div>
+<div class="skip"><span class="num"><pre>358</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>359</pre></span><pre>	# import additional classes required in this module</pre></div>
+<div class="cov"><span class="num"><pre>360</pre></span><pre>	from mrv.maya.ns import Namespace</pre></div>
+<div class="skip"><span class="num"><pre>361</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>362</pre></span><pre>	# Setup all actual types - this makes the use much easier</pre></div>
+<div class="cov"><span class="num"><pre>363</pre></span><pre>	_force_type_creation()</pre></div>
+<div class="cov"><span class="num"><pre>364</pre></span><pre>	_init_plugin_db()</pre></div>
+<div class="skip"><span class="num"><pre>365</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>366</pre></span><pre>init_done = True</pre></div>
+<div class="skip"><span class="num"><pre>367</pre></span><pre></pre></div>
+</div>
+</body>
+</html>

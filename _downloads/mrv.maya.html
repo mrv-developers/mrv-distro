@@ -1,0 +1,506 @@
+<html>
+<head>
+<title>mrv.maya</title>
+</head>
+<body>
+mrv.maya
+<style>
+.coverage pre {float: left; margin: 0px 1em; border: none;
+               padding: 0px; }
+.num pre { margin: 0px }
+.nocov, .nocov pre {background-color: #faa}
+.cov, .cov pre {background-color: #cfc}
+div.coverage div { clear: both; height: 1.1em}
+</style>
+<div class="stats">
+Covered: 182 lines<br/>
+Missed: 96 lines<br/>
+Skipped 203 lines<br/>
+Percent: 65 %<br/>
+
+</div>
+<div class="coverage">
+<div class="skip"><span class="num"><pre>  1</pre></span><pre># -*- coding: utf-8 -*-</pre></div>
+<div class="cov"><span class="num"><pre>  2</pre></span><pre>&quot;&quot;&quot; Inialize the mrv.maya sub-system and startup maya as completely as possible or configured &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  3</pre></span><pre>import os, sys</pre></div>
+<div class="cov"><span class="num"><pre>  4</pre></span><pre>import mrv</pre></div>
+<div class="cov"><span class="num"><pre>  5</pre></span><pre>from mrv import init_modules</pre></div>
+<div class="cov"><span class="num"><pre>  6</pre></span><pre>from mrv.util import capitalize, DAGTree, PipeSeparatedFile</pre></div>
+<div class="cov"><span class="num"><pre>  7</pre></span><pre>from mrv.exc import MRVError</pre></div>
+<div class="cov"><span class="num"><pre>  8</pre></span><pre>from mrv.path import make_path</pre></div>
+<div class="skip"><span class="num"><pre>  9</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 10</pre></span><pre>from itertools import chain</pre></div>
+<div class="cov"><span class="num"><pre> 11</pre></span><pre>import logging</pre></div>
+<div class="cov"><span class="num"><pre> 12</pre></span><pre>log = logging.getLogger(&quot;mrv.maya&quot;)</pre></div>
+<div class="skip"><span class="num"><pre> 13</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 14</pre></span><pre># initialize globals</pre></div>
+<div class="cov"><span class="num"><pre> 15</pre></span><pre>if not hasattr( sys,&quot;_dataTypeIdToTrackingDictMap&quot; ):</pre></div>
+<div class="cov"><span class="num"><pre> 16</pre></span><pre>	sys._dataTypeIdToTrackingDictMap = dict()			 # DataTypeId : tracking dict</pre></div>
+<div class="skip"><span class="num"><pre> 17</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 18</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 19</pre></span><pre>__all__ = (&quot;registerPluginDataTrackingDict&quot;, )</pre></div>
+<div class="skip"><span class="num"><pre> 20</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 21</pre></span><pre>############################</pre></div>
+<div class="skip"><span class="num"><pre> 22</pre></span><pre>#### COMMON   			####</pre></div>
+<div class="skip"><span class="num"><pre> 23</pre></span><pre>##########################</pre></div>
+<div class="skip"><span class="num"><pre> 24</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 25</pre></span><pre>#{ Common</pre></div>
+<div class="skip"><span class="num"><pre> 26</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 27</pre></span><pre>def registerPluginDataTrackingDict( dataTypeID, trackingDict ):</pre></div>
+<div class="cov"><span class="num"><pre> 28</pre></span><pre>	&quot;&quot;&quot;Using the given dataTypeID and tracking dict, nt.PluginData can return</pre></div>
+<div class="cov"><span class="num"><pre> 29</pre></span><pre>	self pointers belonging to an MPxPluginData instance as returned by MFnPluginData.</pre></div>
+<div class="cov"><span class="num"><pre> 30</pre></span><pre>	Call this method to register your PluginData information to the mrv system.</pre></div>
+<div class="cov"><span class="num"><pre> 31</pre></span><pre>	Afterwards you can extract the self pointer using plug.masData().data()&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 32</pre></span><pre>	sys._dataTypeIdToTrackingDictMap[ dataTypeID.id() ] = trackingDict</pre></div>
+<div class="skip"><span class="num"><pre> 33</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 34</pre></span><pre>#} End Common</pre></div>
+<div class="skip"><span class="num"><pre> 35</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 36</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 37</pre></span><pre>#{ Init new maya version</pre></div>
+<div class="cov"><span class="num"><pre> 38</pre></span><pre>def initializeNewMayaRelease( ):</pre></div>
+<div class="cov"><span class="num"><pre> 39</pre></span><pre>	&quot;&quot;&quot;This method should be called once a new maya release is encountered. It will</pre></div>
+<div class="cov"><span class="num"><pre> 40</pre></span><pre>	initialize and update the database as well as possible, and give instructions </pre></div>
+<div class="cov"><span class="num"><pre> 41</pre></span><pre>	on what to do next.</pre></div>
+<div class="skip"><span class="num"><pre> 42</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 43</pre></span><pre>	:note: Will not run if any user setup is performed as we need a clean maya </pre></div>
+<div class="cov"><span class="num"><pre> 44</pre></span><pre>	without any plugins loaded.</pre></div>
+<div class="cov"><span class="num"><pre> 45</pre></span><pre>	:raise EnvironmentError: if the current maya version has already been initialized</pre></div>
+<div class="cov"><span class="num"><pre> 46</pre></span><pre>	or if the user setup was executed&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 47</pre></span><pre>	if int(os.environ.get('MRV_STANDALONE_AUTOLOAD_PLUGINS', 0)) or \</pre></div>
+<div class="cov"><span class="num"><pre> 48</pre></span><pre>		int(os.environ.get('MRV_STANDALONE_RUN_USER_SETUP', 0)):</pre></div>
+<div class="cov"><span class="num"><pre> 49</pre></span><pre>		raise EnvironmentError(&quot;Cannot operate if custom user setup was performed&quot;)</pre></div>
+<div class="skip"><span class="num"><pre> 50</pre></span><pre>	# END check environments</pre></div>
+<div class="skip"><span class="num"><pre> 51</pre></span><pre>	</pre></div>
+<div class="nocov"><span class="num"><pre> 52</pre></span><pre>	import env</pre></div>
+<div class="nocov"><span class="num"><pre> 53</pre></span><pre>	import mdb</pre></div>
+<div class="skip"><span class="num"><pre> 54</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 55</pre></span><pre>	nodeshf = mdb.nodeHierarchyFile()</pre></div>
+<div class="nocov"><span class="num"><pre> 56</pre></span><pre>	app_version = env.appVersion()[0]</pre></div>
+<div class="nocov"><span class="num"><pre> 57</pre></span><pre>	if nodeshf.isfile():</pre></div>
+<div class="nocov"><span class="num"><pre> 58</pre></span><pre>		raise EnvironmentError(&quot;Maya version %g already initialized as hierarchy file at %s does already exist&quot; % (app_version, nodeshf))</pre></div>
+<div class="skip"><span class="num"><pre> 59</pre></span><pre>	# END assure we are not already initialized</pre></div>
+<div class="skip"><span class="num"><pre> 60</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre> 61</pre></span><pre>	# UPDATE MFN DB FILES</pre></div>
+<div class="skip"><span class="num"><pre> 62</pre></span><pre>	#####################</pre></div>
+<div class="skip"><span class="num"><pre> 63</pre></span><pre>	# Get all MFn function sets and put in their new versions as well as files</pre></div>
+<div class="nocov"><span class="num"><pre> 64</pre></span><pre>	mdb.writeMfnDBCacheFiles()</pre></div>
+<div class="skip"><span class="num"><pre> 65</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre> 66</pre></span><pre>	# UPDATE NODE HIERARCHY FILE</pre></div>
+<div class="skip"><span class="num"><pre> 67</pre></span><pre>	############################</pre></div>
+<div class="skip"><span class="num"><pre> 68</pre></span><pre>	# create all node types, one by one, and query their hierarchy relationship.</pre></div>
+<div class="skip"><span class="num"><pre> 69</pre></span><pre>	# From that info, generate a dagtree which is written to the hierarchy file.</pre></div>
+<div class="skip"><span class="num"><pre> 70</pre></span><pre>	# NOTE: for now we just copy the old one</pre></div>
+<div class="nocov"><span class="num"><pre> 71</pre></span><pre>	dagTree, typeToMFnList = mdb.generateNodeHierarchy()</pre></div>
+<div class="nocov"><span class="num"><pre> 72</pre></span><pre>	dagTree.to_hierarchy_file('_root_', mdb.nodeHierarchyFile())</pre></div>
+<div class="skip"><span class="num"><pre> 73</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre> 74</pre></span><pre>	# UPDATE MFN ASSOCIATIONS</pre></div>
+<div class="skip"><span class="num"><pre> 75</pre></span><pre>	#########################</pre></div>
+<div class="nocov"><span class="num"><pre> 76</pre></span><pre>	fp = open(mdb.cacheFilePath('nodeTypeToMfnCls', 'map'), 'wb')</pre></div>
+<div class="nocov"><span class="num"><pre> 77</pre></span><pre>	mla = reduce(max, (len(t[0]) for t in typeToMFnList))</pre></div>
+<div class="nocov"><span class="num"><pre> 78</pre></span><pre>	mlb = reduce(max, (len(t[1]) for t in typeToMFnList))</pre></div>
+<div class="skip"><span class="num"><pre> 79</pre></span><pre>	</pre></div>
+<div class="nocov"><span class="num"><pre> 80</pre></span><pre>	psf = PipeSeparatedFile(fp)</pre></div>
+<div class="nocov"><span class="num"><pre> 81</pre></span><pre>	psf.beginWriting((mla, mlb))</pre></div>
+<div class="nocov"><span class="num"><pre> 82</pre></span><pre>	for token in typeToMFnList:</pre></div>
+<div class="nocov"><span class="num"><pre> 83</pre></span><pre>		psf.writeTokens(token)</pre></div>
+<div class="skip"><span class="num"><pre> 84</pre></span><pre>	# END for each line to write</pre></div>
+<div class="nocov"><span class="num"><pre> 85</pre></span><pre>	fp.close()</pre></div>
+<div class="skip"><span class="num"><pre> 86</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre> 87</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre> 88</pre></span><pre>	# PROVIDE INFO	TO THE USER</pre></div>
+<div class="skip"><span class="num"><pre> 89</pre></span><pre>	############################</pre></div>
+<div class="nocov"><span class="num"><pre> 90</pre></span><pre>	print &gt;&gt; sys.stderr, &quot;1. git status might reveals new MFnFunction sets as untracked files - check the new methods and possibly define aliases (or delete them wiht 'x')&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 91</pre></span><pre>	print &gt;&gt; sys.stderr, &quot;2. Check the 'whats new' part of the maya docs for important API changes and possibly incorporate them into the code&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 92</pre></span><pre>	print &gt;&gt; sys.stderr, &quot;3. run 'tmrv %g' and fix possibly breaking tests or the code being tested&quot; % app_version</pre></div>
+<div class="nocov"><span class="num"><pre> 93</pre></span><pre>	print &gt;&gt; sys.stderr, &quot;4. run 'tmrvr' to assure all maya versions are still working - ideally on all platforms.&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 94</pre></span><pre>	print &gt;&gt; sys.stderr, &quot;5. run the UI tests and assure that they don't fail&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 95</pre></span><pre>	print &gt;&gt; sys.stderr, &quot;6. Commit and push your changes - you are done&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 96</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 97</pre></span><pre>#} END init new maya version</pre></div>
+<div class="skip"><span class="num"><pre> 98</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 99</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>100</pre></span><pre>#{ Internal Utilities</pre></div>
+<div class="cov"><span class="num"><pre>101</pre></span><pre>def dag_tree_from_tuple_list( tuplelist ):</pre></div>
+<div class="cov"><span class="num"><pre>102</pre></span><pre>	&quot;&quot;&quot;:return: DagTree from list of tuples [ (level,name),...], where level specifies</pre></div>
+<div class="cov"><span class="num"><pre>103</pre></span><pre>	the level of items in the dag.</pre></div>
+<div class="cov"><span class="num"><pre>104</pre></span><pre>	:note: there needs to be only one root node which should be first in the list</pre></div>
+<div class="cov"><span class="num"><pre>105</pre></span><pre>	:return: `DagTree` item allowing to easily query the hierarchy &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>106</pre></span><pre>	tree = None</pre></div>
+<div class="cov"><span class="num"><pre>107</pre></span><pre>	lastparent = None</pre></div>
+<div class="cov"><span class="num"><pre>108</pre></span><pre>	lastchild = None</pre></div>
+<div class="cov"><span class="num"><pre>109</pre></span><pre>	lastlevel = 0</pre></div>
+<div class="skip"><span class="num"><pre>110</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>111</pre></span><pre>	for no,item in enumerate( tuplelist ):</pre></div>
+<div class="cov"><span class="num"><pre>112</pre></span><pre>		level, name = item</pre></div>
+<div class="skip"><span class="num"><pre>113</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>114</pre></span><pre>		if level == 0:</pre></div>
+<div class="cov"><span class="num"><pre>115</pre></span><pre>			if tree != None:</pre></div>
+<div class="nocov"><span class="num"><pre>116</pre></span><pre>				raise MRVError( &quot;DAG tree must currently be rooted - thus there must only be one root node, found another: &quot; + name )</pre></div>
+<div class="cov"><span class="num"><pre>117</pre></span><pre>			else:</pre></div>
+<div class="cov"><span class="num"><pre>118</pre></span><pre>				tree = DAGTree(  )		# create root</pre></div>
+<div class="cov"><span class="num"><pre>119</pre></span><pre>				tree.add_node( name )</pre></div>
+<div class="cov"><span class="num"><pre>120</pre></span><pre>				lastparent = name</pre></div>
+<div class="cov"><span class="num"><pre>121</pre></span><pre>				lastchild = name</pre></div>
+<div class="cov"><span class="num"><pre>122</pre></span><pre>				continue</pre></div>
+<div class="skip"><span class="num"><pre>123</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>124</pre></span><pre>		direction = level - lastlevel</pre></div>
+<div class="cov"><span class="num"><pre>125</pre></span><pre>		if direction &gt; 1:</pre></div>
+<div class="nocov"><span class="num"><pre>126</pre></span><pre>			raise MRVError( &quot;Can only change by one down the dag, changed by %i in item %s&quot; % ( direction, str( item ) ) )</pre></div>
+<div class="skip"><span class="num"><pre>127</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>128</pre></span><pre>		lastlevel = level</pre></div>
+<div class="cov"><span class="num"><pre>129</pre></span><pre>		if direction == 0:</pre></div>
+<div class="cov"><span class="num"><pre>130</pre></span><pre>			pass</pre></div>
+<div class="cov"><span class="num"><pre>131</pre></span><pre>		elif direction == 1 :</pre></div>
+<div class="cov"><span class="num"><pre>132</pre></span><pre>			lastparent = lastchild</pre></div>
+<div class="cov"><span class="num"><pre>133</pre></span><pre>		elif direction == -1:</pre></div>
+<div class="cov"><span class="num"><pre>134</pre></span><pre>			lastparent = tree.parent( lastparent )</pre></div>
+<div class="cov"><span class="num"><pre>135</pre></span><pre>		elif direction &lt; -1:		# we go many parents back, find the parent at level</pre></div>
+<div class="cov"><span class="num"><pre>136</pre></span><pre>			lastparent = list( tree.parent_iter( lastparent ) )[ -level ]</pre></div>
+<div class="skip"><span class="num"><pre>137</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>138</pre></span><pre>		tree.add_edge( lastparent, name )</pre></div>
+<div class="cov"><span class="num"><pre>139</pre></span><pre>		lastchild = name</pre></div>
+<div class="skip"><span class="num"><pre>140</pre></span><pre>	# END for each line in hiearchy map</pre></div>
+<div class="skip"><span class="num"><pre>141</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>142</pre></span><pre>	return tree</pre></div>
+<div class="skip"><span class="num"><pre>143</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>144</pre></span><pre>def tuple_list_from_file( filepath ):</pre></div>
+<div class="cov"><span class="num"><pre>145</pre></span><pre>	&quot;&quot;&quot;Create a tuple hierarchy list from the file at the given path</pre></div>
+<div class="cov"><span class="num"><pre>146</pre></span><pre>	:return: tuple list suitable for dag_tree_from_tuple_list&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>147</pre></span><pre>	lines = make_path( filepath ).lines( retain = False )</pre></div>
+<div class="skip"><span class="num"><pre>148</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>149</pre></span><pre>	hierarchytuples = list()</pre></div>
+<div class="skip"><span class="num"><pre>150</pre></span><pre>	# PARSE THE FILE INTO A TUPLE LIST</pre></div>
+<div class="cov"><span class="num"><pre>151</pre></span><pre>	for no,line in enumerate( lines ):</pre></div>
+<div class="cov"><span class="num"><pre>152</pre></span><pre>		item = ( line.count( '\t' ), line.lstrip( '\t' ) )</pre></div>
+<div class="cov"><span class="num"><pre>153</pre></span><pre>		hierarchytuples.append( item )</pre></div>
+<div class="skip"><span class="num"><pre>154</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>155</pre></span><pre>	return hierarchytuples</pre></div>
+<div class="skip"><span class="num"><pre>156</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>157</pre></span><pre>def initWrappers( mdict, types, metacreatorcls, force_creation = False ):</pre></div>
+<div class="cov"><span class="num"><pre>158</pre></span><pre>	&quot;&quot;&quot; Create standin classes that will create the actual class once creation is</pre></div>
+<div class="cov"><span class="num"><pre>159</pre></span><pre>	requested.</pre></div>
+<div class="cov"><span class="num"><pre>160</pre></span><pre>	:param mdict: module dictionary object from which the latter classes will be imported from, </pre></div>
+<div class="cov"><span class="num"><pre>161</pre></span><pre>	can be obtained using ``globals()`` in the module</pre></div>
+<div class="cov"><span class="num"><pre>162</pre></span><pre>	:param types: iterable containing the names of classnames ( they will be capitalized</pre></div>
+<div class="cov"><span class="num"><pre>163</pre></span><pre>	as classes must begin with a capital letter )&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>164</pre></span><pre>	from mrv.maya.util import StandinClass</pre></div>
+<div class="skip"><span class="num"><pre>165</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>166</pre></span><pre>	# create dummy class that will generate the class once it is first being instatiated</pre></div>
+<div class="cov"><span class="num"><pre>167</pre></span><pre>	standin_instances = list()</pre></div>
+<div class="cov"><span class="num"><pre>168</pre></span><pre>	for uitype in types:</pre></div>
+<div class="cov"><span class="num"><pre>169</pre></span><pre>		clsname = capitalize( uitype )</pre></div>
+<div class="skip"><span class="num"><pre>170</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>171</pre></span><pre>		# do not overwrite hand-made classes</pre></div>
+<div class="cov"><span class="num"><pre>172</pre></span><pre>		if clsname in mdict:</pre></div>
+<div class="nocov"><span class="num"><pre>173</pre></span><pre>			continue</pre></div>
+<div class="skip"><span class="num"><pre>174</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>175</pre></span><pre>		standin = StandinClass( clsname, metacreatorcls )</pre></div>
+<div class="cov"><span class="num"><pre>176</pre></span><pre>		mdict[ clsname ] = standin</pre></div>
+<div class="skip"><span class="num"><pre>177</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>178</pre></span><pre>		if force_creation:</pre></div>
+<div class="cov"><span class="num"><pre>179</pre></span><pre>			standin_instances.append(standin)</pre></div>
+<div class="skip"><span class="num"><pre>180</pre></span><pre>	# END for each uitype</pre></div>
+<div class="skip"><span class="num"><pre>181</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>182</pre></span><pre>	# delay forced creation as there may be hierarchical relations between </pre></div>
+<div class="skip"><span class="num"><pre>183</pre></span><pre>	# the types</pre></div>
+<div class="cov"><span class="num"><pre>184</pre></span><pre>	for standin in standin_instances:</pre></div>
+<div class="cov"><span class="num"><pre>185</pre></span><pre>		standin.createCls( )</pre></div>
+<div class="skip"><span class="num"><pre>186</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>187</pre></span><pre>def move_vars_to_environ( ):</pre></div>
+<div class="cov"><span class="num"><pre>188</pre></span><pre>	&quot;&quot;&quot;Move the maya vars as set in the shell into the os.environ to make them available to python&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>189</pre></span><pre>	import maya.cmds as cmds</pre></div>
+<div class="nocov"><span class="num"><pre>190</pre></span><pre>	import subprocess</pre></div>
+<div class="nocov"><span class="num"><pre>191</pre></span><pre>	envcmd = &quot;env&quot;</pre></div>
+<div class="skip"><span class="num"><pre>192</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>193</pre></span><pre>	if cmds.about( nt=1 ):</pre></div>
+<div class="nocov"><span class="num"><pre>194</pre></span><pre>		envcmd = &quot;set&quot;</pre></div>
+<div class="skip"><span class="num"><pre>195</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>196</pre></span><pre>	p = subprocess.Popen( envcmd, shell=True, stdout=subprocess.PIPE )</pre></div>
+<div class="skip"><span class="num"><pre>197</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>198</pre></span><pre>	for line in p.stdout:</pre></div>
+<div class="nocov"><span class="num"><pre>199</pre></span><pre>		try:</pre></div>
+<div class="nocov"><span class="num"><pre>200</pre></span><pre>			var,value = line.split(&quot;=&quot;, 1)</pre></div>
+<div class="nocov"><span class="num"><pre>201</pre></span><pre>		except:</pre></div>
+<div class="nocov"><span class="num"><pre>202</pre></span><pre>			continue</pre></div>
+<div class="nocov"><span class="num"><pre>203</pre></span><pre>		else:</pre></div>
+<div class="nocov"><span class="num"><pre>204</pre></span><pre>			os.environ[ var ] = value.strip()</pre></div>
+<div class="skip"><span class="num"><pre>205</pre></span><pre>		# END try to split line</pre></div>
+<div class="skip"><span class="num"><pre>206</pre></span><pre>	# END for each line from process' stdout </pre></div>
+<div class="skip"><span class="num"><pre>207</pre></span><pre>#} END internal utilities</pre></div>
+<div class="skip"><span class="num"><pre>208</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>209</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>210</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>211</pre></span><pre>############################</pre></div>
+<div class="skip"><span class="num"><pre>212</pre></span><pre>#### INITIALIZATION   ####</pre></div>
+<div class="skip"><span class="num"><pre>213</pre></span><pre>#########################</pre></div>
+<div class="skip"><span class="num"><pre>214</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>215</pre></span><pre>#{ Initialization</pre></div>
+<div class="cov"><span class="num"><pre>216</pre></span><pre>def init_system( ):</pre></div>
+<div class="cov"><span class="num"><pre>217</pre></span><pre>	&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>218</pre></span><pre>	Check if we are suited to import the maya namespace and try to set it</pre></div>
+<div class="cov"><span class="num"><pre>219</pre></span><pre>	up such we can use the maya standalone package.</pre></div>
+<div class="cov"><span class="num"><pre>220</pre></span><pre>	If running within maya or whith maya py, this is true, otherwise we have to</pre></div>
+<div class="cov"><span class="num"><pre>221</pre></span><pre>	use the MAYA_LOCATION to get this to work.</pre></div>
+<div class="cov"><span class="num"><pre>222</pre></span><pre>	&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>223</pre></span><pre>	# RUNNING WITHIN MAYA ? Then we have everything</pre></div>
+<div class="skip"><span class="num"><pre>224</pre></span><pre>	# if being launched in mayapy, we need initialization though !</pre></div>
+<div class="cov"><span class="num"><pre>225</pre></span><pre>	binBaseName = os.path.split( sys.executable )[1].split( '.' )[0]</pre></div>
+<div class="cov"><span class="num"><pre>226</pre></span><pre>	if binBaseName[0:4].lower() == 'maya' and binBaseName[0:6].lower() != 'mayapy':</pre></div>
+<div class="nocov"><span class="num"><pre>227</pre></span><pre>		return</pre></div>
+<div class="skip"><span class="num"><pre>228</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>229</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>230</pre></span><pre>	# try to setup the paths to maya accordingly</pre></div>
+<div class="cov"><span class="num"><pre>231</pre></span><pre>	locvar = 'MAYA_LOCATION'</pre></div>
+<div class="cov"><span class="num"><pre>232</pre></span><pre>	if not os.environ.has_key( locvar ):</pre></div>
+<div class="nocov"><span class="num"><pre>233</pre></span><pre>		raise EnvironmentError( locvar + &quot; was not set - it must point to the maya installation directory&quot; )</pre></div>
+<div class="skip"><span class="num"><pre>234</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>235</pre></span><pre>	# EXTRACT VERSION INFORMATION IF POSSIBLE</pre></div>
+<div class="skip"><span class="num"><pre>236</pre></span><pre>	##########################################</pre></div>
+<div class="cov"><span class="num"><pre>237</pre></span><pre>	mayalocation = os.path.realpath(os.environ[locvar])</pre></div>
+<div class="cov"><span class="num"><pre>238</pre></span><pre>	splitpos = -1</pre></div>
+<div class="skip"><span class="num"><pre>239</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>240</pre></span><pre>	# OS X special case</pre></div>
+<div class="cov"><span class="num"><pre>241</pre></span><pre>	if mayalocation.endswith( &quot;Contents&quot; ):</pre></div>
+<div class="nocov"><span class="num"><pre>242</pre></span><pre>		splitpos = -3</pre></div>
+<div class="skip"><span class="num"><pre>243</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>244</pre></span><pre>	mayabasename = mayalocation.split( os.sep )[ splitpos ]</pre></div>
+<div class="skip"><span class="num"><pre>245</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>246</pre></span><pre>	# currently unused</pre></div>
+<div class="cov"><span class="num"><pre>247</pre></span><pre>	bits = 32</pre></div>
+<div class="cov"><span class="num"><pre>248</pre></span><pre>	if mayabasename.endswith( '64' ):</pre></div>
+<div class="cov"><span class="num"><pre>249</pre></span><pre>		bits = 64</pre></div>
+<div class="skip"><span class="num"><pre>250</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>251</pre></span><pre>	mayabasename = mayabasename.replace( &quot;-x64&quot;, &quot;&quot; )	# could be mayaxxxx-x64</pre></div>
+<div class="cov"><span class="num"><pre>252</pre></span><pre>	mayaversion = mayabasename[4:]				# could be without version, like &quot;maya&quot;</pre></div>
+<div class="cov"><span class="num"><pre>253</pre></span><pre>	fmayaversion = float(mayaversion)</pre></div>
+<div class="skip"><span class="num"><pre>254</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>255</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>256</pre></span><pre>	# PYTHON COMPATABILITY CHECK</pre></div>
+<div class="skip"><span class="num"><pre>257</pre></span><pre>	##############################</pre></div>
+<div class="cov"><span class="num"><pre>258</pre></span><pre>	pymayaversion = sys.version_info[0:2]</pre></div>
+<div class="cov"><span class="num"><pre>259</pre></span><pre>	if len( mayaversion ):</pre></div>
+<div class="cov"><span class="num"><pre>260</pre></span><pre>		pyminor = pymayaversion[1]</pre></div>
+<div class="skip"><span class="num"><pre>261</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>262</pre></span><pre>		if mayaversion not in [ '8.5', '2008', '2009', '2010', '2011' ]:</pre></div>
+<div class="nocov"><span class="num"><pre>263</pre></span><pre>			raise EnvironmentError( &quot;Requires Maya 8.5 or higher for python support, found &quot; + mayaversion + &quot;, or maya version is not implemented&quot; )</pre></div>
+<div class="skip"><span class="num"><pre>264</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>265</pre></span><pre>		if  ( mayaversion == &quot;8.5&quot; and pyminor != 4 ) or \</pre></div>
+<div class="cov"><span class="num"><pre>266</pre></span><pre>			( mayaversion == &quot;2008&quot; and pyminor != 5 ) or \</pre></div>
+<div class="cov"><span class="num"><pre>267</pre></span><pre>			( mayaversion == &quot;2009&quot; and pyminor != 5 ) or \</pre></div>
+<div class="cov"><span class="num"><pre>268</pre></span><pre>			( mayaversion == &quot;2010&quot; and pyminor != 6 ) or \</pre></div>
+<div class="cov"><span class="num"><pre>269</pre></span><pre>			( mayaversion == &quot;2011&quot; and pyminor != 6 ):</pre></div>
+<div class="nocov"><span class="num"><pre>270</pre></span><pre>			raise EnvironmentError( &quot;Maya &quot; + mayaversion + &quot; python interpreter requirements not met&quot; )</pre></div>
+<div class="skip"><span class="num"><pre>271</pre></span><pre>		# END check python version</pre></div>
+<div class="skip"><span class="num"><pre>272</pre></span><pre>	# END check maya version</pre></div>
+<div class="skip"><span class="num"><pre>273</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>274</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>275</pre></span><pre>	# CHECK AND FIX SYSPATH</pre></div>
+<div class="skip"><span class="num"><pre>276</pre></span><pre>	########################</pre></div>
+<div class="skip"><span class="num"><pre>277</pre></span><pre>	# to be very sure: If for some reason we have our own root package</pre></div>
+<div class="skip"><span class="num"><pre>278</pre></span><pre>	# in the path, remove it as we would most likely import our own maya</pre></div>
+<div class="skip"><span class="num"><pre>279</pre></span><pre>	# This appears to happen if mrv is installed as site-package btw. </pre></div>
+<div class="skip"><span class="num"><pre>280</pre></span><pre>	# remove existing sys-paths containing maya, just to be sure we get the right one</pre></div>
+<div class="cov"><span class="num"><pre>281</pre></span><pre>	for path in sys.path[:]:</pre></div>
+<div class="cov"><span class="num"><pre>282</pre></span><pre>		if os.path.isdir(os.path.join(path, 'maya')) and not path.endswith(&quot;site-packages&quot;):</pre></div>
+<div class="cov"><span class="num"><pre>283</pre></span><pre>			sys.path.remove(path)</pre></div>
+<div class="skip"><span class="num"><pre>284</pre></span><pre>		# END if if maya package was found</pre></div>
+<div class="skip"><span class="num"><pre>285</pre></span><pre>	# END for each path in sys.path</pre></div>
+<div class="skip"><span class="num"><pre>286</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>287</pre></span><pre>	# FINALLY INIALIZE MAYA TO TO MAKE USE OF MAYA STANDALONE</pre></div>
+<div class="skip"><span class="num"><pre>288</pre></span><pre>	###########################################################</pre></div>
+<div class="cov"><span class="num"><pre>289</pre></span><pre>	if os.name == &quot;nt&quot;:</pre></div>
+<div class="nocov"><span class="num"><pre>290</pre></span><pre>		osspecific = os.path.join(&quot;Python&quot;, &quot;lib&quot;)</pre></div>
+<div class="cov"><span class="num"><pre>291</pre></span><pre>	else:</pre></div>
+<div class="cov"><span class="num"><pre>292</pre></span><pre>		pyversionstr = str( pymayaversion[0] ) + &quot;.&quot; + str( pymayaversion[1] )</pre></div>
+<div class="cov"><span class="num"><pre>293</pre></span><pre>		osspecific = os.path.join(&quot;lib&quot;, &quot;python&quot; + pyversionstr, &quot;site-packages&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>294</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>295</pre></span><pre>	mayapylibpath = os.path.join( mayalocation, osspecific, &quot;site-packages&quot; )</pre></div>
+<div class="cov"><span class="num"><pre>296</pre></span><pre>	sys.path.append( mayapylibpath )</pre></div>
+<div class="skip"><span class="num"><pre>297</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>298</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>299</pre></span><pre>	# although this was already done, do it again :). Its required if mrv is installed</pre></div>
+<div class="skip"><span class="num"><pre>300</pre></span><pre>	# natively</pre></div>
+<div class="cov"><span class="num"><pre>301</pre></span><pre>	mrv._remove_empty_syspath_entries()</pre></div>
+<div class="skip"><span class="num"><pre>302</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>303</pre></span><pre>	try:</pre></div>
+<div class="cov"><span class="num"><pre>304</pre></span><pre>		import maya</pre></div>
+<div class="nocov"><span class="num"><pre>305</pre></span><pre>	except Exception, e:</pre></div>
+<div class="nocov"><span class="num"><pre>306</pre></span><pre>		print &quot;Paths in sys.path: &quot;</pre></div>
+<div class="nocov"><span class="num"><pre>307</pre></span><pre>		for p in sys.path: print &quot;%r&quot; % p</pre></div>
+<div class="nocov"><span class="num"><pre>308</pre></span><pre>		raise EnvironmentError( &quot;Failed to import maya - check this script or assure LD_LIBRARY path is set accordingly: &quot; + str( e ) )</pre></div>
+<div class="skip"><span class="num"><pre>309</pre></span><pre>	# END handle import</pre></div>
+<div class="skip"><span class="num"><pre>310</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>311</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>312</pre></span><pre>	# FINALLY STARTUP MAYA</pre></div>
+<div class="skip"><span class="num"><pre>313</pre></span><pre>	########################</pre></div>
+<div class="skip"><span class="num"><pre>314</pre></span><pre>	# This will also set all default path environment variables and read the</pre></div>
+<div class="skip"><span class="num"><pre>315</pre></span><pre>	# maya environment file</pre></div>
+<div class="cov"><span class="num"><pre>316</pre></span><pre>	try:</pre></div>
+<div class="cov"><span class="num"><pre>317</pre></span><pre>		import maya.standalone</pre></div>
+<div class="cov"><span class="num"><pre>318</pre></span><pre>		maya.standalone.initialize()</pre></div>
+<div class="nocov"><span class="num"><pre>319</pre></span><pre>	except:</pre></div>
+<div class="nocov"><span class="num"><pre>320</pre></span><pre>		log.debug(&quot;Paths in sys.path: &quot;)</pre></div>
+<div class="nocov"><span class="num"><pre>321</pre></span><pre>		for p in sys.path: log.debug(&quot;%r&quot; % p)</pre></div>
+<div class="nocov"><span class="num"><pre>322</pre></span><pre>		if 'maya' in locals():</pre></div>
+<div class="nocov"><span class="num"><pre>323</pre></span><pre>			log.info(&quot;Imported maya module is located at: %r&quot; % maya.__file__)</pre></div>
+<div class="nocov"><span class="num"><pre>324</pre></span><pre>		log.error(&quot;ERROR: Failed initialize maya&quot;)</pre></div>
+<div class="nocov"><span class="num"><pre>325</pre></span><pre>		raise</pre></div>
+<div class="skip"><span class="num"><pre>326</pre></span><pre>	# END handle maya standalone initialization</pre></div>
+<div class="skip"><span class="num"><pre>327</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>328</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>329</pre></span><pre>	# COPY ENV VARS</pre></div>
+<div class="skip"><span class="num"><pre>330</pre></span><pre>	###############</pre></div>
+<div class="skip"><span class="num"><pre>331</pre></span><pre>	# NOTE: this might have to be redone in your own package dependent on when</pre></div>
+<div class="skip"><span class="num"><pre>332</pre></span><pre>	# we are called - might be too early here</pre></div>
+<div class="skip"><span class="num"><pre>333</pre></span><pre>	# This also handles the Maya.env variables</pre></div>
+<div class="cov"><span class="num"><pre>334</pre></span><pre>	if fmayaversion &lt; 2009:</pre></div>
+<div class="nocov"><span class="num"><pre>335</pre></span><pre>		move_vars_to_environ( )</pre></div>
+<div class="skip"><span class="num"><pre>336</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>337</pre></span><pre>	# FINISHED</pre></div>
+<div class="cov"><span class="num"><pre>338</pre></span><pre>	return</pre></div>
+<div class="skip"><span class="num"><pre>339</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>340</pre></span><pre># END INIT SYSTEM</pre></div>
+<div class="skip"><span class="num"><pre>341</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>342</pre></span><pre>def init_path( ):</pre></div>
+<div class="cov"><span class="num"><pre>343</pre></span><pre>	&quot;&quot;&quot;Setup the path type to use slashes internally, no matter which operating </pre></div>
+<div class="cov"><span class="num"><pre>344</pre></span><pre>	system we are on&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>345</pre></span><pre>	import mrv.path</pre></div>
+<div class="cov"><span class="num"><pre>346</pre></span><pre>	mrv.path.BasePath.set_separator('/')</pre></div>
+<div class="skip"><span class="num"><pre>347</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>348</pre></span><pre>def init_user_prefs( ):</pre></div>
+<div class="cov"><span class="num"><pre>349</pre></span><pre>	&quot;&quot;&quot;intiialize the user preferences according to the set configuration variables&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>350</pre></span><pre>	try:</pre></div>
+<div class="cov"><span class="num"><pre>351</pre></span><pre>		init_mel = int(os.environ.get('MRV_STANDALONE_INIT_OPTIONVARS', 0))</pre></div>
+<div class="cov"><span class="num"><pre>352</pre></span><pre>		run_user_setup = int(os.environ.get('MRV_STANDALONE_RUN_USER_SETUP', 0))</pre></div>
+<div class="cov"><span class="num"><pre>353</pre></span><pre>		autoload_plugins = int(os.environ.get('MRV_STANDALONE_AUTOLOAD_PLUGINS', 0))</pre></div>
+<div class="nocov"><span class="num"><pre>354</pre></span><pre>	except ValueError, e:</pre></div>
+<div class="nocov"><span class="num"><pre>355</pre></span><pre>		log.warn(&quot;Invalid value for MRV configuration variable: %s&quot; % str(e).split(':', 1)[-1])</pre></div>
+<div class="skip"><span class="num"><pre>356</pre></span><pre>	# END safe access to variables</pre></div>
+<div class="skip"><span class="num"><pre>357</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>358</pre></span><pre>	def source_file_safely(script):</pre></div>
+<div class="nocov"><span class="num"><pre>359</pre></span><pre>		try:</pre></div>
+<div class="nocov"><span class="num"><pre>360</pre></span><pre>			maya.mel.eval('source &quot;%s&quot;' % script)  </pre></div>
+<div class="nocov"><span class="num"><pre>361</pre></span><pre>		except RuntimeError, e:</pre></div>
+<div class="nocov"><span class="num"><pre>362</pre></span><pre>			log.error(str(e) + &quot;- ignored&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>363</pre></span><pre>		# END exception handling</pre></div>
+<div class="skip"><span class="num"><pre>364</pre></span><pre>	# END utility </pre></div>
+<div class="skip"><span class="num"><pre>365</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>366</pre></span><pre>	if not (init_mel|run_user_setup|autoload_plugins):</pre></div>
+<div class="cov"><span class="num"><pre>367</pre></span><pre>		return</pre></div>
+<div class="skip"><span class="num"><pre>368</pre></span><pre>	</pre></div>
+<div class="nocov"><span class="num"><pre>369</pre></span><pre>	import maya.cmds as cmds</pre></div>
+<div class="nocov"><span class="num"><pre>370</pre></span><pre>	prefsdir = make_path(cmds.internalVar(userPrefDir=1))</pre></div>
+<div class="skip"><span class="num"><pre>371</pre></span><pre>	</pre></div>
+<div class="nocov"><span class="num"><pre>372</pre></span><pre>	if not prefsdir.isdir():</pre></div>
+<div class="nocov"><span class="num"><pre>373</pre></span><pre>		log.warn(&quot;User Preferences directory did not exist: %s&quot; % prefsdir)</pre></div>
+<div class="nocov"><span class="num"><pre>374</pre></span><pre>		return</pre></div>
+<div class="skip"><span class="num"><pre>375</pre></span><pre>	# END check for existence</pre></div>
+<div class="skip"><span class="num"><pre>376</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>377</pre></span><pre>	# source actual MEL scripts</pre></div>
+<div class="nocov"><span class="num"><pre>378</pre></span><pre>	sources = list()</pre></div>
+<div class="nocov"><span class="num"><pre>379</pre></span><pre>	if init_mel:</pre></div>
+<div class="nocov"><span class="num"><pre>380</pre></span><pre>		sources.append(&quot;createPreferencesOptVars.mel&quot;)</pre></div>
+<div class="nocov"><span class="num"><pre>381</pre></span><pre>		sources.append(&quot;createGlobalOptVars.mel&quot;)</pre></div>
+<div class="nocov"><span class="num"><pre>382</pre></span><pre>		sources.append(prefsdir + &quot;/userPrefs.mel&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>383</pre></span><pre>	# END option vars </pre></div>
+<div class="skip"><span class="num"><pre>384</pre></span><pre>	</pre></div>
+<div class="nocov"><span class="num"><pre>385</pre></span><pre>	if autoload_plugins:</pre></div>
+<div class="nocov"><span class="num"><pre>386</pre></span><pre>		sources.append(prefsdir + &quot;/pluginPrefs.mel&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>387</pre></span><pre>	# END autoload plugins</pre></div>
+<div class="skip"><span class="num"><pre>388</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>389</pre></span><pre>	# run scripts we collected</pre></div>
+<div class="nocov"><span class="num"><pre>390</pre></span><pre>	import maya.mel</pre></div>
+<div class="nocov"><span class="num"><pre>391</pre></span><pre>	for scriptpath in sources:</pre></div>
+<div class="nocov"><span class="num"><pre>392</pre></span><pre>		if os.path.isabs(scriptpath) and not os.path.isfile(scriptpath):</pre></div>
+<div class="nocov"><span class="num"><pre>393</pre></span><pre>			log.warn(&quot;Couldn't source %s as it did not exist&quot; % scriptpath)</pre></div>
+<div class="skip"><span class="num"><pre>394</pre></span><pre>		# END check whether absolute paths are available</pre></div>
+<div class="skip"><span class="num"><pre>395</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>396</pre></span><pre>		source_file_safely(scriptpath)</pre></div>
+<div class="skip"><span class="num"><pre>397</pre></span><pre>	# END for each script path </pre></div>
+<div class="skip"><span class="num"><pre>398</pre></span><pre>	</pre></div>
+<div class="nocov"><span class="num"><pre>399</pre></span><pre>	if run_user_setup:</pre></div>
+<div class="skip"><span class="num"><pre>400</pre></span><pre>		# mel</pre></div>
+<div class="nocov"><span class="num"><pre>401</pre></span><pre>		source_file_safely(&quot;userSetup.mel&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>402</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>403</pre></span><pre>		# userSetup.py gets executed by maya</pre></div>
+<div class="skip"><span class="num"><pre>404</pre></span><pre>	# END run user setup</pre></div>
+<div class="skip"><span class="num"><pre>405</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>406</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>407</pre></span><pre>def init_singletons( ):</pre></div>
+<div class="cov"><span class="num"><pre>408</pre></span><pre>	&quot;&quot;&quot; Initialize singleton classes and attach them direclty to our module&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>409</pre></span><pre>	global Scene</pre></div>
+<div class="cov"><span class="num"><pre>410</pre></span><pre>	global Mel</pre></div>
+<div class="skip"><span class="num"><pre>411</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>412</pre></span><pre>	import scene</pre></div>
+<div class="cov"><span class="num"><pre>413</pre></span><pre>	Scene = scene.Scene()</pre></div>
+<div class="skip"><span class="num"><pre>414</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>415</pre></span><pre>	import util</pre></div>
+<div class="cov"><span class="num"><pre>416</pre></span><pre>	Mel = util.Mel()</pre></div>
+<div class="skip"><span class="num"><pre>417</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>418</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>419</pre></span><pre>def init_standard_output( ):</pre></div>
+<div class="cov"><span class="num"><pre>420</pre></span><pre>	&quot;&quot;&quot;Assure that logging can print to stdout and stderr which get overwritten</pre></div>
+<div class="cov"><span class="num"><pre>421</pre></span><pre>	by special maya versions which lack the 'flush' method&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>422</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>423</pre></span><pre>	class PassOnOrDummy(object):</pre></div>
+<div class="cov"><span class="num"><pre>424</pre></span><pre>		def __init__(self, obj):</pre></div>
+<div class="nocov"><span class="num"><pre>425</pre></span><pre>			self.obj = obj</pre></div>
+<div class="skip"><span class="num"><pre>426</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>427</pre></span><pre>		def does_nothing(self, *args, **kwargs):</pre></div>
+<div class="nocov"><span class="num"><pre>428</pre></span><pre>			return</pre></div>
+<div class="skip"><span class="num"><pre>429</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>430</pre></span><pre>		def __getattr__(self, attr):</pre></div>
+<div class="nocov"><span class="num"><pre>431</pre></span><pre>			try:</pre></div>
+<div class="nocov"><span class="num"><pre>432</pre></span><pre>				return getattr(self.obj, attr)</pre></div>
+<div class="nocov"><span class="num"><pre>433</pre></span><pre>			except AttributeError:</pre></div>
+<div class="nocov"><span class="num"><pre>434</pre></span><pre>				return self.does_nothing</pre></div>
+<div class="skip"><span class="num"><pre>435</pre></span><pre>			# END handle object retrieval</pre></div>
+<div class="skip"><span class="num"><pre>436</pre></span><pre>	# END utility class</pre></div>
+<div class="skip"><span class="num"><pre>437</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>438</pre></span><pre>	for channame in ('stdout', 'stderr'):</pre></div>
+<div class="cov"><span class="num"><pre>439</pre></span><pre>		chan = getattr(sys, channame)</pre></div>
+<div class="cov"><span class="num"><pre>440</pre></span><pre>		if hasattr(chan, 'flush'):</pre></div>
+<div class="cov"><span class="num"><pre>441</pre></span><pre>			continue</pre></div>
+<div class="skip"><span class="num"><pre>442</pre></span><pre>		# END skip channels that would work</pre></div>
+<div class="skip"><span class="num"><pre>443</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>444</pre></span><pre>		# patch the curently established channel</pre></div>
+<div class="nocov"><span class="num"><pre>445</pre></span><pre>		fixedchan = PassOnOrDummy(chan)</pre></div>
+<div class="nocov"><span class="num"><pre>446</pre></span><pre>		setattr(sys, channame, fixedchan)</pre></div>
+<div class="skip"><span class="num"><pre>447</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>448</pre></span><pre>		# find all loggers so far and patch up their logging objects</pre></div>
+<div class="nocov"><span class="num"><pre>449</pre></span><pre>		for l in chain((logging.root, ), logging.root.manager.loggerDict.values()):</pre></div>
+<div class="nocov"><span class="num"><pre>450</pre></span><pre>			if not isinstance(l, logging.Logger):</pre></div>
+<div class="nocov"><span class="num"><pre>451</pre></span><pre>				continue</pre></div>
+<div class="skip"><span class="num"><pre>452</pre></span><pre>			# END skip placeholders</pre></div>
+<div class="nocov"><span class="num"><pre>453</pre></span><pre>			for handler in l.handlers:</pre></div>
+<div class="nocov"><span class="num"><pre>454</pre></span><pre>				if isinstance(handler, logging.StreamHandler) and handler.stream is chan:</pre></div>
+<div class="nocov"><span class="num"><pre>455</pre></span><pre>					handler.stream = fixedchan</pre></div>
+<div class="skip"><span class="num"><pre>456</pre></span><pre>				# END if stream needs fixing</pre></div>
+<div class="skip"><span class="num"><pre>457</pre></span><pre>			# END for each handler</pre></div>
+<div class="skip"><span class="num"><pre>458</pre></span><pre>		# END for each logger</pre></div>
+<div class="skip"><span class="num"><pre>459</pre></span><pre>	# END for each channel</pre></div>
+<div class="skip"><span class="num"><pre>460</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>461</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>462</pre></span><pre>#} Initialization</pre></div>
+<div class="skip"><span class="num"><pre>463</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>464</pre></span><pre>if 'init_done' not in locals():</pre></div>
+<div class="cov"><span class="num"><pre>465</pre></span><pre>	init_done = False</pre></div>
+<div class="skip"><span class="num"><pre>466</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>467</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>468</pre></span><pre>if not init_done:</pre></div>
+<div class="skip"><span class="num"><pre>469</pre></span><pre>	# assure we do not run several times</pre></div>
+<div class="cov"><span class="num"><pre>470</pre></span><pre>	init_system()</pre></div>
+<div class="cov"><span class="num"><pre>471</pre></span><pre>	init_path()</pre></div>
+<div class="cov"><span class="num"><pre>472</pre></span><pre>	init_standard_output()</pre></div>
+<div class="cov"><span class="num"><pre>473</pre></span><pre>	init_modules(__file__, &quot;mrv.maya&quot;)</pre></div>
+<div class="cov"><span class="num"><pre>474</pre></span><pre>	init_singletons()</pre></div>
+<div class="skip"><span class="num"><pre>475</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>476</pre></span><pre>	# this serves as a reentrance check in case userSetup is importing us again</pre></div>
+<div class="cov"><span class="num"><pre>477</pre></span><pre>	init_done = True</pre></div>
+<div class="cov"><span class="num"><pre>478</pre></span><pre>	init_user_prefs()</pre></div>
+<div class="skip"><span class="num"><pre>479</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>480</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>481</pre></span><pre></pre></div>
+</div>
+</body>
+</html>

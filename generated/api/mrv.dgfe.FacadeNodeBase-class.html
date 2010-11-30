@@ -1,0 +1,689 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>mrv.dgfe.FacadeNodeBase</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="mrv-module.html">Package&nbsp;mrv</a> ::
+        <a href="mrv.dgfe-module.html">Module&nbsp;dgfe</a> ::
+        Class&nbsp;FacadeNodeBase
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="mrv.dgfe.FacadeNodeBase-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class FacadeNodeBase</h1><p class="nomargin-top"><span class="codelink"><a href="mrv.dgfe-pysrc.html#FacadeNodeBase">source&nbsp;code</a></span></p>
+<pre class="base-tree">
+         object --+            
+                  |            
+<a href="mrv.interface.Interface-class.html">interface.Interface</a> --+        
+                      |        
+<a href="mrv.interface.iDuplicatable-class.html">interface.iDuplicatable</a> --+    
+                          |    
+               <a href="mrv.dge.NodeBase-class.html">dge.NodeBase</a> --+
+                              |
+                             <strong class="uidshort">FacadeNodeBase</strong>
+</pre>
+
+<dl><dt>Known Subclasses:</dt>
+<dd>
+      <ul class="subclass-list">
+<li><a href="mrv.dgfe.GraphNodeBase-class.html">GraphNodeBase</a></li>  </ul>
+</dd></dl>
+
+<hr />
+<p>Node having no own plugs, but retrieves them by querying other other nodes
+and claiming its his own ones.</p>
+<p>Using a non-default shell it is possibly to guide all calls through to the
+virtual PlugShell.</p>
+<p>Derived classes must override _plugshells which will be queried when
+plugs or plugshells are requested. This node will cache the result and do
+everything required to integrate itself.</p>
+<p>It lies in the nature of this class that the plugs are dependent on a specific instance
+of this node, thus classmethods of NodeBase have been overridden with instance versions
+of it.</p>
+<p>The facade node keeps a plug map allowing it to map plug-shells it got from
+you back to the original shell respectively. If the map has been missed,
+your node will be asked for information.</p>
+
+<hr />
+<div class="fields">      <strong>Notes:</strong>
+      <ul class="nomargin-top">
+        <li>
+        facades are intrusive for the nodes they are facading - thus the nodes
+returned by <a href="mrv.dgfe.FacadeNodeBase-class.html#_getNodePlugs" class="link" onclick="show_private();">_getNodePlugs</a> will be altered. Namely the instance will get a
+shellcls and plug override to allow us to hook into the callchain. Thus you should have
+your own instance of the node - otherwise things might behave differently for
+others using your nodes from another angle
+        </li>
+        <li>
+        this class could also be used for facades Container nodes that provide
+an interface to their internal nodes
+        </li>
+      </ul>
+</div><!-- ==================== NESTED CLASSES ==================== -->
+<a name="section-NestedClasses"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Nested Classes</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-NestedClasses"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="mrv.dgfe._OIShell-class.html" class="summary-name">shellcls</a><br />
+      All connections from and to the FacadeNode must actually start and end there.
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.dge.NodeBase-class.html">dge.NodeBase</a></code></b>:
+      <code><a href="mrv.dge._NodeBaseCheckMeta-class.html">__metaclass__</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dgfe.FacadeNodeBase-class.html#__getattr__" class="summary-sig-name">__getattr__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">attr</span>)</span><br />
+      Returns:
+shell on attr made from our plugs - we do not have real ones, so we
+need to call plugs and find it by name</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dgfe-pysrc.html#FacadeNodeBase.__getattr__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dgfe.FacadeNodeBase-class.html#clearPlugCache" class="summary-sig-name">clearPlugCache</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      if a cache has been build as caching is enabled, this method clears
+the cache forcing it to be updated on the next demand</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dgfe-pysrc.html#FacadeNodeBase.clearPlugCache">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.interface.iDuplicatable-class.html">interface.iDuplicatable</a></code></b>:
+      <code><a href="mrv.interface.iDuplicatable-class.html#copyTo">copyTo</a></code>,
+      <code><a href="mrv.interface.iDuplicatable-class.html#copyToOther">copyToOther</a></code>,
+      <code><a href="mrv.interface.iDuplicatable-class.html#duplicate">duplicate</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.interface.Interface-class.html">interface.Interface</a></code></b>:
+      <code><a href="mrv.interface.Interface-class.html#supports">supports</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8"  class="private">
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;To be Subclass-Implemented</th></tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dgfe.FacadeNodeBase-class.html#_getNodePlugs" class="summary-sig-name" onclick="show_private();">_getNodePlugs</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Implement this as if it was your plugs method - it will be called by the
+base - your result needs processing before it can be returned</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dgfe-pysrc.html#FacadeNodeBase._getNodePlugs">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Overridden from Object</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dgfe.FacadeNodeBase-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Initialize the instance</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dgfe-pysrc.html#FacadeNodeBase.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.dge.NodeBase-class.html">dge.NodeBase</a></code></b>:
+      <code><a href="mrv.dge.NodeBase-class.html#__del__">__del__</a></code>,
+      <code><a href="mrv.dge.NodeBase-class.html#__str__">__str__</a></code>
+      </p>
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;iDuplicatable Interface</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dgfe.FacadeNodeBase-class.html#copyFrom" class="summary-sig-name">copyFrom</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Actually, it does nothing because our plugs are linked to the internal
+nodes in a quite complex way.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dgfe-pysrc.html#FacadeNodeBase.copyFrom">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.dge.NodeBase-class.html">dge.NodeBase</a></code></b>:
+      <code><a href="mrv.dge.NodeBase-class.html#createInstance">createInstance</a></code>
+      </p>
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Base Interface</th></tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.dge.NodeBase-class.html">dge.NodeBase</a></code></b>:
+      <code><a href="mrv.dge.NodeBase-class.html#compute">compute</a></code>
+      </p>
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;ID Handling</th></tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.dge.NodeBase-class.html">dge.NodeBase</a></code></b>:
+      <code><a href="mrv.dge.NodeBase-class.html#id">id</a></code>,
+      <code><a href="mrv.dge.NodeBase-class.html#setID">setID</a></code>
+      </p>
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Base</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dgfe.FacadeNodeBase-class.html#plugs" class="summary-sig-name">plugs</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Calls <a href="mrv.dgfe.FacadeNodeBase-class.html#_getNodePlugs" class="link" onclick="show_private();">_getNodePlugs</a> method to ask you to actuallly return your
+actual nodes and plugs or shells.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dgfe-pysrc.html#FacadeNodeBase.plugs">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.dge.NodeBase-class.html">dge.NodeBase</a></code></b>:
+      <code><a href="mrv.dge.NodeBase-class.html#clearCache">clearCache</a></code>,
+      <code><a href="mrv.dge.NodeBase-class.html#connections">connections</a></code>,
+      <code><a href="mrv.dge.NodeBase-class.html#inputPlugs">inputPlugs</a></code>,
+      <code><a href="mrv.dge.NodeBase-class.html#outputPlugs">outputPlugs</a></code>,
+      <code><a href="mrv.dge.NodeBase-class.html#toShell">toShell</a></code>,
+      <code><a href="mrv.dge.NodeBase-class.html#toShells">toShells</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS METHODS ==================== -->
+<a name="section-ClassMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Base</th></tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.dge.NodeBase-class.html">dge.NodeBase</a></code></b>:
+      <code><a href="mrv.dge.NodeBase-class.html#filterCompatiblePlugs">filterCompatiblePlugs</a></code>,
+      <code><a href="mrv.dge.NodeBase-class.html#inputPlugsStatic">inputPlugsStatic</a></code>,
+      <code><a href="mrv.dge.NodeBase-class.html#outputPlugsStatic">outputPlugsStatic</a></code>,
+      <code><a href="mrv.dge.NodeBase-class.html#plugsStatic">plugsStatic</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Configuration</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="caching_enabled"></a><span class="summary-name">caching_enabled</span> = <code title="True">True</code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dgfe-pysrc.html#FacadeNodeBase.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Initialize the instance
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>kwargs</code></strong> - 'id' = id of the instance, defaults to None if it is not required</li>
+    </ul></dd>
+    <dt>Overrides:
+        object.__init__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__getattr__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__getattr__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">attr</span>)</span>
+    <br /><em class="fname">(Qualification operator)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dgfe-pysrc.html#FacadeNodeBase.__getattr__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>shell on attr made from our plugs - we do not have real ones, so we
+need to call plugs and find it by name</dd>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        to make this work, you should always name the plug names equal to their
+class attribute
+      </p>
+</div></td></tr></table>
+</div>
+<a name="copyFrom"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">copyFrom</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">other</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dgfe-pysrc.html#FacadeNodeBase.copyFrom">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Actually, it does nothing because our plugs are linked to the internal
+nodes in a quite complex way. The good thing is that this is just a cache that
+will be updated once someone queries connections again.
+Basically it comes down to the graph duplicating itself using node and plug
+methods instead of just doing his 'internal' magic
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>add_to_graph</code></strong> - if true, the new node instance will be added to the graph of</li>
+    </ul></dd>
+    <dt>Overrides:
+        <a href="mrv.interface.iDuplicatable-class.html#copyFrom">interface.iDuplicatable.copyFrom</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_getNodePlugs"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_getNodePlugs</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dgfe-pysrc.html#FacadeNodeBase._getNodePlugs">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Implement this as if it was your plugs method - it will be called by the
+base - your result needs processing before it can be returned
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd><p>list( tuple( node, plug ) )
+if you have an existing node that the plug or shell  you gave is from,
+return it in the tuple, otherwise set it to a node with a shell that allows you
+to handle it - the only time the node is required is when it is used in and with
+the shells of the node's own shell class.</p>
+<p>The node will be altered slightly to allow input of your facade to be reached
+from the inside</p></dd>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        a predicate is not supported as it must be applied on the converted
+plugs, not on the ones you hand out
+      </p>
+</div></td></tr></table>
+</div>
+<a name="plugs"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">plugs</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dgfe-pysrc.html#FacadeNodeBase.plugs">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Calls <a href="mrv.dgfe.FacadeNodeBase-class.html#_getNodePlugs" class="link" onclick="show_private();">_getNodePlugs</a> method to ask you to actuallly return your
+actual nodes and plugs or shells.
+We prepare the returned value to assure we are being called in certain occasion,
+which actually glues outside and inside worlds together
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>predicate</code></strong> - return static plug only if predicate is true</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>list of dynamic plugs as defined on this node - they are usually retrieved
+on class level, but may be overridden on instance level</dd>
+    <dt>Overrides:
+        <a href="mrv.dge.NodeBase-class.html#plugs">dge.NodeBase.plugs</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="clearPlugCache"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">clearPlugCache</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dgfe-pysrc.html#FacadeNodeBase.clearPlugCache">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  if a cache has been build as caching is enabled, this method clears
+the cache forcing it to be updated on the next demand
+  <dl class="fields">
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        this could be more efficient by just deleting plugs that are
+not required anymore, but probably this method can expect the whole
+cache to be deleted right away ... so its fine
+      </p>
+</div></td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Nov 30 14:48:32 2010
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

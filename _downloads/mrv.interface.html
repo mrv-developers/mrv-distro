@@ -1,0 +1,574 @@
+<html>
+<head>
+<title>mrv.interface</title>
+</head>
+<body>
+mrv.interface
+<style>
+.coverage pre {float: left; margin: 0px 1em; border: none;
+               padding: 0px; }
+.num pre { margin: 0px }
+.nocov, .nocov pre {background-color: #faa}
+.cov, .cov pre {background-color: #cfc}
+div.coverage div { clear: both; height: 1.1em}
+</style>
+<div class="stats">
+Covered: 126 lines<br/>
+Missed: 254 lines<br/>
+Skipped 169 lines<br/>
+Percent: 33 %<br/>
+
+</div>
+<div class="coverage">
+<div class="skip"><span class="num"><pre>  1</pre></span><pre># -*- coding: utf-8 -*-</pre></div>
+<div class="nocov"><span class="num"><pre>  2</pre></span><pre>&quot;&quot;&quot;Contains interface definitions &quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>  3</pre></span><pre>__docformat__ = &quot;restructuredtext&quot;</pre></div>
+<div class="skip"><span class="num"><pre>  4</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>  5</pre></span><pre>from collections import deque as Deque</pre></div>
+<div class="nocov"><span class="num"><pre>  6</pre></span><pre>import logging</pre></div>
+<div class="nocov"><span class="num"><pre>  7</pre></span><pre>log = logging.getLogger('mrv.interface')</pre></div>
+<div class="skip"><span class="num"><pre>  8</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>  9</pre></span><pre>__all__ = (&quot;Interface&quot;, &quot;iDagItem&quot;, &quot;iDuplicatable&quot;, &quot;iChoiceDialog&quot;, &quot;iPrompt&quot;, </pre></div>
+<div class="nocov"><span class="num"><pre> 10</pre></span><pre>           &quot;iProgressIndicator&quot;)</pre></div>
+<div class="skip"><span class="num"><pre> 11</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 12</pre></span><pre>class Interface( object ):</pre></div>
+<div class="nocov"><span class="num"><pre> 13</pre></span><pre>	&quot;&quot;&quot;Base for all interfaces.</pre></div>
+<div class="nocov"><span class="num"><pre> 14</pre></span><pre>	All interfaces should derive from here.&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 15</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre> 16</pre></span><pre>	# assure we can be handled efficiently - subclasses are free not to define </pre></div>
+<div class="skip"><span class="num"><pre> 17</pre></span><pre>	# slots, but those who do will not inherit a __dict__ from here</pre></div>
+<div class="nocov"><span class="num"><pre> 18</pre></span><pre>	__slots__ = tuple()</pre></div>
+<div class="skip"><span class="num"><pre> 19</pre></span><pre>	</pre></div>
+<div class="nocov"><span class="num"><pre> 20</pre></span><pre>	def supports( self, interface_type ):</pre></div>
+<div class="nocov"><span class="num"><pre> 21</pre></span><pre>		&quot;&quot;&quot;:return: True if this instance supports the interface of the given type</pre></div>
+<div class="nocov"><span class="num"><pre> 22</pre></span><pre>		:param interface_type: Type of the interface you require this instance </pre></div>
+<div class="nocov"><span class="num"><pre> 23</pre></span><pre>			to support</pre></div>
+<div class="nocov"><span class="num"><pre> 24</pre></span><pre>		:note: Must be used in case you only have a weak reference of your interface</pre></div>
+<div class="nocov"><span class="num"><pre> 25</pre></span><pre>			instance or proxy which is a case where the ordinary isinstance( obj, iInterface )</pre></div>
+<div class="nocov"><span class="num"><pre> 26</pre></span><pre>			will not work&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 27</pre></span><pre>		return isinstance( self, interface_type )</pre></div>
+<div class="skip"><span class="num"><pre> 28</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 29</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 30</pre></span><pre>class iDagItem( Interface ):</pre></div>
+<div class="nocov"><span class="num"><pre> 31</pre></span><pre>	&quot;&quot;&quot; Describes interface for a DAG item.</pre></div>
+<div class="nocov"><span class="num"><pre> 32</pre></span><pre>	Its used to unify interfaces allowing to access objects in a dag like graph</pre></div>
+<div class="nocov"><span class="num"><pre> 33</pre></span><pre>	Of the underlying object has a string representation, the defatult implementation</pre></div>
+<div class="nocov"><span class="num"><pre> 34</pre></span><pre>	will work natively.</pre></div>
+<div class="nocov"><span class="num"><pre> 35</pre></span><pre>	Otherwise the getParent and getChildren methods should be overwritten</pre></div>
+<div class="skip"><span class="num"><pre> 36</pre></span><pre>	</pre></div>
+<div class="nocov"><span class="num"><pre> 37</pre></span><pre>	:note: a few methods of this class are abstract and need to be overwritten</pre></div>
+<div class="nocov"><span class="num"><pre> 38</pre></span><pre>	:note: this class expects the attribute '_sep' to exist containing the</pre></div>
+<div class="nocov"><span class="num"><pre> 39</pre></span><pre>		separator at which your object should be split ( for default implementations ).</pre></div>
+<div class="nocov"><span class="num"><pre> 40</pre></span><pre>		This works as the passed in pointer will belong to derived classes that can</pre></div>
+<div class="nocov"><span class="num"><pre> 41</pre></span><pre>		define that attribute on instance or on class level&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 42</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 43</pre></span><pre>	kOrder_DepthFirst, kOrder_BreadthFirst = range(2)</pre></div>
+<div class="skip"><span class="num"><pre> 44</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 45</pre></span><pre>	# assure we can be handled efficiently - subclasses are free not to define </pre></div>
+<div class="skip"><span class="num"><pre> 46</pre></span><pre>	# slots, but those who do will not inherit a __dict__ from here</pre></div>
+<div class="nocov"><span class="num"><pre> 47</pre></span><pre>	__slots__ = tuple()</pre></div>
+<div class="skip"><span class="num"><pre> 48</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 49</pre></span><pre>	#{ Configuration</pre></div>
+<div class="skip"><span class="num"><pre> 50</pre></span><pre>	# separator as appropriate for your class if it can be treated as string</pre></div>
+<div class="skip"><span class="num"><pre> 51</pre></span><pre>	# if string treatment is not possibly, override the respective method</pre></div>
+<div class="nocov"><span class="num"><pre> 52</pre></span><pre>	_sep = None</pre></div>
+<div class="skip"><span class="num"><pre> 53</pre></span><pre>	#} END configuration</pre></div>
+<div class="skip"><span class="num"><pre> 54</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 55</pre></span><pre>	#{ Query Methods</pre></div>
+<div class="skip"><span class="num"><pre> 56</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 57</pre></span><pre>	def isRoot( self ):</pre></div>
+<div class="nocov"><span class="num"><pre> 58</pre></span><pre>		&quot;&quot;&quot;:return: True if this path is the root of the DAG &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 59</pre></span><pre>		return self ==  self.root()</pre></div>
+<div class="skip"><span class="num"><pre> 60</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 61</pre></span><pre>	def root( self ):</pre></div>
+<div class="nocov"><span class="num"><pre> 62</pre></span><pre>		&quot;&quot;&quot;:return: the root of the DAG - it has no further parents&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 63</pre></span><pre>		parents = self.parentDeep( )</pre></div>
+<div class="cov"><span class="num"><pre> 64</pre></span><pre>		if not parents:</pre></div>
+<div class="cov"><span class="num"><pre> 65</pre></span><pre>			return self</pre></div>
+<div class="cov"><span class="num"><pre> 66</pre></span><pre>		return parents[-1]</pre></div>
+<div class="skip"><span class="num"><pre> 67</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 68</pre></span><pre>	def basename( self ):</pre></div>
+<div class="nocov"><span class="num"><pre> 69</pre></span><pre>		&quot;&quot;&quot;:return: basename of this path, '/hello/world' -&gt; 'world'&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 70</pre></span><pre>		return str(self).split( self._sep )[-1]</pre></div>
+<div class="skip"><span class="num"><pre> 71</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 72</pre></span><pre>	def parent( self ):</pre></div>
+<div class="nocov"><span class="num"><pre> 73</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 74</pre></span><pre>		:return: parent of this path, '/hello/world' -&gt; '/hello' or None if this path</pre></div>
+<div class="nocov"><span class="num"><pre> 75</pre></span><pre>			is the dag's root&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 76</pre></span><pre>		tokens =  str(self).split( self._sep )</pre></div>
+<div class="cov"><span class="num"><pre> 77</pre></span><pre>		if len( tokens ) &lt;= 2:		# its already root</pre></div>
+<div class="cov"><span class="num"><pre> 78</pre></span><pre>			return None</pre></div>
+<div class="skip"><span class="num"><pre> 79</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 80</pre></span><pre>		return self.__class__( self._sep.join( tokens[0:-1] ) )</pre></div>
+<div class="skip"><span class="num"><pre> 81</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 82</pre></span><pre>	def parentDeep( self ):</pre></div>
+<div class="nocov"><span class="num"><pre> 83</pre></span><pre>		&quot;&quot;&quot;:return: all parents of this path, '/hello/my/world' -&gt; [ '/hello/my','/hello' ]&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 84</pre></span><pre>		return list( self.iterParents( ) )</pre></div>
+<div class="skip"><span class="num"><pre> 85</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 86</pre></span><pre>		return out</pre></div>
+<div class="skip"><span class="num"><pre> 87</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 88</pre></span><pre>	def children( self , predicate = lambda x: True):</pre></div>
+<div class="nocov"><span class="num"><pre> 89</pre></span><pre>		&quot;&quot;&quot;:return: list of intermediate children of path, [ child1 , child2 ]</pre></div>
+<div class="nocov"><span class="num"><pre> 90</pre></span><pre>		:param predicate: return True to include x in result</pre></div>
+<div class="nocov"><span class="num"><pre> 91</pre></span><pre>		:note: the child objects returned are supposed to be valid paths, not just relative paths&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 92</pre></span><pre>		raise NotImplementedError( )</pre></div>
+<div class="skip"><span class="num"><pre> 93</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 94</pre></span><pre>	def childrenDeep( self , order = kOrder_BreadthFirst, predicate=lambda x: True ):</pre></div>
+<div class="cov"><span class="num"><pre> 95</pre></span><pre>		&quot;&quot;&quot;:return: list of all children of path, [ child1 , child2 ]</pre></div>
+<div class="cov"><span class="num"><pre> 96</pre></span><pre>		:param order: order enumeration</pre></div>
+<div class="cov"><span class="num"><pre> 97</pre></span><pre>		:param predicate: returns true if x may be returned</pre></div>
+<div class="cov"><span class="num"><pre> 98</pre></span><pre>		:note: the child objects returned are supposed to be valid paths, not just relative paths&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 99</pre></span><pre>		out = []</pre></div>
+<div class="cov"><span class="num"><pre>100</pre></span><pre>		if order == self.kOrder_DepthFirst:</pre></div>
+<div class="nocov"><span class="num"><pre>101</pre></span><pre>			def depthSearch( child ):</pre></div>
+<div class="nocov"><span class="num"><pre>102</pre></span><pre>				if not predicate( c ):</pre></div>
+<div class="nocov"><span class="num"><pre>103</pre></span><pre>					return</pre></div>
+<div class="nocov"><span class="num"><pre>104</pre></span><pre>				children = child.children( predicate = predicate )</pre></div>
+<div class="nocov"><span class="num"><pre>105</pre></span><pre>				for c in children:</pre></div>
+<div class="nocov"><span class="num"><pre>106</pre></span><pre>					depthSearch( c )</pre></div>
+<div class="nocov"><span class="num"><pre>107</pre></span><pre>				out.append( child )</pre></div>
+<div class="skip"><span class="num"><pre>108</pre></span><pre>			# END recursive search method</pre></div>
+<div class="skip"><span class="num"><pre>109</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>110</pre></span><pre>			depthSearch( self )</pre></div>
+<div class="skip"><span class="num"><pre>111</pre></span><pre>		# END if depth first</pre></div>
+<div class="cov"><span class="num"><pre>112</pre></span><pre>		elif order == self.kOrder_BreadthFirst:</pre></div>
+<div class="cov"><span class="num"><pre>113</pre></span><pre>			childstack = Deque( [ self ] )</pre></div>
+<div class="cov"><span class="num"><pre>114</pre></span><pre>			while childstack:</pre></div>
+<div class="cov"><span class="num"><pre>115</pre></span><pre>				item = childstack.pop( )</pre></div>
+<div class="cov"><span class="num"><pre>116</pre></span><pre>				if not predicate( item ):</pre></div>
+<div class="nocov"><span class="num"><pre>117</pre></span><pre>					continue</pre></div>
+<div class="cov"><span class="num"><pre>118</pre></span><pre>				children = item.children( predicate = predicate )</pre></div>
+<div class="skip"><span class="num"><pre>119</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>120</pre></span><pre>				childstack.extendleft( children )</pre></div>
+<div class="cov"><span class="num"><pre>121</pre></span><pre>				out.extend( children )</pre></div>
+<div class="skip"><span class="num"><pre>122</pre></span><pre>			# END while childstack</pre></div>
+<div class="skip"><span class="num"><pre>123</pre></span><pre>		# END if breadth first</pre></div>
+<div class="cov"><span class="num"><pre>124</pre></span><pre>		return out</pre></div>
+<div class="skip"><span class="num"><pre>125</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>126</pre></span><pre>	def isPartOf( self, other ):</pre></div>
+<div class="nocov"><span class="num"><pre>127</pre></span><pre>		&quot;&quot;&quot;:return: True if self is a part of other, and thus can be found in other</pre></div>
+<div class="nocov"><span class="num"><pre>128</pre></span><pre>		:note: operates on strings only&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>129</pre></span><pre>		return str( other ).find( str( self ) ) != -1</pre></div>
+<div class="skip"><span class="num"><pre>130</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>131</pre></span><pre>	def isRootOf( self, other ):</pre></div>
+<div class="nocov"><span class="num"><pre>132</pre></span><pre>		&quot;&quot;&quot;:return: True other starts with self</pre></div>
+<div class="nocov"><span class="num"><pre>133</pre></span><pre>		:note: operates on strings</pre></div>
+<div class="nocov"><span class="num"><pre>134</pre></span><pre>		:note: we assume other has the same type as self, thus the same separator&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>135</pre></span><pre>		selfstr =  self.addSep( str( self ), self._sep )</pre></div>
+<div class="nocov"><span class="num"><pre>136</pre></span><pre>		other = self.addSep( str( other ), self._sep )</pre></div>
+<div class="nocov"><span class="num"><pre>137</pre></span><pre>		return other.startswith( selfstr )</pre></div>
+<div class="skip"><span class="num"><pre>138</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>139</pre></span><pre>	#} END Query Methods</pre></div>
+<div class="skip"><span class="num"><pre>140</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>141</pre></span><pre>	#{ Iterators</pre></div>
+<div class="cov"><span class="num"><pre>142</pre></span><pre>	def iterParents( self , predicate = lambda x : True ):</pre></div>
+<div class="cov"><span class="num"><pre>143</pre></span><pre>		&quot;&quot;&quot;:return: generator retrieving all parents up to the root</pre></div>
+<div class="cov"><span class="num"><pre>144</pre></span><pre>		:param predicate: returns True for all x that you want to be returned&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>145</pre></span><pre>		curpath = self</pre></div>
+<div class="cov"><span class="num"><pre>146</pre></span><pre>		while True:</pre></div>
+<div class="cov"><span class="num"><pre>147</pre></span><pre>			parent = curpath.parent( )</pre></div>
+<div class="cov"><span class="num"><pre>148</pre></span><pre>			if not parent:</pre></div>
+<div class="cov"><span class="num"><pre>149</pre></span><pre>				raise StopIteration</pre></div>
+<div class="skip"><span class="num"><pre>150</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>151</pre></span><pre>			if predicate( parent ):</pre></div>
+<div class="cov"><span class="num"><pre>152</pre></span><pre>				yield parent</pre></div>
+<div class="skip"><span class="num"><pre>153</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>154</pre></span><pre>			curpath = parent</pre></div>
+<div class="skip"><span class="num"><pre>155</pre></span><pre>		# END while true</pre></div>
+<div class="skip"><span class="num"><pre>156</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>157</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>158</pre></span><pre>	#} END Iterators</pre></div>
+<div class="skip"><span class="num"><pre>159</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>160</pre></span><pre>	#{ Name Generation</pre></div>
+<div class="nocov"><span class="num"><pre>161</pre></span><pre>	@classmethod</pre></div>
+<div class="nocov"><span class="num"><pre>162</pre></span><pre>	def addSep( cls, item, sep ):</pre></div>
+<div class="nocov"><span class="num"><pre>163</pre></span><pre>		&quot;&quot;&quot;:return: item with separator added to it ( just once )</pre></div>
+<div class="nocov"><span class="num"><pre>164</pre></span><pre>		:note: operates best on strings</pre></div>
+<div class="nocov"><span class="num"><pre>165</pre></span><pre>		:param item: item to add separator to</pre></div>
+<div class="nocov"><span class="num"><pre>166</pre></span><pre>		:param sep: the separator&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>167</pre></span><pre>		if not item.endswith( sep ):</pre></div>
+<div class="cov"><span class="num"><pre>168</pre></span><pre>			item += sep</pre></div>
+<div class="cov"><span class="num"><pre>169</pre></span><pre>		return item</pre></div>
+<div class="skip"><span class="num"><pre>170</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>171</pre></span><pre>	def fullChildName( self, childname ):</pre></div>
+<div class="nocov"><span class="num"><pre>172</pre></span><pre>		&quot;&quot;&quot;Add the given name to the string version of our instance</pre></div>
+<div class="nocov"><span class="num"><pre>173</pre></span><pre>		:return: string with childname added like name _sep childname&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>174</pre></span><pre>		sname = self.addSep( str( self ), self._sep )</pre></div>
+<div class="skip"><span class="num"><pre>175</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>176</pre></span><pre>		if childname.startswith( self._sep ):</pre></div>
+<div class="nocov"><span class="num"><pre>177</pre></span><pre>			childname = childname[1:]</pre></div>
+<div class="skip"><span class="num"><pre>178</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>179</pre></span><pre>		return sname + childname</pre></div>
+<div class="skip"><span class="num"><pre>180</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>181</pre></span><pre>	#} END name generation</pre></div>
+<div class="skip"><span class="num"><pre>182</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>183</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>184</pre></span><pre>class iDuplicatable( Interface ):</pre></div>
+<div class="nocov"><span class="num"><pre>185</pre></span><pre>	&quot;&quot;&quot;Simple interface allowing any class to be properly duplicated</pre></div>
+<div class="skip"><span class="num"><pre>186</pre></span><pre>	</pre></div>
+<div class="nocov"><span class="num"><pre>187</pre></span><pre>	:note: to implement this interface, implement `createInstance` and</pre></div>
+<div class="nocov"><span class="num"><pre>188</pre></span><pre>		`copyFrom` in your class &quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>189</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>190</pre></span><pre>	# assure we can be handled efficiently - subclasses are free not to define </pre></div>
+<div class="skip"><span class="num"><pre>191</pre></span><pre>	# slots, but those who do will not inherit a __dict__ from here</pre></div>
+<div class="nocov"><span class="num"><pre>192</pre></span><pre>	__slots__ = tuple()</pre></div>
+<div class="skip"><span class="num"><pre>193</pre></span><pre>	</pre></div>
+<div class="nocov"><span class="num"><pre>194</pre></span><pre>	def __copyTo( self, instance, *args, **kwargs ):</pre></div>
+<div class="nocov"><span class="num"><pre>195</pre></span><pre>		&quot;&quot;&quot;Internal Method with minimal checking&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>196</pre></span><pre>		# Get reversed mro, starting at lowest base</pre></div>
+<div class="cov"><span class="num"><pre>197</pre></span><pre>		mrorev = instance.__class__.mro()</pre></div>
+<div class="cov"><span class="num"><pre>198</pre></span><pre>		mrorev.reverse()</pre></div>
+<div class="skip"><span class="num"><pre>199</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>200</pre></span><pre>		# APPLY COPY CONSTRUCTORS !</pre></div>
+<div class="skip"><span class="num"><pre>201</pre></span><pre>		##############################</pre></div>
+<div class="cov"><span class="num"><pre>202</pre></span><pre>		for base in mrorev:</pre></div>
+<div class="cov"><span class="num"><pre>203</pre></span><pre>			if base is iDuplicatable:</pre></div>
+<div class="cov"><span class="num"><pre>204</pre></span><pre>				continue</pre></div>
+<div class="skip"><span class="num"><pre>205</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>206</pre></span><pre>			# must get the actual method directly from the base ! Getattr respects the mro ( of course )</pre></div>
+<div class="skip"><span class="num"><pre>207</pre></span><pre>			# and possibly looks at the base's superclass methods of the same name</pre></div>
+<div class="cov"><span class="num"><pre>208</pre></span><pre>			try:</pre></div>
+<div class="cov"><span class="num"><pre>209</pre></span><pre>				copyFromFunc = base.__dict__[ 'copyFrom' ]</pre></div>
+<div class="cov"><span class="num"><pre>210</pre></span><pre>				copyFromFunc( instance, self, *args, **kwargs )</pre></div>
+<div class="cov"><span class="num"><pre>211</pre></span><pre>			except KeyError:</pre></div>
+<div class="cov"><span class="num"><pre>212</pre></span><pre>				pass</pre></div>
+<div class="nocov"><span class="num"><pre>213</pre></span><pre>			except TypeError,e:</pre></div>
+<div class="nocov"><span class="num"><pre>214</pre></span><pre>				raise</pre></div>
+<div class="skip"><span class="num"><pre>215</pre></span><pre>		# END for each base</pre></div>
+<div class="skip"><span class="num"><pre>216</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>217</pre></span><pre>		# return the result !</pre></div>
+<div class="cov"><span class="num"><pre>218</pre></span><pre>		return instance</pre></div>
+<div class="skip"><span class="num"><pre>219</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>220</pre></span><pre>	#{ Interface</pre></div>
+<div class="skip"><span class="num"><pre>221</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>222</pre></span><pre>	def createInstance( self, *args, **kwargs ):</pre></div>
+<div class="nocov"><span class="num"><pre>223</pre></span><pre>		&quot;&quot;&quot;Create and Initialize an instance of self.__class__( ... ) based on your own data</pre></div>
+<div class="skip"><span class="num"><pre>224</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>225</pre></span><pre>		:return: new instance of self</pre></div>
+<div class="nocov"><span class="num"><pre>226</pre></span><pre>		:note: using self.__class__ instead of an explicit class allows derived</pre></div>
+<div class="nocov"><span class="num"><pre>227</pre></span><pre>			classes that do not have anything to duplicate just to use your implementeation</pre></div>
+<div class="skip"><span class="num"><pre>228</pre></span><pre>			</pre></div>
+<div class="nocov"><span class="num"><pre>229</pre></span><pre>		:note: you must support ``args`` and ``kwargs`` if one of your iDuplicate bases does&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>230</pre></span><pre>		return self.__class__(*args, **kwargs)</pre></div>
+<div class="skip"><span class="num"><pre>231</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>232</pre></span><pre>	def copyFrom( self, other, *args, **kwargs ):</pre></div>
+<div class="nocov"><span class="num"><pre>233</pre></span><pre>		&quot;&quot;&quot;Copy the data from other into self as good as possible</pre></div>
+<div class="nocov"><span class="num"><pre>234</pre></span><pre>		Only copy the data that is unique to your specific class - the data of other</pre></div>
+<div class="nocov"><span class="num"><pre>235</pre></span><pre>		classes will be taken care of by them !</pre></div>
+<div class="skip"><span class="num"><pre>236</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>237</pre></span><pre>		:note: you must support ``args`` and ``kwargs`` if one of your iDuplicate bases does&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>238</pre></span><pre>		raise NotImplementedError( &quot;Copy all data you know from other into self&quot; )</pre></div>
+<div class="skip"><span class="num"><pre>239</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>240</pre></span><pre>	#} END interface</pre></div>
+<div class="skip"><span class="num"><pre>241</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>242</pre></span><pre>	def duplicate( self, *args, **kwargs ):</pre></div>
+<div class="nocov"><span class="num"><pre>243</pre></span><pre>		&quot;&quot;&quot;Implements a c-style copy constructor by creating a new instance of self</pre></div>
+<div class="nocov"><span class="num"><pre>244</pre></span><pre>		and applying the `copyFrom` methods from base to all classes implementing the copyfrom</pre></div>
+<div class="nocov"><span class="num"><pre>245</pre></span><pre>		method. Thus we will call the method directly on the class</pre></div>
+<div class="skip"><span class="num"><pre>246</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>247</pre></span><pre>		:param args: passed to `copyFrom` and `createInstance` method to give additional directions</pre></div>
+<div class="nocov"><span class="num"><pre>248</pre></span><pre>		:param kwargs: see param args&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>249</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre>250</pre></span><pre>			createInstFunc = getattr( self, 'createInstance' )</pre></div>
+<div class="cov"><span class="num"><pre>251</pre></span><pre>			instance = createInstFunc( *args, **kwargs )</pre></div>
+<div class="nocov"><span class="num"><pre>252</pre></span><pre>		except TypeError,e:</pre></div>
+<div class="skip"><span class="num"><pre>253</pre></span><pre>			#raise</pre></div>
+<div class="nocov"><span class="num"><pre>254</pre></span><pre>			raise AssertionError( &quot;The subclass method %s must support *args and or **kwargs if the superclass does, error: %s&quot; % ( createInstFunc, e ) )</pre></div>
+<div class="skip"><span class="num"><pre>255</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>256</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>257</pre></span><pre>		# Sanity Check</pre></div>
+<div class="cov"><span class="num"><pre>258</pre></span><pre>		if not ( instance.__class__ is self.__class__ ):</pre></div>
+<div class="nocov"><span class="num"><pre>259</pre></span><pre>			msg = &quot;Duplicate must have same class as self, was %s, should be %s&quot; % ( instance.__class__, self.__class__ )</pre></div>
+<div class="nocov"><span class="num"><pre>260</pre></span><pre>			raise AssertionError( msg )</pre></div>
+<div class="skip"><span class="num"><pre>261</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>262</pre></span><pre>		return self.__copyTo( instance, *args, **kwargs )</pre></div>
+<div class="skip"><span class="num"><pre>263</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>264</pre></span><pre>	def copyTo( self, instance, *args, **kwargs ):</pre></div>
+<div class="nocov"><span class="num"><pre>265</pre></span><pre>		&quot;&quot;&quot;Copy the values of ourselves onto the given instance which must be an</pre></div>
+<div class="nocov"><span class="num"><pre>266</pre></span><pre>		instance of our class to be compatible.</pre></div>
+<div class="nocov"><span class="num"><pre>267</pre></span><pre>		Only the common classes will be copied to instance</pre></div>
+<div class="skip"><span class="num"><pre>268</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>269</pre></span><pre>		:return: altered instance</pre></div>
+<div class="nocov"><span class="num"><pre>270</pre></span><pre>		:note: instance will be altered during the process&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>271</pre></span><pre>		if type( instance ) != type( self ):</pre></div>
+<div class="nocov"><span class="num"><pre>272</pre></span><pre>			raise TypeError( &quot;copyTo: Instance must be of type %s but was type %s&quot; % ( type( self ), type( instance ) ) )</pre></div>
+<div class="cov"><span class="num"><pre>273</pre></span><pre>		return self.__copyTo( instance, *args, **kwargs )</pre></div>
+<div class="skip"><span class="num"><pre>274</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>275</pre></span><pre>	def copyToOther( self, instance, *args, **kwargs ):</pre></div>
+<div class="nocov"><span class="num"><pre>276</pre></span><pre>		&quot;&quot;&quot;As `copyTo`, but does only require the objects to have a common base.</pre></div>
+<div class="nocov"><span class="num"><pre>277</pre></span><pre>		It will match the actually compatible base classes and call `copyFrom`</pre></div>
+<div class="nocov"><span class="num"><pre>278</pre></span><pre>		if possible.</pre></div>
+<div class="nocov"><span class="num"><pre>279</pre></span><pre>		As more checking is performed, this method performs worse than `copyTo`&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>280</pre></span><pre>		# Get reversed mro, starting at lowest base</pre></div>
+<div class="nocov"><span class="num"><pre>281</pre></span><pre>		mrorev = instance.__class__.mro()</pre></div>
+<div class="nocov"><span class="num"><pre>282</pre></span><pre>		mrorev.reverse()</pre></div>
+<div class="skip"><span class="num"><pre>283</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>284</pre></span><pre>		own_bases = self.__class__.mro()</pre></div>
+<div class="nocov"><span class="num"><pre>285</pre></span><pre>		own_bases.reverse()</pre></div>
+<div class="skip"><span class="num"><pre>286</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>287</pre></span><pre>		# APPLY COPY CONSTRUCTORS !</pre></div>
+<div class="skip"><span class="num"><pre>288</pre></span><pre>		##############################</pre></div>
+<div class="nocov"><span class="num"><pre>289</pre></span><pre>		for base in mrorev:</pre></div>
+<div class="nocov"><span class="num"><pre>290</pre></span><pre>			if base is iDuplicatable or base not in own_bases:</pre></div>
+<div class="nocov"><span class="num"><pre>291</pre></span><pre>				continue</pre></div>
+<div class="skip"><span class="num"><pre>292</pre></span><pre>			</pre></div>
+<div class="nocov"><span class="num"><pre>293</pre></span><pre>			try:</pre></div>
+<div class="nocov"><span class="num"><pre>294</pre></span><pre>				copyFromFunc = base.__dict__[ 'copyFrom' ]</pre></div>
+<div class="nocov"><span class="num"><pre>295</pre></span><pre>				copyFromFunc( instance, self, *args, **kwargs )</pre></div>
+<div class="nocov"><span class="num"><pre>296</pre></span><pre>			except KeyError:</pre></div>
+<div class="nocov"><span class="num"><pre>297</pre></span><pre>				pass</pre></div>
+<div class="nocov"><span class="num"><pre>298</pre></span><pre>			except TypeError,e: </pre></div>
+<div class="nocov"><span class="num"><pre>299</pre></span><pre>				raise AssertionError( &quot;The subclass method %s.%s must support *args and or **kwargs if the superclass does, error: %s&quot; % (base, copyFromFunc,e) )</pre></div>
+<div class="skip"><span class="num"><pre>300</pre></span><pre>		# END for each base</pre></div>
+<div class="nocov"><span class="num"><pre>301</pre></span><pre>		return instance</pre></div>
+<div class="skip"><span class="num"><pre>302</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>303</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>304</pre></span><pre>class iChoiceDialog( Interface ):</pre></div>
+<div class="nocov"><span class="num"><pre>305</pre></span><pre>	&quot;&quot;&quot;Interface allowing access to a simple confirm dialog allowing the user</pre></div>
+<div class="nocov"><span class="num"><pre>306</pre></span><pre>	to pick between a selection of choices, one of which he has to confirm</pre></div>
+<div class="skip"><span class="num"><pre>307</pre></span><pre>	</pre></div>
+<div class="nocov"><span class="num"><pre>308</pre></span><pre>	:note: for convenience, this interface contains a brief implementation as a</pre></div>
+<div class="nocov"><span class="num"><pre>309</pre></span><pre>		basis for subclasses, using standard input  and standard ouput for communication&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>310</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>311</pre></span><pre>	def __init__( self, *args, **kwargs ):</pre></div>
+<div class="nocov"><span class="num"><pre>312</pre></span><pre>		&quot;&quot;&quot;Allow the user to pick a choice</pre></div>
+<div class="skip"><span class="num"><pre>313</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>314</pre></span><pre>		:note: all paramaters exist in a short and a long version for convenience, given</pre></div>
+<div class="nocov"><span class="num"><pre>315</pre></span><pre>			in the form short/long</pre></div>
+<div class="nocov"><span class="num"><pre>316</pre></span><pre>		:param kwargs:</pre></div>
+<div class="nocov"><span class="num"><pre>317</pre></span><pre>			 * t/title: optional title of the choice box, quickly saying what this choice is about</pre></div>
+<div class="nocov"><span class="num"><pre>318</pre></span><pre>			 * m/message: message to be shown, informing the user in detail what the choice is about</pre></div>
+<div class="nocov"><span class="num"><pre>319</pre></span><pre>			 * c/choices: single item or list of items identifying the choices if used as string</pre></div>
+<div class="nocov"><span class="num"><pre>320</pre></span><pre>			 * dc/defaultChoice: choice in set of choices to be used as default choice, default is first choice</pre></div>
+<div class="nocov"><span class="num"><pre>321</pre></span><pre>			 * cc/cancelChoice: choice in set of choices to be used if the dialog is cancelled using esc,</pre></div>
+<div class="nocov"><span class="num"><pre>322</pre></span><pre>			   default is last choice&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>323</pre></span><pre>		self.title = kwargs.get( &quot;t&quot;, kwargs.get( &quot;title&quot;, &quot;Choice Dialog&quot; ) )</pre></div>
+<div class="cov"><span class="num"><pre>324</pre></span><pre>		self.message = kwargs.get( &quot;m&quot;, kwargs.get( &quot;message&quot;, None ) )</pre></div>
+<div class="cov"><span class="num"><pre>325</pre></span><pre>		assert self.message</pre></div>
+<div class="skip"><span class="num"><pre>326</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>327</pre></span><pre>		self.choices = kwargs.get( &quot;c&quot;, kwargs.get( &quot;choices&quot;, None ) )</pre></div>
+<div class="cov"><span class="num"><pre>328</pre></span><pre>		assert self.choices</pre></div>
+<div class="skip"><span class="num"><pre>329</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>330</pre></span><pre>		# internally we store a choice list</pre></div>
+<div class="cov"><span class="num"><pre>331</pre></span><pre>		if not isinstance( self.choices, ( list, tuple ) ):</pre></div>
+<div class="cov"><span class="num"><pre>332</pre></span><pre>			self.choices = [ self.choices ]</pre></div>
+<div class="skip"><span class="num"><pre>333</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>334</pre></span><pre>		self.default_choice = kwargs.get( &quot;dc&quot;, kwargs.get( &quot;defaultChoice&quot;, self.choices[0] ) )</pre></div>
+<div class="cov"><span class="num"><pre>335</pre></span><pre>		self.cancel_choice = kwargs.get( &quot;cc&quot;, kwargs.get( &quot;cancelChoice&quot;, self.choices[-1] ) )</pre></div>
+<div class="skip"><span class="num"><pre>336</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>337</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>338</pre></span><pre>	def choice( self ):</pre></div>
+<div class="nocov"><span class="num"><pre>339</pre></span><pre>		&quot;&quot;&quot;Make the choice</pre></div>
+<div class="skip"><span class="num"><pre>340</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>341</pre></span><pre>		:return: name of the choice made by the user, the type shall equal the type given</pre></div>
+<div class="nocov"><span class="num"><pre>342</pre></span><pre>			as button names</pre></div>
+<div class="nocov"><span class="num"><pre>343</pre></span><pre>		:note: this implementation always returns the default choice&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>344</pre></span><pre>		log.debug(self.title)</pre></div>
+<div class="cov"><span class="num"><pre>345</pre></span><pre>		log.debug(&quot;-&quot;*len( self.title ))</pre></div>
+<div class="cov"><span class="num"><pre>346</pre></span><pre>		log.debug(self.message)</pre></div>
+<div class="cov"><span class="num"><pre>347</pre></span><pre>		log.debug(&quot; | &quot;.join(( str( c ) for c in self.choices )))</pre></div>
+<div class="cov"><span class="num"><pre>348</pre></span><pre>		log.debug(&quot;answer: %s&quot; % self.default_choice)</pre></div>
+<div class="skip"><span class="num"><pre>349</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>350</pre></span><pre>		return self.default_choice</pre></div>
+<div class="skip"><span class="num"><pre>351</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>352</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>353</pre></span><pre>class iPrompt( Interface ):</pre></div>
+<div class="nocov"><span class="num"><pre>354</pre></span><pre>	&quot;&quot;&quot;Prompt a value from the user, providing a default if no input is retrieved&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>355</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>356</pre></span><pre>	def __init__( self, **kwargs ):</pre></div>
+<div class="nocov"><span class="num"><pre>357</pre></span><pre>		&quot;&quot;&quot;Configure the prompt, most parameters allow short and long names</pre></div>
+<div class="skip"><span class="num"><pre>358</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>359</pre></span><pre>		:param kwargs:</pre></div>
+<div class="nocov"><span class="num"><pre>360</pre></span><pre>			 * m/message: Message to be presented, like &quot;Enter your name&quot;, must be set</pre></div>
+<div class="nocov"><span class="num"><pre>361</pre></span><pre>			 * d/default: default value to return in case there is no input</pre></div>
+<div class="nocov"><span class="num"><pre>362</pre></span><pre>			 * cd/cancelDefault: default value if prompt is cancelled</pre></div>
+<div class="nocov"><span class="num"><pre>363</pre></span><pre>			 * confirmToken: token to enter/hit/press to finish the prompt</pre></div>
+<div class="nocov"><span class="num"><pre>364</pre></span><pre>			 * cancelToken: token to cancel and abort the prompt&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>365</pre></span><pre>		self.msg = kwargs.pop( &quot;m&quot;, kwargs.pop( &quot;message&quot;, None ) )</pre></div>
+<div class="cov"><span class="num"><pre>366</pre></span><pre>		assert self.msg is not None, &quot;No Message given&quot;</pre></div>
+<div class="cov"><span class="num"><pre>367</pre></span><pre>		self.confirmDefault = kwargs.pop( &quot;d&quot;, kwargs.pop( &quot;default&quot;, None ) )</pre></div>
+<div class="cov"><span class="num"><pre>368</pre></span><pre>		self.cancelDefault = kwargs.pop( &quot;cd&quot;, kwargs.pop( &quot;cancelDefault&quot;, None ) )</pre></div>
+<div class="cov"><span class="num"><pre>369</pre></span><pre>		self.confirmToken = kwargs.pop( &quot;t&quot;, kwargs.pop( &quot;confirmToken&quot;, None ) )</pre></div>
+<div class="cov"><span class="num"><pre>370</pre></span><pre>		self.cancelToken = kwargs.pop( &quot;ct&quot;, kwargs.pop( &quot;cancelToken&quot;, None ) )</pre></div>
+<div class="skip"><span class="num"><pre>371</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>372</pre></span><pre>		# remaining arguments for subclass use</pre></div>
+<div class="cov"><span class="num"><pre>373</pre></span><pre>		self._kwargs = kwargs</pre></div>
+<div class="skip"><span class="num"><pre>374</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>375</pre></span><pre>	def prompt( self ):</pre></div>
+<div class="nocov"><span class="num"><pre>376</pre></span><pre>		&quot;&quot;&quot;activate our prompt</pre></div>
+<div class="nocov"><span class="num"><pre>377</pre></span><pre>		:return: the prompted value</pre></div>
+<div class="nocov"><span class="num"><pre>378</pre></span><pre>		:note: base implementation just prints a sample text and returns the default&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>379</pre></span><pre>		log.debug(&quot;%s [ %s ]:&quot; % ( self.msg, self.confirmDefault ))</pre></div>
+<div class="cov"><span class="num"><pre>380</pre></span><pre>		log.debug(&quot;Hit %s to confirm or %s to cancel&quot; % ( self.confirmToken, self.cancelToken ))</pre></div>
+<div class="cov"><span class="num"><pre>381</pre></span><pre>		return self.confirmDefault</pre></div>
+<div class="skip"><span class="num"><pre>382</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>383</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>384</pre></span><pre>class iProgressIndicator( Interface ):</pre></div>
+<div class="nocov"><span class="num"><pre>385</pre></span><pre>	&quot;&quot;&quot;Interface allowing to submit progress information</pre></div>
+<div class="nocov"><span class="num"><pre>386</pre></span><pre>	The default implementation just prints the respective messages</pre></div>
+<div class="nocov"><span class="num"><pre>387</pre></span><pre>	Additionally you may query whether the computation has been cancelled by the user</pre></div>
+<div class="skip"><span class="num"><pre>388</pre></span><pre>	</pre></div>
+<div class="nocov"><span class="num"><pre>389</pre></span><pre>	:note: this interface is a simple progress indicator itself, and can do some computations</pre></div>
+<div class="nocov"><span class="num"><pre>390</pre></span><pre>		for you if you use the get() method yourself&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>391</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>392</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>393</pre></span><pre>	#{ Initialization</pre></div>
+<div class="nocov"><span class="num"><pre>394</pre></span><pre>	def __init__( self, min = 0, max = 100, is_relative = True, may_abort = False, round_robin=False, **kwargs ):</pre></div>
+<div class="nocov"><span class="num"><pre>395</pre></span><pre>		&quot;&quot;&quot;:param min: the minimum progress value</pre></div>
+<div class="nocov"><span class="num"><pre>396</pre></span><pre>		:param max: the maximum progress value</pre></div>
+<div class="nocov"><span class="num"><pre>397</pre></span><pre>		:param is_relative: if True, the values given will be scaled to a range of 0-100,</pre></div>
+<div class="nocov"><span class="num"><pre>398</pre></span><pre>			if False no adjustments will be done</pre></div>
+<div class="nocov"><span class="num"><pre>399</pre></span><pre>		:param round_robin: see `setRoundRobin` </pre></div>
+<div class="nocov"><span class="num"><pre>400</pre></span><pre>		:param kwargs: additional arguments being ignored&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>401</pre></span><pre>		self.setRange( min, max )</pre></div>
+<div class="cov"><span class="num"><pre>402</pre></span><pre>		self.setRelative( is_relative )</pre></div>
+<div class="cov"><span class="num"><pre>403</pre></span><pre>		self.setAbortable( may_abort )</pre></div>
+<div class="cov"><span class="num"><pre>404</pre></span><pre>		self.setRoundRobin( round_robin )</pre></div>
+<div class="cov"><span class="num"><pre>405</pre></span><pre>		self.__progress = min</pre></div>
+<div class="skip"><span class="num"><pre>406</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>407</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>408</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>409</pre></span><pre>	def begin( self ):</pre></div>
+<div class="nocov"><span class="num"><pre>410</pre></span><pre>		&quot;&quot;&quot;intiialize the progress indicator before calling `set` &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>411</pre></span><pre>		self.__progress = self.__min		# refresh</pre></div>
+<div class="skip"><span class="num"><pre>412</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>413</pre></span><pre>	def end( self ):</pre></div>
+<div class="nocov"><span class="num"><pre>414</pre></span><pre>		&quot;&quot;&quot;indicate that you are done with the progress indicator - this must be your last</pre></div>
+<div class="nocov"><span class="num"><pre>415</pre></span><pre>		call to the interface&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>416</pre></span><pre>		pass</pre></div>
+<div class="skip"><span class="num"><pre>417</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>418</pre></span><pre>	#} END initialization</pre></div>
+<div class="skip"><span class="num"><pre>419</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>420</pre></span><pre>	#{ Edit</pre></div>
+<div class="cov"><span class="num"><pre>421</pre></span><pre>	def refresh( self, message = None ):</pre></div>
+<div class="cov"><span class="num"><pre>422</pre></span><pre>		&quot;&quot;&quot;Refresh the progress indicator so that it represents its values on screen.</pre></div>
+<div class="skip"><span class="num"><pre>423</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>424</pre></span><pre>		:param message: message passed along by the user&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>425</pre></span><pre>		# To be implemented in subclass</pre></div>
+<div class="skip"><span class="num"><pre>426</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>427</pre></span><pre>	def set( self, value, message = None , omit_refresh=False ):</pre></div>
+<div class="nocov"><span class="num"><pre>428</pre></span><pre>		&quot;&quot;&quot;Set the progress of the progress indicator to the given value</pre></div>
+<div class="skip"><span class="num"><pre>429</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>430</pre></span><pre>		:param value: progress value ( min&lt;=value&lt;=max )</pre></div>
+<div class="nocov"><span class="num"><pre>431</pre></span><pre>		:param message: optional message you would like to give to the user</pre></div>
+<div class="nocov"><span class="num"><pre>432</pre></span><pre>		:param omit_refresh: by default, the progress indicator refreshes on set,</pre></div>
+<div class="nocov"><span class="num"><pre>433</pre></span><pre>			if False, you have to call refresh manually after you set the value&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>434</pre></span><pre>		self.__progress = value</pre></div>
+<div class="skip"><span class="num"><pre>435</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>436</pre></span><pre>		if not omit_refresh:</pre></div>
+<div class="cov"><span class="num"><pre>437</pre></span><pre>			self.refresh( message = message )</pre></div>
+<div class="skip"><span class="num"><pre>438</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>439</pre></span><pre>	def setRange( self, min, max ):</pre></div>
+<div class="nocov"><span class="num"><pre>440</pre></span><pre>		&quot;&quot;&quot;set the range within we expect our progress to occour&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>441</pre></span><pre>		self.__min = min</pre></div>
+<div class="cov"><span class="num"><pre>442</pre></span><pre>		self.__max = max</pre></div>
+<div class="skip"><span class="num"><pre>443</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>444</pre></span><pre>	def setRoundRobin( self, round_robin ):</pre></div>
+<div class="nocov"><span class="num"><pre>445</pre></span><pre>		&quot;&quot;&quot;Set if round-robin mode should be used. </pre></div>
+<div class="nocov"><span class="num"><pre>446</pre></span><pre>		If True, values exceeding the maximum range will be wrapped and </pre></div>
+<div class="nocov"><span class="num"><pre>447</pre></span><pre>		start at the minimum range&quot;&quot;&quot; </pre></div>
+<div class="cov"><span class="num"><pre>448</pre></span><pre>		self.__rr = round_robin</pre></div>
+<div class="skip"><span class="num"><pre>449</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>450</pre></span><pre>	def setRelative( self, state ):</pre></div>
+<div class="nocov"><span class="num"><pre>451</pre></span><pre>		&quot;&quot;&quot;enable or disable relative progress computations&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>452</pre></span><pre>		self.__relative = state</pre></div>
+<div class="skip"><span class="num"><pre>453</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>454</pre></span><pre>	def setAbortable( self, state ):</pre></div>
+<div class="nocov"><span class="num"><pre>455</pre></span><pre>		&quot;&quot;&quot;If state is True, the progress may be interrupted, if false it cannot</pre></div>
+<div class="nocov"><span class="num"><pre>456</pre></span><pre>		be interrupted&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>457</pre></span><pre>		self.__may_abort = state</pre></div>
+<div class="skip"><span class="num"><pre>458</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>459</pre></span><pre>	def setup( self, range=None, relative=None, abortable=None, begin=True, round_robin=None ):</pre></div>
+<div class="nocov"><span class="num"><pre>460</pre></span><pre>		&quot;&quot;&quot;Multifunctional, all in one convenience method setting all important attributes</pre></div>
+<div class="nocov"><span class="num"><pre>461</pre></span><pre>		at once. This allows setting up the progress indicator with one call instead of many</pre></div>
+<div class="skip"><span class="num"><pre>462</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>463</pre></span><pre>		:note: If a kw argument is None, it will not be set</pre></div>
+<div class="nocov"><span class="num"><pre>464</pre></span><pre>		:param range: Tuple( min, max ) - start ane end of progress indicator range</pre></div>
+<div class="nocov"><span class="num"><pre>465</pre></span><pre>		:param relative: equivalent to `setRelative`</pre></div>
+<div class="nocov"><span class="num"><pre>466</pre></span><pre>		:param abortable: equivalent to `setAbortable`</pre></div>
+<div class="nocov"><span class="num"><pre>467</pre></span><pre>		:param round_robin: equivalent to `setRoundRobin`</pre></div>
+<div class="nocov"><span class="num"><pre>468</pre></span><pre>		:param begin: if True, `begin` will be called as well&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>469</pre></span><pre>		if range is not None:</pre></div>
+<div class="cov"><span class="num"><pre>470</pre></span><pre>			self.setRange( range[0], range[1] )</pre></div>
+<div class="skip"><span class="num"><pre>471</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>472</pre></span><pre>		if relative is not None:</pre></div>
+<div class="cov"><span class="num"><pre>473</pre></span><pre>			self.setRelative( relative )</pre></div>
+<div class="skip"><span class="num"><pre>474</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>475</pre></span><pre>		if abortable is not None:</pre></div>
+<div class="cov"><span class="num"><pre>476</pre></span><pre>			self.setAbortable( abortable )</pre></div>
+<div class="skip"><span class="num"><pre>477</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre>478</pre></span><pre>		if round_robin is not None:</pre></div>
+<div class="cov"><span class="num"><pre>479</pre></span><pre>			self.setRoundRobin(round_robin)</pre></div>
+<div class="skip"><span class="num"><pre>480</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>481</pre></span><pre>		if begin:</pre></div>
+<div class="cov"><span class="num"><pre>482</pre></span><pre>			self.begin()</pre></div>
+<div class="skip"><span class="num"><pre>483</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>484</pre></span><pre>	#} END edit</pre></div>
+<div class="skip"><span class="num"><pre>485</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>486</pre></span><pre>	#{ Query</pre></div>
+<div class="nocov"><span class="num"><pre>487</pre></span><pre>	def get( self ):</pre></div>
+<div class="nocov"><span class="num"><pre>488</pre></span><pre>		&quot;&quot;&quot;:return: the current progress value</pre></div>
+<div class="skip"><span class="num"><pre>489</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>490</pre></span><pre>		:note: if set to relative mode, values will range</pre></div>
+<div class="nocov"><span class="num"><pre>491</pre></span><pre>			from 0.0 to 100.0.</pre></div>
+<div class="nocov"><span class="num"><pre>492</pre></span><pre>			Values will always be within the ones returned by `range`&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>493</pre></span><pre>		p = self.value()</pre></div>
+<div class="cov"><span class="num"><pre>494</pre></span><pre>		mn,mx = self.range()</pre></div>
+<div class="cov"><span class="num"><pre>495</pre></span><pre>		if self.roundRobin():</pre></div>
+<div class="cov"><span class="num"><pre>496</pre></span><pre>			p = p % mx</pre></div>
+<div class="skip"><span class="num"><pre>497</pre></span><pre>				</pre></div>
+<div class="cov"><span class="num"><pre>498</pre></span><pre>		if not self.isRelative():</pre></div>
+<div class="cov"><span class="num"><pre>499</pre></span><pre>			return min( max( p, mn ), mx )</pre></div>
+<div class="skip"><span class="num"><pre>500</pre></span><pre>		# END relative handling </pre></div>
+<div class="skip"><span class="num"><pre>501</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>502</pre></span><pre>		# compute the percentage</pre></div>
+<div class="cov"><span class="num"><pre>503</pre></span><pre>		return min( max( ( p - mn ) / float( mx - mn ), 0.0 ), 1.0 ) * 100.0</pre></div>
+<div class="skip"><span class="num"><pre>504</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>505</pre></span><pre>	def value( self ):</pre></div>
+<div class="nocov"><span class="num"><pre>506</pre></span><pre>		&quot;&quot;&quot;:return: current progress as it is stored internally, without regarding </pre></div>
+<div class="nocov"><span class="num"><pre>507</pre></span><pre>			the range or round-robin options.</pre></div>
+<div class="skip"><span class="num"><pre>508</pre></span><pre>			</pre></div>
+<div class="nocov"><span class="num"><pre>509</pre></span><pre>		:note: This allows you to use this instance as a counter without concern to </pre></div>
+<div class="nocov"><span class="num"><pre>510</pre></span><pre>			the range and round-robin settings&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>511</pre></span><pre>		return self.__progress</pre></div>
+<div class="skip"><span class="num"><pre>512</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>513</pre></span><pre>	def range( self ):</pre></div>
+<div class="nocov"><span class="num"><pre>514</pre></span><pre>		&quot;&quot;&quot;:return: tuple( min, max ) value&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>515</pre></span><pre>		return ( self.__min, self.__max )</pre></div>
+<div class="skip"><span class="num"><pre>516</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>517</pre></span><pre>	def roundRobin( self ):</pre></div>
+<div class="nocov"><span class="num"><pre>518</pre></span><pre>		&quot;&quot;&quot;:return: True if roundRobin mode is enabled&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>519</pre></span><pre>		return self.__rr</pre></div>
+<div class="skip"><span class="num"><pre>520</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>521</pre></span><pre>	def prefix( self, value ):</pre></div>
+<div class="nocov"><span class="num"><pre>522</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>523</pre></span><pre>		:return: a prefix indicating the progress according to the current range</pre></div>
+<div class="nocov"><span class="num"><pre>524</pre></span><pre>			and given value &quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>525</pre></span><pre>		prefix = &quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>526</pre></span><pre>		if self.isRelative():</pre></div>
+<div class="nocov"><span class="num"><pre>527</pre></span><pre>			prefix = &quot;%i%%&quot; % value</pre></div>
+<div class="nocov"><span class="num"><pre>528</pre></span><pre>		else:</pre></div>
+<div class="nocov"><span class="num"><pre>529</pre></span><pre>			mn,mx = self.range()</pre></div>
+<div class="nocov"><span class="num"><pre>530</pre></span><pre>			prefix = &quot;%i/%i&quot; % ( value, mx )</pre></div>
+<div class="skip"><span class="num"><pre>531</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>532</pre></span><pre>		return prefix</pre></div>
+<div class="skip"><span class="num"><pre>533</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>534</pre></span><pre>	def isAbortable( self ):</pre></div>
+<div class="nocov"><span class="num"><pre>535</pre></span><pre>		&quot;&quot;&quot;:return: True if the process may be cancelled&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>536</pre></span><pre>		return self.__may_abort</pre></div>
+<div class="skip"><span class="num"><pre>537</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>538</pre></span><pre>	def isRelative( self ):</pre></div>
+<div class="nocov"><span class="num"><pre>539</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>540</pre></span><pre>		:return: true if internal progress computations are relative, False if</pre></div>
+<div class="nocov"><span class="num"><pre>541</pre></span><pre>			they are treated as absolute values&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>542</pre></span><pre>		return self.__relative</pre></div>
+<div class="skip"><span class="num"><pre>543</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>544</pre></span><pre>	def isCancelRequested( self ):</pre></div>
+<div class="nocov"><span class="num"><pre>545</pre></span><pre>		&quot;&quot;&quot;:return: true if the operation should be aborted&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>546</pre></span><pre>		return False</pre></div>
+<div class="skip"><span class="num"><pre>547</pre></span><pre>	#} END query</pre></div>
+<div class="skip"><span class="num"><pre>548</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>549</pre></span><pre></pre></div>
+</div>
+</body>
+</html>

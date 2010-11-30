@@ -1,0 +1,72 @@
+<html>
+<head>
+<title>mrv.automation.processes</title>
+</head>
+<body>
+mrv.automation.processes
+<style>
+.coverage pre {float: left; margin: 0px 1em; border: none;
+               padding: 0px; }
+.num pre { margin: 0px }
+.nocov, .nocov pre {background-color: #faa}
+.cov, .cov pre {background-color: #cfc}
+div.coverage div { clear: both; height: 1.1em}
+</style>
+<div class="stats">
+Covered: 19 lines<br/>
+Missed: 6 lines<br/>
+Skipped 22 lines<br/>
+Percent: 76 %<br/>
+
+</div>
+<div class="coverage">
+<div class="skip"><span class="num"><pre> 1</pre></span><pre># -*- coding: utf-8 -*-</pre></div>
+<div class="cov"><span class="num"><pre> 2</pre></span><pre>&quot;&quot;&quot;Contains all processes &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 3</pre></span><pre>__docformat__ = &quot;restructuredtext&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 4</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 5</pre></span><pre>from mrv.automation.process import ProcessBase</pre></div>
+<div class="cov"><span class="num"><pre> 6</pre></span><pre>import mrv.util as util</pre></div>
+<div class="skip"><span class="num"><pre> 7</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 8</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 9</pre></span><pre>def parseProcessesFromPackage( importBase, packageFile ):</pre></div>
+<div class="cov"><span class="num"><pre>10</pre></span><pre>	&quot;&quot;&quot;Parse all processes from the given package's sub-modules and add them to main</pre></div>
+<div class="cov"><span class="num"><pre>11</pre></span><pre>	processes module to make them available to the workflow system</pre></div>
+<div class="skip"><span class="num"><pre>12</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>13</pre></span><pre>	:param importBase: Something like: parentPackage.subpackage.mypackage, of your processes package</pre></div>
+<div class="cov"><span class="num"><pre>14</pre></span><pre>	:param packageFile: the pointing to your processes package, usually __file__ of your package</pre></div>
+<div class="cov"><span class="num"><pre>15</pre></span><pre>	&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>16</pre></span><pre>	isProcess = lambda cls: hasattr( cls, 'mro' ) and ProcessBase in cls.mro()</pre></div>
+<div class="nocov"><span class="num"><pre>17</pre></span><pre>	processes = util.getPackageClasses( importBase, packageFile, predicate = isProcess )</pre></div>
+<div class="skip"><span class="num"><pre>18</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>19</pre></span><pre>	gd = globals()</pre></div>
+<div class="nocov"><span class="num"><pre>20</pre></span><pre>	for pcls in processes:</pre></div>
+<div class="nocov"><span class="num"><pre>21</pre></span><pre>		gd[pcls.__name__] = pcls</pre></div>
+<div class="skip"><span class="num"><pre>22</pre></span><pre>	# END for each process</pre></div>
+<div class="skip"><span class="num"><pre>23</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>24</pre></span><pre>def addProcesses( *args ):</pre></div>
+<div class="cov"><span class="num"><pre>25</pre></span><pre>	&quot;&quot;&quot;Add the given process classes to the list of known process types. They will be regeistered</pre></div>
+<div class="cov"><span class="num"><pre>26</pre></span><pre>	with their name obtained by str( processCls ).</pre></div>
+<div class="cov"><span class="num"><pre>27</pre></span><pre>	Workflows loaded from files will have access to the processes in this package</pre></div>
+<div class="skip"><span class="num"><pre>28</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>29</pre></span><pre>	:param args: process classes to be registered to this module.&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>30</pre></span><pre>	gd = globals();</pre></div>
+<div class="cov"><span class="num"><pre>31</pre></span><pre>	for pcls in args:</pre></div>
+<div class="cov"><span class="num"><pre>32</pre></span><pre>		if ProcessBase not in pcls.mro():</pre></div>
+<div class="nocov"><span class="num"><pre>33</pre></span><pre>			raise TypeError( &quot;%r does not support the process interface&quot; % pcls )</pre></div>
+<div class="skip"><span class="num"><pre>34</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>35</pre></span><pre>		gd[pcls.__name__] = pcls</pre></div>
+<div class="skip"><span class="num"><pre>36</pre></span><pre>	# END for each arg</pre></div>
+<div class="skip"><span class="num"><pre>37</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>38</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>39</pre></span><pre>#{ Initialization</pre></div>
+<div class="skip"><span class="num"><pre>40</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>41</pre></span><pre>#} END initialization</pre></div>
+<div class="skip"><span class="num"><pre>42</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>43</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>44</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>45</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>46</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>47</pre></span><pre></pre></div>
+</div>
+</body>
+</html>

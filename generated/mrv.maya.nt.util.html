@@ -1,0 +1,688 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>mrv.maya.nt.util &mdash; mrv v1.0.1-develop documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.1-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="mrv v1.0.1-develop documentation" href="../index.html" />
+    <link rel="next" title="mrv.maya.nt.storage" href="mrv.maya.nt.storage.html" />
+    <link rel="prev" title="mrv.maya.nt.anim" href="mrv.maya.nt.anim.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.nt.storage.html" title="mrv.maya.nt.storage"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.nt.anim.html" title="mrv.maya.nt.anim"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-mrv.maya.nt.util">
+<h1><tt class="xref docutils literal"><span class="pre">mrv.maya.nt.util</span></tt><a class="headerlink" href="#module-mrv.maya.nt.util" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="api/mrv.maya.nt.util-module.html">Epydoc: mrv.maya.nt.util</a></p>
+<p>General utility methods</p>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mrv.maya.nt.util.in_double3_as_vector">
+<tt class="descclassname">mrv.maya.nt.util.</tt><tt class="descname">in_double3_as_vector</tt><big>(</big><em>function</em>, <em>vec_value</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.in_double3_as_vector" title="Permalink to this definition">¶</a></dt>
+<dd>Set the value in vec_value to passed in function as double [3] and 
+return the result</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.nt.util.in_double3_out_vector">
+<tt class="descclassname">mrv.maya.nt.util.</tt><tt class="descname">in_double3_out_vector</tt><big>(</big><em>function</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.in_double3_out_vector" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">MVector containing result of function with signature 
+function(double [3])</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.nt.util.in_two_floats_out_tuple">
+<tt class="descclassname">mrv.maya.nt.util.</tt><tt class="descname">in_two_floats_out_tuple</tt><big>(</big><em>function</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.in_two_floats_out_tuple" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">tuple containing result of function with signature 
+function(float&amp; f1, float&amp; f2)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.nt.util.undoable_in_double3_as_vector">
+<tt class="descclassname">mrv.maya.nt.util.</tt><tt class="descname">undoable_in_double3_as_vector</tt><big>(</big><em>function</em>, <em>vec_old_value</em>, <em>vec_new_value</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.undoable_in_double3_as_vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>function supports the signature function(double [3] const) and will 
+change the underlying instance to the respective values as retrieved 
+from the passed in vector.
+The calling method must be enclosed in an undoable decorator.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>vec_old_value</em> &#8211; vector with the old value of the corresponding getX method</li>
+<li><em>vec_new_value</em> &#8211; vector with new value that is to be set</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="api/mrv.maya.nt.util-module.html#MScriptUtil">Epydoc: mrv.maya.nt.util</a></p>
+<dl class="class">
+<dt id="mrv.maya.nt.util.MScriptUtil">
+<em class="property">class </em><tt class="descclassname">mrv.maya.nt.util.</tt><tt class="descname">MScriptUtil</tt><big>(</big><em>*args</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.asBool">
+<tt class="descname">asBool</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.asBool" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.asBoolPtr">
+<tt class="descname">asBoolPtr</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.asBoolPtr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.asCharPtr">
+<tt class="descname">asCharPtr</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.asCharPtr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.asDouble">
+<tt class="descname">asDouble</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.asDouble" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.asDouble2Ptr">
+<tt class="descname">asDouble2Ptr</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.asDouble2Ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.asDouble3Ptr">
+<tt class="descname">asDouble3Ptr</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.asDouble3Ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.asDouble4Ptr">
+<tt class="descname">asDouble4Ptr</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.asDouble4Ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.asDoublePtr">
+<tt class="descname">asDoublePtr</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.asDoublePtr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.asFloat">
+<tt class="descname">asFloat</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.asFloat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.asFloat2Ptr">
+<tt class="descname">asFloat2Ptr</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.asFloat2Ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.asFloat3Ptr">
+<tt class="descname">asFloat3Ptr</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.asFloat3Ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.asFloat4Ptr">
+<tt class="descname">asFloat4Ptr</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.asFloat4Ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.asFloatPtr">
+<tt class="descname">asFloatPtr</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.asFloatPtr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.asInt">
+<tt class="descname">asInt</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.asInt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.asInt2Ptr">
+<tt class="descname">asInt2Ptr</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.asInt2Ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.asInt3Ptr">
+<tt class="descname">asInt3Ptr</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.asInt3Ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.asInt4Ptr">
+<tt class="descname">asInt4Ptr</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.asInt4Ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.asIntPtr">
+<tt class="descname">asIntPtr</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.asIntPtr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.asShort">
+<tt class="descname">asShort</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.asShort" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.asShort2Ptr">
+<tt class="descname">asShort2Ptr</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.asShort2Ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.asShort3Ptr">
+<tt class="descname">asShort3Ptr</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.asShort3Ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.asShort4Ptr">
+<tt class="descname">asShort4Ptr</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.asShort4Ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.asShortPtr">
+<tt class="descname">asShortPtr</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.asShortPtr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.asUcharPtr">
+<tt class="descname">asUcharPtr</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.asUcharPtr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.asUint">
+<tt class="descname">asUint</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.asUint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.asUint2Ptr">
+<tt class="descname">asUint2Ptr</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.asUint2Ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.asUint3Ptr">
+<tt class="descname">asUint3Ptr</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.asUint3Ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.asUint4Ptr">
+<tt class="descname">asUint4Ptr</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.asUint4Ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.asUintPtr">
+<tt class="descname">asUintPtr</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.asUintPtr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.createFloatArrayFromList">
+<tt class="descname">createFloatArrayFromList</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.createFloatArrayFromList" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.createFloatMatrixFromList">
+<tt class="descname">createFloatMatrixFromList</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.createFloatMatrixFromList" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.createFromDouble">
+<tt class="descname">createFromDouble</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.createFromDouble" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.createFromInt">
+<tt class="descname">createFromInt</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.createFromInt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.createFromList">
+<tt class="descname">createFromList</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.createFromList" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.createIntArrayFromList">
+<tt class="descname">createIntArrayFromList</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.createIntArrayFromList" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.createMatrixFromList">
+<tt class="descname">createMatrixFromList</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.createMatrixFromList" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.getBool">
+<tt class="descname">getBool</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.getBool" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.getBoolArrayItem">
+<tt class="descname">getBoolArrayItem</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.getBoolArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.getChar">
+<tt class="descname">getChar</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.getChar" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.getCharArrayItem">
+<tt class="descname">getCharArrayItem</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.getCharArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.getDouble">
+<tt class="descname">getDouble</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.getDouble" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.getDouble2ArrayItem">
+<tt class="descname">getDouble2ArrayItem</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.getDouble2ArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.getDouble3ArrayItem">
+<tt class="descname">getDouble3ArrayItem</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.getDouble3ArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.getDouble4ArrayItem">
+<tt class="descname">getDouble4ArrayItem</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.getDouble4ArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.getDoubleArrayItem">
+<tt class="descname">getDoubleArrayItem</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.getDoubleArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.getFloat">
+<tt class="descname">getFloat</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.getFloat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.getFloat2ArrayItem">
+<tt class="descname">getFloat2ArrayItem</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.getFloat2ArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.getFloat3ArrayItem">
+<tt class="descname">getFloat3ArrayItem</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.getFloat3ArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.getFloat4ArrayItem">
+<tt class="descname">getFloat4ArrayItem</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.getFloat4ArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.getFloatArrayItem">
+<tt class="descname">getFloatArrayItem</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.getFloatArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.getInt">
+<tt class="descname">getInt</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.getInt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.getInt2ArrayItem">
+<tt class="descname">getInt2ArrayItem</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.getInt2ArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.getInt3ArrayItem">
+<tt class="descname">getInt3ArrayItem</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.getInt3ArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.getInt4ArrayItem">
+<tt class="descname">getInt4ArrayItem</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.getInt4ArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.getIntArrayItem">
+<tt class="descname">getIntArrayItem</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.getIntArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.getShort">
+<tt class="descname">getShort</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.getShort" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.getShort2ArrayItem">
+<tt class="descname">getShort2ArrayItem</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.getShort2ArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.getShort3ArrayItem">
+<tt class="descname">getShort3ArrayItem</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.getShort3ArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.getShort4ArrayItem">
+<tt class="descname">getShort4ArrayItem</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.getShort4ArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.getShortArrayItem">
+<tt class="descname">getShortArrayItem</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.getShortArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.getUchar">
+<tt class="descname">getUchar</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.getUchar" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.getUcharArrayItem">
+<tt class="descname">getUcharArrayItem</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.getUcharArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.getUint">
+<tt class="descname">getUint</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.getUint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.getUint2ArrayItem">
+<tt class="descname">getUint2ArrayItem</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.getUint2ArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.getUint3ArrayItem">
+<tt class="descname">getUint3ArrayItem</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.getUint3ArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.getUint4ArrayItem">
+<tt class="descname">getUint4ArrayItem</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.getUint4ArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.getUintArrayItem">
+<tt class="descname">getUintArrayItem</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.getUintArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.setBool">
+<tt class="descname">setBool</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.setBool" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.setBoolArray">
+<tt class="descname">setBoolArray</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.setBoolArray" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.setChar">
+<tt class="descname">setChar</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.setChar" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.setCharArray">
+<tt class="descname">setCharArray</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.setCharArray" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.setDouble">
+<tt class="descname">setDouble</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.setDouble" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.setDouble2ArrayItem">
+<tt class="descname">setDouble2ArrayItem</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.setDouble2ArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.setDouble3ArrayItem">
+<tt class="descname">setDouble3ArrayItem</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.setDouble3ArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.setDouble4ArrayItem">
+<tt class="descname">setDouble4ArrayItem</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.setDouble4ArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.setDoubleArray">
+<tt class="descname">setDoubleArray</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.setDoubleArray" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.setFloat">
+<tt class="descname">setFloat</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.setFloat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.setFloat2ArrayItem">
+<tt class="descname">setFloat2ArrayItem</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.setFloat2ArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.setFloat3ArrayItem">
+<tt class="descname">setFloat3ArrayItem</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.setFloat3ArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.setFloat4ArrayItem">
+<tt class="descname">setFloat4ArrayItem</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.setFloat4ArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.setFloatArray">
+<tt class="descname">setFloatArray</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.setFloatArray" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.setInt">
+<tt class="descname">setInt</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.setInt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.setInt2ArrayItem">
+<tt class="descname">setInt2ArrayItem</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.setInt2ArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.setInt3ArrayItem">
+<tt class="descname">setInt3ArrayItem</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.setInt3ArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.setInt4ArrayItem">
+<tt class="descname">setInt4ArrayItem</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.setInt4ArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.setIntArray">
+<tt class="descname">setIntArray</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.setIntArray" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.setShort">
+<tt class="descname">setShort</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.setShort" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.setShort2ArrayItem">
+<tt class="descname">setShort2ArrayItem</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.setShort2ArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.setShort3ArrayItem">
+<tt class="descname">setShort3ArrayItem</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.setShort3ArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.setShort4ArrayItem">
+<tt class="descname">setShort4ArrayItem</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.setShort4ArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.setShortArray">
+<tt class="descname">setShortArray</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.setShortArray" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.setUchar">
+<tt class="descname">setUchar</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.setUchar" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.setUcharArray">
+<tt class="descname">setUcharArray</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.setUcharArray" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.setUint">
+<tt class="descname">setUint</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.setUint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.setUint2ArrayItem">
+<tt class="descname">setUint2ArrayItem</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.setUint2ArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.setUint3ArrayItem">
+<tt class="descname">setUint3ArrayItem</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.setUint3ArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.setUint4ArrayItem">
+<tt class="descname">setUint4ArrayItem</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.setUint4ArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.util.MScriptUtil.setUintArray">
+<tt class="descname">setUintArray</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.setUintArray" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.nt.util.MScriptUtil.thisown">
+<tt class="descname">thisown</tt><a class="headerlink" href="#mrv.maya.nt.util.MScriptUtil.thisown" title="Permalink to this definition">¶</a></dt>
+<dd>The membership flag</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="../index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#"><tt class="docutils literal"><span class="pre">mrv.maya.nt.util</span></tt></a><ul>
+<li><a class="reference external" href="#functions">Functions</a></li>
+<li><a class="reference external" href="#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="mrv.maya.nt.anim.html"
+                                  title="previous chapter"><tt class="docutils literal docutils literal docutils literal"><span class="pre">mrv.maya.nt.anim</span></tt></a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="mrv.maya.nt.storage.html"
+                                  title="next chapter"><tt class="docutils literal docutils literal docutils literal"><span class="pre">mrv.maya.nt.storage</span></tt></a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/generated/mrv.maya.nt.util.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.nt.storage.html" title="mrv.maya.nt.storage"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.nt.anim.html" title="mrv.maya.nt.anim"
+             >previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Nov 30, 2010.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

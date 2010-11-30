@@ -1,0 +1,1541 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>mrv.maya.ui.browse.option &mdash; mrv v1.0.1-develop documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.1-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="mrv v1.0.1-develop documentation" href="../index.html" />
+    <link rel="next" title="mrv.maya.ui.browse.util" href="mrv.maya.ui.browse.util.html" />
+    <link rel="prev" title="mrv.maya.ui.browse.layout" href="mrv.maya.ui.browse.layout.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.ui.browse.util.html" title="mrv.maya.ui.browse.util"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.ui.browse.layout.html" title="mrv.maya.ui.browse.layout"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-mrv.maya.ui.browse.option">
+<h1><tt class="xref docutils literal"><span class="pre">mrv.maya.ui.browse.option</span></tt><a class="headerlink" href="#module-mrv.maya.ui.browse.option" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="api/mrv.maya.ui.browse.option-module.html">Epydoc: mrv.maya.ui.browse.option</a></p>
+<p>module with option implementations, to be shown in finder layouts</p>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="api/mrv.maya.ui.browse.option.FileOpenOptions-class.html">Epydoc: mrv.maya.ui.browse.option.FileOpenOptions</a></p>
+<dl class="class">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions">
+<em class="property">class </em><tt class="descclassname">mrv.maya.ui.browse.option.</tt><tt class="descname">FileOpenOptions</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">mrv.maya.ui.ColumnLayout</span></tt>, <a title="mrv.maya.ui.browse.interface.iOptions" class="reference external" href="mrv.maya.ui.browse.interface.html#mrv.maya.ui.browse.interface.iOptions"><tt class="xref docutils literal"><span class="pre">mrv.maya.ui.browse.interface.iOptions</span></tt></a></p>
+<p>Options implementation providing options useful during file-open</p>
+<dl class="classmethod">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.activeParent">
+<em class="property">classmethod </em><tt class="descname">activeParent</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.activeParent" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">NameUI of the currently set parent</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises RuntimeError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if no active parent was set</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.add">
+<tt class="descname">add</tt><big>(</big><em>child</em>, <em>set_self_active=False</em>, <em>revert_to_previous_parent=True</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add the given child UI item to our list of children</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>set_self_active</em> &#8211; if True, we explicitly make ourselves the current parent
+for newly created UI elements</li>
+<li><em>revert_to_previous_parent</em> &#8211; if True, the previous parent will be restored
+once we are done, if False we keep the parent - only effective if set_self_active is True</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the newly added child, allowing contructs like
+button = layout.addChild( Button( ) )</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.addSep">
+<em class="property">classmethod </em><tt class="descname">addSep</tt><big>(</big><em>item</em>, <em>sep</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.addSep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">item with separator added to it ( just once )</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">operates best on strings</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>item</em> &#8211; item to add separator to</li>
+<li><em>sep</em> &#8211; the separator</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.annotation">
+<tt class="descname">annotation</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.annotation" title="Permalink to this definition">¶</a></dt>
+<dd>:return : the annotation string</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.basename">
+<tt class="descname">basename</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.basename" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">basename of this path, &#8216;/hello/world&#8217; -&gt; &#8216;world&#8217;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.capitalize">
+<tt class="descname">capitalize</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.capitalize" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.capitalize() -&gt; unicode</p>
+<p>Return a capitalized version of S, i.e. make the first character
+have upper case.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.center">
+<tt class="descname">center</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.center" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.center(width[, fillchar]) -&gt; unicode</p>
+<p>Return S centered in a Unicode string of length width. Padding is
+done using the specified fill character (default is a space)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.childByName">
+<tt class="descname">childByName</tt><big>(</big><em>childname</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.childByName" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">stored child instance, specified either as short name ( without pipes )
+or fully qualified ( i.e. mychild or parent|subparent|mychild&#8221; )</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises KeyError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if a child with that name does not exist</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.children">
+<tt class="descname">children</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.children" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">children of this layout</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.childrenDeep">
+<tt class="descname">childrenDeep</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.childrenDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">all child instances recursively</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">the order of children is lexically ordered at this time</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">this implementation is slow and should be overridden by more specialized subclasses</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.clearAllEvents">
+<tt class="descname">clearAllEvents</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.clearAllEvents" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all event receivers for all events registered in this instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">This usually doesn&#8217;t need to be called directly, but might be useful 
+in conjunction with other system that do not release your strongly bound 
+instance</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.clearChildren">
+<tt class="descname">clearChildren</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.clearChildren" title="Permalink to this definition">¶</a></dt>
+<dd>Clear our child arrays to quickly forget about our children</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.count">
+<tt class="descname">count</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.count" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.count(sub[, start[, end]]) -&gt; int</p>
+<p>Return the number of non-overlapping occurrences of substring sub in
+Unicode string S[start:end].  Optional arguments start and end are
+interpreted as in slice notation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.decode">
+<tt class="descname">decode</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.decode" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.decode([encoding[,errors]]) -&gt; string or unicode</p>
+<p>Decodes S using the codec registered for encoding. encoding defaults
+to the default encoding. errors may be given to set a different error
+handling scheme. Default is &#8216;strict&#8217; meaning that encoding errors raise
+a UnicodeDecodeError. Other possible values are &#8216;ignore&#8217; and &#8216;replace&#8217;
+as well as any other name registerd with codecs.register_error that is
+able to handle UnicodeDecodeErrors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.delete">
+<tt class="descname">delete</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.delete" title="Permalink to this definition">¶</a></dt>
+<dd>Delete this UI - the wrapper instance must not be used after this call</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.deleteChild">
+<tt class="descname">deleteChild</tt><big>(</big><em>child</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.deleteChild" title="Permalink to this definition">¶</a></dt>
+<dd>Delete the given child ui physically so it will not be shown anymore
+after removing it from our list of children</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.dimension">
+<tt class="descname">dimension</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.dimension" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">(x,y) tuple of x and y dimensions of the UI element</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.e_dgc">
+<tt class="descname">e_dgc</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.e_dgc" title="Permalink to this definition">¶</a></dt>
+<dd>Event suitable to deal with user interface callback</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.e_dpc">
+<tt class="descname">e_dpc</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.e_dpc" title="Permalink to this definition">¶</a></dt>
+<dd>Event suitable to deal with user interface callback</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.e_dragCallback">
+<tt class="descname">e_dragCallback</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.e_dragCallback" title="Permalink to this definition">¶</a></dt>
+<dd>Event suitable to deal with user interface callback</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.e_dropCallback">
+<tt class="descname">e_dropCallback</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.e_dropCallback" title="Permalink to this definition">¶</a></dt>
+<dd>Event suitable to deal with user interface callback</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.e_vcc">
+<tt class="descname">e_vcc</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.e_vcc" title="Permalink to this definition">¶</a></dt>
+<dd>Event suitable to deal with user interface callback</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.e_visibleChangeCommand">
+<tt class="descname">e_visibleChangeCommand</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.e_visibleChangeCommand" title="Permalink to this definition">¶</a></dt>
+<dd>Event suitable to deal with user interface callback</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.encode">
+<tt class="descname">encode</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.encode" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.encode([encoding[,errors]]) -&gt; string or unicode</p>
+<p>Encodes S using the codec registered for encoding. encoding defaults
+to the default encoding. errors may be given to set a different error
+handling scheme. Default is &#8216;strict&#8217; meaning that encoding errors raise
+a UnicodeEncodeError. Other possible values are &#8216;ignore&#8217;, &#8216;replace&#8217; and
+&#8216;xmlcharrefreplace&#8217; as well as any other name registered with
+codecs.register_error that can handle UnicodeEncodeErrors.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.endswith">
+<tt class="descname">endswith</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.endswith" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.endswith(suffix[, start[, end]]) -&gt; bool</p>
+<p>Return True if S ends with the specified suffix, False otherwise.
+With optional start, test S beginning at that position.
+With optional end, stop comparing S at that position.
+suffix can also be a tuple of strings to try.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.exists">
+<tt class="descname">exists</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.exists" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this instance still exists in maya</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.expandtabs">
+<tt class="descname">expandtabs</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.expandtabs" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.expandtabs([tabsize]) -&gt; unicode</p>
+<p>Return a copy of S where all tab characters are expanded using spaces.
+If tabsize is not given, a tab size of 8 characters is assumed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.fileOptions">
+<tt class="descname">fileOptions</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.fileOptions" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">dict with keyword options reflecting the settings of the</td>
+</tr>
+</tbody>
+</table>
+<p>interface. These should be given to the file command</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.find">
+<tt class="descname">find</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.find" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.find(sub [,start [,end]]) -&gt; int</p>
+<p>Return the lowest index in S where substring sub is found,
+such that sub is contained within s[start:end].  Optional
+arguments start and end are interpreted as in slice notation.</p>
+<p>Return -1 on failure.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.format">
+<tt class="descname">format</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.format" title="Permalink to this definition">¶</a></dt>
+<dd>S.format(<a href="#id1"><span class="problematic" id="id2">*</span></a>args, <a href="#id3"><span class="problematic" id="id4">**</span></a>kwargs) -&gt; unicode</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.fullChildName">
+<tt class="descname">fullChildName</tt><big>(</big><em>childname</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.fullChildName" title="Permalink to this definition">¶</a></dt>
+<dd>Add the given name to the string version of our instance
+:return: string with childname added like name _sep childname</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.index">
+<tt class="descname">index</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.index(sub [,start [,end]]) -&gt; int</p>
+<p>Like S.find() but raise ValueError when the substring is not found.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.isPartOf">
+<tt class="descname">isPartOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.isPartOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if self is a part of other, and thus can be found in other</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings only</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.isRoot">
+<tt class="descname">isRoot</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.isRoot" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this path is the root of the DAG</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.isRootOf">
+<tt class="descname">isRootOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.isRootOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True other starts with self</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">we assume other has the same type as self, thus the same separator</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.isalnum">
+<tt class="descname">isalnum</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.isalnum" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.isalnum() -&gt; bool</p>
+<p>Return True if all characters in S are alphanumeric
+and there is at least one character in S, False otherwise.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.isalpha">
+<tt class="descname">isalpha</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.isalpha" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.isalpha() -&gt; bool</p>
+<p>Return True if all characters in S are alphabetic
+and there is at least one character in S, False otherwise.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.isdecimal">
+<tt class="descname">isdecimal</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.isdecimal" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.isdecimal() -&gt; bool</p>
+<p>Return True if there are only decimal characters in S,
+False otherwise.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.isdigit">
+<tt class="descname">isdigit</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.isdigit" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.isdigit() -&gt; bool</p>
+<p>Return True if all characters in S are digits
+and there is at least one character in S, False otherwise.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.islower">
+<tt class="descname">islower</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.islower" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.islower() -&gt; bool</p>
+<p>Return True if all cased characters in S are lowercase and there is
+at least one cased character in S, False otherwise.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.isnumeric">
+<tt class="descname">isnumeric</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.isnumeric" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.isnumeric() -&gt; bool</p>
+<p>Return True if there are only numeric characters in S,
+False otherwise.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.isspace">
+<tt class="descname">isspace</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.isspace" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.isspace() -&gt; bool</p>
+<p>Return True if all characters in S are whitespace
+and there is at least one character in S, False otherwise.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.istitle">
+<tt class="descname">istitle</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.istitle" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.istitle() -&gt; bool</p>
+<p>Return True if S is a titlecased string and there is at least one
+character in S, i.e. upper- and titlecase characters may only
+follow uncased characters and lowercase characters only cased ones.
+Return False otherwise.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.isupper">
+<tt class="descname">isupper</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.isupper" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.isupper() -&gt; bool</p>
+<p>Return True if all cased characters in S are uppercase and there is
+at least one cased character in S, False otherwise.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.iterParents">
+<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee2a8&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.iterParents" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">generator retrieving all parents up to the root</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; returns True for all x that you want to be returned</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.join">
+<tt class="descname">join</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.join" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.join(iterable) -&gt; unicode</p>
+<p>Return a string which is the concatenation of the strings in the
+iterable.  The separator between elements is S.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.listChildren">
+<tt class="descname">listChildren</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x57c7758&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.listChildren" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list with our child instances</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; function returning True for each child to include in result,
+allows to easily filter children</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">it&#8217;s a copy, so you can freely act on the list</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">children will be returned in the order in which they have been added</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.listEventNames">
+<em class="property">classmethod </em><tt class="descname">listEventNames</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.listEventNames" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of event ids that exist on our class</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.ljust">
+<tt class="descname">ljust</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.ljust" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.ljust(width[, fillchar]) -&gt; int</p>
+<p>Return S left-justified in a Unicode string of length width. Padding is
+done using the specified fill character (default is a space).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.lower">
+<tt class="descname">lower</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.lower" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.lower() -&gt; unicode</p>
+<p>Return a copy of the string S converted to lowercase.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.lstrip">
+<tt class="descname">lstrip</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.lstrip" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.lstrip([chars]) -&gt; unicode</p>
+<p>Return a copy of the string S with leading whitespace removed.
+If chars is given and not None, remove characters in chars instead.
+If chars is a str, it will be converted to unicode before stripping</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_adj">
+<tt class="descname">p_adj</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_adj" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_adjustableColumn">
+<tt class="descname">p_adjustableColumn</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_adjustableColumn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_ann">
+<tt class="descname">p_ann</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_ann" title="Permalink to this definition">¶</a></dt>
+<dd>:return : the annotation string</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_annotation">
+<tt class="descname">p_annotation</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_annotation" title="Permalink to this definition">¶</a></dt>
+<dd>:return : the annotation string</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_backgroundColor">
+<tt class="descname">p_backgroundColor</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_backgroundColor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_bgc">
+<tt class="descname">p_bgc</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_bgc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_ca">
+<tt class="descname">p_ca</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_ca" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">children of this layout</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_cal">
+<tt class="descname">p_cal</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_cal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_cat">
+<tt class="descname">p_cat</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_cat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_childArray">
+<tt class="descname">p_childArray</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_childArray" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">children of this layout</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_co">
+<tt class="descname">p_co</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_co" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_columnAlign">
+<tt class="descname">p_columnAlign</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_columnAlign" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_columnAttach">
+<tt class="descname">p_columnAttach</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_columnAttach" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_columnOffset">
+<tt class="descname">p_columnOffset</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_columnOffset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_columnWidth">
+<tt class="descname">p_columnWidth</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_columnWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_cw">
+<tt class="descname">p_cw</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_cw" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_defineTemplate">
+<tt class="descname">p_defineTemplate</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_defineTemplate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_dimension">
+<tt class="descname">p_dimension</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_dimension" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">(x,y) tuple of x and y dimensions of the UI element</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_doctTag">
+<tt class="descname">p_doctTag</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_doctTag" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_dt">
+<tt class="descname">p_dt</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_dt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_dtg">
+<tt class="descname">p_dtg</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_dtg" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_ebg">
+<tt class="descname">p_ebg</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_ebg" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_en">
+<tt class="descname">p_en</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_en" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_enable">
+<tt class="descname">p_enable</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_enable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_enableBackground">
+<tt class="descname">p_enableBackground</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_enableBackground" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_ex">
+<tt class="descname">p_ex</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_ex" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this instance still exists in maya</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_exists">
+<tt class="descname">p_exists</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_exists" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this instance still exists in maya</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_fpn">
+<tt class="descname">p_fpn</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_fpn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_fullPathName">
+<tt class="descname">p_fullPathName</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_fullPathName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_h">
+<tt class="descname">p_h</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_h" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_height">
+<tt class="descname">p_height</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_height" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_io">
+<tt class="descname">p_io</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_io" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_isObscured">
+<tt class="descname">p_isObscured</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_isObscured" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_m">
+<tt class="descname">p_m</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_m" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_manage">
+<tt class="descname">p_manage</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_manage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_nch">
+<tt class="descname">p_nch</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_nch" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_npm">
+<tt class="descname">p_npm</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_npm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_numberOfChildren">
+<tt class="descname">p_numberOfChildren</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_numberOfChildren" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_numberOfPopupMenus">
+<tt class="descname">p_numberOfPopupMenus</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_numberOfPopupMenus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_pma">
+<tt class="descname">p_pma</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_pma" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">popup menus attached to this control</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_po">
+<tt class="descname">p_po</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_po" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_popupMenuArray">
+<tt class="descname">p_popupMenuArray</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_popupMenuArray" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">popup menus attached to this control</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_preventOverride">
+<tt class="descname">p_preventOverride</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_preventOverride" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_rowSpacing">
+<tt class="descname">p_rowSpacing</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_rowSpacing" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_rs">
+<tt class="descname">p_rs</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_rs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_useTemplate">
+<tt class="descname">p_useTemplate</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_useTemplate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_ut">
+<tt class="descname">p_ut</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_ut" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_vis">
+<tt class="descname">p_vis</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_vis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_visible">
+<tt class="descname">p_visible</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_visible" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_w">
+<tt class="descname">p_w</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_w" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.p_width">
+<tt class="descname">p_width</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.p_width" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.parent">
+<tt class="descname">parent</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.parent" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">parent instance of this ui element</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.parentDeep">
+<tt class="descname">parentDeep</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.parentDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">all parents of this path, &#8216;/hello/my/world&#8217; -&gt; [ &#8216;/hello/my&#8217;,&#8217;/hello&#8217; ]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.partition">
+<tt class="descname">partition</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.partition" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.partition(sep) -&gt; (head, sep, tail)</p>
+<p>Search for the separator sep in S, and return the part before it,
+the separator itself, and the part after it.  If the separator is not
+found, return S and two empty strings.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.popupMenuArray">
+<tt class="descname">popupMenuArray</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.popupMenuArray" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">popup menus attached to this control</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.removeChild">
+<tt class="descname">removeChild</tt><big>(</big><em>child</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.removeChild" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the given child from our list</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if the child was found and has been removed, False otherwise</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.replace">
+<tt class="descname">replace</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.replace" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.replace (old, new[, count]) -&gt; unicode</p>
+<p>Return a copy of S with all occurrences of substring
+old replaced by new.  If the optional argument count is
+given, only the first count occurrences are replaced.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.rfind">
+<tt class="descname">rfind</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.rfind" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.rfind(sub [,start [,end]]) -&gt; int</p>
+<p>Return the highest index in S where substring sub is found,
+such that sub is contained within s[start:end].  Optional
+arguments start and end are interpreted as in slice notation.</p>
+<p>Return -1 on failure.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.rindex">
+<tt class="descname">rindex</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.rindex" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.rindex(sub [,start [,end]]) -&gt; int</p>
+<p>Like S.rfind() but raise ValueError when the substring is not found.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.rjust">
+<tt class="descname">rjust</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.rjust" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.rjust(width[, fillchar]) -&gt; unicode</p>
+<p>Return S right-justified in a Unicode string of length width. Padding is
+done using the specified fill character (default is a space).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.root">
+<tt class="descname">root</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.root" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the root of the DAG - it has no further parents</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.rpartition">
+<tt class="descname">rpartition</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.rpartition" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.rpartition(sep) -&gt; (head, sep, tail)</p>
+<p>Search for the separator sep in S, starting at the end of S, and return
+the part before it, the separator itself, and the part after it.  If the
+separator is not found, return two empty strings and S.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.rsplit">
+<tt class="descname">rsplit</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.rsplit" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.rsplit([sep [,maxsplit]]) -&gt; list of strings</p>
+<p>Return a list of the words in S, using sep as the
+delimiter string, starting at the end of the string and
+working to the front.  If maxsplit is given, at most maxsplit
+splits are done. If sep is not specified, any whitespace string
+is a separator.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.rstrip">
+<tt class="descname">rstrip</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.rstrip" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.rstrip([chars]) -&gt; unicode</p>
+<p>Return a copy of the string S with trailing whitespace removed.
+If chars is given and not None, remove characters in chars instead.
+If chars is a str, it will be converted to unicode before stripping</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.sender">
+<tt class="descname">sender</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.sender" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">instance which sent the event you are currently processing</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises ValueError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if no event is currently in progress</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.setActive">
+<tt class="descname">setActive</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.setActive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set this container active, such that newly created items will be children
+of this layout</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">always use the addChild function to add the children !</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.setAnnotation">
+<tt class="descname">setAnnotation</tt><big>(</big><em>ann</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.setAnnotation" title="Permalink to this definition">¶</a></dt>
+<dd>Set the UI element&#8217;s annotation
+:note: not all named UI elements can have their annotation set</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.setDimension">
+<tt class="descname">setDimension</tt><big>(</big><em>dimension</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.setDimension" title="Permalink to this definition">¶</a></dt>
+<dd>Set the UI elements dimension
+:param dimension: (x,y) : tuple holding desired x and y dimension</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.setFocus">
+<tt class="descname">setFocus</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.setFocus" title="Permalink to this definition">¶</a></dt>
+<dd>Set the global keyboard focus to this control</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.setParentActive">
+<tt class="descname">setParentActive</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.setParentActive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the parent ( layout ) of this layout active - newly created items
+will be children of the parent layout</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">can safely be called several times</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.shortName">
+<tt class="descname">shortName</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.shortName" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">shortname of the ui ( name without pipes )</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.split">
+<tt class="descname">split</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.split" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.split([sep [,maxsplit]]) -&gt; list of strings</p>
+<p>Return a list of the words in S, using sep as the
+delimiter string.  If maxsplit is given, at most maxsplit
+splits are done. If sep is not specified or is None, any
+whitespace string is a separator and empty strings are
+removed from the result.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.splitlines">
+<tt class="descname">splitlines</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.splitlines" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.splitlines([keepends]) -&gt; list of strings</p>
+<p>Return a list of the lines in S, breaking at line boundaries.
+Line breaks are not included in the resulting list unless keepends
+is given and true.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.startswith">
+<tt class="descname">startswith</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.startswith" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.startswith(prefix[, start[, end]]) -&gt; bool</p>
+<p>Return True if S starts with the specified prefix, False otherwise.
+With optional start, test S beginning at that position.
+With optional end, stop comparing S at that position.
+prefix can also be a tuple of strings to try.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.strip">
+<tt class="descname">strip</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.strip" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.strip([chars]) -&gt; unicode</p>
+<p>Return a copy of the string S with leading and trailing
+whitespace removed.
+If chars is given and not None, remove characters in chars instead.
+If chars is a str, it will be converted to unicode before stripping</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.supports">
+<tt class="descname">supports</tt><big>(</big><em>interface_type</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.supports" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this instance supports the interface of the given type</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>interface_type</em> &#8211; Type of the interface you require this instance 
+to support</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Must be used in case you only have a weak reference of your interface
+instance or proxy which is a case where the ordinary isinstance( obj, iInterface )
+will not work</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.swapcase">
+<tt class="descname">swapcase</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.swapcase" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.swapcase() -&gt; unicode</p>
+<p>Return a copy of S with uppercase characters converted to lowercase
+and vice versa.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.title">
+<tt class="descname">title</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.title" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.title() -&gt; unicode</p>
+<p>Return a titlecased version of S, i.e. words start with title case
+characters, all remaining cased characters have lower case.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.translate">
+<tt class="descname">translate</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.translate" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.translate(table) -&gt; unicode</p>
+<p>Return a copy of the string S, where all characters have been mapped
+through the given translation table, which must be a mapping of
+Unicode ordinals to Unicode ordinals, Unicode strings or None.
+Unmapped characters are left untouched. Characters mapped to None
+are deleted.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.type">
+<tt class="descname">type</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.type" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the python class able to create this class</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">The return value is NOT the type string, but a class</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.uiDeleted">
+<tt class="descname">uiDeleted</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.uiDeleted" title="Permalink to this definition">¶</a></dt>
+<dd><p>If overridden in subclass, it will be called once the UI gets deleted 
+within maya ( i.e. the user closed the window )eee
+The base implementation assures that all event-receivers that are bound to 
+your events will be freed, allowing them to possibly be destroyed as well.</p>
+<p>Use this callback to register yourself from all your event senders, then call 
+the base class method.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">This is not related to the __del__ method of your object. Its worth
+noting that your instance will be strongly bound to a maya event, hence 
+your instance will exist as long as your user interface element exists 
+within maya.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.upper">
+<tt class="descname">upper</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.upper" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.upper() -&gt; unicode</p>
+<p>Return a copy of S converted to uppercase.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ui.browse.option.FileOpenOptions.zfill">
+<tt class="descname">zfill</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.FileOpenOptions.zfill" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.zfill(width) -&gt; unicode</p>
+<p>Pad a numeric string S with zeros on the left, to fill a field
+of the specified width. The string S is never truncated.</p>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.ui.browse.option-module.html#iOptions">Epydoc: mrv.maya.ui.browse.option</a></p>
+<dl class="class">
+<dt id="mrv.maya.ui.browse.option.iOptions">
+<em class="property">class </em><tt class="descclassname">mrv.maya.ui.browse.option.</tt><tt class="descname">iOptions</tt><a class="headerlink" href="#mrv.maya.ui.browse.option.iOptions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.interface.Interface" class="reference external" href="mrv.interface.html#mrv.interface.Interface"><tt class="xref docutils literal"><span class="pre">mrv.interface.Interface</span></tt></a></p>
+<p>Interface for all custom options layouts to be used with the FinderLayout. 
+They take a weak-reference to their parent FinderLayout allowing them to 
+set themselves up if necessary.
+The options they represent must be read by a custom implementation of the
+FinderLayout</p>
+<dl class="classmethod">
+<dt id="mrv.maya.ui.browse.option.iOptions.addSep">
+<em class="property">classmethod </em><tt class="descname">addSep</tt><big>(</big><em>item</em>, <em>sep</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.iOptions.addSep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">item with separator added to it ( just once )</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">operates best on strings</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>item</em> &#8211; item to add separator to</li>
+<li><em>sep</em> &#8211; the separator</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.iOptions.basename">
+<tt class="descname">basename</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.iOptions.basename" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">basename of this path, &#8216;/hello/world&#8217; -&gt; &#8216;world&#8217;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.iOptions.children">
+<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee848&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.iOptions.children" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of intermediate children of path, [ child1 , child2 ]</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; return True to include x in result</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">the child objects returned are supposed to be valid paths, not just relative paths</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.iOptions.childrenDeep">
+<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee668&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.iOptions.childrenDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of all children of path, [ child1 , child2 ]</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>order</em> &#8211; order enumeration</li>
+<li><em>predicate</em> &#8211; returns true if x may be returned</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">the child objects returned are supposed to be valid paths, not just relative paths</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.iOptions.fullChildName">
+<tt class="descname">fullChildName</tt><big>(</big><em>childname</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.iOptions.fullChildName" title="Permalink to this definition">¶</a></dt>
+<dd>Add the given name to the string version of our instance
+:return: string with childname added like name _sep childname</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.iOptions.isPartOf">
+<tt class="descname">isPartOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.iOptions.isPartOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if self is a part of other, and thus can be found in other</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings only</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.iOptions.isRoot">
+<tt class="descname">isRoot</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.iOptions.isRoot" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this path is the root of the DAG</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.iOptions.isRootOf">
+<tt class="descname">isRootOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.iOptions.isRootOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True other starts with self</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">we assume other has the same type as self, thus the same separator</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.iOptions.iterParents">
+<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee2a8&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.iOptions.iterParents" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">generator retrieving all parents up to the root</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; returns True for all x that you want to be returned</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.iOptions.parent">
+<tt class="descname">parent</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.iOptions.parent" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">parent of this path, &#8216;/hello/world&#8217; -&gt; &#8216;/hello&#8217; or None if this path
+is the dag&#8217;s root</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.iOptions.parentDeep">
+<tt class="descname">parentDeep</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.iOptions.parentDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">all parents of this path, &#8216;/hello/my/world&#8217; -&gt; [ &#8216;/hello/my&#8217;,&#8217;/hello&#8217; ]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.iOptions.root">
+<tt class="descname">root</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.iOptions.root" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the root of the DAG - it has no further parents</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.option.iOptions.supports">
+<tt class="descname">supports</tt><big>(</big><em>interface_type</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.option.iOptions.supports" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this instance supports the interface of the given type</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>interface_type</em> &#8211; Type of the interface you require this instance 
+to support</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Must be used in case you only have a weak reference of your interface
+instance or proxy which is a case where the ordinary isinstance( obj, iInterface )
+will not work</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="../index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#"><tt class="docutils literal"><span class="pre">mrv.maya.ui.browse.option</span></tt></a><ul>
+<li><a class="reference external" href="#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="mrv.maya.ui.browse.layout.html"
+                                  title="previous chapter"><tt class="docutils literal docutils literal"><span class="pre">mrv.maya.ui.browse.layout</span></tt></a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="mrv.maya.ui.browse.util.html"
+                                  title="next chapter"><tt class="docutils literal docutils literal"><span class="pre">mrv.maya.ui.browse.util</span></tt></a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/generated/mrv.maya.ui.browse.option.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.ui.browse.util.html" title="mrv.maya.ui.browse.util"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.ui.browse.layout.html" title="mrv.maya.ui.browse.layout"
+             >previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Nov 30, 2010.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

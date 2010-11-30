@@ -1,0 +1,514 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>mrv.conf.ConfigManager</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="mrv-module.html">Package&nbsp;mrv</a> ::
+        <a href="mrv.conf-module.html">Module&nbsp;conf</a> ::
+        Class&nbsp;ConfigManager
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="mrv.conf.ConfigManager-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class ConfigManager</h1><p class="nomargin-top"><span class="codelink"><a href="mrv.conf-pysrc.html#ConfigManager">source&nbsp;code</a></span></p>
+<pre class="base-tree">
+object --+
+         |
+        <strong class="uidshort">ConfigManager</strong>
+</pre>
+
+<hr />
+<p>Cache Configurations for fast access and provide a convenient interface</p>
+<p>The the ConfigAccessor has limited speed due to the hierarchical nature of
+configuration chains.
+The config manager flattens the chain providing fast access. Once it is being
+deleted or if asked, it will find the differences between the fast cached
+configuration and the original one, and apply the changes back to the original chain,
+which will then write the changes back ( if possible ).</p>
+<p>This class should be preferred over the direct congiguration accessor.
+This class mimics the ConfigAccessor inteface as far as possible to improve ease of use.
+Use self.config to directly access the configuration through the <a href="mrv.conf.ConfigAccessor-class.html" class="link">ConfigAccessor</a> interface</p>
+<p>To use this class, read a list of ini files and use configManager.config to access
+the configuration.</p>
+<p>For convenience, it will wire through all calls it cannot handle to its <a href="mrv.conf.ConfigAccessor-class.html" class="link">ConfigAccessor</a>
+stored at .config</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.conf.ConfigManager-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">filePointers</span>=<span class="summary-sig-default"><code class="variable-group">[</code><code class="variable-group">]</code></span>,
+        <span class="summary-sig-arg">write_back_on_desctruction</span>=<span class="summary-sig-default">True</span>,
+        <span class="summary-sig-arg">close_fp</span>=<span class="summary-sig-default">True</span>)</span><br />
+      Initialize the class with a list of Extended File Classes</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.conf-pysrc.html#ConfigManager.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__del__"></a><span class="summary-sig-name">__del__</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      If we are supposed to write back the configuration, after merging
+the differences back into the original configuration chain</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.conf-pysrc.html#ConfigManager.__del__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__getattr__"></a><span class="summary-sig-name">__getattr__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">attr</span>)</span><br />
+      Wire all queries we cannot handle to our config accessor</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.conf-pysrc.html#ConfigManager.__getattr__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__str__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;IO Methods</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.conf.ConfigManager-class.html#write" class="summary-sig-name">write</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Write the possibly changed configuration back to its sources.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.conf-pysrc.html#ConfigManager.write">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.conf.ConfigManager-class.html#readfp" class="summary-sig-name">readfp</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">filefporlist</span>,
+        <span class="summary-sig-arg">close_fp</span>=<span class="summary-sig-default">True</span>)</span><br />
+      Read the configuration from the file pointers.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.conf-pysrc.html#ConfigManager.readfp">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS METHODS ==================== -->
+<a name="section-ClassMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Utilities</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.conf.ConfigManager-class.html#taggedFileDescriptors" class="summary-sig-name">taggedFileDescriptors</a>(<span class="summary-sig-arg">cls</span>,
+        <span class="summary-sig-arg">directories</span>,
+        <span class="summary-sig-arg">taglist</span>,
+        <span class="summary-sig-arg">pattern</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Finds tagged configuration files in given directories and return them.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.conf-pysrc.html#ConfigManager.taggedFileDescriptors">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="__config"></a><span class="summary-name">__config</span>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_closeFp"></a><span class="summary-name">_closeFp</span>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_writeBackOnDestruction"></a><span class="summary-name">_writeBackOnDestruction</span>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="config"></a><span class="summary-name">config</span>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">filePointers</span>=<span class="sig-default"><code class="variable-group">[</code><code class="variable-group">]</code></span>,
+        <span class="sig-arg">write_back_on_desctruction</span>=<span class="sig-default">True</span>,
+        <span class="sig-arg">close_fp</span>=<span class="sig-default">True</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.conf-pysrc.html#ConfigManager.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Initialize the class with a list of Extended File Classes
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>filePointers</code></strong> (<a href="mrv.conf.ExtendedFileInterface-class.html" class="link">ExtendedFileInterface</a>) - Point to the actual configuration to use
+If not given, you have to call the <a href="mrv.conf.ConfigManager-class.html#readfp" class="link">readfp</a> function with filePointers respectively</li>
+        <li><strong class="pname"><code>close_fp</code></strong> - if true, the files will be closed and can thus be changed.
+This should be the default as files might be located on the network as shared resource</li>
+        <li><strong class="pname"><code>write_back_on_desctruction</code></strong> - if True, the config chain and possible
+changes will be written once this instance is being deleted. If false,
+the changes must explicitly be written back using the write method</li>
+    </ul></dd>
+    <dt>Overrides:
+        object.__init__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="write"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">write</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.conf-pysrc.html#ConfigManager.write">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Write the possibly changed configuration back to its sources.
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>the names of the files that have been written as string list</dd>
+    <dt>Raises:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code><strong class='fraise'>IOError</strong></code> - if at least one node could not be properly written.</li>
+        <li><code><strong class='fraise'>ValueError</strong></code> - if instance is not properly initialized.</li>
+    </ul></dd>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        It could be the case that all nodes are marked read-only and
+thus cannot be written - this will also raise as the request to write
+the changes could not be accomodated.
+      </p>
+</div></td></tr></table>
+</div>
+<a name="readfp"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">readfp</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">filefporlist</span>,
+        <span class="sig-arg">close_fp</span>=<span class="sig-default">True</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.conf-pysrc.html#ConfigManager.readfp">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Read the configuration from the file pointers.
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>filefporlist</code></strong> - single file like object or list of such</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>the configuration that is meant to be used for accessing the configuration</dd>
+    <dt>Raises:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code><strong class='fraise'><a href="mrv.conf.ConfigParsingError-class.html">ConfigParsingError</a></strong></code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="taggedFileDescriptors"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">taggedFileDescriptors</span>(<span class="sig-arg">cls</span>,
+        <span class="sig-arg">directories</span>,
+        <span class="sig-arg">taglist</span>,
+        <span class="sig-arg">pattern</span>=<span class="sig-default">None</span>)</span>
+    <br /><em class="fname">Class Method</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.conf-pysrc.html#ConfigManager.taggedFileDescriptors">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Finds tagged configuration files in given directories and return them.</p>
+<p>The files retrieved can be files like &quot;file.ext&quot; or can contain tags. Tags are '.'
+separated files tags that are to be matched with the tags in taglist in order.</p>
+<p>All tags must match to retrieve a filepointer to the respective file.</p>
+<p>Example Usage: you could give two paths, one is a global one in a read-only location,
+another is a local one in the user's home ( where you might have precreated a file already ).</p>
+<p>The list of filepointers returned would be all matching files from the global path and
+all matching files from the local one, sorted such that the file with the smallest amount
+of tags come first, files with more tags ( more specialized ones ) will come after that.</p>
+<p>If fed into the <a href="mrv.conf.ConfigManager-class.html#readfp" class="link">readfp</a> or the <a href="mrv.conf.ConfigManager-class.html#__init__" class="link">__init__</a> method, the individual file contents can override each other.
+Once changes have been applied to the configuration, they can be written back to the writable
+file pointers respectively.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>directories</code></strong> - [ string( path ) ... ] of directories to look in for files</li>
+        <li><strong class="pname"><code>taglist</code></strong> - [ string( tag ) ... ] of tags, like a tag for the operating system, or the user name</li>
+        <li><strong class="pname"><code>pattern</code></strong> - simple fnmatch pattern as used for globs or a list of them ( allowing to match several
+different patterns at once )</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Nov 30 14:48:32 2010
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

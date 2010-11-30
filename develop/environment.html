@@ -1,0 +1,264 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Environment &mdash; mrv v1.0.1-develop documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.1-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="mrv v1.0.1-develop documentation" href="../index.html" />
+    <link rel="up" title="Development" href="index.html" />
+    <link rel="next" title="Naming Conventions" href="conventions.html" />
+    <link rel="prev" title="Development" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="conventions.html" title="Naming Conventions"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Development"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Development</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="environment">
+<h1>Environment<a class="headerlink" href="#environment" title="Permalink to this headline">¶</a></h1>
+<p>This paragraph describes the required setup and configuration of your system to develop MRV or projects based on MRV.</p>
+<div class="section" id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<p>The following software packages need to be installed,</p>
+<ul class="simple">
+<li>Git 1.6.5 or higher</li>
+<li>Autodesk Maya 8.5 or higher</li>
+<li><em>Testing Framework</em></li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>Nose 0.11 or higher</li>
+<li>Coverage ( optional )</li>
+</ul>
+</blockquote>
+<ul class="simple">
+<li><em>Documentation Generation</em></li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>Epydoc 3.x</li>
+<li>Sphinx 0.65 or higher</li>
+</ul>
+</blockquote>
+<p>The following installation guide <em>assumes you have already installed git and Autodesk Maya</em> for your platform. For instruction, please see the documentations of the respective software package.</p>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>The basic installation steps are similar in all supported operating systems. Getting MRV to run within a standalone interpreter differs between the platforms.</p>
+<p>If a standalone interpreter does not work for you, its absolutely possible to run MRV within the default maya python interpreter, <tt class="docutils literal"><span class="pre">mayapy</span></tt>.</p>
+<div class="section" id="install-the-prerequisites">
+<span id="install-label"></span><h3>1. Install the Prerequisites<a class="headerlink" href="#install-the-prerequisites" title="Permalink to this headline">¶</a></h3>
+<p>The instructions assume you are going to run MRV within a standalone interpreter. If you are planning to use mayapy, the installation may be more complicated, but in general all that needs to be done is to put the required package(s) into the &#8216;site-packages&#8217; folder of your python installation.</p>
+<p>Using easy_install, which comes with the <a class="reference external" href="http://pypi.python.org/pypi/setuptools">python setuptools</a> the installation is as easy as the name suggests:</p>
+<div class="highlight-python"><pre>$ easy_install&lt;python_version&gt; nose epydoc sphinx gitpython ipython</pre>
+</div>
+<p>Please note that the version of easy_install is important as you need to install the prerequisites for each python version that is used by the maya version you are going to run:</p>
+<ul class="simple">
+<li>Maya 8.5 -&gt; Python 2.4</li>
+<li>Maya 2008|2009 -&gt; Pyhthon 2.5</li>
+<li>Maya 2010|2011 -&gt; Python 2.6</li>
+</ul>
+<div class="section" id="mayapy">
+<h4>Mayapy<a class="headerlink" href="#mayapy" title="Permalink to this headline">¶</a></h4>
+<p>The only package that you need to install to run the tests is <strong>nose</strong>. It is recommended to retrieve the package using easy_install for your standalone interpreter and to alter your <tt class="docutils literal"><span class="pre">PYTHONPATH</span></tt> to include the <tt class="docutils literal"><span class="pre">site-packages</span></tt> directory of your local python installation.</p>
+<p>Alternatively, copy the <tt class="docutils literal"><span class="pre">nose</span></tt> package into <em>&#8220;C:\Program Files\Autodesk\Maya&lt;version&gt;\Python\Lib\site-packages&#8221;</em> ( windows ), into <em>&#8220;/usr/autodesk/maya&lt;version&gt;/lib/python&lt;pyversion&gt;/site-packages&#8221;</em> ( Linux ) or into <em>&#8220;/Applications/Autodesk/maya&lt;version&gt;/Maya.app/Contents/Frameworks/Python.framework/Versions/&lt;pyversion&gt;/lib/python&lt;pyversion&gt;/site-packages&#8221;</em> ( OSX ).</p>
+</div>
+</div>
+<div class="section" id="get-a-or-your-repository-clone">
+<span id="repo-clone-label"></span><h3>2. Get A or Your Repository Clone<a class="headerlink" href="#get-a-or-your-repository-clone" title="Permalink to this headline">¶</a></h3>
+<p>Clone the MRV mainline repository from github, or fork your own on <a class="reference external" href="http://www.github.com/Byron/mrv">http://www.github.com/Byron/mrv</a> and clone from your fork, or clone from the mainline repository as shown here.</p>
+<p>Execute the following:</p>
+<div class="highlight-python"><pre>$ git clone git://github.com/Byron/mrv.git mrv
+$ cd mrv
+$ git submodule update --init</pre>
+</div>
+<p>On linux and OSX, you would have done this in a shell of your choice. On windows, you would have retrieved a shell using the &#8220;Git Bash Here&#8221; menu entry in your RMB explorer menu when clicking on a parent-folder of your choice.</p>
+<div class="section" id="windows">
+<h4>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h4>
+<p>On Windows, make sure that the MRV repository has at least one folder between itself and the drive letter. Otherwise you are not able to run tests properly due to some issue with nose on windows (apparently).</p>
+<ul class="simple">
+<li>This is wrong:</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>c:\mrv\[.git]</li>
+</ul>
+</blockquote>
+<ul class="simple">
+<li>This would work:</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>c:\projects\mrv\[.git]</li>
+</ul>
+</blockquote>
+</div>
+</div>
+<div class="section" id="run-the-tests">
+<h3>3. Run the tests<a class="headerlink" href="#run-the-tests" title="Permalink to this headline">¶</a></h3>
+<p>By running the tests, you verify that the installation actually succeeded as you are able to run MRV in a standalone interpreter.</p>
+<p>In your shell, you should now be able to execute the <a class="reference external" href="../tools.html#tmrv-label"><em>tmrv</em></a> command as follows:</p>
+<div class="highlight-python"><pre>$ cd mrv
+$ # start the tests for the given maya version, 2011 in this case
+$ test/bin/tmrv &lt;maya-version&gt;</pre>
+</div>
+<p>All tests are expected to succeed. The given <tt class="docutils literal"><span class="pre">&lt;maya-version&gt;</span></tt>, i.e. <tt class="docutils literal"><span class="pre">2011</span></tt> must cause <tt class="docutils literal"><span class="pre">mrv</span></tt> to launch the python version you installed the prerequisites for - <tt class="docutils literal"><span class="pre">2011</span></tt> would trigger python <tt class="docutils literal"><span class="pre">2.6</span></tt> to be launched for instance.</p>
+<p>Please note that <tt class="docutils literal"><span class="pre">tmrv</span></tt> just executes <tt class="docutils literal"><span class="pre">mrv/bin/mrv</span></tt> and launches nosetest afterwards, hence all parameters supported by <tt class="docutils literal"><span class="pre">nosetests</span></tt> in your particular installation will work here as well.</p>
+<p>On <strong>OSX Snow Leopard</strong>, the default python installation will not work if you intend to run Maya2010 or earlier. Please see the <tt class="docutils literal"><span class="pre">Troubleshooting</span></tt> guide for a solution which is essentially using mayapy. This can be achieved using the following command:</p>
+<div class="highlight-python"><pre>$ test/bin/tmrv 2011 --mrv-mayapy</pre>
+</div>
+<p>On <strong>windows</strong>, in a command prompt, execute:</p>
+<div class="highlight-python"><pre>$ cd mrv
+$ python test\bin\tmrv 2011 &lt;full/path/to/test/directory&gt;</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">On windows, you can use the same commands presented here if you use a git-bash instead of cmd.exe.</p>
+</div>
+</div>
+<div class="section" id="troubleshooting">
+<h3>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h3>
+<p>This paragraph informs about possible issues which have a solution already.</p>
+<div class="section" id="osx-snow-leopard-and-32bit-64bit-mismatch">
+<h4>OSX Snow Leopard and 32bit/64bit Mismatch<a class="headerlink" href="#osx-snow-leopard-and-32bit-64bit-mismatch" title="Permalink to this headline">¶</a></h4>
+<p>Starting with Maya2011, maya is delivered as 64 bit binary. The default interpreter in your path should be 64 bits as well, but if it is not, you have to make some adjustments. Conversely, Maya2010 uses Pyhthon2.6 which is 64 bit on Snow Leopard, whereas Maya was just compiled in 32 bits.</p>
+<p>To solve the issue, either install a python interpreter which matches the architecture of your respective maya version, or enforce using mayapy by specifying the <tt class="docutils literal"><span class="pre">--mrv-mayapy</span></tt> flag to the <a class="reference external" href="../tools.html"><em>mrv tools</em></a>.</p>
+</div>
+<div class="section" id="still-troubled-use-mayapy">
+<h4>Still troubled ? Use mayapy<a class="headerlink" href="#still-troubled-use-mayapy" title="Permalink to this headline">¶</a></h4>
+<p>If the standalone interpreter just doesn&#8217;t want to work on your platform or with your particular configuration, you may always use <tt class="docutils literal"><span class="pre">mayapy</span></tt>, which can be found in the <em>&lt;maya_install_directory&gt;/bin</em> folder. It will setup a standalone interpreter which automatically pulls in the packages required for Maya to work.</p>
+<p>As a side-effect, <tt class="docutils literal"><span class="pre">nose</span></tt> needs to be installed in mayapy&#8217;s <em>site-packages</em> directory, as indicated in the <a class="reference internal" href="#install-label"><em>installation section</em></a>.</p>
+<p>To force using mayapy, use the <tt class="docutils literal"><span class="pre">--mrv-mayapy</span></tt> flag:</p>
+<div class="highlight-python"><pre>$ # start the mayapy python interpreter in interactive mode
+$ bin/mrv 2011 --mrv-mayapy
+
+$ # run all tests in mayapy
+$ /test/bin/tmrv 2009 --mrv-mayapy</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="../index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#">Environment</a><ul>
+<li><a class="reference external" href="#prerequisites">Prerequisites</a></li>
+<li><a class="reference external" href="#installation">Installation</a><ul>
+<li><a class="reference external" href="#install-the-prerequisites">1. Install the Prerequisites</a><ul>
+<li><a class="reference external" href="#mayapy">Mayapy</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#get-a-or-your-repository-clone">2. Get A or Your Repository Clone</a><ul>
+<li><a class="reference external" href="#windows">Windows</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#run-the-tests">3. Run the tests</a></li>
+<li><a class="reference external" href="#troubleshooting">Troubleshooting</a><ul>
+<li><a class="reference external" href="#osx-snow-leopard-and-32bit-64bit-mismatch">OSX Snow Leopard and 32bit/64bit Mismatch</a></li>
+<li><a class="reference external" href="#still-troubled-use-mayapy">Still troubled ? Use mayapy</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="index.html"
+                                  title="previous chapter">Development</a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="conventions.html"
+                                  title="next chapter">Naming Conventions</a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/develop/environment.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="conventions.html" title="Naming Conventions"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Development"
+             >previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li>
+          <li><a href="index.html" >Development</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Nov 30, 2010.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

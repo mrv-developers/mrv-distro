@@ -1,0 +1,695 @@
+<html>
+<head>
+<title>mrv.maya.nt.set</title>
+</head>
+<body>
+mrv.maya.nt.set
+<style>
+.coverage pre {float: left; margin: 0px 1em; border: none;
+               padding: 0px; }
+.num pre { margin: 0px }
+.nocov, .nocov pre {background-color: #faa}
+.cov, .cov pre {background-color: #cfc}
+div.coverage div { clear: both; height: 1.1em}
+</style>
+<div class="stats">
+Covered: 431 lines<br/>
+Missed: 11 lines<br/>
+Skipped 228 lines<br/>
+Percent: 97 %<br/>
+
+</div>
+<div class="coverage">
+<div class="skip"><span class="num"><pre>  1</pre></span><pre># -*- coding: utf-8 -*-</pre></div>
+<div class="cov"><span class="num"><pre>  2</pre></span><pre>&quot;&quot;&quot; Contains improved clases for set and partition editing  &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  3</pre></span><pre>__docformat__ = &quot;restructuredtext&quot;</pre></div>
+<div class="skip"><span class="num"><pre>  4</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  5</pre></span><pre>import base as nt</pre></div>
+<div class="cov"><span class="num"><pre>  6</pre></span><pre>import typ</pre></div>
+<div class="cov"><span class="num"><pre>  7</pre></span><pre>import maya.OpenMaya as api</pre></div>
+<div class="cov"><span class="num"><pre>  8</pre></span><pre>import maya.cmds as cmds</pre></div>
+<div class="cov"><span class="num"><pre>  9</pre></span><pre>import it</pre></div>
+<div class="cov"><span class="num"><pre> 10</pre></span><pre>import mrv.maya.undo as undo</pre></div>
+<div class="skip"><span class="num"><pre> 11</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 12</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 13</pre></span><pre>#{ Exceptions </pre></div>
+<div class="cov"><span class="num"><pre> 14</pre></span><pre>class ConstraintError( RuntimeError ):</pre></div>
+<div class="cov"><span class="num"><pre> 15</pre></span><pre>	&quot;&quot;&quot;Thrown if a partition does not allow objects to be added, and the addition </pre></div>
+<div class="cov"><span class="num"><pre> 16</pre></span><pre>	was not forced, and failure was not ignored as well&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 17</pre></span><pre>#} </pre></div>
+<div class="skip"><span class="num"><pre> 18</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 19</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 20</pre></span><pre>class ObjectSet:</pre></div>
+<div class="cov"><span class="num"><pre> 21</pre></span><pre>	&quot;&quot;&quot; Extended and more convenient object set interface dealing with Nodes ( and </pre></div>
+<div class="cov"><span class="num"><pre> 22</pre></span><pre>	provides the original MFnSet interface as well</pre></div>
+<div class="cov"><span class="num"><pre> 23</pre></span><pre>	&quot;&quot;&quot;                                                               </pre></div>
+<div class="cov"><span class="num"><pre> 24</pre></span><pre>	__metaclass__ = typ.MetaClassCreatorNodes</pre></div>
+<div class="cov"><span class="num"><pre> 25</pre></span><pre>	kReplace, kAdd,kAddForce, kRemove = range( 4 )</pre></div>
+<div class="skip"><span class="num"><pre> 26</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre> 27</pre></span><pre>	#{ Partition Handling </pre></div>
+<div class="skip"><span class="num"><pre> 28</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 29</pre></span><pre>	def partitions( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 30</pre></span><pre>		&quot;&quot;&quot;:return: list of Nodes of partitions the entity is set is part of&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 31</pre></span><pre>		return [ p.mwrappedNode() for p in self.partition.moutputs() ]</pre></div>
+<div class="skip"><span class="num"><pre> 32</pre></span><pre>		 </pre></div>
+<div class="skip"><span class="num"><pre> 33</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 34</pre></span><pre>	@undoable 	</pre></div>
+<div class="cov"><span class="num"><pre> 35</pre></span><pre>	def setPartition( self, partition, mode = 0 ):</pre></div>
+<div class="cov"><span class="num"><pre> 36</pre></span><pre>		&quot;&quot;&quot;Add, add exclusive or remove the given partition from our partition list</pre></div>
+<div class="skip"><span class="num"><pre> 37</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 38</pre></span><pre>		:param partition: Node, representing the partition, or a list of such</pre></div>
+<div class="cov"><span class="num"><pre> 39</pre></span><pre>		:param mode:</pre></div>
+<div class="cov"><span class="num"><pre> 40</pre></span><pre>			 * 0 = replace</pre></div>
+<div class="cov"><span class="num"><pre> 41</pre></span><pre>			 * 1 = add </pre></div>
+<div class="cov"><span class="num"><pre> 42</pre></span><pre>			 * 2 = remove </pre></div>
+<div class="cov"><span class="num"><pre> 43</pre></span><pre>		:return: self for chained operations</pre></div>
+<div class="cov"><span class="num"><pre> 44</pre></span><pre>		:note: use the supplied enumeration to specify the mode&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 45</pre></span><pre>		# convert to list</pre></div>
+<div class="cov"><span class="num"><pre> 46</pre></span><pre>		prts = partition</pre></div>
+<div class="cov"><span class="num"><pre> 47</pre></span><pre>		if isinstance( partition, Partition ):</pre></div>
+<div class="cov"><span class="num"><pre> 48</pre></span><pre>			prts = [ partition ]</pre></div>
+<div class="skip"><span class="num"><pre> 49</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre> 50</pre></span><pre>		if mode == self.kReplace:</pre></div>
+<div class="cov"><span class="num"><pre> 51</pre></span><pre>			self.setPartition( self.partitions( ), self.kRemove )</pre></div>
+<div class="cov"><span class="num"><pre> 52</pre></span><pre>			mode = self.kAdd		# now the partitions have to be added</pre></div>
+<div class="skip"><span class="num"><pre> 53</pre></span><pre>			# go ahead with the add</pre></div>
+<div class="skip"><span class="num"><pre> 54</pre></span><pre>		# END replace mode </pre></div>
+<div class="skip"><span class="num"><pre> 55</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre> 56</pre></span><pre>		if mode == self.kRemove:</pre></div>
+<div class="cov"><span class="num"><pre> 57</pre></span><pre>			for part in prts:</pre></div>
+<div class="cov"><span class="num"><pre> 58</pre></span><pre>				self.partition.mdisconnectNode( part )</pre></div>
+<div class="cov"><span class="num"><pre> 59</pre></span><pre>			return self</pre></div>
+<div class="skip"><span class="num"><pre> 60</pre></span><pre>		# END remove mode </pre></div>
+<div class="skip"><span class="num"><pre> 61</pre></span><pre>				</pre></div>
+<div class="cov"><span class="num"><pre> 62</pre></span><pre>		if mode == self.kAdd:</pre></div>
+<div class="skip"><span class="num"><pre> 63</pre></span><pre>			# only allow to be connected once </pre></div>
+<div class="cov"><span class="num"><pre> 64</pre></span><pre>			for part in prts:</pre></div>
+<div class="cov"><span class="num"><pre> 65</pre></span><pre>				self.partition.mconnectToArray( part.st, exclusive_connection = True )</pre></div>
+<div class="skip"><span class="num"><pre> 66</pre></span><pre>			# END for each partition to be added</pre></div>
+<div class="cov"><span class="num"><pre> 67</pre></span><pre>			return self</pre></div>
+<div class="skip"><span class="num"><pre> 68</pre></span><pre>		# END add mode </pre></div>
+<div class="skip"><span class="num"><pre> 69</pre></span><pre>			</pre></div>
+<div class="nocov"><span class="num"><pre> 70</pre></span><pre>		raise AssertionError( &quot;Invalid mode given: %i&quot; % mode )</pre></div>
+<div class="skip"><span class="num"><pre> 71</pre></span><pre>				</pre></div>
+<div class="skip"><span class="num"><pre> 72</pre></span><pre>	#} END partition handling</pre></div>
+<div class="skip"><span class="num"><pre> 73</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre> 74</pre></span><pre>	#{ Member Editing</pre></div>
+<div class="skip"><span class="num"><pre> 75</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 76</pre></span><pre>	def _toMemberObj( self, member ):</pre></div>
+<div class="cov"><span class="num"><pre> 77</pre></span><pre>		&quot;&quot;&quot;Convert member to a valid member object ( MObject, DagPath or Plug )&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 78</pre></span><pre>		memberobj = member</pre></div>
+<div class="skip"><span class="num"><pre> 79</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 80</pre></span><pre>		if isinstance( member, nt.DagNode ):</pre></div>
+<div class="cov"><span class="num"><pre> 81</pre></span><pre>			memberobj = member.dagPath()</pre></div>
+<div class="cov"><span class="num"><pre> 82</pre></span><pre>		elif isinstance( member, nt.DependNode ):</pre></div>
+<div class="cov"><span class="num"><pre> 83</pre></span><pre>			memberobj = member.object()</pre></div>
+<div class="skip"><span class="num"><pre> 84</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre> 85</pre></span><pre>		return memberobj</pre></div>
+<div class="skip"><span class="num"><pre> 86</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre> 87</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 88</pre></span><pre>	def _forceMembership( self, member, component, is_single_member, ignore_failure ):</pre></div>
+<div class="cov"><span class="num"><pre> 89</pre></span><pre>		&quot;&quot;&quot;Search all sets connected to our partitions </pre></div>
+<div class="cov"><span class="num"><pre> 90</pre></span><pre>		for intersecting members and remove them.</pre></div>
+<div class="cov"><span class="num"><pre> 91</pre></span><pre>		Finally dd the members in question to us again</pre></div>
+<div class="skip"><span class="num"><pre> 92</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 93</pre></span><pre>		:param member: can be selection list or MObject, MDagPath, MPlug</pre></div>
+<div class="cov"><span class="num"><pre> 94</pre></span><pre>		:return: self if everything is fine&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 95</pre></span><pre>		for partition in self.partitions():</pre></div>
+<div class="cov"><span class="num"><pre> 96</pre></span><pre>			for otherset in partition.sets():</pre></div>
+<div class="cov"><span class="num"><pre> 97</pre></span><pre>				if is_single_member:</pre></div>
+<div class="cov"><span class="num"><pre> 98</pre></span><pre>					otherset.removeMember( member, component = component )</pre></div>
+<div class="cov"><span class="num"><pre> 99</pre></span><pre>				else:</pre></div>
+<div class="cov"><span class="num"><pre>100</pre></span><pre>					otherset.removeMembers( otherset.intersection( member, sets_are_members = True ) )</pre></div>
+<div class="skip"><span class="num"><pre>101</pre></span><pre>				# END single member handling </pre></div>
+<div class="skip"><span class="num"><pre>102</pre></span><pre>			# END for each set in partition           </pre></div>
+<div class="skip"><span class="num"><pre>103</pre></span><pre>		# END for each partition</pre></div>
+<div class="skip"><span class="num"><pre>104</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>105</pre></span><pre>		# finally add the member to our set once more - now it should work </pre></div>
+<div class="skip"><span class="num"><pre>106</pre></span><pre>		# do not risk recursion though by setting everything to ignore errors </pre></div>
+<div class="cov"><span class="num"><pre>107</pre></span><pre>		if isinstance( member, api.MSelectionList ):</pre></div>
+<div class="cov"><span class="num"><pre>108</pre></span><pre>			return self._addRemoveMembers( member, self.kAdd, ignore_failure )</pre></div>
+<div class="cov"><span class="num"><pre>109</pre></span><pre>		else:</pre></div>
+<div class="cov"><span class="num"><pre>110</pre></span><pre>			return self._addRemoveMember( member, component, self.kAdd, ignore_failure )</pre></div>
+<div class="skip"><span class="num"><pre>111</pre></span><pre>			</pre></div>
+<div class="skip"><span class="num"><pre>112</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>113</pre></span><pre>	def _checkMemberAddResult( self, member, component, mode, ignore_failure, is_single_member ):</pre></div>
+<div class="cov"><span class="num"><pre>114</pre></span><pre>		&quot;&quot;&quot;Check whether the given member has truly been added to our set</pre></div>
+<div class="cov"><span class="num"><pre>115</pre></span><pre>		and either force membership or raise and exception</pre></div>
+<div class="skip"><span class="num"><pre>116</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>117</pre></span><pre>		:param is_single_member: if True, member can safely be assumed to be a single member, </pre></div>
+<div class="cov"><span class="num"><pre>118</pre></span><pre>			this speeds up operations as we do not have to use multi-member tests&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>119</pre></span><pre>		if mode in ( self.kAdd, self.kAddForce ):</pre></div>
+<div class="skip"><span class="num"><pre>120</pre></span><pre>			# do we have to check the result ?</pre></div>
+<div class="cov"><span class="num"><pre>121</pre></span><pre>			if mode == self.kAdd and ignore_failure:</pre></div>
+<div class="cov"><span class="num"><pre>122</pre></span><pre>				return self</pre></div>
+<div class="skip"><span class="num"><pre>123</pre></span><pre>				</pre></div>
+<div class="skip"><span class="num"><pre>124</pre></span><pre>			# check result - member can be MObject, MDagPath, plug, or selection list </pre></div>
+<div class="cov"><span class="num"><pre>125</pre></span><pre>			numMatches = 1</pre></div>
+<div class="cov"><span class="num"><pre>126</pre></span><pre>			if isinstance( member, api.MSelectionList ):</pre></div>
+<div class="cov"><span class="num"><pre>127</pre></span><pre>				numMatches = member.length()</pre></div>
+<div class="skip"><span class="num"><pre>128</pre></span><pre>				</pre></div>
+<div class="skip"><span class="num"><pre>129</pre></span><pre>			# CHECK MEMBERS</pre></div>
+<div class="cov"><span class="num"><pre>130</pre></span><pre>			not_all_members_added = True</pre></div>
+<div class="cov"><span class="num"><pre>131</pre></span><pre>			if is_single_member:</pre></div>
+<div class="cov"><span class="num"><pre>132</pre></span><pre>				not_all_members_added = not self.isMember( member, component = component )</pre></div>
+<div class="cov"><span class="num"><pre>133</pre></span><pre>			else:</pre></div>
+<div class="cov"><span class="num"><pre>134</pre></span><pre>				not_all_members_added = self.intersection( member, sets_are_members = True ).length() != numMatches</pre></div>
+<div class="skip"><span class="num"><pre>135</pre></span><pre>				</pre></div>
+<div class="cov"><span class="num"><pre>136</pre></span><pre>			if not_all_members_added:</pre></div>
+<div class="cov"><span class="num"><pre>137</pre></span><pre>				if mode == self.kAddForce:</pre></div>
+<div class="cov"><span class="num"><pre>138</pre></span><pre>					return self._forceMembership( member, component, is_single_member, ignore_failure )</pre></div>
+<div class="skip"><span class="num"><pre>139</pre></span><pre>				</pre></div>
+<div class="skip"><span class="num"><pre>140</pre></span><pre>				# if we are here, we do not ignore failure, and raise  </pre></div>
+<div class="cov"><span class="num"><pre>141</pre></span><pre>				raise ConstraintError( &quot;At least some members of %r could not be added to %r due to violation of exclusivity constraint&quot; % (member,self) )</pre></div>
+<div class="skip"><span class="num"><pre>142</pre></span><pre>				</pre></div>
+<div class="skip"><span class="num"><pre>143</pre></span><pre>			# END if added members are not yet available</pre></div>
+<div class="skip"><span class="num"><pre>144</pre></span><pre>		# END if mode is add or forced add </pre></div>
+<div class="cov"><span class="num"><pre>145</pre></span><pre>		return self</pre></div>
+<div class="skip"><span class="num"><pre>146</pre></span><pre>			</pre></div>
+<div class="skip"><span class="num"><pre>147</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>148</pre></span><pre>	def _addRemoveMember( self, member, component, mode, ignore_failure ):</pre></div>
+<div class="cov"><span class="num"><pre>149</pre></span><pre>		&quot;&quot;&quot;Add or remove the member with undo support</pre></div>
+<div class="skip"><span class="num"><pre>150</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>151</pre></span><pre>		:param mode: kRemove or kAdd&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>152</pre></span><pre>		memberobj = self._toMemberObj( member )</pre></div>
+<div class="skip"><span class="num"><pre>153</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre>154</pre></span><pre>		op = undo.GenericOperation()</pre></div>
+<div class="cov"><span class="num"><pre>155</pre></span><pre>		mfninst = self._mfncls( self._apiobj )</pre></div>
+<div class="cov"><span class="num"><pre>156</pre></span><pre>		doitfunc = mfninst.addMember</pre></div>
+<div class="cov"><span class="num"><pre>157</pre></span><pre>		undoitfunc = mfninst.removeMember</pre></div>
+<div class="skip"><span class="num"><pre>158</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>159</pre></span><pre>		# for dag paths, append empty component mobjects</pre></div>
+<div class="cov"><span class="num"><pre>160</pre></span><pre>		args = [ memberobj ]</pre></div>
+<div class="cov"><span class="num"><pre>161</pre></span><pre>		if isinstance( memberobj, api.MDagPath ):	# add component ( default None )</pre></div>
+<div class="cov"><span class="num"><pre>162</pre></span><pre>			args.append( component )</pre></div>
+<div class="skip"><span class="num"><pre>163</pre></span><pre>		# END component handling </pre></div>
+<div class="skip"><span class="num"><pre>164</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>165</pre></span><pre>		# swap functions if we remove the node</pre></div>
+<div class="cov"><span class="num"><pre>166</pre></span><pre>		if mode == ObjectSet.kRemove:</pre></div>
+<div class="cov"><span class="num"><pre>167</pre></span><pre>			tmp = undoitfunc</pre></div>
+<div class="cov"><span class="num"><pre>168</pre></span><pre>			undoitfunc = doitfunc</pre></div>
+<div class="cov"><span class="num"><pre>169</pre></span><pre>			doitfunc = tmp</pre></div>
+<div class="skip"><span class="num"><pre>170</pre></span><pre>		# END variable switching</pre></div>
+<div class="skip"><span class="num"><pre>171</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre>172</pre></span><pre>		op.setDoitCmd( doitfunc, *args )</pre></div>
+<div class="cov"><span class="num"><pre>173</pre></span><pre>		op.setUndoitCmd( undoitfunc, *args )</pre></div>
+<div class="cov"><span class="num"><pre>174</pre></span><pre>		op.doIt( )</pre></div>
+<div class="skip"><span class="num"><pre>175</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>176</pre></span><pre>		return self._checkMemberAddResult( member, component, mode, ignore_failure, True )</pre></div>
+<div class="skip"><span class="num"><pre>177</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>178</pre></span><pre>	def _addRemoveMembers( self, members, mode, ignore_failure ):</pre></div>
+<div class="cov"><span class="num"><pre>179</pre></span><pre>		&quot;&quot;&quot;Add or remove the members to the set</pre></div>
+<div class="skip"><span class="num"><pre>180</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>181</pre></span><pre>		:param mode: kRemove or kAdd or kAddForce&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>182</pre></span><pre>		sellist = nt.toSelectionList( members )	# handles 'member is SelectionList' case !</pre></div>
+<div class="skip"><span class="num"><pre>183</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre>184</pre></span><pre>		lsellist = sellist.length()</pre></div>
+<div class="cov"><span class="num"><pre>185</pre></span><pre>		if not lsellist:</pre></div>
+<div class="cov"><span class="num"><pre>186</pre></span><pre>			return self</pre></div>
+<div class="skip"><span class="num"><pre>187</pre></span><pre>			</pre></div>
+<div class="skip"><span class="num"><pre>188</pre></span><pre>		# if there is only one member, use our single member function </pre></div>
+<div class="skip"><span class="num"><pre>189</pre></span><pre>		# as it will be faster when checking for partition constraints</pre></div>
+<div class="cov"><span class="num"><pre>190</pre></span><pre>		if lsellist == 1:</pre></div>
+<div class="cov"><span class="num"><pre>191</pre></span><pre>			return self._addRemoveMember( it.iterSelectionList( sellist, asNode = 0 ).next(), api.MObject(), mode, ignore_failure )</pre></div>
+<div class="skip"><span class="num"><pre>192</pre></span><pre>				</pre></div>
+<div class="skip"><span class="num"><pre>193</pre></span><pre>		# prepare operation</pre></div>
+<div class="cov"><span class="num"><pre>194</pre></span><pre>		mfninst = self._mfncls( self._apiobj )</pre></div>
+<div class="cov"><span class="num"><pre>195</pre></span><pre>		doitfunc = mfninst.addMembers</pre></div>
+<div class="cov"><span class="num"><pre>196</pre></span><pre>		undoitfunc = mfninst.removeMembers</pre></div>
+<div class="skip"><span class="num"><pre>197</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>198</pre></span><pre>		# swap functions if we remove the node</pre></div>
+<div class="cov"><span class="num"><pre>199</pre></span><pre>		if mode == ObjectSet.kRemove:</pre></div>
+<div class="cov"><span class="num"><pre>200</pre></span><pre>			tmp = undoitfunc</pre></div>
+<div class="cov"><span class="num"><pre>201</pre></span><pre>			undoitfunc = doitfunc</pre></div>
+<div class="cov"><span class="num"><pre>202</pre></span><pre>			doitfunc = tmp</pre></div>
+<div class="skip"><span class="num"><pre>203</pre></span><pre>			</pre></div>
+<div class="skip"><span class="num"><pre>204</pre></span><pre>			# IMPORTANT: If one member of sellist is not in the set, the operation</pre></div>
+<div class="skip"><span class="num"><pre>205</pre></span><pre>			# will *silently* ( WTF ??) fail. Hence we have to make sure that</pre></div>
+<div class="skip"><span class="num"><pre>206</pre></span><pre>			# we only even remotely think about trying to remove items which are</pre></div>
+<div class="skip"><span class="num"><pre>207</pre></span><pre>			# actually in the set !</pre></div>
+<div class="cov"><span class="num"><pre>208</pre></span><pre>			sellist = self.intersection(sellist)</pre></div>
+<div class="skip"><span class="num"><pre>209</pre></span><pre>		# END function swapping</pre></div>
+<div class="skip"><span class="num"><pre>210</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>211</pre></span><pre>		op = undo.GenericOperation()	</pre></div>
+<div class="cov"><span class="num"><pre>212</pre></span><pre>		op.setDoitCmd( doitfunc, sellist )</pre></div>
+<div class="cov"><span class="num"><pre>213</pre></span><pre>		op.setUndoitCmd( undoitfunc, sellist )</pre></div>
+<div class="cov"><span class="num"><pre>214</pre></span><pre>		op.doIt()</pre></div>
+<div class="skip"><span class="num"><pre>215</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>216</pre></span><pre>		return self._checkMemberAddResult( sellist, None, mode, ignore_failure, False )</pre></div>
+<div class="skip"><span class="num"><pre>217</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>218</pre></span><pre>	@undoable</pre></div>
+<div class="cov"><span class="num"><pre>219</pre></span><pre>	def clear( self ):</pre></div>
+<div class="cov"><span class="num"><pre>220</pre></span><pre>		&quot;&quot;&quot;Clear the set so that it will be empty afterwards</pre></div>
+<div class="skip"><span class="num"><pre>221</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>222</pre></span><pre>		:return: self&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>223</pre></span><pre>		self.removeMembers( self.getMembers() )</pre></div>
+<div class="cov"><span class="num"><pre>224</pre></span><pre>		return self</pre></div>
+<div class="skip"><span class="num"><pre>225</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>226</pre></span><pre>	@undoable</pre></div>
+<div class="cov"><span class="num"><pre>227</pre></span><pre>	def addMember( self, member, component = api.MObject(), force = False, ignore_failure = False ):</pre></div>
+<div class="cov"><span class="num"><pre>228</pre></span><pre>		&quot;&quot;&quot;Add the item to the set</pre></div>
+<div class="skip"><span class="num"><pre>229</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>230</pre></span><pre>		:param member: Node, MObject, MDagPath or plug</pre></div>
+<div class="cov"><span class="num"><pre>231</pre></span><pre>		:param force: if True, member ship will be forced by removing the member in question </pre></div>
+<div class="cov"><span class="num"><pre>232</pre></span><pre>			from the other set connected to our partitions</pre></div>
+<div class="cov"><span class="num"><pre>233</pre></span><pre>		:param ignore_failure: if True, a failed add due to partion constraints will result in an </pre></div>
+<div class="cov"><span class="num"><pre>234</pre></span><pre>			exception, otherwise it will be silently ignored. Ignored if if force is True</pre></div>
+<div class="cov"><span class="num"><pre>235</pre></span><pre>		:param component: if member is a dagnode, you can specify a component instance </pre></div>
+<div class="cov"><span class="num"><pre>236</pre></span><pre>			of type component instance ( Single|Double|TripleIndexComponent )</pre></div>
+<div class="cov"><span class="num"><pre>237</pre></span><pre>		:todo: handle components - currently its only possible when using selection lists</pre></div>
+<div class="cov"><span class="num"><pre>238</pre></span><pre>		:return: self &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>239</pre></span><pre>		mode = self.kAdd</pre></div>
+<div class="cov"><span class="num"><pre>240</pre></span><pre>		if force:</pre></div>
+<div class="cov"><span class="num"><pre>241</pre></span><pre>			mode = self.kAddForce</pre></div>
+<div class="cov"><span class="num"><pre>242</pre></span><pre>		return self._addRemoveMember( member, component, mode, ignore_failure )		</pre></div>
+<div class="skip"><span class="num"><pre>243</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>244</pre></span><pre>	@undoable</pre></div>
+<div class="cov"><span class="num"><pre>245</pre></span><pre>	def add( self, member_or_members, *args, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>246</pre></span><pre>		&quot;&quot;&quot;Combined method which takes single or multiple members which are to be added</pre></div>
+<div class="skip"><span class="num"><pre>247</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>248</pre></span><pre>		:param member_or_members: one of the input types supported by `addMember` and</pre></div>
+<div class="cov"><span class="num"><pre>249</pre></span><pre>			`addMembers`</pre></div>
+<div class="cov"><span class="num"><pre>250</pre></span><pre>		:param kwargs: see `addMember`</pre></div>
+<div class="cov"><span class="num"><pre>251</pre></span><pre>		:note: this method is for convenience only and should not be used to </pre></div>
+<div class="cov"><span class="num"><pre>252</pre></span><pre>			add massive amounts of items&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>253</pre></span><pre>		addfun = None</pre></div>
+<div class="cov"><span class="num"><pre>254</pre></span><pre>		if isinstance(member_or_members, (tuple, list, api.MSelectionList)):</pre></div>
+<div class="cov"><span class="num"><pre>255</pre></span><pre>			addfun = self.addMembers</pre></div>
+<div class="cov"><span class="num"><pre>256</pre></span><pre>		else:</pre></div>
+<div class="cov"><span class="num"><pre>257</pre></span><pre>			addfun = self.addMember</pre></div>
+<div class="skip"><span class="num"><pre>258</pre></span><pre>		# END handle input</pre></div>
+<div class="cov"><span class="num"><pre>259</pre></span><pre>		return addfun(member_or_members, *args, **kwargs)</pre></div>
+<div class="skip"><span class="num"><pre>260</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>261</pre></span><pre>	@undoable</pre></div>
+<div class="cov"><span class="num"><pre>262</pre></span><pre>	def removeMember( self, member, component = api.MObject()  ):</pre></div>
+<div class="cov"><span class="num"><pre>263</pre></span><pre>		&quot;&quot;&quot;Remove the member from the set</pre></div>
+<div class="skip"><span class="num"><pre>264</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>265</pre></span><pre>		:param member: member of the list, for types see `addMember`&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>266</pre></span><pre>		return self._addRemoveMember( member, component, ObjectSet.kRemove, True )</pre></div>
+<div class="skip"><span class="num"><pre>267</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>268</pre></span><pre>	@undoable</pre></div>
+<div class="cov"><span class="num"><pre>269</pre></span><pre>	def discard( self, member_or_members, *args, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>270</pre></span><pre>		&quot;&quot;&quot;Removes a single member or multiple members from the set</pre></div>
+<div class="skip"><span class="num"><pre>271</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>272</pre></span><pre>		:param member_or_members: any of the types supported by `removeMember`</pre></div>
+<div class="cov"><span class="num"><pre>273</pre></span><pre>			or `removeMembers`</pre></div>
+<div class="cov"><span class="num"><pre>274</pre></span><pre>		:param kwargs: see `removeMember`&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>275</pre></span><pre>		rmfun = None</pre></div>
+<div class="cov"><span class="num"><pre>276</pre></span><pre>		if isinstance(member_or_members, (tuple, list, api.MSelectionList)):</pre></div>
+<div class="cov"><span class="num"><pre>277</pre></span><pre>			rmfun = self.removeMembers</pre></div>
+<div class="cov"><span class="num"><pre>278</pre></span><pre>		else:</pre></div>
+<div class="cov"><span class="num"><pre>279</pre></span><pre>			rmfun = self.removeMember</pre></div>
+<div class="skip"><span class="num"><pre>280</pre></span><pre>		# END handle input</pre></div>
+<div class="cov"><span class="num"><pre>281</pre></span><pre>		return rmfun(member_or_members, *args, **kwargs)</pre></div>
+<div class="skip"><span class="num"><pre>282</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>283</pre></span><pre>	@undoable</pre></div>
+<div class="cov"><span class="num"><pre>284</pre></span><pre>	def addMembers( self, nodes, force = False, ignore_failure = False ):</pre></div>
+<div class="cov"><span class="num"><pre>285</pre></span><pre>		&quot;&quot;&quot;Add items from iterable or selection list as members to this set</pre></div>
+<div class="skip"><span class="num"><pre>286</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>287</pre></span><pre>		:param nodes: MSelectionList or list of Nodes and Plugs</pre></div>
+<div class="cov"><span class="num"><pre>288</pre></span><pre>		:param force: see `addMember`</pre></div>
+<div class="cov"><span class="num"><pre>289</pre></span><pre>		:param ignore_failure: see `addMember`</pre></div>
+<div class="cov"><span class="num"><pre>290</pre></span><pre>		:return: self &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>291</pre></span><pre>		mode = self.kAdd</pre></div>
+<div class="cov"><span class="num"><pre>292</pre></span><pre>		if force:</pre></div>
+<div class="cov"><span class="num"><pre>293</pre></span><pre>			mode = self.kAddForce</pre></div>
+<div class="cov"><span class="num"><pre>294</pre></span><pre>		return self._addRemoveMembers( nodes, mode, ignore_failure )</pre></div>
+<div class="skip"><span class="num"><pre>295</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>296</pre></span><pre>	@undoable</pre></div>
+<div class="cov"><span class="num"><pre>297</pre></span><pre>	def removeMembers( self, nodes ):</pre></div>
+<div class="cov"><span class="num"><pre>298</pre></span><pre>		&quot;&quot;&quot;Remove items from iterable or selection list from this set</pre></div>
+<div class="skip"><span class="num"><pre>299</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>300</pre></span><pre>		:param nodes: see `addMembers`</pre></div>
+<div class="cov"><span class="num"><pre>301</pre></span><pre>		:return: self &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>302</pre></span><pre>		return self._addRemoveMembers( nodes, ObjectSet.kRemove, True )</pre></div>
+<div class="skip"><span class="num"><pre>303</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre>304</pre></span><pre>	@undoable</pre></div>
+<div class="cov"><span class="num"><pre>305</pre></span><pre>	def setMembers( self, nodes, mode, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>306</pre></span><pre>		&quot;&quot;&quot;Adjust set membership for nodes</pre></div>
+<div class="skip"><span class="num"><pre>307</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>308</pre></span><pre>		:param nodes: items to handle, supports everything that `addMembers` does</pre></div>
+<div class="cov"><span class="num"><pre>309</pre></span><pre>		:param kwargs: arguments passed to `addMembers` or `removeMembers`&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>310</pre></span><pre>		if mode == self.kReplace:</pre></div>
+<div class="cov"><span class="num"><pre>311</pre></span><pre>			self.clear()</pre></div>
+<div class="cov"><span class="num"><pre>312</pre></span><pre>			mode = self.kAdd</pre></div>
+<div class="skip"><span class="num"><pre>313</pre></span><pre>		# END replace </pre></div>
+<div class="skip"><span class="num"><pre>314</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre>315</pre></span><pre>		if mode == self.kAdd:</pre></div>
+<div class="cov"><span class="num"><pre>316</pre></span><pre>			return self.addMembers( nodes, **kwargs )</pre></div>
+<div class="skip"><span class="num"><pre>317</pre></span><pre>			</pre></div>
+<div class="skip"><span class="num"><pre>318</pre></span><pre>		# remove </pre></div>
+<div class="cov"><span class="num"><pre>319</pre></span><pre>		return self.removeMembers( nodes, **kwargs )</pre></div>
+<div class="skip"><span class="num"><pre>320</pre></span><pre>								   </pre></div>
+<div class="skip"><span class="num"><pre>321</pre></span><pre>	#} END member editing</pre></div>
+<div class="skip"><span class="num"><pre>322</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>323</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>324</pre></span><pre>	#{ Member Query </pre></div>
+<div class="skip"><span class="num"><pre>325</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>326</pre></span><pre>	def getMembers( self, flatten = False ):</pre></div>
+<div class="cov"><span class="num"><pre>327</pre></span><pre>		&quot;&quot;&quot;:return: MSelectionList with members of this set</pre></div>
+<div class="cov"><span class="num"><pre>328</pre></span><pre>		:param flatten: if True, members that are objectSets themselves will be resolved to their </pre></div>
+<div class="cov"><span class="num"><pre>329</pre></span><pre>			respective members</pre></div>
+<div class="cov"><span class="num"><pre>330</pre></span><pre>		:note: the members are ordinary api objects that still need to be wrapped</pre></div>
+<div class="cov"><span class="num"><pre>331</pre></span><pre>		:note: use iterMembers to iterate the members as wrapped Nodes&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>332</pre></span><pre>		sellist = api.MSelectionList()</pre></div>
+<div class="cov"><span class="num"><pre>333</pre></span><pre>		self._mfncls( self._apiobj ).getMembers( sellist, flatten )</pre></div>
+<div class="cov"><span class="num"><pre>334</pre></span><pre>		return sellist</pre></div>
+<div class="skip"><span class="num"><pre>335</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>336</pre></span><pre>	def iterMembers( self, *args, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>337</pre></span><pre>		&quot;&quot;&quot;Iterate members of this set</pre></div>
+<div class="skip"><span class="num"><pre>338</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>339</pre></span><pre>		:note: All keywords of iterMembers are supported</pre></div>
+<div class="cov"><span class="num"><pre>340</pre></span><pre>		:note: if 'handlePlugs' is False, the iteration using a filter type will be faster</pre></div>
+<div class="cov"><span class="num"><pre>341</pre></span><pre>		:note: handleComponents will allow component iteration - see the iterator documentation&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>342</pre></span><pre>		return it.iterSelectionList( self.getMembers( ), *args, **kwargs ) </pre></div>
+<div class="skip"><span class="num"><pre>343</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>344</pre></span><pre>	def isMember( self, obj, component = api.MObject() ):</pre></div>
+<div class="cov"><span class="num"><pre>345</pre></span><pre>		&quot;&quot;&quot;:return: True if obj is a member of this set</pre></div>
+<div class="cov"><span class="num"><pre>346</pre></span><pre>		:param component: is given, the component must be fully part of the set </pre></div>
+<div class="cov"><span class="num"><pre>347</pre></span><pre>			for the object ( dagNode ) to be considered part of the set</pre></div>
+<div class="cov"><span class="num"><pre>348</pre></span><pre>		:note: all keywords of `it.iterSelectionList` are supported</pre></div>
+<div class="cov"><span class="num"><pre>349</pre></span><pre>		:note: ismember does not appear to be working properly with component assignments.</pre></div>
+<div class="cov"><span class="num"><pre>350</pre></span><pre>			It returns true for components that are not actually in the givne shading group&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>351</pre></span><pre>		if not component.isNull():</pre></div>
+<div class="cov"><span class="num"><pre>352</pre></span><pre>			return self._mfncls( self._apiobj ).isMember( self._toMemberObj( obj ), component )</pre></div>
+<div class="cov"><span class="num"><pre>353</pre></span><pre>		return self._mfncls( self._apiobj ).isMember( self._toMemberObj( obj ) )</pre></div>
+<div class="skip"><span class="num"><pre>354</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>355</pre></span><pre>	#} END member query</pre></div>
+<div class="skip"><span class="num"><pre>356</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>357</pre></span><pre>	# Aliases</pre></div>
+<div class="cov"><span class="num"><pre>358</pre></span><pre>	members = getMembers</pre></div>
+<div class="skip"><span class="num"><pre>359</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>360</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>361</pre></span><pre>	#{ Set Operations</pre></div>
+<div class="skip"><span class="num"><pre>362</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>363</pre></span><pre>	class _TmpSet( object ):</pre></div>
+<div class="cov"><span class="num"><pre>364</pre></span><pre>		&quot;&quot;&quot;Temporary set that will delete itself once its python destructor is called&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>365</pre></span><pre>		__slots__ = &quot;setobj&quot;</pre></div>
+<div class="cov"><span class="num"><pre>366</pre></span><pre>		def __init__( self, sellist ):</pre></div>
+<div class="cov"><span class="num"><pre>367</pre></span><pre>			dgmod = api.MDGModifier( )</pre></div>
+<div class="cov"><span class="num"><pre>368</pre></span><pre>			self.setobj = dgmod.createNode( &quot;objectSet&quot; )</pre></div>
+<div class="cov"><span class="num"><pre>369</pre></span><pre>			dgmod.doIt( )</pre></div>
+<div class="skip"><span class="num"><pre>370</pre></span><pre>			# add members</pre></div>
+<div class="cov"><span class="num"><pre>371</pre></span><pre>			mfnset = api.MFnSet( self.setobj )</pre></div>
+<div class="cov"><span class="num"><pre>372</pre></span><pre>			mfnset.addMembers( sellist )</pre></div>
+<div class="skip"><span class="num"><pre>373</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre>374</pre></span><pre>		def __del__( self ):</pre></div>
+<div class="cov"><span class="num"><pre>375</pre></span><pre>			&quot;&quot;&quot;Delete our own set upon deletion&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>376</pre></span><pre>			# assure we release members before - otherwise they might be deleted </pre></div>
+<div class="skip"><span class="num"><pre>377</pre></span><pre>			# as well if it is empty sets !</pre></div>
+<div class="cov"><span class="num"><pre>378</pre></span><pre>			mfnset = api.MFnSet( self.setobj )</pre></div>
+<div class="cov"><span class="num"><pre>379</pre></span><pre>			mfnset.clear()</pre></div>
+<div class="cov"><span class="num"><pre>380</pre></span><pre>			del( mfnset )</pre></div>
+<div class="cov"><span class="num"><pre>381</pre></span><pre>			dgmod = api.MDGModifier()</pre></div>
+<div class="cov"><span class="num"><pre>382</pre></span><pre>			dgmod.deleteNode( self.setobj )</pre></div>
+<div class="cov"><span class="num"><pre>383</pre></span><pre>			dgmod.doIt()</pre></div>
+<div class="skip"><span class="num"><pre>384</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>385</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>386</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre>387</pre></span><pre>	def _toValidSetOpInput( cls, objects, sets_are_members = False ):</pre></div>
+<div class="cov"><span class="num"><pre>388</pre></span><pre>		&quot;&quot;&quot;Method creating valid input for the union/intersection or difference methods</pre></div>
+<div class="skip"><span class="num"><pre>389</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>390</pre></span><pre>		:note: it may return a temporary set that will delete itself once the wrapper object</pre></div>
+<div class="cov"><span class="num"><pre>391</pre></span><pre>			is being destroyed</pre></div>
+<div class="cov"><span class="num"><pre>392</pre></span><pre>		:param sets_are_members: see `union`</pre></div>
+<div class="cov"><span class="num"><pre>393</pre></span><pre>		:note: set &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>394</pre></span><pre>		if isinstance( objects, (tuple, list) ):</pre></div>
+<div class="skip"><span class="num"><pre>395</pre></span><pre>			# MOBJECTARRAY OF SETS</pre></div>
+<div class="cov"><span class="num"><pre>396</pre></span><pre>			if not objects:		# emty list, return empty mobject array</pre></div>
+<div class="nocov"><span class="num"><pre>397</pre></span><pre>				return api.MObjectArray( )</pre></div>
+<div class="skip"><span class="num"><pre>398</pre></span><pre>				</pre></div>
+<div class="cov"><span class="num"><pre>399</pre></span><pre>			if not sets_are_members and isinstance( objects[ 0 ], ObjectSet ):</pre></div>
+<div class="cov"><span class="num"><pre>400</pre></span><pre>				objarray = api.MObjectArray( )</pre></div>
+<div class="cov"><span class="num"><pre>401</pre></span><pre>				for setNode in objects: </pre></div>
+<div class="cov"><span class="num"><pre>402</pre></span><pre>					objarray.append( setNode._apiobj )</pre></div>
+<div class="cov"><span class="num"><pre>403</pre></span><pre>				return objarray</pre></div>
+<div class="cov"><span class="num"><pre>404</pre></span><pre>			else:</pre></div>
+<div class="skip"><span class="num"><pre>405</pre></span><pre>				# create selection list from nodes and use a tmpSet </pre></div>
+<div class="cov"><span class="num"><pre>406</pre></span><pre>				sellist = nt.toSelectionList( objects )</pre></div>
+<div class="cov"><span class="num"><pre>407</pre></span><pre>				return cls._TmpSet( sellist )</pre></div>
+<div class="skip"><span class="num"><pre>408</pre></span><pre>		# END list handling</pre></div>
+<div class="skip"><span class="num"><pre>409</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>410</pre></span><pre>		# still here, handle a single object</pre></div>
+<div class="cov"><span class="num"><pre>411</pre></span><pre>		singleobj = objects</pre></div>
+<div class="cov"><span class="num"><pre>412</pre></span><pre>		if isinstance( singleobj, api.MSelectionList ):	# Selection List ?</pre></div>
+<div class="cov"><span class="num"><pre>413</pre></span><pre>			return cls._TmpSet( singleobj )</pre></div>
+<div class="skip"><span class="num"><pre>414</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre>415</pre></span><pre>		if not sets_are_members and isinstance( singleobj, ObjectSet ):				# Single Object Set ?</pre></div>
+<div class="cov"><span class="num"><pre>416</pre></span><pre>			return singleobj.object()</pre></div>
+<div class="skip"><span class="num"><pre>417</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre>418</pre></span><pre>		if isinstance( singleobj, cls._TmpSet ):										# single set object </pre></div>
+<div class="nocov"><span class="num"><pre>419</pre></span><pre>			return singleobj.setobj</pre></div>
+<div class="skip"><span class="num"><pre>420</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre>421</pre></span><pre>		if isinstance( singleobj, api.MObject ) and singleobj.hasFn( api.MFn.kSet ):	# MObject object set ?</pre></div>
+<div class="cov"><span class="num"><pre>422</pre></span><pre>			return singleobj</pre></div>
+<div class="skip"><span class="num"><pre>423</pre></span><pre>			</pre></div>
+<div class="skip"><span class="num"><pre>424</pre></span><pre>		# assume best for MObject arrays - usually we pass it in ourselves </pre></div>
+<div class="nocov"><span class="num"><pre>425</pre></span><pre>		if isinstance( singleobj, api.MObjectArray ):</pre></div>
+<div class="nocov"><span class="num"><pre>426</pre></span><pre>			return singleobj</pre></div>
+<div class="skip"><span class="num"><pre>427</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>428</pre></span><pre>		# Can be Node, MDagPath or plug or MObject ( not set )</pre></div>
+<div class="nocov"><span class="num"><pre>429</pre></span><pre>		return cls._toValidSetOpInput( ( singleobj, ), sets_are_members = sets_are_members ) # will create a tmpset then</pre></div>
+<div class="skip"><span class="num"><pre>430</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>431</pre></span><pre>		raise TypeError( &quot;Type InputObjects for set operation ( %r ) was not recognized&quot; % objects )</pre></div>
+<div class="skip"><span class="num"><pre>432</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>433</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>434</pre></span><pre>	def _applySetOp( self, objects, opid, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>435</pre></span><pre>		&quot;&quot;&quot;Apply the set operation with the given id&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>436</pre></span><pre>		# have to do it in steps to assure our temporary set will be deleted after </pre></div>
+<div class="skip"><span class="num"><pre>437</pre></span><pre>		# the operation has finished</pre></div>
+<div class="cov"><span class="num"><pre>438</pre></span><pre>		obj = fobj = self._toValidSetOpInput( objects, **kwargs )</pre></div>
+<div class="cov"><span class="num"><pre>439</pre></span><pre>		outlist = api.MSelectionList()</pre></div>
+<div class="cov"><span class="num"><pre>440</pre></span><pre>		if isinstance( obj, self._TmpSet ):</pre></div>
+<div class="cov"><span class="num"><pre>441</pre></span><pre>			fobj = obj.setobj	# need to keep reference to _TmpSet until it was used</pre></div>
+<div class="skip"><span class="num"><pre>442</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>443</pre></span><pre>		mfnset = self._mfncls( self._apiobj )</pre></div>
+<div class="cov"><span class="num"><pre>444</pre></span><pre>		if opid == &quot;union&quot;:</pre></div>
+<div class="cov"><span class="num"><pre>445</pre></span><pre>			mfnset.getUnion( fobj, outlist )</pre></div>
+<div class="cov"><span class="num"><pre>446</pre></span><pre>		elif opid == &quot;intersection&quot;:</pre></div>
+<div class="cov"><span class="num"><pre>447</pre></span><pre>			mfnset.getIntersection( fobj, outlist )</pre></div>
+<div class="nocov"><span class="num"><pre>448</pre></span><pre>		else:</pre></div>
+<div class="nocov"><span class="num"><pre>449</pre></span><pre>			raise AssertionError( &quot;Invalid Set Operation: %s&quot; % opid )</pre></div>
+<div class="skip"><span class="num"><pre>450</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre>451</pre></span><pre>		return outlist</pre></div>
+<div class="skip"><span class="num"><pre>452</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>453</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre>454</pre></span><pre>	def tmpSet( cls, objects, sets_are_members = False ):</pre></div>
+<div class="cov"><span class="num"><pre>455</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>456</pre></span><pre>		:return: temporary set that will delete itself once it's reference count</pre></div>
+<div class="cov"><span class="num"><pre>457</pre></span><pre>			reaches 0. Use rval.setobj to access the actual set, as the returned object is </pre></div>
+<div class="cov"><span class="num"><pre>458</pre></span><pre>			just a hanlde to it. The handle is a valid input to the set functions as well</pre></div>
+<div class="cov"><span class="num"><pre>459</pre></span><pre>		:param objects: see `union`</pre></div>
+<div class="cov"><span class="num"><pre>460</pre></span><pre>		:param sets_are_members: see `union`</pre></div>
+<div class="cov"><span class="num"><pre>461</pre></span><pre>		:note: useful if you want to use the set member union, intersection or substraction </pre></div>
+<div class="cov"><span class="num"><pre>462</pre></span><pre>			methods efficiently on many sets in a row - these internally operate on a set, thus </pre></div>
+<div class="cov"><span class="num"><pre>463</pre></span><pre>			it is faster to use them with another set from the beginning to prevent creation of intermediate </pre></div>
+<div class="cov"><span class="num"><pre>464</pre></span><pre>			sets&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>465</pre></span><pre>		return cls._toValidSetOpInput( objects, sets_are_members = sets_are_members )</pre></div>
+<div class="skip"><span class="num"><pre>466</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>467</pre></span><pre>	def getUnion( self, objects, sets_are_members = False  ):</pre></div>
+<div class="cov"><span class="num"><pre>468</pre></span><pre>		&quot;&quot;&quot;Create a union of the given items with the members of this set</pre></div>
+<div class="skip"><span class="num"><pre>469</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>470</pre></span><pre>		:param objects: an ObjectSet, an MObject of an object set, a list of ObjectSets </pre></div>
+<div class="cov"><span class="num"><pre>471</pre></span><pre>			or a list of wrapped Objects or an MSelectionList or a single wrapped object . </pre></div>
+<div class="cov"><span class="num"><pre>472</pre></span><pre>			If you have objects in a list as well as sets</pre></div>
+<div class="cov"><span class="num"><pre>473</pre></span><pre>			themselves, objects must come first as the operation will fail otherwise.</pre></div>
+<div class="cov"><span class="num"><pre>474</pre></span><pre>		:param sets_are_members: if True, objects can contain sets, but they should not be treated </pre></div>
+<div class="cov"><span class="num"><pre>475</pre></span><pre>			as sets to apply the set operation with, they should simply be members of this set, and </pre></div>
+<div class="cov"><span class="num"><pre>476</pre></span><pre>			thus need to be wrapped into a tmp set as well</pre></div>
+<div class="cov"><span class="num"><pre>477</pre></span><pre>		:return: MSelectionList of all objects of self and objects &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>478</pre></span><pre>		return self._applySetOp( objects, &quot;union&quot;, sets_are_members = sets_are_members )</pre></div>
+<div class="skip"><span class="num"><pre>479</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>480</pre></span><pre>	def getIntersection( self, objects, sets_are_members = False  ):</pre></div>
+<div class="cov"><span class="num"><pre>481</pre></span><pre>		&quot;&quot;&quot;As `union`, but returns the intersection ( items in common ) of this </pre></div>
+<div class="cov"><span class="num"><pre>482</pre></span><pre>		set with objects</pre></div>
+<div class="skip"><span class="num"><pre>483</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>484</pre></span><pre>		:param objects: see `union`</pre></div>
+<div class="cov"><span class="num"><pre>485</pre></span><pre>		:param sets_are_members: see `union`</pre></div>
+<div class="cov"><span class="num"><pre>486</pre></span><pre>		:return: MSelectionList of objects being in self and in objects&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>487</pre></span><pre>		return self._applySetOp( objects, &quot;intersection&quot;, sets_are_members = sets_are_members )</pre></div>
+<div class="skip"><span class="num"><pre>488</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>489</pre></span><pre>	def getDifference( self, objects, sets_are_members = False  ):</pre></div>
+<div class="cov"><span class="num"><pre>490</pre></span><pre>		&quot;&quot;&quot;return the result of ``self minus objects``, thus objects will be substracted from our obejcts</pre></div>
+<div class="skip"><span class="num"><pre>491</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>492</pre></span><pre>		:param objects: see `union`</pre></div>
+<div class="cov"><span class="num"><pre>493</pre></span><pre>		:param sets_are_members: see `union`</pre></div>
+<div class="cov"><span class="num"><pre>494</pre></span><pre>		:return: MSelectionList containing objects of self not being in objects list&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>495</pre></span><pre>		# have to do the intersections individually and keep them </pre></div>
+<div class="cov"><span class="num"><pre>496</pre></span><pre>		intersections = list()</pre></div>
+<div class="cov"><span class="num"><pre>497</pre></span><pre>		obj = fobj = self._toValidSetOpInput( objects, sets_are_members = sets_are_members )</pre></div>
+<div class="cov"><span class="num"><pre>498</pre></span><pre>		outlist = api.MSelectionList()</pre></div>
+<div class="cov"><span class="num"><pre>499</pre></span><pre>		if isinstance( obj, self._TmpSet ):</pre></div>
+<div class="cov"><span class="num"><pre>500</pre></span><pre>			fobj = obj.setobj	# need to keep reference to _TmpSet until it was used</pre></div>
+<div class="skip"><span class="num"><pre>501</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>502</pre></span><pre>		# either we have a single _tmpSet, or a list of sets </pre></div>
+<div class="skip"><span class="num"><pre>503</pre></span><pre>		#if not isinstance( fobj , ( tuple, list ) ):</pre></div>
+<div class="cov"><span class="num"><pre>504</pre></span><pre>		if not hasattr( fobj, '__iter__' ):</pre></div>
+<div class="cov"><span class="num"><pre>505</pre></span><pre>			fobj = [ fobj ]</pre></div>
+<div class="skip"><span class="num"><pre>506</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>507</pre></span><pre>		for item in fobj:</pre></div>
+<div class="cov"><span class="num"><pre>508</pre></span><pre>			intersections.append( self.intersection( item ) )</pre></div>
+<div class="skip"><span class="num"><pre>509</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>510</pre></span><pre>		# remove intersecting members temporarily </pre></div>
+<div class="cov"><span class="num"><pre>511</pre></span><pre>		for its in intersections:</pre></div>
+<div class="cov"><span class="num"><pre>512</pre></span><pre>			self.removeMembers( its )</pre></div>
+<div class="skip"><span class="num"><pre>513</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre>514</pre></span><pre>		difference = self.getMembers()</pre></div>
+<div class="skip"><span class="num"><pre>515</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>516</pre></span><pre>		# add members again </pre></div>
+<div class="cov"><span class="num"><pre>517</pre></span><pre>		for its in intersections:</pre></div>
+<div class="cov"><span class="num"><pre>518</pre></span><pre>			self.addMembers( its )</pre></div>
+<div class="skip"><span class="num"><pre>519</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre>520</pre></span><pre>		return difference</pre></div>
+<div class="skip"><span class="num"><pre>521</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>522</pre></span><pre>	def iterUnion( self, setOrSetsOrObjects, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>523</pre></span><pre>		&quot;&quot;&quot;As union, but returns an iterator</pre></div>
+<div class="skip"><span class="num"><pre>524</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>525</pre></span><pre>		:param kwargs: passed to it.iterSelectionList&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>526</pre></span><pre>		return it.iterSelectionList( self.union( setOrSetsOrObjects ), **kwargs )</pre></div>
+<div class="skip"><span class="num"><pre>527</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>528</pre></span><pre>	def iterIntersection( self, setOrSetsOrObjects, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>529</pre></span><pre>		&quot;&quot;&quot;As intersection, but returns an iterator</pre></div>
+<div class="skip"><span class="num"><pre>530</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>531</pre></span><pre>		:param kwargs: passed to it.iterSelectionList&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>532</pre></span><pre>		return it.iterSelectionList( self.intersection( setOrSetsOrObjects ), **kwargs )</pre></div>
+<div class="skip"><span class="num"><pre>533</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>534</pre></span><pre>	def iterDifference( self, setOrSetsOrObjects, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>535</pre></span><pre>		&quot;&quot;&quot;As difference, but returns an iterator</pre></div>
+<div class="skip"><span class="num"><pre>536</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>537</pre></span><pre>		:param kwargs: passed to it.iterSelectionList&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>538</pre></span><pre>		return it.iterSelectionList( self.difference( setOrSetsOrObjects ), **kwargs )</pre></div>
+<div class="skip"><span class="num"><pre>539</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>540</pre></span><pre>	#} END set operations</pre></div>
+<div class="skip"><span class="num"><pre>541</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>542</pre></span><pre>	# aliases</pre></div>
+<div class="cov"><span class="num"><pre>543</pre></span><pre>	union = getUnion</pre></div>
+<div class="cov"><span class="num"><pre>544</pre></span><pre>	intersection = getIntersection</pre></div>
+<div class="cov"><span class="num"><pre>545</pre></span><pre>	difference = getDifference</pre></div>
+<div class="skip"><span class="num"><pre>546</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>547</pre></span><pre>	#{ Operators</pre></div>
+<div class="cov"><span class="num"><pre>548</pre></span><pre>	__or__ = union</pre></div>
+<div class="cov"><span class="num"><pre>549</pre></span><pre>	__add__ = union</pre></div>
+<div class="cov"><span class="num"><pre>550</pre></span><pre>	__sub__ = difference</pre></div>
+<div class="cov"><span class="num"><pre>551</pre></span><pre>	__and__ = intersection</pre></div>
+<div class="skip"><span class="num"><pre>552</pre></span><pre>	#} END operators</pre></div>
+<div class="skip"><span class="num"><pre>553</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>554</pre></span><pre>	#{ Protocols </pre></div>
+<div class="cov"><span class="num"><pre>555</pre></span><pre>	def __len__(self):</pre></div>
+<div class="cov"><span class="num"><pre>556</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>557</pre></span><pre>		:warn: This method is possibly slow as it will retrieve all members </pre></div>
+<div class="cov"><span class="num"><pre>558</pre></span><pre>			just to get the size of the set. Don't use it directly if you like performance&quot;&quot;&quot; </pre></div>
+<div class="cov"><span class="num"><pre>559</pre></span><pre>		return len(self.getMembers())</pre></div>
+<div class="skip"><span class="num"><pre>560</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>561</pre></span><pre>	def __iter__(self):</pre></div>
+<div class="cov"><span class="num"><pre>562</pre></span><pre>		return self.getMembers().mtoIter()</pre></div>
+<div class="skip"><span class="num"><pre>563</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>564</pre></span><pre>	def __contains__( self, obj ):</pre></div>
+<div class="cov"><span class="num"><pre>565</pre></span><pre>		&quot;&quot;&quot;:return: True if the given obj is member of this set&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>566</pre></span><pre>		return self.isMember( obj )</pre></div>
+<div class="skip"><span class="num"><pre>567</pre></span><pre>	#} END protocols </pre></div>
+<div class="skip"><span class="num"><pre>568</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>569</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>570</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>571</pre></span><pre>class ShadingEngine:</pre></div>
+<div class="cov"><span class="num"><pre>572</pre></span><pre>	&quot;&quot;&quot;Provides specialized methods able to deal better with shaders</pre></div>
+<div class="cov"><span class="num"><pre>573</pre></span><pre>	than the default implementation.</pre></div>
+<div class="skip"><span class="num"><pre>574</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>575</pre></span><pre>	:todo: Force exclusivity must be a little more elaborate - this could be overwritten</pre></div>
+<div class="cov"><span class="num"><pre>576</pre></span><pre>		and reimplemented to take care of the details&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>577</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>578</pre></span><pre>	__metaclass__ = typ.MetaClassCreatorNodes</pre></div>
+<div class="skip"><span class="num"><pre>579</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>580</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>581</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>582</pre></span><pre>class Partition:</pre></div>
+<div class="cov"><span class="num"><pre>583</pre></span><pre>	&quot;&quot;&quot;Deal with common set &lt;-&gt; partition interactions&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>584</pre></span><pre>	__metaclass__ = typ.MetaClassCreatorNodes</pre></div>
+<div class="skip"><span class="num"><pre>585</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>586</pre></span><pre>	#{ Set Membership </pre></div>
+<div class="skip"><span class="num"><pre>587</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>588</pre></span><pre>	@undoable</pre></div>
+<div class="cov"><span class="num"><pre>589</pre></span><pre>	def _addRemoveMember( self, objectset, mode ):</pre></div>
+<div class="cov"><span class="num"><pre>590</pre></span><pre>		sets = objectset</pre></div>
+<div class="cov"><span class="num"><pre>591</pre></span><pre>		if isinstance( objectset, ObjectSet ):</pre></div>
+<div class="cov"><span class="num"><pre>592</pre></span><pre>			sets = [ objectset ]</pre></div>
+<div class="skip"><span class="num"><pre>593</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre>594</pre></span><pre>		for oset in sets:</pre></div>
+<div class="cov"><span class="num"><pre>595</pre></span><pre>			oset.setPartition( self, mode )</pre></div>
+<div class="skip"><span class="num"><pre>596</pre></span><pre>		# END for each set to add/remove</pre></div>
+<div class="skip"><span class="num"><pre>597</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>598</pre></span><pre>		return self</pre></div>
+<div class="skip"><span class="num"><pre>599</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>600</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>601</pre></span><pre>	def addMember( self, objectset ):</pre></div>
+<div class="cov"><span class="num"><pre>602</pre></span><pre>		&quot;&quot;&quot;Add the given objectset or list of sets to the partition</pre></div>
+<div class="skip"><span class="num"><pre>603</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>604</pre></span><pre>		:param objectset: one or multiple object sets </pre></div>
+<div class="cov"><span class="num"><pre>605</pre></span><pre>		:return: self allowing chained calls&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>606</pre></span><pre>		return self._addRemoveMember( objectset, ObjectSet.kAdd )</pre></div>
+<div class="skip"><span class="num"><pre>607</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>608</pre></span><pre>	add = addMember</pre></div>
+<div class="skip"><span class="num"><pre>609</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>610</pre></span><pre>	def removeMember( self, objectset ):</pre></div>
+<div class="cov"><span class="num"><pre>611</pre></span><pre>		&quot;&quot;&quot;Remove the given objectset from the partition</pre></div>
+<div class="skip"><span class="num"><pre>612</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>613</pre></span><pre>		:param objectset: one or multiple object sets </pre></div>
+<div class="cov"><span class="num"><pre>614</pre></span><pre>		:return: self allowing chained calls&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>615</pre></span><pre>		return self._addRemoveMember( objectset, ObjectSet.kRemove )</pre></div>
+<div class="skip"><span class="num"><pre>616</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>617</pre></span><pre>	discard = removeMember</pre></div>
+<div class="skip"><span class="num"><pre>618</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>619</pre></span><pre>	def replaceMember( self, objectset ):</pre></div>
+<div class="cov"><span class="num"><pre>620</pre></span><pre>		&quot;&quot;&quot;Replace existing objectsets with the given one(s)</pre></div>
+<div class="skip"><span class="num"><pre>621</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>622</pre></span><pre>		:param objectset: one or multiple object sets </pre></div>
+<div class="cov"><span class="num"><pre>623</pre></span><pre>		:return: self allowing chained calls)&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>624</pre></span><pre>		return self._addRemoveMember( objectset, ObjectSet.kReplace )</pre></div>
+<div class="skip"><span class="num"><pre>625</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>626</pre></span><pre>	@undoable</pre></div>
+<div class="cov"><span class="num"><pre>627</pre></span><pre>	def clear( self ):</pre></div>
+<div class="cov"><span class="num"><pre>628</pre></span><pre>		&quot;&quot;&quot;remove all members from this partition</pre></div>
+<div class="skip"><span class="num"><pre>629</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>630</pre></span><pre>		:return: self&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>631</pre></span><pre>		for m in self.getMembers():                           </pre></div>
+<div class="cov"><span class="num"><pre>632</pre></span><pre>			self.removeMember( m )</pre></div>
+<div class="skip"><span class="num"><pre>633</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre>634</pre></span><pre>		return self</pre></div>
+<div class="skip"><span class="num"><pre>635</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre>636</pre></span><pre>	def getMembers( self ):</pre></div>
+<div class="cov"><span class="num"><pre>637</pre></span><pre>		&quot;&quot;&quot;:return: sets being member of this partition</pre></div>
+<div class="cov"><span class="num"><pre>638</pre></span><pre>		:note: have to filter the members as there might be non-set connections </pre></div>
+<div class="cov"><span class="num"><pre>639</pre></span><pre>			in referenced environments&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>640</pre></span><pre>		out = list()</pre></div>
+<div class="cov"><span class="num"><pre>641</pre></span><pre>		for plug in self.st.minputs():</pre></div>
+<div class="cov"><span class="num"><pre>642</pre></span><pre>			node = plug.mwrappedNode()</pre></div>
+<div class="cov"><span class="num"><pre>643</pre></span><pre>			if not node.hasFn( api.MFn.kSet ):</pre></div>
+<div class="nocov"><span class="num"><pre>644</pre></span><pre>				continue</pre></div>
+<div class="cov"><span class="num"><pre>645</pre></span><pre>			out.append( node )</pre></div>
+<div class="skip"><span class="num"><pre>646</pre></span><pre>		# END for each plug in set connections</pre></div>
+<div class="cov"><span class="num"><pre>647</pre></span><pre>		return out</pre></div>
+<div class="skip"><span class="num"><pre>648</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>649</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>650</pre></span><pre>	#}END set membership</pre></div>
+<div class="skip"><span class="num"><pre>651</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>652</pre></span><pre>	#{ Name Remapping</pre></div>
+<div class="cov"><span class="num"><pre>653</pre></span><pre>	addSets = addMember</pre></div>
+<div class="cov"><span class="num"><pre>654</pre></span><pre>	removeSets = removeMember</pre></div>
+<div class="cov"><span class="num"><pre>655</pre></span><pre>	replaceSets = replaceMember</pre></div>
+<div class="cov"><span class="num"><pre>656</pre></span><pre>	sets = getMembers</pre></div>
+<div class="cov"><span class="num"><pre>657</pre></span><pre>	members = getMembers</pre></div>
+<div class="skip"><span class="num"><pre>658</pre></span><pre>	#} END name remapping </pre></div>
+<div class="skip"><span class="num"><pre>659</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>660</pre></span><pre>	#{ Protocols </pre></div>
+<div class="cov"><span class="num"><pre>661</pre></span><pre>	def __len__(self):</pre></div>
+<div class="cov"><span class="num"><pre>662</pre></span><pre>		return len(self.st.minputs())</pre></div>
+<div class="skip"><span class="num"><pre>663</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>664</pre></span><pre>	def __iter__(self):</pre></div>
+<div class="cov"><span class="num"><pre>665</pre></span><pre>		for s in self.getMembers():</pre></div>
+<div class="cov"><span class="num"><pre>666</pre></span><pre>			yield s</pre></div>
+<div class="skip"><span class="num"><pre>667</pre></span><pre>		# END for each member (ObjectSet)</pre></div>
+<div class="skip"><span class="num"><pre>668</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>669</pre></span><pre>	#} END protocols </pre></div>
+<div class="skip"><span class="num"><pre>670</pre></span><pre></pre></div>
+</div>
+</body>
+</html>

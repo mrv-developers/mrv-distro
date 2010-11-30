@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Development &mdash; mrv v1.0.1-develop documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.1-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="mrv v1.0.1-develop documentation" href="../index.html" />
+    <link rel="next" title="Environment" href="environment.html" />
+    <link rel="prev" title="Configuration" href="../conf.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="environment.html" title="Environment"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../conf.html" title="Configuration"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="development">
+<span id="development-label"></span><h1>Development<a class="headerlink" href="#development" title="Permalink to this headline">¶</a></h1>
+<p>MRV is a framework onto which new programs are easily being built, and it provides many tools to facilitate development and to help producing good software quickly.</p>
+<p>Setting up your development environment is the first step, which involves cloning the MRV mainline repository, and assuring that some prerequisites are met.</p>
+<p>The second part of this guide explains the naming conventions used in MRV and tells you about the development practices employed to produce it.</p>
+<p>At the end of this article, there are tips on how to optimize your code for performance, and how to contribute to the MRV project.</p>
+<div class="section" id="mailing-list">
+<h2>Mailing List<a class="headerlink" href="#mailing-list" title="Permalink to this headline">¶</a></h2>
+<p>If you get stuck or need some help regarding MRV, direct your questions to the mailing list:</p>
+<blockquote>
+<a class="reference external" href="http://groups.google.de/group/mrv-dev">http://groups.google.de/group/mrv-dev</a></blockquote>
+</div>
+<div class="section" id="bugs-and-issues">
+<h2>Bugs and Issues<a class="headerlink" href="#bugs-and-issues" title="Permalink to this headline">¶</a></h2>
+<p>Did you find a reproducable bug that should get fixed ? Please file it on lighthouse:</p>
+<blockquote>
+<a class="reference external" href="http://byronimo.lighthouseapp.com/projects/51780-mrv/overview">http://byronimo.lighthouseapp.com/projects/51780-mrv/overview</a></blockquote>
+</div>
+<div class="section" id="contents">
+<h2>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="environment.html">Environment</a><ul>
+<li class="toctree-l2"><a class="reference external" href="environment.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference external" href="environment.html#installation">Installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="conventions.html">Naming Conventions</a><ul>
+<li class="toctree-l2"><a class="reference external" href="conventions.html#method-names">Method Names</a></li>
+<li class="toctree-l2"><a class="reference external" href="conventions.html#variable-names">Variable Names</a></li>
+<li class="toctree-l2"><a class="reference external" href="conventions.html#method-aliases">Method Aliases</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="conventions.html#calling-mfnmethods">Calling MFnMethods</a></li>
+<li class="toctree-l1"><a class="reference external" href="contribute.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference external" href="contribute.html#using-git">Using Git</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="workflow.html">Workflow</a><ul>
+<li class="toctree-l2"><a class="reference external" href="workflow.html#id1">Test-Driven-Development</a></li>
+<li class="toctree-l2"><a class="reference external" href="workflow.html#running-tests">Running Tests</a></li>
+<li class="toctree-l2"><a class="reference external" href="workflow.html#ipython-and-imrv">IPython and IMRV</a></li>
+<li class="toctree-l2"><a class="reference external" href="workflow.html#avoiding-trouble-a-word-about-reference-counts">Avoiding Trouble - A Word about Reference Counts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="integrate.html">Integrating MRV into Production-Pipelines</a></li>
+<li class="toctree-l1"><a class="reference external" href="performance.html">Performance and Memory Considerations</a><ul>
+<li class="toctree-l2"><a class="reference external" href="performance.html#iterators">Iterators</a></li>
+<li class="toctree-l2"><a class="reference external" href="performance.html#undo">Undo</a></li>
+<li class="toctree-l2"><a class="reference external" href="performance.html#single-vs-multi">Single vs. Multi</a></li>
+<li class="toctree-l2"><a class="reference external" href="performance.html#convenience-methods">Convenience Methods</a></li>
+<li class="toctree-l2"><a class="reference external" href="performance.html#findplug-vs-node-plug">findPlug vs. node.plug</a></li>
+<li class="toctree-l2"><a class="reference external" href="performance.html#api-calling-convention">_api_ calling convention</a></li>
+<li class="toctree-l2"><a class="reference external" href="performance.html#python-method-caching">Python Method Caching</a></li>
+<li class="toctree-l2"><a class="reference external" href="performance.html#node-wrapping">Node-Wrapping</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="distribute/index.html">Distribution</a><ul>
+<li class="toctree-l2"><a class="reference external" href="distribute/pinfo.html">Project Information Module</a></li>
+<li class="toctree-l2"><a class="reference external" href="distribute/setup.html">The Setup Script</a></li>
+<li class="toctree-l2"><a class="reference external" href="distribute/docs.html">The Documentation Generator</a></li>
+<li class="toctree-l2"><a class="reference external" href="distribute/workflow.html">Distribution Workflow</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="projects.html">The Template Project</a><ul>
+<li class="toctree-l2"><a class="reference external" href="projects.html#todo">TODO</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="../index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#">Development</a><ul>
+<li><a class="reference external" href="#mailing-list">Mailing List</a></li>
+<li><a class="reference external" href="#bugs-and-issues">Bugs and Issues</a></li>
+<li><a class="reference external" href="#contents">Contents</a><ul>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="../conf.html"
+                                  title="previous chapter">Configuration</a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="environment.html"
+                                  title="next chapter">Environment</a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/develop/index.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="environment.html" title="Environment"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../conf.html" title="Configuration"
+             >previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Nov 30, 2010.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

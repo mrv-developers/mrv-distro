@@ -1,0 +1,781 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>mrv.maya.automation.qa &mdash; mrv v1.0.1-develop documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.1-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="mrv v1.0.1-develop documentation" href="../index.html" />
+    <link rel="next" title="mrv.maya.ui.layout" href="mrv.maya.ui.layout.html" />
+    <link rel="prev" title="mrv.maya.env" href="mrv.maya.env.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.ui.layout.html" title="mrv.maya.ui.layout"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.env.html" title="mrv.maya.env"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-mrv.maya.automation.qa">
+<h1><tt class="xref docutils literal"><span class="pre">mrv.maya.automation.qa</span></tt><a class="headerlink" href="#module-mrv.maya.automation.qa" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="api/mrv.maya.automation.qa-module.html">Epydoc: mrv.maya.automation.qa</a></p>
+<p>Specialization of workflow to allow checks to be natively implemented in MEL</p>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="api/mrv.maya.automation.qa-module.html#Mel">Epydoc: mrv.maya.automation.qa</a></p>
+<dl class="class">
+<dt id="mrv.maya.automation.qa.Mel">
+<em class="property">class </em><tt class="descclassname">mrv.maya.automation.qa.</tt><tt class="descname">Mel</tt><a class="headerlink" href="#mrv.maya.automation.qa.Mel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.util.Singleton" class="reference external" href="mrv.util.html#mrv.util.Singleton"><tt class="xref docutils literal"><span class="pre">mrv.util.Singleton</span></tt></a></p>
+<p>This class is a necessity for calling mel scripts from python. It allows scripts to be called
+in a cleaner fashion, by automatically formatting python arguments into a string
+which is executed via maya.mel.eval().</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">originated from pymel, added customizations</td>
+</tr>
+</tbody>
+</table>
+<dl class="staticmethod">
+<dt id="mrv.maya.automation.qa.Mel.call">
+<em class="property">static </em><tt class="descname">call</tt><big>(</big><em>command</em>, <em>*args</em><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.Mel.call" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call a mel script , very simpilar to Mel.myscript( args )</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Todo:</th><td class="field-body">more docs</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="mrv.maya.automation.qa.Mel.error">
+<em class="property">static </em><tt class="descname">error</tt><big>(</big><em>*args</em><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.Mel.error" title="Permalink to this definition">¶</a></dt>
+<dd>error</dd></dl>
+
+<dl class="staticmethod">
+<dt id="mrv.maya.automation.qa.Mel.eval">
+<em class="property">static </em><tt class="descname">eval</tt><big>(</big><em>command</em><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.Mel.eval" title="Permalink to this definition">¶</a></dt>
+<dd>same as maya.mel eval</dd></dl>
+
+<dl class="staticmethod">
+<dt id="mrv.maya.automation.qa.Mel.info">
+<em class="property">static </em><tt class="descname">info</tt><big>(</big><em>*args</em><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.Mel.info" title="Permalink to this definition">¶</a></dt>
+<dd>print</dd></dl>
+
+<dl class="staticmethod">
+<dt id="mrv.maya.automation.qa.Mel.mprint">
+<em class="property">static </em><tt class="descname">mprint</tt><big>(</big><em>*args</em><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.Mel.mprint" title="Permalink to this definition">¶</a></dt>
+<dd>mel print command in case the python print command doesn&#8217;t cut it. i have noticed that python print does not appear
+in certain output, such as the rush render-queue manager.</dd></dl>
+
+<dl class="staticmethod">
+<dt id="mrv.maya.automation.qa.Mel.trace">
+<em class="property">static </em><tt class="descname">trace</tt><big>(</big><em>*args</em><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.Mel.trace" title="Permalink to this definition">¶</a></dt>
+<dd>trace</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.automation.qa-module.html#QACheck">Epydoc: mrv.maya.automation.qa</a></p>
+<dl class="class">
+<dt id="mrv.maya.automation.qa.QACheck">
+<em class="property">class </em><tt class="descclassname">mrv.maya.automation.qa.</tt><tt class="descname">QACheck</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.QACheck" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.dge.plug" class="reference external" href="mrv.dge.html#mrv.dge.plug"><tt class="xref docutils literal"><span class="pre">mrv.dge.plug</span></tt></a></p>
+<p>Defines a test suitable to be run and computed by a <cite>QAProcessBase</cite>
+It&#8217;s nothing more than a convenience class as the actual information is held by the
+respective <cite>QACheckAttribute</cite>.
+All non-plug calls are passed on to the underlying attribute, allowing it to
+be treated like one</p>
+<dl class="method">
+<dt id="mrv.maya.automation.qa.QACheck.affected">
+<tt class="descname">affected</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.QACheck.affected" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">tuple containing affected plugs ( plugs that are affected by our value )</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.automation.qa.QACheck.affectedBy">
+<tt class="descname">affectedBy</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.QACheck.affectedBy" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">tuple containing plugs that affect us ( plugs affecting our value )</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.automation.qa.QACheck.affects">
+<tt class="descname">affects</tt><big>(</big><em>otherplug</em><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.QACheck.affects" title="Permalink to this definition">¶</a></dt>
+<dd>Set an affects relation ship between this plug and otherplug, saying
+that this plug affects otherplug.</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.automation.qa.QACheck.check_attribute_cls">
+<tt class="descname">check_attribute_cls</tt><a class="headerlink" href="#mrv.maya.automation.qa.QACheck.check_attribute_cls" title="Permalink to this definition">¶</a></dt>
+<dd>alias of <a title="mrv.maya.automation.qa.QACheckAttribute" class="reference internal" href="#mrv.maya.automation.qa.QACheckAttribute"><tt class="xref docutils literal"><span class="pre">QACheckAttribute</span></tt></a></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.automation.qa.QACheck.name">
+<tt class="descname">name</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.QACheck.name" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">name of plug</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.automation.qa.QACheck.providesInput">
+<tt class="descname">providesInput</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.QACheck.providesInput" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this is an input plug that will never cause computations</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.automation.qa.QACheck.providesOutput">
+<tt class="descname">providesOutput</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.QACheck.providesOutput" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this is an output plug that can trigger computations</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.automation.qa.QACheck.setName">
+<tt class="descname">setName</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.QACheck.setName" title="Permalink to this definition">¶</a></dt>
+<dd>Set the name of this plug - can be set only once</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.automation.qa-module.html#QACheckAttribute">Epydoc: mrv.maya.automation.qa</a></p>
+<dl class="class">
+<dt id="mrv.maya.automation.qa.QACheckAttribute">
+<em class="property">class </em><tt class="descclassname">mrv.maya.automation.qa.</tt><tt class="descname">QACheckAttribute</tt><big>(</big><em>annotation</em>, <em>has_fix=False</em>, <em>flags=4</em><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.QACheckAttribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.dge.Attribute" class="reference external" href="mrv.dge.html#mrv.dge.Attribute"><tt class="xref docutils literal"><span class="pre">mrv.dge.Attribute</span></tt></a></p>
+<p>The Test Attribute represents an interface to a specific test as implemented
+by the parent <cite>QAProcessBase</cite>.
+The QA Attribute returns specialized quality assurance results and provides
+additional information about the respective test</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">as this class holds meta information about the respective test ( see <cite>QACheck</cite> )
+user interfaces may use it to adjust it&#8217;s display</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">this class depends on unknown mel implementations - on error we abort
+but do not throw as this would cause class creation to fail and leave the whole
+qa system unusable</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mrv.maya.automation.qa.QACheckAttribute.affinity">
+<tt class="descname">affinity</tt><big>(</big><em>otherattr</em><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.QACheckAttribute.affinity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute affinity for otherattr.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">rating from 0 to 255 defining how good the attribtues match each
+other in general - how good can we store values of otherattr ? 
+Thus this comparison is directed.</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">for checking connections, use <cite>connectionAffinity</cite></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.automation.qa.QACheckAttribute.compatabilityRate">
+<tt class="descname">compatabilityRate</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.QACheckAttribute.compatabilityRate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute value&#8217;s compatability rate</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">value between 0 and 255, 0 means no compatability, 255 a perfect match. 
+if larger than 0, the plug can hold the value ( assumed the flags are set correctly ).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.automation.qa.QACheckAttribute.connectionAffinity">
+<tt class="descname">connectionAffinity</tt><big>(</big><em>destinationattr</em><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.QACheckAttribute.connectionAffinity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute connection affinity for given destination attribute</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">rating from 0 to 255 defining the quality of the connection to
+otherplug. an affinity of 0 mean connection is not possible, 255 mean the connection
+is perfectly suited.
+The connection is a directed one from self -&gt; otherplug</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.automation.qa.QACheckAttribute.default">
+<tt class="descname">default</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.QACheckAttribute.default" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">default value stored for this attribute, or raise</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">handles dynamic defaults, so you should not directly access the default member variable</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises MissingDefaultValueError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if attribute does not have a default value</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises TypeError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if value returned by dynamic attribute has incorrect type</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.automation.qa-module.html#QACheckResult">Epydoc: mrv.maya.automation.qa</a></p>
+<dl class="class">
+<dt id="mrv.maya.automation.qa.QACheckResult">
+<em class="property">class </em><tt class="descclassname">mrv.maya.automation.qa.</tt><tt class="descname">QACheckResult</tt><big>(</big><em>fixed_items=None</em>, <em>failed_items=None</em>, <em>header=''</em><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.QACheckResult" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>Wrapper class declaring test results as a type that provides a simple interface
+to retrieve the test results</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">test results are only reqtrieved by QACheckAttribute plugs</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mrv.maya.automation.qa.QACheckResult.failedItems">
+<tt class="descname">failedItems</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.QACheckResult.failedItems" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">( list( Item, ... ) list of failed items being items that could not be
+fixed and are not yet in the desired state</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.automation.qa.QACheckResult.fixedItems">
+<tt class="descname">fixedItems</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.QACheckResult.fixedItems" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list( Item , ... ) list of items ( the exact type may differ
+depending on the actual test ) which have been fixed so they represent the
+desired state</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.automation.qa.QACheckResult.isNull">
+<tt class="descname">isNull</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.QACheckResult.isNull" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if the test result is empty, and thus resembles a null value</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.automation.qa.QACheckResult.isSuccessful">
+<tt class="descname">isSuccessful</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.QACheckResult.isSuccessful" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if the check is successful, and False if there are at least some failed objects</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.automation.qa.QAMELCheck-class.html">Epydoc: mrv.maya.automation.qa.QAMELCheck</a></p>
+<dl class="class">
+<dt id="mrv.maya.automation.qa.QAMELCheck">
+<em class="property">class </em><tt class="descclassname">mrv.maya.automation.qa.</tt><tt class="descname">QAMELCheck</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.QAMELCheck" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.automation.qa.QACheck" class="reference external" href="mrv.automation.qa.html#mrv.automation.qa.QACheck"><tt class="xref docutils literal"><span class="pre">mrv.automation.qa.QACheck</span></tt></a></p>
+<p>Specialized version of the QACheck allowing to use our own MEL attribute
+contianiing more information</p>
+<dl class="method">
+<dt id="mrv.maya.automation.qa.QAMELCheck.affected">
+<tt class="descname">affected</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.QAMELCheck.affected" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">tuple containing affected plugs ( plugs that are affected by our value )</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.automation.qa.QAMELCheck.affectedBy">
+<tt class="descname">affectedBy</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.QAMELCheck.affectedBy" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">tuple containing plugs that affect us ( plugs affecting our value )</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.automation.qa.QAMELCheck.affects">
+<tt class="descname">affects</tt><big>(</big><em>otherplug</em><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.QAMELCheck.affects" title="Permalink to this definition">¶</a></dt>
+<dd>Set an affects relation ship between this plug and otherplug, saying
+that this plug affects otherplug.</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.automation.qa.QAMELCheck.check_attribute_cls">
+<tt class="descname">check_attribute_cls</tt><a class="headerlink" href="#mrv.maya.automation.qa.QAMELCheck.check_attribute_cls" title="Permalink to this definition">¶</a></dt>
+<dd>alias of <a title="mrv.maya.automation.qa.QAMELCheckAttribute" class="reference internal" href="#mrv.maya.automation.qa.QAMELCheckAttribute"><tt class="xref docutils literal"><span class="pre">QAMELCheckAttribute</span></tt></a></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.automation.qa.QAMELCheck.name">
+<tt class="descname">name</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.QAMELCheck.name" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">name of plug</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.automation.qa.QAMELCheck.providesInput">
+<tt class="descname">providesInput</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.QAMELCheck.providesInput" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this is an input plug that will never cause computations</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.automation.qa.QAMELCheck.providesOutput">
+<tt class="descname">providesOutput</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.QAMELCheck.providesOutput" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this is an output plug that can trigger computations</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.automation.qa.QAMELCheck.setName">
+<tt class="descname">setName</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.QAMELCheck.setName" title="Permalink to this definition">¶</a></dt>
+<dd>Set the name of this plug - can be set only once</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.automation.qa.QAMELCheckAttribute-class.html">Epydoc: mrv.maya.automation.qa.QAMELCheckAttribute</a></p>
+<dl class="class">
+<dt id="mrv.maya.automation.qa.QAMELCheckAttribute">
+<em class="property">class </em><tt class="descclassname">mrv.maya.automation.qa.</tt><tt class="descname">QAMELCheckAttribute</tt><big>(</big><em>annotation</em>, <em>has_fix=False</em>, <em>flags=4</em><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.QAMELCheckAttribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.automation.qa.QACheckAttribute" class="reference external" href="mrv.automation.qa.html#mrv.automation.qa.QACheckAttribute"><tt class="xref docutils literal"><span class="pre">mrv.automation.qa.QACheckAttribute</span></tt></a></p>
+<p>Attribute identifying a MEL check carrying additional mel specific attributes</p>
+<dl class="method">
+<dt id="mrv.maya.automation.qa.QAMELCheckAttribute.affinity">
+<tt class="descname">affinity</tt><big>(</big><em>otherattr</em><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.QAMELCheckAttribute.affinity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute affinity for otherattr.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">rating from 0 to 255 defining how good the attribtues match each
+other in general - how good can we store values of otherattr ? 
+Thus this comparison is directed.</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">for checking connections, use <cite>connectionAffinity</cite></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.automation.qa.QAMELCheckAttribute.compatabilityRate">
+<tt class="descname">compatabilityRate</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.QAMELCheckAttribute.compatabilityRate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute value&#8217;s compatability rate</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">value between 0 and 255, 0 means no compatability, 255 a perfect match. 
+if larger than 0, the plug can hold the value ( assumed the flags are set correctly ).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.automation.qa.QAMELCheckAttribute.connectionAffinity">
+<tt class="descname">connectionAffinity</tt><big>(</big><em>destinationattr</em><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.QAMELCheckAttribute.connectionAffinity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute connection affinity for given destination attribute</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">rating from 0 to 255 defining the quality of the connection to
+otherplug. an affinity of 0 mean connection is not possible, 255 mean the connection
+is perfectly suited.
+The connection is a directed one from self -&gt; otherplug</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.automation.qa.QAMELCheckAttribute.default">
+<tt class="descname">default</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.QAMELCheckAttribute.default" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">default value stored for this attribute, or raise</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">handles dynamic defaults, so you should not directly access the default member variable</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises MissingDefaultValueError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if attribute does not have a default value</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises TypeError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if value returned by dynamic attribute has incorrect type</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.automation.qa.QAMELMixin-class.html">Epydoc: mrv.maya.automation.qa.QAMELMixin</a></p>
+<dl class="class">
+<dt id="mrv.maya.automation.qa.QAMELMixin">
+<em class="property">class </em><tt class="descclassname">mrv.maya.automation.qa.</tt><tt class="descname">QAMELMixin</tt><a class="headerlink" href="#mrv.maya.automation.qa.QAMELMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>Base class allowing to process MEL baesd plugs as created by our metaclass</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">this class assumes it is used on a process</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt><strong>Configuration</strong>:</dt>
+<dd><p class="first">The following variables MUST be used to setup this class once you have derived
+from it:</p>
+<blockquote>
+<ul>
+<li><dl class="first docutils">
+<dt>mel_index_proc:</dt>
+<dd><dl class="first last docutils">
+<dt>produdure name with signature func( ) returning string array in following format:</dt>
+<dd><p class="first last">[n*3+0] = checkname : the name of the check, use CamelCase names or names_with_underscore
+The checkname is also used as id to identify the check lateron
+[n*3+1] = description: Single sentence desciption of the check targeted at the end user
+[n*3+2] = can_fix:      Boolean value indicating whether the check can also fix the issue</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>mel_check_proc:</dt>
+<dd><dl class="first docutils">
+<dt>procedure called to actually process the given check, signature is:</dt>
+<dd><p class="first">func( check_name, should_fix )
+returning list of strings as follows:</p>
+<blockquote class="last">
+<p>[0] = x number of fixed items
+[1] = header
+[1:1+x] = x fixed items
+[2+x:n] = n invalid items</p>
+</blockquote>
+</dd>
+</dl>
+<p>items are either objects or in general anything you check for. The check is
+considered to be failed if there is at least one invalid item.</p>
+<p class="last">If you fixed items, all previously failed items should now be returned as
+valid items</p>
+</dd>
+</dl>
+</li>
+</ul>
+</blockquote>
+<dl class="last docutils">
+<dt>static_mel_plugs:</dt>
+<dd>Please note that your class must implemnent plugs and extend the super class
+result by the result of <cite>listMELChecks</cite> to dynamically retrieve the available
+checks</dd>
+</dl>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="mrv.maya.automation.qa.QAMELMixin.check_plug_cls">
+<tt class="descname">check_plug_cls</tt><a class="headerlink" href="#mrv.maya.automation.qa.QAMELMixin.check_plug_cls" title="Permalink to this definition">¶</a></dt>
+<dd>Specialized version of the QACheck allowing to use our own MEL attribute
+contianiing more information</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.automation.qa.QAMELMixin.check_result_cls">
+<tt class="descname">check_result_cls</tt><a class="headerlink" href="#mrv.maya.automation.qa.QAMELMixin.check_result_cls" title="Permalink to this definition">¶</a></dt>
+<dd>alias of <a title="mrv.maya.automation.qa.QACheckResult" class="reference internal" href="#mrv.maya.automation.qa.QACheckResult"><tt class="xref docutils literal"><span class="pre">QACheckResult</span></tt></a></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.automation.qa.QAMELMixin.handleMELCheck">
+<tt class="descname">handleMELCheck</tt><big>(</big><em>check</em>, <em>mode</em><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.QAMELMixin.handleMELCheck" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called to handle the given check in the given mode</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name" colspan="2">Raises RuntimeError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">If MEL throws an error</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">QACheckResult of the result generated by MEL</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.automation.qa.QAMELMixin.isMELCheck">
+<tt class="descname">isMELCheck</tt><big>(</big><em>check</em><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.QAMELMixin.isMELCheck" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if the given check plug is implemented in MEL and can be handled
+there accordingly</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.automation.qa.QAMELMixin.listMELChecks">
+<tt class="descname">listMELChecks</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.QAMELMixin.listMELChecks" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list all checks ( Plugs ) available on this class that are implemented
+in MEL</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.maya.automation.qa.QAMELMixin.melChecks">
+<em class="property">classmethod </em><tt class="descname">melChecks</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x54267d0&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.automation.qa.QAMELMixin.melChecks" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of MEL checks ( plugs ) representing checks defined by MEL</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; only return plug if predicate( item ) yield True</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.automation.qa.QAMetaMel-class.html">Epydoc: mrv.maya.automation.qa.QAMetaMel</a></p>
+<dl class="class">
+<dt id="mrv.maya.automation.qa.QAMetaMel">
+<em class="property">class </em><tt class="descclassname">mrv.maya.automation.qa.</tt><tt class="descname">QAMetaMel</tt><a class="headerlink" href="#mrv.maya.automation.qa.QAMetaMel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.dge._NodeBaseCheckMeta" class="reference external" href="mrv.dge.html#mrv.dge._NodeBaseCheckMeta"><tt class="xref docutils literal"><span class="pre">mrv.dge._NodeBaseCheckMeta</span></tt></a></p>
+<p>Metaclass allowing to create plugs based on a MEL implementation, allowing
+to decide whether checks are Python or MEL implemented, but still running natively
+in python</p>
+<dl class="attribute">
+<dt id="mrv.maya.automation.qa.QAMetaMel.mro">
+<tt class="descname">mro</tt><a class="headerlink" href="#mrv.maya.automation.qa.QAMetaMel.mro" title="Permalink to this definition">¶</a></dt>
+<dd>mro() -&gt; list
+return a type&#8217;s method resolution order</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.automation.qa-module.html#_NodeBaseCheckMeta">Epydoc: mrv.maya.automation.qa</a></p>
+<dl class="class">
+<dt id="mrv.maya.automation.qa._NodeBaseCheckMeta">
+<em class="property">class </em><tt class="descclassname">mrv.maya.automation.qa.</tt><tt class="descname">_NodeBaseCheckMeta</tt><a class="headerlink" href="#mrv.maya.automation.qa._NodeBaseCheckMeta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">type</span></tt></p>
+<p>Class checking the consistency of the nodebase class before it is being created</p>
+<dl class="attribute">
+<dt id="mrv.maya.automation.qa._NodeBaseCheckMeta.mro">
+<tt class="descname">mro</tt><a class="headerlink" href="#mrv.maya.automation.qa._NodeBaseCheckMeta.mro" title="Permalink to this definition">¶</a></dt>
+<dd>mro() -&gt; list
+return a type&#8217;s method resolution order</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="../index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#"><tt class="docutils literal"><span class="pre">mrv.maya.automation.qa</span></tt></a><ul>
+<li><a class="reference external" href="#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="mrv.maya.env.html"
+                                  title="previous chapter"><tt class="docutils literal"><span class="pre">mrv.maya.env</span></tt></a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="mrv.maya.ui.layout.html"
+                                  title="next chapter"><tt class="docutils literal"><span class="pre">mrv.maya.ui.layout</span></tt></a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/generated/mrv.maya.automation.qa.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.ui.layout.html" title="mrv.maya.ui.layout"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.env.html" title="mrv.maya.env"
+             >previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Nov 30, 2010.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

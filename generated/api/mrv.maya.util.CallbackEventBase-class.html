@@ -1,0 +1,659 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>mrv.maya.util.CallbackEventBase</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="mrv-module.html">Package&nbsp;mrv</a> ::
+        <a href="mrv.maya-module.html">Package&nbsp;maya</a> ::
+        <a href="mrv.maya.util-module.html">Module&nbsp;util</a> ::
+        Class&nbsp;CallbackEventBase
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="mrv.maya.util.CallbackEventBase-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class CallbackEventBase</h1><p class="nomargin-top"><span class="codelink"><a href="mrv.maya.util-pysrc.html#CallbackEventBase">source&nbsp;code</a></span></p>
+<pre class="base-tree">
+object --+    
+         |    
+<a href="mrv.util.Event-class.html">util.Event</a> --+
+             |
+            <strong class="uidshort">CallbackEventBase</strong>
+</pre>
+
+<hr />
+<p>Allows the mapping of MMessage callbacks to mrv's event sender system.
+This event will register a new message once the first event receiver registers
+itself. Once the last event receiver deregisters, the message will be deregistered in
+maya as well.</p>
+<p>Derived types have to implement the <a href="mrv.maya.util.CallbackEventBase-class.html#_getRegisterFunction" class="link" onclick="show_private();">_getRegisterFunction</a></p>
+
+<hr />
+<div class="fields">      <p><strong>Note:</strong>
+        Its important that you care about deregistering your event to make sure the maya event can
+be deregistered. Its worth knowing that the eventSender in question is strongly
+bound to his callback event, so it cannot be deleted while the event is active.
+      </p>
+</div><!-- ==================== NESTED CLASSES ==================== -->
+<a name="section-NestedClasses"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Nested Classes</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-NestedClasses"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Utility Classes</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="mrv.maya.util.CallbackEventBase.CBStorageFunction-class.html" class="summary-name">CBStorageFunction</a>
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.util.CallbackEventBase-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">eventId</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Initialize our instance with the callbackID we are to represent.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.util-pysrc.html#CallbackEventBase.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.util.CallbackEventBase-class.html#send" class="summary-sig-name">send</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">inst</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Sets our instance prior to calling the super class</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.util-pysrc.html#CallbackEventBase.send">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.util.CallbackEventBase-class.html#__set__" class="summary-sig-name">__set__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">inst</span>,
+        <span class="summary-sig-arg">eventfunc</span>)</span><br />
+      Set a new event to our object</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.util-pysrc.html#CallbackEventBase.__set__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.util.CallbackEventBase-class.html#remove" class="summary-sig-name">remove</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">eventfunc</span>)</span><br />
+      Also removes our callback if the last receiver is gone</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.util-pysrc.html#CallbackEventBase.remove">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.util.Event-class.html">util.Event</a></code></b>:
+      <code><a href="mrv.util.Event-class.html#__call__">__call__</a></code>,
+      <code><a href="mrv.util.Event-class.html#__get__">__get__</a></code>,
+      <code><a href="mrv.util.Event-class.html#duplicate">duplicate</a></code>
+      </p>
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.util.Event-class.html">util.Event</a></code></b> (private):
+      <code><a href="mrv.util.Event-class.html#_func_to_key" onclick="show_private();">_func_to_key</a></code>,
+      <code><a href="mrv.util.Event-class.html#_getFunctionSet" onclick="show_private();">_getFunctionSet</a></code>,
+      <code><a href="mrv.util.Event-class.html#_get_last_instance" onclick="show_private();">_get_last_instance</a></code>,
+      <code><a href="mrv.util.Event-class.html#_key_to_func" onclick="show_private();">_key_to_func</a></code>
+      </p></div>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__str__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8"  class="private">
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Subclass Implementation Needed</th></tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.util.CallbackEventBase-class.html#_getRegisterFunction" class="summary-sig-name" onclick="show_private();">_getRegisterFunction</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">eventID</span>)</span><br />
+      Returns:
+MMessage::register* compatible callback function which can be
+used to register the given eventID</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.util-pysrc.html#CallbackEventBase._getRegisterFunction">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8"  class="private">
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;CallbackID handling</th></tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.util.CallbackEventBase-class.html#_storeCallbackID" class="summary-sig-name" onclick="show_private();">_storeCallbackID</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">inst</span>,
+        <span class="summary-sig-arg">callbackID</span>)</span><br />
+      Store the given callbackID in the event sender instance.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.util-pysrc.html#CallbackEventBase._storeCallbackID">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.util.CallbackEventBase-class.html#_getCallbackIDStorage" class="summary-sig-name" onclick="show_private();">_getCallbackIDStorage</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">inst</span>,
+        <span class="summary-sig-arg">create</span>=<span class="summary-sig-default">False</span>)</span><br />
+      Returns:
+Callback storage function if it exists or None</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.util-pysrc.html#CallbackEventBase._getCallbackIDStorage">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.util.CallbackEventBase-class.html#_getCallbackID" class="summary-sig-name" onclick="show_private();">_getCallbackID</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">inst</span>)</span><br />
+      Returns:
+stored callback ID or None</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.util-pysrc.html#CallbackEventBase._getCallbackID">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.util.Event-class.html">util.Event</a></code></b>:
+      <code><a href="mrv.util.Event-class.html#remove_on_error">remove_on_error</a></code>,
+      <code><a href="mrv.util.Event-class.html#sender_as_argument">sender_as_argument</a></code>,
+      <code><a href="mrv.util.Event-class.html#use_weakref">use_weakref</a></code>
+      </p>
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.util.Event-class.html">util.Event</a></code></b> (private):
+      <code><a href="mrv.util.Event-class.html#_curSender" onclick="show_private();">_curSender</a></code>,
+      <code><a href="mrv.util.Event-class.html#_inst_event_attr" onclick="show_private();">_inst_event_attr</a></code>
+      </p></div>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">eventId</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.util-pysrc.html#CallbackEventBase.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Initialize our instance with the callbackID we are to represent.
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>kwargs</code></strong> - <ul>
+<li><dl class="rst-rst-first rst-rst-docutils rst-first rst-docutils">
+<dt>weak: if True, default class configuration use_weakref, weak</dt>
+<dd><p class="rst-rst-first rst-rst-last rst-first rst-last">references will be created for event handlers, if False it will be strong
+references</p>
+</dd>
+</dl>
+</li>
+<li><dl class="rst-rst-first rst-rst-docutils rst-first rst-docutils">
+<dt>remove_failed: if True, defailt False, failed callback handlers</dt>
+<dd><p class="rst-rst-first rst-rst-last rst-first rst-last">will be removed silently</p>
+</dd>
+</dl>
+</li>
+</ul></li>
+    </ul></dd>
+    <dt>Overrides:
+        object.__init__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_getRegisterFunction"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_getRegisterFunction</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">eventID</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.util-pysrc.html#CallbackEventBase._getRegisterFunction">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>MMessage::register* compatible callback function which can be
+used to register the given eventID</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_storeCallbackID"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_storeCallbackID</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">inst</span>,
+        <span class="sig-arg">callbackID</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.util-pysrc.html#CallbackEventBase._storeCallbackID">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Store the given callbackID in the event sender instance.
+We do that by registering it as function for the given instance which
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>the callback ID on call</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_getCallbackIDStorage"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_getCallbackIDStorage</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">inst</span>,
+        <span class="sig-arg">create</span>=<span class="sig-default">False</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.util-pysrc.html#CallbackEventBase._getCallbackIDStorage">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>create</code></strong> - if True, the storage will be created if needed, hence
+you will always receive a valid storage</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>Callback storage function if it exists or None</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_getCallbackID"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_getCallbackID</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">inst</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.util-pysrc.html#CallbackEventBase._getCallbackID">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>stored callback ID or None</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="send"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">send</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">inst</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.util-pysrc.html#CallbackEventBase.send">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Sets our instance prior to calling the super class
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>False if at least one event call threw an exception, true otherwise</dd>
+    <dt>Overrides:
+        <a href="mrv.util.Event-class.html#send">util.Event.send</a>
+    </dt>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        must not be called manually
+      </p>
+</div></td></tr></table>
+</div>
+<a name="__set__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__set__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">inst</span>,
+        <span class="sig-arg">eventfunc</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.util-pysrc.html#CallbackEventBase.__set__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Set a new event to our object
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="mrv.util.Event-class.html#__set__">util.Event.__set__</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="remove"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">remove</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">eventfunc</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.util-pysrc.html#CallbackEventBase.remove">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Also removes our callback if the last receiver is gone
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="mrv.util.Event-class.html#remove">util.Event.remove</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Nov 30 14:48:38 2010
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

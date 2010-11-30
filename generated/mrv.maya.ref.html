@@ -1,0 +1,2004 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>mrv.maya.ref &mdash; mrv v1.0.1-develop documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.1-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="mrv v1.0.1-develop documentation" href="../index.html" />
+    <link rel="next" title="mrv.maya.all" href="mrv.maya.all.html" />
+    <link rel="prev" title="mrv.maya.util" href="mrv.maya.util.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.all.html" title="mrv.maya.all"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.util.html" title="mrv.maya.util"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-mrv.maya.ref">
+<h1><tt class="xref docutils literal"><span class="pre">mrv.maya.ref</span></tt><a class="headerlink" href="#module-mrv.maya.ref" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="api/mrv.maya.ref-module.html">Epydoc: mrv.maya.ref</a></p>
+<p>Allows convenient access and handling of references in an object oriented manner</p>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mrv.maya.ref._isRootOf">
+<tt class="descclassname">mrv.maya.ref.</tt><tt class="descname">_isRootOf</tt><big>(</big><em>root</em>, <em>other</em><big>)</big><a class="headerlink" href="#mrv.maya.ref._isRootOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if other which may be a string, is rooted at &#8216;root</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>other</em> &#8211; &#8216;&#8217; = root namespace&#8217;
+hello:world =&gt; :hello:world</li>
+<li><em>root</em> &#8211; may be namespace or string. It must not have a &#8216;:&#8217; in front, 
+hence it must be a relative naespace, and must end with a &#8216;:&#8217;.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">the arguments are very specific, but this allows the method 
+to be faster than usual</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.ref.createReference">
+<tt class="descclassname">mrv.maya.ref.</tt><tt class="descname">createReference</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.createReference" title="Permalink to this definition">¶</a></dt>
+<dd>create a new reference, see <cite>FileReference.create</cite> for more information</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.ref.listReferences">
+<tt class="descclassname">mrv.maya.ref.</tt><tt class="descname">listReferences</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.listReferences" title="Permalink to this definition">¶</a></dt>
+<dd>List intermediate references of in the scene, see <cite>FileReference.ls</cite> for 
+more information</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.ref.make_path">
+<tt class="descclassname">mrv.maya.ref.</tt><tt class="descname">make_path</tt><big>(</big><em>path</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.make_path" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">A path instance of the correct type</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">use this constructor if you use the Path.set_separator method at runtime
+to assure you will always create instances of the actual type, and not only
+of the type you imported last</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.ref.noneToList">
+<tt class="descclassname">mrv.maya.ref.</tt><tt class="descname">noneToList</tt><big>(</big><em>res</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.noneToList" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list instead of None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="api/mrv.maya.ref-module.html#And">Epydoc: mrv.maya.ref</a></p>
+<dl class="class">
+<dt id="mrv.maya.ref.And">
+<em class="property">class </em><tt class="descclassname">mrv.maya.ref.</tt><tt class="descname">And</tt><big>(</big><em>*args</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.And" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>For use with python&#8217;s filter method, simulates logical AND
+Usage: filter( And( f1,f2,fn ), sequence )</p>
+<dl class="attribute">
+<dt id="mrv.maya.ref.And.functions">
+<tt class="descname">functions</tt><a class="headerlink" href="#mrv.maya.ref.And.functions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.ref.FileReference-class.html">Epydoc: mrv.maya.ref.FileReference</a></p>
+<dl class="class">
+<dt id="mrv.maya.ref.FileReference">
+<em class="property">class </em><tt class="descclassname">mrv.maya.ref.</tt><tt class="descname">FileReference</tt><big>(</big><em>filepath=None</em>, <em>refnode=None</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.FileReference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.interface.iDagItem" class="reference external" href="mrv.interface.html#mrv.interface.iDagItem"><tt class="xref docutils literal"><span class="pre">mrv.interface.iDagItem</span></tt></a></p>
+<p>Represents a Maya file reference</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">do not cache these instances but get a fresh one when you have to work with it</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">as FileReference is also a iDagItem, all the respective methods, especially for
+parent/child iteration and query can be used as well</td>
+</tr>
+</tbody>
+</table>
+<dl class="classmethod">
+<dt id="mrv.maya.ref.FileReference.addSep">
+<em class="property">classmethod </em><tt class="descname">addSep</tt><big>(</big><em>item</em>, <em>sep</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.FileReference.addSep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">item with separator added to it ( just once )</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">operates best on strings</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>item</em> &#8211; item to add separator to</li>
+<li><em>sep</em> &#8211; the separator</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.FileReference.basename">
+<tt class="descname">basename</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ref.FileReference.basename" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">basename of this path, &#8216;/hello/world&#8217; -&gt; &#8216;world&#8217;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.FileReference.children">
+<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x5410b90&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.FileReference.children" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">all intermediate child references of this instance</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.FileReference.childrenDeep">
+<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee668&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.FileReference.childrenDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of all children of path, [ child1 , child2 ]</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>order</em> &#8211; order enumeration</li>
+<li><em>predicate</em> &#8211; returns true if x may be returned</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">the child objects returned are supposed to be valid paths, not just relative paths</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.FileReference.cleanup">
+<tt class="descname">cleanup</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.FileReference.cleanup" title="Permalink to this definition">¶</a></dt>
+<dd><p>remove unresolved edits or all edits on this reference</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>unresolvedEdits</em> &#8211; if True, only dangling connections will be removed,
+if False, all reference edits will be removed - the reference will be unloaded for beforehand.
+The loading state of the reference will stay unchanged after the operation.</li>
+<li><em>editTypes</em> &#8211; list of edit types to remove during cleanup</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">self</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.FileReference.copynumber">
+<tt class="descname">copynumber</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ref.FileReference.copynumber" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the references copy number - starting at 0 for the first reference</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">we do not cache the copy number as mayas internal numbering can change on
+when references change - the only stable thing is the reference node name</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.maya.ref.FileReference.create">
+<em class="property">classmethod </em><tt class="descname">create</tt><big>(</big><em>filepath</em>, <em>namespace=None</em>, <em>load=True</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.FileReference.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a reference with the given namespace</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>filepath</em> &#8211; path describing the reference file location</li>
+<li><em>namespace</em> &#8211; if None, a unique namespace will be generated for you
+The namespace will contain all referenced objects.</li>
+<li><em>load</em> &#8211; if True, the reference will be created in loaded state, other
+wise its loading is deferred</li>
+<li><em>kwargs</em> &#8211; passed to file command</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises ValueError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first">if the namespace does already exist</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises RuntimeError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">if the reference could not be created</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.FileReference.exists">
+<tt class="descname">exists</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ref.FileReference.exists" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if our file reference exists in maya</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.maya.ref.FileReference.fromPaths">
+<em class="property">classmethod </em><tt class="descname">fromPaths</tt><big>(</big><em>paths</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.FileReference.fromPaths" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the reference for each path in paths. If you provide the path X
+2 times, but you only have one reference to X, the return value will be 
+[ FileReference(X), None ] as there are less references than provided paths.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>paths</em> &#8211; a list of paths or references whose references in the scene 
+should be returned. In case a reference is found, its plain path will be 
+used instead.</li>
+<li><em>kwargs</em> &#8211; <p>all supported by <cite>ls</cite> to yield the base set of references
+we will use to match the paths with. Additionally, you may specify:</p>
+<blockquote>
+<ul>
+<li><dl class="first docutils">
+<dt>ignore_extension: </dt>
+<dd>if True, default False, the extension will be ignored
+during the search, only the actual base name will matter.
+This way, an MA file will be matched with an MB file. 
+The references returned will still have their extension original extension.</dd>
+</dl>
+</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list( FileReference|None, ... )
+if a filereference was found for given occurrence of Path, it will be returned
+at index of the current path in the input paths, otherwise it is None.</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">zip( paths, result ) to get a corresponding tuple list associating each input path
+with the located reference</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.FileReference.fullChildName">
+<tt class="descname">fullChildName</tt><big>(</big><em>childname</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.FileReference.fullChildName" title="Permalink to this definition">¶</a></dt>
+<dd>Add the given name to the string version of our instance
+:return: string with childname added like name _sep childname</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.FileReference.importRef">
+<tt class="descname">importRef</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.FileReference.importRef" title="Permalink to this definition">¶</a></dt>
+<dd><p>Import the reference until the given depth is reached</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>depth</em> &#8211; <ul>
+<li>x&lt;1: import all references and subreferences</li>
+<li><dl class="first docutils">
+<dt>x: import until level x is reached, 0 imports just self such that</dt>
+<dd>all its children are on the same level as self was before import</dd>
+</dl>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of FileReference objects that are now in the root namespace - this
+list could be empty if all subreferences are fully imported</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.FileReference.isLoaded">
+<tt class="descname">isLoaded</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ref.FileReference.isLoaded" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if the reference is loaded</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.FileReference.isLocked">
+<tt class="descname">isLocked</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ref.FileReference.isLocked" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if reference is locked</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.FileReference.isPartOf">
+<tt class="descname">isPartOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.FileReference.isPartOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if self is a part of other, and thus can be found in other</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings only</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.FileReference.isRoot">
+<tt class="descname">isRoot</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ref.FileReference.isRoot" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this path is the root of the DAG</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.FileReference.isRootOf">
+<tt class="descname">isRootOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.FileReference.isRootOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True other starts with self</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">we assume other has the same type as self, thus the same separator</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.FileReference.iterNodes">
+<tt class="descname">iterNodes</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.FileReference.iterNodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates iterator over nodes in this reference</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>args</em> &#8211; MFn.kType filter ids to be used to pre-filter all nodes.
+If you know what you are looking for, setting this can greatly improve 
+performance !</li>
+<li><em>kwargs</em> &#8211; <p>additional kwargs will be passed to either <cite>iterDagNodes</cite>
+or <cite>iterDgNodes</cite> ( dag = False ). The following additional kwargs may
+be specified:</p>
+<blockquote>
+<ul>
+<li><dl class="first docutils">
+<dt>asNode: </dt>
+<dd>if True, default True, return wrapped Nodes, if False MDagPaths
+or MObjects will be returned</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>dag: </dt>
+<dd>if True, default False, return dag nodes only. Otherwise return dependency nodes 
+as well. Enables assemblies and assembilesInReference.</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>assemblies: </dt>
+<dd>if True, return only dagNodes with no parent. Needs dag and 
+is mutually exclusive with assembilesInReference.</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>assembliesInReference: </dt>
+<dd>if True, return only dag nodes that have no
+parent in their own reference. They may have a parent not coming from their
+reference though. This flag has a big negative performance impact and requires dag.</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>predicate: </dt>
+<dd>if function returns True for Node|MObject|MDagPath n, n will be yielded.
+Defaults to return True for all.</dd>
+</dl>
+</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises ValueError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">if incompatible arguments have been given</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.FileReference.iterParents">
+<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee2a8&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.FileReference.iterParents" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">generator retrieving all parents up to the root</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; returns True for all x that you want to be returned</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.maya.ref.FileReference.ls">
+<em class="property">classmethod </em><tt class="descname">ls</tt><big>(</big><em>rootReference=''</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x5410500&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.FileReference.ls" title="Permalink to this definition">¶</a></dt>
+<dd><p>list all references in the scene or under the given root</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>rootReference</em> &#8211; if not empty, the references below it will be returned.
+Otherwise all scene references will be listed.
+May be string, Path or FileReference</li>
+<li><em>predicate</em> &#8211; method returning true for each valid file reference object that 
+should be part of the return value.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of <cite>FileReference</cite> s objects</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.maya.ref.FileReference.lsDeep">
+<em class="property">classmethod </em><tt class="descname">lsDeep</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x54105f0&gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.FileReference.lsDeep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all references recursively</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>kwargs</em> &#8211; support for arguments as in <cite>ls</cite>, hence you can use the 
+rootReference flag to restrict the set of returned FileReferences.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.FileReference.namespace">
+<tt class="descname">namespace</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ref.FileReference.namespace" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">namespace object of the full namespace holding all objects in this reference</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.FileReference.parent">
+<tt class="descname">parent</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ref.FileReference.parent" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the parent reference of this instance or None if we are root</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.FileReference.parentDeep">
+<tt class="descname">parentDeep</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ref.FileReference.parentDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">all parents of this path, &#8216;/hello/my/world&#8217; -&gt; [ &#8216;/hello/my&#8217;,&#8217;/hello&#8217; ]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.FileReference.path">
+<tt class="descname">path</tt><big>(</big><em>copynumber=False</em>, <em>unresolved=False</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.FileReference.path" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Path object with the path containing the reference&#8217;s data</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>copynumber</em> &#8211; If True, the returned path will include the copy number.
+As it will be a path object, it might not be fully usable in that state</li>
+<li><em>unresolved</em> &#8211; see <cite>ls</cite></li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">we always query it from maya as our numbers change if some other
+reference is being removed and cannot be trusted</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.FileReference.referenceNode">
+<tt class="descname">referenceNode</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ref.FileReference.referenceNode" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">wrapped reference node managing this reference</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.FileReference.remove">
+<tt class="descname">remove</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.FileReference.remove" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the given reference from the scene</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">assures that no namespaces of that reference are left, remaining objects
+will be moved into the root namespace. This way the namespaces will not be left as waste.
+This fails if there are referenced objects in the subnamespace - we currently 
+ignore that issue as the main reference removal worked at that point.</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">kwargs passed to namespace.delete</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.FileReference.replace">
+<tt class="descname">replace</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.FileReference.replace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace this reference with filepath</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>filepath</em> &#8211; the path to the file to replace this reference with
+Reference instances will be handled as well.</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.FileReference.root">
+<tt class="descname">root</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ref.FileReference.root" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the root of the DAG - it has no further parents</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.FileReference.setLoaded">
+<tt class="descname">setLoaded</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.FileReference.setLoaded" title="Permalink to this definition">¶</a></dt>
+<dd><p>set the reference loaded or unloaded</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>state</em> &#8211; True = unload reference, True = load reference</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.FileReference.setLocked">
+<tt class="descname">setLocked</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.FileReference.setLocked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the reference to be locked or unlocked</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>state</em> &#8211; if True, the reference is locked , if False its unlocked and
+can be altered</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.FileReference.setNamespace">
+<tt class="descname">setNamespace</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.FileReference.setNamespace" title="Permalink to this definition">¶</a></dt>
+<dd><p>set the reference to use the given namespace</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>namespace</em> &#8211; Namespace instance or name of the short namespace</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises RuntimeError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if namespace already exists or if reference is not root</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.FileReference.supports">
+<tt class="descname">supports</tt><big>(</big><em>interface_type</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.FileReference.supports" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this instance supports the interface of the given type</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>interface_type</em> &#8211; Type of the interface you require this instance 
+to support</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Must be used in case you only have a weak reference of your interface
+instance or proxy which is a case where the ordinary isinstance( obj, iInterface )
+will not work</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.ref-module.html#Namespace">Epydoc: mrv.maya.ref</a></p>
+<dl class="class">
+<dt id="mrv.maya.ref.Namespace">
+<em class="property">class </em><tt class="descclassname">mrv.maya.ref.</tt><tt class="descname">Namespace</tt><a class="headerlink" href="#mrv.maya.ref.Namespace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">unicode</span></tt>, <a title="mrv.interface.iDagItem" class="reference external" href="mrv.interface.html#mrv.interface.iDagItem"><tt class="xref docutils literal"><span class="pre">mrv.interface.iDagItem</span></tt></a></p>
+<p>Represents a Maya namespace
+Namespaces follow the given nameing conventions:</p>
+<blockquote>
+<ul class="simple">
+<li>Paths starting with a column are absolute</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>:absolute:path</li>
+</ul>
+</blockquote>
+<ul class="simple">
+<li>Path separator is &#8216;:&#8217;</li>
+</ul>
+</blockquote>
+<dl class="classmethod">
+<dt id="mrv.maya.ref.Namespace.addSep">
+<em class="property">classmethod </em><tt class="descname">addSep</tt><big>(</big><em>item</em>, <em>sep</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.Namespace.addSep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">item with separator added to it ( just once )</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">operates best on strings</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>item</em> &#8211; item to add separator to</li>
+<li><em>sep</em> &#8211; the separator</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.Namespace.basename">
+<tt class="descname">basename</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ref.Namespace.basename" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">basename of this path, &#8216;/hello/world&#8217; -&gt; &#8216;world&#8217;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.capitalize">
+<tt class="descname">capitalize</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.capitalize" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.capitalize() -&gt; unicode</p>
+<p>Return a capitalized version of S, i.e. make the first character
+have upper case.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.center">
+<tt class="descname">center</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.center" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.center(width[, fillchar]) -&gt; unicode</p>
+<p>Return S centered in a Unicode string of length width. Padding is
+done using the specified fill character (default is a space)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.Namespace.children">
+<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x5408d70&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.Namespace.children" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of child namespaces</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; return True to include x in result</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.Namespace.childrenDeep">
+<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee668&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.Namespace.childrenDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of all children of path, [ child1 , child2 ]</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>order</em> &#8211; order enumeration</li>
+<li><em>predicate</em> &#8211; returns true if x may be returned</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">the child objects returned are supposed to be valid paths, not just relative paths</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.count">
+<tt class="descname">count</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.count" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.count(sub[, start[, end]]) -&gt; int</p>
+<p>Return the number of non-overlapping occurrences of substring sub in
+Unicode string S[start:end].  Optional arguments start and end are
+interpreted as in slice notation.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.maya.ref.Namespace.create">
+<em class="property">classmethod </em><tt class="descname">create</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.Namespace.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new namespace</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>namespaceName</em> &#8211; the name of the namespace, absolute or relative -
+it may contain subspaces too, i.e. :foo:bar.
+fred:subfred is a relative namespace, created in the currently active namespace</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">if the target namespace already exists, it will be returned</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the create Namespace object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.maya.ref.Namespace.current">
+<em class="property">classmethod </em><tt class="descname">current</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ref.Namespace.current" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the currently set absolute namespace</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.decode">
+<tt class="descname">decode</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.decode" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.decode([encoding[,errors]]) -&gt; string or unicode</p>
+<p>Decodes S using the codec registered for encoding. encoding defaults
+to the default encoding. errors may be given to set a different error
+handling scheme. Default is &#8216;strict&#8217; meaning that encoding errors raise
+a UnicodeDecodeError. Other possible values are &#8216;ignore&#8217; and &#8216;replace&#8217;
+as well as any other name registerd with codecs.register_error that is
+able to handle UnicodeDecodeErrors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.Namespace.defaultIncrFunc">
+<tt class="descname">defaultIncrFunc</tt><big>(</big><em>b</em>, <em>i</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.Namespace.defaultIncrFunc" title="Permalink to this definition">¶</a></dt>
+<dd>%s%02i</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.Namespace.delete">
+<tt class="descname">delete</tt><big>(</big><em>move_to_namespace=':'</em>, <em>autocreate=True</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.Namespace.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete this namespace and move it&#8217;s obejcts to the given move_to_namespace</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>move_to_namespace</em> &#8211; if None, the namespace to be deleted must be empty
+If Namespace, objects in this namespace will be moved there prior to namespace deletion
+move_to_namespace must exist</li>
+<li><em>autocreate</em> &#8211; if True, move_to_namespace will be created if it does not exist yet</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">can handle sub-namespaces properly</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises RuntimeError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"></td>
+</tr>
+<tr class="field"><th class="field-name">Todo:</th><td class="field-body"><p class="first last">Implement undo !</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.encode">
+<tt class="descname">encode</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.encode" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.encode([encoding[,errors]]) -&gt; string or unicode</p>
+<p>Encodes S using the codec registered for encoding. encoding defaults
+to the default encoding. errors may be given to set a different error
+handling scheme. Default is &#8216;strict&#8217; meaning that encoding errors raise
+a UnicodeEncodeError. Other possible values are &#8216;ignore&#8217;, &#8216;replace&#8217; and
+&#8216;xmlcharrefreplace&#8217; as well as any other name registered with
+codecs.register_error that can handle UnicodeEncodeErrors.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.endswith">
+<tt class="descname">endswith</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.endswith" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.endswith(suffix[, start[, end]]) -&gt; bool</p>
+<p>Return True if S ends with the specified suffix, False otherwise.
+With optional start, test S beginning at that position.
+With optional end, stop comparing S at that position.
+suffix can also be a tuple of strings to try.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.Namespace.exists">
+<tt class="descname">exists</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ref.Namespace.exists" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this namespace exists</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.expandtabs">
+<tt class="descname">expandtabs</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.expandtabs" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.expandtabs([tabsize]) -&gt; unicode</p>
+<p>Return a copy of S where all tab characters are expanded using spaces.
+If tabsize is not given, a tab size of 8 characters is assumed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.find">
+<tt class="descname">find</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.find" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.find(sub [,start [,end]]) -&gt; int</p>
+<p>Return the lowest index in S where substring sub is found,
+such that sub is contained within s[start:end].  Optional
+arguments start and end are interpreted as in slice notation.</p>
+<p>Return -1 on failure.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.maya.ref.Namespace.findUnique">
+<em class="property">classmethod </em><tt class="descname">findUnique</tt><big>(</big><em>basename</em>, <em>incrementFunc=&lt;function &lt;lambda&gt; at 0x54002a8&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.Namespace.findUnique" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find a unique namespace based on basename which does not yet exist
+in the scene and can be created.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>basename</em> &#8211; basename of the namespace, like &#8220;:mynamespace&#8221; or &#8220;mynamespace:subspace&#8221;</li>
+<li><em>incrementFunc</em> &#8211; func( basename, index ), returns a unique name generated
+from the basename and the index representing the current iteration</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">unique namespace that is guaranteed not to exist below the current
+namespace</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.format">
+<tt class="descname">format</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.format" title="Permalink to this definition">¶</a></dt>
+<dd>S.format(<a href="#id1"><span class="problematic" id="id2">*</span></a>args, <a href="#id3"><span class="problematic" id="id4">**</span></a>kwargs) -&gt; unicode</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.Namespace.fullChildName">
+<tt class="descname">fullChildName</tt><big>(</big><em>childname</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.Namespace.fullChildName" title="Permalink to this definition">¶</a></dt>
+<dd>Add the given name to the string version of our instance
+:return: string with childname added like name _sep childname</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.index">
+<tt class="descname">index</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.index(sub [,start [,end]]) -&gt; int</p>
+<p>Like S.find() but raise ValueError when the substring is not found.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.Namespace.isAbsolute">
+<tt class="descname">isAbsolute</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ref.Namespace.isAbsolute" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this namespace is an absolut one, defining a namespace
+from the root namespace like &#8220;:foo:bar</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.Namespace.isPartOf">
+<tt class="descname">isPartOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.Namespace.isPartOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if self is a part of other, and thus can be found in other</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings only</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.Namespace.isRoot">
+<tt class="descname">isRoot</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ref.Namespace.isRoot" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this path is the root of the DAG</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.Namespace.isRootOf">
+<tt class="descname">isRootOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.Namespace.isRootOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True other starts with self</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">we assume other has the same type as self, thus the same separator</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.isalnum">
+<tt class="descname">isalnum</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.isalnum" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.isalnum() -&gt; bool</p>
+<p>Return True if all characters in S are alphanumeric
+and there is at least one character in S, False otherwise.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.isalpha">
+<tt class="descname">isalpha</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.isalpha" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.isalpha() -&gt; bool</p>
+<p>Return True if all characters in S are alphabetic
+and there is at least one character in S, False otherwise.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.isdecimal">
+<tt class="descname">isdecimal</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.isdecimal" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.isdecimal() -&gt; bool</p>
+<p>Return True if there are only decimal characters in S,
+False otherwise.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.isdigit">
+<tt class="descname">isdigit</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.isdigit" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.isdigit() -&gt; bool</p>
+<p>Return True if all characters in S are digits
+and there is at least one character in S, False otherwise.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.islower">
+<tt class="descname">islower</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.islower" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.islower() -&gt; bool</p>
+<p>Return True if all cased characters in S are lowercase and there is
+at least one cased character in S, False otherwise.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.isnumeric">
+<tt class="descname">isnumeric</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.isnumeric" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.isnumeric() -&gt; bool</p>
+<p>Return True if there are only numeric characters in S,
+False otherwise.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.isspace">
+<tt class="descname">isspace</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.isspace" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.isspace() -&gt; bool</p>
+<p>Return True if all characters in S are whitespace
+and there is at least one character in S, False otherwise.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.istitle">
+<tt class="descname">istitle</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.istitle" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.istitle() -&gt; bool</p>
+<p>Return True if S is a titlecased string and there is at least one
+character in S, i.e. upper- and titlecase characters may only
+follow uncased characters and lowercase characters only cased ones.
+Return False otherwise.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.isupper">
+<tt class="descname">isupper</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.isupper" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.isupper() -&gt; bool</p>
+<p>Return True if all cased characters in S are uppercase and there is
+at least one cased character in S, False otherwise.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.Namespace.iterNodes">
+<tt class="descname">iterNodes</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.Namespace.iterNodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an iterator on all objects in the namespace</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>args</em> &#8211; MFn.kType filter types to be used to pre-filter the nodes 
+in the namespace. This can greatly improve performance !</li>
+<li><em>kwargs</em> &#8211; <p>given to <cite>iterDagNodes</cite> or <cite>iterDgNodes</cite>, which includes the 
+option to provide a predicate function. Additionally, the following ones 
+may be defined:</p>
+<blockquote>
+<ul>
+<li><dl class="first docutils">
+<dt>asNode: </dt>
+<dd>if true, default True, Nodes will be yielded. If False, 
+you will receive MDagPaths or MObjects depending on the &#8216;dag&#8217; kwarg</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>dag: </dt>
+<dd>if True, default False, only dag nodes will be returned, otherwise you will 
+receive dag nodes and dg nodes. Instance information will be lost on the way
+though.</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>depth: </dt>
+<dd>if 0, default 0, only objects in this namespace will be returned<p>if -1, all subnamespaces will be included as well, the depth is unlimited</p>
+<p class="last">if 0&lt;depth&lt;x include all objects up to the &#8216;depth&#8217; subnamespace</p>
+</dd>
+</dl>
+</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">this method is quite similar to <cite>FileReference.iterNodes</cite>, but 
+has a different feature set and needs this code here for maximum performance</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.Namespace.iterParents">
+<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee2a8&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.Namespace.iterParents" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">generator retrieving all parents up to the root</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; returns True for all x that you want to be returned</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.join">
+<tt class="descname">join</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.join" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.join(iterable) -&gt; unicode</p>
+<p>Return a string which is the concatenation of the strings in the
+iterable.  The separator between elements is S.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.ljust">
+<tt class="descname">ljust</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.ljust" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.ljust(width[, fillchar]) -&gt; int</p>
+<p>Return S left-justified in a Unicode string of length width. Padding is
+done using the specified fill character (default is a space).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.lower">
+<tt class="descname">lower</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.lower" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.lower() -&gt; unicode</p>
+<p>Return a copy of the string S converted to lowercase.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.lstrip">
+<tt class="descname">lstrip</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.lstrip" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.lstrip([chars]) -&gt; unicode</p>
+<p>Return a copy of the string S with leading whitespace removed.
+If chars is given and not None, remove characters in chars instead.
+If chars is a str, it will be converted to unicode before stripping</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.Namespace.moveNodes">
+<tt class="descname">moveNodes</tt><big>(</big><em>targetNamespace</em>, <em>force=True</em>, <em>autocreate=True</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.Namespace.moveNodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move objects from this to the targetNamespace</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>force</em> &#8211; if True, namespace clashes will be resolved by renaming, if false
+possible clashes would result in an error</li>
+<li><em>autocreate</em> &#8211; if True, targetNamespace will be created if it does not exist yet</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Todo:</th><td class="field-body"><p class="first last">Implement undo !</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.Namespace.parent">
+<tt class="descname">parent</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ref.Namespace.parent" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">parent namespace of this instance</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.Namespace.parentDeep">
+<tt class="descname">parentDeep</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ref.Namespace.parentDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">all parents of this path, &#8216;/hello/my/world&#8217; -&gt; [ &#8216;/hello/my&#8217;,&#8217;/hello&#8217; ]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.partition">
+<tt class="descname">partition</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.partition" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.partition(sep) -&gt; (head, sep, tail)</p>
+<p>Search for the separator sep in S, and return the part before it,
+the separator itself, and the part after it.  If the separator is not
+found, return S and two empty strings.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.Namespace.relativeTo">
+<tt class="descname">relativeTo</tt><big>(</big><em>basenamespace</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.Namespace.relativeTo" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns this namespace relative to the given basenamespace</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>basenamespace</em> &#8211; the namespace to which the returned one should be
+relative too</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises ValueError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">If this or basenamespace is not absolute or if no relative
+namespace exists</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">relative namespace</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.Namespace.rename">
+<tt class="descname">rename</tt><big>(</big><em>newName</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.Namespace.rename" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rename this namespace to newName - the original namespace will cease to exist</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">if the namespace already exists, the existing one will be returned with
+all objects from this one added accordingly</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>newName</em> &#8211; the absolute name of the new namespace</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">Namespace with the new name</td>
+</tr>
+<tr class="field"><th class="field-name">Todo:</th><td class="field-body">Implement undo !</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.replace">
+<tt class="descname">replace</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.replace" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.replace (old, new[, count]) -&gt; unicode</p>
+<p>Return a copy of S with all occurrences of substring
+old replaced by new.  If the optional argument count is
+given, only the first count occurrences are replaced.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.rfind">
+<tt class="descname">rfind</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.rfind" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.rfind(sub [,start [,end]]) -&gt; int</p>
+<p>Return the highest index in S where substring sub is found,
+such that sub is contained within s[start:end].  Optional
+arguments start and end are interpreted as in slice notation.</p>
+<p>Return -1 on failure.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.rindex">
+<tt class="descname">rindex</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.rindex" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.rindex(sub [,start [,end]]) -&gt; int</p>
+<p>Like S.rfind() but raise ValueError when the substring is not found.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.rjust">
+<tt class="descname">rjust</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.rjust" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.rjust(width[, fillchar]) -&gt; unicode</p>
+<p>Return S right-justified in a Unicode string of length width. Padding is
+done using the specified fill character (default is a space).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.Namespace.root">
+<tt class="descname">root</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ref.Namespace.root" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the root of the DAG - it has no further parents</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.rpartition">
+<tt class="descname">rpartition</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.rpartition" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.rpartition(sep) -&gt; (head, sep, tail)</p>
+<p>Search for the separator sep in S, starting at the end of S, and return
+the part before it, the separator itself, and the part after it.  If the
+separator is not found, return two empty strings and S.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.rsplit">
+<tt class="descname">rsplit</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.rsplit" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.rsplit([sep [,maxsplit]]) -&gt; list of strings</p>
+<p>Return a list of the words in S, using sep as the
+delimiter string, starting at the end of the string and
+working to the front.  If maxsplit is given, at most maxsplit
+splits are done. If sep is not specified, any whitespace string
+is a separator.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.rstrip">
+<tt class="descname">rstrip</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.rstrip" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.rstrip([chars]) -&gt; unicode</p>
+<p>Return a copy of the string S with trailing whitespace removed.
+If chars is given and not None, remove characters in chars instead.
+If chars is a str, it will be converted to unicode before stripping</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.Namespace.setCurrent">
+<tt class="descname">setCurrent</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.Namespace.setCurrent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set this namespace to be the current one - new objects will be put in it
+by default</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">self</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.split">
+<tt class="descname">split</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.split" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.split([sep [,maxsplit]]) -&gt; list of strings</p>
+<p>Return a list of the words in S, using sep as the
+delimiter string.  If maxsplit is given, at most maxsplit
+splits are done. If sep is not specified or is None, any
+whitespace string is a separator and empty strings are
+removed from the result.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.maya.ref.Namespace.splitNamespace">
+<em class="property">classmethod </em><tt class="descname">splitNamespace</tt><big>(</big><em>objectname</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.Namespace.splitNamespace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cut the namespace from the given  name and return a tuple( namespacename, objectname )</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">method assumes that the namespace starts at the beginning of the object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.splitlines">
+<tt class="descname">splitlines</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.splitlines" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.splitlines([keepends]) -&gt; list of strings</p>
+<p>Return a list of the lines in S, breaking at line boundaries.
+Line breaks are not included in the resulting list unless keepends
+is given and true.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.startswith">
+<tt class="descname">startswith</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.startswith" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.startswith(prefix[, start[, end]]) -&gt; bool</p>
+<p>Return True if S starts with the specified prefix, False otherwise.
+With optional start, test S beginning at that position.
+With optional end, stop comparing S at that position.
+prefix can also be a tuple of strings to try.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.strip">
+<tt class="descname">strip</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.strip" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.strip([chars]) -&gt; unicode</p>
+<p>Return a copy of the string S with leading and trailing
+whitespace removed.
+If chars is given and not None, remove characters in chars instead.
+If chars is a str, it will be converted to unicode before stripping</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.Namespace.substitute">
+<tt class="descname">substitute</tt><big>(</big><em>find_in</em>, <em>replacement</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.Namespace.substitute" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">string with our namespace properly substituted with replacement such
+that the result is a properly formatted object name ( with or without namespace
+depending of the value of replacement )
+As this method is based on string replacement, self might as well match sub-namespaces
+if it is relative</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">if replacement is an empty string, it will effectively cut the matched namespace
+off the object name</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">handles replacement of subnamespaces correctly as well</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">as it operates on strings, the actual namespaces do not need to exist</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.maya.ref.Namespace.substituteNamespace">
+<em class="property">classmethod </em><tt class="descname">substituteNamespace</tt><big>(</big><em>thisns</em>, <em>find_in</em>, <em>replacement</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.Namespace.substituteNamespace" title="Permalink to this definition">¶</a></dt>
+<dd>Same as <cite>substitute</cite>, but signature might feel more natural</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.Namespace.supports">
+<tt class="descname">supports</tt><big>(</big><em>interface_type</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.Namespace.supports" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this instance supports the interface of the given type</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>interface_type</em> &#8211; Type of the interface you require this instance 
+to support</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Must be used in case you only have a weak reference of your interface
+instance or proxy which is a case where the ordinary isinstance( obj, iInterface )
+will not work</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.swapcase">
+<tt class="descname">swapcase</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.swapcase" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.swapcase() -&gt; unicode</p>
+<p>Return a copy of S with uppercase characters converted to lowercase
+and vice versa.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.title">
+<tt class="descname">title</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.title" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.title() -&gt; unicode</p>
+<p>Return a titlecased version of S, i.e. words start with title case
+characters, all remaining cased characters have lower case.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.Namespace.toRelative">
+<tt class="descname">toRelative</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ref.Namespace.toRelative" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">a relative version of self, thus it does not start with a colon</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">the root namespace cannot be relative - if this is of interest for you,
+you have to check for it. This method gracefully ignores that fact to make
+it more convenient to use as one does not have to be afraid of exceptions</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.translate">
+<tt class="descname">translate</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.translate" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.translate(table) -&gt; unicode</p>
+<p>Return a copy of the string S, where all characters have been mapped
+through the given translation table, which must be a mapping of
+Unicode ordinals to Unicode ordinals, Unicode strings or None.
+Unmapped characters are left untouched. Characters mapped to None
+are deleted.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.upper">
+<tt class="descname">upper</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.upper" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.upper() -&gt; unicode</p>
+<p>Return a copy of S converted to uppercase.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.Namespace.zfill">
+<tt class="descname">zfill</tt><a class="headerlink" href="#mrv.maya.ref.Namespace.zfill" title="Permalink to this definition">¶</a></dt>
+<dd><p>S.zfill(width) -&gt; unicode</p>
+<p>Pad a numeric string S with zeros on the left, to fill a field
+of the specified width. The string S is never truncated.</p>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.ref-module.html#iDagItem">Epydoc: mrv.maya.ref</a></p>
+<dl class="class">
+<dt id="mrv.maya.ref.iDagItem">
+<em class="property">class </em><tt class="descclassname">mrv.maya.ref.</tt><tt class="descname">iDagItem</tt><a class="headerlink" href="#mrv.maya.ref.iDagItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.interface.Interface" class="reference external" href="mrv.interface.html#mrv.interface.Interface"><tt class="xref docutils literal"><span class="pre">mrv.interface.Interface</span></tt></a></p>
+<p>Describes interface for a DAG item.
+Its used to unify interfaces allowing to access objects in a dag like graph
+Of the underlying object has a string representation, the defatult implementation
+will work natively.
+Otherwise the getParent and getChildren methods should be overwritten</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">a few methods of this class are abstract and need to be overwritten</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">this class expects the attribute &#8216;_sep&#8217; to exist containing the
+separator at which your object should be split ( for default implementations ).
+This works as the passed in pointer will belong to derived classes that can
+define that attribute on instance or on class level</td>
+</tr>
+</tbody>
+</table>
+<dl class="classmethod">
+<dt id="mrv.maya.ref.iDagItem.addSep">
+<em class="property">classmethod </em><tt class="descname">addSep</tt><big>(</big><em>item</em>, <em>sep</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.iDagItem.addSep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">item with separator added to it ( just once )</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">operates best on strings</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>item</em> &#8211; item to add separator to</li>
+<li><em>sep</em> &#8211; the separator</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.iDagItem.basename">
+<tt class="descname">basename</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ref.iDagItem.basename" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">basename of this path, &#8216;/hello/world&#8217; -&gt; &#8216;world&#8217;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.iDagItem.children">
+<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee848&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.iDagItem.children" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of intermediate children of path, [ child1 , child2 ]</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; return True to include x in result</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">the child objects returned are supposed to be valid paths, not just relative paths</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.iDagItem.childrenDeep">
+<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee668&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.iDagItem.childrenDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of all children of path, [ child1 , child2 ]</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>order</em> &#8211; order enumeration</li>
+<li><em>predicate</em> &#8211; returns true if x may be returned</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">the child objects returned are supposed to be valid paths, not just relative paths</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.iDagItem.fullChildName">
+<tt class="descname">fullChildName</tt><big>(</big><em>childname</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.iDagItem.fullChildName" title="Permalink to this definition">¶</a></dt>
+<dd>Add the given name to the string version of our instance
+:return: string with childname added like name _sep childname</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.iDagItem.isPartOf">
+<tt class="descname">isPartOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.iDagItem.isPartOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if self is a part of other, and thus can be found in other</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings only</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.iDagItem.isRoot">
+<tt class="descname">isRoot</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ref.iDagItem.isRoot" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this path is the root of the DAG</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.iDagItem.isRootOf">
+<tt class="descname">isRootOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.iDagItem.isRootOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True other starts with self</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">we assume other has the same type as self, thus the same separator</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.iDagItem.iterParents">
+<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee2a8&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.iDagItem.iterParents" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">generator retrieving all parents up to the root</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; returns True for all x that you want to be returned</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.iDagItem.parent">
+<tt class="descname">parent</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ref.iDagItem.parent" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">parent of this path, &#8216;/hello/world&#8217; -&gt; &#8216;/hello&#8217; or None if this path
+is the dag&#8217;s root</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.iDagItem.parentDeep">
+<tt class="descname">parentDeep</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ref.iDagItem.parentDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">all parents of this path, &#8216;/hello/my/world&#8217; -&gt; [ &#8216;/hello/my&#8217;,&#8217;/hello&#8217; ]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.iDagItem.root">
+<tt class="descname">root</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ref.iDagItem.root" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the root of the DAG - it has no further parents</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ref.iDagItem.supports">
+<tt class="descname">supports</tt><big>(</big><em>interface_type</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.iDagItem.supports" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this instance supports the interface of the given type</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>interface_type</em> &#8211; Type of the interface you require this instance 
+to support</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Must be used in case you only have a weak reference of your interface
+instance or proxy which is a case where the ordinary isinstance( obj, iInterface )
+will not work</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.ref-module.html#ifilter">Epydoc: mrv.maya.ref</a></p>
+<dl class="class">
+<dt id="mrv.maya.ref.ifilter">
+<em class="property">class </em><tt class="descclassname">mrv.maya.ref.</tt><tt class="descname">ifilter</tt><a class="headerlink" href="#mrv.maya.ref.ifilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>ifilter(function or None, sequence) &#8211;&gt; ifilter object</p>
+<p>Return those items of sequence for which function(item) is true.
+If function is None, return the items that are true.</p>
+<dl class="attribute">
+<dt id="mrv.maya.ref.ifilter.next">
+<tt class="descname">next</tt><a class="headerlink" href="#mrv.maya.ref.ifilter.next" title="Permalink to this definition">¶</a></dt>
+<dd>x.next() -&gt; the next value, or raise StopIteration</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="exceptions">
+<h2>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="api/mrv.maya.ref.FileReferenceError-class.html">Epydoc: mrv.maya.ref.FileReferenceError</a></p>
+<dl class="class">
+<dt id="mrv.maya.ref.FileReferenceError">
+<em class="property">class </em><tt class="descclassname">mrv.maya.ref.</tt><tt class="descname">FileReferenceError</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.FileReferenceError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.exc.MRVError" class="reference external" href="mrv.exc.html#mrv.exc.MRVError"><tt class="xref docutils literal"><span class="pre">mrv.exc.MRVError</span></tt></a></p>
+<dl class="attribute">
+<dt id="mrv.maya.ref.FileReferenceError.args">
+<tt class="descname">args</tt><a class="headerlink" href="#mrv.maya.ref.FileReferenceError.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.FileReferenceError.message">
+<tt class="descname">message</tt><a class="headerlink" href="#mrv.maya.ref.FileReferenceError.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.ref-module.html#MRVError">Epydoc: mrv.maya.ref</a></p>
+<dl class="class">
+<dt id="mrv.maya.ref.MRVError">
+<em class="property">class </em><tt class="descclassname">mrv.maya.ref.</tt><tt class="descname">MRVError</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.ref.MRVError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+<p>Base Class for all exceptions that the mrv framework throws</p>
+<dl class="attribute">
+<dt id="mrv.maya.ref.MRVError.args">
+<tt class="descname">args</tt><a class="headerlink" href="#mrv.maya.ref.MRVError.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.ref.MRVError.message">
+<tt class="descname">message</tt><a class="headerlink" href="#mrv.maya.ref.MRVError.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="../index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#"><tt class="docutils literal"><span class="pre">mrv.maya.ref</span></tt></a><ul>
+<li><a class="reference external" href="#functions">Functions</a></li>
+<li><a class="reference external" href="#classes">Classes</a></li>
+<li><a class="reference external" href="#exceptions">Exceptions</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="mrv.maya.util.html"
+                                  title="previous chapter"><tt class="docutils literal docutils literal"><span class="pre">mrv.maya.util</span></tt></a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="mrv.maya.all.html"
+                                  title="next chapter"><tt class="docutils literal docutils literal docutils literal"><span class="pre">mrv.maya.all</span></tt></a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/generated/mrv.maya.ref.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.all.html" title="mrv.maya.all"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.util.html" title="mrv.maya.util"
+             >previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Nov 30, 2010.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

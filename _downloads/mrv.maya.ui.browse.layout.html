@@ -1,0 +1,534 @@
+<html>
+<head>
+<title>mrv.maya.ui.browse.layout</title>
+</head>
+<body>
+mrv.maya.ui.browse.layout
+<style>
+.coverage pre {float: left; margin: 0px 1em; border: none;
+               padding: 0px; }
+.num pre { margin: 0px }
+.nocov, .nocov pre {background-color: #faa}
+.cov, .cov pre {background-color: #cfc}
+div.coverage div { clear: both; height: 1.1em}
+</style>
+<div class="stats">
+Covered: 103 lines<br/>
+Missed: 231 lines<br/>
+Skipped 175 lines<br/>
+Percent: 30 %<br/>
+
+</div>
+<div class="coverage">
+<div class="skip"><span class="num"><pre>  1</pre></span><pre># -*- coding: utf-8 -*-</pre></div>
+<div class="cov"><span class="num"><pre>  2</pre></span><pre>&quot;&quot;&quot;module containing layouts which combine finder ui modules&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  3</pre></span><pre>__docformat__ = &quot;restructuredtext&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  4</pre></span><pre>import sys</pre></div>
+<div class="cov"><span class="num"><pre>  5</pre></span><pre>import string</pre></div>
+<div class="skip"><span class="num"><pre>  6</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  7</pre></span><pre>from mrv.path import Path</pre></div>
+<div class="skip"><span class="num"><pre>  8</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  9</pre></span><pre>from control import *</pre></div>
+<div class="cov"><span class="num"><pre> 10</pre></span><pre>from finder import *</pre></div>
+<div class="cov"><span class="num"><pre> 11</pre></span><pre>from option import *</pre></div>
+<div class="skip"><span class="num"><pre> 12</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 13</pre></span><pre>from util import ( FrameDecorator, handleUnsavedModifications )</pre></div>
+<div class="skip"><span class="num"><pre> 14</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 15</pre></span><pre>import mrv.maya.ui as ui</pre></div>
+<div class="cov"><span class="num"><pre> 16</pre></span><pre>import mrv.maya</pre></div>
+<div class="cov"><span class="num"><pre> 17</pre></span><pre>from mrv.maya.util import (logException, notifyException)</pre></div>
+<div class="skip"><span class="num"><pre> 18</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 19</pre></span><pre>from mrv.maya.ref import FileReference</pre></div>
+<div class="cov"><span class="num"><pre> 20</pre></span><pre>import maya.utils as mutil</pre></div>
+<div class="cov"><span class="num"><pre> 21</pre></span><pre>import maya.cmds as cmds</pre></div>
+<div class="skip"><span class="num"><pre> 22</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 23</pre></span><pre>__all__ = ('FinderLayout', 'FileOpenFinder', 'FileReferenceFinder', 'FileSaveFinder')</pre></div>
+<div class="skip"><span class="num"><pre> 24</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 25</pre></span><pre>class FinderLayout(ui.FormLayout):</pre></div>
+<div class="cov"><span class="num"><pre> 26</pre></span><pre>	&quot;&quot;&quot;Implements a layout with a finder as well a surrounding elements. It can </pre></div>
+<div class="cov"><span class="num"><pre> 27</pre></span><pre>	be configured using class configuration variables, and allows easy modification</pre></div>
+<div class="cov"><span class="num"><pre> 28</pre></span><pre>	through derivation</pre></div>
+<div class="skip"><span class="num"><pre> 29</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 30</pre></span><pre>	**Instance Variables**</pre></div>
+<div class="cov"><span class="num"><pre> 31</pre></span><pre>	* finder </pre></div>
+<div class="cov"><span class="num"><pre> 32</pre></span><pre>	* options&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 33</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre> 34</pre></span><pre>	#{ Configuration</pre></div>
+<div class="skip"><span class="num"><pre> 35</pre></span><pre>	# used as names for buttons</pre></div>
+<div class="cov"><span class="num"><pre> 36</pre></span><pre>	k_confirm_name = &quot;OK&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 37</pre></span><pre>	k_cancel_name = &quot;Cancel&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 38</pre></span><pre>	k_stack_item_remove_name = &quot;Remove Item&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 39</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 40</pre></span><pre>	t_finder=Finder</pre></div>
+<div class="cov"><span class="num"><pre> 41</pre></span><pre>	t_finder_provider = FileProvider</pre></div>
+<div class="cov"><span class="num"><pre> 42</pre></span><pre>	t_filepath = FilePathControl</pre></div>
+<div class="cov"><span class="num"><pre> 43</pre></span><pre>	t_options=None</pre></div>
+<div class="cov"><span class="num"><pre> 44</pre></span><pre>	t_bookmarks=BookmarkControl</pre></div>
+<div class="cov"><span class="num"><pre> 45</pre></span><pre>	t_root_selector=FileRootSelectorControl</pre></div>
+<div class="cov"><span class="num"><pre> 46</pre></span><pre>	t_stack=None</pre></div>
+<div class="cov"><span class="num"><pre> 47</pre></span><pre>	t_filter=FileFilterControl</pre></div>
+<div class="skip"><span class="num"><pre> 48</pre></span><pre>	#} END configuration</pre></div>
+<div class="skip"><span class="num"><pre> 49</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 50</pre></span><pre>	def __new__(cls, *args, **kwargs):</pre></div>
+<div class="nocov"><span class="num"><pre> 51</pre></span><pre>		return super(FinderLayout, cls).__new__(cls)</pre></div>
+<div class="skip"><span class="num"><pre> 52</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 53</pre></span><pre>	def __init__(self, *args, **kwargs):</pre></div>
+<div class="cov"><span class="num"><pre> 54</pre></span><pre>		&quot;&quot;&quot;Initialize all ui elements</pre></div>
+<div class="cov"><span class="num"><pre> 55</pre></span><pre>		:param kwargs: The following keywords are defined</pre></div>
+<div class="cov"><span class="num"><pre> 56</pre></span><pre>		 * **defaultRoots**: default False, if True, show all roots available</pre></div>
+<div class="cov"><span class="num"><pre> 57</pre></span><pre>		  on the system.&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 58</pre></span><pre>		num_splits = 1 + (self.t_options is not None)</pre></div>
+<div class="nocov"><span class="num"><pre> 59</pre></span><pre>		config = (num_splits == 1 and &quot;single&quot;) or &quot;vertical%i&quot; % num_splits</pre></div>
+<div class="nocov"><span class="num"><pre> 60</pre></span><pre>		pane = ui.PaneLayout(configuration=config)</pre></div>
+<div class="nocov"><span class="num"><pre> 61</pre></span><pre>		pane.p_paneSize=(1, 75, 100)</pre></div>
+<div class="skip"><span class="num"><pre> 62</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre> 63</pre></span><pre>		# attach the elements</pre></div>
+<div class="nocov"><span class="num"><pre> 64</pre></span><pre>		t, b, l, r = self.kSides</pre></div>
+<div class="nocov"><span class="num"><pre> 65</pre></span><pre>		m = 2</pre></div>
+<div class="skip"><span class="num"><pre> 66</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre> 67</pre></span><pre>		try:</pre></div>
+<div class="nocov"><span class="num"><pre> 68</pre></span><pre>			pane.p_staticWidthPane=1</pre></div>
+<div class="nocov"><span class="num"><pre> 69</pre></span><pre>		except (RuntimeError, TypeError):</pre></div>
+<div class="skip"><span class="num"><pre> 70</pre></span><pre>			# maya &gt;= 2011</pre></div>
+<div class="nocov"><span class="num"><pre> 71</pre></span><pre>			pass</pre></div>
+<div class="skip"><span class="num"><pre> 72</pre></span><pre>		# END exception handling</pre></div>
+<div class="skip"><span class="num"><pre> 73</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre> 74</pre></span><pre>		# populate main pane</pre></div>
+<div class="nocov"><span class="num"><pre> 75</pre></span><pre>		if pane:</pre></div>
+<div class="nocov"><span class="num"><pre> 76</pre></span><pre>			if self.t_stack is not None:</pre></div>
+<div class="nocov"><span class="num"><pre> 77</pre></span><pre>				finder_form = ui.FormLayout()</pre></div>
+<div class="nocov"><span class="num"><pre> 78</pre></span><pre>				if finder_form:</pre></div>
+<div class="skip"><span class="num"><pre> 79</pre></span><pre>					</pre></div>
+<div class="nocov"><span class="num"><pre> 80</pre></span><pre>					sdc = FrameDecorator(&quot;Stack&quot;, self.t_stack)</pre></div>
+<div class="nocov"><span class="num"><pre> 81</pre></span><pre>					self.stack = sdc.layout</pre></div>
+<div class="nocov"><span class="num"><pre> 82</pre></span><pre>					popup = ui.PopupMenu(markingMenu=True)</pre></div>
+<div class="nocov"><span class="num"><pre> 83</pre></span><pre>					self._create_stack_menu(popup)</pre></div>
+<div class="skip"><span class="num"><pre> 84</pre></span><pre>					</pre></div>
+<div class="skip"><span class="num"><pre> 85</pre></span><pre>					</pre></div>
+<div class="nocov"><span class="num"><pre> 86</pre></span><pre>					fdc = FrameDecorator(&quot;Finder&quot;, self.t_finder)</pre></div>
+<div class="nocov"><span class="num"><pre> 87</pre></span><pre>					self.finder = fdc.layout</pre></div>
+<div class="nocov"><span class="num"><pre> 88</pre></span><pre>					fi, st = fdc, sdc</pre></div>
+<div class="skip"><span class="num"><pre> 89</pre></span><pre>					</pre></div>
+<div class="nocov"><span class="num"><pre> 90</pre></span><pre>					finder_form.setup(</pre></div>
+<div class="nocov"><span class="num"><pre> 91</pre></span><pre>											attachForm=(</pre></div>
+<div class="nocov"><span class="num"><pre> 92</pre></span><pre>															(fi, t, m),</pre></div>
+<div class="nocov"><span class="num"><pre> 93</pre></span><pre>															(fi, b, m),</pre></div>
+<div class="nocov"><span class="num"><pre> 94</pre></span><pre>															(fi, l, m),</pre></div>
+<div class="nocov"><span class="num"><pre> 95</pre></span><pre>															(st, t, m),</pre></div>
+<div class="nocov"><span class="num"><pre> 96</pre></span><pre>															(st, b, m),</pre></div>
+<div class="nocov"><span class="num"><pre> 97</pre></span><pre>															(st, r, m),</pre></div>
+<div class="nocov"><span class="num"><pre> 98</pre></span><pre>														),</pre></div>
+<div class="nocov"><span class="num"><pre> 99</pre></span><pre>											attachNone=(</pre></div>
+<div class="nocov"><span class="num"><pre>100</pre></span><pre>															(st, l)</pre></div>
+<div class="nocov"><span class="num"><pre>101</pre></span><pre>														),</pre></div>
+<div class="nocov"><span class="num"><pre>102</pre></span><pre>											attachControl=(</pre></div>
+<div class="nocov"><span class="num"><pre>103</pre></span><pre>															(fi, r, m, st)</pre></div>
+<div class="nocov"><span class="num"><pre>104</pre></span><pre>															)</pre></div>
+<div class="nocov"><span class="num"><pre>105</pre></span><pre>										)</pre></div>
+<div class="skip"><span class="num"><pre>106</pre></span><pre>				# END finder form</pre></div>
+<div class="nocov"><span class="num"><pre>107</pre></span><pre>				self.setActive()</pre></div>
+<div class="nocov"><span class="num"><pre>108</pre></span><pre>			else:</pre></div>
+<div class="nocov"><span class="num"><pre>109</pre></span><pre>				self.finder = self.t_finder()</pre></div>
+<div class="skip"><span class="num"><pre>110</pre></span><pre>			# END handle stack</pre></div>
+<div class="skip"><span class="num"><pre>111</pre></span><pre>			</pre></div>
+<div class="skip"><span class="num"><pre>112</pre></span><pre>			# setup RMB menu</pre></div>
+<div class="nocov"><span class="num"><pre>113</pre></span><pre>			finder_popup = ui.PopupMenu(markingMenu=True)</pre></div>
+<div class="nocov"><span class="num"><pre>114</pre></span><pre>			self._create_finder_menu(finder_popup)</pre></div>
+<div class="skip"><span class="num"><pre>115</pre></span><pre>			# END popupMenu</pre></div>
+<div class="skip"><span class="num"><pre>116</pre></span><pre>			</pre></div>
+<div class="nocov"><span class="num"><pre>117</pre></span><pre>			if self.t_options is not None:</pre></div>
+<div class="nocov"><span class="num"><pre>118</pre></span><pre>				self.options = self.t_options()</pre></div>
+<div class="skip"><span class="num"><pre>119</pre></span><pre>		# END pane layout</pre></div>
+<div class="nocov"><span class="num"><pre>120</pre></span><pre>		self.setActive()</pre></div>
+<div class="skip"><span class="num"><pre>121</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>122</pre></span><pre>		# if we have a filter, set it to the finder</pre></div>
+<div class="skip"><span class="num"><pre>123</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>124</pre></span><pre>		# FILEPATH</pre></div>
+<div class="skip"><span class="num"><pre>125</pre></span><pre>		##########</pre></div>
+<div class="nocov"><span class="num"><pre>126</pre></span><pre>		fp = self.t_filepath()</pre></div>
+<div class="nocov"><span class="num"><pre>127</pre></span><pre>		fp.setEditable(False)</pre></div>
+<div class="nocov"><span class="num"><pre>128</pre></span><pre>		self.fpctrl = fp</pre></div>
+<div class="nocov"><span class="num"><pre>129</pre></span><pre>		self.finder.url_changed = fp.setPath</pre></div>
+<div class="skip"><span class="num"><pre>130</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>131</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>132</pre></span><pre>		# BOOKMARKS AND SELECTOR</pre></div>
+<div class="skip"><span class="num"><pre>133</pre></span><pre>		########################</pre></div>
+<div class="nocov"><span class="num"><pre>134</pre></span><pre>		num_panes = (self.t_bookmarks is not None) + (self.t_root_selector is not None)</pre></div>
+<div class="nocov"><span class="num"><pre>135</pre></span><pre>		assert num_panes, &quot;Require at least one bookmark type or a selector type&quot;</pre></div>
+<div class="skip"><span class="num"><pre>136</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>137</pre></span><pre>		config = &quot;horizontal%i&quot; % num_panes</pre></div>
+<div class="nocov"><span class="num"><pre>138</pre></span><pre>		lpane = ui.PaneLayout(configuration=config)</pre></div>
+<div class="skip"><span class="num"><pre>139</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>140</pre></span><pre>		if lpane:</pre></div>
+<div class="nocov"><span class="num"><pre>141</pre></span><pre>			self.rootselector, self.bookmarks = None, None</pre></div>
+<div class="nocov"><span class="num"><pre>142</pre></span><pre>			if self.t_root_selector:</pre></div>
+<div class="nocov"><span class="num"><pre>143</pre></span><pre>				rdc = FrameDecorator(&quot;Roots&quot;, self.t_root_selector)</pre></div>
+<div class="nocov"><span class="num"><pre>144</pre></span><pre>				self.rootselector = rdc.layout</pre></div>
+<div class="nocov"><span class="num"><pre>145</pre></span><pre>				self.rootselector.root_changed = self.finder.setProvider</pre></div>
+<div class="skip"><span class="num"><pre>146</pre></span><pre>				</pre></div>
+<div class="nocov"><span class="num"><pre>147</pre></span><pre>				if kwargs.get('defaultRoots', False):</pre></div>
+<div class="nocov"><span class="num"><pre>148</pre></span><pre>					roots = list()</pre></div>
+<div class="nocov"><span class="num"><pre>149</pre></span><pre>					if not sys.platform.startswith('win'):</pre></div>
+<div class="nocov"><span class="num"><pre>150</pre></span><pre>						roots.append(Path(&quot;/&quot;))</pre></div>
+<div class="nocov"><span class="num"><pre>151</pre></span><pre>					else:</pre></div>
+<div class="skip"><span class="num"><pre>152</pre></span><pre>						# just try all accessible drives</pre></div>
+<div class="nocov"><span class="num"><pre>153</pre></span><pre>						for letter in string.ascii_uppercase:</pre></div>
+<div class="nocov"><span class="num"><pre>154</pre></span><pre>							try:</pre></div>
+<div class="nocov"><span class="num"><pre>155</pre></span><pre>								p = Path(letter + &quot;:\\&quot;)</pre></div>
+<div class="nocov"><span class="num"><pre>156</pre></span><pre>								p.stat()</pre></div>
+<div class="nocov"><span class="num"><pre>157</pre></span><pre>								roots.append(p)</pre></div>
+<div class="nocov"><span class="num"><pre>158</pre></span><pre>							except OSError:</pre></div>
+<div class="nocov"><span class="num"><pre>159</pre></span><pre>								continue</pre></div>
+<div class="skip"><span class="num"><pre>160</pre></span><pre>							# END ignore exceptions</pre></div>
+<div class="skip"><span class="num"><pre>161</pre></span><pre>						# END for each letter</pre></div>
+<div class="skip"><span class="num"><pre>162</pre></span><pre>					# END handle roots</pre></div>
+<div class="skip"><span class="num"><pre>163</pre></span><pre>					</pre></div>
+<div class="nocov"><span class="num"><pre>164</pre></span><pre>					if self.t_finder_provider is not None:</pre></div>
+<div class="nocov"><span class="num"><pre>165</pre></span><pre>						for rootpath in roots:</pre></div>
+<div class="nocov"><span class="num"><pre>166</pre></span><pre>							self.rootselector.addItem(self.t_finder_provider(rootpath))</pre></div>
+<div class="skip"><span class="num"><pre>167</pre></span><pre>						# END for each rootpath</pre></div>
+<div class="nocov"><span class="num"><pre>168</pre></span><pre>						if roots:</pre></div>
+<div class="nocov"><span class="num"><pre>169</pre></span><pre>							self.rootselector.setSelectedItem(roots[0])</pre></div>
+<div class="skip"><span class="num"><pre>170</pre></span><pre>					# END if we have a provider type</pre></div>
+<div class="skip"><span class="num"><pre>171</pre></span><pre>				# END handle default roots</pre></div>
+<div class="skip"><span class="num"><pre>172</pre></span><pre>			# END root selector setup</pre></div>
+<div class="nocov"><span class="num"><pre>173</pre></span><pre>			lpane.setActive()</pre></div>
+<div class="nocov"><span class="num"><pre>174</pre></span><pre>			if self.t_bookmarks:</pre></div>
+<div class="nocov"><span class="num"><pre>175</pre></span><pre>				bdc = FrameDecorator(&quot;Bookmarks&quot;, self.t_bookmarks)</pre></div>
+<div class="nocov"><span class="num"><pre>176</pre></span><pre>				self.bookmarks = bdc.layout</pre></div>
+<div class="nocov"><span class="num"><pre>177</pre></span><pre>				self.bookmarks.bookmark_changed = self._on_bookmark_change</pre></div>
+<div class="skip"><span class="num"><pre>178</pre></span><pre>				</pre></div>
+<div class="skip"><span class="num"><pre>179</pre></span><pre>				# BOOKMARK POPUP</pre></div>
+<div class="nocov"><span class="num"><pre>180</pre></span><pre>				pmenu = ui.PopupMenu(markingMenu=True)</pre></div>
+<div class="nocov"><span class="num"><pre>181</pre></span><pre>				pmenu.e_postMenuCommand = self._build_bookmark_popup</pre></div>
+<div class="skip"><span class="num"><pre>182</pre></span><pre>			# END bookmarks setup</pre></div>
+<div class="skip"><span class="num"><pre>183</pre></span><pre>		# END left pane layout</pre></div>
+<div class="nocov"><span class="num"><pre>184</pre></span><pre>		self.setActive()</pre></div>
+<div class="skip"><span class="num"><pre>185</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>186</pre></span><pre>		# FILTER ELEMENT</pre></div>
+<div class="skip"><span class="num"><pre>187</pre></span><pre>		################</pre></div>
+<div class="nocov"><span class="num"><pre>188</pre></span><pre>		assert self.t_filter is not None, &quot;Require filter element, replace it by a dummy filter if it is not required&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>189</pre></span><pre>		self.filter = self.t_filter()</pre></div>
+<div class="nocov"><span class="num"><pre>190</pre></span><pre>		fil = self.filter</pre></div>
+<div class="nocov"><span class="num"><pre>191</pre></span><pre>		self.setActive()</pre></div>
+<div class="skip"><span class="num"><pre>192</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>193</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>194</pre></span><pre>		# BUTTONS</pre></div>
+<div class="skip"><span class="num"><pre>195</pre></span><pre>		#########</pre></div>
+<div class="nocov"><span class="num"><pre>196</pre></span><pre>		bl = self._create_button_layout()</pre></div>
+<div class="skip"><span class="num"><pre>197</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>198</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>199</pre></span><pre>		# CONTROL ASSEMBLY</pre></div>
+<div class="skip"><span class="num"><pre>200</pre></span><pre>		##################</pre></div>
+<div class="nocov"><span class="num"><pre>201</pre></span><pre>		self.setup(</pre></div>
+<div class="nocov"><span class="num"><pre>202</pre></span><pre>					attachForm=(</pre></div>
+<div class="nocov"><span class="num"><pre>203</pre></span><pre>								(fil, t, m),</pre></div>
+<div class="nocov"><span class="num"><pre>204</pre></span><pre>								(fil, l, m),</pre></div>
+<div class="nocov"><span class="num"><pre>205</pre></span><pre>								(fil, r, m),</pre></div>
+<div class="nocov"><span class="num"><pre>206</pre></span><pre>								(lpane, l, m),</pre></div>
+<div class="nocov"><span class="num"><pre>207</pre></span><pre>								(lpane, b, m),</pre></div>
+<div class="nocov"><span class="num"><pre>208</pre></span><pre>								(pane, r, m),</pre></div>
+<div class="nocov"><span class="num"><pre>209</pre></span><pre>								(fp, b, m),</pre></div>
+<div class="nocov"><span class="num"><pre>210</pre></span><pre>								(bl, r, m),</pre></div>
+<div class="nocov"><span class="num"><pre>211</pre></span><pre>								(bl, b, m),</pre></div>
+<div class="nocov"><span class="num"><pre>212</pre></span><pre>								),</pre></div>
+<div class="skip"><span class="num"><pre>213</pre></span><pre>					</pre></div>
+<div class="nocov"><span class="num"><pre>214</pre></span><pre>					attachNone=(</pre></div>
+<div class="nocov"><span class="num"><pre>215</pre></span><pre>								(fp, t),</pre></div>
+<div class="nocov"><span class="num"><pre>216</pre></span><pre>								(lpane, r),</pre></div>
+<div class="nocov"><span class="num"><pre>217</pre></span><pre>								(fil, b),</pre></div>
+<div class="nocov"><span class="num"><pre>218</pre></span><pre>								(bl, l),</pre></div>
+<div class="nocov"><span class="num"><pre>219</pre></span><pre>								(bl, t),</pre></div>
+<div class="nocov"><span class="num"><pre>220</pre></span><pre>								),</pre></div>
+<div class="skip"><span class="num"><pre>221</pre></span><pre>					</pre></div>
+<div class="nocov"><span class="num"><pre>222</pre></span><pre>					attachControl=(</pre></div>
+<div class="nocov"><span class="num"><pre>223</pre></span><pre>									(lpane, t, m, fil),</pre></div>
+<div class="nocov"><span class="num"><pre>224</pre></span><pre>									(pane, t, m, fil),</pre></div>
+<div class="nocov"><span class="num"><pre>225</pre></span><pre>									(pane, b, m, bl),</pre></div>
+<div class="nocov"><span class="num"><pre>226</pre></span><pre>									(pane, l, m, lpane),</pre></div>
+<div class="nocov"><span class="num"><pre>227</pre></span><pre>									(fp, l, m, lpane),</pre></div>
+<div class="nocov"><span class="num"><pre>228</pre></span><pre>									(fp, r, m, bl),</pre></div>
+<div class="nocov"><span class="num"><pre>229</pre></span><pre>									),</pre></div>
+<div class="nocov"><span class="num"><pre>230</pre></span><pre>					)</pre></div>
+<div class="skip"><span class="num"><pre>231</pre></span><pre>		# END setup</pre></div>
+<div class="skip"><span class="num"><pre>232</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>233</pre></span><pre>	#{ Subclass Interface</pre></div>
+<div class="skip"><span class="num"><pre>234</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>235</pre></span><pre>	def _create_finder_menu(self, menu):</pre></div>
+<div class="cov"><span class="num"><pre>236</pre></span><pre>		&quot;&quot;&quot;Create a static menu for the finder. The active parent is a popupMenu</pre></div>
+<div class="cov"><span class="num"><pre>237</pre></span><pre>		at the time of this call. The default buttons allow to quickly confirm</pre></div>
+<div class="cov"><span class="num"><pre>238</pre></span><pre>		and cancel.</pre></div>
+<div class="cov"><span class="num"><pre>239</pre></span><pre>		If a stack is present, items can be added to it&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>240</pre></span><pre>		mi = ui.MenuItem(rp=&quot;SW&quot;, label=self.k_cancel_name)</pre></div>
+<div class="nocov"><span class="num"><pre>241</pre></span><pre>		mi.e_command = self._cancel_button_pressed</pre></div>
+<div class="skip"><span class="num"><pre>242</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>243</pre></span><pre>		mi = ui.MenuItem(rp=&quot;SE&quot;, label=self.k_confirm_name)</pre></div>
+<div class="nocov"><span class="num"><pre>244</pre></span><pre>		mi.e_command = self._confirm_button_pressed</pre></div>
+<div class="skip"><span class="num"><pre>245</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>246</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>247</pre></span><pre>	def _create_stack_menu(self, menu):</pre></div>
+<div class="nocov"><span class="num"><pre>248</pre></span><pre>		mi = ui.MenuItem(label=self.k_stack_item_remove_name, rp=&quot;W&quot;)</pre></div>
+<div class="nocov"><span class="num"><pre>249</pre></span><pre>		mi.e_command = self._on_stack_remove_item</pre></div>
+<div class="skip"><span class="num"><pre>250</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>251</pre></span><pre>	def _create_button_layout(self):</pre></div>
+<div class="cov"><span class="num"><pre>252</pre></span><pre>		&quot;&quot;&quot;Create a layout with two main buttons, one to confirm, the other </pre></div>
+<div class="cov"><span class="num"><pre>253</pre></span><pre>		to cancel the operation</pre></div>
+<div class="cov"><span class="num"><pre>254</pre></span><pre>		:return: parent layout containing the buttons&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>255</pre></span><pre>		bform = ui.FormLayout()</pre></div>
+<div class="skip"><span class="num"><pre>256</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>257</pre></span><pre>		if bform:</pre></div>
+<div class="nocov"><span class="num"><pre>258</pre></span><pre>			okb = ui.Button(label=self.k_confirm_name)</pre></div>
+<div class="nocov"><span class="num"><pre>259</pre></span><pre>			okb.e_released = self._confirm_button_pressed</pre></div>
+<div class="skip"><span class="num"><pre>260</pre></span><pre>			</pre></div>
+<div class="nocov"><span class="num"><pre>261</pre></span><pre>			cnclb = ui.Button(label=self.k_cancel_name)</pre></div>
+<div class="nocov"><span class="num"><pre>262</pre></span><pre>			cnclb.e_released = self._cancel_button_pressed</pre></div>
+<div class="skip"><span class="num"><pre>263</pre></span><pre>		# END create buttons</pre></div>
+<div class="nocov"><span class="num"><pre>264</pre></span><pre>		self.setActive()</pre></div>
+<div class="skip"><span class="num"><pre>265</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>266</pre></span><pre>		t, b, l, r = self.kSides</pre></div>
+<div class="nocov"><span class="num"><pre>267</pre></span><pre>		m = 2</pre></div>
+<div class="nocov"><span class="num"><pre>268</pre></span><pre>		bform.setup(</pre></div>
+<div class="nocov"><span class="num"><pre>269</pre></span><pre>					attachForm=(</pre></div>
+<div class="nocov"><span class="num"><pre>270</pre></span><pre>									(okb, t, m),</pre></div>
+<div class="nocov"><span class="num"><pre>271</pre></span><pre>									(okb, b, m),</pre></div>
+<div class="nocov"><span class="num"><pre>272</pre></span><pre>									(okb, l, m),</pre></div>
+<div class="nocov"><span class="num"><pre>273</pre></span><pre>									(cnclb, t, m),</pre></div>
+<div class="nocov"><span class="num"><pre>274</pre></span><pre>									(cnclb, b, m),</pre></div>
+<div class="nocov"><span class="num"><pre>275</pre></span><pre>									(cnclb, r, m),</pre></div>
+<div class="nocov"><span class="num"><pre>276</pre></span><pre>								),</pre></div>
+<div class="nocov"><span class="num"><pre>277</pre></span><pre>					attachNone=(</pre></div>
+<div class="nocov"><span class="num"><pre>278</pre></span><pre>									(okb, r),</pre></div>
+<div class="nocov"><span class="num"><pre>279</pre></span><pre>								),</pre></div>
+<div class="nocov"><span class="num"><pre>280</pre></span><pre>					attachControl=(</pre></div>
+<div class="nocov"><span class="num"><pre>281</pre></span><pre>									(cnclb, l, m, okb),</pre></div>
+<div class="nocov"><span class="num"><pre>282</pre></span><pre>									)</pre></div>
+<div class="nocov"><span class="num"><pre>283</pre></span><pre>					)</pre></div>
+<div class="skip"><span class="num"><pre>284</pre></span><pre>		# END setup</pre></div>
+<div class="skip"><span class="num"><pre>285</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>286</pre></span><pre>		return bform</pre></div>
+<div class="skip"><span class="num"><pre>287</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>288</pre></span><pre>	#}END subclass interface</pre></div>
+<div class="skip"><span class="num"><pre>289</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>290</pre></span><pre>	#{ Callbacks</pre></div>
+<div class="skip"><span class="num"><pre>291</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>292</pre></span><pre>	def _on_stack_remove_item(self, *args):</pre></div>
+<div class="nocov"><span class="num"><pre>293</pre></span><pre>		self.stack.removeItem(self.stack.selectedItem())</pre></div>
+<div class="skip"><span class="num"><pre>294</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>295</pre></span><pre>	def _close_parent_window(self):</pre></div>
+<div class="cov"><span class="num"><pre>296</pre></span><pre>		&quot;&quot;&quot;helper routine closing the parent window if there is one&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>297</pre></span><pre>		p = self.parent()</pre></div>
+<div class="nocov"><span class="num"><pre>298</pre></span><pre>		if isinstance(p, ui.Window):</pre></div>
+<div class="skip"><span class="num"><pre>299</pre></span><pre>			# If its not deferred, it will crash maya for some reason, maybe</pre></div>
+<div class="skip"><span class="num"><pre>300</pre></span><pre>			# something related to garbage collection.</pre></div>
+<div class="nocov"><span class="num"><pre>301</pre></span><pre>			mutil.executeDeferred(self.parent().delete)</pre></div>
+<div class="nocov"><span class="num"><pre>302</pre></span><pre>		elif isinstance(p, ui.FormLayout) and p.startswith('layoutDialog'):</pre></div>
+<div class="nocov"><span class="num"><pre>303</pre></span><pre>			cmds.layoutDialog(dismiss='close')</pre></div>
+<div class="skip"><span class="num"><pre>304</pre></span><pre>		# END close window</pre></div>
+<div class="skip"><span class="num"><pre>305</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>306</pre></span><pre>	def _confirm_button_pressed(self, *args):</pre></div>
+<div class="cov"><span class="num"><pre>307</pre></span><pre>		&quot;&quot;&quot;Called when the ok button was pressed to finalize the operation&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>308</pre></span><pre>		self._close_parent_window()</pre></div>
+<div class="skip"><span class="num"><pre>309</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>310</pre></span><pre>	def _cancel_button_pressed(self, *args):</pre></div>
+<div class="cov"><span class="num"><pre>311</pre></span><pre>		&quot;&quot;&quot;Called when the cancel button was pressed, terminating the operation without</pre></div>
+<div class="cov"><span class="num"><pre>312</pre></span><pre>		any changes.</pre></div>
+<div class="cov"><span class="num"><pre>313</pre></span><pre>		:note: if our parent is a window, we will close it through deletion&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>314</pre></span><pre>		self._close_parent_window()</pre></div>
+<div class="skip"><span class="num"><pre>315</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>316</pre></span><pre>	def _build_bookmark_popup(self, popup, *args):</pre></div>
+<div class="nocov"><span class="num"><pre>317</pre></span><pre>		popup.p_deleteAllItems = True</pre></div>
+<div class="nocov"><span class="num"><pre>318</pre></span><pre>		popup.setActive()</pre></div>
+<div class="skip"><span class="num"><pre>319</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>320</pre></span><pre>		mi = ui.MenuItem(label=&quot;Add Bookmark&quot;)</pre></div>
+<div class="nocov"><span class="num"><pre>321</pre></span><pre>		mi.p_enable = self.finder.selectedUrl() is not None</pre></div>
+<div class="nocov"><span class="num"><pre>322</pre></span><pre>		if mi.p_enable:</pre></div>
+<div class="nocov"><span class="num"><pre>323</pre></span><pre>			mi.e_command = self._on_add_bookmark</pre></div>
+<div class="skip"><span class="num"><pre>324</pre></span><pre>		# END setup command</pre></div>
+<div class="skip"><span class="num"><pre>325</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>326</pre></span><pre>		mi = ui.MenuItem(label=&quot;Remove Bookmark&quot;)</pre></div>
+<div class="nocov"><span class="num"><pre>327</pre></span><pre>		mi.p_enable = len(self.bookmarks.selectedItems()) == 1</pre></div>
+<div class="nocov"><span class="num"><pre>328</pre></span><pre>		if mi.p_enable:</pre></div>
+<div class="nocov"><span class="num"><pre>329</pre></span><pre>			mi.e_command = self._on_remove_bookmark</pre></div>
+<div class="skip"><span class="num"><pre>330</pre></span><pre>		# END setup command </pre></div>
+<div class="skip"><span class="num"><pre>331</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>332</pre></span><pre>	@logException</pre></div>
+<div class="cov"><span class="num"><pre>333</pre></span><pre>	def _on_add_bookmark(self, item, *args):</pre></div>
+<div class="nocov"><span class="num"><pre>334</pre></span><pre>		url = self.finder.selectedUrl()</pre></div>
+<div class="nocov"><span class="num"><pre>335</pre></span><pre>		provider = self.finder.provider()</pre></div>
+<div class="skip"><span class="num"><pre>336</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>337</pre></span><pre>		if not hasattr(provider, 'root'):</pre></div>
+<div class="nocov"><span class="num"><pre>338</pre></span><pre>			raise TypeError(&quot;Provider doesn't support the 'root' method&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>339</pre></span><pre>		# END verify interface</pre></div>
+<div class="skip"><span class="num"><pre>340</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>341</pre></span><pre>		self.bookmarks.addItem((provider.root(), url))</pre></div>
+<div class="skip"><span class="num"><pre>342</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>343</pre></span><pre>	@logException</pre></div>
+<div class="cov"><span class="num"><pre>344</pre></span><pre>	def _on_remove_bookmark(self, item, *args):</pre></div>
+<div class="nocov"><span class="num"><pre>345</pre></span><pre>		self.bookmarks.removeItem(self.bookmarks.selectedItems()[0])</pre></div>
+<div class="skip"><span class="num"><pre>346</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>347</pre></span><pre>	@logException</pre></div>
+<div class="cov"><span class="num"><pre>348</pre></span><pre>	def _on_bookmark_change(self, root, url):</pre></div>
+<div class="cov"><span class="num"><pre>349</pre></span><pre>		&quot;&quot;&quot;Propagate changed bookmarks to changed roots. If necessary, add a new</pre></div>
+<div class="cov"><span class="num"><pre>350</pre></span><pre>		root to the root selector. Otherwise just set the root and url of the finder&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>351</pre></span><pre>		cur_provider = self.finder.provider()</pre></div>
+<div class="nocov"><span class="num"><pre>352</pre></span><pre>		if cur_provider and root == cur_provider.root() and self.finder.selectedUrl() == url:</pre></div>
+<div class="nocov"><span class="num"><pre>353</pre></span><pre>			return</pre></div>
+<div class="skip"><span class="num"><pre>354</pre></span><pre>		# END early bailout</pre></div>
+<div class="skip"><span class="num"><pre>355</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>356</pre></span><pre>		if self.rootselector is None:</pre></div>
+<div class="nocov"><span class="num"><pre>357</pre></span><pre>			ptype = type(cur_provider)</pre></div>
+<div class="nocov"><span class="num"><pre>358</pre></span><pre>			assert ptype is not type(None), &quot;Finder needs provider to be set beforehand&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>359</pre></span><pre>			self.finder.setProvider(ptype(root))</pre></div>
+<div class="nocov"><span class="num"><pre>360</pre></span><pre>		else:</pre></div>
+<div class="nocov"><span class="num"><pre>361</pre></span><pre>			actual_provider = None</pre></div>
+<div class="nocov"><span class="num"><pre>362</pre></span><pre>			root_item = root</pre></div>
+<div class="skip"><span class="num"><pre>363</pre></span><pre>			# find a provider matching the root - if not, add it</pre></div>
+<div class="nocov"><span class="num"><pre>364</pre></span><pre>			for provider in self.rootselector.providers():</pre></div>
+<div class="nocov"><span class="num"><pre>365</pre></span><pre>				if provider.root() == root:</pre></div>
+<div class="nocov"><span class="num"><pre>366</pre></span><pre>					actual_provider = provider</pre></div>
+<div class="nocov"><span class="num"><pre>367</pre></span><pre>					break</pre></div>
+<div class="skip"><span class="num"><pre>368</pre></span><pre>				# END handle provider match</pre></div>
+<div class="skip"><span class="num"><pre>369</pre></span><pre>			# END for each provider</pre></div>
+<div class="skip"><span class="num"><pre>370</pre></span><pre>			</pre></div>
+<div class="nocov"><span class="num"><pre>371</pre></span><pre>			if actual_provider is None:</pre></div>
+<div class="nocov"><span class="num"><pre>372</pre></span><pre>				actual_provider = self.t_finder_provider(root)</pre></div>
+<div class="nocov"><span class="num"><pre>373</pre></span><pre>				self.rootselector.addItem(actual_provider)</pre></div>
+<div class="skip"><span class="num"><pre>374</pre></span><pre>			# END add a new provider to root selector</pre></div>
+<div class="skip"><span class="num"><pre>375</pre></span><pre>			</pre></div>
+<div class="nocov"><span class="num"><pre>376</pre></span><pre>			self.rootselector.setSelectedItem(root_item)</pre></div>
+<div class="skip"><span class="num"><pre>377</pre></span><pre>		# END handle existance of rootselector</pre></div>
+<div class="nocov"><span class="num"><pre>378</pre></span><pre>		self.finder.setUrl(url, allow_memory=False)</pre></div>
+<div class="skip"><span class="num"><pre>379</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>380</pre></span><pre>	#} END callbacks</pre></div>
+<div class="skip"><span class="num"><pre>381</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>382</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>383</pre></span><pre>class FileSaveFinder(FinderLayout):</pre></div>
+<div class="cov"><span class="num"><pre>384</pre></span><pre>	&quot;&quot;&quot;Finder optimized to choose a location to save a file&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>385</pre></span><pre>	#{ Configuration </pre></div>
+<div class="cov"><span class="num"><pre>386</pre></span><pre>	k_confirm_name = &quot;Save File&quot;</pre></div>
+<div class="cov"><span class="num"><pre>387</pre></span><pre>	t_stack = None</pre></div>
+<div class="skip"><span class="num"><pre>388</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>389</pre></span><pre>	t_filepath = FilePathControlEditable</pre></div>
+<div class="cov"><span class="num"><pre>390</pre></span><pre>	t_options=None</pre></div>
+<div class="skip"><span class="num"><pre>391</pre></span><pre>	#} END configuration</pre></div>
+<div class="skip"><span class="num"><pre>392</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>393</pre></span><pre>	def __init__(self, *args, **kwargs):</pre></div>
+<div class="nocov"><span class="num"><pre>394</pre></span><pre>		super(FileSaveFinder, self).__init__(*args, **kwargs)</pre></div>
+<div class="nocov"><span class="num"><pre>395</pre></span><pre>		self.bookmarks.k_bookmark_store = &quot;MRV_SAVE_Bookmarks&quot;</pre></div>
+<div class="skip"><span class="num"><pre>396</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>397</pre></span><pre>		# filepath field is editable in this case</pre></div>
+<div class="nocov"><span class="num"><pre>398</pre></span><pre>		self.fpctrl.setEditable(True)</pre></div>
+<div class="skip"><span class="num"><pre>399</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>400</pre></span><pre>	@notifyException</pre></div>
+<div class="cov"><span class="num"><pre>401</pre></span><pre>	def _confirm_button_pressed(self, *args, **kwargs):</pre></div>
+<div class="nocov"><span class="num"><pre>402</pre></span><pre>		save_path = self.finder.provider().root() / self.fpctrl.path()</pre></div>
+<div class="nocov"><span class="num"><pre>403</pre></span><pre>		mrv.maya.Scene.save(save_path)</pre></div>
+<div class="skip"><span class="num"><pre>404</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>405</pre></span><pre>		super(FileSaveFinder, self)._confirm_button_pressed(*args, **kwargs)</pre></div>
+<div class="skip"><span class="num"><pre>406</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>407</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>408</pre></span><pre>class FileOpenFinder(FinderLayout):</pre></div>
+<div class="cov"><span class="num"><pre>409</pre></span><pre>	&quot;&quot;&quot;Finder customized for opening files&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>410</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>411</pre></span><pre>	#{ Configuration </pre></div>
+<div class="cov"><span class="num"><pre>412</pre></span><pre>	k_confirm_name = &quot;Open File&quot;</pre></div>
+<div class="cov"><span class="num"><pre>413</pre></span><pre>	t_stack = None</pre></div>
+<div class="skip"><span class="num"><pre>414</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>415</pre></span><pre>	t_options=FileOpenOptions</pre></div>
+<div class="skip"><span class="num"><pre>416</pre></span><pre>	#} END configuration</pre></div>
+<div class="skip"><span class="num"><pre>417</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>418</pre></span><pre>	def __init__(self, *args, **kwargs):</pre></div>
+<div class="nocov"><span class="num"><pre>419</pre></span><pre>		super(FileOpenFinder, self).__init__(*args, **kwargs)</pre></div>
+<div class="nocov"><span class="num"><pre>420</pre></span><pre>		self.bookmarks.k_bookmark_store = &quot;MRV_OPEN_Bookmarks&quot;</pre></div>
+<div class="skip"><span class="num"><pre>421</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>422</pre></span><pre>	@notifyException</pre></div>
+<div class="cov"><span class="num"><pre>423</pre></span><pre>	def _confirm_button_pressed(self, *args):</pre></div>
+<div class="cov"><span class="num"><pre>424</pre></span><pre>		&quot;&quot;&quot;Called when the ok button was pressed to finalize the operation&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>425</pre></span><pre>		fileToOpen = self.finder.selectedUrl(absolute=True)</pre></div>
+<div class="nocov"><span class="num"><pre>426</pre></span><pre>		opts = self.options.fileOptions() </pre></div>
+<div class="nocov"><span class="num"><pre>427</pre></span><pre>		opts['open'] = True</pre></div>
+<div class="nocov"><span class="num"><pre>428</pre></span><pre>		if not handleUnsavedModifications():</pre></div>
+<div class="nocov"><span class="num"><pre>429</pre></span><pre>			print &quot;Cancelled by User&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>430</pre></span><pre>			return</pre></div>
+<div class="skip"><span class="num"><pre>431</pre></span><pre>		# END handle modification</pre></div>
+<div class="nocov"><span class="num"><pre>432</pre></span><pre>		cmds.file(fileToOpen, **opts)</pre></div>
+<div class="nocov"><span class="num"><pre>433</pre></span><pre>		super(FileOpenFinder, self)._confirm_button_pressed()</pre></div>
+<div class="skip"><span class="num"><pre>434</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>435</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>436</pre></span><pre>class FileReferenceFinder(FinderLayout):</pre></div>
+<div class="cov"><span class="num"><pre>437</pre></span><pre>	&quot;&quot;&quot;Finder Layout for creating references&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>438</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>439</pre></span><pre>	#{ Configuration</pre></div>
+<div class="skip"><span class="num"><pre>440</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>441</pre></span><pre>	k_add_single = &quot;Add to Stack&quot;</pre></div>
+<div class="cov"><span class="num"><pre>442</pre></span><pre>	k_add_and_confirm = &quot;Add to Stack and Confirm&quot;</pre></div>
+<div class="cov"><span class="num"><pre>443</pre></span><pre>	k_confirm_name = &quot;Create Reference(s)&quot;</pre></div>
+<div class="cov"><span class="num"><pre>444</pre></span><pre>	k_stack_item_remove_name = &quot;Remove File from Stack&quot;</pre></div>
+<div class="skip"><span class="num"><pre>445</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>446</pre></span><pre>	t_stack=FileStack</pre></div>
+<div class="cov"><span class="num"><pre>447</pre></span><pre>	t_options=None</pre></div>
+<div class="skip"><span class="num"><pre>448</pre></span><pre>	#} END configuration</pre></div>
+<div class="skip"><span class="num"><pre>449</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>450</pre></span><pre>	def __init__(self, *args, **kwargs):</pre></div>
+<div class="nocov"><span class="num"><pre>451</pre></span><pre>		super(FileReferenceFinder, self).__init__(*args, **kwargs)</pre></div>
+<div class="nocov"><span class="num"><pre>452</pre></span><pre>		self.bookmarks.k_bookmark_store = &quot;MRV_REF_Bookmarks&quot;</pre></div>
+<div class="skip"><span class="num"><pre>453</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>454</pre></span><pre>	def _create_finder_menu(self, menu):</pre></div>
+<div class="nocov"><span class="num"><pre>455</pre></span><pre>		super(FileReferenceFinder, self)._create_finder_menu(menu)</pre></div>
+<div class="nocov"><span class="num"><pre>456</pre></span><pre>		mi = ui.MenuItem(label=self.k_add_single, rp=&quot;E&quot;)</pre></div>
+<div class="nocov"><span class="num"><pre>457</pre></span><pre>		mi.e_command = self._on_add_to_stack</pre></div>
+<div class="skip"><span class="num"><pre>458</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>459</pre></span><pre>		mi = ui.MenuItem(label=self.k_add_and_confirm, rp=&quot;NE&quot;)</pre></div>
+<div class="nocov"><span class="num"><pre>460</pre></span><pre>		mi.e_command = self._on_add_to_stack</pre></div>
+<div class="skip"><span class="num"><pre>461</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>462</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>463</pre></span><pre>	#{ Subclass Interface</pre></div>
+<div class="skip"><span class="num"><pre>464</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>465</pre></span><pre>	def _create_references(self, refpaths):</pre></div>
+<div class="cov"><span class="num"><pre>466</pre></span><pre>		&quot;&quot;&quot;Create reference to the given reference paths, being strings to the file </pre></div>
+<div class="cov"><span class="num"><pre>467</pre></span><pre>		in question&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>468</pre></span><pre>		for ref in refpaths:</pre></div>
+<div class="nocov"><span class="num"><pre>469</pre></span><pre>			FileReference.create(ref)</pre></div>
+<div class="skip"><span class="num"><pre>470</pre></span><pre>		# END for each ref to create</pre></div>
+<div class="skip"><span class="num"><pre>471</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>472</pre></span><pre>	#} END subclass interface</pre></div>
+<div class="skip"><span class="num"><pre>473</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>474</pre></span><pre>	#{ Callbacks</pre></div>
+<div class="skip"><span class="num"><pre>475</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>476</pre></span><pre>	@notifyException</pre></div>
+<div class="cov"><span class="num"><pre>477</pre></span><pre>	def _on_add_to_stack(self, menu_item, *args):</pre></div>
+<div class="nocov"><span class="num"><pre>478</pre></span><pre>		prov = self.finder.provider()</pre></div>
+<div class="nocov"><span class="num"><pre>479</pre></span><pre>		if prov is None:</pre></div>
+<div class="nocov"><span class="num"><pre>480</pre></span><pre>			raise AssertionError(&quot;Finder is not setup&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>481</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>482</pre></span><pre>		# default is always add</pre></div>
+<div class="nocov"><span class="num"><pre>483</pre></span><pre>		url = self.finder.selectedUrl(absolute=True)</pre></div>
+<div class="nocov"><span class="num"><pre>484</pre></span><pre>		if url is None:</pre></div>
+<div class="nocov"><span class="num"><pre>485</pre></span><pre>			raise ValueError(&quot;Please select a path and retry&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>486</pre></span><pre>		# END handle nothing selected</pre></div>
+<div class="skip"><span class="num"><pre>487</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>488</pre></span><pre>		self.stack.addItem(url)</pre></div>
+<div class="skip"><span class="num"><pre>489</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>490</pre></span><pre>		if menu_item.p_label == self.k_add_and_confirm:</pre></div>
+<div class="nocov"><span class="num"><pre>491</pre></span><pre>			self._confirm_button_pressed()</pre></div>
+<div class="skip"><span class="num"><pre>492</pre></span><pre>		# END handle confirm</pre></div>
+<div class="skip"><span class="num"><pre>493</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>494</pre></span><pre>	@notifyException</pre></div>
+<div class="cov"><span class="num"><pre>495</pre></span><pre>	def _confirm_button_pressed(self, *args):</pre></div>
+<div class="nocov"><span class="num"><pre>496</pre></span><pre>		if not self.stack.base_items:</pre></div>
+<div class="nocov"><span class="num"><pre>497</pre></span><pre>			raise ValueError(&quot;Please add at least one item to the stack and retry&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>498</pre></span><pre>		# END handle empty refs</pre></div>
+<div class="skip"><span class="num"><pre>499</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>500</pre></span><pre>		# create refs</pre></div>
+<div class="nocov"><span class="num"><pre>501</pre></span><pre>		self._create_references(self.stack.base_items)</pre></div>
+<div class="skip"><span class="num"><pre>502</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>503</pre></span><pre>		# finally let base take care of the rest</pre></div>
+<div class="skip"><span class="num"><pre>504</pre></span><pre>		# NOTE: Needs to be deferred, crashes otherwis</pre></div>
+<div class="nocov"><span class="num"><pre>505</pre></span><pre>		mutil.executeDeferred(super(FileReferenceFinder, self)._confirm_button_pressed)</pre></div>
+<div class="skip"><span class="num"><pre>506</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>507</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>508</pre></span><pre>	#} END callbacks</pre></div>
+<div class="skip"><span class="num"><pre>509</pre></span><pre></pre></div>
+</div>
+</body>
+</html>

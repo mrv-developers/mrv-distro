@@ -1,0 +1,47 @@
+<html>
+<head>
+<title>mrv.exc</title>
+</head>
+<body>
+mrv.exc
+<style>
+.coverage pre {float: left; margin: 0px 1em; border: none;
+               padding: 0px; }
+.num pre { margin: 0px }
+.nocov, .nocov pre {background-color: #faa}
+.cov, .cov pre {background-color: #cfc}
+div.coverage div { clear: both; height: 1.1em}
+</style>
+<div class="stats">
+Covered: 15 lines<br/>
+Missed: 0 lines<br/>
+Skipped 7 lines<br/>
+Percent: 100 %<br/>
+
+</div>
+<div class="coverage">
+<div class="skip"><span class="num"><pre> 1</pre></span><pre># -*- coding: utf-8 -*-</pre></div>
+<div class="cov"><span class="num"><pre> 2</pre></span><pre>&quot;&quot;&quot; Contains all exceptions used by the mrv package in general &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 3</pre></span><pre>__docformat__ = &quot;restructuredtext&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 4</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 5</pre></span><pre>class MRVError( Exception ):</pre></div>
+<div class="cov"><span class="num"><pre> 6</pre></span><pre>	&quot;&quot;&quot; Base Class for all exceptions that the mrv framework throws&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 7</pre></span><pre>	def __init__(self, *args, **kwargs):</pre></div>
+<div class="cov"><span class="num"><pre> 8</pre></span><pre>		self._message = &quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 9</pre></span><pre>		if args and isinstance(args[0], basestring):</pre></div>
+<div class="cov"><span class="num"><pre>10</pre></span><pre>			self._message = args[0]</pre></div>
+<div class="cov"><span class="num"><pre>11</pre></span><pre>			args = args[1:]</pre></div>
+<div class="skip"><span class="num"><pre>12</pre></span><pre>		# END args and message handling</pre></div>
+<div class="cov"><span class="num"><pre>13</pre></span><pre>		Exception.__init__(self,*args, **kwargs)</pre></div>
+<div class="skip"><span class="num"><pre>14</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>15</pre></span><pre>	def _get_message(self): </pre></div>
+<div class="cov"><span class="num"><pre>16</pre></span><pre>		return self._message</pre></div>
+<div class="cov"><span class="num"><pre>17</pre></span><pre>	def _set_message(self, message): </pre></div>
+<div class="cov"><span class="num"><pre>18</pre></span><pre>		self._message = message</pre></div>
+<div class="cov"><span class="num"><pre>19</pre></span><pre>	message = property(_get_message, _set_message)</pre></div>
+<div class="skip"><span class="num"><pre>20</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>21</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>22</pre></span><pre></pre></div>
+</div>
+</body>
+</html>

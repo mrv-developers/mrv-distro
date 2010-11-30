@@ -1,0 +1,277 @@
+<html>
+<head>
+<title>mrv.maya.scene</title>
+</head>
+<body>
+mrv.maya.scene
+<style>
+.coverage pre {float: left; margin: 0px 1em; border: none;
+               padding: 0px; }
+.num pre { margin: 0px }
+.nocov, .nocov pre {background-color: #faa}
+.cov, .cov pre {background-color: #cfc}
+div.coverage div { clear: both; height: 1.1em}
+</style>
+<div class="stats">
+Covered: 155 lines<br/>
+Missed: 8 lines<br/>
+Skipped 89 lines<br/>
+Percent: 95 %<br/>
+
+</div>
+<div class="coverage">
+<div class="skip"><span class="num"><pre>  1</pre></span><pre># -*- coding: utf-8 -*-</pre></div>
+<div class="cov"><span class="num"><pre>  2</pre></span><pre>&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  3</pre></span><pre>Provides methodes to query and alter the currently loaded scene. It covers</pre></div>
+<div class="cov"><span class="num"><pre>  4</pre></span><pre>most of the functionality of the 'file' command, but has been renamed to scene</pre></div>
+<div class="cov"><span class="num"><pre>  5</pre></span><pre>as disambiguation to a filesystem file.</pre></div>
+<div class="cov"><span class="num"><pre>  6</pre></span><pre>&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  7</pre></span><pre>__docformat__ = &quot;restructuredtext&quot;</pre></div>
+<div class="skip"><span class="num"><pre>  8</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  9</pre></span><pre>import util as mutil</pre></div>
+<div class="cov"><span class="num"><pre> 10</pre></span><pre>import mrv.util as util</pre></div>
+<div class="cov"><span class="num"><pre> 11</pre></span><pre>import maya.OpenMaya as api</pre></div>
+<div class="cov"><span class="num"><pre> 12</pre></span><pre>import maya.cmds as cmds</pre></div>
+<div class="cov"><span class="num"><pre> 13</pre></span><pre>from mrv.path import make_path</pre></div>
+<div class="skip"><span class="num"><pre> 14</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 15</pre></span><pre>import inspect</pre></div>
+<div class="skip"><span class="num"><pre> 16</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 17</pre></span><pre>__all__ = [ 'Scene' ]</pre></div>
+<div class="skip"><span class="num"><pre> 18</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 19</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 20</pre></span><pre>class _SceneEvent( mutil.CallbackEventBase ):</pre></div>
+<div class="cov"><span class="num"><pre> 21</pre></span><pre>	&quot;&quot;&quot; Implements Scene Callbacks&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 22</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 23</pre></span><pre>	_checkCBSet = set( ( 	api.MSceneMessage.kBeforeNewCheck,</pre></div>
+<div class="cov"><span class="num"><pre> 24</pre></span><pre>							api.MSceneMessage.kBeforeSaveCheck ) )</pre></div>
+<div class="skip"><span class="num"><pre> 25</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 26</pre></span><pre>	_checkFileCBSet = set( ( 	api.MSceneMessage.kBeforeImportCheck,</pre></div>
+<div class="cov"><span class="num"><pre> 27</pre></span><pre>							  	api.MSceneMessage.kBeforeOpenCheck,</pre></div>
+<div class="cov"><span class="num"><pre> 28</pre></span><pre>								api.MSceneMessage.kBeforeExportCheck,</pre></div>
+<div class="cov"><span class="num"><pre> 29</pre></span><pre>								api.MSceneMessage.kBeforeReferenceCheck,</pre></div>
+<div class="cov"><span class="num"><pre> 30</pre></span><pre>								api.MSceneMessage.kBeforeLoadReferenceCheck  ) )</pre></div>
+<div class="skip"><span class="num"><pre> 31</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 32</pre></span><pre>	#( Configuration</pre></div>
+<div class="cov"><span class="num"><pre> 33</pre></span><pre>	use_weakref = False</pre></div>
+<div class="cov"><span class="num"><pre> 34</pre></span><pre>	remove_on_error = True</pre></div>
+<div class="skip"><span class="num"><pre> 35</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 36</pre></span><pre>	weakref_sender = True</pre></div>
+<div class="skip"><span class="num"><pre> 37</pre></span><pre>	#) END configuration</pre></div>
+<div class="skip"><span class="num"><pre> 38</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 39</pre></span><pre>	# get the proper registration method</pre></div>
+<div class="cov"><span class="num"><pre> 40</pre></span><pre>	def _getRegisterFunction(self, eventID):</pre></div>
+<div class="cov"><span class="num"><pre> 41</pre></span><pre>		reg_method = api.MSceneMessage.addCallback</pre></div>
+<div class="cov"><span class="num"><pre> 42</pre></span><pre>		if eventID in self._checkCBSet:</pre></div>
+<div class="cov"><span class="num"><pre> 43</pre></span><pre>			reg_method = api.MSceneMessage.addCheckCallback</pre></div>
+<div class="cov"><span class="num"><pre> 44</pre></span><pre>		elif eventID in self._checkFileCBSet:</pre></div>
+<div class="cov"><span class="num"><pre> 45</pre></span><pre>			reg_method = api.MSceneMessage.addCheckFileCallback</pre></div>
+<div class="skip"><span class="num"><pre> 46</pre></span><pre>		# END find registration method</pre></div>
+<div class="cov"><span class="num"><pre> 47</pre></span><pre>		return reg_method</pre></div>
+<div class="skip"><span class="num"><pre> 48</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre> 49</pre></span><pre># END SceneEvent</pre></div>
+<div class="skip"><span class="num"><pre> 50</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 51</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 52</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 53</pre></span><pre>class Scene( util.Singleton, util.EventSender ):</pre></div>
+<div class="cov"><span class="num"><pre> 54</pre></span><pre>	&quot;&quot;&quot;Singleton Class allowing access to the maya scene</pre></div>
+<div class="skip"><span class="num"><pre> 55</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 56</pre></span><pre>	You can register all events available in MSceneMessage easily usnig the following </pre></div>
+<div class="cov"><span class="num"><pre> 57</pre></span><pre>	syntax:</pre></div>
+<div class="skip"><span class="num"><pre> 58</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 59</pre></span><pre>		&gt;&gt;&gt; scene.beforeSoftwareRender = myFunctionObject</pre></div>
+<div class="skip"><span class="num"><pre> 60</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 61</pre></span><pre>	&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 62</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 63</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 64</pre></span><pre>	kFileTypeMap = { 	&quot;&quot;	  : &quot;mayaAscii&quot;,		# treat untitled scenes as ma</pre></div>
+<div class="cov"><span class="num"><pre> 65</pre></span><pre>						&quot;.ma&quot; : &quot;mayaAscii&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 66</pre></span><pre>						&quot;.mb&quot; : &quot;mayaBinary&quot; }</pre></div>
+<div class="skip"><span class="num"><pre> 67</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 68</pre></span><pre>	#{ Events </pre></div>
+<div class="cov"><span class="num"><pre> 69</pre></span><pre>	sender_as_argument = False</pre></div>
+<div class="skip"><span class="num"><pre> 70</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre> 71</pre></span><pre>	# create events from 'kEventName', creating a corresponding event named </pre></div>
+<div class="skip"><span class="num"><pre> 72</pre></span><pre>	# 'eventName'</pre></div>
+<div class="cov"><span class="num"><pre> 73</pre></span><pre>	for eidName, eid in ((n,v) for n,v in inspect.getmembers(api.MSceneMessage) if n.startswith('k')):</pre></div>
+<div class="cov"><span class="num"><pre> 74</pre></span><pre>		locals()[util.uncapitalize(eidName[1:])] = _SceneEvent(eid)</pre></div>
+<div class="skip"><span class="num"><pre> 75</pre></span><pre>	# END for each message id to create</pre></div>
+<div class="skip"><span class="num"><pre> 76</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre> 77</pre></span><pre>	#} END events</pre></div>
+<div class="skip"><span class="num"><pre> 78</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 79</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre> 80</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 81</pre></span><pre>	#{ Edit Methods</pre></div>
+<div class="cov"><span class="num"><pre> 82</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre> 83</pre></span><pre>	def open( cls, scenepath=None, force=False, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre> 84</pre></span><pre>		&quot;&quot;&quot; Open the scene at the given scenepath</pre></div>
+<div class="skip"><span class="num"><pre> 85</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 86</pre></span><pre>		:param scenepath: The path to the file to be opened</pre></div>
+<div class="cov"><span class="num"><pre> 87</pre></span><pre>			If None, the currently loaded file will reopened</pre></div>
+<div class="cov"><span class="num"><pre> 88</pre></span><pre>		:param force: if True, the new scene will be loaded although currently</pre></div>
+<div class="cov"><span class="num"><pre> 89</pre></span><pre>			loaded contains unsaved changes</pre></div>
+<div class="cov"><span class="num"><pre> 90</pre></span><pre>		:param kwargs: passed to *cmds.file*</pre></div>
+<div class="cov"><span class="num"><pre> 91</pre></span><pre>		:return: a Path to the loaded scene&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 92</pre></span><pre>		if not scenepath:</pre></div>
+<div class="cov"><span class="num"><pre> 93</pre></span><pre>			scenepath = cls.name()</pre></div>
+<div class="skip"><span class="num"><pre> 94</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 95</pre></span><pre>		# NOTE: it will return the last loaded reference instead of the loaded file - lets fix this !</pre></div>
+<div class="cov"><span class="num"><pre> 96</pre></span><pre>		sourcePath = make_path( scenepath )</pre></div>
+<div class="cov"><span class="num"><pre> 97</pre></span><pre>		kwargs.pop('open', kwargs.pop('o', None))</pre></div>
+<div class="cov"><span class="num"><pre> 98</pre></span><pre>		kwargs.pop('force', kwargs.pop('f', None))</pre></div>
+<div class="cov"><span class="num"><pre> 99</pre></span><pre>		lastReference = cmds.file( sourcePath.abspath(), open=1, force=force, **kwargs )</pre></div>
+<div class="cov"><span class="num"><pre>100</pre></span><pre>		return make_path( sourcePath )</pre></div>
+<div class="skip"><span class="num"><pre>101</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>102</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre>103</pre></span><pre>	def new( cls, force = False, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>104</pre></span><pre>		&quot;&quot;&quot; Create a new scene</pre></div>
+<div class="skip"><span class="num"><pre>105</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>106</pre></span><pre>		:param force: if True, the new scene will be created even though there</pre></div>
+<div class="cov"><span class="num"><pre>107</pre></span><pre>			are unsaved modifications</pre></div>
+<div class="cov"><span class="num"><pre>108</pre></span><pre>		:param kwargs: passed to *cmds.file*</pre></div>
+<div class="cov"><span class="num"><pre>109</pre></span><pre>		:return: Path with name of the new file&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>110</pre></span><pre>		kwargs.pop('new', kwargs.pop('n', None))</pre></div>
+<div class="cov"><span class="num"><pre>111</pre></span><pre>		kwargs.pop('force', kwargs.pop('f', None))</pre></div>
+<div class="cov"><span class="num"><pre>112</pre></span><pre>		return make_path( cmds.file( new = True, force = force, **kwargs ) )</pre></div>
+<div class="skip"><span class="num"><pre>113</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>114</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre>115</pre></span><pre>	def rename( cls, scenepath ):</pre></div>
+<div class="cov"><span class="num"><pre>116</pre></span><pre>		&quot;&quot;&quot;Rename the currently loaded file to be the file at scenepath</pre></div>
+<div class="skip"><span class="num"><pre>117</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>118</pre></span><pre>		:param scenepath: string or Path pointing describing the new location of the scene.</pre></div>
+<div class="cov"><span class="num"><pre>119</pre></span><pre>		:return: Path to scenepath</pre></div>
+<div class="cov"><span class="num"><pre>120</pre></span><pre>		:note: as opposed to the normal file -rename it will also adjust the extension</pre></div>
+<div class="cov"><span class="num"><pre>121</pre></span><pre>		:raise RuntimeError: if the scene's extension is not supported.&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>122</pre></span><pre>		scenepath = make_path(scenepath)</pre></div>
+<div class="cov"><span class="num"><pre>123</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre>124</pre></span><pre>			cmds.file( rename = scenepath.expandvars() )</pre></div>
+<div class="cov"><span class="num"><pre>125</pre></span><pre>			cmds.file( type = cls.kFileTypeMap[ scenepath.ext() ] )</pre></div>
+<div class="nocov"><span class="num"><pre>126</pre></span><pre>		except KeyError:</pre></div>
+<div class="nocov"><span class="num"><pre>127</pre></span><pre>			raise RuntimeError( &quot;Unsupported filetype of: &quot; + scenepath  )</pre></div>
+<div class="skip"><span class="num"><pre>128</pre></span><pre>		# END exception handling</pre></div>
+<div class="skip"><span class="num"><pre>129</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>130</pre></span><pre>		return scenepath</pre></div>
+<div class="skip"><span class="num"><pre>131</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>132</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre>133</pre></span><pre>	def save( cls, scenepath=None, autodeleteUnknown = False, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>134</pre></span><pre>		&quot;&quot;&quot;Save the currently opened scene under scenepath in the respective format</pre></div>
+<div class="skip"><span class="num"><pre>135</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>136</pre></span><pre>		:param scenepath: if None, the currently opened scene will be saved, otherwise </pre></div>
+<div class="cov"><span class="num"><pre>137</pre></span><pre>			the name will be changed. Paths leading to the file will automatically be created.</pre></div>
+<div class="cov"><span class="num"><pre>138</pre></span><pre>		:param autodeleteUnknown: if true, unknown nodes will automatically be deleted</pre></div>
+<div class="cov"><span class="num"><pre>139</pre></span><pre>			before an attempt is made to change the maya file's type</pre></div>
+<div class="cov"><span class="num"><pre>140</pre></span><pre>		:param kwargs: passed to cmds.file</pre></div>
+<div class="cov"><span class="num"><pre>141</pre></span><pre>		:return: Path at which the scene has been saved.&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>142</pre></span><pre>		if scenepath is None or scenepath == &quot;&quot;:</pre></div>
+<div class="nocov"><span class="num"><pre>143</pre></span><pre>			scenepath = cls.name( )</pre></div>
+<div class="skip"><span class="num"><pre>144</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>145</pre></span><pre>		scenepath = make_path( scenepath )</pre></div>
+<div class="cov"><span class="num"><pre>146</pre></span><pre>		curscene = cls.name()</pre></div>
+<div class="cov"><span class="num"><pre>147</pre></span><pre>		try :</pre></div>
+<div class="cov"><span class="num"><pre>148</pre></span><pre>			filetype = cls.kFileTypeMap[ scenepath.ext() ]</pre></div>
+<div class="cov"><span class="num"><pre>149</pre></span><pre>			curscenetype = cls.kFileTypeMap[ curscene.ext() ]</pre></div>
+<div class="nocov"><span class="num"><pre>150</pre></span><pre>		except KeyError:</pre></div>
+<div class="nocov"><span class="num"><pre>151</pre></span><pre>			raise RuntimeError( &quot;Unsupported filetype of: &quot; + scenepath  )</pre></div>
+<div class="skip"><span class="num"><pre>152</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>153</pre></span><pre>		# is it a save as ?</pre></div>
+<div class="cov"><span class="num"><pre>154</pre></span><pre>		if curscene != scenepath:</pre></div>
+<div class="cov"><span class="num"><pre>155</pre></span><pre>			cls.rename(scenepath)</pre></div>
+<div class="skip"><span class="num"><pre>156</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>157</pre></span><pre>		# assure path exists</pre></div>
+<div class="cov"><span class="num"><pre>158</pre></span><pre>		parentdir = scenepath.dirname( )</pre></div>
+<div class="cov"><span class="num"><pre>159</pre></span><pre>		if not parentdir.exists( ):</pre></div>
+<div class="cov"><span class="num"><pre>160</pre></span><pre>			parentdir.makedirs( )</pre></div>
+<div class="skip"><span class="num"><pre>161</pre></span><pre>		# END assure parent path exists</pre></div>
+<div class="skip"><span class="num"><pre>162</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>163</pre></span><pre>		# delete unknown before changing types ( would result in an error otherwise )</pre></div>
+<div class="cov"><span class="num"><pre>164</pre></span><pre>		if autodeleteUnknown and curscenetype != filetype:</pre></div>
+<div class="cov"><span class="num"><pre>165</pre></span><pre>			cls.deleteUnknownNodes()</pre></div>
+<div class="skip"><span class="num"><pre>166</pre></span><pre>		# END handle unkonwn nodes</pre></div>
+<div class="skip"><span class="num"><pre>167</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>168</pre></span><pre>		# safe the file</pre></div>
+<div class="cov"><span class="num"><pre>169</pre></span><pre>		kwargs.pop('save', kwargs.pop('s', None))</pre></div>
+<div class="cov"><span class="num"><pre>170</pre></span><pre>		kwargs.pop('type', kwargs.pop('typ', None))</pre></div>
+<div class="cov"><span class="num"><pre>171</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre>172</pre></span><pre>			return make_path( cmds.file( save=True, type=filetype, **kwargs ) )</pre></div>
+<div class="cov"><span class="num"><pre>173</pre></span><pre>		except RuntimeError:</pre></div>
+<div class="cov"><span class="num"><pre>174</pre></span><pre>			if curscene != cls.name():</pre></div>
+<div class="cov"><span class="num"><pre>175</pre></span><pre>				cls.rename(curscene)</pre></div>
+<div class="skip"><span class="num"><pre>176</pre></span><pre>			# END restore previous name on error</pre></div>
+<div class="cov"><span class="num"><pre>177</pre></span><pre>			raise</pre></div>
+<div class="skip"><span class="num"><pre>178</pre></span><pre>		# END exception handling</pre></div>
+<div class="skip"><span class="num"><pre>179</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>180</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre>181</pre></span><pre>	def export(cls, outputFile, nodeListOrIterable=None, **kwargs):</pre></div>
+<div class="cov"><span class="num"><pre>182</pre></span><pre>		&quot;&quot;&quot;Export the given nodes or everything into the file at path</pre></div>
+<div class="skip"><span class="num"><pre>183</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>184</pre></span><pre>		:param outputFile: Path object or path string to which the data should </pre></div>
+<div class="cov"><span class="num"><pre>185</pre></span><pre>			be written to. Parent directories will be created as needed</pre></div>
+<div class="cov"><span class="num"><pre>186</pre></span><pre>		:param nodeListOrIterable: if None, everything will be exported. </pre></div>
+<div class="cov"><span class="num"><pre>187</pre></span><pre>			Otherwise it may be an MSelectionList ( recommended ), or a list of</pre></div>
+<div class="cov"><span class="num"><pre>188</pre></span><pre>			Nodes, MObjects or MDagPaths</pre></div>
+<div class="cov"><span class="num"><pre>189</pre></span><pre>		:param kwargs: passed to cmds.file, see the mel docs for modifying flags</pre></div>
+<div class="cov"><span class="num"><pre>190</pre></span><pre>		:return: Path to which the data was exported&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>191</pre></span><pre>		outputFile = make_path(outputFile) </pre></div>
+<div class="cov"><span class="num"><pre>192</pre></span><pre>		if not outputFile.dirname().isdir():</pre></div>
+<div class="nocov"><span class="num"><pre>193</pre></span><pre>			outputFile.dirname().makedirs()</pre></div>
+<div class="skip"><span class="num"><pre>194</pre></span><pre>		# END create parent dirs</pre></div>
+<div class="skip"><span class="num"><pre>195</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>196</pre></span><pre>		prev_selection = None</pre></div>
+<div class="cov"><span class="num"><pre>197</pre></span><pre>		if nodeListOrIterable is None:</pre></div>
+<div class="cov"><span class="num"><pre>198</pre></span><pre>			kwargs['exportAll'] = True</pre></div>
+<div class="cov"><span class="num"><pre>199</pre></span><pre>		else:</pre></div>
+<div class="skip"><span class="num"><pre>200</pre></span><pre>			# export selected mode</pre></div>
+<div class="cov"><span class="num"><pre>201</pre></span><pre>			kwargs['exportSelected'] = True</pre></div>
+<div class="cov"><span class="num"><pre>202</pre></span><pre>			prev_selection = api.MSelectionList()</pre></div>
+<div class="cov"><span class="num"><pre>203</pre></span><pre>			api.MGlobal.getActiveSelectionList(prev_selection)</pre></div>
+<div class="skip"><span class="num"><pre>204</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre>205</pre></span><pre>			import nt</pre></div>
+<div class="cov"><span class="num"><pre>206</pre></span><pre>			nt.select(nt.toSelectionList(nodeListOrIterable))</pre></div>
+<div class="skip"><span class="num"><pre>207</pre></span><pre>		# END handle nodes</pre></div>
+<div class="skip"><span class="num"><pre>208</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>209</pre></span><pre>		typ = kwargs.pop('type', kwargs.pop('typ', cls.kFileTypeMap.get(outputFile.ext(), None)))</pre></div>
+<div class="cov"><span class="num"><pre>210</pre></span><pre>		if typ is None:</pre></div>
+<div class="nocov"><span class="num"><pre>211</pre></span><pre>			raise RuntimeError(&quot;Invalid type in %s&quot; % outputFile)</pre></div>
+<div class="skip"><span class="num"><pre>212</pre></span><pre>		# END handle type </pre></div>
+<div class="skip"><span class="num"><pre>213</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>214</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre>215</pre></span><pre>			cmds.file(outputFile, type=typ, **kwargs)</pre></div>
+<div class="cov"><span class="num"><pre>216</pre></span><pre>			return outputFile</pre></div>
+<div class="cov"><span class="num"><pre>217</pre></span><pre>		finally:</pre></div>
+<div class="cov"><span class="num"><pre>218</pre></span><pre>			if prev_selection is not None:</pre></div>
+<div class="cov"><span class="num"><pre>219</pre></span><pre>				api.MGlobal.setActiveSelectionList(prev_selection)</pre></div>
+<div class="skip"><span class="num"><pre>220</pre></span><pre>			# END if we have a selection to restore</pre></div>
+<div class="skip"><span class="num"><pre>221</pre></span><pre>		# END handle selection</pre></div>
+<div class="skip"><span class="num"><pre>222</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>223</pre></span><pre>	#} END edit methods</pre></div>
+<div class="skip"><span class="num"><pre>224</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>225</pre></span><pre>	#{ Utilities</pre></div>
+<div class="cov"><span class="num"><pre>226</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre>227</pre></span><pre>	def deleteUnknownNodes( cls ):</pre></div>
+<div class="cov"><span class="num"><pre>228</pre></span><pre>		&quot;&quot;&quot;Deletes all unknown nodes in the scene</pre></div>
+<div class="skip"><span class="num"><pre>229</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>230</pre></span><pre>		:note: only do this if you are about to change the type of the scene during</pre></div>
+<div class="cov"><span class="num"><pre>231</pre></span><pre>			save or export - otherwise the operation would fail if there are still unknown nodes</pre></div>
+<div class="cov"><span class="num"><pre>232</pre></span><pre>			in the scene&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>233</pre></span><pre>		unknownNodes = cmds.ls( type=&quot;unknown&quot; )		# using mel is the faatest here</pre></div>
+<div class="cov"><span class="num"><pre>234</pre></span><pre>		if unknownNodes:</pre></div>
+<div class="cov"><span class="num"><pre>235</pre></span><pre>			cmds.delete( unknownNodes )</pre></div>
+<div class="skip"><span class="num"><pre>236</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>237</pre></span><pre>	#} END utilities</pre></div>
+<div class="skip"><span class="num"><pre>238</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>239</pre></span><pre>	#{ Query Methods</pre></div>
+<div class="cov"><span class="num"><pre>240</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre>241</pre></span><pre>	def name( cls ):</pre></div>
+<div class="cov"><span class="num"><pre>242</pre></span><pre>		return make_path( cmds.file( q=1, exn=1 ) )</pre></div>
+<div class="skip"><span class="num"><pre>243</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>244</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre>245</pre></span><pre>	def isModified( cls ):</pre></div>
+<div class="nocov"><span class="num"><pre>246</pre></span><pre>		return cmds.file( q=1, amf=True )</pre></div>
+<div class="skip"><span class="num"><pre>247</pre></span><pre>	#} END query methods</pre></div>
+<div class="skip"><span class="num"><pre>248</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>249</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>250</pre></span><pre># END SCENE</pre></div>
+<div class="skip"><span class="num"><pre>251</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>252</pre></span><pre></pre></div>
+</div>
+</body>
+</html>

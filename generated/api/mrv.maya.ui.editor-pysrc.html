@@ -1,0 +1,1678 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>mrv.maya.ui.editor</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="mrv-module.html">Package&nbsp;mrv</a> ::
+        <a href="mrv.maya-module.html">Package&nbsp;maya</a> ::
+        <a href="mrv.maya.ui-module.html">Package&nbsp;ui</a> ::
+        Module&nbsp;editor
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="mrv.maya.ui.editor-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="mrv.maya.ui.editor-module.html">Module mrv.maya.ui.editor</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment"># -*- coding: utf-8 -*-</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-docstring">Contains implementations of maya editors</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-name">__docformat__</tt> <tt class="py-op">=</tt> <tt class="py-string">"restructuredtext"</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-0" class="py-name" targets="Module mrv.automation.base=mrv.automation.base-module.html,Module mrv.cmd.base=mrv.cmd.base-module.html,Module mrv.doc.base=mrv.doc.base-module.html,Module mrv.maya.nt.base=mrv.maya.nt.base-module.html,Module mrv.maya.ui.base=mrv.maya.ui.base-module.html"><a title="mrv.automation.base
+mrv.cmd.base
+mrv.doc.base
+mrv.maya.nt.base
+mrv.maya.ui.base" class="py-name" href="#" onclick="return doclink('link-0', 'base', 'link-0');">base</a></tt> <tt class="py-keyword">as</tt> <tt class="py-name">uibase</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-1" class="py-name" targets="Module mrv.maya.nt.util=mrv.maya.nt.util-module.html,Module mrv.maya.ui.browse.util=mrv.maya.ui.browse.util-module.html,Module mrv.maya.ui.util=mrv.maya.ui.util-module.html,Module mrv.maya.util=mrv.maya.util-module.html,Module mrv.util=mrv.util-module.html"><a title="mrv.maya.nt.util
+mrv.maya.ui.browse.util
+mrv.maya.ui.util
+mrv.maya.util
+mrv.util" class="py-name" href="#" onclick="return doclink('link-1', 'util', 'link-1');">util</a></tt> <tt class="py-keyword">as</tt> <tt class="py-name">uiutil</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"> </tt>
+<a name="EditorBase"></a><div id="EditorBase-def"><a name="L10"></a><tt class="py-lineno"> 10</tt> <a class="py-toggle" href="#" id="EditorBase-toggle" onclick="return toggle('EditorBase');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.editor.EditorBase-class.html">EditorBase</a><tt class="py-op">(</tt> <tt class="py-base-class">uibase</tt><tt class="py-op">.</tt><tt class="py-base-class">NamedUI</tt><tt class="py-op">,</tt> <tt class="py-base-class">uiutil</tt><tt class="py-op">.</tt><tt class="py-base-class">UIContainerBase</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="EditorBase-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="EditorBase-expanded"><a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line">        <tt class="py-docstring">""" Structural base  for all Layouts allowing general queries and name handling</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-docstring">        Layouts may track their children """</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line">        <tt id="link-2" class="py-name" targets="Variable mrv.maya.ui.base.Menu._properties_=mrv.maya.ui.base.Menu-class.html#_properties_,Variable mrv.maya.ui.base.MenuBase._properties_=mrv.maya.ui.base.MenuBase-class.html#_properties_,Variable mrv.maya.ui.base.MenuItem._properties_=mrv.maya.ui.base.MenuItem-class.html#_properties_,Variable mrv.maya.ui.base.PopupMenu._properties_=mrv.maya.ui.base.PopupMenu-class.html#_properties_,Variable mrv.maya.ui.base.SizedControl._properties_=mrv.maya.ui.base.SizedControl-class.html#_properties_,Variable mrv.maya.ui.base.Window._properties_=mrv.maya.ui.base.Window-class.html#_properties_,Variable mrv.maya.ui.control.BooleanGroupBase._properties_=mrv.maya.ui.control.BooleanGroupBase-class.html#_properties_,Variable mrv.maya.ui.control.Button._properties_=mrv.maya.ui.control.Button-class.html#_properties_,Variable mrv.maya.ui.control.ButtonGroupBase._properties_=mrv.maya.ui.control.ButtonGroupBase-class.html#_properties_,Variable mrv.maya.ui.control.CheckBoxBase._properties_=mrv.maya.ui.control.CheckBoxBase-class.html#_properties_,Variable mrv.maya.ui.control.CheckBoxGrp._properties_=mrv.maya.ui.control.CheckBoxGrp-class.html#_properties_,Variable mrv.maya.ui.control.FieldBase._properties_=mrv.maya.ui.control.FieldBase-class.html#_properties_,Variable mrv.maya.ui.control.GroupBase._properties_=mrv.maya.ui.control.GroupBase-class.html#_properties_,Variable mrv.maya.ui.control.IconTextBase._properties_=mrv.maya.ui.control.IconTextBase-class.html#_properties_,Variable mrv.maya.ui.control.LabelBase._properties_=mrv.maya.ui.control.LabelBase-class.html#_properties_,Variable mrv.maya.ui.control.OptionMenuBase._properties_=mrv.maya.ui.control.OptionMenuBase-class.html#_properties_,Variable mrv.maya.ui.control.RadioButtonBase._properties_=mrv.maya.ui.control.RadioButtonBase-class.html#_properties_,Variable mrv.maya.ui.control.RadioCollectionBase._properties_=mrv.maya.ui.control.RadioCollectionBase-class.html#_properties_,Variable mrv.maya.ui.control.ScrollField._properties_=mrv.maya.ui.control.ScrollField-class.html#_properties_,Variable mrv.maya.ui.control.Separator._properties_=mrv.maya.ui.control.Separator-class.html#_properties_,Variable mrv.maya.ui.control.SliderBase._properties_=mrv.maya.ui.control.SliderBase-class.html#_properties_,Variable mrv.maya.ui.control.SliderGroupBase._properties_=mrv.maya.ui.control.SliderGroupBase-class.html#_properties_,Variable mrv.maya.ui.control.Text._properties_=mrv.maya.ui.control.Text-class.html#_properties_,Variable mrv.maya.ui.control.TextFieldBase._properties_=mrv.maya.ui.control.TextFieldBase-class.html#_properties_,Variable mrv.maya.ui.control.TextScrollList._properties_=mrv.maya.ui.control.TextScrollList-class.html#_properties_,Variable mrv.maya.ui.editor.AnimCurveEditor._properties_=mrv.maya.ui.editor.AnimCurveEditor-class.html#_properties_,Variable mrv.maya.ui.editor.AnimEditorBase._properties_=mrv.maya.ui.editor.AnimEditorBase-class.html#_properties_,Variable mrv.maya.ui.editor.BlendShapeEditor._properties_=mrv.maya.ui.editor.BlendShapeEditor-class.html#_properties_,Variable mrv.maya.ui.editor.ClipEditor._properties_=mrv.maya.ui.editor.ClipEditor-class.html#_properties_,Variable mrv.maya.ui.editor.ColorEditor._properties_=mrv.maya.ui.editor.ColorEditor-class.html#_properties_,Variable mrv.maya.ui.editor.ComponentEditor._properties_=mrv.maya.ui.editor.ComponentEditor-class.html#_properties_,Variable mrv.maya.ui.editor.DeviceEditor._properties_=mrv.maya.ui.editor.DeviceEditor-class.html#_properties_,Variable mrv.maya.ui.editor.DynPaintEditor._properties_=mrv.maya.ui.editor.DynPaintEditor-class.html#_properties_,Variable mrv.maya.ui.editor.EditorBase._properties_=mrv.maya.ui.editor.EditorBase-class.html#_properties_,Variable mrv.maya.ui.editor.GlRenderEditor._properties_=mrv.maya.ui.editor.GlRenderEditor-class.html#_properties_,Variable mrv.maya.ui.editor.ItemFilter._properties_=mrv.maya.ui.editor.ItemFilter-class.html#_properties_,Variable mrv.maya.ui.editor.ItemFilterAttr._properties_=mrv.maya.ui.editor.ItemFilterAttr-class.html#_properties_,Variable mrv.maya.ui.editor.ItemFilterBase._properties_=mrv.maya.ui.editor.ItemFilterBase-class.html#_properties_,Variable mrv.maya.ui.editor.ItemFilterRender._properties_=mrv.maya.ui.editor.ItemFilterRender-class.html#_properties_,Variable mrv.maya.ui.editor.ModelEditor._properties_=mrv.maya.ui.editor.ModelEditor-class.html#_properties_,Variable mrv.maya.ui.editor.OutlinerEditor._properties_=mrv.maya.ui.editor.OutlinerEditor-class.html#_properties_,Variable mrv.maya.ui.editor.RenderEditorBase._properties_=mrv.maya.ui.editor.RenderEditorBase-class.html#_properties_,Variable mrv.maya.ui.editor.RenderWindowEditor._properties_=mrv.maya.ui.editor.RenderWindowEditor-class.html#_properties_,Variable mrv.maya.ui.editor.SelectionConnection._properties_=mrv.maya.ui.editor.SelectionConnection-class.html#_properties_,Variable mrv.maya.ui.layout.ColumnLayout._properties_=mrv.maya.ui.layout.ColumnLayout-class.html#_properties_,Variable mrv.maya.ui.layout.ColumnLayoutBase._properties_=mrv.maya.ui.layout.ColumnLayoutBase-class.html#_properties_,Variable mrv.maya.ui.layout.FrameLayout._properties_=mrv.maya.ui.layout.FrameLayout-class.html#_properties_,Variable mrv.maya.ui.layout.Layout._properties_=mrv.maya.ui.layout.Layout-class.html#_properties_,Variable mrv.maya.ui.layout.PaneLayout._properties_=mrv.maya.ui.layout.PaneLayout-class.html#_properties_,Variable mrv.maya.ui.layout.RowColumnLayout._properties_=mrv.maya.ui.layout.RowColumnLayout-class.html#_properties_,Variable mrv.maya.ui.layout.RowLayout._properties_=mrv.maya.ui.layout.RowLayout-class.html#_properties_,Variable mrv.maya.ui.layout.ScrollLayout._properties_=mrv.maya.ui.layout.ScrollLayout-class.html#_properties_,Variable mrv.maya.ui.layout.TabLayout._properties_=mrv.maya.ui.layout.TabLayout-class.html#_properties_"><a title="mrv.maya.ui.base.Menu._properties_
+mrv.maya.ui.base.MenuBase._properties_
+mrv.maya.ui.base.MenuItem._properties_
+mrv.maya.ui.base.PopupMenu._properties_
+mrv.maya.ui.base.SizedControl._properties_
+mrv.maya.ui.base.Window._properties_
+mrv.maya.ui.control.BooleanGroupBase._properties_
+mrv.maya.ui.control.Button._properties_
+mrv.maya.ui.control.ButtonGroupBase._properties_
+mrv.maya.ui.control.CheckBoxBase._properties_
+mrv.maya.ui.control.CheckBoxGrp._properties_
+mrv.maya.ui.control.FieldBase._properties_
+mrv.maya.ui.control.GroupBase._properties_
+mrv.maya.ui.control.IconTextBase._properties_
+mrv.maya.ui.control.LabelBase._properties_
+mrv.maya.ui.control.OptionMenuBase._properties_
+mrv.maya.ui.control.RadioButtonBase._properties_
+mrv.maya.ui.control.RadioCollectionBase._properties_
+mrv.maya.ui.control.ScrollField._properties_
+mrv.maya.ui.control.Separator._properties_
+mrv.maya.ui.control.SliderBase._properties_
+mrv.maya.ui.control.SliderGroupBase._properties_
+mrv.maya.ui.control.Text._properties_
+mrv.maya.ui.control.TextFieldBase._properties_
+mrv.maya.ui.control.TextScrollList._properties_
+mrv.maya.ui.editor.AnimCurveEditor._properties_
+mrv.maya.ui.editor.AnimEditorBase._properties_
+mrv.maya.ui.editor.BlendShapeEditor._properties_
+mrv.maya.ui.editor.ClipEditor._properties_
+mrv.maya.ui.editor.ColorEditor._properties_
+mrv.maya.ui.editor.ComponentEditor._properties_
+mrv.maya.ui.editor.DeviceEditor._properties_
+mrv.maya.ui.editor.DynPaintEditor._properties_
+mrv.maya.ui.editor.EditorBase._properties_
+mrv.maya.ui.editor.GlRenderEditor._properties_
+mrv.maya.ui.editor.ItemFilter._properties_
+mrv.maya.ui.editor.ItemFilterAttr._properties_
+mrv.maya.ui.editor.ItemFilterBase._properties_
+mrv.maya.ui.editor.ItemFilterRender._properties_
+mrv.maya.ui.editor.ModelEditor._properties_
+mrv.maya.ui.editor.OutlinerEditor._properties_
+mrv.maya.ui.editor.RenderEditorBase._properties_
+mrv.maya.ui.editor.RenderWindowEditor._properties_
+mrv.maya.ui.editor.SelectionConnection._properties_
+mrv.maya.ui.layout.ColumnLayout._properties_
+mrv.maya.ui.layout.ColumnLayoutBase._properties_
+mrv.maya.ui.layout.FrameLayout._properties_
+mrv.maya.ui.layout.Layout._properties_
+mrv.maya.ui.layout.PaneLayout._properties_
+mrv.maya.ui.layout.RowColumnLayout._properties_
+mrv.maya.ui.layout.RowLayout._properties_
+mrv.maya.ui.layout.ScrollLayout._properties_
+mrv.maya.ui.layout.TabLayout._properties_" class="py-name" href="#" onclick="return doclink('link-2', '_properties_', 'link-2');">_properties_</a></tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line">                                                <tt class="py-string">"panel"</tt><tt class="py-op">,</tt> <tt class="py-string">"pnl"</tt><tt class="py-op">,</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line">                                                <tt class="py-string">"control"</tt><tt class="py-op">,</tt> <tt class="py-string">"ctl"</tt><tt class="py-op">,</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line">                                                <tt class="py-string">"mainListConnection"</tt><tt class="py-op">,</tt> <tt class="py-string">"mlc"</tt><tt class="py-op">,</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line">                                                <tt class="py-string">"forceMainConnection"</tt><tt class="py-op">,</tt> <tt class="py-string">"fmc"</tt><tt class="py-op">,</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line">                                                <tt class="py-string">"selectionConnection"</tt><tt class="py-op">,</tt> <tt class="py-string">"slc"</tt><tt class="py-op">,</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line">                                                <tt class="py-string">"highlightConnection"</tt><tt class="py-op">,</tt> <tt class="py-string">"hlc"</tt><tt class="py-op">,</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line">                                                <tt class="py-string">"filter"</tt><tt class="py-op">,</tt> <tt class="py-string">"f"</tt><tt class="py-op">,</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line">                                                <tt class="py-string">"lockMainConnection"</tt><tt class="py-op">,</tt> <tt class="py-string">"lck"</tt><tt class="py-op">,</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line">                                                <tt class="py-string">"stateString"</tt><tt class="py-op">,</tt> <tt class="py-string">"sts"</tt><tt class="py-op">,</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line">                                                <tt class="py-string">"unlockMainConnection"</tt><tt class="py-op">,</tt> <tt class="py-string">"ulk"</tt><tt class="py-op">,</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line">                                                <tt class="py-string">"updateMainConnection"</tt><tt class="py-op">,</tt> <tt class="py-string">"upd"</tt><tt class="py-op">,</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line">                                                <tt class="py-string">"docTag"</tt><tt class="py-op">,</tt> <tt class="py-string">"dtg"</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line">                                        <tt class="py-op">)</tt> </tt>
+</div><a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"> </tt>
+<a name="ColorEditor"></a><div id="ColorEditor-def"><a name="L30"></a><tt class="py-lineno"> 30</tt> <a class="py-toggle" href="#" id="ColorEditor-toggle" onclick="return toggle('ColorEditor');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.editor.ColorEditor-class.html">ColorEditor</a><tt class="py-op">(</tt> <tt class="py-base-class">uibase</tt><tt class="py-op">.</tt><tt class="py-base-class">NamedUI</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ColorEditor-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="ColorEditor-expanded"><a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">        <tt id="link-3" class="py-name"><a title="mrv.maya.ui.base.Menu._properties_
+mrv.maya.ui.base.MenuBase._properties_
+mrv.maya.ui.base.MenuItem._properties_
+mrv.maya.ui.base.PopupMenu._properties_
+mrv.maya.ui.base.SizedControl._properties_
+mrv.maya.ui.base.Window._properties_
+mrv.maya.ui.control.BooleanGroupBase._properties_
+mrv.maya.ui.control.Button._properties_
+mrv.maya.ui.control.ButtonGroupBase._properties_
+mrv.maya.ui.control.CheckBoxBase._properties_
+mrv.maya.ui.control.CheckBoxGrp._properties_
+mrv.maya.ui.control.FieldBase._properties_
+mrv.maya.ui.control.GroupBase._properties_
+mrv.maya.ui.control.IconTextBase._properties_
+mrv.maya.ui.control.LabelBase._properties_
+mrv.maya.ui.control.OptionMenuBase._properties_
+mrv.maya.ui.control.RadioButtonBase._properties_
+mrv.maya.ui.control.RadioCollectionBase._properties_
+mrv.maya.ui.control.ScrollField._properties_
+mrv.maya.ui.control.Separator._properties_
+mrv.maya.ui.control.SliderBase._properties_
+mrv.maya.ui.control.SliderGroupBase._properties_
+mrv.maya.ui.control.Text._properties_
+mrv.maya.ui.control.TextFieldBase._properties_
+mrv.maya.ui.control.TextScrollList._properties_
+mrv.maya.ui.editor.AnimCurveEditor._properties_
+mrv.maya.ui.editor.AnimEditorBase._properties_
+mrv.maya.ui.editor.BlendShapeEditor._properties_
+mrv.maya.ui.editor.ClipEditor._properties_
+mrv.maya.ui.editor.ColorEditor._properties_
+mrv.maya.ui.editor.ComponentEditor._properties_
+mrv.maya.ui.editor.DeviceEditor._properties_
+mrv.maya.ui.editor.DynPaintEditor._properties_
+mrv.maya.ui.editor.EditorBase._properties_
+mrv.maya.ui.editor.GlRenderEditor._properties_
+mrv.maya.ui.editor.ItemFilter._properties_
+mrv.maya.ui.editor.ItemFilterAttr._properties_
+mrv.maya.ui.editor.ItemFilterBase._properties_
+mrv.maya.ui.editor.ItemFilterRender._properties_
+mrv.maya.ui.editor.ModelEditor._properties_
+mrv.maya.ui.editor.OutlinerEditor._properties_
+mrv.maya.ui.editor.RenderEditorBase._properties_
+mrv.maya.ui.editor.RenderWindowEditor._properties_
+mrv.maya.ui.editor.SelectionConnection._properties_
+mrv.maya.ui.layout.ColumnLayout._properties_
+mrv.maya.ui.layout.ColumnLayoutBase._properties_
+mrv.maya.ui.layout.FrameLayout._properties_
+mrv.maya.ui.layout.Layout._properties_
+mrv.maya.ui.layout.PaneLayout._properties_
+mrv.maya.ui.layout.RowColumnLayout._properties_
+mrv.maya.ui.layout.RowLayout._properties_
+mrv.maya.ui.layout.ScrollLayout._properties_
+mrv.maya.ui.layout.TabLayout._properties_" class="py-name" href="#" onclick="return doclink('link-3', '_properties_', 'link-2');">_properties_</a></tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line">                                                <tt class="py-string">"rgbValue"</tt><tt class="py-op">,</tt> <tt class="py-string">"rgb"</tt><tt class="py-op">,</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line">                                                <tt class="py-string">"hsvValue"</tt><tt class="py-op">,</tt> <tt class="py-string">"hsv"</tt><tt class="py-op">,</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line">                                                <tt class="py-string">"alpha"</tt><tt class="py-op">,</tt> <tt class="py-string">"a"</tt><tt class="py-op">,</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line">                                                <tt class="py-string">"result"</tt><tt class="py-op">,</tt> <tt class="py-string">"r"</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line">                                        <tt class="py-op">)</tt> </tt>
+</div><a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"> </tt>
+<a name="BlendShapeEditor"></a><div id="BlendShapeEditor-def"><a name="L38"></a><tt class="py-lineno"> 38</tt> <a class="py-toggle" href="#" id="BlendShapeEditor-toggle" onclick="return toggle('BlendShapeEditor');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.editor.BlendShapeEditor-class.html">BlendShapeEditor</a><tt class="py-op">(</tt> <tt class="py-base-class">EditorBase</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="BlendShapeEditor-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="BlendShapeEditor-expanded"><a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line">        <tt id="link-4" class="py-name"><a title="mrv.maya.ui.base.Menu._properties_
+mrv.maya.ui.base.MenuBase._properties_
+mrv.maya.ui.base.MenuItem._properties_
+mrv.maya.ui.base.PopupMenu._properties_
+mrv.maya.ui.base.SizedControl._properties_
+mrv.maya.ui.base.Window._properties_
+mrv.maya.ui.control.BooleanGroupBase._properties_
+mrv.maya.ui.control.Button._properties_
+mrv.maya.ui.control.ButtonGroupBase._properties_
+mrv.maya.ui.control.CheckBoxBase._properties_
+mrv.maya.ui.control.CheckBoxGrp._properties_
+mrv.maya.ui.control.FieldBase._properties_
+mrv.maya.ui.control.GroupBase._properties_
+mrv.maya.ui.control.IconTextBase._properties_
+mrv.maya.ui.control.LabelBase._properties_
+mrv.maya.ui.control.OptionMenuBase._properties_
+mrv.maya.ui.control.RadioButtonBase._properties_
+mrv.maya.ui.control.RadioCollectionBase._properties_
+mrv.maya.ui.control.ScrollField._properties_
+mrv.maya.ui.control.Separator._properties_
+mrv.maya.ui.control.SliderBase._properties_
+mrv.maya.ui.control.SliderGroupBase._properties_
+mrv.maya.ui.control.Text._properties_
+mrv.maya.ui.control.TextFieldBase._properties_
+mrv.maya.ui.control.TextScrollList._properties_
+mrv.maya.ui.editor.AnimCurveEditor._properties_
+mrv.maya.ui.editor.AnimEditorBase._properties_
+mrv.maya.ui.editor.BlendShapeEditor._properties_
+mrv.maya.ui.editor.ClipEditor._properties_
+mrv.maya.ui.editor.ColorEditor._properties_
+mrv.maya.ui.editor.ComponentEditor._properties_
+mrv.maya.ui.editor.DeviceEditor._properties_
+mrv.maya.ui.editor.DynPaintEditor._properties_
+mrv.maya.ui.editor.EditorBase._properties_
+mrv.maya.ui.editor.GlRenderEditor._properties_
+mrv.maya.ui.editor.ItemFilter._properties_
+mrv.maya.ui.editor.ItemFilterAttr._properties_
+mrv.maya.ui.editor.ItemFilterBase._properties_
+mrv.maya.ui.editor.ItemFilterRender._properties_
+mrv.maya.ui.editor.ModelEditor._properties_
+mrv.maya.ui.editor.OutlinerEditor._properties_
+mrv.maya.ui.editor.RenderEditorBase._properties_
+mrv.maya.ui.editor.RenderWindowEditor._properties_
+mrv.maya.ui.editor.SelectionConnection._properties_
+mrv.maya.ui.layout.ColumnLayout._properties_
+mrv.maya.ui.layout.ColumnLayoutBase._properties_
+mrv.maya.ui.layout.FrameLayout._properties_
+mrv.maya.ui.layout.Layout._properties_
+mrv.maya.ui.layout.PaneLayout._properties_
+mrv.maya.ui.layout.RowColumnLayout._properties_
+mrv.maya.ui.layout.RowLayout._properties_
+mrv.maya.ui.layout.ScrollLayout._properties_
+mrv.maya.ui.layout.TabLayout._properties_" class="py-name" href="#" onclick="return doclink('link-4', '_properties_', 'link-2');">_properties_</a></tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line">                                                <tt class="py-string">"verticalSliders"</tt><tt class="py-op">,</tt> <tt class="py-string">"vs"</tt><tt class="py-op">,</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line">                                                <tt class="py-string">"targetControlList"</tt><tt class="py-op">,</tt> <tt class="py-string">"tcl"</tt><tt class="py-op">,</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line">                                                <tt class="py-string">"targetList"</tt><tt class="py-op">,</tt> <tt class="py-string">"tl"</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line">                                        <tt class="py-op">)</tt> </tt>
+</div><a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"> </tt>
+<a name="OutlinerEditor"></a><div id="OutlinerEditor-def"><a name="L45"></a><tt class="py-lineno"> 45</tt> <a class="py-toggle" href="#" id="OutlinerEditor-toggle" onclick="return toggle('OutlinerEditor');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.editor.OutlinerEditor-class.html">OutlinerEditor</a><tt class="py-op">(</tt> <tt class="py-base-class">EditorBase</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="OutlinerEditor-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="OutlinerEditor-expanded"><a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line">        <tt id="link-5" class="py-name"><a title="mrv.maya.ui.base.Menu._properties_
+mrv.maya.ui.base.MenuBase._properties_
+mrv.maya.ui.base.MenuItem._properties_
+mrv.maya.ui.base.PopupMenu._properties_
+mrv.maya.ui.base.SizedControl._properties_
+mrv.maya.ui.base.Window._properties_
+mrv.maya.ui.control.BooleanGroupBase._properties_
+mrv.maya.ui.control.Button._properties_
+mrv.maya.ui.control.ButtonGroupBase._properties_
+mrv.maya.ui.control.CheckBoxBase._properties_
+mrv.maya.ui.control.CheckBoxGrp._properties_
+mrv.maya.ui.control.FieldBase._properties_
+mrv.maya.ui.control.GroupBase._properties_
+mrv.maya.ui.control.IconTextBase._properties_
+mrv.maya.ui.control.LabelBase._properties_
+mrv.maya.ui.control.OptionMenuBase._properties_
+mrv.maya.ui.control.RadioButtonBase._properties_
+mrv.maya.ui.control.RadioCollectionBase._properties_
+mrv.maya.ui.control.ScrollField._properties_
+mrv.maya.ui.control.Separator._properties_
+mrv.maya.ui.control.SliderBase._properties_
+mrv.maya.ui.control.SliderGroupBase._properties_
+mrv.maya.ui.control.Text._properties_
+mrv.maya.ui.control.TextFieldBase._properties_
+mrv.maya.ui.control.TextScrollList._properties_
+mrv.maya.ui.editor.AnimCurveEditor._properties_
+mrv.maya.ui.editor.AnimEditorBase._properties_
+mrv.maya.ui.editor.BlendShapeEditor._properties_
+mrv.maya.ui.editor.ClipEditor._properties_
+mrv.maya.ui.editor.ColorEditor._properties_
+mrv.maya.ui.editor.ComponentEditor._properties_
+mrv.maya.ui.editor.DeviceEditor._properties_
+mrv.maya.ui.editor.DynPaintEditor._properties_
+mrv.maya.ui.editor.EditorBase._properties_
+mrv.maya.ui.editor.GlRenderEditor._properties_
+mrv.maya.ui.editor.ItemFilter._properties_
+mrv.maya.ui.editor.ItemFilterAttr._properties_
+mrv.maya.ui.editor.ItemFilterBase._properties_
+mrv.maya.ui.editor.ItemFilterRender._properties_
+mrv.maya.ui.editor.ModelEditor._properties_
+mrv.maya.ui.editor.OutlinerEditor._properties_
+mrv.maya.ui.editor.RenderEditorBase._properties_
+mrv.maya.ui.editor.RenderWindowEditor._properties_
+mrv.maya.ui.editor.SelectionConnection._properties_
+mrv.maya.ui.layout.ColumnLayout._properties_
+mrv.maya.ui.layout.ColumnLayoutBase._properties_
+mrv.maya.ui.layout.FrameLayout._properties_
+mrv.maya.ui.layout.Layout._properties_
+mrv.maya.ui.layout.PaneLayout._properties_
+mrv.maya.ui.layout.RowColumnLayout._properties_
+mrv.maya.ui.layout.RowLayout._properties_
+mrv.maya.ui.layout.ScrollLayout._properties_
+mrv.maya.ui.layout.TabLayout._properties_" class="py-name" href="#" onclick="return doclink('link-5', '_properties_', 'link-2');">_properties_</a></tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line">                                                <tt class="py-string">"showShapes"</tt><tt class="py-op">,</tt> <tt class="py-string">"shp"</tt><tt class="py-op">,</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line">                                                <tt class="py-string">"attrFilter"</tt><tt class="py-op">,</tt> <tt class="py-string">"af"</tt><tt class="py-op">,</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">                                                <tt class="py-string">"showAttributes"</tt><tt class="py-op">,</tt> <tt class="py-string">"atr"</tt><tt class="py-op">,</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">                                                <tt class="py-string">"showConnected"</tt><tt class="py-op">,</tt> <tt class="py-string">"con"</tt><tt class="py-op">,</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">                                                <tt class="py-string">"showAnimCurvesOnly"</tt><tt class="py-op">,</tt> <tt class="py-string">"aco"</tt><tt class="py-op">,</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line">                                                <tt class="py-string">"showTextureNodesOnly"</tt><tt class="py-op">,</tt> <tt class="py-string">"tno"</tt><tt class="py-op">,</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">                                                <tt class="py-string">"showDagOnly"</tt><tt class="py-op">,</tt> <tt class="py-string">"dag"</tt><tt class="py-op">,</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">                                                <tt class="py-string">"ignoreDagHierarchy"</tt><tt class="py-op">,</tt> <tt class="py-string">"hir"</tt><tt class="py-op">,</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">                                                <tt class="py-string">"autoExpand"</tt><tt class="py-op">,</tt> <tt class="py-string">"xpd"</tt><tt class="py-op">,</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">                                                <tt class="py-string">"expandConnections"</tt><tt class="py-op">,</tt> <tt class="py-string">"xc"</tt><tt class="py-op">,</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line">                                                <tt class="py-string">"showUnitlessCurves"</tt><tt class="py-op">,</tt> <tt class="py-string">"su"</tt><tt class="py-op">,</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">                                                <tt class="py-string">"showCompounds"</tt><tt class="py-op">,</tt> <tt class="py-string">"cmp"</tt><tt class="py-op">,</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">                                                <tt class="py-string">"showLeafs"</tt><tt class="py-op">,</tt> <tt class="py-string">"laf"</tt><tt class="py-op">,</tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">                                                <tt class="py-string">"showNumericAttrsOnly"</tt><tt class="py-op">,</tt> <tt class="py-string">"num"</tt><tt class="py-op">,</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line">                                                <tt class="py-string">"editAttrName"</tt><tt class="py-op">,</tt> <tt class="py-string">"ean"</tt><tt class="py-op">,</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">                                                <tt class="py-string">"showUVAttrsOnly"</tt><tt class="py-op">,</tt> <tt class="py-string">"uv"</tt><tt class="py-op">,</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">                                                <tt class="py-string">"highlightActive"</tt><tt class="py-op">,</tt> <tt class="py-string">"ha"</tt><tt class="py-op">,</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">                                                <tt class="py-string">"highlightSecondary"</tt><tt class="py-op">,</tt> <tt class="py-string">"hs"</tt><tt class="py-op">,</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">                                                <tt class="py-string">"autoSelectNewObjects"</tt><tt class="py-op">,</tt> <tt class="py-string">"as"</tt><tt class="py-op">,</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">                                                <tt class="py-string">"doNotSelectNewObjects"</tt><tt class="py-op">,</tt> <tt class="py-string">"dns"</tt><tt class="py-op">,</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">                                                <tt class="py-string">"dropIsParent"</tt><tt class="py-op">,</tt> <tt class="py-string">"dip"</tt><tt class="py-op">,</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">                                                <tt class="py-string">"transmitFilters"</tt><tt class="py-op">,</tt> <tt class="py-string">"tf"</tt><tt class="py-op">,</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">                                                <tt class="py-string">"showSelected"</tt><tt class="py-op">,</tt> <tt class="py-string">"sc"</tt><tt class="py-op">,</tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">                                                <tt class="py-string">"setFilter"</tt><tt class="py-op">,</tt> <tt class="py-string">"sf"</tt><tt class="py-op">,</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">                                                <tt class="py-string">"showSetMembers"</tt><tt class="py-op">,</tt> <tt class="py-string">"ssm"</tt><tt class="py-op">,</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">                                                <tt class="py-string">"allowMultiSelection"</tt><tt class="py-op">,</tt> <tt class="py-string">"ams"</tt><tt class="py-op">,</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">                                                <tt class="py-string">"alwaysToggleSelect"</tt><tt class="py-op">,</tt> <tt class="py-string">"ats"</tt><tt class="py-op">,</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">                                                <tt class="py-string">"directSelect"</tt><tt class="py-op">,</tt> <tt class="py-string">"ds"</tt><tt class="py-op">,</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">                                                <tt class="py-string">"object"</tt><tt class="py-op">,</tt> <tt class="py-string">"Obj"</tt><tt class="py-op">,</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">                                                <tt class="py-string">"displayMode"</tt><tt class="py-op">,</tt> <tt class="py-string">"dm"</tt><tt class="py-op">,</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">                                                <tt class="py-string">"expandObjects"</tt><tt class="py-op">,</tt> <tt class="py-string">"eo"</tt><tt class="py-op">,</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">                                                <tt class="py-string">"setsIgnoreFilters"</tt><tt class="py-op">,</tt> <tt class="py-string">"sif"</tt><tt class="py-op">,</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">                                                <tt class="py-string">"showAttrValues"</tt><tt class="py-op">,</tt> <tt class="py-string">"av"</tt><tt class="py-op">,</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">                                                <tt class="py-string">"masterOutliner"</tt><tt class="py-op">,</tt> <tt class="py-string">"mst"</tt><tt class="py-op">,</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">                                                <tt class="py-string">"isChildSelected"</tt><tt class="py-op">,</tt> <tt class="py-string">"ics"</tt><tt class="py-op">,</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">                                                <tt class="py-string">"attrAlphaOrder"</tt><tt class="py-op">,</tt> <tt class="py-string">"aao"</tt><tt class="py-op">,</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">                                                <tt class="py-string">"sortOrder"</tt><tt class="py-op">,</tt> <tt class="py-string">"so"</tt><tt class="py-op">,</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">                                                <tt class="py-string">"longNames"</tt><tt class="py-op">,</tt> <tt class="py-string">"ln"</tt><tt class="py-op">,</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">                                                <tt class="py-string">"niceNames"</tt><tt class="py-op">,</tt> <tt class="py-string">"nn"</tt><tt class="py-op">,</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">                                                <tt class="py-string">"showNamespace"</tt><tt class="py-op">,</tt> <tt class="py-string">"sn"</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">                                        <tt class="py-op">)</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">        <tt id="link-6" class="py-name" targets="Variable mrv.maya.ui.base.MenuBase._events_=mrv.maya.ui.base.MenuBase-class.html#_events_,Variable mrv.maya.ui.base.MenuItem._events_=mrv.maya.ui.base.MenuItem-class.html#_events_,Variable mrv.maya.ui.base.PopupMenu._events_=mrv.maya.ui.base.PopupMenu-class.html#_events_,Variable mrv.maya.ui.base.SizedControl._events_=mrv.maya.ui.base.SizedControl-class.html#_events_,Variable mrv.maya.ui.base.Window._events_=mrv.maya.ui.base.Window-class.html#_events_,Variable mrv.maya.ui.control.BooleanBase._events_=mrv.maya.ui.control.BooleanBase-class.html#_events_,Variable mrv.maya.ui.control.BooleanGroupBase._events_=mrv.maya.ui.control.BooleanGroupBase-class.html#_events_,Variable mrv.maya.ui.control.Button._events_=mrv.maya.ui.control.Button-class.html#_events_,Variable mrv.maya.ui.control.ButtonGroupBase._events_=mrv.maya.ui.control.ButtonGroupBase-class.html#_events_,Variable mrv.maya.ui.control.FieldBase._events_=mrv.maya.ui.control.FieldBase-class.html#_events_,Variable mrv.maya.ui.control.IconTextBase._events_=mrv.maya.ui.control.IconTextBase-class.html#_events_,Variable mrv.maya.ui.control.IconTextButton._events_=mrv.maya.ui.control.IconTextButton-class.html#_events_,Variable mrv.maya.ui.control.OptionMenuBase._events_=mrv.maya.ui.control.OptionMenuBase-class.html#_events_,Variable mrv.maya.ui.control.ScrollField._events_=mrv.maya.ui.control.ScrollField-class.html#_events_,Variable mrv.maya.ui.control.SliderBase._events_=mrv.maya.ui.control.SliderBase-class.html#_events_,Variable mrv.maya.ui.control.TextFieldGroupBase._events_=mrv.maya.ui.control.TextFieldGroupBase-class.html#_events_,Variable mrv.maya.ui.control.TextScrollList._events_=mrv.maya.ui.control.TextScrollList-class.html#_events_,Variable mrv.maya.ui.editor.AnimCurveEditor._events_=mrv.maya.ui.editor.AnimCurveEditor-class.html#_events_,Variable mrv.maya.ui.editor.ClipEditor._events_=mrv.maya.ui.editor.ClipEditor-class.html#_events_,Variable mrv.maya.ui.editor.ItemFilterBase._events_=mrv.maya.ui.editor.ItemFilterBase-class.html#_events_,Variable mrv.maya.ui.editor.OutlinerEditor._events_=mrv.maya.ui.editor.OutlinerEditor-class.html#_events_,Variable mrv.maya.ui.editor.RenderWindowEditor._events_=mrv.maya.ui.editor.RenderWindowEditor-class.html#_events_,Variable mrv.maya.ui.editor.SelectionConnection._events_=mrv.maya.ui.editor.SelectionConnection-class.html#_events_,Variable mrv.maya.ui.layout.FrameLayout._events_=mrv.maya.ui.layout.FrameLayout-class.html#_events_,Variable mrv.maya.ui.layout.PaneLayout._events_=mrv.maya.ui.layout.PaneLayout-class.html#_events_,Variable mrv.maya.ui.layout.TabLayout._events_=mrv.maya.ui.layout.TabLayout-class.html#_events_"><a title="mrv.maya.ui.base.MenuBase._events_
+mrv.maya.ui.base.MenuItem._events_
+mrv.maya.ui.base.PopupMenu._events_
+mrv.maya.ui.base.SizedControl._events_
+mrv.maya.ui.base.Window._events_
+mrv.maya.ui.control.BooleanBase._events_
+mrv.maya.ui.control.BooleanGroupBase._events_
+mrv.maya.ui.control.Button._events_
+mrv.maya.ui.control.ButtonGroupBase._events_
+mrv.maya.ui.control.FieldBase._events_
+mrv.maya.ui.control.IconTextBase._events_
+mrv.maya.ui.control.IconTextButton._events_
+mrv.maya.ui.control.OptionMenuBase._events_
+mrv.maya.ui.control.ScrollField._events_
+mrv.maya.ui.control.SliderBase._events_
+mrv.maya.ui.control.TextFieldGroupBase._events_
+mrv.maya.ui.control.TextScrollList._events_
+mrv.maya.ui.editor.AnimCurveEditor._events_
+mrv.maya.ui.editor.ClipEditor._events_
+mrv.maya.ui.editor.ItemFilterBase._events_
+mrv.maya.ui.editor.OutlinerEditor._events_
+mrv.maya.ui.editor.RenderWindowEditor._events_
+mrv.maya.ui.editor.SelectionConnection._events_
+mrv.maya.ui.layout.FrameLayout._events_
+mrv.maya.ui.layout.PaneLayout._events_
+mrv.maya.ui.layout.TabLayout._events_" class="py-name" href="#" onclick="return doclink('link-6', '_events_', 'link-6');">_events_</a></tt> <tt class="py-op">=</tt>              <tt class="py-op">(</tt> <tt class="py-string">"selectCommand"</tt><tt class="py-op">,</tt> <tt class="py-string">"sec"</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line"> </tt>
+<a name="AnimEditorBase"></a><div id="AnimEditorBase-def"><a name="L90"></a><tt class="py-lineno"> 90</tt> <a class="py-toggle" href="#" id="AnimEditorBase-toggle" onclick="return toggle('AnimEditorBase');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.editor.AnimEditorBase-class.html">AnimEditorBase</a><tt class="py-op">(</tt> <tt class="py-base-class">EditorBase</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="AnimEditorBase-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="AnimEditorBase-expanded"><a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">        <tt id="link-7" class="py-name"><a title="mrv.maya.ui.base.Menu._properties_
+mrv.maya.ui.base.MenuBase._properties_
+mrv.maya.ui.base.MenuItem._properties_
+mrv.maya.ui.base.PopupMenu._properties_
+mrv.maya.ui.base.SizedControl._properties_
+mrv.maya.ui.base.Window._properties_
+mrv.maya.ui.control.BooleanGroupBase._properties_
+mrv.maya.ui.control.Button._properties_
+mrv.maya.ui.control.ButtonGroupBase._properties_
+mrv.maya.ui.control.CheckBoxBase._properties_
+mrv.maya.ui.control.CheckBoxGrp._properties_
+mrv.maya.ui.control.FieldBase._properties_
+mrv.maya.ui.control.GroupBase._properties_
+mrv.maya.ui.control.IconTextBase._properties_
+mrv.maya.ui.control.LabelBase._properties_
+mrv.maya.ui.control.OptionMenuBase._properties_
+mrv.maya.ui.control.RadioButtonBase._properties_
+mrv.maya.ui.control.RadioCollectionBase._properties_
+mrv.maya.ui.control.ScrollField._properties_
+mrv.maya.ui.control.Separator._properties_
+mrv.maya.ui.control.SliderBase._properties_
+mrv.maya.ui.control.SliderGroupBase._properties_
+mrv.maya.ui.control.Text._properties_
+mrv.maya.ui.control.TextFieldBase._properties_
+mrv.maya.ui.control.TextScrollList._properties_
+mrv.maya.ui.editor.AnimCurveEditor._properties_
+mrv.maya.ui.editor.AnimEditorBase._properties_
+mrv.maya.ui.editor.BlendShapeEditor._properties_
+mrv.maya.ui.editor.ClipEditor._properties_
+mrv.maya.ui.editor.ColorEditor._properties_
+mrv.maya.ui.editor.ComponentEditor._properties_
+mrv.maya.ui.editor.DeviceEditor._properties_
+mrv.maya.ui.editor.DynPaintEditor._properties_
+mrv.maya.ui.editor.EditorBase._properties_
+mrv.maya.ui.editor.GlRenderEditor._properties_
+mrv.maya.ui.editor.ItemFilter._properties_
+mrv.maya.ui.editor.ItemFilterAttr._properties_
+mrv.maya.ui.editor.ItemFilterBase._properties_
+mrv.maya.ui.editor.ItemFilterRender._properties_
+mrv.maya.ui.editor.ModelEditor._properties_
+mrv.maya.ui.editor.OutlinerEditor._properties_
+mrv.maya.ui.editor.RenderEditorBase._properties_
+mrv.maya.ui.editor.RenderWindowEditor._properties_
+mrv.maya.ui.editor.SelectionConnection._properties_
+mrv.maya.ui.layout.ColumnLayout._properties_
+mrv.maya.ui.layout.ColumnLayoutBase._properties_
+mrv.maya.ui.layout.FrameLayout._properties_
+mrv.maya.ui.layout.Layout._properties_
+mrv.maya.ui.layout.PaneLayout._properties_
+mrv.maya.ui.layout.RowColumnLayout._properties_
+mrv.maya.ui.layout.RowLayout._properties_
+mrv.maya.ui.layout.ScrollLayout._properties_
+mrv.maya.ui.layout.TabLayout._properties_" class="py-name" href="#" onclick="return doclink('link-7', '_properties_', 'link-2');">_properties_</a></tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">                                        <tt class="py-string">"displayKeys"</tt><tt class="py-op">,</tt> <tt class="py-string">"dk"</tt><tt class="py-op">,</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">                                        <tt class="py-string">"displayTangents"</tt><tt class="py-op">,</tt> <tt class="py-string">"dtn"</tt><tt class="py-op">,</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">                                        <tt class="py-string">"displayActiveKeys"</tt><tt class="py-op">,</tt> <tt class="py-string">"dak"</tt><tt class="py-op">,</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">                                        <tt class="py-string">"displayActiveKeyTangents"</tt><tt class="py-op">,</tt> <tt class="py-string">"dat"</tt><tt class="py-op">,</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">                                        <tt class="py-string">"displayInfinities"</tt><tt class="py-op">,</tt> <tt class="py-string">"di"</tt><tt class="py-op">,</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">                                        <tt class="py-string">"autoFit"</tt><tt class="py-op">,</tt> <tt class="py-string">"af"</tt><tt class="py-op">,</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">                                        <tt class="py-string">"lookAt"</tt><tt class="py-op">,</tt> <tt class="py-string">"la"</tt><tt class="py-op">,</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">                                        <tt class="py-string">"snapTime"</tt><tt class="py-op">,</tt> <tt class="py-string">"st"</tt><tt class="py-op">,</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">                                        <tt class="py-string">"snapValue"</tt><tt class="py-op">,</tt> <tt class="py-string">"sv"</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line">                                        <tt class="py-op">)</tt> </tt>
+</div><a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line"> </tt>
+<a name="AnimCurveEditor"></a><div id="AnimCurveEditor-def"><a name="L103"></a><tt class="py-lineno">103</tt> <a class="py-toggle" href="#" id="AnimCurveEditor-toggle" onclick="return toggle('AnimCurveEditor');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.editor.AnimCurveEditor-class.html">AnimCurveEditor</a><tt class="py-op">(</tt> <tt class="py-base-class">AnimEditorBase</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="AnimCurveEditor-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="AnimCurveEditor-expanded"><a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">        <tt id="link-8" class="py-name"><a title="mrv.maya.ui.base.Menu._properties_
+mrv.maya.ui.base.MenuBase._properties_
+mrv.maya.ui.base.MenuItem._properties_
+mrv.maya.ui.base.PopupMenu._properties_
+mrv.maya.ui.base.SizedControl._properties_
+mrv.maya.ui.base.Window._properties_
+mrv.maya.ui.control.BooleanGroupBase._properties_
+mrv.maya.ui.control.Button._properties_
+mrv.maya.ui.control.ButtonGroupBase._properties_
+mrv.maya.ui.control.CheckBoxBase._properties_
+mrv.maya.ui.control.CheckBoxGrp._properties_
+mrv.maya.ui.control.FieldBase._properties_
+mrv.maya.ui.control.GroupBase._properties_
+mrv.maya.ui.control.IconTextBase._properties_
+mrv.maya.ui.control.LabelBase._properties_
+mrv.maya.ui.control.OptionMenuBase._properties_
+mrv.maya.ui.control.RadioButtonBase._properties_
+mrv.maya.ui.control.RadioCollectionBase._properties_
+mrv.maya.ui.control.ScrollField._properties_
+mrv.maya.ui.control.Separator._properties_
+mrv.maya.ui.control.SliderBase._properties_
+mrv.maya.ui.control.SliderGroupBase._properties_
+mrv.maya.ui.control.Text._properties_
+mrv.maya.ui.control.TextFieldBase._properties_
+mrv.maya.ui.control.TextScrollList._properties_
+mrv.maya.ui.editor.AnimCurveEditor._properties_
+mrv.maya.ui.editor.AnimEditorBase._properties_
+mrv.maya.ui.editor.BlendShapeEditor._properties_
+mrv.maya.ui.editor.ClipEditor._properties_
+mrv.maya.ui.editor.ColorEditor._properties_
+mrv.maya.ui.editor.ComponentEditor._properties_
+mrv.maya.ui.editor.DeviceEditor._properties_
+mrv.maya.ui.editor.DynPaintEditor._properties_
+mrv.maya.ui.editor.EditorBase._properties_
+mrv.maya.ui.editor.GlRenderEditor._properties_
+mrv.maya.ui.editor.ItemFilter._properties_
+mrv.maya.ui.editor.ItemFilterAttr._properties_
+mrv.maya.ui.editor.ItemFilterBase._properties_
+mrv.maya.ui.editor.ItemFilterRender._properties_
+mrv.maya.ui.editor.ModelEditor._properties_
+mrv.maya.ui.editor.OutlinerEditor._properties_
+mrv.maya.ui.editor.RenderEditorBase._properties_
+mrv.maya.ui.editor.RenderWindowEditor._properties_
+mrv.maya.ui.editor.SelectionConnection._properties_
+mrv.maya.ui.layout.ColumnLayout._properties_
+mrv.maya.ui.layout.ColumnLayoutBase._properties_
+mrv.maya.ui.layout.FrameLayout._properties_
+mrv.maya.ui.layout.Layout._properties_
+mrv.maya.ui.layout.PaneLayout._properties_
+mrv.maya.ui.layout.RowColumnLayout._properties_
+mrv.maya.ui.layout.RowLayout._properties_
+mrv.maya.ui.layout.ScrollLayout._properties_
+mrv.maya.ui.layout.TabLayout._properties_" class="py-name" href="#" onclick="return doclink('link-8', '_properties_', 'link-2');">_properties_</a></tt> <tt class="py-op">=</tt>  <tt class="py-op">(</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">                                        <tt class="py-string">"showResults"</tt><tt class="py-op">,</tt> <tt class="py-string">"sr"</tt><tt class="py-op">,</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">                                        <tt class="py-string">"showBufferCurves"</tt><tt class="py-op">,</tt> <tt class="py-string">"sb"</tt><tt class="py-op">,</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">                                        <tt class="py-string">"smoothness"</tt><tt class="py-op">,</tt> <tt class="py-string">"s"</tt><tt class="py-op">,</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line">                                        <tt class="py-string">"resultScreenSamples"</tt><tt class="py-op">,</tt> <tt class="py-string">"rss"</tt><tt class="py-op">,</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">                                        <tt class="py-string">"resultUpdate"</tt><tt class="py-op">,</tt> <tt class="py-string">"ru"</tt><tt class="py-op">,</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">                                        <tt class="py-string">"clipTime"</tt><tt class="py-op">,</tt> <tt class="py-string">"ct"</tt><tt class="py-op">,</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">                                        <tt class="py-string">"curvesShown"</tt><tt class="py-op">,</tt> <tt class="py-string">"cs"</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">                                        <tt class="py-op">)</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">        <tt id="link-9" class="py-name"><a title="mrv.maya.ui.base.MenuBase._events_
+mrv.maya.ui.base.MenuItem._events_
+mrv.maya.ui.base.PopupMenu._events_
+mrv.maya.ui.base.SizedControl._events_
+mrv.maya.ui.base.Window._events_
+mrv.maya.ui.control.BooleanBase._events_
+mrv.maya.ui.control.BooleanGroupBase._events_
+mrv.maya.ui.control.Button._events_
+mrv.maya.ui.control.ButtonGroupBase._events_
+mrv.maya.ui.control.FieldBase._events_
+mrv.maya.ui.control.IconTextBase._events_
+mrv.maya.ui.control.IconTextButton._events_
+mrv.maya.ui.control.OptionMenuBase._events_
+mrv.maya.ui.control.ScrollField._events_
+mrv.maya.ui.control.SliderBase._events_
+mrv.maya.ui.control.TextFieldGroupBase._events_
+mrv.maya.ui.control.TextScrollList._events_
+mrv.maya.ui.editor.AnimCurveEditor._events_
+mrv.maya.ui.editor.ClipEditor._events_
+mrv.maya.ui.editor.ItemFilterBase._events_
+mrv.maya.ui.editor.OutlinerEditor._events_
+mrv.maya.ui.editor.RenderWindowEditor._events_
+mrv.maya.ui.editor.SelectionConnection._events_
+mrv.maya.ui.layout.FrameLayout._events_
+mrv.maya.ui.layout.PaneLayout._events_
+mrv.maya.ui.layout.TabLayout._events_" class="py-name" href="#" onclick="return doclink('link-9', '_events_', 'link-6');">_events_</a></tt> <tt class="py-op">=</tt>              <tt class="py-op">(</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">                                         <tt class="py-string">"normalizeCurvesCommand"</tt><tt class="py-op">,</tt> <tt class="py-string">"ncc"</tt><tt class="py-op">,</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">                                         <tt class="py-string">"denormalizeCurvesCommand"</tt><tt class="py-op">,</tt> <tt class="py-string">"dcc"</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">                                         <tt class="py-op">)</tt> </tt>
+</div><a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line"> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line"> </tt>
+<a name="RenderEditorBase"></a><div id="RenderEditorBase-def"><a name="L119"></a><tt class="py-lineno">119</tt> <a class="py-toggle" href="#" id="RenderEditorBase-toggle" onclick="return toggle('RenderEditorBase');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.editor.RenderEditorBase-class.html">RenderEditorBase</a><tt class="py-op">(</tt> <tt class="py-base-class">EditorBase</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="RenderEditorBase-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="RenderEditorBase-expanded"><a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line">        <tt id="link-10" class="py-name"><a title="mrv.maya.ui.base.Menu._properties_
+mrv.maya.ui.base.MenuBase._properties_
+mrv.maya.ui.base.MenuItem._properties_
+mrv.maya.ui.base.PopupMenu._properties_
+mrv.maya.ui.base.SizedControl._properties_
+mrv.maya.ui.base.Window._properties_
+mrv.maya.ui.control.BooleanGroupBase._properties_
+mrv.maya.ui.control.Button._properties_
+mrv.maya.ui.control.ButtonGroupBase._properties_
+mrv.maya.ui.control.CheckBoxBase._properties_
+mrv.maya.ui.control.CheckBoxGrp._properties_
+mrv.maya.ui.control.FieldBase._properties_
+mrv.maya.ui.control.GroupBase._properties_
+mrv.maya.ui.control.IconTextBase._properties_
+mrv.maya.ui.control.LabelBase._properties_
+mrv.maya.ui.control.OptionMenuBase._properties_
+mrv.maya.ui.control.RadioButtonBase._properties_
+mrv.maya.ui.control.RadioCollectionBase._properties_
+mrv.maya.ui.control.ScrollField._properties_
+mrv.maya.ui.control.Separator._properties_
+mrv.maya.ui.control.SliderBase._properties_
+mrv.maya.ui.control.SliderGroupBase._properties_
+mrv.maya.ui.control.Text._properties_
+mrv.maya.ui.control.TextFieldBase._properties_
+mrv.maya.ui.control.TextScrollList._properties_
+mrv.maya.ui.editor.AnimCurveEditor._properties_
+mrv.maya.ui.editor.AnimEditorBase._properties_
+mrv.maya.ui.editor.BlendShapeEditor._properties_
+mrv.maya.ui.editor.ClipEditor._properties_
+mrv.maya.ui.editor.ColorEditor._properties_
+mrv.maya.ui.editor.ComponentEditor._properties_
+mrv.maya.ui.editor.DeviceEditor._properties_
+mrv.maya.ui.editor.DynPaintEditor._properties_
+mrv.maya.ui.editor.EditorBase._properties_
+mrv.maya.ui.editor.GlRenderEditor._properties_
+mrv.maya.ui.editor.ItemFilter._properties_
+mrv.maya.ui.editor.ItemFilterAttr._properties_
+mrv.maya.ui.editor.ItemFilterBase._properties_
+mrv.maya.ui.editor.ItemFilterRender._properties_
+mrv.maya.ui.editor.ModelEditor._properties_
+mrv.maya.ui.editor.OutlinerEditor._properties_
+mrv.maya.ui.editor.RenderEditorBase._properties_
+mrv.maya.ui.editor.RenderWindowEditor._properties_
+mrv.maya.ui.editor.SelectionConnection._properties_
+mrv.maya.ui.layout.ColumnLayout._properties_
+mrv.maya.ui.layout.ColumnLayoutBase._properties_
+mrv.maya.ui.layout.FrameLayout._properties_
+mrv.maya.ui.layout.Layout._properties_
+mrv.maya.ui.layout.PaneLayout._properties_
+mrv.maya.ui.layout.RowColumnLayout._properties_
+mrv.maya.ui.layout.RowLayout._properties_
+mrv.maya.ui.layout.ScrollLayout._properties_
+mrv.maya.ui.layout.TabLayout._properties_" class="py-name" href="#" onclick="return doclink('link-10', '_properties_', 'link-2');">_properties_</a></tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line">                                        <tt class="py-string">"scaleRed"</tt><tt class="py-op">,</tt> <tt class="py-string">"sr"</tt><tt class="py-op">,</tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">                                        <tt class="py-string">"scaleGreen"</tt><tt class="py-op">,</tt> <tt class="py-string">"sg"</tt><tt class="py-op">,</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line">                                        <tt class="py-string">"scaleBlue"</tt><tt class="py-op">,</tt> <tt class="py-string">"sb"</tt><tt class="py-op">,</tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line">                                        <tt class="py-string">"singleBuffer"</tt><tt class="py-op">,</tt> <tt class="py-string">"sbf"</tt><tt class="py-op">,</tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">                                        <tt class="py-string">"doubleBuffer"</tt><tt class="py-op">,</tt> <tt class="py-string">"dbf"</tt><tt class="py-op">,</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line">                                        <tt class="py-string">"displayImage"</tt><tt class="py-op">,</tt> <tt class="py-string">"di"</tt><tt class="py-op">,</tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line">                                        <tt class="py-string">"loadImage"</tt><tt class="py-op">,</tt> <tt class="py-string">"li"</tt><tt class="py-op">,</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line">                                        <tt class="py-string">"writeImage"</tt><tt class="py-op">,</tt> <tt class="py-string">"wi"</tt><tt class="py-op">,</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line">                                        <tt class="py-string">"displayStyle"</tt><tt class="py-op">,</tt> <tt class="py-string">"dst"</tt><tt class="py-op">,</tt> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line">                                        <tt class="py-string">"removeImage"</tt><tt class="py-op">,</tt> <tt class="py-string">"ri"</tt><tt class="py-op">,</tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line">                                        <tt class="py-string">"removeAllImages"</tt><tt class="py-op">,</tt> <tt class="py-string">"ra"</tt><tt class="py-op">,</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line">                                        <tt class="py-string">"saveImage"</tt><tt class="py-op">,</tt> <tt class="py-string">"si"</tt><tt class="py-op">,</tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line">                                        <tt class="py-string">"nbImages"</tt><tt class="py-op">,</tt> <tt class="py-string">"nim"</tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line">                                        <tt class="py-op">)</tt> </tt>
+</div><a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line"> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line"> </tt>
+<a name="RenderWindowEditor"></a><div id="RenderWindowEditor-def"><a name="L137"></a><tt class="py-lineno">137</tt> <a class="py-toggle" href="#" id="RenderWindowEditor-toggle" onclick="return toggle('RenderWindowEditor');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.editor.RenderWindowEditor-class.html">RenderWindowEditor</a><tt class="py-op">(</tt> <tt class="py-base-class">RenderEditorBase</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="RenderWindowEditor-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="RenderWindowEditor-expanded"><a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line">        <tt id="link-11" class="py-name"><a title="mrv.maya.ui.base.Menu._properties_
+mrv.maya.ui.base.MenuBase._properties_
+mrv.maya.ui.base.MenuItem._properties_
+mrv.maya.ui.base.PopupMenu._properties_
+mrv.maya.ui.base.SizedControl._properties_
+mrv.maya.ui.base.Window._properties_
+mrv.maya.ui.control.BooleanGroupBase._properties_
+mrv.maya.ui.control.Button._properties_
+mrv.maya.ui.control.ButtonGroupBase._properties_
+mrv.maya.ui.control.CheckBoxBase._properties_
+mrv.maya.ui.control.CheckBoxGrp._properties_
+mrv.maya.ui.control.FieldBase._properties_
+mrv.maya.ui.control.GroupBase._properties_
+mrv.maya.ui.control.IconTextBase._properties_
+mrv.maya.ui.control.LabelBase._properties_
+mrv.maya.ui.control.OptionMenuBase._properties_
+mrv.maya.ui.control.RadioButtonBase._properties_
+mrv.maya.ui.control.RadioCollectionBase._properties_
+mrv.maya.ui.control.ScrollField._properties_
+mrv.maya.ui.control.Separator._properties_
+mrv.maya.ui.control.SliderBase._properties_
+mrv.maya.ui.control.SliderGroupBase._properties_
+mrv.maya.ui.control.Text._properties_
+mrv.maya.ui.control.TextFieldBase._properties_
+mrv.maya.ui.control.TextScrollList._properties_
+mrv.maya.ui.editor.AnimCurveEditor._properties_
+mrv.maya.ui.editor.AnimEditorBase._properties_
+mrv.maya.ui.editor.BlendShapeEditor._properties_
+mrv.maya.ui.editor.ClipEditor._properties_
+mrv.maya.ui.editor.ColorEditor._properties_
+mrv.maya.ui.editor.ComponentEditor._properties_
+mrv.maya.ui.editor.DeviceEditor._properties_
+mrv.maya.ui.editor.DynPaintEditor._properties_
+mrv.maya.ui.editor.EditorBase._properties_
+mrv.maya.ui.editor.GlRenderEditor._properties_
+mrv.maya.ui.editor.ItemFilter._properties_
+mrv.maya.ui.editor.ItemFilterAttr._properties_
+mrv.maya.ui.editor.ItemFilterBase._properties_
+mrv.maya.ui.editor.ItemFilterRender._properties_
+mrv.maya.ui.editor.ModelEditor._properties_
+mrv.maya.ui.editor.OutlinerEditor._properties_
+mrv.maya.ui.editor.RenderEditorBase._properties_
+mrv.maya.ui.editor.RenderWindowEditor._properties_
+mrv.maya.ui.editor.SelectionConnection._properties_
+mrv.maya.ui.layout.ColumnLayout._properties_
+mrv.maya.ui.layout.ColumnLayoutBase._properties_
+mrv.maya.ui.layout.FrameLayout._properties_
+mrv.maya.ui.layout.Layout._properties_
+mrv.maya.ui.layout.PaneLayout._properties_
+mrv.maya.ui.layout.RowColumnLayout._properties_
+mrv.maya.ui.layout.RowLayout._properties_
+mrv.maya.ui.layout.ScrollLayout._properties_
+mrv.maya.ui.layout.TabLayout._properties_" class="py-name" href="#" onclick="return doclink('link-11', '_properties_', 'link-2');">_properties_</a></tt> <tt class="py-op">=</tt>  <tt class="py-op">(</tt> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line">                                        <tt class="py-string">"toggle"</tt><tt class="py-op">,</tt> <tt class="py-string">"tgl"</tt><tt class="py-op">,</tt> </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line">                                        <tt class="py-string">"marquee"</tt><tt class="py-op">,</tt> <tt class="py-string">"mq"</tt><tt class="py-op">,</tt> </tt>
+<a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line">                                        <tt class="py-string">"resetRegion"</tt><tt class="py-op">,</tt> <tt class="py-string">"rr"</tt><tt class="py-op">,</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line">                                        <tt class="py-string">"autoResize"</tt><tt class="py-op">,</tt> <tt class="py-string">"ar"</tt><tt class="py-op">,</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line">                                        <tt class="py-string">"showRegion"</tt><tt class="py-op">,</tt> <tt class="py-string">"srg"</tt><tt class="py-op">,</tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line">                                        <tt class="py-string">"snapshot"</tt><tt class="py-op">,</tt> <tt class="py-string">"snp"</tt><tt class="py-op">,</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line">                                        <tt class="py-string">"currentCamera"</tt><tt class="py-op">,</tt> <tt class="py-string">"crc"</tt><tt class="py-op">,</tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line">                                        <tt class="py-string">"clear"</tt><tt class="py-op">,</tt> <tt class="py-string">"cl"</tt><tt class="py-op">,</tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line">                                        <tt class="py-string">"frameImage"</tt><tt class="py-op">,</tt> <tt class="py-string">"fi"</tt><tt class="py-op">,</tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line">                                        <tt class="py-string">"frameRegion"</tt><tt class="py-op">,</tt> <tt class="py-string">"fr"</tt><tt class="py-op">,</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line">                                        <tt class="py-string">"realSize"</tt><tt class="py-op">,</tt> <tt class="py-string">"rs"</tt><tt class="py-op">,</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line">                                        <tt class="py-string">"caption"</tt><tt class="py-op">,</tt> <tt class="py-string">"cap"</tt><tt class="py-op">,</tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line">                                        <tt class="py-string">"pcaption"</tt><tt class="py-op">,</tt> <tt class="py-string">"pca"</tt><tt class="py-op">,</tt> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line">                                        <tt class="py-string">"compDisplay"</tt><tt class="py-op">,</tt> <tt class="py-string">"cd"</tt><tt class="py-op">,</tt> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line">                                        <tt class="py-string">"blendMode"</tt><tt class="py-op">,</tt> <tt class="py-string">"blm"</tt><tt class="py-op">,</tt> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line">                                        <tt class="py-string">"compImageFile"</tt> </tt>
+<a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line">                                        <tt class="py-op">)</tt> </tt>
+<a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line">        <tt id="link-12" class="py-name"><a title="mrv.maya.ui.base.MenuBase._events_
+mrv.maya.ui.base.MenuItem._events_
+mrv.maya.ui.base.PopupMenu._events_
+mrv.maya.ui.base.SizedControl._events_
+mrv.maya.ui.base.Window._events_
+mrv.maya.ui.control.BooleanBase._events_
+mrv.maya.ui.control.BooleanGroupBase._events_
+mrv.maya.ui.control.Button._events_
+mrv.maya.ui.control.ButtonGroupBase._events_
+mrv.maya.ui.control.FieldBase._events_
+mrv.maya.ui.control.IconTextBase._events_
+mrv.maya.ui.control.IconTextButton._events_
+mrv.maya.ui.control.OptionMenuBase._events_
+mrv.maya.ui.control.ScrollField._events_
+mrv.maya.ui.control.SliderBase._events_
+mrv.maya.ui.control.TextFieldGroupBase._events_
+mrv.maya.ui.control.TextScrollList._events_
+mrv.maya.ui.editor.AnimCurveEditor._events_
+mrv.maya.ui.editor.ClipEditor._events_
+mrv.maya.ui.editor.ItemFilterBase._events_
+mrv.maya.ui.editor.OutlinerEditor._events_
+mrv.maya.ui.editor.RenderWindowEditor._events_
+mrv.maya.ui.editor.SelectionConnection._events_
+mrv.maya.ui.layout.FrameLayout._events_
+mrv.maya.ui.layout.PaneLayout._events_
+mrv.maya.ui.layout.TabLayout._events_" class="py-name" href="#" onclick="return doclink('link-12', '_events_', 'link-6');">_events_</a></tt> <tt class="py-op">=</tt>              <tt class="py-op">(</tt> <tt class="py-string">"changedCommand"</tt><tt class="py-op">,</tt> <tt class="py-string">"cc"</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line"> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line"> </tt>
+<a name="GlRenderEditor"></a><div id="GlRenderEditor-def"><a name="L159"></a><tt class="py-lineno">159</tt> <a class="py-toggle" href="#" id="GlRenderEditor-toggle" onclick="return toggle('GlRenderEditor');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.editor.GlRenderEditor-class.html">GlRenderEditor</a><tt class="py-op">(</tt> <tt class="py-base-class">EditorBase</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="GlRenderEditor-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="GlRenderEditor-expanded"><a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line">        <tt id="link-13" class="py-name"><a title="mrv.maya.ui.base.Menu._properties_
+mrv.maya.ui.base.MenuBase._properties_
+mrv.maya.ui.base.MenuItem._properties_
+mrv.maya.ui.base.PopupMenu._properties_
+mrv.maya.ui.base.SizedControl._properties_
+mrv.maya.ui.base.Window._properties_
+mrv.maya.ui.control.BooleanGroupBase._properties_
+mrv.maya.ui.control.Button._properties_
+mrv.maya.ui.control.ButtonGroupBase._properties_
+mrv.maya.ui.control.CheckBoxBase._properties_
+mrv.maya.ui.control.CheckBoxGrp._properties_
+mrv.maya.ui.control.FieldBase._properties_
+mrv.maya.ui.control.GroupBase._properties_
+mrv.maya.ui.control.IconTextBase._properties_
+mrv.maya.ui.control.LabelBase._properties_
+mrv.maya.ui.control.OptionMenuBase._properties_
+mrv.maya.ui.control.RadioButtonBase._properties_
+mrv.maya.ui.control.RadioCollectionBase._properties_
+mrv.maya.ui.control.ScrollField._properties_
+mrv.maya.ui.control.Separator._properties_
+mrv.maya.ui.control.SliderBase._properties_
+mrv.maya.ui.control.SliderGroupBase._properties_
+mrv.maya.ui.control.Text._properties_
+mrv.maya.ui.control.TextFieldBase._properties_
+mrv.maya.ui.control.TextScrollList._properties_
+mrv.maya.ui.editor.AnimCurveEditor._properties_
+mrv.maya.ui.editor.AnimEditorBase._properties_
+mrv.maya.ui.editor.BlendShapeEditor._properties_
+mrv.maya.ui.editor.ClipEditor._properties_
+mrv.maya.ui.editor.ColorEditor._properties_
+mrv.maya.ui.editor.ComponentEditor._properties_
+mrv.maya.ui.editor.DeviceEditor._properties_
+mrv.maya.ui.editor.DynPaintEditor._properties_
+mrv.maya.ui.editor.EditorBase._properties_
+mrv.maya.ui.editor.GlRenderEditor._properties_
+mrv.maya.ui.editor.ItemFilter._properties_
+mrv.maya.ui.editor.ItemFilterAttr._properties_
+mrv.maya.ui.editor.ItemFilterBase._properties_
+mrv.maya.ui.editor.ItemFilterRender._properties_
+mrv.maya.ui.editor.ModelEditor._properties_
+mrv.maya.ui.editor.OutlinerEditor._properties_
+mrv.maya.ui.editor.RenderEditorBase._properties_
+mrv.maya.ui.editor.RenderWindowEditor._properties_
+mrv.maya.ui.editor.SelectionConnection._properties_
+mrv.maya.ui.layout.ColumnLayout._properties_
+mrv.maya.ui.layout.ColumnLayoutBase._properties_
+mrv.maya.ui.layout.FrameLayout._properties_
+mrv.maya.ui.layout.Layout._properties_
+mrv.maya.ui.layout.PaneLayout._properties_
+mrv.maya.ui.layout.RowColumnLayout._properties_
+mrv.maya.ui.layout.RowLayout._properties_
+mrv.maya.ui.layout.ScrollLayout._properties_
+mrv.maya.ui.layout.TabLayout._properties_" class="py-name" href="#" onclick="return doclink('link-13', '_properties_', 'link-2');">_properties_</a></tt> <tt class="py-op">=</tt>  <tt class="py-op">(</tt> </tt>
+<a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line">                                         <tt class="py-string">"viewCameraName"</tt><tt class="py-op">,</tt> <tt class="py-string">"vcn"</tt><tt class="py-op">,</tt> </tt>
+<a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line">                                         <tt class="py-string">"lookThru"</tt><tt class="py-op">,</tt> <tt class="py-string">"lt"</tt><tt class="py-op">,</tt> </tt>
+<a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line">                                         <tt class="py-string">"modelViewName"</tt><tt class="py-op">,</tt> </tt>
+<a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line">                                         <tt class="py-string">"glRenderViewName"</tt><tt class="py-op">,</tt> <tt class="py-string">"rvn"</tt> </tt>
+<a name="L165"></a><tt class="py-lineno">165</tt>  <tt class="py-line">                                         <tt class="py-op">)</tt> </tt>
+</div><a name="L166"></a><tt class="py-lineno">166</tt>  <tt class="py-line"> </tt>
+<a name="ModelEditor"></a><div id="ModelEditor-def"><a name="L167"></a><tt class="py-lineno">167</tt> <a class="py-toggle" href="#" id="ModelEditor-toggle" onclick="return toggle('ModelEditor');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.editor.ModelEditor-class.html">ModelEditor</a><tt class="py-op">(</tt> <tt class="py-base-class">EditorBase</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ModelEditor-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="ModelEditor-expanded"><a name="L168"></a><tt class="py-lineno">168</tt>  <tt class="py-line">        <tt id="link-14" class="py-name"><a title="mrv.maya.ui.base.Menu._properties_
+mrv.maya.ui.base.MenuBase._properties_
+mrv.maya.ui.base.MenuItem._properties_
+mrv.maya.ui.base.PopupMenu._properties_
+mrv.maya.ui.base.SizedControl._properties_
+mrv.maya.ui.base.Window._properties_
+mrv.maya.ui.control.BooleanGroupBase._properties_
+mrv.maya.ui.control.Button._properties_
+mrv.maya.ui.control.ButtonGroupBase._properties_
+mrv.maya.ui.control.CheckBoxBase._properties_
+mrv.maya.ui.control.CheckBoxGrp._properties_
+mrv.maya.ui.control.FieldBase._properties_
+mrv.maya.ui.control.GroupBase._properties_
+mrv.maya.ui.control.IconTextBase._properties_
+mrv.maya.ui.control.LabelBase._properties_
+mrv.maya.ui.control.OptionMenuBase._properties_
+mrv.maya.ui.control.RadioButtonBase._properties_
+mrv.maya.ui.control.RadioCollectionBase._properties_
+mrv.maya.ui.control.ScrollField._properties_
+mrv.maya.ui.control.Separator._properties_
+mrv.maya.ui.control.SliderBase._properties_
+mrv.maya.ui.control.SliderGroupBase._properties_
+mrv.maya.ui.control.Text._properties_
+mrv.maya.ui.control.TextFieldBase._properties_
+mrv.maya.ui.control.TextScrollList._properties_
+mrv.maya.ui.editor.AnimCurveEditor._properties_
+mrv.maya.ui.editor.AnimEditorBase._properties_
+mrv.maya.ui.editor.BlendShapeEditor._properties_
+mrv.maya.ui.editor.ClipEditor._properties_
+mrv.maya.ui.editor.ColorEditor._properties_
+mrv.maya.ui.editor.ComponentEditor._properties_
+mrv.maya.ui.editor.DeviceEditor._properties_
+mrv.maya.ui.editor.DynPaintEditor._properties_
+mrv.maya.ui.editor.EditorBase._properties_
+mrv.maya.ui.editor.GlRenderEditor._properties_
+mrv.maya.ui.editor.ItemFilter._properties_
+mrv.maya.ui.editor.ItemFilterAttr._properties_
+mrv.maya.ui.editor.ItemFilterBase._properties_
+mrv.maya.ui.editor.ItemFilterRender._properties_
+mrv.maya.ui.editor.ModelEditor._properties_
+mrv.maya.ui.editor.OutlinerEditor._properties_
+mrv.maya.ui.editor.RenderEditorBase._properties_
+mrv.maya.ui.editor.RenderWindowEditor._properties_
+mrv.maya.ui.editor.SelectionConnection._properties_
+mrv.maya.ui.layout.ColumnLayout._properties_
+mrv.maya.ui.layout.ColumnLayoutBase._properties_
+mrv.maya.ui.layout.FrameLayout._properties_
+mrv.maya.ui.layout.Layout._properties_
+mrv.maya.ui.layout.PaneLayout._properties_
+mrv.maya.ui.layout.RowColumnLayout._properties_
+mrv.maya.ui.layout.RowLayout._properties_
+mrv.maya.ui.layout.ScrollLayout._properties_
+mrv.maya.ui.layout.TabLayout._properties_" class="py-name" href="#" onclick="return doclink('link-14', '_properties_', 'link-2');">_properties_</a></tt> <tt class="py-op">=</tt>  <tt class="py-op">(</tt> </tt>
+<a name="L169"></a><tt class="py-lineno">169</tt>  <tt class="py-line">                                         <tt class="py-string">"camera"</tt><tt class="py-op">,</tt> <tt class="py-string">"cam"</tt><tt class="py-op">,</tt> </tt>
+<a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line">                                         <tt class="py-string">"cameraName"</tt><tt class="py-op">,</tt> <tt class="py-string">"cn"</tt><tt class="py-op">,</tt> </tt>
+<a name="L171"></a><tt class="py-lineno">171</tt>  <tt class="py-line">                                         <tt class="py-string">"displayLights"</tt><tt class="py-op">,</tt> <tt class="py-string">"dl"</tt><tt class="py-op">,</tt> </tt>
+<a name="L172"></a><tt class="py-lineno">172</tt>  <tt class="py-line">                                         <tt class="py-string">"bufferMode"</tt><tt class="py-op">,</tt> <tt class="py-string">"bm"</tt><tt class="py-op">,</tt> </tt>
+<a name="L173"></a><tt class="py-lineno">173</tt>  <tt class="py-line">                                         <tt class="py-string">"activeOnly"</tt><tt class="py-op">,</tt> <tt class="py-string">"ao"</tt><tt class="py-op">,</tt> </tt>
+<a name="L174"></a><tt class="py-lineno">174</tt>  <tt class="py-line">                                         <tt class="py-string">"interactive"</tt><tt class="py-op">,</tt> <tt class="py-string">"i"</tt><tt class="py-op">,</tt> </tt>
+<a name="L175"></a><tt class="py-lineno">175</tt>  <tt class="py-line">                                         <tt class="py-string">"twoSidedLighting"</tt><tt class="py-op">,</tt> <tt class="py-string">"tsl"</tt><tt class="py-op">,</tt> </tt>
+<a name="L176"></a><tt class="py-lineno">176</tt>  <tt class="py-line">                                         <tt class="py-string">"displayAppearance"</tt><tt class="py-op">,</tt> <tt class="py-string">"da"</tt><tt class="py-op">,</tt> </tt>
+<a name="L177"></a><tt class="py-lineno">177</tt>  <tt class="py-line">                                         <tt class="py-string">"wireframeOnShaded"</tt><tt class="py-op">,</tt> <tt class="py-string">"wos"</tt><tt class="py-op">,</tt> </tt>
+<a name="L178"></a><tt class="py-lineno">178</tt>  <tt class="py-line">                                         <tt class="py-string">"headsUpDisplay"</tt><tt class="py-op">,</tt> <tt class="py-string">"hud"</tt><tt class="py-op">,</tt> </tt>
+<a name="L179"></a><tt class="py-lineno">179</tt>  <tt class="py-line">                                         <tt class="py-string">"selectionHiliteDisplay"</tt><tt class="py-op">,</tt> <tt class="py-string">"sel"</tt><tt class="py-op">,</tt> </tt>
+<a name="L180"></a><tt class="py-lineno">180</tt>  <tt class="py-line">                                         <tt class="py-string">"useDefaultMaterial"</tt><tt class="py-op">,</tt> <tt class="py-string">"udm"</tt><tt class="py-op">,</tt> </tt>
+<a name="L181"></a><tt class="py-lineno">181</tt>  <tt class="py-line">                                         <tt class="py-string">"useColorIndex"</tt><tt class="py-op">,</tt> <tt class="py-string">"uci"</tt><tt class="py-op">,</tt> </tt>
+<a name="L182"></a><tt class="py-lineno">182</tt>  <tt class="py-line">                                         <tt class="py-string">"wireframeBackingStore"</tt><tt class="py-op">,</tt> <tt class="py-string">"wbs"</tt><tt class="py-op">,</tt> </tt>
+<a name="L183"></a><tt class="py-lineno">183</tt>  <tt class="py-line">                                         <tt class="py-string">"useRGBImagePlane"</tt><tt class="py-op">,</tt> <tt class="py-string">"ip"</tt><tt class="py-op">,</tt> </tt>
+<a name="L184"></a><tt class="py-lineno">184</tt>  <tt class="py-line">                                         <tt class="py-string">"updateColorMode"</tt><tt class="py-op">,</tt> <tt class="py-string">"ucm"</tt><tt class="py-op">,</tt> </tt>
+<a name="L185"></a><tt class="py-lineno">185</tt>  <tt class="py-line">                                         <tt class="py-string">"colorMap"</tt><tt class="py-op">,</tt> <tt class="py-string">"cm"</tt><tt class="py-op">,</tt> </tt>
+<a name="L186"></a><tt class="py-lineno">186</tt>  <tt class="py-line">                                         <tt class="py-string">"backfaceCulling"</tt><tt class="py-op">,</tt> <tt class="py-string">"bfc"</tt><tt class="py-op">,</tt> </tt>
+<a name="L187"></a><tt class="py-lineno">187</tt>  <tt class="py-line">                                         <tt class="py-string">"xray"</tt><tt class="py-op">,</tt> <tt class="py-string">"xr"</tt><tt class="py-op">,</tt> </tt>
+<a name="L188"></a><tt class="py-lineno">188</tt>  <tt class="py-line">                                         <tt class="py-string">"maxConstantTransparency"</tt><tt class="py-op">,</tt> <tt class="py-string">"mct"</tt><tt class="py-op">,</tt> </tt>
+<a name="L189"></a><tt class="py-lineno">189</tt>  <tt class="py-line">                                         <tt class="py-string">"displayTextures"</tt><tt class="py-op">,</tt> <tt class="py-string">"dtx"</tt><tt class="py-op">,</tt> </tt>
+<a name="L190"></a><tt class="py-lineno">190</tt>  <tt class="py-line">                                         <tt class="py-string">"smoothWireframe"</tt><tt class="py-op">,</tt> <tt class="py-string">"swf"</tt><tt class="py-op">,</tt> </tt>
+<a name="L191"></a><tt class="py-lineno">191</tt>  <tt class="py-line">                                         <tt class="py-string">"textureMaxSize"</tt><tt class="py-op">,</tt> <tt class="py-string">"tms"</tt><tt class="py-op">,</tt> </tt>
+<a name="L192"></a><tt class="py-lineno">192</tt>  <tt class="py-line">                                         <tt class="py-string">"textureMemoryUsed"</tt><tt class="py-op">,</tt> <tt class="py-string">"tmu"</tt><tt class="py-op">,</tt> </tt>
+<a name="L193"></a><tt class="py-lineno">193</tt>  <tt class="py-line">                                         <tt class="py-string">"textureAnisotropic"</tt><tt class="py-op">,</tt> <tt class="py-string">"ta"</tt><tt class="py-op">,</tt> </tt>
+<a name="L194"></a><tt class="py-lineno">194</tt>  <tt class="py-line">                                         <tt class="py-string">"textureSampling"</tt><tt class="py-op">,</tt> <tt class="py-string">"ts"</tt><tt class="py-op">,</tt> </tt>
+<a name="L195"></a><tt class="py-lineno">195</tt>  <tt class="py-line">                                         <tt class="py-string">"textureDisplay"</tt><tt class="py-op">,</tt> <tt class="py-string">"td"</tt><tt class="py-op">,</tt> </tt>
+<a name="L196"></a><tt class="py-lineno">196</tt>  <tt class="py-line">                                         <tt class="py-string">"textureHighlight"</tt><tt class="py-op">,</tt> <tt class="py-string">"th"</tt><tt class="py-op">,</tt> </tt>
+<a name="L197"></a><tt class="py-lineno">197</tt>  <tt class="py-line">                                         <tt class="py-string">"fogging"</tt><tt class="py-op">,</tt> <tt class="py-string">"fg"</tt><tt class="py-op">,</tt> </tt>
+<a name="L198"></a><tt class="py-lineno">198</tt>  <tt class="py-line">                                         <tt class="py-string">"fogSource"</tt><tt class="py-op">,</tt> <tt class="py-string">"fsc"</tt><tt class="py-op">,</tt> </tt>
+<a name="L199"></a><tt class="py-lineno">199</tt>  <tt class="py-line">                                         <tt class="py-string">"fogMode"</tt><tt class="py-op">,</tt> <tt class="py-string">"fmd"</tt><tt class="py-op">,</tt> </tt>
+<a name="L200"></a><tt class="py-lineno">200</tt>  <tt class="py-line">                                         <tt class="py-string">"fogDensity"</tt><tt class="py-op">,</tt> <tt class="py-string">"fdn"</tt><tt class="py-op">,</tt> </tt>
+<a name="L201"></a><tt class="py-lineno">201</tt>  <tt class="py-line">                                         <tt class="py-string">"fogEnd"</tt><tt class="py-op">,</tt> <tt class="py-string">"fen"</tt><tt class="py-op">,</tt> </tt>
+<a name="L202"></a><tt class="py-lineno">202</tt>  <tt class="py-line">                                         <tt class="py-string">"fogStart"</tt><tt class="py-op">,</tt> <tt class="py-string">"fst"</tt><tt class="py-op">,</tt> </tt>
+<a name="L203"></a><tt class="py-lineno">203</tt>  <tt class="py-line">                                         <tt class="py-string">"fogColor"</tt><tt class="py-op">,</tt> <tt class="py-string">"fcl"</tt><tt class="py-op">,</tt> </tt>
+<a name="L204"></a><tt class="py-lineno">204</tt>  <tt class="py-line">                                         <tt class="py-string">"shadows"</tt><tt class="py-op">,</tt> <tt class="py-string">"sdw"</tt><tt class="py-op">,</tt> </tt>
+<a name="L205"></a><tt class="py-lineno">205</tt>  <tt class="py-line">                                         <tt class="py-string">"rendererName"</tt><tt class="py-op">,</tt> <tt class="py-string">"rnm"</tt><tt class="py-op">,</tt> </tt>
+<a name="L206"></a><tt class="py-lineno">206</tt>  <tt class="py-line">                                         <tt class="py-string">"rendererList"</tt><tt class="py-op">,</tt> <tt class="py-string">"rls"</tt><tt class="py-op">,</tt> </tt>
+<a name="L207"></a><tt class="py-lineno">207</tt>  <tt class="py-line">                                         <tt class="py-string">"rendererListUI"</tt><tt class="py-op">,</tt> <tt class="py-string">"rlu"</tt><tt class="py-op">,</tt> </tt>
+<a name="L208"></a><tt class="py-lineno">208</tt>  <tt class="py-line">                                         <tt class="py-string">"colorResolution"</tt><tt class="py-op">,</tt> <tt class="py-string">"crz"</tt><tt class="py-op">,</tt> </tt>
+<a name="L209"></a><tt class="py-lineno">209</tt>  <tt class="py-line">                                         <tt class="py-string">"bumpResolution"</tt><tt class="py-op">,</tt> <tt class="py-string">"brz"</tt><tt class="py-op">,</tt> </tt>
+<a name="L210"></a><tt class="py-lineno">210</tt>  <tt class="py-line">                                         <tt class="py-string">"transparencyAlgorithm"</tt><tt class="py-op">,</tt> <tt class="py-string">"tal"</tt><tt class="py-op">,</tt> </tt>
+<a name="L211"></a><tt class="py-lineno">211</tt>  <tt class="py-line">                                         <tt class="py-string">"transpInShadows"</tt><tt class="py-op">,</tt> <tt class="py-string">"tis"</tt><tt class="py-op">,</tt> </tt>
+<a name="L212"></a><tt class="py-lineno">212</tt>  <tt class="py-line">                                         <tt class="py-string">"cullingOverride"</tt><tt class="py-op">,</tt> <tt class="py-string">"cov"</tt><tt class="py-op">,</tt> </tt>
+<a name="L213"></a><tt class="py-lineno">213</tt>  <tt class="py-line">                                         <tt class="py-string">"lowQualityLighting"</tt><tt class="py-op">,</tt> <tt class="py-string">"lql"</tt><tt class="py-op">,</tt> </tt>
+<a name="L214"></a><tt class="py-lineno">214</tt>  <tt class="py-line">                                         <tt class="py-string">"occlusionCulling"</tt><tt class="py-op">,</tt> <tt class="py-string">"ocl"</tt><tt class="py-op">,</tt> </tt>
+<a name="L215"></a><tt class="py-lineno">215</tt>  <tt class="py-line">                                         <tt class="py-string">"useBaseRenderer"</tt><tt class="py-op">,</tt> <tt class="py-string">"ubr"</tt><tt class="py-op">,</tt> </tt>
+<a name="L216"></a><tt class="py-lineno">216</tt>  <tt class="py-line">                                         <tt class="py-string">"nurbsCurves"</tt><tt class="py-op">,</tt> <tt class="py-string">"nc"</tt><tt class="py-op">,</tt> </tt>
+<a name="L217"></a><tt class="py-lineno">217</tt>  <tt class="py-line">                                         <tt class="py-string">"nurbsSurfaces"</tt><tt class="py-op">,</tt> <tt class="py-string">"ns"</tt><tt class="py-op">,</tt> </tt>
+<a name="L218"></a><tt class="py-lineno">218</tt>  <tt class="py-line">                                         <tt class="py-string">"polyMeshes"</tt><tt class="py-op">,</tt> <tt class="py-string">"pm"</tt><tt class="py-op">,</tt> </tt>
+<a name="L219"></a><tt class="py-lineno">219</tt>  <tt class="py-line">                                         <tt class="py-string">"subdivSurfaces"</tt><tt class="py-op">,</tt> <tt class="py-string">"sds"</tt><tt class="py-op">,</tt> </tt>
+<a name="L220"></a><tt class="py-lineno">220</tt>  <tt class="py-line">                                         <tt class="py-string">"planes"</tt><tt class="py-op">,</tt> <tt class="py-string">"pl"</tt><tt class="py-op">,</tt> </tt>
+<a name="L221"></a><tt class="py-lineno">221</tt>  <tt class="py-line">                                         <tt class="py-string">"lights"</tt><tt class="py-op">,</tt> <tt class="py-string">"lt"</tt><tt class="py-op">,</tt> </tt>
+<a name="L222"></a><tt class="py-lineno">222</tt>  <tt class="py-line">                                         <tt class="py-string">"cameras"</tt><tt class="py-op">,</tt> <tt class="py-string">"ca"</tt><tt class="py-op">,</tt> </tt>
+<a name="L223"></a><tt class="py-lineno">223</tt>  <tt class="py-line">                                         <tt class="py-string">"controlVertices"</tt><tt class="py-op">,</tt> <tt class="py-string">"cv"</tt><tt class="py-op">,</tt> </tt>
+<a name="L224"></a><tt class="py-lineno">224</tt>  <tt class="py-line">                                         <tt class="py-string">"grid"</tt><tt class="py-op">,</tt> <tt class="py-string">"gr"</tt><tt class="py-op">,</tt> </tt>
+<a name="L225"></a><tt class="py-lineno">225</tt>  <tt class="py-line">                                         <tt class="py-string">"hulls"</tt><tt class="py-op">,</tt> <tt class="py-string">"hu"</tt><tt class="py-op">,</tt> </tt>
+<a name="L226"></a><tt class="py-lineno">226</tt>  <tt class="py-line">                                         <tt class="py-string">"joints"</tt><tt class="py-op">,</tt> <tt class="py-string">"j"</tt><tt class="py-op">,</tt> </tt>
+<a name="L227"></a><tt class="py-lineno">227</tt>  <tt class="py-line">                                         <tt class="py-string">"ikHandles"</tt><tt class="py-op">,</tt> <tt class="py-string">"ikh"</tt><tt class="py-op">,</tt> </tt>
+<a name="L228"></a><tt class="py-lineno">228</tt>  <tt class="py-line">                                         <tt class="py-string">"deformers"</tt><tt class="py-op">,</tt> <tt class="py-string">"df"</tt><tt class="py-op">,</tt> </tt>
+<a name="L229"></a><tt class="py-lineno">229</tt>  <tt class="py-line">                                         <tt class="py-string">"dynamics"</tt><tt class="py-op">,</tt> <tt class="py-string">"dy"</tt><tt class="py-op">,</tt> </tt>
+<a name="L230"></a><tt class="py-lineno">230</tt>  <tt class="py-line">                                         <tt class="py-string">"fluids"</tt><tt class="py-op">,</tt> <tt class="py-string">"fl"</tt><tt class="py-op">,</tt> </tt>
+<a name="L231"></a><tt class="py-lineno">231</tt>  <tt class="py-line">                                         <tt class="py-string">"hairSystems"</tt><tt class="py-op">,</tt> <tt class="py-string">"hs"</tt><tt class="py-op">,</tt> </tt>
+<a name="L232"></a><tt class="py-lineno">232</tt>  <tt class="py-line">                                         <tt class="py-string">"follicles"</tt><tt class="py-op">,</tt> <tt class="py-string">"fo"</tt><tt class="py-op">,</tt> </tt>
+<a name="L233"></a><tt class="py-lineno">233</tt>  <tt class="py-line">                                         <tt class="py-string">"nCloths"</tt><tt class="py-op">,</tt> <tt class="py-string">"ncl"</tt><tt class="py-op">,</tt> </tt>
+<a name="L234"></a><tt class="py-lineno">234</tt>  <tt class="py-line">                                         <tt class="py-string">"nRigids"</tt><tt class="py-op">,</tt> <tt class="py-string">"nr"</tt><tt class="py-op">,</tt> </tt>
+<a name="L235"></a><tt class="py-lineno">235</tt>  <tt class="py-line">                                         <tt class="py-string">"dynamicConstraints"</tt><tt class="py-op">,</tt> <tt class="py-string">"dc"</tt><tt class="py-op">,</tt> </tt>
+<a name="L236"></a><tt class="py-lineno">236</tt>  <tt class="py-line">                                         <tt class="py-string">"locators"</tt><tt class="py-op">,</tt> <tt class="py-string">"lc"</tt><tt class="py-op">,</tt> </tt>
+<a name="L237"></a><tt class="py-lineno">237</tt>  <tt class="py-line">                                         <tt class="py-string">"manipulators"</tt><tt class="py-op">,</tt> <tt class="py-string">"mlocators"</tt><tt class="py-op">,</tt> </tt>
+<a name="L238"></a><tt class="py-lineno">238</tt>  <tt class="py-line">                                         <tt class="py-string">"dimensions"</tt><tt class="py-op">,</tt> <tt class="py-string">"dim"</tt><tt class="py-op">,</tt> </tt>
+<a name="L239"></a><tt class="py-lineno">239</tt>  <tt class="py-line">                                         <tt class="py-string">"handles"</tt><tt class="py-op">,</tt> <tt class="py-string">"ha"</tt><tt class="py-op">,</tt> </tt>
+<a name="L240"></a><tt class="py-lineno">240</tt>  <tt class="py-line">                                         <tt class="py-string">"pivots"</tt><tt class="py-op">,</tt> <tt class="py-string">"pv"</tt><tt class="py-op">,</tt> </tt>
+<a name="L241"></a><tt class="py-lineno">241</tt>  <tt class="py-line">                                         <tt class="py-string">"textures"</tt><tt class="py-op">,</tt> <tt class="py-string">"tx"</tt><tt class="py-op">,</tt> </tt>
+<a name="L242"></a><tt class="py-lineno">242</tt>  <tt class="py-line">                                         <tt class="py-string">"strokes"</tt><tt class="py-op">,</tt> <tt class="py-string">"str"</tt><tt class="py-op">,</tt> </tt>
+<a name="L243"></a><tt class="py-lineno">243</tt>  <tt class="py-line">                                         <tt class="py-string">"allObjects"</tt><tt class="py-op">,</tt> <tt class="py-string">"alo"</tt><tt class="py-op">,</tt> </tt>
+<a name="L244"></a><tt class="py-lineno">244</tt>  <tt class="py-line">                                         <tt class="py-string">"useInteractiveMode"</tt><tt class="py-op">,</tt> <tt class="py-string">"ui"</tt><tt class="py-op">,</tt> </tt>
+<a name="L245"></a><tt class="py-lineno">245</tt>  <tt class="py-line">                                         <tt class="py-string">"activeView"</tt><tt class="py-op">,</tt> <tt class="py-string">"av"</tt><tt class="py-op">,</tt> </tt>
+<a name="L246"></a><tt class="py-lineno">246</tt>  <tt class="py-line">                                         <tt class="py-string">"sortTransparent"</tt><tt class="py-op">,</tt> <tt class="py-string">"st"</tt><tt class="py-op">,</tt> </tt>
+<a name="L247"></a><tt class="py-lineno">247</tt>  <tt class="py-line">                                         <tt class="py-string">"viewSelected"</tt><tt class="py-op">,</tt> <tt class="py-string">"vs"</tt><tt class="py-op">,</tt> </tt>
+<a name="L248"></a><tt class="py-lineno">248</tt>  <tt class="py-line">                                         <tt class="py-string">"setSelected"</tt><tt class="py-op">,</tt> <tt class="py-string">"ss"</tt><tt class="py-op">,</tt> </tt>
+<a name="L249"></a><tt class="py-lineno">249</tt>  <tt class="py-line">                                         <tt class="py-string">"addSelected"</tt><tt class="py-op">,</tt> <tt class="py-string">"as"</tt><tt class="py-op">,</tt> </tt>
+<a name="L250"></a><tt class="py-lineno">250</tt>  <tt class="py-line">                                         <tt class="py-string">"addObjects"</tt><tt class="py-op">,</tt> <tt class="py-string">"aob"</tt><tt class="py-op">,</tt> </tt>
+<a name="L251"></a><tt class="py-lineno">251</tt>  <tt class="py-line">                                         <tt class="py-string">"viewObjects"</tt><tt class="py-op">,</tt> <tt class="py-string">"vo"</tt><tt class="py-op">,</tt> </tt>
+<a name="L252"></a><tt class="py-lineno">252</tt>  <tt class="py-line">                                         <tt class="py-string">"noUndo"</tt><tt class="py-op">,</tt> <tt class="py-string">"nud"</tt> </tt>
+<a name="L253"></a><tt class="py-lineno">253</tt>  <tt class="py-line">                                         <tt class="py-op">)</tt> </tt>
+</div><a name="L254"></a><tt class="py-lineno">254</tt>  <tt class="py-line"> </tt>
+<a name="L255"></a><tt class="py-lineno">255</tt>  <tt class="py-line"> </tt>
+<a name="ClipEditor"></a><div id="ClipEditor-def"><a name="L256"></a><tt class="py-lineno">256</tt> <a class="py-toggle" href="#" id="ClipEditor-toggle" onclick="return toggle('ClipEditor');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.editor.ClipEditor-class.html">ClipEditor</a><tt class="py-op">(</tt> <tt class="py-base-class">AnimEditorBase</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ClipEditor-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="ClipEditor-expanded"><a name="L257"></a><tt class="py-lineno">257</tt>  <tt class="py-line">        <tt id="link-15" class="py-name"><a title="mrv.maya.ui.base.Menu._properties_
+mrv.maya.ui.base.MenuBase._properties_
+mrv.maya.ui.base.MenuItem._properties_
+mrv.maya.ui.base.PopupMenu._properties_
+mrv.maya.ui.base.SizedControl._properties_
+mrv.maya.ui.base.Window._properties_
+mrv.maya.ui.control.BooleanGroupBase._properties_
+mrv.maya.ui.control.Button._properties_
+mrv.maya.ui.control.ButtonGroupBase._properties_
+mrv.maya.ui.control.CheckBoxBase._properties_
+mrv.maya.ui.control.CheckBoxGrp._properties_
+mrv.maya.ui.control.FieldBase._properties_
+mrv.maya.ui.control.GroupBase._properties_
+mrv.maya.ui.control.IconTextBase._properties_
+mrv.maya.ui.control.LabelBase._properties_
+mrv.maya.ui.control.OptionMenuBase._properties_
+mrv.maya.ui.control.RadioButtonBase._properties_
+mrv.maya.ui.control.RadioCollectionBase._properties_
+mrv.maya.ui.control.ScrollField._properties_
+mrv.maya.ui.control.Separator._properties_
+mrv.maya.ui.control.SliderBase._properties_
+mrv.maya.ui.control.SliderGroupBase._properties_
+mrv.maya.ui.control.Text._properties_
+mrv.maya.ui.control.TextFieldBase._properties_
+mrv.maya.ui.control.TextScrollList._properties_
+mrv.maya.ui.editor.AnimCurveEditor._properties_
+mrv.maya.ui.editor.AnimEditorBase._properties_
+mrv.maya.ui.editor.BlendShapeEditor._properties_
+mrv.maya.ui.editor.ClipEditor._properties_
+mrv.maya.ui.editor.ColorEditor._properties_
+mrv.maya.ui.editor.ComponentEditor._properties_
+mrv.maya.ui.editor.DeviceEditor._properties_
+mrv.maya.ui.editor.DynPaintEditor._properties_
+mrv.maya.ui.editor.EditorBase._properties_
+mrv.maya.ui.editor.GlRenderEditor._properties_
+mrv.maya.ui.editor.ItemFilter._properties_
+mrv.maya.ui.editor.ItemFilterAttr._properties_
+mrv.maya.ui.editor.ItemFilterBase._properties_
+mrv.maya.ui.editor.ItemFilterRender._properties_
+mrv.maya.ui.editor.ModelEditor._properties_
+mrv.maya.ui.editor.OutlinerEditor._properties_
+mrv.maya.ui.editor.RenderEditorBase._properties_
+mrv.maya.ui.editor.RenderWindowEditor._properties_
+mrv.maya.ui.editor.SelectionConnection._properties_
+mrv.maya.ui.layout.ColumnLayout._properties_
+mrv.maya.ui.layout.ColumnLayoutBase._properties_
+mrv.maya.ui.layout.FrameLayout._properties_
+mrv.maya.ui.layout.Layout._properties_
+mrv.maya.ui.layout.PaneLayout._properties_
+mrv.maya.ui.layout.RowColumnLayout._properties_
+mrv.maya.ui.layout.RowLayout._properties_
+mrv.maya.ui.layout.ScrollLayout._properties_
+mrv.maya.ui.layout.TabLayout._properties_" class="py-name" href="#" onclick="return doclink('link-15', '_properties_', 'link-2');">_properties_</a></tt> <tt class="py-op">=</tt>  <tt class="py-op">(</tt> </tt>
+<a name="L258"></a><tt class="py-lineno">258</tt>  <tt class="py-line">                                         <tt class="py-string">"characterOutline"</tt><tt class="py-op">,</tt> <tt class="py-string">"co"</tt><tt class="py-op">,</tt> </tt>
+<a name="L259"></a><tt class="py-lineno">259</tt>  <tt class="py-line">                                         <tt class="py-string">"highlightedBlend"</tt><tt class="py-op">,</tt> <tt class="py-string">"hb"</tt><tt class="py-op">,</tt> </tt>
+<a name="L260"></a><tt class="py-lineno">260</tt>  <tt class="py-line">                                         <tt class="py-string">"highlightedClip"</tt><tt class="py-op">,</tt> <tt class="py-string">"hc"</tt><tt class="py-op">,</tt> </tt>
+<a name="L261"></a><tt class="py-lineno">261</tt>  <tt class="py-line">                                         <tt class="py-string">"selectBlend"</tt><tt class="py-op">,</tt> <tt class="py-string">"sb"</tt><tt class="py-op">,</tt> </tt>
+<a name="L262"></a><tt class="py-lineno">262</tt>  <tt class="py-line">                                         <tt class="py-string">"selectClip"</tt><tt class="py-op">,</tt> <tt class="py-string">"sc"</tt><tt class="py-op">,</tt> </tt>
+<a name="L263"></a><tt class="py-lineno">263</tt>  <tt class="py-line">                                         <tt class="py-string">"deselectAll"</tt><tt class="py-op">,</tt> <tt class="py-string">"da"</tt><tt class="py-op">,</tt> </tt>
+<a name="L264"></a><tt class="py-lineno">264</tt>  <tt class="py-line">                                         <tt class="py-string">"frameAll"</tt><tt class="py-op">,</tt> <tt class="py-string">"fa"</tt><tt class="py-op">,</tt> </tt>
+<a name="L265"></a><tt class="py-lineno">265</tt>  <tt class="py-line">                                         <tt class="py-string">"listAllCharacters"</tt><tt class="py-op">,</tt> <tt class="py-string">"lac"</tt><tt class="py-op">,</tt> </tt>
+<a name="L266"></a><tt class="py-lineno">266</tt>  <tt class="py-line">                                         <tt class="py-string">"listCurrentCharacters"</tt><tt class="py-op">,</tt> <tt class="py-string">"lc"</tt><tt class="py-op">,</tt> </tt>
+<a name="L267"></a><tt class="py-lineno">267</tt>  <tt class="py-line">                                         <tt class="py-string">"menuContext"</tt><tt class="py-op">,</tt> <tt class="py-string">"mc"</tt><tt class="py-op">,</tt> </tt>
+<a name="L268"></a><tt class="py-lineno">268</tt>  <tt class="py-line">                                         <tt class="py-string">"allTrackHeights"</tt><tt class="py-op">,</tt> <tt class="py-string">"th"</tt> </tt>
+<a name="L269"></a><tt class="py-lineno">269</tt>  <tt class="py-line">                                         <tt class="py-op">)</tt> </tt>
+<a name="L270"></a><tt class="py-lineno">270</tt>  <tt class="py-line"> </tt>
+<a name="L271"></a><tt class="py-lineno">271</tt>  <tt class="py-line">        <tt id="link-16" class="py-name"><a title="mrv.maya.ui.base.MenuBase._events_
+mrv.maya.ui.base.MenuItem._events_
+mrv.maya.ui.base.PopupMenu._events_
+mrv.maya.ui.base.SizedControl._events_
+mrv.maya.ui.base.Window._events_
+mrv.maya.ui.control.BooleanBase._events_
+mrv.maya.ui.control.BooleanGroupBase._events_
+mrv.maya.ui.control.Button._events_
+mrv.maya.ui.control.ButtonGroupBase._events_
+mrv.maya.ui.control.FieldBase._events_
+mrv.maya.ui.control.IconTextBase._events_
+mrv.maya.ui.control.IconTextButton._events_
+mrv.maya.ui.control.OptionMenuBase._events_
+mrv.maya.ui.control.ScrollField._events_
+mrv.maya.ui.control.SliderBase._events_
+mrv.maya.ui.control.TextFieldGroupBase._events_
+mrv.maya.ui.control.TextScrollList._events_
+mrv.maya.ui.editor.AnimCurveEditor._events_
+mrv.maya.ui.editor.ClipEditor._events_
+mrv.maya.ui.editor.ItemFilterBase._events_
+mrv.maya.ui.editor.OutlinerEditor._events_
+mrv.maya.ui.editor.RenderWindowEditor._events_
+mrv.maya.ui.editor.SelectionConnection._events_
+mrv.maya.ui.layout.FrameLayout._events_
+mrv.maya.ui.layout.PaneLayout._events_
+mrv.maya.ui.layout.TabLayout._events_" class="py-name" href="#" onclick="return doclink('link-16', '_events_', 'link-6');">_events_</a></tt> <tt class="py-op">=</tt>              <tt class="py-op">(</tt> </tt>
+<a name="L272"></a><tt class="py-lineno">272</tt>  <tt class="py-line">                                         <tt class="py-string">"clipDropCmd"</tt><tt class="py-op">,</tt> <tt class="py-string">"cd"</tt><tt class="py-op">,</tt> </tt>
+<a name="L273"></a><tt class="py-lineno">273</tt>  <tt class="py-line">                                         <tt class="py-string">"deleteCmd"</tt><tt class="py-op">,</tt> <tt class="py-string">"dc"</tt> </tt>
+<a name="L274"></a><tt class="py-lineno">274</tt>  <tt class="py-line">                                         <tt class="py-op">)</tt> </tt>
+</div><a name="L275"></a><tt class="py-lineno">275</tt>  <tt class="py-line"> </tt>
+<a name="DeviceEditor"></a><div id="DeviceEditor-def"><a name="L276"></a><tt class="py-lineno">276</tt> <a class="py-toggle" href="#" id="DeviceEditor-toggle" onclick="return toggle('DeviceEditor');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.editor.DeviceEditor-class.html">DeviceEditor</a><tt class="py-op">(</tt> <tt class="py-base-class">EditorBase</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DeviceEditor-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="DeviceEditor-expanded"><a name="L277"></a><tt class="py-lineno">277</tt>  <tt class="py-line">        <tt id="link-17" class="py-name"><a title="mrv.maya.ui.base.Menu._properties_
+mrv.maya.ui.base.MenuBase._properties_
+mrv.maya.ui.base.MenuItem._properties_
+mrv.maya.ui.base.PopupMenu._properties_
+mrv.maya.ui.base.SizedControl._properties_
+mrv.maya.ui.base.Window._properties_
+mrv.maya.ui.control.BooleanGroupBase._properties_
+mrv.maya.ui.control.Button._properties_
+mrv.maya.ui.control.ButtonGroupBase._properties_
+mrv.maya.ui.control.CheckBoxBase._properties_
+mrv.maya.ui.control.CheckBoxGrp._properties_
+mrv.maya.ui.control.FieldBase._properties_
+mrv.maya.ui.control.GroupBase._properties_
+mrv.maya.ui.control.IconTextBase._properties_
+mrv.maya.ui.control.LabelBase._properties_
+mrv.maya.ui.control.OptionMenuBase._properties_
+mrv.maya.ui.control.RadioButtonBase._properties_
+mrv.maya.ui.control.RadioCollectionBase._properties_
+mrv.maya.ui.control.ScrollField._properties_
+mrv.maya.ui.control.Separator._properties_
+mrv.maya.ui.control.SliderBase._properties_
+mrv.maya.ui.control.SliderGroupBase._properties_
+mrv.maya.ui.control.Text._properties_
+mrv.maya.ui.control.TextFieldBase._properties_
+mrv.maya.ui.control.TextScrollList._properties_
+mrv.maya.ui.editor.AnimCurveEditor._properties_
+mrv.maya.ui.editor.AnimEditorBase._properties_
+mrv.maya.ui.editor.BlendShapeEditor._properties_
+mrv.maya.ui.editor.ClipEditor._properties_
+mrv.maya.ui.editor.ColorEditor._properties_
+mrv.maya.ui.editor.ComponentEditor._properties_
+mrv.maya.ui.editor.DeviceEditor._properties_
+mrv.maya.ui.editor.DynPaintEditor._properties_
+mrv.maya.ui.editor.EditorBase._properties_
+mrv.maya.ui.editor.GlRenderEditor._properties_
+mrv.maya.ui.editor.ItemFilter._properties_
+mrv.maya.ui.editor.ItemFilterAttr._properties_
+mrv.maya.ui.editor.ItemFilterBase._properties_
+mrv.maya.ui.editor.ItemFilterRender._properties_
+mrv.maya.ui.editor.ModelEditor._properties_
+mrv.maya.ui.editor.OutlinerEditor._properties_
+mrv.maya.ui.editor.RenderEditorBase._properties_
+mrv.maya.ui.editor.RenderWindowEditor._properties_
+mrv.maya.ui.editor.SelectionConnection._properties_
+mrv.maya.ui.layout.ColumnLayout._properties_
+mrv.maya.ui.layout.ColumnLayoutBase._properties_
+mrv.maya.ui.layout.FrameLayout._properties_
+mrv.maya.ui.layout.Layout._properties_
+mrv.maya.ui.layout.PaneLayout._properties_
+mrv.maya.ui.layout.RowColumnLayout._properties_
+mrv.maya.ui.layout.RowLayout._properties_
+mrv.maya.ui.layout.ScrollLayout._properties_
+mrv.maya.ui.layout.TabLayout._properties_" class="py-name" href="#" onclick="return doclink('link-17', '_properties_', 'link-2');">_properties_</a></tt> <tt class="py-op">=</tt>  <tt class="py-op">(</tt> <tt class="py-string">"takePath"</tt><tt class="py-op">,</tt> <tt class="py-string">"tp"</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L278"></a><tt class="py-lineno">278</tt>  <tt class="py-line"> </tt>
+<a name="L279"></a><tt class="py-lineno">279</tt>  <tt class="py-line"> </tt>
+<a name="DynPaintEditor"></a><div id="DynPaintEditor-def"><a name="L280"></a><tt class="py-lineno">280</tt> <a class="py-toggle" href="#" id="DynPaintEditor-toggle" onclick="return toggle('DynPaintEditor');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.editor.DynPaintEditor-class.html">DynPaintEditor</a><tt class="py-op">(</tt> <tt class="py-base-class">RenderEditorBase</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DynPaintEditor-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="DynPaintEditor-expanded"><a name="L281"></a><tt class="py-lineno">281</tt>  <tt class="py-line">        <tt id="link-18" class="py-name"><a title="mrv.maya.ui.base.Menu._properties_
+mrv.maya.ui.base.MenuBase._properties_
+mrv.maya.ui.base.MenuItem._properties_
+mrv.maya.ui.base.PopupMenu._properties_
+mrv.maya.ui.base.SizedControl._properties_
+mrv.maya.ui.base.Window._properties_
+mrv.maya.ui.control.BooleanGroupBase._properties_
+mrv.maya.ui.control.Button._properties_
+mrv.maya.ui.control.ButtonGroupBase._properties_
+mrv.maya.ui.control.CheckBoxBase._properties_
+mrv.maya.ui.control.CheckBoxGrp._properties_
+mrv.maya.ui.control.FieldBase._properties_
+mrv.maya.ui.control.GroupBase._properties_
+mrv.maya.ui.control.IconTextBase._properties_
+mrv.maya.ui.control.LabelBase._properties_
+mrv.maya.ui.control.OptionMenuBase._properties_
+mrv.maya.ui.control.RadioButtonBase._properties_
+mrv.maya.ui.control.RadioCollectionBase._properties_
+mrv.maya.ui.control.ScrollField._properties_
+mrv.maya.ui.control.Separator._properties_
+mrv.maya.ui.control.SliderBase._properties_
+mrv.maya.ui.control.SliderGroupBase._properties_
+mrv.maya.ui.control.Text._properties_
+mrv.maya.ui.control.TextFieldBase._properties_
+mrv.maya.ui.control.TextScrollList._properties_
+mrv.maya.ui.editor.AnimCurveEditor._properties_
+mrv.maya.ui.editor.AnimEditorBase._properties_
+mrv.maya.ui.editor.BlendShapeEditor._properties_
+mrv.maya.ui.editor.ClipEditor._properties_
+mrv.maya.ui.editor.ColorEditor._properties_
+mrv.maya.ui.editor.ComponentEditor._properties_
+mrv.maya.ui.editor.DeviceEditor._properties_
+mrv.maya.ui.editor.DynPaintEditor._properties_
+mrv.maya.ui.editor.EditorBase._properties_
+mrv.maya.ui.editor.GlRenderEditor._properties_
+mrv.maya.ui.editor.ItemFilter._properties_
+mrv.maya.ui.editor.ItemFilterAttr._properties_
+mrv.maya.ui.editor.ItemFilterBase._properties_
+mrv.maya.ui.editor.ItemFilterRender._properties_
+mrv.maya.ui.editor.ModelEditor._properties_
+mrv.maya.ui.editor.OutlinerEditor._properties_
+mrv.maya.ui.editor.RenderEditorBase._properties_
+mrv.maya.ui.editor.RenderWindowEditor._properties_
+mrv.maya.ui.editor.SelectionConnection._properties_
+mrv.maya.ui.layout.ColumnLayout._properties_
+mrv.maya.ui.layout.ColumnLayoutBase._properties_
+mrv.maya.ui.layout.FrameLayout._properties_
+mrv.maya.ui.layout.Layout._properties_
+mrv.maya.ui.layout.PaneLayout._properties_
+mrv.maya.ui.layout.RowColumnLayout._properties_
+mrv.maya.ui.layout.RowLayout._properties_
+mrv.maya.ui.layout.ScrollLayout._properties_
+mrv.maya.ui.layout.TabLayout._properties_" class="py-name" href="#" onclick="return doclink('link-18', '_properties_', 'link-2');">_properties_</a></tt> <tt class="py-op">=</tt>  <tt class="py-op">(</tt> </tt>
+<a name="L282"></a><tt class="py-lineno">282</tt>  <tt class="py-line">                                         <tt class="py-string">"clear"</tt><tt class="py-op">,</tt> <tt class="py-string">"cl"</tt><tt class="py-op">,</tt> </tt>
+<a name="L283"></a><tt class="py-lineno">283</tt>  <tt class="py-line">                                         <tt class="py-string">"displayAppearance"</tt><tt class="py-op">,</tt> <tt class="py-string">"dsa"</tt><tt class="py-op">,</tt> </tt>
+<a name="L284"></a><tt class="py-lineno">284</tt>  <tt class="py-line">                                         <tt class="py-string">"displayLights"</tt><tt class="py-op">,</tt> <tt class="py-string">"dsl"</tt><tt class="py-op">,</tt> </tt>
+<a name="L285"></a><tt class="py-lineno">285</tt>  <tt class="py-line">                                         <tt class="py-string">"displayTextures"</tt><tt class="py-op">,</tt> <tt class="py-string">"dtx"</tt><tt class="py-op">,</tt> </tt>
+<a name="L286"></a><tt class="py-lineno">286</tt>  <tt class="py-line">                                         <tt class="py-string">"menu"</tt><tt class="py-op">,</tt> <tt class="py-string">"mn"</tt><tt class="py-op">,</tt> </tt>
+<a name="L287"></a><tt class="py-lineno">287</tt>  <tt class="py-line">                                         <tt class="py-string">"newImage"</tt><tt class="py-op">,</tt> <tt class="py-string">"ni"</tt><tt class="py-op">,</tt> </tt>
+<a name="L288"></a><tt class="py-lineno">288</tt>  <tt class="py-line">                                         <tt class="py-string">"wrap"</tt><tt class="py-op">,</tt> <tt class="py-string">"wr"</tt><tt class="py-op">,</tt> </tt>
+<a name="L289"></a><tt class="py-lineno">289</tt>  <tt class="py-line">                                         <tt class="py-string">"zoom"</tt><tt class="py-op">,</tt> <tt class="py-string">"zm"</tt><tt class="py-op">,</tt> </tt>
+<a name="L290"></a><tt class="py-lineno">290</tt>  <tt class="py-line">                                         <tt class="py-string">"camera"</tt><tt class="py-op">,</tt> <tt class="py-string">"cam"</tt><tt class="py-op">,</tt> </tt>
+<a name="L291"></a><tt class="py-lineno">291</tt>  <tt class="py-line">                                         <tt class="py-string">"paintAll"</tt><tt class="py-op">,</tt> <tt class="py-string">"pa"</tt><tt class="py-op">,</tt> </tt>
+<a name="L292"></a><tt class="py-lineno">292</tt>  <tt class="py-line">                                         <tt class="py-string">"rollImage"</tt><tt class="py-op">,</tt> <tt class="py-string">"rig"</tt><tt class="py-op">,</tt> </tt>
+<a name="L293"></a><tt class="py-lineno">293</tt>  <tt class="py-line">                                         <tt class="py-string">"tileSize"</tt><tt class="py-op">,</tt> <tt class="py-string">"ts"</tt><tt class="py-op">,</tt> </tt>
+<a name="L294"></a><tt class="py-lineno">294</tt>  <tt class="py-line">                                         <tt class="py-string">"snapShot"</tt><tt class="py-op">,</tt> <tt class="py-string">"snp"</tt><tt class="py-op">,</tt> </tt>
+<a name="L295"></a><tt class="py-lineno">295</tt>  <tt class="py-line">                                         <tt class="py-string">"undoCache"</tt><tt class="py-op">,</tt> <tt class="py-string">"uc"</tt><tt class="py-op">,</tt> </tt>
+<a name="L296"></a><tt class="py-lineno">296</tt>  <tt class="py-line">                                         <tt class="py-string">"canvasUndo"</tt><tt class="py-op">,</tt> <tt class="py-string">"cu"</tt><tt class="py-op">,</tt> </tt>
+<a name="L297"></a><tt class="py-lineno">297</tt>  <tt class="py-line">                                         <tt class="py-string">"canvasMode"</tt><tt class="py-op">,</tt> <tt class="py-string">"cm"</tt><tt class="py-op">,</tt> </tt>
+<a name="L298"></a><tt class="py-lineno">298</tt>  <tt class="py-line">                                         <tt class="py-string">"redrawLast"</tt><tt class="py-op">,</tt> <tt class="py-string">"rl"</tt><tt class="py-op">,</tt> </tt>
+<a name="L299"></a><tt class="py-lineno">299</tt>  <tt class="py-line">                                         <tt class="py-string">"refreshMode"</tt><tt class="py-op">,</tt> <tt class="py-string">"rmd"</tt><tt class="py-op">,</tt> </tt>
+<a name="L300"></a><tt class="py-lineno">300</tt>  <tt class="py-line">                                         <tt class="py-string">"autoSave"</tt><tt class="py-op">,</tt> <tt class="py-string">"as"</tt><tt class="py-op">,</tt> </tt>
+<a name="L301"></a><tt class="py-lineno">301</tt>  <tt class="py-line">                                         <tt class="py-string">"saveAlpha"</tt><tt class="py-op">,</tt> <tt class="py-string">"sa"</tt><tt class="py-op">,</tt> </tt>
+<a name="L302"></a><tt class="py-lineno">302</tt>  <tt class="py-line">                                         <tt class="py-string">"drawContext"</tt><tt class="py-op">,</tt> <tt class="py-string">"drc"</tt><tt class="py-op">,</tt> </tt>
+<a name="L303"></a><tt class="py-lineno">303</tt>  <tt class="py-line">                                         <tt class="py-string">"activeOnly"</tt><tt class="py-op">,</tt> <tt class="py-string">"ao"</tt><tt class="py-op">,</tt> </tt>
+<a name="L304"></a><tt class="py-lineno">304</tt>  <tt class="py-line">                                         <tt class="py-string">"fileName"</tt><tt class="py-op">,</tt> <tt class="py-string">"fil"</tt><tt class="py-op">,</tt> </tt>
+<a name="L305"></a><tt class="py-lineno">305</tt>  <tt class="py-line">                                         <tt class="py-string">"saveBumpmap"</tt><tt class="py-op">,</tt> <tt class="py-string">"sbm"</tt><tt class="py-op">,</tt> </tt>
+<a name="L306"></a><tt class="py-lineno">306</tt>  <tt class="py-line">                                         <tt class="py-string">"iconGrab"</tt><tt class="py-op">,</tt> <tt class="py-string">"ig"</tt><tt class="py-op">,</tt> </tt>
+<a name="L307"></a><tt class="py-lineno">307</tt>  <tt class="py-line">                                         <tt class="py-string">"displayFog"</tt><tt class="py-op">,</tt> <tt class="py-string">"dfg"</tt><tt class="py-op">,</tt> </tt>
+<a name="L308"></a><tt class="py-lineno">308</tt>  <tt class="py-line">                                         <tt class="py-string">"currentCanvasSize"</tt><tt class="py-op">,</tt> <tt class="py-string">"ccs"</tt> </tt>
+<a name="L309"></a><tt class="py-lineno">309</tt>  <tt class="py-line">                                         <tt class="py-op">)</tt> </tt>
+</div><a name="L310"></a><tt class="py-lineno">310</tt>  <tt class="py-line"> </tt>
+<a name="L311"></a><tt class="py-lineno">311</tt>  <tt class="py-line"> </tt>
+<a name="ComponentEditor"></a><div id="ComponentEditor-def"><a name="L312"></a><tt class="py-lineno">312</tt> <a class="py-toggle" href="#" id="ComponentEditor-toggle" onclick="return toggle('ComponentEditor');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.editor.ComponentEditor-class.html">ComponentEditor</a><tt class="py-op">(</tt> <tt class="py-base-class">EditorBase</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ComponentEditor-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="ComponentEditor-expanded"><a name="L313"></a><tt class="py-lineno">313</tt>  <tt class="py-line">        <tt id="link-19" class="py-name"><a title="mrv.maya.ui.base.Menu._properties_
+mrv.maya.ui.base.MenuBase._properties_
+mrv.maya.ui.base.MenuItem._properties_
+mrv.maya.ui.base.PopupMenu._properties_
+mrv.maya.ui.base.SizedControl._properties_
+mrv.maya.ui.base.Window._properties_
+mrv.maya.ui.control.BooleanGroupBase._properties_
+mrv.maya.ui.control.Button._properties_
+mrv.maya.ui.control.ButtonGroupBase._properties_
+mrv.maya.ui.control.CheckBoxBase._properties_
+mrv.maya.ui.control.CheckBoxGrp._properties_
+mrv.maya.ui.control.FieldBase._properties_
+mrv.maya.ui.control.GroupBase._properties_
+mrv.maya.ui.control.IconTextBase._properties_
+mrv.maya.ui.control.LabelBase._properties_
+mrv.maya.ui.control.OptionMenuBase._properties_
+mrv.maya.ui.control.RadioButtonBase._properties_
+mrv.maya.ui.control.RadioCollectionBase._properties_
+mrv.maya.ui.control.ScrollField._properties_
+mrv.maya.ui.control.Separator._properties_
+mrv.maya.ui.control.SliderBase._properties_
+mrv.maya.ui.control.SliderGroupBase._properties_
+mrv.maya.ui.control.Text._properties_
+mrv.maya.ui.control.TextFieldBase._properties_
+mrv.maya.ui.control.TextScrollList._properties_
+mrv.maya.ui.editor.AnimCurveEditor._properties_
+mrv.maya.ui.editor.AnimEditorBase._properties_
+mrv.maya.ui.editor.BlendShapeEditor._properties_
+mrv.maya.ui.editor.ClipEditor._properties_
+mrv.maya.ui.editor.ColorEditor._properties_
+mrv.maya.ui.editor.ComponentEditor._properties_
+mrv.maya.ui.editor.DeviceEditor._properties_
+mrv.maya.ui.editor.DynPaintEditor._properties_
+mrv.maya.ui.editor.EditorBase._properties_
+mrv.maya.ui.editor.GlRenderEditor._properties_
+mrv.maya.ui.editor.ItemFilter._properties_
+mrv.maya.ui.editor.ItemFilterAttr._properties_
+mrv.maya.ui.editor.ItemFilterBase._properties_
+mrv.maya.ui.editor.ItemFilterRender._properties_
+mrv.maya.ui.editor.ModelEditor._properties_
+mrv.maya.ui.editor.OutlinerEditor._properties_
+mrv.maya.ui.editor.RenderEditorBase._properties_
+mrv.maya.ui.editor.RenderWindowEditor._properties_
+mrv.maya.ui.editor.SelectionConnection._properties_
+mrv.maya.ui.layout.ColumnLayout._properties_
+mrv.maya.ui.layout.ColumnLayoutBase._properties_
+mrv.maya.ui.layout.FrameLayout._properties_
+mrv.maya.ui.layout.Layout._properties_
+mrv.maya.ui.layout.PaneLayout._properties_
+mrv.maya.ui.layout.RowColumnLayout._properties_
+mrv.maya.ui.layout.RowLayout._properties_
+mrv.maya.ui.layout.ScrollLayout._properties_
+mrv.maya.ui.layout.TabLayout._properties_" class="py-name" href="#" onclick="return doclink('link-19', '_properties_', 'link-2');">_properties_</a></tt> <tt class="py-op">=</tt>  <tt class="py-op">(</tt> </tt>
+<a name="L314"></a><tt class="py-lineno">314</tt>  <tt class="py-line">                                         <tt class="py-string">"lockInput"</tt><tt class="py-op">,</tt> <tt class="py-string">"li"</tt><tt class="py-op">,</tt> </tt>
+<a name="L315"></a><tt class="py-lineno">315</tt>  <tt class="py-line">                                         <tt class="py-string">"precision"</tt><tt class="py-op">,</tt> <tt class="py-string">"pre"</tt><tt class="py-op">,</tt> </tt>
+<a name="L316"></a><tt class="py-lineno">316</tt>  <tt class="py-line">                                         <tt class="py-string">"setOperationLabel"</tt><tt class="py-op">,</tt> <tt class="py-string">"sol"</tt><tt class="py-op">,</tt> </tt>
+<a name="L317"></a><tt class="py-lineno">317</tt>  <tt class="py-line">                                         <tt class="py-string">"operationLabels"</tt><tt class="py-op">,</tt> <tt class="py-string">"ol"</tt><tt class="py-op">,</tt> </tt>
+<a name="L318"></a><tt class="py-lineno">318</tt>  <tt class="py-line">                                         <tt class="py-string">"operationCount"</tt><tt class="py-op">,</tt> <tt class="py-string">"oc"</tt><tt class="py-op">,</tt> </tt>
+<a name="L319"></a><tt class="py-lineno">319</tt>  <tt class="py-line">                                         <tt class="py-string">"operationType"</tt><tt class="py-op">,</tt> <tt class="py-string">"ot"</tt><tt class="py-op">,</tt> </tt>
+<a name="L320"></a><tt class="py-lineno">320</tt>  <tt class="py-line">                                         <tt class="py-string">"hideZeroColumns"</tt><tt class="py-op">,</tt> <tt class="py-string">"hzc"</tt><tt class="py-op">,</tt> </tt>
+<a name="L321"></a><tt class="py-lineno">321</tt>  <tt class="py-line">                                         <tt class="py-string">"sortAlpha"</tt><tt class="py-op">,</tt> <tt class="py-string">"sa"</tt><tt class="py-op">,</tt> </tt>
+<a name="L322"></a><tt class="py-lineno">322</tt>  <tt class="py-line">                                         <tt class="py-string">"showObjects"</tt><tt class="py-op">,</tt> <tt class="py-string">"so"</tt><tt class="py-op">,</tt> </tt>
+<a name="L323"></a><tt class="py-lineno">323</tt>  <tt class="py-line">                                         <tt class="py-string">"showSelected"</tt><tt class="py-op">,</tt> <tt class="py-string">"ss"</tt><tt class="py-op">,</tt> </tt>
+<a name="L324"></a><tt class="py-lineno">324</tt>  <tt class="py-line">                                         <tt class="py-string">"floatSlider"</tt><tt class="py-op">,</tt> <tt class="py-string">"fs"</tt><tt class="py-op">,</tt> </tt>
+<a name="L325"></a><tt class="py-lineno">325</tt>  <tt class="py-line">                                         <tt class="py-string">"floatField"</tt><tt class="py-op">,</tt> <tt class="py-string">"ff"</tt><tt class="py-op">,</tt> </tt>
+<a name="L326"></a><tt class="py-lineno">326</tt>  <tt class="py-line">                                         <tt class="py-string">"hidePathName"</tt><tt class="py-op">,</tt> <tt class="py-string">"hpn"</tt><tt class="py-op">,</tt> </tt>
+<a name="L327"></a><tt class="py-lineno">327</tt>  <tt class="py-line">                                         <tt class="py-string">"newTab"</tt><tt class="py-op">,</tt> <tt class="py-string">"nt"</tt><tt class="py-op">,</tt> </tt>
+<a name="L328"></a><tt class="py-lineno">328</tt>  <tt class="py-line">                                         <tt class="py-string">"removeTab"</tt><tt class="py-op">,</tt> <tt class="py-string">"rt"</tt><tt class="py-op">,</tt> </tt>
+<a name="L329"></a><tt class="py-lineno">329</tt>  <tt class="py-line">                                         <tt class="py-string">"selected"</tt><tt class="py-op">,</tt> <tt class="py-string">"sl"</tt> </tt>
+<a name="L330"></a><tt class="py-lineno">330</tt>  <tt class="py-line">                                        <tt class="py-op">)</tt> </tt>
+</div><a name="L331"></a><tt class="py-lineno">331</tt>  <tt class="py-line"> </tt>
+<a name="L332"></a><tt class="py-lineno">332</tt>  <tt class="py-line"> </tt>
+<a name="SelectionConnection"></a><div id="SelectionConnection-def"><a name="L333"></a><tt class="py-lineno">333</tt> <a class="py-toggle" href="#" id="SelectionConnection-toggle" onclick="return toggle('SelectionConnection');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.editor.SelectionConnection-class.html">SelectionConnection</a><tt class="py-op">(</tt> <tt class="py-base-class">uibase</tt><tt class="py-op">.</tt><tt class="py-base-class">NamedUI</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SelectionConnection-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="SelectionConnection-expanded"><a name="L334"></a><tt class="py-lineno">334</tt>  <tt class="py-line">        <tt id="link-20" class="py-name"><a title="mrv.maya.ui.base.Menu._properties_
+mrv.maya.ui.base.MenuBase._properties_
+mrv.maya.ui.base.MenuItem._properties_
+mrv.maya.ui.base.PopupMenu._properties_
+mrv.maya.ui.base.SizedControl._properties_
+mrv.maya.ui.base.Window._properties_
+mrv.maya.ui.control.BooleanGroupBase._properties_
+mrv.maya.ui.control.Button._properties_
+mrv.maya.ui.control.ButtonGroupBase._properties_
+mrv.maya.ui.control.CheckBoxBase._properties_
+mrv.maya.ui.control.CheckBoxGrp._properties_
+mrv.maya.ui.control.FieldBase._properties_
+mrv.maya.ui.control.GroupBase._properties_
+mrv.maya.ui.control.IconTextBase._properties_
+mrv.maya.ui.control.LabelBase._properties_
+mrv.maya.ui.control.OptionMenuBase._properties_
+mrv.maya.ui.control.RadioButtonBase._properties_
+mrv.maya.ui.control.RadioCollectionBase._properties_
+mrv.maya.ui.control.ScrollField._properties_
+mrv.maya.ui.control.Separator._properties_
+mrv.maya.ui.control.SliderBase._properties_
+mrv.maya.ui.control.SliderGroupBase._properties_
+mrv.maya.ui.control.Text._properties_
+mrv.maya.ui.control.TextFieldBase._properties_
+mrv.maya.ui.control.TextScrollList._properties_
+mrv.maya.ui.editor.AnimCurveEditor._properties_
+mrv.maya.ui.editor.AnimEditorBase._properties_
+mrv.maya.ui.editor.BlendShapeEditor._properties_
+mrv.maya.ui.editor.ClipEditor._properties_
+mrv.maya.ui.editor.ColorEditor._properties_
+mrv.maya.ui.editor.ComponentEditor._properties_
+mrv.maya.ui.editor.DeviceEditor._properties_
+mrv.maya.ui.editor.DynPaintEditor._properties_
+mrv.maya.ui.editor.EditorBase._properties_
+mrv.maya.ui.editor.GlRenderEditor._properties_
+mrv.maya.ui.editor.ItemFilter._properties_
+mrv.maya.ui.editor.ItemFilterAttr._properties_
+mrv.maya.ui.editor.ItemFilterBase._properties_
+mrv.maya.ui.editor.ItemFilterRender._properties_
+mrv.maya.ui.editor.ModelEditor._properties_
+mrv.maya.ui.editor.OutlinerEditor._properties_
+mrv.maya.ui.editor.RenderEditorBase._properties_
+mrv.maya.ui.editor.RenderWindowEditor._properties_
+mrv.maya.ui.editor.SelectionConnection._properties_
+mrv.maya.ui.layout.ColumnLayout._properties_
+mrv.maya.ui.layout.ColumnLayoutBase._properties_
+mrv.maya.ui.layout.FrameLayout._properties_
+mrv.maya.ui.layout.Layout._properties_
+mrv.maya.ui.layout.PaneLayout._properties_
+mrv.maya.ui.layout.RowColumnLayout._properties_
+mrv.maya.ui.layout.RowLayout._properties_
+mrv.maya.ui.layout.ScrollLayout._properties_
+mrv.maya.ui.layout.TabLayout._properties_" class="py-name" href="#" onclick="return doclink('link-20', '_properties_', 'link-2');">_properties_</a></tt> <tt class="py-op">=</tt>  <tt class="py-op">(</tt> </tt>
+<a name="L335"></a><tt class="py-lineno">335</tt>  <tt class="py-line">                                         <tt class="py-string">"filter"</tt><tt class="py-op">,</tt> <tt class="py-string">"f"</tt><tt class="py-op">,</tt> </tt>
+<a name="L336"></a><tt class="py-lineno">336</tt>  <tt class="py-line">                                         <tt class="py-string">"global"</tt><tt class="py-op">,</tt> <tt class="py-string">"g"</tt><tt class="py-op">,</tt> </tt>
+<a name="L337"></a><tt class="py-lineno">337</tt>  <tt class="py-line">                                         <tt class="py-string">"object"</tt><tt class="py-op">,</tt> <tt class="py-string">"obj"</tt><tt class="py-op">,</tt> </tt>
+<a name="L338"></a><tt class="py-lineno">338</tt>  <tt class="py-line">                                         <tt class="py-string">"connectionList"</tt><tt class="py-op">,</tt> <tt class="py-string">"lst"</tt><tt class="py-op">,</tt> </tt>
+<a name="L339"></a><tt class="py-lineno">339</tt>  <tt class="py-line">                                         <tt class="py-string">"switch"</tt><tt class="py-op">,</tt> <tt class="py-string">"sw"</tt><tt class="py-op">,</tt> </tt>
+<a name="L340"></a><tt class="py-lineno">340</tt>  <tt class="py-line">                                         <tt class="py-string">"editor"</tt><tt class="py-op">,</tt> <tt class="py-string">"ed"</tt><tt class="py-op">,</tt> </tt>
+<a name="L341"></a><tt class="py-lineno">341</tt>  <tt class="py-line">                                         <tt class="py-string">"addTo"</tt><tt class="py-op">,</tt> <tt class="py-string">"add"</tt> </tt>
+<a name="L342"></a><tt class="py-lineno">342</tt>  <tt class="py-line">                                         <tt class="py-string">"remove"</tt><tt class="py-op">,</tt> <tt class="py-string">"rm"</tt><tt class="py-op">,</tt> </tt>
+<a name="L343"></a><tt class="py-lineno">343</tt>  <tt class="py-line">                                         <tt class="py-string">"findObject"</tt><tt class="py-op">,</tt> <tt class="py-string">"fo"</tt><tt class="py-op">,</tt> </tt>
+<a name="L344"></a><tt class="py-lineno">344</tt>  <tt class="py-line">                                         <tt class="py-string">"identify"</tt><tt class="py-op">,</tt> <tt class="py-string">"id"</tt><tt class="py-op">,</tt> </tt>
+<a name="L345"></a><tt class="py-lineno">345</tt>  <tt class="py-line">                                         <tt class="py-string">"lock"</tt><tt class="py-op">,</tt> <tt class="py-string">"lck"</tt><tt class="py-op">,</tt> </tt>
+<a name="L346"></a><tt class="py-lineno">346</tt>  <tt class="py-line">                                         <tt class="py-string">"clear"</tt><tt class="py-op">,</tt> <tt class="py-string">"clr"</tt><tt class="py-op">,</tt> </tt>
+<a name="L347"></a><tt class="py-lineno">347</tt>  <tt class="py-line">                                         <tt class="py-string">"select"</tt><tt class="py-op">,</tt> <tt class="py-string">"s"</tt><tt class="py-op">,</tt> </tt>
+<a name="L348"></a><tt class="py-lineno">348</tt>  <tt class="py-line">                                         <tt class="py-string">"deselect"</tt><tt class="py-op">,</tt> <tt class="py-string">"d"</tt> </tt>
+<a name="L349"></a><tt class="py-lineno">349</tt>  <tt class="py-line">                                        <tt class="py-op">)</tt> </tt>
+<a name="L350"></a><tt class="py-lineno">350</tt>  <tt class="py-line"> </tt>
+<a name="L351"></a><tt class="py-lineno">351</tt>  <tt class="py-line">        <tt id="link-21" class="py-name"><a title="mrv.maya.ui.base.MenuBase._events_
+mrv.maya.ui.base.MenuItem._events_
+mrv.maya.ui.base.PopupMenu._events_
+mrv.maya.ui.base.SizedControl._events_
+mrv.maya.ui.base.Window._events_
+mrv.maya.ui.control.BooleanBase._events_
+mrv.maya.ui.control.BooleanGroupBase._events_
+mrv.maya.ui.control.Button._events_
+mrv.maya.ui.control.ButtonGroupBase._events_
+mrv.maya.ui.control.FieldBase._events_
+mrv.maya.ui.control.IconTextBase._events_
+mrv.maya.ui.control.IconTextButton._events_
+mrv.maya.ui.control.OptionMenuBase._events_
+mrv.maya.ui.control.ScrollField._events_
+mrv.maya.ui.control.SliderBase._events_
+mrv.maya.ui.control.TextFieldGroupBase._events_
+mrv.maya.ui.control.TextScrollList._events_
+mrv.maya.ui.editor.AnimCurveEditor._events_
+mrv.maya.ui.editor.ClipEditor._events_
+mrv.maya.ui.editor.ItemFilterBase._events_
+mrv.maya.ui.editor.OutlinerEditor._events_
+mrv.maya.ui.editor.RenderWindowEditor._events_
+mrv.maya.ui.editor.SelectionConnection._events_
+mrv.maya.ui.layout.FrameLayout._events_
+mrv.maya.ui.layout.PaneLayout._events_
+mrv.maya.ui.layout.TabLayout._events_" class="py-name" href="#" onclick="return doclink('link-21', '_events_', 'link-6');">_events_</a></tt> <tt class="py-op">=</tt>              <tt class="py-op">(</tt> </tt>
+<a name="L352"></a><tt class="py-lineno">352</tt>  <tt class="py-line">                                         <tt class="py-string">"addScript"</tt><tt class="py-op">,</tt> <tt class="py-string">"as"</tt><tt class="py-op">,</tt> </tt>
+<a name="L353"></a><tt class="py-lineno">353</tt>  <tt class="py-line">                                         <tt class="py-string">"removeScript"</tt><tt class="py-op">,</tt> <tt class="py-string">"rs"</tt> </tt>
+<a name="L354"></a><tt class="py-lineno">354</tt>  <tt class="py-line">                                        <tt class="py-op">)</tt> </tt>
+</div><a name="L355"></a><tt class="py-lineno">355</tt>  <tt class="py-line"> </tt>
+<a name="L356"></a><tt class="py-lineno">356</tt>  <tt class="py-line"> </tt>
+<a name="ItemFilterBase"></a><div id="ItemFilterBase-def"><a name="L357"></a><tt class="py-lineno">357</tt> <a class="py-toggle" href="#" id="ItemFilterBase-toggle" onclick="return toggle('ItemFilterBase');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.editor.ItemFilterBase-class.html">ItemFilterBase</a><tt class="py-op">(</tt> <tt class="py-base-class">uibase</tt><tt class="py-op">.</tt><tt class="py-base-class">BaseUI</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ItemFilterBase-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="ItemFilterBase-expanded"><a name="L358"></a><tt class="py-lineno">358</tt>  <tt class="py-line">        <tt id="link-22" class="py-name"><a title="mrv.maya.ui.base.Menu._properties_
+mrv.maya.ui.base.MenuBase._properties_
+mrv.maya.ui.base.MenuItem._properties_
+mrv.maya.ui.base.PopupMenu._properties_
+mrv.maya.ui.base.SizedControl._properties_
+mrv.maya.ui.base.Window._properties_
+mrv.maya.ui.control.BooleanGroupBase._properties_
+mrv.maya.ui.control.Button._properties_
+mrv.maya.ui.control.ButtonGroupBase._properties_
+mrv.maya.ui.control.CheckBoxBase._properties_
+mrv.maya.ui.control.CheckBoxGrp._properties_
+mrv.maya.ui.control.FieldBase._properties_
+mrv.maya.ui.control.GroupBase._properties_
+mrv.maya.ui.control.IconTextBase._properties_
+mrv.maya.ui.control.LabelBase._properties_
+mrv.maya.ui.control.OptionMenuBase._properties_
+mrv.maya.ui.control.RadioButtonBase._properties_
+mrv.maya.ui.control.RadioCollectionBase._properties_
+mrv.maya.ui.control.ScrollField._properties_
+mrv.maya.ui.control.Separator._properties_
+mrv.maya.ui.control.SliderBase._properties_
+mrv.maya.ui.control.SliderGroupBase._properties_
+mrv.maya.ui.control.Text._properties_
+mrv.maya.ui.control.TextFieldBase._properties_
+mrv.maya.ui.control.TextScrollList._properties_
+mrv.maya.ui.editor.AnimCurveEditor._properties_
+mrv.maya.ui.editor.AnimEditorBase._properties_
+mrv.maya.ui.editor.BlendShapeEditor._properties_
+mrv.maya.ui.editor.ClipEditor._properties_
+mrv.maya.ui.editor.ColorEditor._properties_
+mrv.maya.ui.editor.ComponentEditor._properties_
+mrv.maya.ui.editor.DeviceEditor._properties_
+mrv.maya.ui.editor.DynPaintEditor._properties_
+mrv.maya.ui.editor.EditorBase._properties_
+mrv.maya.ui.editor.GlRenderEditor._properties_
+mrv.maya.ui.editor.ItemFilter._properties_
+mrv.maya.ui.editor.ItemFilterAttr._properties_
+mrv.maya.ui.editor.ItemFilterBase._properties_
+mrv.maya.ui.editor.ItemFilterRender._properties_
+mrv.maya.ui.editor.ModelEditor._properties_
+mrv.maya.ui.editor.OutlinerEditor._properties_
+mrv.maya.ui.editor.RenderEditorBase._properties_
+mrv.maya.ui.editor.RenderWindowEditor._properties_
+mrv.maya.ui.editor.SelectionConnection._properties_
+mrv.maya.ui.layout.ColumnLayout._properties_
+mrv.maya.ui.layout.ColumnLayoutBase._properties_
+mrv.maya.ui.layout.FrameLayout._properties_
+mrv.maya.ui.layout.Layout._properties_
+mrv.maya.ui.layout.PaneLayout._properties_
+mrv.maya.ui.layout.RowColumnLayout._properties_
+mrv.maya.ui.layout.RowLayout._properties_
+mrv.maya.ui.layout.ScrollLayout._properties_
+mrv.maya.ui.layout.TabLayout._properties_" class="py-name" href="#" onclick="return doclink('link-22', '_properties_', 'link-2');">_properties_</a></tt> <tt class="py-op">=</tt>  <tt class="py-op">(</tt> </tt>
+<a name="L359"></a><tt class="py-lineno">359</tt>  <tt class="py-line">                                         <tt class="py-string">"byName"</tt><tt class="py-op">,</tt> <tt class="py-string">"bn"</tt><tt class="py-op">,</tt> </tt>
+<a name="L360"></a><tt class="py-lineno">360</tt>  <tt class="py-line">                                         <tt class="py-string">"union"</tt><tt class="py-op">,</tt> <tt class="py-string">"un"</tt><tt class="py-op">,</tt> </tt>
+<a name="L361"></a><tt class="py-lineno">361</tt>  <tt class="py-line">                                         <tt class="py-string">"intersect"</tt><tt class="py-op">,</tt> <tt class="py-string">"in"</tt><tt class="py-op">,</tt> </tt>
+<a name="L362"></a><tt class="py-lineno">362</tt>  <tt class="py-line">                                         <tt class="py-string">"difference"</tt><tt class="py-op">,</tt> <tt class="py-string">"di"</tt><tt class="py-op">,</tt> </tt>
+<a name="L363"></a><tt class="py-lineno">363</tt>  <tt class="py-line">                                         <tt class="py-string">"negate"</tt><tt class="py-op">,</tt> <tt class="py-string">"neg"</tt><tt class="py-op">,</tt> </tt>
+<a name="L364"></a><tt class="py-lineno">364</tt>  <tt class="py-line">                                         <tt class="py-string">"text"</tt><tt class="py-op">,</tt> <tt class="py-string">"t"</tt><tt class="py-op">,</tt> </tt>
+<a name="L365"></a><tt class="py-lineno">365</tt>  <tt class="py-line">                                         <tt class="py-string">"classification"</tt><tt class="py-op">,</tt> <tt class="py-string">"cls"</tt><tt class="py-op">,</tt> </tt>
+<a name="L366"></a><tt class="py-lineno">366</tt>  <tt class="py-line">                                         <tt class="py-string">"listBuiltInFilters"</tt><tt class="py-op">,</tt> <tt class="py-string">"lbf"</tt><tt class="py-op">,</tt> </tt>
+<a name="L367"></a><tt class="py-lineno">367</tt>  <tt class="py-line">                                         <tt class="py-string">"listUserFilters"</tt><tt class="py-op">,</tt> <tt class="py-string">"luf"</tt><tt class="py-op">,</tt> </tt>
+<a name="L368"></a><tt class="py-lineno">368</tt>  <tt class="py-line">                                         <tt class="py-string">"listOtherFilters"</tt><tt class="py-op">,</tt> <tt class="py-string">"lof"</tt> </tt>
+<a name="L369"></a><tt class="py-lineno">369</tt>  <tt class="py-line">                                        <tt class="py-op">)</tt> </tt>
+<a name="L370"></a><tt class="py-lineno">370</tt>  <tt class="py-line"> </tt>
+<a name="L371"></a><tt class="py-lineno">371</tt>  <tt class="py-line">        <tt id="link-23" class="py-name"><a title="mrv.maya.ui.base.MenuBase._events_
+mrv.maya.ui.base.MenuItem._events_
+mrv.maya.ui.base.PopupMenu._events_
+mrv.maya.ui.base.SizedControl._events_
+mrv.maya.ui.base.Window._events_
+mrv.maya.ui.control.BooleanBase._events_
+mrv.maya.ui.control.BooleanGroupBase._events_
+mrv.maya.ui.control.Button._events_
+mrv.maya.ui.control.ButtonGroupBase._events_
+mrv.maya.ui.control.FieldBase._events_
+mrv.maya.ui.control.IconTextBase._events_
+mrv.maya.ui.control.IconTextButton._events_
+mrv.maya.ui.control.OptionMenuBase._events_
+mrv.maya.ui.control.ScrollField._events_
+mrv.maya.ui.control.SliderBase._events_
+mrv.maya.ui.control.TextFieldGroupBase._events_
+mrv.maya.ui.control.TextScrollList._events_
+mrv.maya.ui.editor.AnimCurveEditor._events_
+mrv.maya.ui.editor.ClipEditor._events_
+mrv.maya.ui.editor.ItemFilterBase._events_
+mrv.maya.ui.editor.OutlinerEditor._events_
+mrv.maya.ui.editor.RenderWindowEditor._events_
+mrv.maya.ui.editor.SelectionConnection._events_
+mrv.maya.ui.layout.FrameLayout._events_
+mrv.maya.ui.layout.PaneLayout._events_
+mrv.maya.ui.layout.TabLayout._events_" class="py-name" href="#" onclick="return doclink('link-23', '_events_', 'link-6');">_events_</a></tt>        <tt class="py-op">=</tt>       <tt class="py-op">(</tt> </tt>
+<a name="L372"></a><tt class="py-lineno">372</tt>  <tt class="py-line">                                         <tt class="py-string">"byScript"</tt><tt class="py-op">,</tt> <tt class="py-string">"bs"</tt><tt class="py-op">,</tt> </tt>
+<a name="L373"></a><tt class="py-lineno">373</tt>  <tt class="py-line">                                         <tt class="py-string">"secondScript"</tt><tt class="py-op">,</tt> <tt class="py-string">"ss"</tt> </tt>
+<a name="L374"></a><tt class="py-lineno">374</tt>  <tt class="py-line">                                        <tt class="py-op">)</tt> </tt>
+</div><a name="L375"></a><tt class="py-lineno">375</tt>  <tt class="py-line"> </tt>
+<a name="L376"></a><tt class="py-lineno">376</tt>  <tt class="py-line"> </tt>
+<a name="ItemFilter"></a><div id="ItemFilter-def"><a name="L377"></a><tt class="py-lineno">377</tt> <a class="py-toggle" href="#" id="ItemFilter-toggle" onclick="return toggle('ItemFilter');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.editor.ItemFilter-class.html">ItemFilter</a><tt class="py-op">(</tt> <tt class="py-base-class">ItemFilterBase</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ItemFilter-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="ItemFilter-expanded"><a name="L378"></a><tt class="py-lineno">378</tt>  <tt class="py-line">        <tt id="link-24" class="py-name"><a title="mrv.maya.ui.base.Menu._properties_
+mrv.maya.ui.base.MenuBase._properties_
+mrv.maya.ui.base.MenuItem._properties_
+mrv.maya.ui.base.PopupMenu._properties_
+mrv.maya.ui.base.SizedControl._properties_
+mrv.maya.ui.base.Window._properties_
+mrv.maya.ui.control.BooleanGroupBase._properties_
+mrv.maya.ui.control.Button._properties_
+mrv.maya.ui.control.ButtonGroupBase._properties_
+mrv.maya.ui.control.CheckBoxBase._properties_
+mrv.maya.ui.control.CheckBoxGrp._properties_
+mrv.maya.ui.control.FieldBase._properties_
+mrv.maya.ui.control.GroupBase._properties_
+mrv.maya.ui.control.IconTextBase._properties_
+mrv.maya.ui.control.LabelBase._properties_
+mrv.maya.ui.control.OptionMenuBase._properties_
+mrv.maya.ui.control.RadioButtonBase._properties_
+mrv.maya.ui.control.RadioCollectionBase._properties_
+mrv.maya.ui.control.ScrollField._properties_
+mrv.maya.ui.control.Separator._properties_
+mrv.maya.ui.control.SliderBase._properties_
+mrv.maya.ui.control.SliderGroupBase._properties_
+mrv.maya.ui.control.Text._properties_
+mrv.maya.ui.control.TextFieldBase._properties_
+mrv.maya.ui.control.TextScrollList._properties_
+mrv.maya.ui.editor.AnimCurveEditor._properties_
+mrv.maya.ui.editor.AnimEditorBase._properties_
+mrv.maya.ui.editor.BlendShapeEditor._properties_
+mrv.maya.ui.editor.ClipEditor._properties_
+mrv.maya.ui.editor.ColorEditor._properties_
+mrv.maya.ui.editor.ComponentEditor._properties_
+mrv.maya.ui.editor.DeviceEditor._properties_
+mrv.maya.ui.editor.DynPaintEditor._properties_
+mrv.maya.ui.editor.EditorBase._properties_
+mrv.maya.ui.editor.GlRenderEditor._properties_
+mrv.maya.ui.editor.ItemFilter._properties_
+mrv.maya.ui.editor.ItemFilterAttr._properties_
+mrv.maya.ui.editor.ItemFilterBase._properties_
+mrv.maya.ui.editor.ItemFilterRender._properties_
+mrv.maya.ui.editor.ModelEditor._properties_
+mrv.maya.ui.editor.OutlinerEditor._properties_
+mrv.maya.ui.editor.RenderEditorBase._properties_
+mrv.maya.ui.editor.RenderWindowEditor._properties_
+mrv.maya.ui.editor.SelectionConnection._properties_
+mrv.maya.ui.layout.ColumnLayout._properties_
+mrv.maya.ui.layout.ColumnLayoutBase._properties_
+mrv.maya.ui.layout.FrameLayout._properties_
+mrv.maya.ui.layout.Layout._properties_
+mrv.maya.ui.layout.PaneLayout._properties_
+mrv.maya.ui.layout.RowColumnLayout._properties_
+mrv.maya.ui.layout.RowLayout._properties_
+mrv.maya.ui.layout.ScrollLayout._properties_
+mrv.maya.ui.layout.TabLayout._properties_" class="py-name" href="#" onclick="return doclink('link-24', '_properties_', 'link-2');">_properties_</a></tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt> </tt>
+<a name="L379"></a><tt class="py-lineno">379</tt>  <tt class="py-line">                                        <tt class="py-string">"byType"</tt><tt class="py-op">,</tt> <tt class="py-string">"bt"</tt><tt class="py-op">,</tt> </tt>
+<a name="L380"></a><tt class="py-lineno">380</tt>  <tt class="py-line">                                        <tt class="py-string">"clearByType"</tt><tt class="py-op">,</tt> <tt class="py-string">"cbt"</tt><tt class="py-op">,</tt> </tt>
+<a name="L381"></a><tt class="py-lineno">381</tt>  <tt class="py-line">                                        <tt class="py-string">"byBin"</tt><tt class="py-op">,</tt> <tt class="py-string">"bk"</tt><tt class="py-op">,</tt> </tt>
+<a name="L382"></a><tt class="py-lineno">382</tt>  <tt class="py-line">                                        <tt class="py-string">"clearByBin"</tt><tt class="py-op">,</tt> <tt class="py-string">"cbk"</tt><tt class="py-op">,</tt> </tt>
+<a name="L383"></a><tt class="py-lineno">383</tt>  <tt class="py-line">                                        <tt class="py-string">"category"</tt><tt class="py-op">,</tt> <tt class="py-string">"cat"</tt><tt class="py-op">,</tt> </tt>
+<a name="L384"></a><tt class="py-lineno">384</tt>  <tt class="py-line">                                        <tt class="py-string">"uniqueNodeNames"</tt><tt class="py-op">,</tt> <tt class="py-string">"unn"</tt> </tt>
+<a name="L385"></a><tt class="py-lineno">385</tt>  <tt class="py-line">                                        <tt class="py-op">)</tt> </tt>
+</div><a name="L386"></a><tt class="py-lineno">386</tt>  <tt class="py-line"> </tt>
+<a name="ItemFilterAttr"></a><div id="ItemFilterAttr-def"><a name="L387"></a><tt class="py-lineno">387</tt> <a class="py-toggle" href="#" id="ItemFilterAttr-toggle" onclick="return toggle('ItemFilterAttr');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.editor.ItemFilterAttr-class.html">ItemFilterAttr</a><tt class="py-op">(</tt> <tt class="py-base-class">ItemFilterBase</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ItemFilterAttr-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="ItemFilterAttr-expanded"><a name="L388"></a><tt class="py-lineno">388</tt>  <tt class="py-line">        <tt id="link-25" class="py-name"><a title="mrv.maya.ui.base.Menu._properties_
+mrv.maya.ui.base.MenuBase._properties_
+mrv.maya.ui.base.MenuItem._properties_
+mrv.maya.ui.base.PopupMenu._properties_
+mrv.maya.ui.base.SizedControl._properties_
+mrv.maya.ui.base.Window._properties_
+mrv.maya.ui.control.BooleanGroupBase._properties_
+mrv.maya.ui.control.Button._properties_
+mrv.maya.ui.control.ButtonGroupBase._properties_
+mrv.maya.ui.control.CheckBoxBase._properties_
+mrv.maya.ui.control.CheckBoxGrp._properties_
+mrv.maya.ui.control.FieldBase._properties_
+mrv.maya.ui.control.GroupBase._properties_
+mrv.maya.ui.control.IconTextBase._properties_
+mrv.maya.ui.control.LabelBase._properties_
+mrv.maya.ui.control.OptionMenuBase._properties_
+mrv.maya.ui.control.RadioButtonBase._properties_
+mrv.maya.ui.control.RadioCollectionBase._properties_
+mrv.maya.ui.control.ScrollField._properties_
+mrv.maya.ui.control.Separator._properties_
+mrv.maya.ui.control.SliderBase._properties_
+mrv.maya.ui.control.SliderGroupBase._properties_
+mrv.maya.ui.control.Text._properties_
+mrv.maya.ui.control.TextFieldBase._properties_
+mrv.maya.ui.control.TextScrollList._properties_
+mrv.maya.ui.editor.AnimCurveEditor._properties_
+mrv.maya.ui.editor.AnimEditorBase._properties_
+mrv.maya.ui.editor.BlendShapeEditor._properties_
+mrv.maya.ui.editor.ClipEditor._properties_
+mrv.maya.ui.editor.ColorEditor._properties_
+mrv.maya.ui.editor.ComponentEditor._properties_
+mrv.maya.ui.editor.DeviceEditor._properties_
+mrv.maya.ui.editor.DynPaintEditor._properties_
+mrv.maya.ui.editor.EditorBase._properties_
+mrv.maya.ui.editor.GlRenderEditor._properties_
+mrv.maya.ui.editor.ItemFilter._properties_
+mrv.maya.ui.editor.ItemFilterAttr._properties_
+mrv.maya.ui.editor.ItemFilterBase._properties_
+mrv.maya.ui.editor.ItemFilterRender._properties_
+mrv.maya.ui.editor.ModelEditor._properties_
+mrv.maya.ui.editor.OutlinerEditor._properties_
+mrv.maya.ui.editor.RenderEditorBase._properties_
+mrv.maya.ui.editor.RenderWindowEditor._properties_
+mrv.maya.ui.editor.SelectionConnection._properties_
+mrv.maya.ui.layout.ColumnLayout._properties_
+mrv.maya.ui.layout.ColumnLayoutBase._properties_
+mrv.maya.ui.layout.FrameLayout._properties_
+mrv.maya.ui.layout.Layout._properties_
+mrv.maya.ui.layout.PaneLayout._properties_
+mrv.maya.ui.layout.RowColumnLayout._properties_
+mrv.maya.ui.layout.RowLayout._properties_
+mrv.maya.ui.layout.ScrollLayout._properties_
+mrv.maya.ui.layout.TabLayout._properties_" class="py-name" href="#" onclick="return doclink('link-25', '_properties_', 'link-2');">_properties_</a></tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt> </tt>
+<a name="L389"></a><tt class="py-lineno">389</tt>  <tt class="py-line">                                        <tt class="py-string">"hidden"</tt><tt class="py-op">,</tt> <tt class="py-string">"h"</tt><tt class="py-op">,</tt> </tt>
+<a name="L390"></a><tt class="py-lineno">390</tt>  <tt class="py-line">                                        <tt class="py-string">"writable"</tt><tt class="py-op">,</tt> <tt class="py-string">"w"</tt><tt class="py-op">,</tt> </tt>
+<a name="L391"></a><tt class="py-lineno">391</tt>  <tt class="py-line">                                        <tt class="py-string">"readable"</tt><tt class="py-op">,</tt> <tt class="py-string">"r"</tt><tt class="py-op">,</tt> </tt>
+<a name="L392"></a><tt class="py-lineno">392</tt>  <tt class="py-line">                                        <tt class="py-string">"keyable"</tt><tt class="py-op">,</tt> <tt class="py-string">"k"</tt><tt class="py-op">,</tt> </tt>
+<a name="L393"></a><tt class="py-lineno">393</tt>  <tt class="py-line">                                        <tt class="py-string">"scaleRotateTranslate"</tt><tt class="py-op">,</tt> <tt class="py-string">"srt"</tt><tt class="py-op">,</tt> </tt>
+<a name="L394"></a><tt class="py-lineno">394</tt>  <tt class="py-line">                                        <tt class="py-string">"hasExpression"</tt><tt class="py-op">,</tt> <tt class="py-string">"he"</tt><tt class="py-op">,</tt> </tt>
+<a name="L395"></a><tt class="py-lineno">395</tt>  <tt class="py-line">                                        <tt class="py-string">"byNameString"</tt><tt class="py-op">,</tt> <tt class="py-string">"bns"</tt> </tt>
+<a name="L396"></a><tt class="py-lineno">396</tt>  <tt class="py-line">                                        <tt class="py-op">)</tt> </tt>
+</div><a name="L397"></a><tt class="py-lineno">397</tt>  <tt class="py-line"> </tt>
+<a name="ItemFilterRender"></a><div id="ItemFilterRender-def"><a name="L398"></a><tt class="py-lineno">398</tt> <a class="py-toggle" href="#" id="ItemFilterRender-toggle" onclick="return toggle('ItemFilterRender');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.editor.ItemFilterRender-class.html">ItemFilterRender</a><tt class="py-op">(</tt> <tt class="py-base-class">ItemFilterBase</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ItemFilterRender-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="ItemFilterRender-expanded"><a name="L399"></a><tt class="py-lineno">399</tt>  <tt class="py-line">        <tt id="link-26" class="py-name"><a title="mrv.maya.ui.base.Menu._properties_
+mrv.maya.ui.base.MenuBase._properties_
+mrv.maya.ui.base.MenuItem._properties_
+mrv.maya.ui.base.PopupMenu._properties_
+mrv.maya.ui.base.SizedControl._properties_
+mrv.maya.ui.base.Window._properties_
+mrv.maya.ui.control.BooleanGroupBase._properties_
+mrv.maya.ui.control.Button._properties_
+mrv.maya.ui.control.ButtonGroupBase._properties_
+mrv.maya.ui.control.CheckBoxBase._properties_
+mrv.maya.ui.control.CheckBoxGrp._properties_
+mrv.maya.ui.control.FieldBase._properties_
+mrv.maya.ui.control.GroupBase._properties_
+mrv.maya.ui.control.IconTextBase._properties_
+mrv.maya.ui.control.LabelBase._properties_
+mrv.maya.ui.control.OptionMenuBase._properties_
+mrv.maya.ui.control.RadioButtonBase._properties_
+mrv.maya.ui.control.RadioCollectionBase._properties_
+mrv.maya.ui.control.ScrollField._properties_
+mrv.maya.ui.control.Separator._properties_
+mrv.maya.ui.control.SliderBase._properties_
+mrv.maya.ui.control.SliderGroupBase._properties_
+mrv.maya.ui.control.Text._properties_
+mrv.maya.ui.control.TextFieldBase._properties_
+mrv.maya.ui.control.TextScrollList._properties_
+mrv.maya.ui.editor.AnimCurveEditor._properties_
+mrv.maya.ui.editor.AnimEditorBase._properties_
+mrv.maya.ui.editor.BlendShapeEditor._properties_
+mrv.maya.ui.editor.ClipEditor._properties_
+mrv.maya.ui.editor.ColorEditor._properties_
+mrv.maya.ui.editor.ComponentEditor._properties_
+mrv.maya.ui.editor.DeviceEditor._properties_
+mrv.maya.ui.editor.DynPaintEditor._properties_
+mrv.maya.ui.editor.EditorBase._properties_
+mrv.maya.ui.editor.GlRenderEditor._properties_
+mrv.maya.ui.editor.ItemFilter._properties_
+mrv.maya.ui.editor.ItemFilterAttr._properties_
+mrv.maya.ui.editor.ItemFilterBase._properties_
+mrv.maya.ui.editor.ItemFilterRender._properties_
+mrv.maya.ui.editor.ModelEditor._properties_
+mrv.maya.ui.editor.OutlinerEditor._properties_
+mrv.maya.ui.editor.RenderEditorBase._properties_
+mrv.maya.ui.editor.RenderWindowEditor._properties_
+mrv.maya.ui.editor.SelectionConnection._properties_
+mrv.maya.ui.layout.ColumnLayout._properties_
+mrv.maya.ui.layout.ColumnLayoutBase._properties_
+mrv.maya.ui.layout.FrameLayout._properties_
+mrv.maya.ui.layout.Layout._properties_
+mrv.maya.ui.layout.PaneLayout._properties_
+mrv.maya.ui.layout.RowColumnLayout._properties_
+mrv.maya.ui.layout.RowLayout._properties_
+mrv.maya.ui.layout.ScrollLayout._properties_
+mrv.maya.ui.layout.TabLayout._properties_" class="py-name" href="#" onclick="return doclink('link-26', '_properties_', 'link-2');">_properties_</a></tt> <tt class="py-op">=</tt>  <tt class="py-op">(</tt> </tt>
+<a name="L400"></a><tt class="py-lineno">400</tt>  <tt class="py-line">                                         <tt class="py-string">"category"</tt><tt class="py-op">,</tt> <tt class="py-string">"cat"</tt><tt class="py-op">,</tt> </tt>
+<a name="L401"></a><tt class="py-lineno">401</tt>  <tt class="py-line">                                         <tt class="py-string">"shaders"</tt><tt class="py-op">,</tt> <tt class="py-string">"s"</tt><tt class="py-op">,</tt> </tt>
+<a name="L402"></a><tt class="py-lineno">402</tt>  <tt class="py-line">                                         <tt class="py-string">"anyTextures"</tt><tt class="py-op">,</tt> <tt class="py-string">"at"</tt><tt class="py-op">,</tt> </tt>
+<a name="L403"></a><tt class="py-lineno">403</tt>  <tt class="py-line">                                         <tt class="py-string">"textures2d"</tt><tt class="py-op">,</tt> <tt class="py-string">"t2d"</tt><tt class="py-op">,</tt> </tt>
+<a name="L404"></a><tt class="py-lineno">404</tt>  <tt class="py-line">                                         <tt class="py-string">"textures3d"</tt><tt class="py-op">,</tt> <tt class="py-string">"t3d"</tt><tt class="py-op">,</tt> </tt>
+<a name="L405"></a><tt class="py-lineno">405</tt>  <tt class="py-line">                                         <tt class="py-string">"lights"</tt><tt class="py-op">,</tt> <tt class="py-string">"l"</tt><tt class="py-op">,</tt> </tt>
+<a name="L406"></a><tt class="py-lineno">406</tt>  <tt class="py-line">                                         <tt class="py-string">"postProcess"</tt><tt class="py-op">,</tt> <tt class="py-string">"pp"</tt><tt class="py-op">,</tt> </tt>
+<a name="L407"></a><tt class="py-lineno">407</tt>  <tt class="py-line">                                         <tt class="py-string">"renderUtilityNode"</tt><tt class="py-op">,</tt> <tt class="py-string">"run"</tt><tt class="py-op">,</tt> </tt>
+<a name="L408"></a><tt class="py-lineno">408</tt>  <tt class="py-line">                                         <tt class="py-string">"exclusiveLights"</tt><tt class="py-op">,</tt> <tt class="py-string">"exl"</tt><tt class="py-op">,</tt> </tt>
+<a name="L409"></a><tt class="py-lineno">409</tt>  <tt class="py-line">                                         <tt class="py-string">"linkedLights"</tt><tt class="py-op">,</tt> <tt class="py-string">"ls"</tt><tt class="py-op">,</tt> </tt>
+<a name="L410"></a><tt class="py-lineno">410</tt>  <tt class="py-line">                                         <tt class="py-string">"lightSets"</tt><tt class="py-op">,</tt> <tt class="py-string">"ls"</tt><tt class="py-op">,</tt> </tt>
+<a name="L411"></a><tt class="py-lineno">411</tt>  <tt class="py-line">                                         <tt class="py-string">"nonIlluminatingLights"</tt><tt class="py-op">,</tt> <tt class="py-string">"nil"</tt> </tt>
+<a name="L412"></a><tt class="py-lineno">412</tt>  <tt class="py-line">                                         <tt class="py-string">"nonExclusiveLights"</tt><tt class="py-op">,</tt> <tt class="py-string">"nxl"</tt><tt class="py-op">,</tt> </tt>
+<a name="L413"></a><tt class="py-lineno">413</tt>  <tt class="py-line">                                         <tt class="py-string">"renderableObjectSets"</tt><tt class="py-op">,</tt> <tt class="py-string">"ros"</tt><tt class="py-op">,</tt> </tt>
+<a name="L414"></a><tt class="py-lineno">414</tt>  <tt class="py-line">                                         <tt class="py-string">"texturesProcedural"</tt><tt class="py-op">,</tt> <tt class="py-string">"tp"</tt> </tt>
+<a name="L415"></a><tt class="py-lineno">415</tt>  <tt class="py-line">                                        <tt class="py-op">)</tt> </tt>
+</div><a name="L416"></a><tt class="py-lineno">416</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Nov 30 14:48:42 2010
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

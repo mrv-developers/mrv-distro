@@ -1,0 +1,731 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>mrv.maya.nt</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="mrv-module.html">Package&nbsp;mrv</a> ::
+        <a href="mrv.maya-module.html">Package&nbsp;maya</a> ::
+        Package&nbsp;nt
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="mrv.maya.nt-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="mrv.maya.nt-module.html">Package mrv.maya.nt</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment"># -*- coding: utf-8 -*-</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-docstring">All classes required to wrap maya nodes in an object oriented manner into python objects</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-docstring">and allow easy handling of them.</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-docstring">These python classes wrap the API representations of their respective nodes - most general</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-docstring">commands will be natively working on them.</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-docstring">These classes follow the node hierarchy as supplied by the maya api.</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-docstring">Optionally: Attribute access is as easy as using properties like:</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-docstring">        &gt;&gt;&gt; node.translateX</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-docstring">:note: it is important not to cache these as the underlying obejcts my change over time.</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-docstring">        For long-term storage, use handles instead.</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-docstring">Default maya commands will require them to be used as strings instead.</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-name">__docformat__</tt> <tt class="py-op">=</tt> <tt class="py-string">"restructuredtext"</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-0" class="py-name" targets="Package mrv=mrv-module.html,Function mrv.cmd.startup.mrv()=mrv.cmd.startup-module.html#mrv"><a title="mrv
+mrv.cmd.startup.mrv" class="py-name" href="#" onclick="return doclink('link-0', 'mrv', 'link-0');">mrv</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Package mrv.maya=mrv.maya-module.html"><a title="mrv.maya" class="py-name" href="#" onclick="return doclink('link-1', 'maya', 'link-1');">maya</a></tt> <tt class="py-keyword">as</tt> <tt class="py-name">mrvmaya</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-2" class="py-name" targets="Module mrv.maya.nt.typ=mrv.maya.nt.typ-module.html,Module mrv.maya.ui.typ=mrv.maya.ui.typ-module.html"><a title="mrv.maya.nt.typ
+mrv.maya.ui.typ" class="py-name" href="#" onclick="return doclink('link-2', 'typ', 'link-2');">typ</a></tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt id="link-3" class="py-name" targets="Variable mrv.maya.nt._thismodule=mrv.maya.nt-module.html#_thismodule"><a title="mrv.maya.nt._thismodule" class="py-name" href="#" onclick="return doclink('link-3', '_thismodule', 'link-3');">_thismodule</a></tt> <tt class="py-op">=</tt> <tt class="py-name">__import__</tt><tt class="py-op">(</tt> <tt class="py-string">"mrv.maya.nt"</tt><tt class="py-op">,</tt> <tt class="py-name">globals</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">locals</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-op">[</tt><tt class="py-string">'nt'</tt><tt class="py-op">]</tt> <tt class="py-op">)</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-4" class="py-name"><a title="mrv
+mrv.cmd.startup.mrv" class="py-name" href="#" onclick="return doclink('link-4', 'mrv', 'link-0');">mrv</a></tt><tt class="py-op">.</tt><tt id="link-5" class="py-name" targets="Module mrv.maya.nt.util=mrv.maya.nt.util-module.html,Module mrv.maya.ui.browse.util=mrv.maya.ui.browse.util-module.html,Module mrv.maya.ui.util=mrv.maya.ui.util-module.html,Module mrv.maya.util=mrv.maya.util-module.html,Module mrv.util=mrv.util-module.html"><a title="mrv.maya.nt.util
+mrv.maya.ui.browse.util
+mrv.maya.ui.util
+mrv.maya.util
+mrv.util" class="py-name" href="#" onclick="return doclink('link-5', 'util', 'link-5');">util</a></tt> <tt class="py-keyword">import</tt> <tt id="link-6" class="py-name" targets="Function mrv.util.capitalize()=mrv.util-module.html#capitalize"><a title="mrv.util.capitalize" class="py-name" href="#" onclick="return doclink('link-6', 'capitalize', 'link-6');">capitalize</a></tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-7" class="py-name"><a title="mrv
+mrv.cmd.startup.mrv" class="py-name" href="#" onclick="return doclink('link-7', 'mrv', 'link-0');">mrv</a></tt><tt class="py-op">.</tt><tt id="link-8" class="py-name"><a title="mrv.maya" class="py-name" href="#" onclick="return doclink('link-8', 'maya', 'link-1');">maya</a></tt><tt class="py-op">.</tt><tt id="link-9" class="py-name" targets="Module mrv.maya.env=mrv.maya.env-module.html"><a title="mrv.maya.env" class="py-name" href="#" onclick="return doclink('link-9', 'env', 'link-9');">env</a></tt> <tt class="py-keyword">as</tt> <tt id="link-10" class="py-name"><a title="mrv.maya.env" class="py-name" href="#" onclick="return doclink('link-10', 'env', 'link-9');">env</a></tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-11" class="py-name"><a title="mrv
+mrv.cmd.startup.mrv" class="py-name" href="#" onclick="return doclink('link-11', 'mrv', 'link-0');">mrv</a></tt><tt class="py-op">.</tt><tt id="link-12" class="py-name"><a title="mrv.maya" class="py-name" href="#" onclick="return doclink('link-12', 'maya', 'link-1');">maya</a></tt><tt class="py-op">.</tt><tt id="link-13" class="py-name"><a title="mrv.maya.nt.util
+mrv.maya.ui.browse.util
+mrv.maya.ui.util
+mrv.maya.util
+mrv.util" class="py-name" href="#" onclick="return doclink('link-13', 'util', 'link-5');">util</a></tt> <tt class="py-keyword">as</tt> <tt class="py-name">mrvmayautil</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-14" class="py-name"><a title="mrv
+mrv.cmd.startup.mrv" class="py-name" href="#" onclick="return doclink('link-14', 'mrv', 'link-0');">mrv</a></tt> <tt class="py-keyword">import</tt> <tt id="link-15" class="py-name" targets="Function mrv.init_modules()=mrv-module.html#init_modules"><a title="mrv.init_modules" class="py-name" href="#" onclick="return doclink('link-15', 'init_modules', 'link-15');">init_modules</a></tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-16" class="py-name"><a title="mrv.maya" class="py-name" href="#" onclick="return doclink('link-16', 'maya', 'link-1');">maya</a></tt><tt class="py-op">.</tt><tt class="py-name">cmds</tt> <tt class="py-keyword">as</tt> <tt class="py-name">cmds</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-17" class="py-name"><a title="mrv.maya" class="py-name" href="#" onclick="return doclink('link-17', 'maya', 'link-1');">maya</a></tt><tt class="py-op">.</tt><tt class="py-name">OpenMaya</tt> <tt class="py-keyword">as</tt> <tt class="py-name">api</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">sys</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">os</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">logging</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"><tt class="py-comment"># May not use all as it will receive all submodules </tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line"><tt class="py-comment"># __all__</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line"> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"><tt class="py-comment">#{ Globals</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line"><tt id="link-18" class="py-name" targets="Variable mrv.maya.nt.pluginDB=mrv.maya.nt-module.html#pluginDB"><a title="mrv.maya.nt.pluginDB" class="py-name" href="#" onclick="return doclink('link-18', 'pluginDB', 'link-18');">pluginDB</a></tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line"> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"><tt class="py-comment">#} END globals</tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line"><tt class="py-comment">#{ Common</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line"> </tt>
+<a name="addCustomType"></a><div id="addCustomType-def"><a name="L48"></a><tt class="py-lineno"> 48</tt> <a class="py-toggle" href="#" id="addCustomType-toggle" onclick="return toggle('addCustomType');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.nt-module.html#addCustomType">addCustomType</a><tt class="py-op">(</tt> <tt class="py-param">newcls</tt><tt class="py-op">,</tt> <tt class="py-param">parentClsName</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="addCustomType-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="addCustomType-expanded"><a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">        <tt class="py-docstring">""" Add a custom class to this module - it will be handled like a native type</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line"><tt class="py-docstring">        :param newcls: new class object if metaclass is None, otherwise string name of the</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line"><tt class="py-docstring">                type name to be created by your metaclass</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line"><tt class="py-docstring">        :param parentClsName: if metaclass is set, the parentclass name ( of a class existing</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line"><tt class="py-docstring">                in the nodeTypeTree ( see /maya/cache/nodeHierarchy.html )</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line"><tt class="py-docstring">                Otherwise, if unset, the parentclassname will be extracted from the newcls object</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line"><tt class="py-docstring">        :param kwargs:</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line"><tt class="py-docstring">                 * force_creation: </tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line"><tt class="py-docstring">                                if True, default False, the class type will be created immediately. This</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line"><tt class="py-docstring">                                can be useful if you wish to use the type for comparison, possibly before it is first being</tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line"><tt class="py-docstring">                                queried by the system. The latter case would bind the StandinClass instead of the actual type.</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line"><tt class="py-docstring">        :raise KeyError: if the parentClsName does not exist"""</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">        <tt class="py-name">newclsname</tt> <tt class="py-op">=</tt> <tt class="py-name">newcls</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">        <tt class="py-name">newclsobj</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">        <tt class="py-name">parentname</tt> <tt class="py-op">=</tt> <tt class="py-name">parentClsName</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt id="link-19" class="py-name" targets="Function unittest.isinstance()=unittest-module.html#isinstance"><a title="unittest.isinstance" class="py-name" href="#" onclick="return doclink('link-19', 'isinstance', 'link-19');">isinstance</a></tt><tt class="py-op">(</tt> <tt class="py-name">newcls</tt><tt class="py-op">,</tt> <tt id="link-20" class="py-name" targets="Variable mrv.path.basestring=mrv.path-module.html#basestring"><a title="mrv.path.basestring" class="py-name" href="#" onclick="return doclink('link-20', 'basestring', 'link-20');">basestring</a></tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">                <tt class="py-name">newclsname</tt> <tt class="py-op">=</tt> <tt class="py-name">newcls</tt><tt class="py-op">.</tt><tt class="py-name">__name__</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">                <tt class="py-name">newclsobj</tt> <tt class="py-op">=</tt> <tt class="py-name">newcls</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">parentClsName</tt><tt class="py-op">:</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">                        <tt class="py-name">parentname</tt> <tt class="py-op">=</tt> <tt class="py-name">newcls</tt><tt class="py-op">.</tt><tt class="py-name">__bases__</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt class="py-name">__name__</tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line"> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">        <tt class="py-comment"># add to hierarchy tree</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">        <tt id="link-21" class="py-name"><a title="mrv.maya.nt.typ
+mrv.maya.ui.typ" class="py-name" href="#" onclick="return doclink('link-21', 'typ', 'link-2');">typ</a></tt><tt class="py-op">.</tt><tt class="py-name">_addCustomType</tt><tt class="py-op">(</tt> <tt class="py-name">globals</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">parentname</tt><tt class="py-op">,</tt> <tt class="py-name">newclsname</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt id="link-22" class="py-name" targets="Variable mrv.util.Call.kwargs=mrv.util.Call-class.html#kwargs"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-22', 'kwargs', 'link-22');">kwargs</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line"> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">        <tt class="py-comment"># add the class to our module if required</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">newclsobj</tt><tt class="py-op">:</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">                <tt class="py-name">setattr</tt><tt class="py-op">(</tt> <tt id="link-23" class="py-name"><a title="mrv.maya.nt._thismodule" class="py-name" href="#" onclick="return doclink('link-23', '_thismodule', 'link-3');">_thismodule</a></tt><tt class="py-op">,</tt> <tt class="py-name">newclsname</tt><tt class="py-op">,</tt> <tt class="py-name">newclsobj</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">                 </tt>
+<a name="removeCustomType"></a><div id="removeCustomType-def"><a name="L78"></a><tt class="py-lineno"> 78</tt> <a class="py-toggle" href="#" id="removeCustomType-toggle" onclick="return toggle('removeCustomType');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.nt-module.html#removeCustomType">removeCustomType</a><tt class="py-op">(</tt> <tt class="py-param">customType</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="removeCustomType-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="removeCustomType-expanded"><a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">        <tt class="py-docstring">"""Removes the given type from this module as well as from the type hierarchy.</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line"><tt class="py-docstring">        This makes it unavailble to MRV</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line"><tt class="py-docstring">        :param customType: either string identifying the type's name or the type itself</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line"><tt class="py-docstring">        :note: does nothing if the type does not exist"""</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt id="link-24" class="py-name"><a title="unittest.isinstance" class="py-name" href="#" onclick="return doclink('link-24', 'isinstance', 'link-19');">isinstance</a></tt><tt class="py-op">(</tt><tt class="py-name">customType</tt><tt class="py-op">,</tt> <tt id="link-25" class="py-name"><a title="mrv.path.basestring" class="py-name" href="#" onclick="return doclink('link-25', 'basestring', 'link-20');">basestring</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">                <tt class="py-name">customType</tt> <tt class="py-op">=</tt> <tt class="py-name">customType</tt><tt class="py-op">.</tt><tt class="py-name">__name__</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">        <tt id="link-26" class="py-name"><a title="mrv.maya.nt.typ
+mrv.maya.ui.typ" class="py-name" href="#" onclick="return doclink('link-26', 'typ', 'link-2');">typ</a></tt><tt class="py-op">.</tt><tt class="py-name">_removeCustomType</tt><tt class="py-op">(</tt><tt class="py-name">globals</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">customType</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">         </tt>
+<a name="addCustomTypeFromFile"></a><div id="addCustomTypeFromFile-def"><a name="L88"></a><tt class="py-lineno"> 88</tt> <a class="py-toggle" href="#" id="addCustomTypeFromFile-toggle" onclick="return toggle('addCustomTypeFromFile');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.nt-module.html#addCustomTypeFromFile">addCustomTypeFromFile</a><tt class="py-op">(</tt> <tt class="py-param">hierarchyfile</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="addCustomTypeFromFile-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="addCustomTypeFromFile-expanded"><a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">        <tt class="py-docstring">"""Add a custom classes as defined by the given tab separated file.</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line"><tt class="py-docstring">        Call addCustomClasses afterwards to register your own base classes to the system</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line"><tt class="py-docstring">        This will be required to assure your own base classes will be used instead of auto-generated</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line"><tt class="py-docstring">        stand-in classes</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line"><tt class="py-docstring">        :param hierarchyfile: Filepath to file modeling the class hierarchy using tab-indentation.</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line"><tt class="py-docstring">                The root node has no indentation, whereas each child node adds one indentation level using </tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line"><tt class="py-docstring">                tabs.</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line"><tt class="py-docstring">        :param kwargs:</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line"><tt class="py-docstring">                 * force_creation: see `addCustomType`</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line"><tt class="py-docstring">        :note: all attributes of `addCustomType` are supported</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line"><tt class="py-docstring">        :note: there must be exactly one root type</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line"><tt class="py-docstring">        :return: iterator providing all class names that have been added"""</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">        <tt class="py-name">dagtree</tt> <tt class="py-op">=</tt> <tt class="py-name">mrvmaya</tt><tt class="py-op">.</tt><tt class="py-name">_dagTreeFromTupleList</tt><tt class="py-op">(</tt> <tt class="py-name">mrvmaya</tt><tt class="py-op">.</tt><tt class="py-name">_tupleListFromFile</tt><tt class="py-op">(</tt> <tt class="py-name">hierarchyfile</tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">        <tt id="link-27" class="py-name"><a title="mrv.maya.nt.typ
+mrv.maya.ui.typ" class="py-name" href="#" onclick="return doclink('link-27', 'typ', 'link-2');">typ</a></tt><tt class="py-op">.</tt><tt class="py-name">_addCustomTypeFromDagtree</tt><tt class="py-op">(</tt> <tt class="py-name">globals</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">dagtree</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt id="link-28" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-28', 'kwargs', 'link-22');">kwargs</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-op">(</tt> <tt id="link-29" class="py-name"><a title="mrv.util.capitalize" class="py-name" href="#" onclick="return doclink('link-29', 'capitalize', 'link-6');">capitalize</a></tt><tt class="py-op">(</tt> <tt class="py-name">nodetype</tt> <tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">nodetype</tt> <tt class="py-keyword">in</tt> <tt class="py-name">dagtree</tt><tt class="py-op">.</tt><tt class="py-name">nodes_iter</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line"> </tt>
+<a name="addCustomClasses"></a><div id="addCustomClasses-def"><a name="L106"></a><tt class="py-lineno">106</tt> <a class="py-toggle" href="#" id="addCustomClasses-toggle" onclick="return toggle('addCustomClasses');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.nt-module.html#addCustomClasses">addCustomClasses</a><tt class="py-op">(</tt> <tt class="py-param">clsobjlist</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="addCustomClasses-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="addCustomClasses-expanded"><a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">        <tt class="py-docstring">"""Add the given classes to the nodes module, making them available to the sytem</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line"><tt class="py-docstring">        :note: first the class hierarchy need to be updated using addCustomTypeFromFile.</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line"><tt class="py-docstring">                This must appen before your additional classes are parsed to assure our metaclass creator will not</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line"><tt class="py-docstring">                be called before it knows the class hierarchy ( and where to actually put your type ).</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line"><tt class="py-docstring">        :param clsobjlist: list of class objects whose names are mentioned in the dagtree"""</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">        <tt class="py-comment"># add the classes</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt id="link-30" class="py-name" targets="Variable mrv.dge.Attribute.cls=mrv.dge.Attribute-class.html#cls"><a title="mrv.dge.Attribute.cls" class="py-name" href="#" onclick="return doclink('link-30', 'cls', 'link-30');">cls</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">clsobjlist</tt><tt class="py-op">:</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">                <tt class="py-name">setattr</tt><tt class="py-op">(</tt> <tt id="link-31" class="py-name"><a title="mrv.maya.nt._thismodule" class="py-name" href="#" onclick="return doclink('link-31', '_thismodule', 'link-3');">_thismodule</a></tt><tt class="py-op">,</tt> <tt id="link-32" class="py-name"><a title="mrv.dge.Attribute.cls" class="py-name" href="#" onclick="return doclink('link-32', 'cls', 'link-30');">cls</a></tt><tt class="py-op">.</tt><tt class="py-name">__name__</tt><tt class="py-op">,</tt> <tt id="link-33" class="py-name"><a title="mrv.dge.Attribute.cls" class="py-name" href="#" onclick="return doclink('link-33', 'cls', 'link-30');">cls</a></tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">        <tt class="py-comment"># END for each class to add</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line"> </tt>
+<a name="forceClassCreation"></a><div id="forceClassCreation-def"><a name="L119"></a><tt class="py-lineno">119</tt> <a class="py-toggle" href="#" id="forceClassCreation-toggle" onclick="return toggle('forceClassCreation');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.nt-module.html#forceClassCreation">forceClassCreation</a><tt class="py-op">(</tt> <tt class="py-param">typeNameList</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="forceClassCreation-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="forceClassCreation-expanded"><a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line">        <tt class="py-docstring">"""Create the types from standin classes from the given typeName iterable.</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line"><tt class="py-docstring">        The typenames must be upper case</tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line"><tt class="py-docstring">        :return: List of type instances ( the classes ) that have been created"""</tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line">        <tt class="py-name">outclslist</tt> <tt class="py-op">=</tt> <tt class="py-name">list</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">        <tt class="py-name">standincls</tt> <tt class="py-op">=</tt> <tt class="py-name">mrvmayautil</tt><tt class="py-op">.</tt><tt id="link-34" class="py-name" targets="Class mrv.maya.util.StandinClass=mrv.maya.util.StandinClass-class.html"><a title="mrv.maya.util.StandinClass" class="py-name" href="#" onclick="return doclink('link-34', 'StandinClass', 'link-34');">StandinClass</a></tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">typename</tt> <tt class="py-keyword">in</tt> <tt class="py-name">typeNameList</tt><tt class="py-op">:</tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line">                <tt class="py-name">typeCls</tt> <tt class="py-op">=</tt> <tt class="py-name">getattr</tt><tt class="py-op">(</tt> <tt id="link-35" class="py-name"><a title="mrv.maya.nt._thismodule" class="py-name" href="#" onclick="return doclink('link-35', '_thismodule', 'link-3');">_thismodule</a></tt><tt class="py-op">,</tt> <tt class="py-name">typename</tt> <tt class="py-op">)</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt id="link-36" class="py-name"><a title="unittest.isinstance" class="py-name" href="#" onclick="return doclink('link-36', 'isinstance', 'link-19');">isinstance</a></tt><tt class="py-op">(</tt> <tt class="py-name">typeCls</tt><tt class="py-op">,</tt> <tt class="py-name">standincls</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line">                        <tt class="py-name">outclslist</tt><tt class="py-op">.</tt><tt id="link-37" class="py-name" targets="Method mrv.conf.ConfigChain.append()=mrv.conf.ConfigChain-class.html#append"><a title="mrv.conf.ConfigChain.append" class="py-name" href="#" onclick="return doclink('link-37', 'append', 'link-37');">append</a></tt><tt class="py-op">(</tt> <tt class="py-name">typeCls</tt><tt class="py-op">.</tt><tt id="link-38" class="py-name" targets="Method mrv.maya.util.StandinClass.createCls()=mrv.maya.util.StandinClass-class.html#createCls"><a title="mrv.maya.util.StandinClass.createCls" class="py-name" href="#" onclick="return doclink('link-38', 'createCls', 'link-38');">createCls</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line">        <tt class="py-comment"># END for each typename</tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">outclslist</tt> </tt>
+</div><a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line"> </tt>
+<a name="enforcePersistence"></a><div id="enforcePersistence-def"><a name="L133"></a><tt class="py-lineno">133</tt> <a class="py-toggle" href="#" id="enforcePersistence-toggle" onclick="return toggle('enforcePersistence');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.nt-module.html#enforcePersistence">enforcePersistence</a><tt class="py-op">(</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="enforcePersistence-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="enforcePersistence-expanded"><a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line">        <tt class="py-docstring">"""Call this method to ensure that the persistance plugin is loaded and available.</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line"><tt class="py-docstring">        This should by used by plugins which require persitence features but want to </tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line"><tt class="py-docstring">        be sure it is not disabled on the target system"""</tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">        <tt class="py-keyword">import</tt> <tt id="link-39" class="py-name"><a title="mrv
+mrv.cmd.startup.mrv" class="py-name" href="#" onclick="return doclink('link-39', 'mrv', 'link-0');">mrv</a></tt><tt class="py-op">.</tt><tt id="link-40" class="py-name"><a title="mrv.maya" class="py-name" href="#" onclick="return doclink('link-40', 'maya', 'link-1');">maya</a></tt><tt class="py-op">.</tt><tt id="link-41" class="py-name" targets="Package mrv.maya.nt=mrv.maya.nt-module.html"><a title="mrv.maya.nt" class="py-name" href="#" onclick="return doclink('link-41', 'nt', 'link-41');">nt</a></tt><tt class="py-op">.</tt><tt id="link-42" class="py-name" targets="Module mrv.maya.nt.storage=mrv.maya.nt.storage-module.html"><a title="mrv.maya.nt.storage" class="py-name" href="#" onclick="return doclink('link-42', 'storage', 'link-42');">storage</a></tt> <tt class="py-keyword">as</tt> <tt id="link-43" class="py-name"><a title="mrv.maya.nt.storage" class="py-name" href="#" onclick="return doclink('link-43', 'storage', 'link-42');">storage</a></tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line">        <tt class="py-keyword">import</tt> <tt id="link-44" class="py-name"><a title="mrv
+mrv.cmd.startup.mrv" class="py-name" href="#" onclick="return doclink('link-44', 'mrv', 'link-0');">mrv</a></tt><tt class="py-op">.</tt><tt id="link-45" class="py-name"><a title="mrv.maya" class="py-name" href="#" onclick="return doclink('link-45', 'maya', 'link-1');">maya</a></tt><tt class="py-op">.</tt><tt id="link-46" class="py-name"><a title="mrv.maya.nt" class="py-name" href="#" onclick="return doclink('link-46', 'nt', 'link-41');">nt</a></tt><tt class="py-op">.</tt><tt id="link-47" class="py-name" targets="Module mrv.maya.nt.persistence=mrv.maya.nt.persistence-module.html"><a title="mrv.maya.nt.persistence" class="py-name" href="#" onclick="return doclink('link-47', 'persistence', 'link-47');">persistence</a></tt> <tt class="py-keyword">as</tt> <tt id="link-48" class="py-name"><a title="mrv.maya.nt.persistence" class="py-name" href="#" onclick="return doclink('link-48', 'persistence', 'link-47');">persistence</a></tt> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line">         </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line">        <tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">environ</tt><tt class="py-op">[</tt><tt id="link-49" class="py-name"><a title="mrv.maya.nt.persistence" class="py-name" href="#" onclick="return doclink('link-49', 'persistence', 'link-47');">persistence</a></tt><tt class="py-op">.</tt><tt id="link-50" class="py-name" targets="Variable mrv.maya.nt.persistence.persistence_enabled_envvar=mrv.maya.nt.persistence-module.html#persistence_enabled_envvar"><a title="mrv.maya.nt.persistence.persistence_enabled_envvar" class="py-name" href="#" onclick="return doclink('link-50', 'persistence_enabled_envvar', 'link-50');">persistence_enabled_envvar</a></tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-string">"1"</tt> </tt>
+<a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line">        <tt class="py-name">reload</tt><tt class="py-op">(</tt><tt id="link-51" class="py-name"><a title="mrv.maya.nt.persistence" class="py-name" href="#" onclick="return doclink('link-51', 'persistence', 'link-47');">persistence</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line">        <tt class="py-name">reload</tt><tt class="py-op">(</tt><tt id="link-52" class="py-name"><a title="mrv.maya.nt.storage" class="py-name" href="#" onclick="return doclink('link-52', 'storage', 'link-42');">storage</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line">        <tt id="link-53" class="py-name"><a title="mrv.maya.nt.persistence" class="py-name" href="#" onclick="return doclink('link-53', 'persistence', 'link-47');">persistence</a></tt><tt class="py-op">.</tt><tt id="link-54" class="py-name" targets="Function mrv.maya.nt.persistence.__initialize()=mrv.maya.nt.persistence-module.html#__initialize,Function mrv.maya.undo.__initialize()=mrv.maya.undo-module.html#__initialize"><a title="mrv.maya.nt.persistence.__initialize
+mrv.maya.undo.__initialize" class="py-name" href="#" onclick="return doclink('link-54', '__initialize', 'link-54');">__initialize</a></tt><tt class="py-op">(</tt> <tt id="link-55" class="py-name"><a title="mrv.maya.nt._thismodule" class="py-name" href="#" onclick="return doclink('link-55', '_thismodule', 'link-3');">_thismodule</a></tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line"> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line"><tt class="py-comment">#} END common utilities</tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line"> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line"><tt class="py-comment">#{ Initialization </tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line"> </tt>
+<a name="_init_package"></a><div id="_init_package-def"><a name="L149"></a><tt class="py-lineno">149</tt> <a class="py-toggle" href="#" id="_init_package-toggle" onclick="return toggle('_init_package');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.nt-module.html#_init_package">_init_package</a><tt class="py-op">(</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_init_package-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_init_package-expanded"><a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line">        <tt class="py-docstring">"""Do the main initialization of this package"""</tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line">        <tt class="py-keyword">import</tt> <tt id="link-56" class="py-name"><a title="mrv
+mrv.cmd.startup.mrv" class="py-name" href="#" onclick="return doclink('link-56', 'mrv', 'link-0');">mrv</a></tt><tt class="py-op">.</tt><tt id="link-57" class="py-name"><a title="mrv.maya" class="py-name" href="#" onclick="return doclink('link-57', 'maya', 'link-1');">maya</a></tt><tt class="py-op">.</tt><tt id="link-58" class="py-name" targets="Module mrv.maya.mdb=mrv.maya.mdb-module.html"><a title="mrv.maya.mdb" class="py-name" href="#" onclick="return doclink('link-58', 'mdb', 'link-58');">mdb</a></tt> <tt class="py-keyword">as</tt> <tt id="link-59" class="py-name"><a title="mrv.maya.mdb" class="py-name" href="#" onclick="return doclink('link-59', 'mdb', 'link-58');">mdb</a></tt> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line">        <tt id="link-60" class="py-name"><a title="mrv.maya.nt.typ
+mrv.maya.ui.typ" class="py-name" href="#" onclick="return doclink('link-60', 'typ', 'link-2');">typ</a></tt><tt class="py-op">.</tt><tt id="link-61" class="py-name" targets="Variable mrv.maya.nt.typ.targetModule=mrv.maya.nt.typ-module.html#targetModule"><a title="mrv.maya.nt.typ.targetModule" class="py-name" href="#" onclick="return doclink('link-61', 'targetModule', 'link-61');">targetModule</a></tt> <tt class="py-op">=</tt> <tt id="link-62" class="py-name"><a title="mrv.maya.nt._thismodule" class="py-name" href="#" onclick="return doclink('link-62', '_thismodule', 'link-3');">_thismodule</a></tt>                  <tt class="py-comment"># init metaclass with our module</tt> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line">        <tt id="link-63" class="py-name"><a title="mrv.maya.nt.typ
+mrv.maya.ui.typ" class="py-name" href="#" onclick="return doclink('link-63', 'typ', 'link-2');">typ</a></tt><tt class="py-op">.</tt><tt id="link-64" class="py-name" targets="Variable mrv.maya.nt.base._nodesdict=mrv.maya.nt.base-module.html#_nodesdict,Variable mrv.maya.nt.typ._nodesdict=mrv.maya.nt.typ-module.html#_nodesdict"><a title="mrv.maya.nt.base._nodesdict
+mrv.maya.nt.typ._nodesdict" class="py-name" href="#" onclick="return doclink('link-64', '_nodesdict', 'link-64');">_nodesdict</a></tt> <tt class="py-op">=</tt> <tt class="py-name">globals</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line">        <tt id="link-65" class="py-name"><a title="mrv.maya.nt.typ
+mrv.maya.ui.typ" class="py-name" href="#" onclick="return doclink('link-65', 'typ', 'link-2');">typ</a></tt><tt class="py-op">.</tt><tt class="py-name">initNodeHierarchy</tt><tt class="py-op">(</tt> <tt class="py-op">)</tt> </tt>
+<a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line">        <tt id="link-66" class="py-name"><a title="mrv.maya.nt.typ
+mrv.maya.ui.typ" class="py-name" href="#" onclick="return doclink('link-66', 'typ', 'link-2');">typ</a></tt><tt class="py-op">.</tt><tt class="py-name">initTypeNameToMfnClsMap</tt><tt class="py-op">(</tt> <tt class="py-op">)</tt> </tt>
+<a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line">        <tt id="link-67" class="py-name"><a title="mrv.maya.nt.typ
+mrv.maya.ui.typ" class="py-name" href="#" onclick="return doclink('link-67', 'typ', 'link-2');">typ</a></tt><tt class="py-op">.</tt><tt id="link-68" class="py-name" targets="Function mrv.maya.initWrappers()=mrv.maya-module.html#initWrappers"><a title="mrv.maya.initWrappers" class="py-name" href="#" onclick="return doclink('link-68', 'initWrappers', 'link-68');">initWrappers</a></tt><tt class="py-op">(</tt> <tt class="py-name">globals</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line">         </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line">        <tt class="py-comment"># code generator needs an initialized nodes dict to work</tt> </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line">        <tt id="link-69" class="py-name"><a title="mrv.maya.nt.typ
+mrv.maya.ui.typ" class="py-name" href="#" onclick="return doclink('link-69', 'typ', 'link-2');">typ</a></tt><tt class="py-op">.</tt><tt id="link-70" class="py-name" targets="Variable mrv.maya.nt.typ.codegen=mrv.maya.nt.typ-module.html#codegen"><a title="mrv.maya.nt.typ.codegen" class="py-name" href="#" onclick="return doclink('link-70', 'codegen', 'link-70');">codegen</a></tt> <tt class="py-op">=</tt> <tt id="link-71" class="py-name"><a title="mrv.maya.mdb" class="py-name" href="#" onclick="return doclink('link-71', 'mdb', 'link-58');">mdb</a></tt><tt class="py-op">.</tt><tt id="link-72" class="py-name" targets="Class mrv.maya.mdb.PythonMFnCodeGenerator=mrv.maya.mdb.PythonMFnCodeGenerator-class.html"><a title="mrv.maya.mdb.PythonMFnCodeGenerator" class="py-name" href="#" onclick="return doclink('link-72', 'PythonMFnCodeGenerator', 'link-72');">PythonMFnCodeGenerator</a></tt><tt class="py-op">(</tt><tt id="link-73" class="py-name"><a title="mrv.maya.nt.typ
+mrv.maya.ui.typ" class="py-name" href="#" onclick="return doclink('link-73', 'typ', 'link-2');">typ</a></tt><tt class="py-op">.</tt><tt id="link-74" class="py-name"><a title="mrv.maya.nt.base._nodesdict
+mrv.maya.nt.typ._nodesdict" class="py-name" href="#" onclick="return doclink('link-74', '_nodesdict', 'link-64');">_nodesdict</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line"> </tt>
+<a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line">        <tt class="py-comment"># initialize base module with our global namespace dict</tt> </tt>
+<a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line">        <tt class="py-keyword">import</tt> <tt id="link-75" class="py-name" targets="Module mrv.automation.base=mrv.automation.base-module.html,Module mrv.cmd.base=mrv.cmd.base-module.html,Module mrv.doc.base=mrv.doc.base-module.html,Module mrv.maya.nt.base=mrv.maya.nt.base-module.html,Module mrv.maya.ui.base=mrv.maya.ui.base-module.html"><a title="mrv.automation.base
+mrv.cmd.base
+mrv.doc.base
+mrv.maya.nt.base
+mrv.maya.ui.base" class="py-name" href="#" onclick="return doclink('link-75', 'base', 'link-75');">base</a></tt> </tt>
+<a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line">        <tt id="link-76" class="py-name"><a title="mrv.automation.base
+mrv.cmd.base
+mrv.doc.base
+mrv.maya.nt.base
+mrv.maya.ui.base" class="py-name" href="#" onclick="return doclink('link-76', 'base', 'link-75');">base</a></tt><tt class="py-op">.</tt><tt id="link-77" class="py-name"><a title="mrv.maya.nt.base._nodesdict
+mrv.maya.nt.typ._nodesdict" class="py-name" href="#" onclick="return doclink('link-77', '_nodesdict', 'link-64');">_nodesdict</a></tt> <tt class="py-op">=</tt> <tt class="py-name">globals</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line"> </tt>
+<a name="L165"></a><tt class="py-lineno">165</tt>  <tt class="py-line">        <tt class="py-comment"># must come last as typ needs full initialization first</tt> </tt>
+<a name="L166"></a><tt class="py-lineno">166</tt>  <tt class="py-line">        <tt class="py-keyword">import</tt> <tt id="link-78" class="py-name" targets="Module mrv.maya.nt.apipatch=mrv.maya.nt.apipatch-module.html"><a title="mrv.maya.nt.apipatch" class="py-name" href="#" onclick="return doclink('link-78', 'apipatch', 'link-78');">apipatch</a></tt> </tt>
+<a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line">        <tt id="link-79" class="py-name"><a title="mrv.maya.nt.apipatch" class="py-name" href="#" onclick="return doclink('link-79', 'apipatch', 'link-78');">apipatch</a></tt><tt class="py-op">.</tt><tt id="link-80" class="py-name" targets="Function mrv.maya.nt.apipatch.init_applyPatches()=mrv.maya.nt.apipatch-module.html#init_applyPatches"><a title="mrv.maya.nt.apipatch.init_applyPatches" class="py-name" href="#" onclick="return doclink('link-80', 'init_applyPatches', 'link-80');">init_applyPatches</a></tt><tt class="py-op">(</tt> <tt class="py-op">)</tt> </tt>
+<a name="L168"></a><tt class="py-lineno">168</tt>  <tt class="py-line">         </tt>
+<a name="L169"></a><tt class="py-lineno">169</tt>  <tt class="py-line">        <tt class="py-comment"># initialize modules</tt> </tt>
+<a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line">        <tt id="link-81" class="py-name"><a title="mrv.init_modules" class="py-name" href="#" onclick="return doclink('link-81', 'init_modules', 'link-15');">init_modules</a></tt><tt class="py-op">(</tt> <tt class="py-name">__file__</tt><tt class="py-op">,</tt> <tt class="py-string">"mrv.maya.nt"</tt><tt class="py-op">,</tt> <tt class="py-name">self_module</tt> <tt class="py-op">=</tt> <tt id="link-82" class="py-name"><a title="mrv.maya.nt._thismodule" class="py-name" href="#" onclick="return doclink('link-82', '_thismodule', 'link-3');">_thismodule</a></tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L171"></a><tt class="py-lineno">171</tt>  <tt class="py-line"> </tt>
+<a name="L172"></a><tt class="py-lineno">172</tt>  <tt class="py-line"> </tt>
+<a name="_force_type_creation"></a><div id="_force_type_creation-def"><a name="L173"></a><tt class="py-lineno">173</tt> <a class="py-toggle" href="#" id="_force_type_creation-toggle" onclick="return toggle('_force_type_creation');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.nt-module.html#_force_type_creation">_force_type_creation</a><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_force_type_creation-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_force_type_creation-expanded"><a name="L174"></a><tt class="py-lineno">174</tt>  <tt class="py-line">        <tt class="py-docstring">"""Enforce the creation of all types - must be called once all custom types </tt> </tt>
+<a name="L175"></a><tt class="py-lineno">175</tt>  <tt class="py-line"><tt class="py-docstring">        were imported"""</tt> </tt>
+<a name="L176"></a><tt class="py-lineno">176</tt>  <tt class="py-line">        <tt class="py-name">standincls</tt> <tt class="py-op">=</tt> <tt class="py-name">mrvmayautil</tt><tt class="py-op">.</tt><tt id="link-83" class="py-name"><a title="mrv.maya.util.StandinClass" class="py-name" href="#" onclick="return doclink('link-83', 'StandinClass', 'link-34');">StandinClass</a></tt> </tt>
+<a name="L177"></a><tt class="py-lineno">177</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt id="link-84" class="py-name"><a title="mrv.dge.Attribute.cls" class="py-name" href="#" onclick="return doclink('link-84', 'cls', 'link-30');">cls</a></tt> <tt class="py-keyword">in</tt> <tt id="link-85" class="py-name"><a title="mrv.maya.nt._thismodule" class="py-name" href="#" onclick="return doclink('link-85', '_thismodule', 'link-3');">_thismodule</a></tt><tt class="py-op">.</tt><tt class="py-name">__dict__</tt><tt class="py-op">.</tt><tt id="link-86" class="py-name" targets="Method mrv.maya.util.OptionVarDict.itervalues()=mrv.maya.util.OptionVarDict-class.html#itervalues"><a title="mrv.maya.util.OptionVarDict.itervalues" class="py-name" href="#" onclick="return doclink('link-86', 'itervalues', 'link-86');">itervalues</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L178"></a><tt class="py-lineno">178</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt id="link-87" class="py-name"><a title="unittest.isinstance" class="py-name" href="#" onclick="return doclink('link-87', 'isinstance', 'link-19');">isinstance</a></tt><tt class="py-op">(</tt> <tt id="link-88" class="py-name"><a title="mrv.dge.Attribute.cls" class="py-name" href="#" onclick="return doclink('link-88', 'cls', 'link-30');">cls</a></tt><tt class="py-op">,</tt> <tt class="py-name">standincls</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L179"></a><tt class="py-lineno">179</tt>  <tt class="py-line">                        <tt id="link-89" class="py-name"><a title="mrv.dge.Attribute.cls" class="py-name" href="#" onclick="return doclink('link-89', 'cls', 'link-30');">cls</a></tt><tt class="py-op">.</tt><tt id="link-90" class="py-name"><a title="mrv.maya.util.StandinClass.createCls" class="py-name" href="#" onclick="return doclink('link-90', 'createCls', 'link-38');">createCls</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L180"></a><tt class="py-lineno">180</tt>  <tt class="py-line">                <tt class="py-comment"># END create type </tt> </tt>
+<a name="L181"></a><tt class="py-lineno">181</tt>  <tt class="py-line">        <tt class="py-comment"># END for each stored type</tt> </tt>
+<a name="L182"></a><tt class="py-lineno">182</tt>  <tt class="py-line">         </tt>
+<a name="L183"></a><tt class="py-lineno">183</tt>  <tt class="py-line">         </tt>
+<a name="_init_plugin_db"></a><div id="_init_plugin_db-def"><a name="L184"></a><tt class="py-lineno">184</tt> <a class="py-toggle" href="#" id="_init_plugin_db-toggle" onclick="return toggle('_init_plugin_db');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.nt-module.html#_init_plugin_db">_init_plugin_db</a><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_init_plugin_db-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_init_plugin_db-expanded"><a name="L185"></a><tt class="py-lineno">185</tt>  <tt class="py-line">        <tt class="py-docstring">"""Find loaded plugins and provide dummies for their types - this assures iteration </tt> </tt>
+<a name="L186"></a><tt class="py-lineno">186</tt>  <tt class="py-line"><tt class="py-docstring">        will not stop on these types for instance"""</tt> </tt>
+<a name="L187"></a><tt class="py-lineno">187</tt>  <tt class="py-line">        <tt class="py-keyword">global</tt> <tt id="link-91" class="py-name"><a title="mrv.maya.nt.pluginDB" class="py-name" href="#" onclick="return doclink('link-91', 'pluginDB', 'link-18');">pluginDB</a></tt> </tt>
+<a name="L188"></a><tt class="py-lineno">188</tt>  <tt class="py-line">        <tt id="link-92" class="py-name"><a title="mrv.maya.nt.pluginDB" class="py-name" href="#" onclick="return doclink('link-92', 'pluginDB', 'link-18');">pluginDB</a></tt> <tt class="py-op">=</tt> <tt id="link-93" class="py-name" targets="Class mrv.maya.nt.PluginDB=mrv.maya.nt.PluginDB-class.html"><a title="mrv.maya.nt.PluginDB" class="py-name" href="#" onclick="return doclink('link-93', 'PluginDB', 'link-93');">PluginDB</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L189"></a><tt class="py-lineno">189</tt>  <tt class="py-line">         </tt>
+<a name="L190"></a><tt class="py-lineno">190</tt>  <tt class="py-line"><tt class="py-comment">#} END initialization</tt> </tt>
+<a name="L191"></a><tt class="py-lineno">191</tt>  <tt class="py-line"> </tt>
+<a name="L192"></a><tt class="py-lineno">192</tt>  <tt class="py-line"><tt class="py-comment">#{ Utility Classes</tt> </tt>
+<a name="L193"></a><tt class="py-lineno">193</tt>  <tt class="py-line"> </tt>
+<a name="PluginDB"></a><div id="PluginDB-def"><a name="L194"></a><tt class="py-lineno">194</tt> <a class="py-toggle" href="#" id="PluginDB-toggle" onclick="return toggle('PluginDB');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.nt.PluginDB-class.html">PluginDB</a><tt class="py-op">(</tt><tt class="py-base-class">dict</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="PluginDB-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="PluginDB-expanded"><a name="L195"></a><tt class="py-lineno">195</tt>  <tt class="py-line">        <tt class="py-docstring">"""Simple container keeping information about the loaded plugins, namely the node</tt> </tt>
+<a name="L196"></a><tt class="py-lineno">196</tt>  <tt class="py-line"><tt class="py-docstring">        types they register.</tt> </tt>
+<a name="L197"></a><tt class="py-lineno">197</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L198"></a><tt class="py-lineno">198</tt>  <tt class="py-line"><tt class="py-docstring">        As PyMel code has shown, we cannot rely on pluginLoaded and unloaded callbacks, which </tt> </tt>
+<a name="L199"></a><tt class="py-lineno">199</tt>  <tt class="py-line"><tt class="py-docstring">        is why we just listen to plugin changed events, and figure out the differences ourselves.</tt> </tt>
+<a name="L200"></a><tt class="py-lineno">200</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L201"></a><tt class="py-lineno">201</tt>  <tt class="py-line"><tt class="py-docstring">        Currently we are only interested in the registered node types, which is why we </tt> </tt>
+<a name="L202"></a><tt class="py-lineno">202</tt>  <tt class="py-line"><tt class="py-docstring">        are on ``mrv.maya.nt`` level, not on ``mrv.maya`` level</tt> </tt>
+<a name="L203"></a><tt class="py-lineno">203</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L204"></a><tt class="py-lineno">204</tt>  <tt class="py-line">        <tt class="py-name">__slots__</tt> <tt class="py-op">=</tt> <tt class="py-string">'log'</tt> </tt>
+<a name="L205"></a><tt class="py-lineno">205</tt>  <tt class="py-line">         </tt>
+<a name="PluginDB.__init__"></a><div id="PluginDB.__init__-def"><a name="L206"></a><tt class="py-lineno">206</tt> <a class="py-toggle" href="#" id="PluginDB.__init__-toggle" onclick="return toggle('PluginDB.__init__');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.nt.PluginDB-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="PluginDB.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="PluginDB.__init__-expanded"><a name="L207"></a><tt class="py-lineno">207</tt>  <tt class="py-line">                <tt class="py-docstring">"""Upon initialization, we will parse the currently loaded plugins and </tt> </tt>
+<a name="L208"></a><tt class="py-lineno">208</tt>  <tt class="py-line"><tt class="py-docstring">                register them. Additionally we register our event to stay in the loop </tt> </tt>
+<a name="L209"></a><tt class="py-lineno">209</tt>  <tt class="py-line"><tt class="py-docstring">                if anything changes."""</tt> </tt>
+<a name="L210"></a><tt class="py-lineno">210</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-94" class="py-name" targets="Variable mrv.automation.base.log=mrv.automation.base-module.html#log,Variable mrv.automation.qa.log=mrv.automation.qa-module.html#log,Variable mrv.automation.workflow.log=mrv.automation.workflow-module.html#log,Variable mrv.cmd.base.SpawnedCommand.log=mrv.cmd.base.SpawnedCommand-class.html#log,Variable mrv.cmd.base.log=mrv.cmd.base-module.html#log,Variable mrv.conf.log=mrv.conf-module.html#log,Variable mrv.interface.log=mrv.interface-module.html#log,Variable mrv.log=mrv-module.html#log,Variable mrv.maya.automation.qa.log=mrv.maya.automation.qa-module.html#log,Variable mrv.maya.log=mrv.maya-module.html#log,Variable mrv.maya.mdb.log=mrv.maya.mdb-module.html#log,Variable mrv.maya.nt.base.log=mrv.maya.nt.base-module.html#log,Variable mrv.maya.nt.geometry.log=mrv.maya.nt.geometry-module.html#log,Variable mrv.maya.nt.persistence.log=mrv.maya.nt.persistence-module.html#log,Variable mrv.maya.nt.typ.log=mrv.maya.nt.typ-module.html#log,Variable mrv.maya.ui.control.log=mrv.maya.ui.control-module.html#log,Variable mrv.maya.ui.dialog.log=mrv.maya.ui.dialog-module.html#log,Variable mrv.maya.ui.qa.log=mrv.maya.ui.qa-module.html#log,Variable mrv.mdepparse.log=mrv.mdepparse-module.html#log,Variable mrv.path.log=mrv.path-module.html#log,Variable mrv.util.log=mrv.util-module.html#log"><a title="mrv.automation.base.log
+mrv.automation.qa.log
+mrv.automation.workflow.log
+mrv.cmd.base.SpawnedCommand.log
+mrv.cmd.base.log
+mrv.conf.log
+mrv.interface.log
+mrv.log
+mrv.maya.automation.qa.log
+mrv.maya.log
+mrv.maya.mdb.log
+mrv.maya.nt.base.log
+mrv.maya.nt.geometry.log
+mrv.maya.nt.persistence.log
+mrv.maya.nt.typ.log
+mrv.maya.ui.control.log
+mrv.maya.ui.dialog.log
+mrv.maya.ui.qa.log
+mrv.mdepparse.log
+mrv.path.log
+mrv.util.log" class="py-name" href="#" onclick="return doclink('link-94', 'log', 'link-94');">log</a></tt> <tt class="py-op">=</tt> <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">getLogger</tt><tt class="py-op">(</tt><tt class="py-string">'mrv.maya.nt.%s'</tt> <tt class="py-op">%</tt> <tt id="link-95" class="py-name" targets="Method mrv.maya.ui.base.NamedUI.type()=mrv.maya.ui.base.NamedUI-class.html#type"><a title="mrv.maya.ui.base.NamedUI.type" class="py-name" href="#" onclick="return doclink('link-95', 'type', 'link-95');">type</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">__name__</tt><tt class="py-op">)</tt> </tt>
+<a name="L211"></a><tt class="py-lineno">211</tt>  <tt class="py-line">                <tt class="py-comment"># yes, we need a string here, yes, its mel</tt> </tt>
+<a name="L212"></a><tt class="py-lineno">212</tt>  <tt class="py-line">                <tt class="py-comment"># UPDATE: In maya 2011, a method is alright !</tt> </tt>
+<a name="L213"></a><tt class="py-lineno">213</tt>  <tt class="py-line">                <tt class="py-name">melstr</tt> <tt class="py-op">=</tt> <tt class="py-string">'python("import mrv.maya.nt; mrv.maya.nt.pluginDB.plugin_registry_changed()")'</tt> </tt>
+<a name="L214"></a><tt class="py-lineno">214</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt id="link-96" class="py-name"><a title="mrv.maya.env" class="py-name" href="#" onclick="return doclink('link-96', 'env', 'link-9');">env</a></tt><tt class="py-op">.</tt><tt id="link-97" class="py-name" targets="Function mrv.maya.env.appVersion()=mrv.maya.env-module.html#appVersion"><a title="mrv.maya.env.appVersion" class="py-name" href="#" onclick="return doclink('link-97', 'appVersion', 'link-97');">appVersion</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> <tt class="py-op">&lt;</tt> <tt class="py-number">2011.0</tt><tt class="py-op">:</tt> </tt>
+<a name="L215"></a><tt class="py-lineno">215</tt>  <tt class="py-line">                        <tt class="py-name">cmds</tt><tt class="py-op">.</tt><tt class="py-name">pluginInfo</tt><tt class="py-op">(</tt><tt class="py-name">changedCommand</tt><tt class="py-op">=</tt><tt class="py-name">melstr</tt><tt class="py-op">)</tt> </tt>
+<a name="L216"></a><tt class="py-lineno">216</tt>  <tt class="py-line">                <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L217"></a><tt class="py-lineno">217</tt>  <tt class="py-line">                        <tt class="py-comment"># Okay, if we do this, maya crashes during shutdown, which is why we </tt> </tt>
+<a name="L218"></a><tt class="py-lineno">218</tt>  <tt class="py-line">                        <tt class="py-comment"># use mel then ... nice work, Autodesk ;)</tt> </tt>
+<a name="L219"></a><tt class="py-lineno">219</tt>  <tt class="py-line">                        <tt class="py-comment"># cmds.pluginInfo(changedCommand=self.plugin_registry_changed)</tt> </tt>
+<a name="L220"></a><tt class="py-lineno">220</tt>  <tt class="py-line">                        <tt class="py-name">mrvmaya</tt><tt class="py-op">.</tt><tt id="link-98" class="py-name" targets="Variable mrv.maya.ui.browse.option.Mel=mrv.maya.ui.browse.option-module.html#Mel,Class mrv.maya.util.Mel=mrv.maya.util.Mel-class.html"><a title="mrv.maya.ui.browse.option.Mel
+mrv.maya.util.Mel" class="py-name" href="#" onclick="return doclink('link-98', 'Mel', 'link-98');">Mel</a></tt><tt class="py-op">.</tt><tt id="link-99" class="py-name" targets="Static Method mrv.maya.util.Mel.eval()=mrv.maya.util.Mel-class.html#eval"><a title="mrv.maya.util.Mel.eval" class="py-name" href="#" onclick="return doclink('link-99', 'eval', 'link-99');">eval</a></tt><tt class="py-op">(</tt><tt class="py-string">'pluginInfo -changedCommand "%s"'</tt> <tt class="py-op">%</tt> <tt class="py-name">melstr</tt><tt class="py-op">.</tt><tt id="link-100" class="py-name" targets="Method mrv.maya.ref.FileReference.replace()=mrv.maya.ref.FileReference-class.html#replace"><a title="mrv.maya.ref.FileReference.replace" class="py-name" href="#" onclick="return doclink('link-100', 'replace', 'link-100');">replace</a></tt><tt class="py-op">(</tt><tt class="py-string">'"'</tt><tt class="py-op">,</tt> <tt class="py-string">'\\"'</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L221"></a><tt class="py-lineno">221</tt>  <tt class="py-line">                <tt class="py-comment"># END install callback</tt> </tt>
+<a name="L222"></a><tt class="py-lineno">222</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-101" class="py-name" targets="Method mrv.maya.nt.PluginDB.plugin_registry_changed()=mrv.maya.nt.PluginDB-class.html#plugin_registry_changed"><a title="mrv.maya.nt.PluginDB.plugin_registry_changed" class="py-name" href="#" onclick="return doclink('link-101', 'plugin_registry_changed', 'link-101');">plugin_registry_changed</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L223"></a><tt class="py-lineno">223</tt>  <tt class="py-line"> </tt>
+<a name="PluginDB.plugin_registry_changed"></a><div id="PluginDB.plugin_registry_changed-def"><a name="L224"></a><tt class="py-lineno">224</tt> <a class="py-toggle" href="#" id="PluginDB.plugin_registry_changed-toggle" onclick="return toggle('PluginDB.plugin_registry_changed');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.nt.PluginDB-class.html#plugin_registry_changed">plugin_registry_changed</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="PluginDB.plugin_registry_changed-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="PluginDB.plugin_registry_changed-expanded"><a name="L225"></a><tt class="py-lineno">225</tt>  <tt class="py-line">                <tt class="py-docstring">"""Called by maya to indicate something has changed. </tt> </tt>
+<a name="L226"></a><tt class="py-lineno">226</tt>  <tt class="py-line"><tt class="py-docstring">                We will diff the returned plugin information with our own database </tt> </tt>
+<a name="L227"></a><tt class="py-lineno">227</tt>  <tt class="py-line"><tt class="py-docstring">                to determine which plugin was added or removed, to make the appropriate </tt> </tt>
+<a name="L228"></a><tt class="py-lineno">228</tt>  <tt class="py-line"><tt class="py-docstring">                calls"""</tt> </tt>
+<a name="L229"></a><tt class="py-lineno">229</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-102" class="py-name"><a title="mrv.automation.base.log
+mrv.automation.qa.log
+mrv.automation.workflow.log
+mrv.cmd.base.SpawnedCommand.log
+mrv.cmd.base.log
+mrv.conf.log
+mrv.interface.log
+mrv.log
+mrv.maya.automation.qa.log
+mrv.maya.log
+mrv.maya.mdb.log
+mrv.maya.nt.base.log
+mrv.maya.nt.geometry.log
+mrv.maya.nt.persistence.log
+mrv.maya.nt.typ.log
+mrv.maya.ui.control.log
+mrv.maya.ui.dialog.log
+mrv.maya.ui.qa.log
+mrv.mdepparse.log
+mrv.path.log
+mrv.util.log" class="py-name" href="#" onclick="return doclink('link-102', 'log', 'link-94');">log</a></tt><tt class="py-op">.</tt><tt id="link-103" class="py-name" targets="Method unittest.TestCase.debug()=unittest.TestCase-class.html#debug,Method unittest.TestSuite.debug()=unittest.TestSuite-class.html#debug"><a title="unittest.TestCase.debug
+unittest.TestSuite.debug" class="py-name" href="#" onclick="return doclink('link-103', 'debug', 'link-103');">debug</a></tt><tt class="py-op">(</tt><tt class="py-string">"registry changed"</tt><tt class="py-op">)</tt> </tt>
+<a name="L230"></a><tt class="py-lineno">230</tt>  <tt class="py-line">                 </tt>
+<a name="L231"></a><tt class="py-lineno">231</tt>  <tt class="py-line">                <tt class="py-name">loaded_plugins</tt> <tt class="py-op">=</tt> <tt id="link-104" class="py-name" targets="Method mrv.dge._PlugShell.set()=mrv.dge._PlugShell-class.html#set,Method mrv.dgfe._IOShell.set()=mrv.dgfe._IOShell-class.html#set,Method mrv.dgfe._OIShell.set()=mrv.dgfe._OIShell-class.html#set,Method mrv.interface.iProgressIndicator.set()=mrv.interface.iProgressIndicator-class.html#set,Method mrv.maya.nt.base.Transform.set()=mrv.maya.nt.base.Transform-class.html#set,Module mrv.maya.nt.set=mrv.maya.nt.set-module.html,Variable mrv.maya.nt.set=mrv.maya.nt-module.html#set,Module mrv.maya.ui.set=mrv.maya.ui.set-module.html"><a title="mrv.dge._PlugShell.set
+mrv.dgfe._IOShell.set
+mrv.dgfe._OIShell.set
+mrv.interface.iProgressIndicator.set
+mrv.maya.nt.base.Transform.set
+mrv.maya.nt.set
+mrv.maya.nt.set
+mrv.maya.ui.set" class="py-name" href="#" onclick="return doclink('link-104', 'set', 'link-104');">set</a></tt><tt class="py-op">(</tt><tt class="py-name">cmds</tt><tt class="py-op">.</tt><tt class="py-name">pluginInfo</tt><tt class="py-op">(</tt><tt class="py-name">q</tt><tt class="py-op">=</tt><tt class="py-number">1</tt><tt class="py-op">,</tt> <tt class="py-name">listPlugins</tt><tt class="py-op">=</tt><tt class="py-number">1</tt><tt class="py-op">)</tt> <tt class="py-keyword">or</tt> <tt class="py-name">list</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L232"></a><tt class="py-lineno">232</tt>  <tt class="py-line">                <tt class="py-name">our_plugins</tt> <tt class="py-op">=</tt> <tt id="link-105" class="py-name"><a title="mrv.dge._PlugShell.set
+mrv.dgfe._IOShell.set
+mrv.dgfe._OIShell.set
+mrv.interface.iProgressIndicator.set
+mrv.maya.nt.base.Transform.set
+mrv.maya.nt.set
+mrv.maya.nt.set
+mrv.maya.ui.set" class="py-name" href="#" onclick="return doclink('link-105', 'set', 'link-104');">set</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-106" class="py-name" targets="Variable mrv.conf.Section.keys=mrv.conf.Section-class.html#keys,Method mrv.maya.util.OptionVarDict.keys()=mrv.maya.util.OptionVarDict-class.html#keys"><a title="mrv.conf.Section.keys
+mrv.maya.util.OptionVarDict.keys" class="py-name" href="#" onclick="return doclink('link-106', 'keys', 'link-106');">keys</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L233"></a><tt class="py-lineno">233</tt>  <tt class="py-line">                 </tt>
+<a name="L234"></a><tt class="py-lineno">234</tt>  <tt class="py-line">                <tt class="py-comment"># plugins loaded </tt> </tt>
+<a name="L235"></a><tt class="py-lineno">235</tt>  <tt class="py-line">                <tt class="py-keyword">for</tt> <tt class="py-name">pn</tt> <tt class="py-keyword">in</tt> <tt class="py-name">loaded_plugins</tt> <tt class="py-op">-</tt> <tt class="py-name">our_plugins</tt><tt class="py-op">:</tt> </tt>
+<a name="L236"></a><tt class="py-lineno">236</tt>  <tt class="py-line">                        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-107" class="py-name" targets="Method mrv.maya.nt.PluginDB.plugin_loaded()=mrv.maya.nt.PluginDB-class.html#plugin_loaded"><a title="mrv.maya.nt.PluginDB.plugin_loaded" class="py-name" href="#" onclick="return doclink('link-107', 'plugin_loaded', 'link-107');">plugin_loaded</a></tt><tt class="py-op">(</tt><tt class="py-name">pn</tt><tt class="py-op">)</tt> </tt>
+<a name="L237"></a><tt class="py-lineno">237</tt>  <tt class="py-line">                         </tt>
+<a name="L238"></a><tt class="py-lineno">238</tt>  <tt class="py-line">                <tt class="py-comment"># plugins unloded</tt> </tt>
+<a name="L239"></a><tt class="py-lineno">239</tt>  <tt class="py-line">                <tt class="py-keyword">for</tt> <tt class="py-name">pn</tt> <tt class="py-keyword">in</tt> <tt class="py-name">our_plugins</tt> <tt class="py-op">-</tt> <tt class="py-name">loaded_plugins</tt><tt class="py-op">:</tt> </tt>
+<a name="L240"></a><tt class="py-lineno">240</tt>  <tt class="py-line">                        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-108" class="py-name" targets="Method mrv.maya.nt.PluginDB.plugin_unloaded()=mrv.maya.nt.PluginDB-class.html#plugin_unloaded"><a title="mrv.maya.nt.PluginDB.plugin_unloaded" class="py-name" href="#" onclick="return doclink('link-108', 'plugin_unloaded', 'link-108');">plugin_unloaded</a></tt><tt class="py-op">(</tt><tt class="py-name">pn</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L241"></a><tt class="py-lineno">241</tt>  <tt class="py-line">                 </tt>
+<a name="PluginDB.plugin_loaded"></a><div id="PluginDB.plugin_loaded-def"><a name="L242"></a><tt class="py-lineno">242</tt> <a class="py-toggle" href="#" id="PluginDB.plugin_loaded-toggle" onclick="return toggle('PluginDB.plugin_loaded');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.nt.PluginDB-class.html#plugin_loaded">plugin_loaded</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">pluginName</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="PluginDB.plugin_loaded-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="PluginDB.plugin_loaded-expanded"><a name="L243"></a><tt class="py-lineno">243</tt>  <tt class="py-line">                <tt class="py-docstring">"""Retrieve plugin information from a plugin named ``pluginName``, which is </tt> </tt>
+<a name="L244"></a><tt class="py-lineno">244</tt>  <tt class="py-line"><tt class="py-docstring">                assumed to be loaded.</tt> </tt>
+<a name="L245"></a><tt class="py-lineno">245</tt>  <tt class="py-line"><tt class="py-docstring">                Currently the nodetypes found are added to the node-type tree to make them available.</tt> </tt>
+<a name="L246"></a><tt class="py-lineno">246</tt>  <tt class="py-line"><tt class="py-docstring">                The plugin author is free to add specialized types to the tree afterwards, overwriting </tt> </tt>
+<a name="L247"></a><tt class="py-lineno">247</tt>  <tt class="py-line"><tt class="py-docstring">                the default ones.</tt> </tt>
+<a name="L248"></a><tt class="py-lineno">248</tt>  <tt class="py-line"><tt class="py-docstring">                </tt> </tt>
+<a name="L249"></a><tt class="py-lineno">249</tt>  <tt class="py-line"><tt class="py-docstring">                We loosely determine the inheritance by differentiating them into types suggested</tt> </tt>
+<a name="L250"></a><tt class="py-lineno">250</tt>  <tt class="py-line"><tt class="py-docstring">                by MFn::kPlugin&lt;Name&gt;Node"""</tt> </tt>
+<a name="L251"></a><tt class="py-lineno">251</tt>  <tt class="py-line">                <tt class="py-keyword">import</tt> <tt id="link-109" class="py-name"><a title="mrv.automation.base
+mrv.cmd.base
+mrv.doc.base
+mrv.maya.nt.base
+mrv.maya.ui.base" class="py-name" href="#" onclick="return doclink('link-109', 'base', 'link-75');">base</a></tt>             <tt class="py-comment"># needs late import, TODO: reorganize modules</tt> </tt>
+<a name="L252"></a><tt class="py-lineno">252</tt>  <tt class="py-line">                 </tt>
+<a name="L253"></a><tt class="py-lineno">253</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-110" class="py-name"><a title="mrv.automation.base.log
+mrv.automation.qa.log
+mrv.automation.workflow.log
+mrv.cmd.base.SpawnedCommand.log
+mrv.cmd.base.log
+mrv.conf.log
+mrv.interface.log
+mrv.log
+mrv.maya.automation.qa.log
+mrv.maya.log
+mrv.maya.mdb.log
+mrv.maya.nt.base.log
+mrv.maya.nt.geometry.log
+mrv.maya.nt.persistence.log
+mrv.maya.nt.typ.log
+mrv.maya.ui.control.log
+mrv.maya.ui.dialog.log
+mrv.maya.ui.qa.log
+mrv.mdepparse.log
+mrv.path.log
+mrv.util.log" class="py-name" href="#" onclick="return doclink('link-110', 'log', 'link-94');">log</a></tt><tt class="py-op">.</tt><tt id="link-111" class="py-name"><a title="unittest.TestCase.debug
+unittest.TestSuite.debug" class="py-name" href="#" onclick="return doclink('link-111', 'debug', 'link-103');">debug</a></tt><tt class="py-op">(</tt><tt class="py-string">"plugin '%s' loaded"</tt> <tt class="py-op">%</tt> <tt class="py-name">pluginName</tt><tt class="py-op">)</tt> </tt>
+<a name="L254"></a><tt class="py-lineno">254</tt>  <tt class="py-line">                 </tt>
+<a name="L255"></a><tt class="py-lineno">255</tt>  <tt class="py-line">                <tt class="py-name">type_names</tt> <tt class="py-op">=</tt> <tt class="py-name">cmds</tt><tt class="py-op">.</tt><tt class="py-name">pluginInfo</tt><tt class="py-op">(</tt><tt class="py-name">pluginName</tt><tt class="py-op">,</tt> <tt class="py-name">q</tt><tt class="py-op">=</tt><tt class="py-number">1</tt><tt class="py-op">,</tt> <tt class="py-name">dependNode</tt><tt class="py-op">=</tt><tt class="py-number">1</tt><tt class="py-op">)</tt> <tt class="py-keyword">or</tt> <tt class="py-name">list</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L256"></a><tt class="py-lineno">256</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">[</tt><tt class="py-name">pluginName</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">type_names</tt> </tt>
+<a name="L257"></a><tt class="py-lineno">257</tt>  <tt class="py-line">                 </tt>
+<a name="L258"></a><tt class="py-lineno">258</tt>  <tt class="py-line">                <tt class="py-comment"># register types in the system if possible</tt> </tt>
+<a name="L259"></a><tt class="py-lineno">259</tt>  <tt class="py-line">                <tt class="py-name">dgmod</tt> <tt class="py-op">=</tt> <tt class="py-name">api</tt><tt class="py-op">.</tt><tt class="py-name">MDGModifier</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L260"></a><tt class="py-lineno">260</tt>  <tt class="py-line">                <tt class="py-name">dagmod</tt> <tt class="py-op">=</tt> <tt class="py-name">api</tt><tt class="py-op">.</tt><tt class="py-name">MDagModifier</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L261"></a><tt class="py-lineno">261</tt>  <tt class="py-line">                <tt class="py-name">transobj</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L262"></a><tt class="py-lineno">262</tt>  <tt class="py-line">                 </tt>
+<a name="L263"></a><tt class="py-lineno">263</tt>  <tt class="py-line">                <tt id="link-112" class="py-name"><a title="mrv.maya.nt" class="py-name" href="#" onclick="return doclink('link-112', 'nt', 'link-41');">nt</a></tt> <tt class="py-op">=</tt> <tt class="py-name">globals</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L264"></a><tt class="py-lineno">264</tt>  <tt class="py-line">                <tt class="py-keyword">for</tt> <tt class="py-name">tn</tt> <tt class="py-keyword">in</tt> <tt class="py-name">type_names</tt><tt class="py-op">:</tt> </tt>
+<a name="L265"></a><tt class="py-lineno">265</tt>  <tt class="py-line">                        <tt class="py-name">tnc</tt> <tt class="py-op">=</tt> <tt id="link-113" class="py-name"><a title="mrv.util.capitalize" class="py-name" href="#" onclick="return doclink('link-113', 'capitalize', 'link-6');">capitalize</a></tt><tt class="py-op">(</tt><tt class="py-name">tn</tt><tt class="py-op">)</tt> </tt>
+<a name="L266"></a><tt class="py-lineno">266</tt>  <tt class="py-line">                        <tt class="py-keyword">if</tt> <tt class="py-name">tnc</tt> <tt class="py-keyword">in</tt> <tt id="link-114" class="py-name"><a title="mrv.maya.nt" class="py-name" href="#" onclick="return doclink('link-114', 'nt', 'link-41');">nt</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L267"></a><tt class="py-lineno">267</tt>  <tt class="py-line">                                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-115" class="py-name"><a title="mrv.automation.base.log
+mrv.automation.qa.log
+mrv.automation.workflow.log
+mrv.cmd.base.SpawnedCommand.log
+mrv.cmd.base.log
+mrv.conf.log
+mrv.interface.log
+mrv.log
+mrv.maya.automation.qa.log
+mrv.maya.log
+mrv.maya.mdb.log
+mrv.maya.nt.base.log
+mrv.maya.nt.geometry.log
+mrv.maya.nt.persistence.log
+mrv.maya.nt.typ.log
+mrv.maya.ui.control.log
+mrv.maya.ui.dialog.log
+mrv.maya.ui.qa.log
+mrv.mdepparse.log
+mrv.path.log
+mrv.util.log" class="py-name" href="#" onclick="return doclink('link-115', 'log', 'link-94');">log</a></tt><tt class="py-op">.</tt><tt id="link-116" class="py-name"><a title="unittest.TestCase.debug
+unittest.TestSuite.debug" class="py-name" href="#" onclick="return doclink('link-116', 'debug', 'link-103');">debug</a></tt><tt class="py-op">(</tt><tt class="py-string">"Skipped type %s as it did already exist in module"</tt> <tt class="py-op">%</tt> <tt class="py-name">tnc</tt><tt class="py-op">)</tt> </tt>
+<a name="L268"></a><tt class="py-lineno">268</tt>  <tt class="py-line">                                <tt class="py-keyword">continue</tt> </tt>
+<a name="L269"></a><tt class="py-lineno">269</tt>  <tt class="py-line">                        <tt class="py-comment"># END skip existing node types ( probably user created )</tt> </tt>
+<a name="L270"></a><tt class="py-lineno">270</tt>  <tt class="py-line">                         </tt>
+<a name="L271"></a><tt class="py-lineno">271</tt>  <tt class="py-line">                        <tt class="py-comment"># get the type id- first try depend node, then dag node. Never actually</tt> </tt>
+<a name="L272"></a><tt class="py-lineno">272</tt>  <tt class="py-line">                        <tt class="py-comment"># create the nodes in the scene, created MObjects will be discarded</tt> </tt>
+<a name="L273"></a><tt class="py-lineno">273</tt>  <tt class="py-line">                        <tt class="py-comment"># once the modifiers go out of scope</tt> </tt>
+<a name="L274"></a><tt class="py-lineno">274</tt>  <tt class="py-line">                        <tt class="py-name">apitype</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L275"></a><tt class="py-lineno">275</tt>  <tt class="py-line">                        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L276"></a><tt class="py-lineno">276</tt>  <tt class="py-line">                                <tt class="py-name">apitype</tt> <tt class="py-op">=</tt> <tt class="py-name">dgmod</tt><tt class="py-op">.</tt><tt id="link-117" class="py-name" targets="Function mrv.maya.nt.base.createNode()=mrv.maya.nt.base-module.html#createNode"><a title="mrv.maya.nt.base.createNode" class="py-name" href="#" onclick="return doclink('link-117', 'createNode', 'link-117');">createNode</a></tt><tt class="py-op">(</tt><tt class="py-name">tn</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-118" class="py-name" targets="Method mrv.maya.nt.base.Node.apiType()=mrv.maya.nt.base.Node-class.html#apiType"><a title="mrv.maya.nt.base.Node.apiType" class="py-name" href="#" onclick="return doclink('link-118', 'apiType', 'link-118');">apiType</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L277"></a><tt class="py-lineno">277</tt>  <tt class="py-line">                        <tt class="py-keyword">except</tt> <tt class="py-name">RuntimeError</tt><tt class="py-op">:</tt> </tt>
+<a name="L278"></a><tt class="py-lineno">278</tt>  <tt class="py-line">                                <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L279"></a><tt class="py-lineno">279</tt>  <tt class="py-line">                                        <tt class="py-comment"># most plugin dag nodes require a transform to be created</tt> </tt>
+<a name="L280"></a><tt class="py-lineno">280</tt>  <tt class="py-line">                                        <tt class="py-comment"># We create a dummy for the dagmod, otherwise it would create</tt> </tt>
+<a name="L281"></a><tt class="py-lineno">281</tt>  <tt class="py-line">                                        <tt class="py-comment"># it for us and return the parent transform instead, which </tt> </tt>
+<a name="L282"></a><tt class="py-lineno">282</tt>  <tt class="py-line">                                        <tt class="py-comment"># has no child officially yet as its not part of the dag</tt> </tt>
+<a name="L283"></a><tt class="py-lineno">283</tt>  <tt class="py-line">                                        <tt class="py-comment"># ( so we cannot query the child from there ).</tt> </tt>
+<a name="L284"></a><tt class="py-lineno">284</tt>  <tt class="py-line">                                        <tt class="py-keyword">if</tt> <tt class="py-name">transobj</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L285"></a><tt class="py-lineno">285</tt>  <tt class="py-line">                                                <tt class="py-name">transobj</tt> <tt class="py-op">=</tt> <tt class="py-name">dagmod</tt><tt class="py-op">.</tt><tt id="link-119" class="py-name"><a title="mrv.maya.nt.base.createNode" class="py-name" href="#" onclick="return doclink('link-119', 'createNode', 'link-117');">createNode</a></tt><tt class="py-op">(</tt><tt class="py-string">"transform"</tt><tt class="py-op">)</tt> </tt>
+<a name="L286"></a><tt class="py-lineno">286</tt>  <tt class="py-line">                                        <tt class="py-comment"># END assure we have parent </tt> </tt>
+<a name="L287"></a><tt class="py-lineno">287</tt>  <tt class="py-line">                                         </tt>
+<a name="L288"></a><tt class="py-lineno">288</tt>  <tt class="py-line">                                        <tt class="py-name">apitype</tt> <tt class="py-op">=</tt> <tt class="py-name">dagmod</tt><tt class="py-op">.</tt><tt id="link-120" class="py-name"><a title="mrv.maya.nt.base.createNode" class="py-name" href="#" onclick="return doclink('link-120', 'createNode', 'link-117');">createNode</a></tt><tt class="py-op">(</tt><tt class="py-name">tn</tt><tt class="py-op">,</tt> <tt class="py-name">transobj</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-121" class="py-name"><a title="mrv.maya.nt.base.Node.apiType" class="py-name" href="#" onclick="return doclink('link-121', 'apiType', 'link-118');">apiType</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L289"></a><tt class="py-lineno">289</tt>  <tt class="py-line">                                <tt class="py-keyword">except</tt> <tt class="py-name">RuntimeError</tt><tt class="py-op">:</tt> </tt>
+<a name="L290"></a><tt class="py-lineno">290</tt>  <tt class="py-line">                                        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-122" class="py-name"><a title="mrv.automation.base.log
+mrv.automation.qa.log
+mrv.automation.workflow.log
+mrv.cmd.base.SpawnedCommand.log
+mrv.cmd.base.log
+mrv.conf.log
+mrv.interface.log
+mrv.log
+mrv.maya.automation.qa.log
+mrv.maya.log
+mrv.maya.mdb.log
+mrv.maya.nt.base.log
+mrv.maya.nt.geometry.log
+mrv.maya.nt.persistence.log
+mrv.maya.nt.typ.log
+mrv.maya.ui.control.log
+mrv.maya.ui.dialog.log
+mrv.maya.ui.qa.log
+mrv.mdepparse.log
+mrv.path.log
+mrv.util.log" class="py-name" href="#" onclick="return doclink('link-122', 'log', 'link-94');">log</a></tt><tt class="py-op">.</tt><tt id="link-123" class="py-name" targets="Variable mrv.maya.util.Mel.error=mrv.maya.util.Mel-class.html#error"><a title="mrv.maya.util.Mel.error" class="py-name" href="#" onclick="return doclink('link-123', 'error', 'link-123');">error</a></tt><tt class="py-op">(</tt><tt class="py-string">"Failed to retrieve apitype of node type %s - skipped"</tt> <tt class="py-op">%</tt> <tt class="py-name">tnc</tt><tt class="py-op">)</tt> </tt>
+<a name="L291"></a><tt class="py-lineno">291</tt>  <tt class="py-line">                                        <tt class="py-keyword">continue</tt> </tt>
+<a name="L292"></a><tt class="py-lineno">292</tt>  <tt class="py-line">                                <tt class="py-comment"># END dag exception handling</tt> </tt>
+<a name="L293"></a><tt class="py-lineno">293</tt>  <tt class="py-line">                        <tt class="py-comment"># END dg exception handling </tt> </tt>
+<a name="L294"></a><tt class="py-lineno">294</tt>  <tt class="py-line">                         </tt>
+<a name="L295"></a><tt class="py-lineno">295</tt>  <tt class="py-line">                        <tt class="py-name">parentclsname</tt> <tt class="py-op">=</tt> <tt id="link-124" class="py-name"><a title="mrv.automation.base
+mrv.cmd.base
+mrv.doc.base
+mrv.maya.nt.base
+mrv.maya.ui.base" class="py-name" href="#" onclick="return doclink('link-124', 'base', 'link-75');">base</a></tt><tt class="py-op">.</tt><tt id="link-125" class="py-name" targets="Variable mrv.maya.nt.base._plugin_type_to_node_type_name=mrv.maya.nt.base-module.html#_plugin_type_to_node_type_name"><a title="mrv.maya.nt.base._plugin_type_to_node_type_name" class="py-name" href="#" onclick="return doclink('link-125', '_plugin_type_to_node_type_name', 'link-125');">_plugin_type_to_node_type_name</a></tt><tt class="py-op">.</tt><tt id="link-126" class="py-name" targets="Method mrv.conf.ConfigAccessor.get()=mrv.conf.ConfigAccessor-class.html#get,Method mrv.dge._PlugShell.get()=mrv.dge._PlugShell-class.html#get,Method mrv.dgfe._IOShell.get()=mrv.dgfe._IOShell-class.html#get,Method mrv.dgfe._OIShell.get()=mrv.dgfe._OIShell-class.html#get,Method mrv.interface.iProgressIndicator.get()=mrv.interface.iProgressIndicator-class.html#get,Method mrv.maya.util.OptionVarDict.get()=mrv.maya.util.OptionVarDict-class.html#get"><a title="mrv.conf.ConfigAccessor.get
+mrv.dge._PlugShell.get
+mrv.dgfe._IOShell.get
+mrv.dgfe._OIShell.get
+mrv.interface.iProgressIndicator.get
+mrv.maya.util.OptionVarDict.get" class="py-name" href="#" onclick="return doclink('link-126', 'get', 'link-126');">get</a></tt><tt class="py-op">(</tt><tt class="py-name">apitype</tt><tt class="py-op">,</tt> <tt class="py-string">'Unknown'</tt><tt class="py-op">)</tt> </tt>
+<a name="L296"></a><tt class="py-lineno">296</tt>  <tt class="py-line">                        <tt id="link-127" class="py-name"><a title="mrv.maya.nt.typ
+mrv.maya.ui.typ" class="py-name" href="#" onclick="return doclink('link-127', 'typ', 'link-2');">typ</a></tt><tt class="py-op">.</tt><tt class="py-name">_addCustomType</tt><tt class="py-op">(</tt> <tt id="link-128" class="py-name"><a title="mrv.maya.nt" class="py-name" href="#" onclick="return doclink('link-128', 'nt', 'link-41');">nt</a></tt><tt class="py-op">,</tt> <tt class="py-name">parentclsname</tt><tt class="py-op">,</tt> <tt class="py-name">tnc</tt><tt class="py-op">,</tt> <tt class="py-name">force_creation</tt><tt class="py-op">=</tt><tt class="py-name">True</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L297"></a><tt class="py-lineno">297</tt>  <tt class="py-line">                <tt class="py-comment"># END for each type to handle</tt> </tt>
+<a name="L298"></a><tt class="py-lineno">298</tt>  <tt class="py-line"> </tt>
+<a name="PluginDB.plugin_unloaded"></a><div id="PluginDB.plugin_unloaded-def"><a name="L299"></a><tt class="py-lineno">299</tt> <a class="py-toggle" href="#" id="PluginDB.plugin_unloaded-toggle" onclick="return toggle('PluginDB.plugin_unloaded');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.nt.PluginDB-class.html#plugin_unloaded">plugin_unloaded</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">pluginName</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="PluginDB.plugin_unloaded-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="PluginDB.plugin_unloaded-expanded"><a name="L300"></a><tt class="py-lineno">300</tt>  <tt class="py-line">                <tt class="py-docstring">"""Remove all node types registered by pluginName unless they have been </tt> </tt>
+<a name="L301"></a><tt class="py-lineno">301</tt>  <tt class="py-line"><tt class="py-docstring">                registered by a third party. We cannot assume that they listen to these events, </tt> </tt>
+<a name="L302"></a><tt class="py-lineno">302</tt>  <tt class="py-line"><tt class="py-docstring">                hence we just keep the record as it will not harm.</tt> </tt>
+<a name="L303"></a><tt class="py-lineno">303</tt>  <tt class="py-line"><tt class="py-docstring">                </tt> </tt>
+<a name="L304"></a><tt class="py-lineno">304</tt>  <tt class="py-line"><tt class="py-docstring">                In any way, we will remove any record of the plugin from our db"""</tt> </tt>
+<a name="L305"></a><tt class="py-lineno">305</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-129" class="py-name"><a title="mrv.automation.base.log
+mrv.automation.qa.log
+mrv.automation.workflow.log
+mrv.cmd.base.SpawnedCommand.log
+mrv.cmd.base.log
+mrv.conf.log
+mrv.interface.log
+mrv.log
+mrv.maya.automation.qa.log
+mrv.maya.log
+mrv.maya.mdb.log
+mrv.maya.nt.base.log
+mrv.maya.nt.geometry.log
+mrv.maya.nt.persistence.log
+mrv.maya.nt.typ.log
+mrv.maya.ui.control.log
+mrv.maya.ui.dialog.log
+mrv.maya.ui.qa.log
+mrv.mdepparse.log
+mrv.path.log
+mrv.util.log" class="py-name" href="#" onclick="return doclink('link-129', 'log', 'link-94');">log</a></tt><tt class="py-op">.</tt><tt id="link-130" class="py-name"><a title="unittest.TestCase.debug
+unittest.TestSuite.debug" class="py-name" href="#" onclick="return doclink('link-130', 'debug', 'link-103');">debug</a></tt><tt class="py-op">(</tt><tt class="py-string">"plugin '%s' unloaded"</tt> <tt class="py-op">%</tt> <tt class="py-name">pluginName</tt><tt class="py-op">)</tt> </tt>
+<a name="L306"></a><tt class="py-lineno">306</tt>  <tt class="py-line">                 </tt>
+<a name="L307"></a><tt class="py-lineno">307</tt>  <tt class="py-line">                <tt class="py-comment"># clear our record</tt> </tt>
+<a name="L308"></a><tt class="py-lineno">308</tt>  <tt class="py-line">                <tt class="py-name">installed_type_names</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">[</tt><tt class="py-name">pluginName</tt><tt class="py-op">]</tt> </tt>
+<a name="L309"></a><tt class="py-lineno">309</tt>  <tt class="py-line">                <tt class="py-keyword">del</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">[</tt><tt class="py-name">pluginName</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L310"></a><tt class="py-lineno">310</tt>  <tt class="py-line">                 </tt>
+<a name="L311"></a><tt class="py-lineno">311</tt>  <tt class="py-line">                <tt class="py-comment"># deregister types if possible</tt> </tt>
+<a name="L312"></a><tt class="py-lineno">312</tt>  <tt class="py-line">                <tt id="link-131" class="py-name"><a title="mrv.maya.nt" class="py-name" href="#" onclick="return doclink('link-131', 'nt', 'link-41');">nt</a></tt> <tt class="py-op">=</tt> <tt class="py-name">globals</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L313"></a><tt class="py-lineno">313</tt>  <tt class="py-line">                <tt class="py-keyword">for</tt> <tt class="py-name">tn</tt> <tt class="py-keyword">in</tt> <tt class="py-name">installed_type_names</tt><tt class="py-op">:</tt> </tt>
+<a name="L314"></a><tt class="py-lineno">314</tt>  <tt class="py-line">                        <tt class="py-name">tnc</tt> <tt class="py-op">=</tt> <tt id="link-132" class="py-name"><a title="mrv.util.capitalize" class="py-name" href="#" onclick="return doclink('link-132', 'capitalize', 'link-6');">capitalize</a></tt><tt class="py-op">(</tt><tt class="py-name">tn</tt><tt class="py-op">)</tt> </tt>
+<a name="L315"></a><tt class="py-lineno">315</tt>  <tt class="py-line">                         </tt>
+<a name="L316"></a><tt class="py-lineno">316</tt>  <tt class="py-line">                        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L317"></a><tt class="py-lineno">317</tt>  <tt class="py-line">                                <tt class="py-name">node_type</tt> <tt class="py-op">=</tt> <tt id="link-133" class="py-name"><a title="mrv.maya.nt" class="py-name" href="#" onclick="return doclink('link-133', 'nt', 'link-41');">nt</a></tt><tt class="py-op">[</tt><tt class="py-name">tnc</tt><tt class="py-op">]</tt> </tt>
+<a name="L318"></a><tt class="py-lineno">318</tt>  <tt class="py-line">                        <tt class="py-keyword">except</tt> <tt class="py-name">KeyError</tt><tt class="py-op">:</tt> </tt>
+<a name="L319"></a><tt class="py-lineno">319</tt>  <tt class="py-line">                                <tt class="py-comment"># wasnt registered anymore ? </tt> </tt>
+<a name="L320"></a><tt class="py-lineno">320</tt>  <tt class="py-line">                                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-134" class="py-name"><a title="mrv.automation.base.log
+mrv.automation.qa.log
+mrv.automation.workflow.log
+mrv.cmd.base.SpawnedCommand.log
+mrv.cmd.base.log
+mrv.conf.log
+mrv.interface.log
+mrv.log
+mrv.maya.automation.qa.log
+mrv.maya.log
+mrv.maya.mdb.log
+mrv.maya.nt.base.log
+mrv.maya.nt.geometry.log
+mrv.maya.nt.persistence.log
+mrv.maya.nt.typ.log
+mrv.maya.ui.control.log
+mrv.maya.ui.dialog.log
+mrv.maya.ui.qa.log
+mrv.mdepparse.log
+mrv.path.log
+mrv.util.log" class="py-name" href="#" onclick="return doclink('link-134', 'log', 'link-94');">log</a></tt><tt class="py-op">.</tt><tt class="py-name">warn</tt><tt class="py-op">(</tt><tt class="py-string">"Type %s of unloaded plugin %s was already de-registered in mrv type system - skipped"</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-name">tnc</tt><tt class="py-op">,</tt> <tt class="py-name">pluginName</tt><tt class="py-op">)</tt><tt class="py-op">)</tt>  </tt>
+<a name="L321"></a><tt class="py-lineno">321</tt>  <tt class="py-line">                                <tt class="py-keyword">continue</tt> </tt>
+<a name="L322"></a><tt class="py-lineno">322</tt>  <tt class="py-line">                        <tt class="py-comment"># END handle exception</tt> </tt>
+<a name="L323"></a><tt class="py-lineno">323</tt>  <tt class="py-line">                         </tt>
+<a name="L324"></a><tt class="py-lineno">324</tt>  <tt class="py-line">                        <tt class="py-comment"># remove the type only if it was one of our unknown default types</tt> </tt>
+<a name="L325"></a><tt class="py-lineno">325</tt>  <tt class="py-line">                        <tt class="py-name">parentclsname</tt> <tt class="py-op">=</tt> <tt class="py-name">node_type</tt><tt class="py-op">.</tt><tt class="py-name">__base__</tt><tt class="py-op">.</tt><tt class="py-name">__name__</tt> </tt>
+<a name="L326"></a><tt class="py-lineno">326</tt>  <tt class="py-line">                        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">parentclsname</tt><tt class="py-op">.</tt><tt class="py-name">startswith</tt><tt class="py-op">(</tt><tt class="py-string">'Unknown'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L327"></a><tt class="py-lineno">327</tt>  <tt class="py-line">                                <tt class="py-keyword">continue</tt> </tt>
+<a name="L328"></a><tt class="py-lineno">328</tt>  <tt class="py-line">                        <tt class="py-comment"># END skip custom nodes</tt> </tt>
+<a name="L329"></a><tt class="py-lineno">329</tt>  <tt class="py-line">                         </tt>
+<a name="L330"></a><tt class="py-lineno">330</tt>  <tt class="py-line">                        <tt id="link-135" class="py-name"><a title="mrv.maya.nt.typ
+mrv.maya.ui.typ" class="py-name" href="#" onclick="return doclink('link-135', 'typ', 'link-2');">typ</a></tt><tt class="py-op">.</tt><tt class="py-name">_removeCustomType</tt><tt class="py-op">(</tt><tt id="link-136" class="py-name"><a title="mrv.maya.nt" class="py-name" href="#" onclick="return doclink('link-136', 'nt', 'link-41');">nt</a></tt><tt class="py-op">,</tt> <tt class="py-name">tnc</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L331"></a><tt class="py-lineno">331</tt>  <tt class="py-line">                <tt class="py-comment"># END for each typename</tt> </tt>
+<a name="L332"></a><tt class="py-lineno">332</tt>  <tt class="py-line">                 </tt>
+<a name="L333"></a><tt class="py-lineno">333</tt>  <tt class="py-line">                 </tt>
+<a name="L334"></a><tt class="py-lineno">334</tt>  <tt class="py-line"> </tt>
+<a name="L335"></a><tt class="py-lineno">335</tt>  <tt class="py-line"><tt class="py-comment">#} END utilty classes</tt> </tt>
+<a name="L336"></a><tt class="py-lineno">336</tt>  <tt class="py-line"> </tt>
+<a name="L337"></a><tt class="py-lineno">337</tt>  <tt class="py-line"> </tt>
+<a name="L338"></a><tt class="py-lineno">338</tt>  <tt class="py-line"> </tt>
+<a name="L339"></a><tt class="py-lineno">339</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt class="py-string">'init_done'</tt> <tt class="py-keyword">not</tt> <tt class="py-keyword">in</tt> <tt class="py-name">locals</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L340"></a><tt class="py-lineno">340</tt>  <tt class="py-line">        <tt id="link-137" class="py-name" targets="Variable mrv.maya.automation.init_done=mrv.maya.automation-module.html#init_done,Variable mrv.maya.init_done=mrv.maya-module.html#init_done,Variable mrv.maya.nt.init_done=mrv.maya.nt-module.html#init_done,Variable mrv.maya.ui.init_done=mrv.maya.ui-module.html#init_done"><a title="mrv.maya.automation.init_done
+mrv.maya.init_done
+mrv.maya.nt.init_done
+mrv.maya.ui.init_done" class="py-name" href="#" onclick="return doclink('link-137', 'init_done', 'link-137');">init_done</a></tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+<a name="L341"></a><tt class="py-lineno">341</tt>  <tt class="py-line"> </tt>
+<a name="L342"></a><tt class="py-lineno">342</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt id="link-138" class="py-name"><a title="mrv.maya.automation.init_done
+mrv.maya.init_done
+mrv.maya.nt.init_done
+mrv.maya.ui.init_done" class="py-name" href="#" onclick="return doclink('link-138', 'init_done', 'link-137');">init_done</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L343"></a><tt class="py-lineno">343</tt>  <tt class="py-line"> </tt>
+<a name="L344"></a><tt class="py-lineno">344</tt>  <tt class="py-line">        <tt id="link-139" class="py-name" targets="Function mrv.maya.nt._init_package()=mrv.maya.nt-module.html#_init_package"><a title="mrv.maya.nt._init_package" class="py-name" href="#" onclick="return doclink('link-139', '_init_package', 'link-139');">_init_package</a></tt><tt class="py-op">(</tt> <tt class="py-op">)</tt> </tt>
+<a name="L345"></a><tt class="py-lineno">345</tt>  <tt class="py-line"> </tt>
+<a name="L346"></a><tt class="py-lineno">346</tt>  <tt class="py-line"> </tt>
+<a name="L347"></a><tt class="py-lineno">347</tt>  <tt class="py-line">        <tt class="py-comment"># overwrite dummy node bases with hand-implemented ones</tt> </tt>
+<a name="L348"></a><tt class="py-lineno">348</tt>  <tt class="py-line">        <tt class="py-keyword">from</tt> <tt id="link-140" class="py-name"><a title="mrv.automation.base
+mrv.cmd.base
+mrv.doc.base
+mrv.maya.nt.base
+mrv.maya.ui.base" class="py-name" href="#" onclick="return doclink('link-140', 'base', 'link-75');">base</a></tt> <tt class="py-keyword">import</tt> <tt class="py-op">*</tt> </tt>
+<a name="L349"></a><tt class="py-lineno">349</tt>  <tt class="py-line">        <tt class="py-keyword">from</tt> <tt id="link-141" class="py-name" targets="Module mrv.maya.nt.geometry=mrv.maya.nt.geometry-module.html"><a title="mrv.maya.nt.geometry" class="py-name" href="#" onclick="return doclink('link-141', 'geometry', 'link-141');">geometry</a></tt> <tt class="py-keyword">import</tt> <tt class="py-op">*</tt> </tt>
+<a name="L350"></a><tt class="py-lineno">350</tt>  <tt class="py-line">        <tt class="py-keyword">from</tt> <tt id="link-142" class="py-name"><a title="mrv.dge._PlugShell.set
+mrv.dgfe._IOShell.set
+mrv.dgfe._OIShell.set
+mrv.interface.iProgressIndicator.set
+mrv.maya.nt.base.Transform.set
+mrv.maya.nt.set
+mrv.maya.nt.set
+mrv.maya.ui.set" class="py-name" href="#" onclick="return doclink('link-142', 'set', 'link-104');">set</a></tt> <tt class="py-keyword">import</tt> <tt class="py-op">*</tt> </tt>
+<a name="L351"></a><tt class="py-lineno">351</tt>  <tt class="py-line">        <tt class="py-keyword">from</tt> <tt id="link-143" class="py-name" targets="Module mrv.maya.nt.anim=mrv.maya.nt.anim-module.html"><a title="mrv.maya.nt.anim" class="py-name" href="#" onclick="return doclink('link-143', 'anim', 'link-143');">anim</a></tt> <tt class="py-keyword">import</tt> <tt class="py-op">*</tt> </tt>
+<a name="L352"></a><tt class="py-lineno">352</tt>  <tt class="py-line">        <tt class="py-keyword">from</tt> <tt id="link-144" class="py-name" targets="Module mrv.maya.nt.it=mrv.maya.nt.it-module.html"><a title="mrv.maya.nt.it" class="py-name" href="#" onclick="return doclink('link-144', 'it', 'link-144');">it</a></tt> <tt class="py-keyword">import</tt> <tt class="py-op">*</tt> </tt>
+<a name="L353"></a><tt class="py-lineno">353</tt>  <tt class="py-line">        <tt class="py-keyword">from</tt> <tt id="link-145" class="py-name"><a title="mrv.maya.nt.storage" class="py-name" href="#" onclick="return doclink('link-145', 'storage', 'link-42');">storage</a></tt> <tt class="py-keyword">import</tt> <tt class="py-op">*</tt> </tt>
+<a name="L354"></a><tt class="py-lineno">354</tt>  <tt class="py-line">         </tt>
+<a name="L355"></a><tt class="py-lineno">355</tt>  <tt class="py-line">        <tt class="py-comment"># fix set</tt> </tt>
+<a name="L356"></a><tt class="py-lineno">356</tt>  <tt class="py-line">        <tt class="py-keyword">import</tt> <tt class="py-name">__builtin__</tt> </tt>
+<a name="L357"></a><tt class="py-lineno">357</tt>  <tt class="py-line">        <tt id="link-146" class="py-name"><a title="mrv.dge._PlugShell.set
+mrv.dgfe._IOShell.set
+mrv.dgfe._OIShell.set
+mrv.interface.iProgressIndicator.set
+mrv.maya.nt.base.Transform.set
+mrv.maya.nt.set
+mrv.maya.nt.set
+mrv.maya.ui.set" class="py-name" href="#" onclick="return doclink('link-146', 'set', 'link-104');">set</a></tt> <tt class="py-op">=</tt> <tt class="py-name">__builtin__</tt><tt class="py-op">.</tt><tt id="link-147" class="py-name"><a title="mrv.dge._PlugShell.set
+mrv.dgfe._IOShell.set
+mrv.dgfe._OIShell.set
+mrv.interface.iProgressIndicator.set
+mrv.maya.nt.base.Transform.set
+mrv.maya.nt.set
+mrv.maya.nt.set
+mrv.maya.ui.set" class="py-name" href="#" onclick="return doclink('link-147', 'set', 'link-104');">set</a></tt> </tt>
+<a name="L358"></a><tt class="py-lineno">358</tt>  <tt class="py-line">         </tt>
+<a name="L359"></a><tt class="py-lineno">359</tt>  <tt class="py-line">        <tt class="py-comment"># import additional classes required in this module</tt> </tt>
+<a name="L360"></a><tt class="py-lineno">360</tt>  <tt class="py-line">        <tt class="py-keyword">from</tt> <tt id="link-148" class="py-name"><a title="mrv
+mrv.cmd.startup.mrv" class="py-name" href="#" onclick="return doclink('link-148', 'mrv', 'link-0');">mrv</a></tt><tt class="py-op">.</tt><tt id="link-149" class="py-name"><a title="mrv.maya" class="py-name" href="#" onclick="return doclink('link-149', 'maya', 'link-1');">maya</a></tt><tt class="py-op">.</tt><tt id="link-150" class="py-name" targets="Module mrv.maya.ns=mrv.maya.ns-module.html"><a title="mrv.maya.ns" class="py-name" href="#" onclick="return doclink('link-150', 'ns', 'link-150');">ns</a></tt> <tt class="py-keyword">import</tt> <tt id="link-151" class="py-name" targets="Class mrv.maya.ns.Namespace=mrv.maya.ns.Namespace-class.html"><a title="mrv.maya.ns.Namespace" class="py-name" href="#" onclick="return doclink('link-151', 'Namespace', 'link-151');">Namespace</a></tt> </tt>
+<a name="L361"></a><tt class="py-lineno">361</tt>  <tt class="py-line">         </tt>
+<a name="L362"></a><tt class="py-lineno">362</tt>  <tt class="py-line">        <tt class="py-comment"># Setup all actual types - this makes the use much easier</tt> </tt>
+<a name="L363"></a><tt class="py-lineno">363</tt>  <tt class="py-line">        <tt id="link-152" class="py-name" targets="Function mrv.maya.nt._force_type_creation()=mrv.maya.nt-module.html#_force_type_creation"><a title="mrv.maya.nt._force_type_creation" class="py-name" href="#" onclick="return doclink('link-152', '_force_type_creation', 'link-152');">_force_type_creation</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L364"></a><tt class="py-lineno">364</tt>  <tt class="py-line">        <tt id="link-153" class="py-name" targets="Function mrv.maya.nt._init_plugin_db()=mrv.maya.nt-module.html#_init_plugin_db"><a title="mrv.maya.nt._init_plugin_db" class="py-name" href="#" onclick="return doclink('link-153', '_init_plugin_db', 'link-153');">_init_plugin_db</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L365"></a><tt class="py-lineno">365</tt>  <tt class="py-line"> </tt>
+<a name="L366"></a><tt class="py-lineno">366</tt>  <tt class="py-line"><tt id="link-154" class="py-name"><a title="mrv.maya.automation.init_done
+mrv.maya.init_done
+mrv.maya.nt.init_done
+mrv.maya.ui.init_done" class="py-name" href="#" onclick="return doclink('link-154', 'init_done', 'link-137');">init_done</a></tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L367"></a><tt class="py-lineno">367</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Nov 30 14:48:41 2010
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

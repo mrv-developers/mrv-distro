@@ -1,0 +1,441 @@
+<html>
+<head>
+<title>mrv.maya.ui.editor</title>
+</head>
+<body>
+mrv.maya.ui.editor
+<style>
+.coverage pre {float: left; margin: 0px 1em; border: none;
+               padding: 0px; }
+.num pre { margin: 0px }
+.nocov, .nocov pre {background-color: #faa}
+.cov, .cov pre {background-color: #cfc}
+div.coverage div { clear: both; height: 1.1em}
+</style>
+<div class="stats">
+Covered: 380 lines<br/>
+Missed: 0 lines<br/>
+Skipped 36 lines<br/>
+Percent: 100 %<br/>
+
+</div>
+<div class="coverage">
+<div class="skip"><span class="num"><pre>  1</pre></span><pre># -*- coding: utf-8 -*-</pre></div>
+<div class="cov"><span class="num"><pre>  2</pre></span><pre>&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  3</pre></span><pre>Contains implementations of maya editors</pre></div>
+<div class="cov"><span class="num"><pre>  4</pre></span><pre>&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  5</pre></span><pre>__docformat__ = &quot;restructuredtext&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  6</pre></span><pre>import base as uibase</pre></div>
+<div class="cov"><span class="num"><pre>  7</pre></span><pre>import util as uiutil</pre></div>
+<div class="skip"><span class="num"><pre>  8</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>  9</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 10</pre></span><pre>class EditorBase( uibase.NamedUI, uiutil.UIContainerBase ):</pre></div>
+<div class="cov"><span class="num"><pre> 11</pre></span><pre>	&quot;&quot;&quot; Structural base  for all Layouts allowing general queries and name handling</pre></div>
+<div class="cov"><span class="num"><pre> 12</pre></span><pre>	Layouts may track their children &quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 13</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 14</pre></span><pre>	_properties_ = (</pre></div>
+<div class="cov"><span class="num"><pre> 15</pre></span><pre>						&quot;panel&quot;, &quot;pnl&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 16</pre></span><pre>						&quot;control&quot;, &quot;ctl&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 17</pre></span><pre>						&quot;mainListConnection&quot;, &quot;mlc&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 18</pre></span><pre>						&quot;forceMainConnection&quot;, &quot;fmc&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 19</pre></span><pre>						&quot;selectionConnection&quot;, &quot;slc&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 20</pre></span><pre>						&quot;highlightConnection&quot;, &quot;hlc&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 21</pre></span><pre>						&quot;filter&quot;, &quot;f&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 22</pre></span><pre>						&quot;lockMainConnection&quot;, &quot;lck&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 23</pre></span><pre>						&quot;stateString&quot;, &quot;sts&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 24</pre></span><pre>						&quot;unlockMainConnection&quot;, &quot;ulk&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 25</pre></span><pre>						&quot;updateMainConnection&quot;, &quot;upd&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 26</pre></span><pre>						&quot;docTag&quot;, &quot;dtg&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 27</pre></span><pre>					)</pre></div>
+<div class="skip"><span class="num"><pre> 28</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 29</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 30</pre></span><pre>class ColorEditor( uibase.NamedUI ):</pre></div>
+<div class="cov"><span class="num"><pre> 31</pre></span><pre>	_properties_ = (</pre></div>
+<div class="cov"><span class="num"><pre> 32</pre></span><pre>						&quot;rgbValue&quot;, &quot;rgb&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 33</pre></span><pre>						&quot;hsvValue&quot;, &quot;hsv&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 34</pre></span><pre>						&quot;alpha&quot;, &quot;a&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 35</pre></span><pre>						&quot;result&quot;, &quot;r&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 36</pre></span><pre>					)</pre></div>
+<div class="skip"><span class="num"><pre> 37</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 38</pre></span><pre>class BlendShapeEditor( EditorBase ):</pre></div>
+<div class="cov"><span class="num"><pre> 39</pre></span><pre>	_properties_ = (</pre></div>
+<div class="cov"><span class="num"><pre> 40</pre></span><pre>						&quot;verticalSliders&quot;, &quot;vs&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 41</pre></span><pre>						&quot;targetControlList&quot;, &quot;tcl&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 42</pre></span><pre>						&quot;targetList&quot;, &quot;tl&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 43</pre></span><pre>					)</pre></div>
+<div class="skip"><span class="num"><pre> 44</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 45</pre></span><pre>class OutlinerEditor( EditorBase ):</pre></div>
+<div class="cov"><span class="num"><pre> 46</pre></span><pre>	_properties_ = (</pre></div>
+<div class="cov"><span class="num"><pre> 47</pre></span><pre>						&quot;showShapes&quot;, &quot;shp&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 48</pre></span><pre>						&quot;attrFilter&quot;, &quot;af&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 49</pre></span><pre>						&quot;showAttributes&quot;, &quot;atr&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 50</pre></span><pre>						&quot;showConnected&quot;, &quot;con&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 51</pre></span><pre>						&quot;showAnimCurvesOnly&quot;, &quot;aco&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 52</pre></span><pre>						&quot;showTextureNodesOnly&quot;, &quot;tno&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 53</pre></span><pre>						&quot;showDagOnly&quot;, &quot;dag&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 54</pre></span><pre>						&quot;ignoreDagHierarchy&quot;, &quot;hir&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 55</pre></span><pre>						&quot;autoExpand&quot;, &quot;xpd&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 56</pre></span><pre>						&quot;expandConnections&quot;, &quot;xc&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 57</pre></span><pre>						&quot;showUnitlessCurves&quot;, &quot;su&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 58</pre></span><pre>						&quot;showCompounds&quot;, &quot;cmp&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 59</pre></span><pre>						&quot;showLeafs&quot;, &quot;laf&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 60</pre></span><pre>						&quot;showNumericAttrsOnly&quot;, &quot;num&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 61</pre></span><pre>						&quot;editAttrName&quot;, &quot;ean&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 62</pre></span><pre>						&quot;showUVAttrsOnly&quot;, &quot;uv&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 63</pre></span><pre>						&quot;highlightActive&quot;, &quot;ha&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 64</pre></span><pre>						&quot;highlightSecondary&quot;, &quot;hs&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 65</pre></span><pre>						&quot;autoSelectNewObjects&quot;, &quot;as&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 66</pre></span><pre>						&quot;doNotSelectNewObjects&quot;, &quot;dns&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 67</pre></span><pre>						&quot;dropIsParent&quot;, &quot;dip&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 68</pre></span><pre>						&quot;transmitFilters&quot;, &quot;tf&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 69</pre></span><pre>						&quot;showSelected&quot;, &quot;sc&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 70</pre></span><pre>						&quot;setFilter&quot;, &quot;sf&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 71</pre></span><pre>						&quot;showSetMembers&quot;, &quot;ssm&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 72</pre></span><pre>						&quot;allowMultiSelection&quot;, &quot;ams&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 73</pre></span><pre>						&quot;alwaysToggleSelect&quot;, &quot;ats&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 74</pre></span><pre>						&quot;directSelect&quot;, &quot;ds&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 75</pre></span><pre>						&quot;object&quot;, &quot;Obj&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 76</pre></span><pre>						&quot;displayMode&quot;, &quot;dm&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 77</pre></span><pre>						&quot;expandObjects&quot;, &quot;eo&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 78</pre></span><pre>						&quot;setsIgnoreFilters&quot;, &quot;sif&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 79</pre></span><pre>						&quot;showAttrValues&quot;, &quot;av&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 80</pre></span><pre>						&quot;masterOutliner&quot;, &quot;mst&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 81</pre></span><pre>						&quot;isChildSelected&quot;, &quot;ics&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 82</pre></span><pre>						&quot;attrAlphaOrder&quot;, &quot;aao&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 83</pre></span><pre>						&quot;sortOrder&quot;, &quot;so&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 84</pre></span><pre>						&quot;longNames&quot;, &quot;ln&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 85</pre></span><pre>						&quot;niceNames&quot;, &quot;nn&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 86</pre></span><pre>						&quot;showNamespace&quot;, &quot;sn&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 87</pre></span><pre>					)</pre></div>
+<div class="cov"><span class="num"><pre> 88</pre></span><pre>	_events_ = 		( &quot;selectCommand&quot;, &quot;sec&quot; )</pre></div>
+<div class="skip"><span class="num"><pre> 89</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 90</pre></span><pre>class AnimEditorBase( EditorBase ):</pre></div>
+<div class="cov"><span class="num"><pre> 91</pre></span><pre>	_properties_ = (</pre></div>
+<div class="cov"><span class="num"><pre> 92</pre></span><pre>					&quot;displayKeys&quot;, &quot;dk&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 93</pre></span><pre>					&quot;displayTangents&quot;, &quot;dtn&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 94</pre></span><pre>					&quot;displayActiveKeys&quot;, &quot;dak&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 95</pre></span><pre>					&quot;displayActiveKeyTangents&quot;, &quot;dat&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 96</pre></span><pre>					&quot;displayInfinities&quot;, &quot;di&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 97</pre></span><pre>					&quot;autoFit&quot;, &quot;af&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 98</pre></span><pre>					&quot;lookAt&quot;, &quot;la&quot;,</pre></div>
+<div class="cov"><span class="num"><pre> 99</pre></span><pre>					&quot;snapTime&quot;, &quot;st&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>100</pre></span><pre>					&quot;snapValue&quot;, &quot;sv&quot;</pre></div>
+<div class="cov"><span class="num"><pre>101</pre></span><pre>					)</pre></div>
+<div class="skip"><span class="num"><pre>102</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>103</pre></span><pre>class AnimCurveEditor( AnimEditorBase ):</pre></div>
+<div class="cov"><span class="num"><pre>104</pre></span><pre>	_properties_ =	(</pre></div>
+<div class="cov"><span class="num"><pre>105</pre></span><pre>					&quot;showResults&quot;, &quot;sr&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>106</pre></span><pre>					&quot;showBufferCurves&quot;, &quot;sb&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>107</pre></span><pre>					&quot;smoothness&quot;, &quot;s&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>108</pre></span><pre>					&quot;resultScreenSamples&quot;, &quot;rss&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>109</pre></span><pre>					&quot;resultUpdate&quot;, &quot;ru&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>110</pre></span><pre>					&quot;clipTime&quot;, &quot;ct&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>111</pre></span><pre>					&quot;curvesShown&quot;, &quot;cs&quot;</pre></div>
+<div class="cov"><span class="num"><pre>112</pre></span><pre>					)</pre></div>
+<div class="cov"><span class="num"><pre>113</pre></span><pre>	_events_ = 		(</pre></div>
+<div class="cov"><span class="num"><pre>114</pre></span><pre>					 &quot;normalizeCurvesCommand&quot;, &quot;ncc&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>115</pre></span><pre>					 &quot;denormalizeCurvesCommand&quot;, &quot;dcc&quot;</pre></div>
+<div class="cov"><span class="num"><pre>116</pre></span><pre>					 )</pre></div>
+<div class="skip"><span class="num"><pre>117</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>118</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>119</pre></span><pre>class RenderEditorBase( EditorBase ):</pre></div>
+<div class="cov"><span class="num"><pre>120</pre></span><pre>	_properties_ = (</pre></div>
+<div class="cov"><span class="num"><pre>121</pre></span><pre>					&quot;scaleRed&quot;, &quot;sr&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>122</pre></span><pre>					&quot;scaleGreen&quot;, &quot;sg&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>123</pre></span><pre>					&quot;scaleBlue&quot;, &quot;sb&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>124</pre></span><pre>					&quot;singleBuffer&quot;, &quot;sbf&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>125</pre></span><pre>					&quot;doubleBuffer&quot;, &quot;dbf&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>126</pre></span><pre>					&quot;displayImage&quot;, &quot;di&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>127</pre></span><pre>					&quot;loadImage&quot;, &quot;li&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>128</pre></span><pre>					&quot;writeImage&quot;, &quot;wi&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>129</pre></span><pre>					&quot;displayStyle&quot;, &quot;dst&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>130</pre></span><pre>					&quot;removeImage&quot;, &quot;ri&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>131</pre></span><pre>					&quot;removeAllImages&quot;, &quot;ra&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>132</pre></span><pre>					&quot;saveImage&quot;, &quot;si&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>133</pre></span><pre>					&quot;nbImages&quot;, &quot;nim&quot;</pre></div>
+<div class="cov"><span class="num"><pre>134</pre></span><pre>					)</pre></div>
+<div class="skip"><span class="num"><pre>135</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>136</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>137</pre></span><pre>class RenderWindowEditor( RenderEditorBase ):</pre></div>
+<div class="cov"><span class="num"><pre>138</pre></span><pre>	_properties_ = 	(</pre></div>
+<div class="cov"><span class="num"><pre>139</pre></span><pre>					&quot;toggle&quot;, &quot;tgl&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>140</pre></span><pre>					&quot;marquee&quot;, &quot;mq&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>141</pre></span><pre>					&quot;resetRegion&quot;, &quot;rr&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>142</pre></span><pre>					&quot;autoResize&quot;, &quot;ar&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>143</pre></span><pre>					&quot;showRegion&quot;, &quot;srg&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>144</pre></span><pre>					&quot;snapshot&quot;, &quot;snp&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>145</pre></span><pre>					&quot;currentCamera&quot;, &quot;crc&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>146</pre></span><pre>					&quot;clear&quot;, &quot;cl&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>147</pre></span><pre>					&quot;frameImage&quot;, &quot;fi&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>148</pre></span><pre>					&quot;frameRegion&quot;, &quot;fr&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>149</pre></span><pre>					&quot;realSize&quot;, &quot;rs&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>150</pre></span><pre>					&quot;caption&quot;, &quot;cap&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>151</pre></span><pre>					&quot;pcaption&quot;, &quot;pca&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>152</pre></span><pre>					&quot;compDisplay&quot;, &quot;cd&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>153</pre></span><pre>					&quot;blendMode&quot;, &quot;blm&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>154</pre></span><pre>					&quot;compImageFile&quot;</pre></div>
+<div class="cov"><span class="num"><pre>155</pre></span><pre>					)</pre></div>
+<div class="cov"><span class="num"><pre>156</pre></span><pre>	_events_ = 		( &quot;changedCommand&quot;, &quot;cc&quot; )</pre></div>
+<div class="skip"><span class="num"><pre>157</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>158</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>159</pre></span><pre>class GlRenderEditor( EditorBase ):</pre></div>
+<div class="cov"><span class="num"><pre>160</pre></span><pre>	_properties_ = 	(</pre></div>
+<div class="cov"><span class="num"><pre>161</pre></span><pre>					 &quot;viewCameraName&quot;, &quot;vcn&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>162</pre></span><pre>					 &quot;lookThru&quot;, &quot;lt&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>163</pre></span><pre>					 &quot;modelViewName&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>164</pre></span><pre>					 &quot;glRenderViewName&quot;, &quot;rvn&quot;</pre></div>
+<div class="cov"><span class="num"><pre>165</pre></span><pre>					 )</pre></div>
+<div class="skip"><span class="num"><pre>166</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>167</pre></span><pre>class ModelEditor( EditorBase ):</pre></div>
+<div class="cov"><span class="num"><pre>168</pre></span><pre>	_properties_ =	(</pre></div>
+<div class="cov"><span class="num"><pre>169</pre></span><pre>					 &quot;camera&quot;, &quot;cam&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>170</pre></span><pre>					 &quot;cameraName&quot;, &quot;cn&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>171</pre></span><pre>					 &quot;displayLights&quot;, &quot;dl&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>172</pre></span><pre>					 &quot;bufferMode&quot;, &quot;bm&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>173</pre></span><pre>					 &quot;activeOnly&quot;, &quot;ao&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>174</pre></span><pre>					 &quot;interactive&quot;, &quot;i&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>175</pre></span><pre>					 &quot;twoSidedLighting&quot;, &quot;tsl&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>176</pre></span><pre>					 &quot;displayAppearance&quot;, &quot;da&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>177</pre></span><pre>					 &quot;wireframeOnShaded&quot;, &quot;wos&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>178</pre></span><pre>					 &quot;headsUpDisplay&quot;, &quot;hud&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>179</pre></span><pre>					 &quot;selectionHiliteDisplay&quot;, &quot;sel&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>180</pre></span><pre>					 &quot;useDefaultMaterial&quot;, &quot;udm&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>181</pre></span><pre>					 &quot;useColorIndex&quot;, &quot;uci&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>182</pre></span><pre>					 &quot;wireframeBackingStore&quot;, &quot;wbs&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>183</pre></span><pre>					 &quot;useRGBImagePlane&quot;, &quot;ip&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>184</pre></span><pre>					 &quot;updateColorMode&quot;, &quot;ucm&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>185</pre></span><pre>					 &quot;colorMap&quot;, &quot;cm&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>186</pre></span><pre>					 &quot;backfaceCulling&quot;, &quot;bfc&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>187</pre></span><pre>					 &quot;xray&quot;, &quot;xr&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>188</pre></span><pre>					 &quot;maxConstantTransparency&quot;, &quot;mct&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>189</pre></span><pre>					 &quot;displayTextures&quot;, &quot;dtx&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>190</pre></span><pre>					 &quot;smoothWireframe&quot;, &quot;swf&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>191</pre></span><pre>					 &quot;textureMaxSize&quot;, &quot;tms&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>192</pre></span><pre>					 &quot;textureMemoryUsed&quot;, &quot;tmu&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>193</pre></span><pre>					 &quot;textureAnisotropic&quot;, &quot;ta&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>194</pre></span><pre>					 &quot;textureSampling&quot;, &quot;ts&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>195</pre></span><pre>					 &quot;textureDisplay&quot;, &quot;td&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>196</pre></span><pre>					 &quot;textureHighlight&quot;, &quot;th&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>197</pre></span><pre>					 &quot;fogging&quot;, &quot;fg&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>198</pre></span><pre>					 &quot;fogSource&quot;, &quot;fsc&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>199</pre></span><pre>					 &quot;fogMode&quot;, &quot;fmd&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>200</pre></span><pre>					 &quot;fogDensity&quot;, &quot;fdn&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>201</pre></span><pre>					 &quot;fogEnd&quot;, &quot;fen&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>202</pre></span><pre>					 &quot;fogStart&quot;, &quot;fst&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>203</pre></span><pre>					 &quot;fogColor&quot;, &quot;fcl&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>204</pre></span><pre>					 &quot;shadows&quot;, &quot;sdw&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>205</pre></span><pre>					 &quot;rendererName&quot;, &quot;rnm&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>206</pre></span><pre>					 &quot;rendererList&quot;, &quot;rls&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>207</pre></span><pre>					 &quot;rendererListUI&quot;, &quot;rlu&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>208</pre></span><pre>					 &quot;colorResolution&quot;, &quot;crz&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>209</pre></span><pre>					 &quot;bumpResolution&quot;, &quot;brz&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>210</pre></span><pre>					 &quot;transparencyAlgorithm&quot;, &quot;tal&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>211</pre></span><pre>					 &quot;transpInShadows&quot;, &quot;tis&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>212</pre></span><pre>					 &quot;cullingOverride&quot;, &quot;cov&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>213</pre></span><pre>					 &quot;lowQualityLighting&quot;, &quot;lql&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>214</pre></span><pre>					 &quot;occlusionCulling&quot;, &quot;ocl&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>215</pre></span><pre>					 &quot;useBaseRenderer&quot;, &quot;ubr&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>216</pre></span><pre>					 &quot;nurbsCurves&quot;, &quot;nc&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>217</pre></span><pre>					 &quot;nurbsSurfaces&quot;, &quot;ns&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>218</pre></span><pre>					 &quot;polyMeshes&quot;, &quot;pm&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>219</pre></span><pre>					 &quot;subdivSurfaces&quot;, &quot;sds&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>220</pre></span><pre>					 &quot;planes&quot;, &quot;pl&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>221</pre></span><pre>					 &quot;lights&quot;, &quot;lt&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>222</pre></span><pre>					 &quot;cameras&quot;, &quot;ca&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>223</pre></span><pre>					 &quot;controlVertices&quot;, &quot;cv&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>224</pre></span><pre>					 &quot;grid&quot;, &quot;gr&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>225</pre></span><pre>					 &quot;hulls&quot;, &quot;hu&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>226</pre></span><pre>					 &quot;joints&quot;, &quot;j&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>227</pre></span><pre>					 &quot;ikHandles&quot;, &quot;ikh&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>228</pre></span><pre>					 &quot;deformers&quot;, &quot;df&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>229</pre></span><pre>					 &quot;dynamics&quot;, &quot;dy&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>230</pre></span><pre>					 &quot;fluids&quot;, &quot;fl&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>231</pre></span><pre>					 &quot;hairSystems&quot;, &quot;hs&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>232</pre></span><pre>					 &quot;follicles&quot;, &quot;fo&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>233</pre></span><pre>					 &quot;nCloths&quot;, &quot;ncl&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>234</pre></span><pre>					 &quot;nRigids&quot;, &quot;nr&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>235</pre></span><pre>					 &quot;dynamicConstraints&quot;, &quot;dc&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>236</pre></span><pre>					 &quot;locators&quot;, &quot;lc&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>237</pre></span><pre>					 &quot;manipulators&quot;, &quot;mlocators&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>238</pre></span><pre>					 &quot;dimensions&quot;, &quot;dim&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>239</pre></span><pre>					 &quot;handles&quot;, &quot;ha&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>240</pre></span><pre>					 &quot;pivots&quot;, &quot;pv&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>241</pre></span><pre>					 &quot;textures&quot;, &quot;tx&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>242</pre></span><pre>					 &quot;strokes&quot;, &quot;str&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>243</pre></span><pre>					 &quot;allObjects&quot;, &quot;alo&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>244</pre></span><pre>					 &quot;useInteractiveMode&quot;, &quot;ui&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>245</pre></span><pre>					 &quot;activeView&quot;, &quot;av&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>246</pre></span><pre>					 &quot;sortTransparent&quot;, &quot;st&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>247</pre></span><pre>					 &quot;viewSelected&quot;, &quot;vs&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>248</pre></span><pre>					 &quot;setSelected&quot;, &quot;ss&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>249</pre></span><pre>					 &quot;addSelected&quot;, &quot;as&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>250</pre></span><pre>					 &quot;addObjects&quot;, &quot;aob&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>251</pre></span><pre>					 &quot;viewObjects&quot;, &quot;vo&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>252</pre></span><pre>					 &quot;noUndo&quot;, &quot;nud&quot;</pre></div>
+<div class="cov"><span class="num"><pre>253</pre></span><pre>					 )</pre></div>
+<div class="skip"><span class="num"><pre>254</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>255</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>256</pre></span><pre>class ClipEditor( AnimEditorBase ):</pre></div>
+<div class="cov"><span class="num"><pre>257</pre></span><pre>	_properties_ = 	(</pre></div>
+<div class="cov"><span class="num"><pre>258</pre></span><pre>					 &quot;characterOutline&quot;, &quot;co&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>259</pre></span><pre>					 &quot;highlightedBlend&quot;, &quot;hb&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>260</pre></span><pre>					 &quot;highlightedClip&quot;, &quot;hc&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>261</pre></span><pre>					 &quot;selectBlend&quot;, &quot;sb&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>262</pre></span><pre>					 &quot;selectClip&quot;, &quot;sc&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>263</pre></span><pre>					 &quot;deselectAll&quot;, &quot;da&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>264</pre></span><pre>					 &quot;frameAll&quot;, &quot;fa&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>265</pre></span><pre>					 &quot;listAllCharacters&quot;, &quot;lac&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>266</pre></span><pre>					 &quot;listCurrentCharacters&quot;, &quot;lc&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>267</pre></span><pre>					 &quot;menuContext&quot;, &quot;mc&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>268</pre></span><pre>					 &quot;allTrackHeights&quot;, &quot;th&quot;</pre></div>
+<div class="cov"><span class="num"><pre>269</pre></span><pre>					 )</pre></div>
+<div class="skip"><span class="num"><pre>270</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>271</pre></span><pre>	_events_ = 		(</pre></div>
+<div class="cov"><span class="num"><pre>272</pre></span><pre>					 &quot;clipDropCmd&quot;, &quot;cd&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>273</pre></span><pre>					 &quot;deleteCmd&quot;, &quot;dc&quot;</pre></div>
+<div class="cov"><span class="num"><pre>274</pre></span><pre>					 )</pre></div>
+<div class="skip"><span class="num"><pre>275</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>276</pre></span><pre>class DeviceEditor( EditorBase ):</pre></div>
+<div class="cov"><span class="num"><pre>277</pre></span><pre>	_properties_ = 	( &quot;takePath&quot;, &quot;tp&quot; )</pre></div>
+<div class="skip"><span class="num"><pre>278</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>279</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>280</pre></span><pre>class DynPaintEditor( RenderEditorBase ):</pre></div>
+<div class="cov"><span class="num"><pre>281</pre></span><pre>	_properties_ = 	(</pre></div>
+<div class="cov"><span class="num"><pre>282</pre></span><pre>					 &quot;clear&quot;, &quot;cl&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>283</pre></span><pre>					 &quot;displayAppearance&quot;, &quot;dsa&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>284</pre></span><pre>					 &quot;displayLights&quot;, &quot;dsl&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>285</pre></span><pre>					 &quot;displayTextures&quot;, &quot;dtx&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>286</pre></span><pre>					 &quot;menu&quot;, &quot;mn&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>287</pre></span><pre>					 &quot;newImage&quot;, &quot;ni&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>288</pre></span><pre>					 &quot;wrap&quot;, &quot;wr&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>289</pre></span><pre>					 &quot;zoom&quot;, &quot;zm&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>290</pre></span><pre>					 &quot;camera&quot;, &quot;cam&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>291</pre></span><pre>					 &quot;paintAll&quot;, &quot;pa&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>292</pre></span><pre>					 &quot;rollImage&quot;, &quot;rig&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>293</pre></span><pre>					 &quot;tileSize&quot;, &quot;ts&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>294</pre></span><pre>					 &quot;snapShot&quot;, &quot;snp&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>295</pre></span><pre>					 &quot;undoCache&quot;, &quot;uc&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>296</pre></span><pre>					 &quot;canvasUndo&quot;, &quot;cu&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>297</pre></span><pre>					 &quot;canvasMode&quot;, &quot;cm&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>298</pre></span><pre>					 &quot;redrawLast&quot;, &quot;rl&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>299</pre></span><pre>					 &quot;refreshMode&quot;, &quot;rmd&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>300</pre></span><pre>					 &quot;autoSave&quot;, &quot;as&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>301</pre></span><pre>					 &quot;saveAlpha&quot;, &quot;sa&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>302</pre></span><pre>					 &quot;drawContext&quot;, &quot;drc&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>303</pre></span><pre>					 &quot;activeOnly&quot;, &quot;ao&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>304</pre></span><pre>					 &quot;fileName&quot;, &quot;fil&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>305</pre></span><pre>					 &quot;saveBumpmap&quot;, &quot;sbm&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>306</pre></span><pre>					 &quot;iconGrab&quot;, &quot;ig&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>307</pre></span><pre>					 &quot;displayFog&quot;, &quot;dfg&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>308</pre></span><pre>					 &quot;currentCanvasSize&quot;, &quot;ccs&quot;</pre></div>
+<div class="cov"><span class="num"><pre>309</pre></span><pre>					 )</pre></div>
+<div class="skip"><span class="num"><pre>310</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>311</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>312</pre></span><pre>class ComponentEditor( EditorBase ):</pre></div>
+<div class="cov"><span class="num"><pre>313</pre></span><pre>	_properties_ = 	(</pre></div>
+<div class="cov"><span class="num"><pre>314</pre></span><pre>					 &quot;lockInput&quot;, &quot;li&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>315</pre></span><pre>					 &quot;precision&quot;, &quot;pre&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>316</pre></span><pre>					 &quot;setOperationLabel&quot;, &quot;sol&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>317</pre></span><pre>					 &quot;operationLabels&quot;, &quot;ol&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>318</pre></span><pre>					 &quot;operationCount&quot;, &quot;oc&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>319</pre></span><pre>					 &quot;operationType&quot;, &quot;ot&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>320</pre></span><pre>					 &quot;hideZeroColumns&quot;, &quot;hzc&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>321</pre></span><pre>					 &quot;sortAlpha&quot;, &quot;sa&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>322</pre></span><pre>					 &quot;showObjects&quot;, &quot;so&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>323</pre></span><pre>					 &quot;showSelected&quot;, &quot;ss&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>324</pre></span><pre>					 &quot;floatSlider&quot;, &quot;fs&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>325</pre></span><pre>					 &quot;floatField&quot;, &quot;ff&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>326</pre></span><pre>					 &quot;hidePathName&quot;, &quot;hpn&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>327</pre></span><pre>					 &quot;newTab&quot;, &quot;nt&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>328</pre></span><pre>					 &quot;removeTab&quot;, &quot;rt&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>329</pre></span><pre>					 &quot;selected&quot;, &quot;sl&quot;</pre></div>
+<div class="cov"><span class="num"><pre>330</pre></span><pre>					)</pre></div>
+<div class="skip"><span class="num"><pre>331</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>332</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>333</pre></span><pre>class SelectionConnection( uibase.NamedUI ):</pre></div>
+<div class="cov"><span class="num"><pre>334</pre></span><pre>	_properties_ = 	(</pre></div>
+<div class="cov"><span class="num"><pre>335</pre></span><pre>					 &quot;filter&quot;, &quot;f&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>336</pre></span><pre>					 &quot;global&quot;, &quot;g&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>337</pre></span><pre>					 &quot;object&quot;, &quot;obj&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>338</pre></span><pre>					 &quot;connectionList&quot;, &quot;lst&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>339</pre></span><pre>					 &quot;switch&quot;, &quot;sw&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>340</pre></span><pre>					 &quot;editor&quot;, &quot;ed&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>341</pre></span><pre>					 &quot;addTo&quot;, &quot;add&quot;</pre></div>
+<div class="cov"><span class="num"><pre>342</pre></span><pre>					 &quot;remove&quot;, &quot;rm&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>343</pre></span><pre>					 &quot;findObject&quot;, &quot;fo&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>344</pre></span><pre>					 &quot;identify&quot;, &quot;id&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>345</pre></span><pre>					 &quot;lock&quot;, &quot;lck&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>346</pre></span><pre>					 &quot;clear&quot;, &quot;clr&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>347</pre></span><pre>					 &quot;select&quot;, &quot;s&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>348</pre></span><pre>					 &quot;deselect&quot;, &quot;d&quot;</pre></div>
+<div class="cov"><span class="num"><pre>349</pre></span><pre>					)</pre></div>
+<div class="skip"><span class="num"><pre>350</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>351</pre></span><pre>	_events_ = 		(</pre></div>
+<div class="cov"><span class="num"><pre>352</pre></span><pre>					 &quot;addScript&quot;, &quot;as&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>353</pre></span><pre>					 &quot;removeScript&quot;, &quot;rs&quot;</pre></div>
+<div class="cov"><span class="num"><pre>354</pre></span><pre>					)</pre></div>
+<div class="skip"><span class="num"><pre>355</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>356</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>357</pre></span><pre>class ItemFilterBase( uibase.BaseUI ):</pre></div>
+<div class="cov"><span class="num"><pre>358</pre></span><pre>	_properties_ = 	(</pre></div>
+<div class="cov"><span class="num"><pre>359</pre></span><pre>					 &quot;byName&quot;, &quot;bn&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>360</pre></span><pre>					 &quot;union&quot;, &quot;un&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>361</pre></span><pre>					 &quot;intersect&quot;, &quot;in&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>362</pre></span><pre>					 &quot;difference&quot;, &quot;di&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>363</pre></span><pre>					 &quot;negate&quot;, &quot;neg&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>364</pre></span><pre>					 &quot;text&quot;, &quot;t&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>365</pre></span><pre>					 &quot;classification&quot;, &quot;cls&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>366</pre></span><pre>					 &quot;listBuiltInFilters&quot;, &quot;lbf&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>367</pre></span><pre>					 &quot;listUserFilters&quot;, &quot;luf&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>368</pre></span><pre>					 &quot;listOtherFilters&quot;, &quot;lof&quot;</pre></div>
+<div class="cov"><span class="num"><pre>369</pre></span><pre>					)</pre></div>
+<div class="skip"><span class="num"><pre>370</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>371</pre></span><pre>	_events_	= 	(</pre></div>
+<div class="cov"><span class="num"><pre>372</pre></span><pre>					 &quot;byScript&quot;, &quot;bs&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>373</pre></span><pre>					 &quot;secondScript&quot;, &quot;ss&quot;</pre></div>
+<div class="cov"><span class="num"><pre>374</pre></span><pre>					)</pre></div>
+<div class="skip"><span class="num"><pre>375</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>376</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>377</pre></span><pre>class ItemFilter( ItemFilterBase ):</pre></div>
+<div class="cov"><span class="num"><pre>378</pre></span><pre>	_properties_ = (</pre></div>
+<div class="cov"><span class="num"><pre>379</pre></span><pre>					&quot;byType&quot;, &quot;bt&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>380</pre></span><pre>					&quot;clearByType&quot;, &quot;cbt&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>381</pre></span><pre>					&quot;byBin&quot;, &quot;bk&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>382</pre></span><pre>					&quot;clearByBin&quot;, &quot;cbk&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>383</pre></span><pre>					&quot;category&quot;, &quot;cat&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>384</pre></span><pre>					&quot;uniqueNodeNames&quot;, &quot;unn&quot;</pre></div>
+<div class="cov"><span class="num"><pre>385</pre></span><pre>					)</pre></div>
+<div class="skip"><span class="num"><pre>386</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>387</pre></span><pre>class ItemFilterAttr( ItemFilterBase ):</pre></div>
+<div class="cov"><span class="num"><pre>388</pre></span><pre>	_properties_ = (</pre></div>
+<div class="cov"><span class="num"><pre>389</pre></span><pre>					&quot;hidden&quot;, &quot;h&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>390</pre></span><pre>					&quot;writable&quot;, &quot;w&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>391</pre></span><pre>					&quot;readable&quot;, &quot;r&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>392</pre></span><pre>					&quot;keyable&quot;, &quot;k&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>393</pre></span><pre>					&quot;scaleRotateTranslate&quot;, &quot;srt&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>394</pre></span><pre>					&quot;hasExpression&quot;, &quot;he&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>395</pre></span><pre>					&quot;byNameString&quot;, &quot;bns&quot;</pre></div>
+<div class="cov"><span class="num"><pre>396</pre></span><pre>					)</pre></div>
+<div class="skip"><span class="num"><pre>397</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>398</pre></span><pre>class ItemFilterRender( ItemFilterBase ):</pre></div>
+<div class="cov"><span class="num"><pre>399</pre></span><pre>	_properties_ = 	(</pre></div>
+<div class="cov"><span class="num"><pre>400</pre></span><pre>					 &quot;category&quot;, &quot;cat&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>401</pre></span><pre>					 &quot;shaders&quot;, &quot;s&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>402</pre></span><pre>					 &quot;anyTextures&quot;, &quot;at&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>403</pre></span><pre>					 &quot;textures2d&quot;, &quot;t2d&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>404</pre></span><pre>					 &quot;textures3d&quot;, &quot;t3d&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>405</pre></span><pre>					 &quot;lights&quot;, &quot;l&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>406</pre></span><pre>					 &quot;postProcess&quot;, &quot;pp&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>407</pre></span><pre>					 &quot;renderUtilityNode&quot;, &quot;run&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>408</pre></span><pre>					 &quot;exclusiveLights&quot;, &quot;exl&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>409</pre></span><pre>					 &quot;linkedLights&quot;, &quot;ls&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>410</pre></span><pre>					 &quot;lightSets&quot;, &quot;ls&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>411</pre></span><pre>					 &quot;nonIlluminatingLights&quot;, &quot;nil&quot;</pre></div>
+<div class="cov"><span class="num"><pre>412</pre></span><pre>					 &quot;nonExclusiveLights&quot;, &quot;nxl&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>413</pre></span><pre>					 &quot;renderableObjectSets&quot;, &quot;ros&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>414</pre></span><pre>					 &quot;texturesProcedural&quot;, &quot;tp&quot;</pre></div>
+<div class="cov"><span class="num"><pre>415</pre></span><pre>					)</pre></div>
+<div class="skip"><span class="num"><pre>416</pre></span><pre></pre></div>
+</div>
+</body>
+</html>

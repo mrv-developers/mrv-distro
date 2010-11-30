@@ -1,0 +1,177 @@
+<html>
+<head>
+<title>mrv.maya.ui.dialog</title>
+</head>
+<body>
+mrv.maya.ui.dialog
+<style>
+.coverage pre {float: left; margin: 0px 1em; border: none;
+               padding: 0px; }
+.num pre { margin: 0px }
+.nocov, .nocov pre {background-color: #faa}
+.cov, .cov pre {background-color: #cfc}
+div.coverage div { clear: both; height: 1.1em}
+</style>
+<div class="stats">
+Covered: 47 lines<br/>
+Missed: 62 lines<br/>
+Skipped 43 lines<br/>
+Percent: 43 %<br/>
+
+</div>
+<div class="coverage">
+<div class="skip"><span class="num"><pre>  1</pre></span><pre># -*- coding: utf-8 -*-</pre></div>
+<div class="cov"><span class="num"><pre>  2</pre></span><pre>&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  3</pre></span><pre>Contains some default dialogs as well as layouts suitable for layout dialogs</pre></div>
+<div class="cov"><span class="num"><pre>  4</pre></span><pre>&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  5</pre></span><pre>__docformat__ = &quot;restructuredtext&quot;</pre></div>
+<div class="skip"><span class="num"><pre>  6</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  7</pre></span><pre>import base as uibase</pre></div>
+<div class="cov"><span class="num"><pre>  8</pre></span><pre>import maya.cmds as cmds</pre></div>
+<div class="cov"><span class="num"><pre>  9</pre></span><pre>import maya.utils as mutils</pre></div>
+<div class="cov"><span class="num"><pre> 10</pre></span><pre>import mrv.util as util</pre></div>
+<div class="cov"><span class="num"><pre> 11</pre></span><pre>from mrv.interface import iPrompt, iChoiceDialog, iProgressIndicator</pre></div>
+<div class="skip"><span class="num"><pre> 12</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 13</pre></span><pre>import logging</pre></div>
+<div class="cov"><span class="num"><pre> 14</pre></span><pre>log = logging.getLogger(&quot;mrv.maya.ui.dialog&quot;)</pre></div>
+<div class="skip"><span class="num"><pre> 15</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 16</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 17</pre></span><pre>class Dialog( uibase.BaseUI ):</pre></div>
+<div class="cov"><span class="num"><pre> 18</pre></span><pre>	&quot;&quot;&quot; Base for all dialog classes &quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 19</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 20</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 21</pre></span><pre>class PromptDialog( Dialog ):</pre></div>
+<div class="cov"><span class="num"><pre> 22</pre></span><pre>	&quot;&quot;&quot; Wrapper class for maya prompt dialog&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 23</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 24</pre></span><pre>	def __init__( self, title, message, okText, cancelText, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre> 25</pre></span><pre>		&quot;&quot;&quot; Create a prompt dialog and allow to query the result</pre></div>
+<div class="cov"><span class="num"><pre> 26</pre></span><pre>		:note: return default text in batch mode, given with 'text' key&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 27</pre></span><pre>		if cmds.about( batch=1 ):</pre></div>
+<div class="nocov"><span class="num"><pre> 28</pre></span><pre>			return kwargs.get( 'text', kwargs.get( 't', '' ) )</pre></div>
+<div class="skip"><span class="num"><pre> 29</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 30</pre></span><pre>		ret = cmds.promptDialog( t = title, m = message, b = [okText,cancelText],</pre></div>
+<div class="nocov"><span class="num"><pre> 31</pre></span><pre>									db = okText, cb = cancelText,**kwargs )</pre></div>
+<div class="nocov"><span class="num"><pre> 32</pre></span><pre>		self._text = None</pre></div>
+<div class="nocov"><span class="num"><pre> 33</pre></span><pre>		if ret == okText:</pre></div>
+<div class="nocov"><span class="num"><pre> 34</pre></span><pre>			self._text = cmds.promptDialog( q=1, text = 1 )</pre></div>
+<div class="skip"><span class="num"><pre> 35</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 36</pre></span><pre>	def text( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 37</pre></span><pre>		&quot;&quot;&quot;:return: the entered text or None if the box has been aborted&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 38</pre></span><pre>		return self._text</pre></div>
+<div class="skip"><span class="num"><pre> 39</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 40</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 41</pre></span><pre>class Prompt( iPrompt ):</pre></div>
+<div class="cov"><span class="num"><pre> 42</pre></span><pre>	&quot;&quot;&quot;Implements the prompt interface using a prompt dialog&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 43</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 44</pre></span><pre>	def prompt( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 45</pre></span><pre>		&quot;&quot;&quot;Aquire the information using a prompt dialog</pre></div>
+<div class="skip"><span class="num"><pre> 46</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 47</pre></span><pre>		:return: prompted value if input was confirmed using confirmToken, or the cancelValue</pre></div>
+<div class="cov"><span class="num"><pre> 48</pre></span><pre>			if cancelToken was pressed</pre></div>
+<div class="cov"><span class="num"><pre> 49</pre></span><pre>		:note: tokens correspond to buttons</pre></div>
+<div class="cov"><span class="num"><pre> 50</pre></span><pre>		:note: handles batch mode correctly&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 51</pre></span><pre>		if cmds.about( batch = 1 ):</pre></div>
+<div class="nocov"><span class="num"><pre> 52</pre></span><pre>			return super( Prompt, self ).prompt( )</pre></div>
+<div class="skip"><span class="num"><pre> 53</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 54</pre></span><pre>		default_text = ( self.confirmDefault is not None and self.confirmDefault ) or &quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 55</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 56</pre></span><pre>		tokens = [ self.confirmToken ]</pre></div>
+<div class="nocov"><span class="num"><pre> 57</pre></span><pre>		token_kwargs = { &quot;db&quot; : self.confirmToken }</pre></div>
+<div class="nocov"><span class="num"><pre> 58</pre></span><pre>		if self.cancelToken is not None:</pre></div>
+<div class="nocov"><span class="num"><pre> 59</pre></span><pre>			tokens.append( self.cancelToken )</pre></div>
+<div class="nocov"><span class="num"><pre> 60</pre></span><pre>			token_kwargs[ &quot;cb&quot; ] = self.cancelToken</pre></div>
+<div class="skip"><span class="num"><pre> 61</pre></span><pre>		# END token preparation</pre></div>
+<div class="nocov"><span class="num"><pre> 62</pre></span><pre>		token_kwargs.update( self._kwargs )</pre></div>
+<div class="skip"><span class="num"><pre> 63</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 64</pre></span><pre>		ret = cmds.promptDialog( t=&quot;Prompt&quot;, m = self.msg, b = tokens, text = default_text, **token_kwargs )</pre></div>
+<div class="skip"><span class="num"><pre> 65</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 66</pre></span><pre>		if ret == self.cancelToken:</pre></div>
+<div class="nocov"><span class="num"><pre> 67</pre></span><pre>			return self.cancelDefault</pre></div>
+<div class="skip"><span class="num"><pre> 68</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 69</pre></span><pre>		if ret == self.confirmToken:</pre></div>
+<div class="nocov"><span class="num"><pre> 70</pre></span><pre>			return cmds.promptDialog( q=1, text = 1 )</pre></div>
+<div class="skip"><span class="num"><pre> 71</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 72</pre></span><pre>		return self.confirmDefault</pre></div>
+<div class="skip"><span class="num"><pre> 73</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 74</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 75</pre></span><pre>class ChoiceDialog( iChoiceDialog ):</pre></div>
+<div class="cov"><span class="num"><pre> 76</pre></span><pre>	&quot;&quot;&quot;Maya implementation of the generic choice dialog interface&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 77</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 78</pre></span><pre>	def choice( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 79</pre></span><pre>		&quot;&quot;&quot;Return the choice made by the user&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 80</pre></span><pre>		# don't do anything inbatch mode</pre></div>
+<div class="nocov"><span class="num"><pre> 81</pre></span><pre>		if cmds.about( b=1 ):</pre></div>
+<div class="nocov"><span class="num"><pre> 82</pre></span><pre>			return self.default_choice</pre></div>
+<div class="skip"><span class="num"><pre> 83</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 84</pre></span><pre>		return cmds.confirmDialog( 	t = self.title,</pre></div>
+<div class="nocov"><span class="num"><pre> 85</pre></span><pre>								  	m = self.message,</pre></div>
+<div class="nocov"><span class="num"><pre> 86</pre></span><pre>									b = [ str( c ) for c in self.choices ],</pre></div>
+<div class="nocov"><span class="num"><pre> 87</pre></span><pre>									db = self.default_choice,</pre></div>
+<div class="nocov"><span class="num"><pre> 88</pre></span><pre>									cb = self.cancel_choice,</pre></div>
+<div class="nocov"><span class="num"><pre> 89</pre></span><pre>									ds = self.cancel_choice )</pre></div>
+<div class="skip"><span class="num"><pre> 90</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 91</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 92</pre></span><pre>class ProgressWindow( iProgressIndicator ):</pre></div>
+<div class="cov"><span class="num"><pre> 93</pre></span><pre>	&quot;&quot;&quot;Simple progress window wrapping the default maya progress window&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 94</pre></span><pre>	def __init__( self, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre> 95</pre></span><pre>		&quot;&quot;&quot;Everything that iProgress indicator and Maya Progress Window support&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 96</pre></span><pre>		min = kwargs.pop( &quot;min&quot;, kwargs.pop( &quot;minValue&quot; , 0 ) )</pre></div>
+<div class="nocov"><span class="num"><pre> 97</pre></span><pre>		max = kwargs.pop( &quot;max&quot;, kwargs.pop( &quot;maxValue&quot;, 100 ) )</pre></div>
+<div class="skip"><span class="num"><pre> 98</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 99</pre></span><pre>		relative = kwargs.pop( &quot;is_relative&quot;, 1 )</pre></div>
+<div class="nocov"><span class="num"><pre>100</pre></span><pre>		super( ProgressWindow, self ).__init__( min = min, max = max, is_relative = relative )</pre></div>
+<div class="skip"><span class="num"><pre>101</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>102</pre></span><pre>		# remove invalid args</pre></div>
+<div class="nocov"><span class="num"><pre>103</pre></span><pre>		kwargs.pop( &quot;s&quot;, kwargs.pop( &quot;step&quot;, 0 ) )</pre></div>
+<div class="nocov"><span class="num"><pre>104</pre></span><pre>		kwargs.pop( &quot;pr&quot;, kwargs.pop( &quot;progress&quot;, 0 ) )</pre></div>
+<div class="nocov"><span class="num"><pre>105</pre></span><pre>		kwargs.pop( &quot;ep&quot;, kwargs.pop( &quot;endProgress&quot;, 0 ) )</pre></div>
+<div class="nocov"><span class="num"><pre>106</pre></span><pre>		kwargs.pop( &quot;ic&quot;, kwargs.pop( &quot;isCancelled&quot;, 0 ) )</pre></div>
+<div class="nocov"><span class="num"><pre>107</pre></span><pre>		kwargs.pop( &quot;e&quot;, kwargs.pop( &quot;edit&quot;, 0 ) )</pre></div>
+<div class="skip"><span class="num"><pre>108</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>109</pre></span><pre>		self.kwargs = kwargs  			# store for begin</pre></div>
+<div class="skip"><span class="num"><pre>110</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>111</pre></span><pre>	def refresh( self, message = None ):</pre></div>
+<div class="cov"><span class="num"><pre>112</pre></span><pre>		&quot;&quot;&quot;Finally show the progress window&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>113</pre></span><pre>		mn,mx = ( self.isRelative() and ( 0,100) ) or self.range()</pre></div>
+<div class="nocov"><span class="num"><pre>114</pre></span><pre>		p = self.get()</pre></div>
+<div class="skip"><span class="num"><pre>115</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>116</pre></span><pre>		myargs = dict()</pre></div>
+<div class="nocov"><span class="num"><pre>117</pre></span><pre>		myargs[ &quot;e&quot; ] = 1</pre></div>
+<div class="nocov"><span class="num"><pre>118</pre></span><pre>		myargs[ &quot;min&quot; ] = mn</pre></div>
+<div class="nocov"><span class="num"><pre>119</pre></span><pre>		myargs[ &quot;max&quot; ] = mx</pre></div>
+<div class="nocov"><span class="num"><pre>120</pre></span><pre>		myargs[ &quot;pr&quot; ] = p</pre></div>
+<div class="nocov"><span class="num"><pre>121</pre></span><pre>		myargs[ &quot;status&quot; ] = message or ( &quot;Progress %s&quot; % ( &quot;.&quot; * ( int(p) % 4 ) ) )</pre></div>
+<div class="skip"><span class="num"><pre>122</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>123</pre></span><pre>		try:</pre></div>
+<div class="nocov"><span class="num"><pre>124</pre></span><pre>			cmds.progressWindow( **myargs )</pre></div>
+<div class="nocov"><span class="num"><pre>125</pre></span><pre>		except RuntimeError,e:</pre></div>
+<div class="nocov"><span class="num"><pre>126</pre></span><pre>			log.warn(str( e ))</pre></div>
+<div class="nocov"><span class="num"><pre>127</pre></span><pre>			pass 		# don't know yet why that happens</pre></div>
+<div class="skip"><span class="num"><pre>128</pre></span><pre>		# END handle progress window errors</pre></div>
+<div class="skip"><span class="num"><pre>129</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>130</pre></span><pre>	def begin( self ):</pre></div>
+<div class="cov"><span class="num"><pre>131</pre></span><pre>		&quot;&quot;&quot;Show our window&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>132</pre></span><pre>		super( ProgressWindow, self ).begin( )</pre></div>
+<div class="nocov"><span class="num"><pre>133</pre></span><pre>		cmds.progressWindow( **self.kwargs )</pre></div>
+<div class="skip"><span class="num"><pre>134</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>135</pre></span><pre>	def end( self ):</pre></div>
+<div class="cov"><span class="num"><pre>136</pre></span><pre>		&quot;&quot;&quot;Close the progress window&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>137</pre></span><pre>		# damn, has to be deferred to actually work</pre></div>
+<div class="nocov"><span class="num"><pre>138</pre></span><pre>		super( ProgressWindow, self ).end( )</pre></div>
+<div class="nocov"><span class="num"><pre>139</pre></span><pre>		mutils.executeDeferred( cmds.progressWindow, ep=1 )</pre></div>
+<div class="skip"><span class="num"><pre>140</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>141</pre></span><pre>	def isCancelRequested( self ):</pre></div>
+<div class="cov"><span class="num"><pre>142</pre></span><pre>		&quot;&quot;&quot;:return: True if the action should be cancelled, False otherwise&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>143</pre></span><pre>		return cmds.progressWindow( q=1, ic=1 )</pre></div>
+<div class="skip"><span class="num"><pre>144</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>145</pre></span><pre>	def isAbortable( self ):</pre></div>
+<div class="cov"><span class="num"><pre>146</pre></span><pre>		&quot;&quot;&quot;:return : true if the process can be aborted&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>147</pre></span><pre>		return cmds.progressWindow( q=1, ii=1 )</pre></div>
+<div class="skip"><span class="num"><pre>148</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>149</pre></span><pre>	def setAbortable( self, state ):</pre></div>
+<div class="nocov"><span class="num"><pre>150</pre></span><pre>		cmds.progressWindow( e=1, ii=state )</pre></div>
+<div class="nocov"><span class="num"><pre>151</pre></span><pre>		return super( ProgressWindow, self ).setAbortable( state )</pre></div>
+<div class="skip"><span class="num"><pre>152</pre></span><pre></pre></div>
+</div>
+</body>
+</html>

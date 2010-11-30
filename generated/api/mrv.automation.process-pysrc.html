@@ -1,0 +1,861 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>mrv.automation.process</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="mrv-module.html">Package&nbsp;mrv</a> ::
+        <a href="mrv.automation-module.html">Package&nbsp;automation</a> ::
+        Module&nbsp;process
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="mrv.automation.process-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="mrv.automation.process-module.html">Module mrv.automation.process</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment"># -*- coding: utf-8 -*-</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-docstring">"""Contains base class and common methods for all processes """</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-name">__docformat__</tt> <tt class="py-op">=</tt> <tt class="py-string">"restructuredtext"</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt id="link-0" class="py-name" targets="Variable mrv.batch.__all__=mrv.batch-module.html#__all__,Variable mrv.mdp.__all__=mrv.mdp-module.html#__all__"><a title="mrv.batch.__all__
+mrv.mdp.__all__" class="py-name" href="#" onclick="return doclink('link-0', '__all__', 'link-0');">__all__</a></tt> <tt class="py-op">=</tt> <tt class="py-name">list</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-1" class="py-name" targets="Package mrv=mrv-module.html,Function mrv.cmd.startup.mrv()=mrv.cmd.startup-module.html#mrv"><a title="mrv
+mrv.cmd.startup.mrv" class="py-name" href="#" onclick="return doclink('link-1', 'mrv', 'link-1');">mrv</a></tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Module mrv.dge=mrv.dge-module.html"><a title="mrv.dge" class="py-name" href="#" onclick="return doclink('link-2', 'dge', 'link-2');">dge</a></tt> <tt class="py-keyword">import</tt> <tt id="link-3" class="py-name" targets="Class mrv.dge.NodeBase=mrv.dge.NodeBase-class.html"><a title="mrv.dge.NodeBase" class="py-name" href="#" onclick="return doclink('link-3', 'NodeBase', 'link-3');">NodeBase</a></tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-4" class="py-name"><a title="mrv
+mrv.cmd.startup.mrv" class="py-name" href="#" onclick="return doclink('link-4', 'mrv', 'link-1');">mrv</a></tt><tt class="py-op">.</tt><tt id="link-5" class="py-name" targets="Module mrv.dgfe=mrv.dgfe-module.html"><a title="mrv.dgfe" class="py-name" href="#" onclick="return doclink('link-5', 'dgfe', 'link-5');">dgfe</a></tt> <tt class="py-keyword">import</tt> <tt id="link-6" class="py-name" targets="Class mrv.dgfe.GraphNodeBase=mrv.dgfe.GraphNodeBase-class.html"><a title="mrv.dgfe.GraphNodeBase" class="py-name" href="#" onclick="return doclink('link-6', 'GraphNodeBase', 'link-6');">GraphNodeBase</a></tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-7" class="py-name"><a title="mrv
+mrv.cmd.startup.mrv" class="py-name" href="#" onclick="return doclink('link-7', 'mrv', 'link-1');">mrv</a></tt><tt class="py-op">.</tt><tt id="link-8" class="py-name"><a title="mrv.dge" class="py-name" href="#" onclick="return doclink('link-8', 'dge', 'link-2');">dge</a></tt> <tt class="py-keyword">import</tt> <tt id="link-9" class="py-name" targets="Class mrv.dge.Attribute=mrv.dge.Attribute-class.html,Class mrv.maya.nt.base.Attribute=mrv.maya.nt.base.Attribute-class.html"><a title="mrv.dge.Attribute
+mrv.maya.nt.base.Attribute" class="py-name" href="#" onclick="return doclink('link-9', 'Attribute', 'link-9');">Attribute</a></tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-10" class="py-name"><a title="mrv
+mrv.cmd.startup.mrv" class="py-name" href="#" onclick="return doclink('link-10', 'mrv', 'link-1');">mrv</a></tt><tt class="py-op">.</tt><tt id="link-11" class="py-name" targets="Package mrv.automation=mrv.automation-module.html,Package mrv.maya.automation=mrv.maya.automation-module.html"><a title="mrv.automation
+mrv.maya.automation" class="py-name" href="#" onclick="return doclink('link-11', 'automation', 'link-11');">automation</a></tt><tt class="py-op">.</tt><tt id="link-12" class="py-name" targets="Module mrv.automation.base=mrv.automation.base-module.html,Module mrv.cmd.base=mrv.cmd.base-module.html,Module mrv.doc.base=mrv.doc.base-module.html,Module mrv.maya.nt.base=mrv.maya.nt.base-module.html,Module mrv.maya.ui.base=mrv.maya.ui.base-module.html"><a title="mrv.automation.base
+mrv.cmd.base
+mrv.doc.base
+mrv.maya.nt.base
+mrv.maya.ui.base" class="py-name" href="#" onclick="return doclink('link-12', 'base', 'link-12');">base</a></tt> <tt class="py-keyword">as</tt> <tt class="py-name">wflbase</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-13" class="py-name"><a title="mrv
+mrv.cmd.startup.mrv" class="py-name" href="#" onclick="return doclink('link-13', 'mrv', 'link-1');">mrv</a></tt><tt class="py-op">.</tt><tt id="link-14" class="py-name" targets="Method mrv.maya.ref.FileReference.path()=mrv.maya.ref.FileReference-class.html#path,Method mrv.maya.ui.browse.control.FilePathControl.path()=mrv.maya.ui.browse.control.FilePathControl-class.html#path,Module mrv.path=mrv.path-module.html"><a title="mrv.maya.ref.FileReference.path
+mrv.maya.ui.browse.control.FilePathControl.path
+mrv.path" class="py-name" href="#" onclick="return doclink('link-14', 'path', 'link-14');">path</a></tt> <tt class="py-keyword">import</tt> <tt id="link-15" class="py-name" targets="Function mrv.path.make_path()=mrv.path-module.html#make_path"><a title="mrv.path.make_path" class="py-name" href="#" onclick="return doclink('link-15', 'make_path', 'link-15');">make_path</a></tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-16" class="py-name"><a title="mrv
+mrv.cmd.startup.mrv" class="py-name" href="#" onclick="return doclink('link-16', 'mrv', 'link-1');">mrv</a></tt><tt class="py-op">.</tt><tt id="link-17" class="py-name" targets="Module mrv.maya.nt.util=mrv.maya.nt.util-module.html,Module mrv.maya.ui.browse.util=mrv.maya.ui.browse.util-module.html,Module mrv.maya.ui.util=mrv.maya.ui.util-module.html,Module mrv.maya.util=mrv.maya.util-module.html,Module mrv.util=mrv.util-module.html"><a title="mrv.maya.nt.util
+mrv.maya.ui.browse.util
+mrv.maya.ui.util
+mrv.maya.util
+mrv.util" class="py-name" href="#" onclick="return doclink('link-17', 'util', 'link-17');">util</a></tt> <tt class="py-keyword">import</tt> <tt id="link-18" class="py-name" targets="Class mrv.util.Or=mrv.util.Or-class.html"><a title="mrv.util.Or" class="py-name" href="#" onclick="return doclink('link-18', 'Or', 'link-18');">Or</a></tt> </tt>
+<a name="track_output_call"></a><div id="track_output_call-def"><a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt> <a class="py-toggle" href="#" id="track_output_call-toggle" onclick="return toggle('track_output_call');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.automation.process-module.html#track_output_call">track_output_call</a><tt class="py-op">(</tt> <tt class="py-param">func</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="track_output_call-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="track_output_call-expanded"><a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line">        <tt class="py-docstring">"""Wraps the proecss.evaluateStateBase function allowing to gather plenty of information</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-docstring">        about the call, as well as error statistics"""</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line">        <tt class="py-keyword">def</tt> <tt class="py-def-name">track_func</tt><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">plug</tt><tt class="py-op">,</tt> <tt class="py-param">mode</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line">                <tt class="py-comment"># return simple result if tracking is disabled</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-19" class="py-name" targets="Variable mrv.automation.process.ProcessBase.track_compute_calls=mrv.automation.process.ProcessBase-class.html#track_compute_calls,Variable mrv.automation.qa.QAProcessBase.track_compute_calls=mrv.automation.qa.QAProcessBase-class.html#track_compute_calls"><a title="mrv.automation.process.ProcessBase.track_compute_calls
+mrv.automation.qa.QAProcessBase.track_compute_calls" class="py-name" href="#" onclick="return doclink('link-19', 'track_compute_calls', 'link-19');">track_compute_calls</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line">                        <tt class="py-keyword">return</tt> <tt id="link-20" class="py-name" targets="Variable mrv.util.Call.func=mrv.util.Call-class.html#func"><a title="mrv.util.Call.func" class="py-name" href="#" onclick="return doclink('link-20', 'func', 'link-20');">func</a></tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">,</tt> <tt id="link-21" class="py-name" targets="Variable mrv.automation.workflow.Workflow.ProcessData.plug=mrv.automation.workflow.Workflow.ProcessData-class.html#plug,Class mrv.dge.plug=mrv.dge.plug-class.html"><a title="mrv.automation.workflow.Workflow.ProcessData.plug
+mrv.dge.plug" class="py-name" href="#" onclick="return doclink('link-21', 'plug', 'link-21');">plug</a></tt><tt class="py-op">,</tt> <tt id="link-22" class="py-name" targets="Variable mrv.automation.workflow.Workflow.ProcessData.mode=mrv.automation.workflow.Workflow.ProcessData-class.html#mode"><a title="mrv.automation.workflow.Workflow.ProcessData.mode" class="py-name" href="#" onclick="return doclink('link-22', 'mode', 'link-22');">mode</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line">                <tt class="py-name">pdata</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-23" class="py-name" targets="Method mrv.automation.process.ProcessBase.workflow()=mrv.automation.process.ProcessBase-class.html#workflow,Module mrv.automation.workflow=mrv.automation.workflow-module.html"><a title="mrv.automation.process.ProcessBase.workflow
+mrv.automation.workflow" class="py-name" href="#" onclick="return doclink('link-23', 'workflow', 'link-23');">workflow</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-24" class="py-name" targets="Method mrv.automation.workflow.Workflow._trackOutputQueryStart()=mrv.automation.workflow.Workflow-class.html#_trackOutputQueryStart"><a title="mrv.automation.workflow.Workflow._trackOutputQueryStart" class="py-name" href="#" onclick="return doclink('link-24', '_trackOutputQueryStart', 'link-24');">_trackOutputQueryStart</a></tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">,</tt> <tt id="link-25" class="py-name"><a title="mrv.automation.workflow.Workflow.ProcessData.plug
+mrv.dge.plug" class="py-name" href="#" onclick="return doclink('link-25', 'plug', 'link-21');">plug</a></tt><tt class="py-op">,</tt> <tt id="link-26" class="py-name"><a title="mrv.automation.workflow.Workflow.ProcessData.mode" class="py-name" href="#" onclick="return doclink('link-26', 'mode', 'link-22');">mode</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line">                <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line">                        <tt id="link-27" class="py-name" targets="Method mrv.automation.workflow.Workflow.ProcessData.result()=mrv.automation.workflow.Workflow.ProcessData-class.html#result"><a title="mrv.automation.workflow.Workflow.ProcessData.result" class="py-name" href="#" onclick="return doclink('link-27', 'result', 'link-27');">result</a></tt> <tt class="py-op">=</tt> <tt id="link-28" class="py-name"><a title="mrv.util.Call.func" class="py-name" href="#" onclick="return doclink('link-28', 'func', 'link-20');">func</a></tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">,</tt> <tt id="link-29" class="py-name"><a title="mrv.automation.workflow.Workflow.ProcessData.plug
+mrv.dge.plug" class="py-name" href="#" onclick="return doclink('link-29', 'plug', 'link-21');">plug</a></tt><tt class="py-op">,</tt> <tt id="link-30" class="py-name"><a title="mrv.automation.workflow.Workflow.ProcessData.mode" class="py-name" href="#" onclick="return doclink('link-30', 'mode', 'link-22');">mode</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line">                <tt class="py-keyword">except</tt> <tt class="py-name">Exception</tt><tt class="py-op">,</tt><tt class="py-name">e</tt><tt class="py-op">:</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line">                        <tt class="py-name">pdata</tt><tt class="py-op">.</tt><tt id="link-31" class="py-name" targets="Variable mrv.automation.workflow.Workflow.ProcessData.exception=mrv.automation.workflow.Workflow.ProcessData-class.html#exception"><a title="mrv.automation.workflow.Workflow.ProcessData.exception" class="py-name" href="#" onclick="return doclink('link-31', 'exception', 'link-31');">exception</a></tt> <tt class="py-op">=</tt> <tt class="py-name">e</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line">                        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-32" class="py-name"><a title="mrv.automation.process.ProcessBase.workflow
+mrv.automation.workflow" class="py-name" href="#" onclick="return doclink('link-32', 'workflow', 'link-23');">workflow</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-33" class="py-name" targets="Method mrv.automation.workflow.Workflow._trackOutputQueryEnd()=mrv.automation.workflow.Workflow-class.html#_trackOutputQueryEnd"><a title="mrv.automation.workflow.Workflow._trackOutputQueryEnd" class="py-name" href="#" onclick="return doclink('link-33', '_trackOutputQueryEnd', 'link-33');">_trackOutputQueryEnd</a></tt><tt class="py-op">(</tt> <tt class="py-name">None</tt> <tt class="py-op">)</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">                        <tt class="py-keyword">raise</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-34" class="py-name"><a title="mrv.automation.process.ProcessBase.workflow
+mrv.automation.workflow" class="py-name" href="#" onclick="return doclink('link-34', 'workflow', 'link-23');">workflow</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-35" class="py-name"><a title="mrv.automation.workflow.Workflow._trackOutputQueryEnd" class="py-name" href="#" onclick="return doclink('link-35', '_trackOutputQueryEnd', 'link-33');">_trackOutputQueryEnd</a></tt><tt class="py-op">(</tt> <tt id="link-36" class="py-name"><a title="mrv.automation.workflow.Workflow.ProcessData.result" class="py-name" href="#" onclick="return doclink('link-36', 'result', 'link-27');">result</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt id="link-37" class="py-name"><a title="mrv.automation.workflow.Workflow.ProcessData.result" class="py-name" href="#" onclick="return doclink('link-37', 'result', 'link-27');">result</a></tt> </tt>
+</div><a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line">        <tt class="py-comment"># END track func</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line"> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">track_func</tt> </tt>
+</div><a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"> </tt>
+<a name="ProcessBase"></a><div id="ProcessBase-def"><a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt> <a class="py-toggle" href="#" id="ProcessBase-toggle" onclick="return toggle('ProcessBase');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.automation.process.ProcessBase-class.html">ProcessBase</a><tt class="py-op">(</tt> <tt class="py-base-class">NodeBase</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ProcessBase-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="ProcessBase-expanded"><a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line">        <tt class="py-docstring">"""The base class for all processes, defining a common interface</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"><tt class="py-docstring">        Inputs and Outputs of this node are statically described using plugs</tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line"><tt class="py-docstring">        :note: the process base is able to duplcate properly as it stores in constructor</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line"><tt class="py-docstring">                arguments accordingly</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">        <tt id="link-38" class="py-name" targets="Variable mrv.automation.process.ProcessBase.kNo=mrv.automation.process.ProcessBase-class.html#kNo,Variable mrv.dge.Attribute.kNo=mrv.dge.Attribute-class.html#kNo,Variable mrv.dge.iPlug.kNo=mrv.dge.iPlug-class.html#kNo"><a title="mrv.automation.process.ProcessBase.kNo
+mrv.dge.Attribute.kNo
+mrv.dge.iPlug.kNo" class="py-name" href="#" onclick="return doclink('link-38', 'kNo', 'link-38');">kNo</a></tt><tt class="py-op">,</tt> <tt id="link-39" class="py-name" targets="Variable mrv.automation.process.ProcessBase.kGood=mrv.automation.process.ProcessBase-class.html#kGood,Variable mrv.dge.Attribute.kGood=mrv.dge.Attribute-class.html#kGood,Variable mrv.dge.iPlug.kGood=mrv.dge.iPlug-class.html#kGood"><a title="mrv.automation.process.ProcessBase.kGood
+mrv.dge.Attribute.kGood
+mrv.dge.iPlug.kGood" class="py-name" href="#" onclick="return doclink('link-39', 'kGood', 'link-39');">kGood</a></tt><tt class="py-op">,</tt> <tt id="link-40" class="py-name" targets="Variable mrv.automation.process.ProcessBase.kPerfect=mrv.automation.process.ProcessBase-class.html#kPerfect,Variable mrv.dge.Attribute.kPerfect=mrv.dge.Attribute-class.html#kPerfect,Variable mrv.dge.iPlug.kPerfect=mrv.dge.iPlug-class.html#kPerfect"><a title="mrv.automation.process.ProcessBase.kPerfect
+mrv.dge.Attribute.kPerfect
+mrv.dge.iPlug.kPerfect" class="py-name" href="#" onclick="return doclink('link-40', 'kPerfect', 'link-40');">kPerfect</a></tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt><tt class="py-op">,</tt> <tt class="py-number">127</tt><tt class="py-op">,</tt> <tt class="py-number">255</tt>                              <tt class="py-comment"># specify how good a certain target can be produced</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">        <tt id="link-41" class="py-name" targets="Variable mrv.automation.process.ProcessBase.is_state=mrv.automation.process.ProcessBase-class.html#is_state"><a title="mrv.automation.process.ProcessBase.is_state" class="py-name" href="#" onclick="return doclink('link-41', 'is_state', 'link-41');">is_state</a></tt><tt class="py-op">,</tt> <tt id="link-42" class="py-name" targets="Variable mrv.automation.process.ProcessBase.target_state=mrv.automation.process.ProcessBase-class.html#target_state"><a title="mrv.automation.process.ProcessBase.target_state" class="py-name" href="#" onclick="return doclink('link-42', 'target_state', 'link-42');">target_state</a></tt><tt class="py-op">,</tt> <tt id="link-43" class="py-name" targets="Variable mrv.automation.process.ProcessBase.dirty_check=mrv.automation.process.ProcessBase-class.html#dirty_check"><a title="mrv.automation.process.ProcessBase.dirty_check" class="py-name" href="#" onclick="return doclink('link-43', 'dirty_check', 'link-43');">dirty_check</a></tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt> <tt class="py-number">1</tt><tt class="py-op">,</tt><tt class="py-number">2</tt><tt class="py-op">,</tt><tt class="py-number">4</tt> <tt class="py-op">)</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line"> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line">        <tt id="link-44" class="py-name" targets="Variable mrv.automation.process.ProcessBase.noun=mrv.automation.process.ProcessBase-class.html#noun"><a title="mrv.automation.process.ProcessBase.noun" class="py-name" href="#" onclick="return doclink('link-44', 'noun', 'link-44');">noun</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"Noun ProcessBase,redefine in subclass"</tt>  <tt class="py-comment"># used in reports</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">        <tt id="link-45" class="py-name" targets="Variable mrv.automation.process.ProcessBase.verb=mrv.automation.process.ProcessBase-class.html#verb"><a title="mrv.automation.process.ProcessBase.verb" class="py-name" href="#" onclick="return doclink('link-45', 'verb', 'link-45');">verb</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"Verb ProcessBase,redefine in subclass"</tt> <tt class="py-comment"># used in reports</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line"> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">        <tt class="py-comment">#{ Configuration</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">        <tt class="py-comment"># if False, the computation results will not be tracked in a callgraph</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line">        <tt id="link-46" class="py-name"><a title="mrv.automation.process.ProcessBase.track_compute_calls
+mrv.automation.qa.QAProcessBase.track_compute_calls" class="py-name" href="#" onclick="return doclink('link-46', 'track_compute_calls', 'link-19');">track_compute_calls</a></tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">        <tt class="py-comment">#} END configuration</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line"> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">        <tt id="link-47" class="py-name"><a title="mrv.batch.__all__
+mrv.mdp.__all__" class="py-name" href="#" onclick="return doclink('link-47', '__all__', 'link-0');">__all__</a></tt><tt class="py-op">.</tt><tt id="link-48" class="py-name" targets="Method mrv.conf.ConfigChain.append()=mrv.conf.ConfigChain-class.html#append"><a title="mrv.conf.ConfigChain.append" class="py-name" href="#" onclick="return doclink('link-48', 'append', 'link-48');">append</a></tt><tt class="py-op">(</tt> <tt class="py-string">"ProcessBase"</tt> <tt class="py-op">)</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line"> </tt>
+<a name="ProcessBase.__init__"></a><div id="ProcessBase.__init__-def"><a name="L62"></a><tt class="py-lineno"> 62</tt> <a class="py-toggle" href="#" id="ProcessBase.__init__-toggle" onclick="return toggle('ProcessBase.__init__');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.automation.process.ProcessBase-class.html#__init__">__init__</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">id</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ProcessBase.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="ProcessBase.__init__-expanded"><a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">                <tt class="py-docstring">"""Initialize process with most common information</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line"><tt class="py-docstring">                </tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line"><tt class="py-docstring">                :param kwargs:</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line"><tt class="py-docstring">                         * noun: noun describing the process, ( i.e. "Process" )</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line"><tt class="py-docstring">                         * verb: verb describing the process, ( i.e. "processing" )</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line"><tt class="py-docstring">                         * workflow: the workflow this instance is part of"""</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_args</tt> <tt class="py-op">=</tt> <tt id="link-49" class="py-name" targets="Variable mrv.util.Call.args=mrv.util.Call-class.html#args"><a title="mrv.util.Call.args" class="py-name" href="#" onclick="return doclink('link-49', 'args', 'link-49');">args</a></tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_kwargs</tt> <tt class="py-op">=</tt> <tt id="link-50" class="py-name" targets="Variable mrv.util.Call.kwargs=mrv.util.Call-class.html#kwargs"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-50', 'kwargs', 'link-50');">kwargs</a></tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">                <tt id="link-51" class="py-name"><a title="mrv.dge.NodeBase" class="py-name" href="#" onclick="return doclink('link-51', 'NodeBase', 'link-3');">NodeBase</a></tt><tt class="py-op">.</tt><tt id="link-52" class="py-name" targets="Method mrv.automation.attributes.RegexStringAttr.__init__()=mrv.automation.attributes.RegexStringAttr-class.html#__init__,Method mrv.automation.process.ProcessBase.__init__()=mrv.automation.process.ProcessBase-class.html#__init__,Method mrv.automation.process.WorkflowProcessBase.__init__()=mrv.automation.process.WorkflowProcessBase-class.html#__init__,Method mrv.automation.qa.QACheck.__init__()=mrv.automation.qa.QACheck-class.html#__init__,Method mrv.automation.qa.QACheckAttribute.__init__()=mrv.automation.qa.QACheckAttribute-class.html#__init__,Method mrv.automation.qa.QACheckResult.__init__()=mrv.automation.qa.QACheckResult-class.html#__init__,Method mrv.automation.qa.QAWorkflow.__init__()=mrv.automation.qa.QAWorkflow-class.html#__init__,Method mrv.automation.report.ReportBase.__init__()=mrv.automation.report.ReportBase-class.html#__init__,Method mrv.automation.workflow.DirtyException.__init__()=mrv.automation.workflow.DirtyException-class.html#__init__,Method mrv.automation.workflow.Workflow.CallGraph.__init__()=mrv.automation.workflow.Workflow.CallGraph-class.html#__init__,Method mrv.automation.workflow.Workflow.ProcessData.__init__()=mrv.automation.workflow.Workflow.ProcessData-class.html#__init__,Method mrv.automation.workflow.Workflow.__init__()=mrv.automation.workflow.Workflow-class.html#__init__,Method mrv.cmd.base.SpawnedCommand.__init__()=mrv.cmd.base.SpawnedCommand-class.html#__init__,Method mrv.cmd.base.SpawnedOptionParser.__init__()=mrv.cmd.base.SpawnedOptionParser-class.html#__init__,Method mrv.conf.ConfigAccessor.__init__()=mrv.conf.ConfigAccessor-class.html#__init__,Method mrv.conf.ConfigChain.__init__()=mrv.conf.ConfigChain-class.html#__init__,Method mrv.conf.ConfigFile.__init__()=mrv.conf.ConfigFile-class.html#__init__,Method mrv.conf.ConfigManager.__init__()=mrv.conf.ConfigManager-class.html#__init__,Method mrv.conf.ConfigNode.__init__()=mrv.conf.ConfigNode-class.html#__init__,Method mrv.conf.DictToINIFile.__init__()=mrv.conf.DictToINIFile-class.html#__init__,Method mrv.conf.DiffData.__init__()=mrv.conf.DiffData-class.html#__init__,Method mrv.conf.Key.__init__()=mrv.conf.Key-class.html#__init__,Method mrv.conf.Section.__init__()=mrv.conf.Section-class.html#__init__,Method mrv.conf._PropertyHolderBase.__init__()=mrv.conf._PropertyHolderBase-class.html#__init__,Method mrv.dge.Attribute.__init__()=mrv.dge.Attribute-class.html#__init__,Method mrv.dge.Graph.__init__()=mrv.dge.Graph-class.html#__init__,Method mrv.dge.NodeBase.__init__()=mrv.dge.NodeBase-class.html#__init__,Method mrv.dge.plug.__init__()=mrv.dge.plug-class.html#__init__,Method mrv.dgfe.FacadeNodeBase.__init__()=mrv.dgfe.FacadeNodeBase-class.html#__init__,Method mrv.dgfe.GraphNodeBase.__init__()=mrv.dgfe.GraphNodeBase-class.html#__init__,Method mrv.dgfe._IOShell.__init__()=mrv.dgfe._IOShell-class.html#__init__,Method mrv.dgfe._OIShell.__init__()=mrv.dgfe._OIShell-class.html#__init__,Method mrv.doc.base.DocGenerator.__init__()=mrv.doc.base.DocGenerator-class.html#__init__,Method mrv.enum.Element.__init__()=mrv.enum.Element-class.html#__init__,Method mrv.enum.Enumeration.__init__()=mrv.enum.Enumeration-class.html#__init__,Method mrv.exc.MRVError.__init__()=mrv.exc.MRVError-class.html#__init__,Method mrv.interface.iChoiceDialog.__init__()=mrv.interface.iChoiceDialog-class.html#__init__,Method mrv.interface.iProgressIndicator.__init__()=mrv.interface.iProgressIndicator-class.html#__init__,Method mrv.interface.iPrompt.__init__()=mrv.interface.iPrompt-class.html#__init__,Method mrv.maya.mdb.MEnumDescriptor.__init__()=mrv.maya.mdb.MEnumDescriptor-class.html#__init__,Method mrv.maya.mdb.MFnCodeGeneratorBase.__init__()=mrv.maya.mdb.MFnCodeGeneratorBase-class.html#__init__,Method mrv.maya.mdb.MMemberMap.__init__()=mrv.maya.mdb.MMemberMap-class.html#__init__,Method mrv.maya.mdb.MMethodDescriptor.__init__()=mrv.maya.mdb.MMethodDescriptor-class.html#__init__,Method mrv.maya.nt.PluginDB.__init__()=mrv.maya.nt.PluginDB-class.html#__init__,Method mrv.maya.nt.geometry._SingleIndexedComponentGenerator.__init__()=mrv.maya.nt.geometry._SingleIndexedComponentGenerator-class.html#__init__,Method mrv.maya.nt.persistence.PyPickleData.__init__()=mrv.maya.nt.persistence.PyPickleData-class.html#__init__,Method mrv.maya.nt.persistence.StoragePluginNode.__init__()=mrv.maya.nt.persistence.StoragePluginNode-class.html#__init__,Method mrv.maya.nt.set.ObjectSet._TmpSet.__init__()=mrv.maya.nt.set.ObjectSet._TmpSet-class.html#__init__,Method mrv.maya.nt.storage.StorageBase.PyPickleValue.__init__()=mrv.maya.nt.storage.StorageBase.PyPickleValue-class.html#__init__,Method mrv.maya.nt.storage.StorageBase.__init__()=mrv.maya.nt.storage.StorageBase-class.html#__init__,Method mrv.maya.nt.storage.StorageNode.__init__()=mrv.maya.nt.storage.StorageNode-class.html#__init__,Method mrv.maya.ref.FileReference.__init__()=mrv.maya.ref.FileReference-class.html#__init__,Method mrv.maya.ui.base.BaseUI.__init__()=mrv.maya.ui.base.BaseUI-class.html#__init__,Method mrv.maya.ui.base.NamedUI.__init__()=mrv.maya.ui.base.NamedUI-class.html#__init__,Method mrv.maya.ui.browse.control.BookmarkControl.__init__()=mrv.maya.ui.browse.control.BookmarkControl-class.html#__init__,Method mrv.maya.ui.browse.control.FilePathControlEditable.__init__()=mrv.maya.ui.browse.control.FilePathControlEditable-class.html#__init__,Method mrv.maya.ui.browse.control.FileProvider.__init__()=mrv.maya.ui.browse.control.FileProvider-class.html#__init__,Method mrv.maya.ui.browse.control.FileRootSelectorControl.__init__()=mrv.maya.ui.browse.control.FileRootSelectorControl-class.html#__init__,Method mrv.maya.ui.browse.control.StackControlBase.__init__()=mrv.maya.ui.browse.control.StackControlBase-class.html#__init__,Method mrv.maya.ui.browse.finder.Finder.__init__()=mrv.maya.ui.browse.finder.Finder-class.html#__init__,Method mrv.maya.ui.browse.interface.iFinderProvider.__init__()=mrv.maya.ui.browse.interface.iFinderProvider-class.html#__init__,Method mrv.maya.ui.browse.layout.FileOpenFinder.__init__()=mrv.maya.ui.browse.layout.FileOpenFinder-class.html#__init__,Method mrv.maya.ui.browse.layout.FileReferenceFinder.__init__()=mrv.maya.ui.browse.layout.FileReferenceFinder-class.html#__init__,Method mrv.maya.ui.browse.layout.FileSaveFinder.__init__()=mrv.maya.ui.browse.layout.FileSaveFinder-class.html#__init__,Method mrv.maya.ui.browse.layout.FinderLayout.__init__()=mrv.maya.ui.browse.layout.FinderLayout-class.html#__init__,Method mrv.maya.ui.browse.option.FileOpenOptions.__init__()=mrv.maya.ui.browse.option.FileOpenOptions-class.html#__init__,Method mrv.maya.ui.dialog.ProgressWindow.__init__()=mrv.maya.ui.dialog.ProgressWindow-class.html#__init__,Method mrv.maya.ui.dialog.PromptDialog.__init__()=mrv.maya.ui.dialog.PromptDialog-class.html#__init__,Method mrv.maya.ui.layout.Layout.__init__()=mrv.maya.ui.layout.Layout-class.html#__init__,Method mrv.maya.ui.qa.QACheckLayout.__init__()=mrv.maya.ui.qa.QACheckLayout-class.html#__init__,Method mrv.maya.ui.qa.QALayout.__init__()=mrv.maya.ui.qa.QALayout-class.html#__init__,Method mrv.maya.ui.util.EventSenderUI._UIEvent.__init__()=mrv.maya.ui.util.EventSenderUI._UIEvent-class.html#__init__,Method mrv.maya.ui.util.UIContainerBase.__init__()=mrv.maya.ui.util.UIContainerBase-class.html#__init__,Method mrv.maya.undo.DGModifier.__init__()=mrv.maya.undo.DGModifier-class.html#__init__,Method mrv.maya.undo.GenericOperation.__init__()=mrv.maya.undo.GenericOperation-class.html#__init__,Method mrv.maya.undo.GenericOperationStack.__init__()=mrv.maya.undo.GenericOperationStack-class.html#__init__,Method mrv.maya.undo.MuteUndo.__init__()=mrv.maya.undo.MuteUndo-class.html#__init__,Method mrv.maya.undo.Operation.__init__()=mrv.maya.undo.Operation-class.html#__init__,Method mrv.maya.undo.StartUndo.__init__()=mrv.maya.undo.StartUndo-class.html#__init__,Method mrv.maya.undo.UndoCmd.__init__()=mrv.maya.undo.UndoCmd-class.html#__init__,Method mrv.maya.undo.UndoRecorder.__init__()=mrv.maya.undo.UndoRecorder-class.html#__init__,Method mrv.maya.util.CallbackEventBase.CBStorageFunction.__init__()=mrv.maya.util.CallbackEventBase.CBStorageFunction-class.html#__init__,Method mrv.maya.util.CallbackEventBase.__init__()=mrv.maya.util.CallbackEventBase-class.html#__init__,Method mrv.maya.util.StandinClass.__init__()=mrv.maya.util.StandinClass-class.html#__init__,Method mrv.thread.TerminatableThread.__init__()=mrv.thread.TerminatableThread-class.html#__init__,Method mrv.thread.WorkerThread.__init__()=mrv.thread.WorkerThread-class.html#__init__,Method mrv.util.And.__init__()=mrv.util.And-class.html#__init__,Method mrv.util.Call.__init__()=mrv.util.Call-class.html#__init__,Method mrv.util.CallAdv.__init__()=mrv.util.CallAdv-class.html#__init__,Method mrv.util.CallOnDeletion.__init__()=mrv.util.CallOnDeletion-class.html#__init__,Method mrv.util.Event.__init__()=mrv.util.Event-class.html#__init__,Method mrv.util.InterfaceMaster.InterfaceBase.__init__()=mrv.util.InterfaceMaster.InterfaceBase-class.html#__init__,Method mrv.util.InterfaceMaster.InterfaceDescriptor.__init__()=mrv.util.InterfaceMaster.InterfaceDescriptor-class.html#__init__,Method mrv.util.InterfaceMaster._InterfaceHandler.__init__()=mrv.util.InterfaceMaster._InterfaceHandler-class.html#__init__,Method mrv.util.InterfaceMaster.__init__()=mrv.util.InterfaceMaster-class.html#__init__,Method mrv.util.Or.__init__()=mrv.util.Or-class.html#__init__,Method mrv.util.PipeSeparatedFile.__init__()=mrv.util.PipeSeparatedFile-class.html#__init__,Method mrv.util.WeakInstFunction.__init__()=mrv.util.WeakInstFunction-class.html#__init__,Method unittest.FunctionTestCase.__init__()=unittest.FunctionTestCase-class.html#__init__,Method unittest.TestCase.__init__()=unittest.TestCase-class.html#__init__,Method unittest.TestProgram.__init__()=unittest.TestProgram-class.html#__init__,Method unittest.TestResult.__init__()=unittest.TestResult-class.html#__init__,Method unittest.TestSuite.__init__()=unittest.TestSuite-class.html#__init__,Method unittest.TextTestRunner.__init__()=unittest.TextTestRunner-class.html#__init__,Method unittest._TextTestResult.__init__()=unittest._TextTestResult-class.html#__init__,Method unittest._WritelnDecorator.__init__()=unittest._WritelnDecorator-class.html#__init__"><a title="mrv.automation.attributes.RegexStringAttr.__init__
+mrv.automation.process.ProcessBase.__init__
+mrv.automation.process.WorkflowProcessBase.__init__
+mrv.automation.qa.QACheck.__init__
+mrv.automation.qa.QACheckAttribute.__init__
+mrv.automation.qa.QACheckResult.__init__
+mrv.automation.qa.QAWorkflow.__init__
+mrv.automation.report.ReportBase.__init__
+mrv.automation.workflow.DirtyException.__init__
+mrv.automation.workflow.Workflow.CallGraph.__init__
+mrv.automation.workflow.Workflow.ProcessData.__init__
+mrv.automation.workflow.Workflow.__init__
+mrv.cmd.base.SpawnedCommand.__init__
+mrv.cmd.base.SpawnedOptionParser.__init__
+mrv.conf.ConfigAccessor.__init__
+mrv.conf.ConfigChain.__init__
+mrv.conf.ConfigFile.__init__
+mrv.conf.ConfigManager.__init__
+mrv.conf.ConfigNode.__init__
+mrv.conf.DictToINIFile.__init__
+mrv.conf.DiffData.__init__
+mrv.conf.Key.__init__
+mrv.conf.Section.__init__
+mrv.conf._PropertyHolderBase.__init__
+mrv.dge.Attribute.__init__
+mrv.dge.Graph.__init__
+mrv.dge.NodeBase.__init__
+mrv.dge.plug.__init__
+mrv.dgfe.FacadeNodeBase.__init__
+mrv.dgfe.GraphNodeBase.__init__
+mrv.dgfe._IOShell.__init__
+mrv.dgfe._OIShell.__init__
+mrv.doc.base.DocGenerator.__init__
+mrv.enum.Element.__init__
+mrv.enum.Enumeration.__init__
+mrv.exc.MRVError.__init__
+mrv.interface.iChoiceDialog.__init__
+mrv.interface.iProgressIndicator.__init__
+mrv.interface.iPrompt.__init__
+mrv.maya.mdb.MEnumDescriptor.__init__
+mrv.maya.mdb.MFnCodeGeneratorBase.__init__
+mrv.maya.mdb.MMemberMap.__init__
+mrv.maya.mdb.MMethodDescriptor.__init__
+mrv.maya.nt.PluginDB.__init__
+mrv.maya.nt.geometry._SingleIndexedComponentGenerator.__init__
+mrv.maya.nt.persistence.PyPickleData.__init__
+mrv.maya.nt.persistence.StoragePluginNode.__init__
+mrv.maya.nt.set.ObjectSet._TmpSet.__init__
+mrv.maya.nt.storage.StorageBase.PyPickleValue.__init__
+mrv.maya.nt.storage.StorageBase.__init__
+mrv.maya.nt.storage.StorageNode.__init__
+mrv.maya.ref.FileReference.__init__
+mrv.maya.ui.base.BaseUI.__init__
+mrv.maya.ui.base.NamedUI.__init__
+mrv.maya.ui.browse.control.BookmarkControl.__init__
+mrv.maya.ui.browse.control.FilePathControlEditable.__init__
+mrv.maya.ui.browse.control.FileProvider.__init__
+mrv.maya.ui.browse.control.FileRootSelectorControl.__init__
+mrv.maya.ui.browse.control.StackControlBase.__init__
+mrv.maya.ui.browse.finder.Finder.__init__
+mrv.maya.ui.browse.interface.iFinderProvider.__init__
+mrv.maya.ui.browse.layout.FileOpenFinder.__init__
+mrv.maya.ui.browse.layout.FileReferenceFinder.__init__
+mrv.maya.ui.browse.layout.FileSaveFinder.__init__
+mrv.maya.ui.browse.layout.FinderLayout.__init__
+mrv.maya.ui.browse.option.FileOpenOptions.__init__
+mrv.maya.ui.dialog.ProgressWindow.__init__
+mrv.maya.ui.dialog.PromptDialog.__init__
+mrv.maya.ui.layout.Layout.__init__
+mrv.maya.ui.qa.QACheckLayout.__init__
+mrv.maya.ui.qa.QALayout.__init__
+mrv.maya.ui.util.EventSenderUI._UIEvent.__init__
+mrv.maya.ui.util.UIContainerBase.__init__
+mrv.maya.undo.DGModifier.__init__
+mrv.maya.undo.GenericOperation.__init__
+mrv.maya.undo.GenericOperationStack.__init__
+mrv.maya.undo.MuteUndo.__init__
+mrv.maya.undo.Operation.__init__
+mrv.maya.undo.StartUndo.__init__
+mrv.maya.undo.UndoCmd.__init__
+mrv.maya.undo.UndoRecorder.__init__
+mrv.maya.util.CallbackEventBase.CBStorageFunction.__init__
+mrv.maya.util.CallbackEventBase.__init__
+mrv.maya.util.StandinClass.__init__
+mrv.thread.TerminatableThread.__init__
+mrv.thread.WorkerThread.__init__
+mrv.util.And.__init__
+mrv.util.Call.__init__
+mrv.util.CallAdv.__init__
+mrv.util.CallOnDeletion.__init__
+mrv.util.Event.__init__
+mrv.util.InterfaceMaster.InterfaceBase.__init__
+mrv.util.InterfaceMaster.InterfaceDescriptor.__init__
+mrv.util.InterfaceMaster._InterfaceHandler.__init__
+mrv.util.InterfaceMaster.__init__
+mrv.util.Or.__init__
+mrv.util.PipeSeparatedFile.__init__
+mrv.util.WeakInstFunction.__init__
+unittest.FunctionTestCase.__init__
+unittest.TestCase.__init__
+unittest.TestProgram.__init__
+unittest.TestResult.__init__
+unittest.TestSuite.__init__
+unittest.TextTestRunner.__init__
+unittest._TextTestResult.__init__
+unittest._WritelnDecorator.__init__" class="py-name" href="#" onclick="return doclink('link-52', '__init__', 'link-52');">__init__</a></tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">,</tt> <tt id="link-53" class="py-name" targets="Method mrv.dge.NodeBase.id()=mrv.dge.NodeBase-class.html#id,Method unittest.FunctionTestCase.id()=unittest.FunctionTestCase-class.html#id,Method unittest.TestCase.id()=unittest.TestCase-class.html#id"><a title="mrv.dge.NodeBase.id
+unittest.FunctionTestCase.id
+unittest.TestCase.id" class="py-name" href="#" onclick="return doclink('link-53', 'id', 'link-53');">id</a></tt> <tt class="py-op">=</tt> <tt id="link-54" class="py-name"><a title="mrv.dge.NodeBase.id
+unittest.FunctionTestCase.id
+unittest.TestCase.id" class="py-name" href="#" onclick="return doclink('link-54', 'id', 'link-53');">id</a></tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt id="link-55" class="py-name"><a title="mrv.util.Call.args" class="py-name" href="#" onclick="return doclink('link-55', 'args', 'link-49');">args</a></tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt id="link-56" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-56', 'kwargs', 'link-50');">kwargs</a></tt> <tt class="py-op">)</tt>             <tt class="py-comment"># init last - need our info first !</tt> </tt>
+</div><a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line"> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">        <tt class="py-comment">#{ iDuplicatable Interface</tt> </tt>
+<a name="ProcessBase.createInstance"></a><div id="ProcessBase.createInstance-def"><a name="L74"></a><tt class="py-lineno"> 74</tt> <a class="py-toggle" href="#" id="ProcessBase.createInstance-toggle" onclick="return toggle('ProcessBase.createInstance');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.automation.process.ProcessBase-class.html#createInstance">createInstance</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ProcessBase.createInstance-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="ProcessBase.createInstance-expanded"><a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">                <tt class="py-docstring">"""Create a copy of self and return it"""</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__class__</tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-57" class="py-name"><a title="mrv.dge.NodeBase.id
+unittest.FunctionTestCase.id
+unittest.TestCase.id" class="py-name" href="#" onclick="return doclink('link-57', 'id', 'link-53');">id</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_kwargs</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line"> </tt>
+<a name="ProcessBase.copyFrom"></a><div id="ProcessBase.copyFrom-def"><a name="L78"></a><tt class="py-lineno"> 78</tt> <a class="py-toggle" href="#" id="ProcessBase.copyFrom-toggle" onclick="return toggle('ProcessBase.copyFrom');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.automation.process.ProcessBase-class.html#copyFrom">copyFrom</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">other</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ProcessBase.copyFrom-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="ProcessBase.copyFrom-expanded"><a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">                <tt class="py-docstring">"""</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line"><tt class="py-docstring">                Note: we have already given our args to the class during instance creation,</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line"><tt class="py-docstring">                        thus we do not copy args again"""</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">                <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">        <tt class="py-comment">#} END iDuplicatable</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line"> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line"> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">        <tt class="py-comment">#{ Query</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line"> </tt>
+<a name="ProcessBase.targetRating"></a><div id="ProcessBase.targetRating-def"><a name="L88"></a><tt class="py-lineno"> 88</tt> <a class="py-toggle" href="#" id="ProcessBase.targetRating-toggle" onclick="return toggle('ProcessBase.targetRating');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.automation.process.ProcessBase-class.html#targetRating">targetRating</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">target</tt><tt class="py-op">,</tt> <tt class="py-param">check_input_plugs</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ProcessBase.targetRating-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="ProcessBase.targetRating-expanded"><a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">                <tt class="py-docstring">"""</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line"><tt class="py-docstring">                :return: tuple( int, PlugShell )</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line"><tt class="py-docstring">                        int between 0 and 255 - 255 means target matches perfectly, 0</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line"><tt class="py-docstring">                        means complete incompatability. Any inbetweens indicate the target can be</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line"><tt class="py-docstring">                        achieved, but maybe just in a basic way</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line"><tt class="py-docstring">                        </tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line"><tt class="py-docstring">                        If rate is 0, the object will be None, otherwise its a plugShell to the</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line"><tt class="py-docstring">                        input attribute that can take target as input. In process terms this means</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line"><tt class="py-docstring">                        that at least one output plug exists that produces the target.</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line"><tt class="py-docstring">                :param target: instance or class of target to check for compatability</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line"><tt class="py-docstring">                :param check_input_plugs: if True, input plugs will be checked for compatability of target,</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line"><tt class="py-docstring">                        otherwise the output plugs</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line"><tt class="py-docstring">                :raise TypeError: if the result is ambiguous and raise_on_ambiguity = 1"""</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">                <tt class="py-comment"># query our ouput plugs for a compatible attr</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">                <tt class="py-name">tarplugs</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">check_input_plugs</tt><tt class="py-op">:</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">                        <tt class="py-name">tarplugs</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-58" class="py-name" targets="Method mrv.dge.NodeBase.inputPlugs()=mrv.dge.NodeBase-class.html#inputPlugs"><a title="mrv.dge.NodeBase.inputPlugs" class="py-name" href="#" onclick="return doclink('link-58', 'inputPlugs', 'link-58');">inputPlugs</a></tt><tt class="py-op">(</tt> <tt class="py-op">)</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">                <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">                        <tt class="py-name">tarplugs</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-59" class="py-name" targets="Method mrv.dge.NodeBase.outputPlugs()=mrv.dge.NodeBase-class.html#outputPlugs"><a title="mrv.dge.NodeBase.outputPlugs" class="py-name" href="#" onclick="return doclink('link-59', 'outputPlugs', 'link-59');">outputPlugs</a></tt><tt class="py-op">(</tt> <tt class="py-op">)</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line"> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">                <tt class="py-name">plugrating</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-60" class="py-name" targets="Class Method mrv.dge.NodeBase.filterCompatiblePlugs()=mrv.dge.NodeBase-class.html#filterCompatiblePlugs"><a title="mrv.dge.NodeBase.filterCompatiblePlugs" class="py-name" href="#" onclick="return doclink('link-60', 'filterCompatiblePlugs', 'link-60');">filterCompatiblePlugs</a></tt><tt class="py-op">(</tt> <tt class="py-name">tarplugs</tt><tt class="py-op">,</tt> <tt class="py-name">target</tt><tt class="py-op">,</tt> <tt class="py-name">attr_as_source</tt><tt class="py-op">=</tt><tt class="py-name">False</tt> <tt class="py-op">,</tt> <tt class="py-op">**</tt><tt id="link-61" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-61', 'kwargs', 'link-50');">kwargs</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line"> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">plugrating</tt><tt class="py-op">:</tt>              <tt class="py-comment">#        no plug ?</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">                        <tt class="py-keyword">return</tt> <tt class="py-op">(</tt> <tt class="py-number">0</tt> <tt class="py-op">,</tt> <tt class="py-name">None</tt> <tt class="py-op">)</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line"> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">                <tt class="py-comment"># remove all non-writable plugs - they can never be targets</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">                <tt class="py-name">writableRatedPlugs</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">                <tt class="py-keyword">for</tt> <tt class="py-name">rate</tt><tt class="py-op">,</tt><tt id="link-62" class="py-name"><a title="mrv.automation.workflow.Workflow.ProcessData.plug
+mrv.dge.plug" class="py-name" href="#" onclick="return doclink('link-62', 'plug', 'link-21');">plug</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">plugrating</tt><tt class="py-op">:</tt>                            <tt class="py-comment"># rate,plug tuple</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">                        <tt class="py-keyword">if</tt> <tt id="link-63" class="py-name"><a title="mrv.automation.workflow.Workflow.ProcessData.plug
+mrv.dge.plug" class="py-name" href="#" onclick="return doclink('link-63', 'plug', 'link-21');">plug</a></tt><tt class="py-op">.</tt><tt class="py-name">attr</tt><tt class="py-op">.</tt><tt class="py-name">flags</tt> <tt class="py-op">&amp;</tt> <tt id="link-64" class="py-name"><a title="mrv.dge.Attribute
+mrv.maya.nt.base.Attribute" class="py-name" href="#" onclick="return doclink('link-64', 'Attribute', 'link-9');">Attribute</a></tt><tt class="py-op">.</tt><tt id="link-65" class="py-name" targets="Variable mrv.dge.Attribute.readonly=mrv.dge.Attribute-class.html#readonly"><a title="mrv.dge.Attribute.readonly" class="py-name" href="#" onclick="return doclink('link-65', 'readonly', 'link-65');">readonly</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line">                                <tt class="py-keyword">continue</tt>                        <tt class="py-comment"># need to set the attribute</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line"> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line">                        <tt class="py-comment"># connected plugs are an option, but prefer the ones being open</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line">                        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-66" class="py-name" targets="Method mrv.dge.NodeBase.toShell()=mrv.dge.NodeBase-class.html#toShell"><a title="mrv.dge.NodeBase.toShell" class="py-name" href="#" onclick="return doclink('link-66', 'toShell', 'link-66');">toShell</a></tt><tt class="py-op">(</tt> <tt id="link-67" class="py-name"><a title="mrv.automation.workflow.Workflow.ProcessData.plug
+mrv.dge.plug" class="py-name" href="#" onclick="return doclink('link-67', 'plug', 'link-21');">plug</a></tt> <tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-68" class="py-name" targets="Method mrv.dge.Graph.input()=mrv.dge.Graph-class.html#input,Method mrv.dge._PlugShell.input()=mrv.dge._PlugShell-class.html#input,Method mrv.dgfe._IOShell.input()=mrv.dgfe._IOShell-class.html#input"><a title="mrv.dge.Graph.input
+mrv.dge._PlugShell.input
+mrv.dgfe._IOShell.input" class="py-name" href="#" onclick="return doclink('link-68', 'input', 'link-68');">input</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">                                <tt class="py-name">rate</tt> <tt class="py-op">/=</tt> <tt class="py-number">2.0</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line"> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line">                        <tt class="py-name">writableRatedPlugs</tt><tt class="py-op">.</tt><tt id="link-69" class="py-name"><a title="mrv.conf.ConfigChain.append" class="py-name" href="#" onclick="return doclink('link-69', 'append', 'link-48');">append</a></tt><tt class="py-op">(</tt> <tt class="py-op">(</tt><tt class="py-name">rate</tt><tt class="py-op">,</tt><tt id="link-70" class="py-name"><a title="mrv.automation.workflow.Workflow.ProcessData.plug
+mrv.dge.plug" class="py-name" href="#" onclick="return doclink('link-70', 'plug', 'link-21');">plug</a></tt><tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">                <tt class="py-comment"># END writable only filters</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line"> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">writableRatedPlugs</tt><tt class="py-op">:</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line">                        <tt class="py-keyword">return</tt> <tt class="py-op">(</tt> <tt class="py-number">0</tt><tt class="py-op">,</tt> <tt class="py-name">None</tt> <tt class="py-op">)</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line"> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line">                <tt class="py-name">writableRatedPlugs</tt><tt class="py-op">.</tt><tt id="link-71" class="py-name" targets="Method mrv.conf.ConfigChain.sort()=mrv.conf.ConfigChain-class.html#sort"><a title="mrv.conf.ConfigChain.sort" class="py-name" href="#" onclick="return doclink('link-71', 'sort', 'link-71');">sort</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt>               <tt class="py-comment"># high comes last</tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line"> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line">                <tt class="py-name">rate</tt><tt class="py-op">,</tt> <tt id="link-72" class="py-name"><a title="mrv.automation.workflow.Workflow.ProcessData.plug
+mrv.dge.plug" class="py-name" href="#" onclick="return doclink('link-72', 'plug', 'link-21');">plug</a></tt> <tt class="py-op">=</tt> <tt class="py-name">writableRatedPlugs</tt><tt class="py-op">[</tt><tt class="py-op">-</tt><tt class="py-number">1</tt><tt class="py-op">]</tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-op">(</tt> <tt class="py-name">int</tt><tt class="py-op">(</tt><tt class="py-name">rate</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-73" class="py-name"><a title="mrv.dge.NodeBase.toShell" class="py-name" href="#" onclick="return doclink('link-73', 'toShell', 'link-66');">toShell</a></tt><tt class="py-op">(</tt> <tt id="link-74" class="py-name"><a title="mrv.automation.workflow.Workflow.ProcessData.plug
+mrv.dge.plug" class="py-name" href="#" onclick="return doclink('link-74', 'plug', 'link-21');">plug</a></tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line"> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line"> </tt>
+<a name="ProcessBase.supportedTargetTypes"></a><div id="ProcessBase.supportedTargetTypes-def"><a name="L136"></a><tt class="py-lineno">136</tt> <a class="py-toggle" href="#" id="ProcessBase.supportedTargetTypes-toggle" onclick="return toggle('ProcessBase.supportedTargetTypes');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.automation.process.ProcessBase-class.html#supportedTargetTypes">supportedTargetTypes</a><tt class="py-op">(</tt> <tt class="py-param">self</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ProcessBase.supportedTargetTypes-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="ProcessBase.supportedTargetTypes-expanded"><a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">                <tt class="py-docstring">""":return: list target types that can be output</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line"><tt class="py-docstring">                :note: targetTypes are classes, not instances"""</tt> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-op">[</tt> <tt id="link-75" class="py-name" targets="Variable mrv.info.p=mrv.info-module.html#p"><a title="mrv.info.p" class="py-name" href="#" onclick="return doclink('link-75', 'p', 'link-75');">p</a></tt><tt class="py-op">.</tt><tt class="py-name">attr</tt><tt class="py-op">.</tt><tt class="py-name">typecls</tt> <tt class="py-keyword">for</tt> <tt id="link-76" class="py-name"><a title="mrv.info.p" class="py-name" href="#" onclick="return doclink('link-76', 'p', 'link-75');">p</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-77" class="py-name"><a title="mrv.dge.NodeBase.inputPlugs" class="py-name" href="#" onclick="return doclink('link-77', 'inputPlugs', 'link-58');">inputPlugs</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-op">]</tt> </tt>
+</div><a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line"> </tt>
+<a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line">        <tt class="py-comment">#} END query</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line"> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line">        <tt class="py-comment">#{ Interface</tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line"> </tt>
+<a name="ProcessBase.evaluateState"></a><div id="ProcessBase.evaluateState-def"><a name="L145"></a><tt class="py-lineno">145</tt> <a class="py-toggle" href="#" id="ProcessBase.evaluateState-toggle" onclick="return toggle('ProcessBase.evaluateState');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.automation.process.ProcessBase-class.html#evaluateState">evaluateState</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">plug</tt><tt class="py-op">,</tt> <tt class="py-param">mode</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ProcessBase.evaluateState-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="ProcessBase.evaluateState-expanded"><a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line">                <tt class="py-docstring">""":return: an instance suitable to be stored in the given plug</tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line"><tt class="py-docstring">                </tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line"><tt class="py-docstring">                :param plug: plug that triggered the computation - use it to compare against</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line"><tt class="py-docstring">                        your classes plugs to see which output is required and return a result suitable</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line"><tt class="py-docstring">                        to be stored in plug</tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line"><tt class="py-docstring">                :param mode: bit flags as follows:</tt> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line"><tt class="py-docstring">                </tt> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line"><tt class="py-docstring">                        is_state:</tt> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line"><tt class="py-docstring">                                your return value represents the current state of the process - your output will</tt> </tt>
+<a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line"><tt class="py-docstring">                                represent what actually is present. You may not alter the state of your environment,</tt> </tt>
+<a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line"><tt class="py-docstring">                                thus this operation is strictly read-only.</tt> </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line"><tt class="py-docstring">                                According to your output, when called you need to setup a certain state</tt> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line"><tt class="py-docstring">                                and return the results according to that state. This flag means you are requrested</tt> </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line"><tt class="py-docstring">                                to return everything that is right according to the state you shall create.</tt> </tt>
+<a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line"><tt class="py-docstring">                                If this state is disabled, you should not return the current state, but behave</tt> </tt>
+<a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line"><tt class="py-docstring">                                according to the other ones.</tt> </tt>
+<a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line"><tt class="py-docstring">                                </tt> </tt>
+<a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line"><tt class="py-docstring">                        target_state:</tt> </tt>
+<a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line"><tt class="py-docstring">                                your return value must represent the 'should' state - thus you must assure</tt> </tt>
+<a name="L165"></a><tt class="py-lineno">165</tt>  <tt class="py-line"><tt class="py-docstring">                                that the environment is left in a state that matches your plug state - the result</tt> </tt>
+<a name="L166"></a><tt class="py-lineno">166</tt>  <tt class="py-line"><tt class="py-docstring">                                of that operation will be returned.</tt> </tt>
+<a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line"><tt class="py-docstring">                                Usually, but not necessarily, the is_state is also requested so that the output</tt> </tt>
+<a name="L168"></a><tt class="py-lineno">168</tt>  <tt class="py-line"><tt class="py-docstring">                                represents the complete new is_state ( the new state after you changed the environment</tt> </tt>
+<a name="L169"></a><tt class="py-lineno">169</tt>  <tt class="py-line"><tt class="py-docstring">                                to match the plug_state )</tt> </tt>
+<a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line"><tt class="py-docstring">                                </tt> </tt>
+<a name="L171"></a><tt class="py-lineno">171</tt>  <tt class="py-line"><tt class="py-docstring">                        dirty_check:</tt> </tt>
+<a name="L172"></a><tt class="py-lineno">172</tt>  <tt class="py-line"><tt class="py-docstring">                                Always comes in conjunction with is_state. You are required to return the is_state</tt> </tt>
+<a name="L173"></a><tt class="py-lineno">173</tt>  <tt class="py-line"><tt class="py-docstring">                                but raise a DirtyException if your inputs would require you to adjust the environment</tt> </tt>
+<a name="L174"></a><tt class="py-lineno">174</tt>  <tt class="py-line"><tt class="py-docstring">                                to deliver the plug state. If the is_state if the environment is the plug_state</tt> </tt>
+<a name="L175"></a><tt class="py-lineno">175</tt>  <tt class="py-line"><tt class="py-docstring">                                as there is nothing to do for you, do not raise and simply return your output.</tt> </tt>
+<a name="L176"></a><tt class="py-lineno">176</tt>  <tt class="py-line"><tt class="py-docstring">                                </tt> </tt>
+<a name="L177"></a><tt class="py-lineno">177</tt>  <tt class="py-line"><tt class="py-docstring">                        The call takes place as there is no cache for plugType.</tt> </tt>
+<a name="L178"></a><tt class="py-lineno">178</tt>  <tt class="py-line"><tt class="py-docstring">                :note: needs to be implemented by subclasses, but subclasses can just call their</tt> </tt>
+<a name="L179"></a><tt class="py-lineno">179</tt>  <tt class="py-line"><tt class="py-docstring">                        superclass for all unhandled plugs resulting in consistent error messages"""</tt> </tt>
+<a name="L180"></a><tt class="py-lineno">180</tt>  <tt class="py-line">                <tt class="py-keyword">raise</tt> <tt id="link-78" class="py-name" targets="Class mrv.dge.PlugUnhandled=mrv.dge.PlugUnhandled-class.html"><a title="mrv.dge.PlugUnhandled" class="py-name" href="#" onclick="return doclink('link-78', 'PlugUnhandled', 'link-78');">PlugUnhandled</a></tt><tt class="py-op">(</tt> <tt class="py-string">"Plug %s.%s cannot be handled - check your implementation"</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt> <tt id="link-79" class="py-name"><a title="mrv.automation.workflow.Workflow.ProcessData.plug
+mrv.dge.plug" class="py-name" href="#" onclick="return doclink('link-79', 'plug', 'link-21');">plug</a></tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L181"></a><tt class="py-lineno">181</tt>  <tt class="py-line"> </tt>
+<a name="L182"></a><tt class="py-lineno">182</tt>  <tt class="py-line">        <tt class="py-comment"># } END interface</tt> </tt>
+<a name="L183"></a><tt class="py-lineno">183</tt>  <tt class="py-line"> </tt>
+<a name="L184"></a><tt class="py-lineno">184</tt>  <tt class="py-line">        <tt class="py-decorator">@</tt><tt class="py-decorator">track_output_call</tt> </tt>
+<a name="ProcessBase.compute"></a><div id="ProcessBase.compute-def"><a name="L185"></a><tt class="py-lineno">185</tt> <a class="py-toggle" href="#" id="ProcessBase.compute-toggle" onclick="return toggle('ProcessBase.compute');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.automation.process.ProcessBase-class.html#compute">compute</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">plug</tt><tt class="py-op">,</tt> <tt class="py-param">mode</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ProcessBase.compute-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="ProcessBase.compute-expanded"><a name="L186"></a><tt class="py-lineno">186</tt>  <tt class="py-line">                <tt class="py-docstring">"""Base implementation of the output, called by `input` Method.</tt> </tt>
+<a name="L187"></a><tt class="py-lineno">187</tt>  <tt class="py-line"><tt class="py-docstring">                Its used to have a general hook for the flow tracing</tt> </tt>
+<a name="L188"></a><tt class="py-lineno">188</tt>  <tt class="py-line"><tt class="py-docstring">                </tt> </tt>
+<a name="L189"></a><tt class="py-lineno">189</tt>  <tt class="py-line"><tt class="py-docstring">                :param plug: plug to evaluate</tt> </tt>
+<a name="L190"></a><tt class="py-lineno">190</tt>  <tt class="py-line"><tt class="py-docstring">                :param mode: the mode of the valuation</tt> </tt>
+<a name="L191"></a><tt class="py-lineno">191</tt>  <tt class="py-line"><tt class="py-docstring">                :return: result of the computation"""</tt> </tt>
+<a name="L192"></a><tt class="py-lineno">192</tt>  <tt class="py-line">                <tt class="py-name">wfl</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-80" class="py-name"><a title="mrv.automation.process.ProcessBase.workflow
+mrv.automation.workflow" class="py-name" href="#" onclick="return doclink('link-80', 'workflow', 'link-23');">workflow</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L193"></a><tt class="py-lineno">193</tt>  <tt class="py-line">                <tt class="py-name">finalmode</tt> <tt class="py-op">=</tt> <tt class="py-name">wfl</tt><tt class="py-op">.</tt><tt class="py-name">_mode</tt>                   <tt class="py-comment"># use global mode</tt> </tt>
+<a name="L194"></a><tt class="py-lineno">194</tt>  <tt class="py-line"> </tt>
+<a name="L195"></a><tt class="py-lineno">195</tt>  <tt class="py-line">                <tt class="py-comment"># if we are root, we take the mode given by the caller though</tt> </tt>
+<a name="L196"></a><tt class="py-lineno">196</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-81" class="py-name"><a title="mrv.automation.process.ProcessBase.track_compute_calls
+mrv.automation.qa.QAProcessBase.track_compute_calls" class="py-name" href="#" onclick="return doclink('link-81', 'track_compute_calls', 'link-19');">track_compute_calls</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L197"></a><tt class="py-lineno">197</tt>  <tt class="py-line">                        <tt class="py-keyword">if</tt> <tt class="py-name">wfl</tt><tt class="py-op">.</tt><tt id="link-82" class="py-name" targets="Method mrv.automation.workflow.Workflow.callgraph()=mrv.automation.workflow.Workflow-class.html#callgraph"><a title="mrv.automation.workflow.Workflow.callgraph" class="py-name" href="#" onclick="return doclink('link-82', 'callgraph', 'link-82');">callgraph</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-83" class="py-name" targets="Method mrv.automation.workflow.Workflow.CallGraph.callRoot()=mrv.automation.workflow.Workflow.CallGraph-class.html#callRoot"><a title="mrv.automation.workflow.Workflow.CallGraph.callRoot" class="py-name" href="#" onclick="return doclink('link-83', 'callRoot', 'link-83');">callRoot</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-84" class="py-name" targets="Module mrv.automation.process=mrv.automation.process-module.html,Variable mrv.automation.workflow.Workflow.ProcessData.process=mrv.automation.workflow.Workflow.ProcessData-class.html#process,Function mrv.batch.process()=mrv.batch-module.html#process"><a title="mrv.automation.process
+mrv.automation.workflow.Workflow.ProcessData.process
+mrv.batch.process" class="py-name" href="#" onclick="return doclink('link-84', 'process', 'link-84');">process</a></tt> <tt class="py-op">==</tt> <tt class="py-name">self</tt><tt class="py-op">:</tt> </tt>
+<a name="L198"></a><tt class="py-lineno">198</tt>  <tt class="py-line">                                <tt class="py-name">finalmode</tt> <tt class="py-op">=</tt> <tt id="link-85" class="py-name"><a title="mrv.automation.workflow.Workflow.ProcessData.mode" class="py-name" href="#" onclick="return doclink('link-85', 'mode', 'link-22');">mode</a></tt> </tt>
+<a name="L199"></a><tt class="py-lineno">199</tt>  <tt class="py-line">                <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L200"></a><tt class="py-lineno">200</tt>  <tt class="py-line">                        <tt class="py-comment"># either use the explicit mode or the global one</tt> </tt>
+<a name="L201"></a><tt class="py-lineno">201</tt>  <tt class="py-line">                        <tt class="py-name">finalmode</tt> <tt class="py-op">=</tt> <tt id="link-86" class="py-name"><a title="mrv.automation.workflow.Workflow.ProcessData.mode" class="py-name" href="#" onclick="return doclink('link-86', 'mode', 'link-22');">mode</a></tt> <tt class="py-keyword">or</tt> <tt class="py-name">wfl</tt><tt class="py-op">.</tt><tt class="py-name">_mode</tt> </tt>
+<a name="L202"></a><tt class="py-lineno">202</tt>  <tt class="py-line"> </tt>
+<a name="L203"></a><tt class="py-lineno">203</tt>  <tt class="py-line">                <tt class="py-comment"># exceptions are handled by dgengine</tt> </tt>
+<a name="L204"></a><tt class="py-lineno">204</tt>  <tt class="py-line">                <tt class="py-comment"># call actually implemented method</tt> </tt>
+<a name="L205"></a><tt class="py-lineno">205</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-87" class="py-name" targets="Method mrv.automation.process.ProcessBase.evaluateState()=mrv.automation.process.ProcessBase-class.html#evaluateState,Method mrv.automation.qa.QAProcessBase.evaluateState()=mrv.automation.qa.QAProcessBase-class.html#evaluateState"><a title="mrv.automation.process.ProcessBase.evaluateState
+mrv.automation.qa.QAProcessBase.evaluateState" class="py-name" href="#" onclick="return doclink('link-87', 'evaluateState', 'link-87');">evaluateState</a></tt><tt class="py-op">(</tt> <tt id="link-88" class="py-name"><a title="mrv.automation.workflow.Workflow.ProcessData.plug
+mrv.dge.plug" class="py-name" href="#" onclick="return doclink('link-88', 'plug', 'link-21');">plug</a></tt><tt class="py-op">,</tt> <tt class="py-name">finalmode</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L206"></a><tt class="py-lineno">206</tt>  <tt class="py-line"> </tt>
+<a name="L207"></a><tt class="py-lineno">207</tt>  <tt class="py-line"> </tt>
+<a name="L208"></a><tt class="py-lineno">208</tt>  <tt class="py-line">        <tt class="py-comment">#{ Base</tt> </tt>
+<a name="L209"></a><tt class="py-lineno">209</tt>  <tt class="py-line">        <tt class="py-comment"># methods that drive the actual call</tt> </tt>
+<a name="L210"></a><tt class="py-lineno">210</tt>  <tt class="py-line"> </tt>
+<a name="ProcessBase.prepareProcess"></a><div id="ProcessBase.prepareProcess-def"><a name="L211"></a><tt class="py-lineno">211</tt> <a class="py-toggle" href="#" id="ProcessBase.prepareProcess-toggle" onclick="return toggle('ProcessBase.prepareProcess');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.automation.process.ProcessBase-class.html#prepareProcess">prepareProcess</a><tt class="py-op">(</tt> <tt class="py-param">self</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ProcessBase.prepareProcess-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="ProcessBase.prepareProcess-expanded"><a name="L212"></a><tt class="py-lineno">212</tt>  <tt class="py-line">                <tt class="py-docstring">"""Will be called on all processes of the workflow once before a target is</tt> </tt>
+<a name="L213"></a><tt class="py-lineno">213</tt>  <tt class="py-line"><tt class="py-docstring">                actually being queried by someone</tt> </tt>
+<a name="L214"></a><tt class="py-lineno">214</tt>  <tt class="py-line"><tt class="py-docstring">                It should be used to do whatever you think is required to work as process.</tt> </tt>
+<a name="L215"></a><tt class="py-lineno">215</tt>  <tt class="py-line"><tt class="py-docstring">                This uauslly is a special case for most preocesses"""</tt> </tt>
+<a name="L216"></a><tt class="py-lineno">216</tt>  <tt class="py-line">                <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L217"></a><tt class="py-lineno">217</tt>  <tt class="py-line"> </tt>
+<a name="ProcessBase.workflow"></a><div id="ProcessBase.workflow-def"><a name="L218"></a><tt class="py-lineno">218</tt> <a class="py-toggle" href="#" id="ProcessBase.workflow-toggle" onclick="return toggle('ProcessBase.workflow');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.automation.process.ProcessBase-class.html#workflow">workflow</a><tt class="py-op">(</tt> <tt class="py-param">self</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ProcessBase.workflow-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="ProcessBase.workflow-expanded"><a name="L219"></a><tt class="py-lineno">219</tt>  <tt class="py-line">                <tt class="py-docstring">""":return: the workflow instance we are connected with. Its used to query global data"""</tt> </tt>
+<a name="L220"></a><tt class="py-lineno">220</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">graph</tt> </tt>
+</div></div><a name="L221"></a><tt class="py-lineno">221</tt>  <tt class="py-line"> </tt>
+<a name="WorkflowProcessBase"></a><div id="WorkflowProcessBase-def"><a name="L222"></a><tt class="py-lineno">222</tt>  <tt class="py-line">        <tt class="py-comment">#} END base</tt> </tt>
+<a name="L223"></a><tt class="py-lineno">223</tt>  <tt class="py-line"> </tt>
+<a name="L224"></a><tt class="py-lineno">224</tt>  <tt class="py-line"> </tt>
+<a name="L225"></a><tt class="py-lineno">225</tt> <a class="py-toggle" href="#" id="WorkflowProcessBase-toggle" onclick="return toggle('WorkflowProcessBase');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.automation.process.WorkflowProcessBase-class.html">WorkflowProcessBase</a><tt class="py-op">(</tt> <tt class="py-base-class">GraphNodeBase</tt><tt class="py-op">,</tt> <tt class="py-base-class">ProcessBase</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="WorkflowProcessBase-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="WorkflowProcessBase-expanded"><a name="L226"></a><tt class="py-lineno">226</tt>  <tt class="py-line">        <tt class="py-docstring">"""A process wrapping a workflow, allowing workflows to be nested</tt> </tt>
+<a name="L227"></a><tt class="py-lineno">227</tt>  <tt class="py-line"><tt class="py-docstring">        Derive from this class and initialize it with the workflow you would like to have wrapped</tt> </tt>
+<a name="L228"></a><tt class="py-lineno">228</tt>  <tt class="py-line"><tt class="py-docstring">        The process works by transmitting relevant calls to its underlying workflow, allowing</tt> </tt>
+<a name="L229"></a><tt class="py-lineno">229</tt>  <tt class="py-line"><tt class="py-docstring">        nodeInsideNestedWorkflow -&gt; thisworkflow.node.plug connections</tt> </tt>
+<a name="L230"></a><tt class="py-lineno">230</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L231"></a><tt class="py-lineno">231</tt>  <tt class="py-line"><tt class="py-docstring">        Workflows are standin nodes - they can connect anything their wrapped nodes can connect</tt> </tt>
+<a name="L232"></a><tt class="py-lineno">232</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L233"></a><tt class="py-lineno">233</tt>  <tt class="py-line"><tt class="py-docstring">        :note: to prevent dependency issues, the workflow instance will be bound on first use</tt> </tt>
+<a name="L234"></a><tt class="py-lineno">234</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L235"></a><tt class="py-lineno">235</tt>  <tt class="py-line">        <tt id="link-89" class="py-name"><a title="mrv.batch.__all__
+mrv.mdp.__all__" class="py-name" href="#" onclick="return doclink('link-89', '__all__', 'link-0');">__all__</a></tt><tt class="py-op">.</tt><tt id="link-90" class="py-name"><a title="mrv.conf.ConfigChain.append" class="py-name" href="#" onclick="return doclink('link-90', 'append', 'link-48');">append</a></tt><tt class="py-op">(</tt> <tt class="py-string">"WorkflowProcessBase"</tt> <tt class="py-op">)</tt> </tt>
+<a name="L236"></a><tt class="py-lineno">236</tt>  <tt class="py-line">        <tt id="link-91" class="py-name" targets="Variable mrv.automation.process.WorkflowProcessBase.workflow_file=mrv.automation.process.WorkflowProcessBase-class.html#workflow_file"><a title="mrv.automation.process.WorkflowProcessBase.workflow_file" class="py-name" href="#" onclick="return doclink('link-91', 'workflow_file', 'link-91');">workflow_file</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"name of the workflow dot file ( incl. extension )"</tt> </tt>
+<a name="L237"></a><tt class="py-lineno">237</tt>  <tt class="py-line">        <tt id="link-92" class="py-name" targets="Variable mrv.automation.process.WorkflowProcessBase.workflow_directory=mrv.automation.process.WorkflowProcessBase-class.html#workflow_directory"><a title="mrv.automation.process.WorkflowProcessBase.workflow_directory" class="py-name" href="#" onclick="return doclink('link-92', 'workflow_directory', 'link-92');">workflow_directory</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"directory containing workflows to load "</tt> </tt>
+<a name="L238"></a><tt class="py-lineno">238</tt>  <tt class="py-line"> </tt>
+<a name="L239"></a><tt class="py-lineno">239</tt>  <tt class="py-line">        <tt id="link-93" class="py-name" targets="Variable mrv.automation.process.WorkflowProcessBase.exclude_connected_plugs=mrv.automation.process.WorkflowProcessBase-class.html#exclude_connected_plugs"><a title="mrv.automation.process.WorkflowProcessBase.exclude_connected_plugs" class="py-name" href="#" onclick="return doclink('link-93', 'exclude_connected_plugs', 'link-93');">exclude_connected_plugs</a></tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt>                          <tt class="py-comment"># if true, all plugs that are connected will be pruned</tt> </tt>
+<a name="L240"></a><tt class="py-lineno">240</tt>  <tt class="py-line">        <tt id="link-94" class="py-name" targets="Variable mrv.automation.process.WorkflowProcessBase.duplicate_wrapped_graph=mrv.automation.process.WorkflowProcessBase-class.html#duplicate_wrapped_graph,Variable mrv.dgfe.GraphNodeBase.duplicate_wrapped_graph=mrv.dgfe.GraphNodeBase-class.html#duplicate_wrapped_graph"><a title="mrv.automation.process.WorkflowProcessBase.duplicate_wrapped_graph
+mrv.dgfe.GraphNodeBase.duplicate_wrapped_graph" class="py-name" href="#" onclick="return doclink('link-94', 'duplicate_wrapped_graph', 'link-94');">duplicate_wrapped_graph</a></tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt>                 <tt class="py-comment"># we load our copies directly and thus have a copy</tt> </tt>
+<a name="L241"></a><tt class="py-lineno">241</tt>  <tt class="py-line"> </tt>
+<a name="WorkflowProcessBase.__init__"></a><div id="WorkflowProcessBase.__init__-def"><a name="L242"></a><tt class="py-lineno">242</tt> <a class="py-toggle" href="#" id="WorkflowProcessBase.__init__-toggle" onclick="return toggle('WorkflowProcessBase.__init__');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.automation.process.WorkflowProcessBase-class.html#__init__">__init__</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">id</tt><tt class="py-op">,</tt> <tt class="py-param">wflInstance</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="WorkflowProcessBase.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="WorkflowProcessBase.__init__-expanded"><a name="L243"></a><tt class="py-lineno">243</tt>  <tt class="py-line">                <tt class="py-docstring">""" Will take all important configuration variables from its class variables</tt> </tt>
+<a name="L244"></a><tt class="py-lineno">244</tt>  <tt class="py-line"><tt class="py-docstring">                - you should override these with your subclass</tt> </tt>
+<a name="L245"></a><tt class="py-lineno">245</tt>  <tt class="py-line"><tt class="py-docstring">                </tt> </tt>
+<a name="L246"></a><tt class="py-lineno">246</tt>  <tt class="py-line"><tt class="py-docstring">                :param wflInstance: if given, this instance will be used instead of creating</tt> </tt>
+<a name="L247"></a><tt class="py-lineno">247</tt>  <tt class="py-line"><tt class="py-docstring">                        a new workflow. Used by copy constructor.</tt> </tt>
+<a name="L248"></a><tt class="py-lineno">248</tt>  <tt class="py-line"><tt class="py-docstring">                :param kwargs: all arguments required to initialize the ProcessBase"""</tt> </tt>
+<a name="L249"></a><tt class="py-lineno">249</tt>  <tt class="py-line"> </tt>
+<a name="L250"></a><tt class="py-lineno">250</tt>  <tt class="py-line">                <tt class="py-name">wrappedwfl</tt> <tt class="py-op">=</tt> <tt class="py-name">wflInstance</tt> </tt>
+<a name="L251"></a><tt class="py-lineno">251</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">wrappedwfl</tt><tt class="py-op">:</tt> </tt>
+<a name="L252"></a><tt class="py-lineno">252</tt>  <tt class="py-line">                        <tt class="py-name">wrappedwfl</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-95" class="py-name" targets="Method mrv.automation.process.WorkflowProcessBase._createWrappedWfl()=mrv.automation.process.WorkflowProcessBase-class.html#_createWrappedWfl"><a title="mrv.automation.process.WorkflowProcessBase._createWrappedWfl" class="py-name" href="#" onclick="return doclink('link-95', '_createWrappedWfl', 'link-95');">_createWrappedWfl</a></tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-96" class="py-name"><a title="mrv.automation.process.WorkflowProcessBase.workflow_directory" class="py-name" href="#" onclick="return doclink('link-96', 'workflow_directory', 'link-92');">workflow_directory</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-97" class="py-name"><a title="mrv.automation.process.WorkflowProcessBase.workflow_file" class="py-name" href="#" onclick="return doclink('link-97', 'workflow_file', 'link-91');">workflow_file</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L253"></a><tt class="py-lineno">253</tt>  <tt class="py-line"> </tt>
+<a name="L254"></a><tt class="py-lineno">254</tt>  <tt class="py-line">                <tt class="py-comment"># NOTE: baseclass stores wrapped wfl for us</tt> </tt>
+<a name="L255"></a><tt class="py-lineno">255</tt>  <tt class="py-line">                <tt class="py-comment"># init bases</tt> </tt>
+<a name="L256"></a><tt class="py-lineno">256</tt>  <tt class="py-line">                <tt id="link-98" class="py-name"><a title="mrv.dgfe.GraphNodeBase" class="py-name" href="#" onclick="return doclink('link-98', 'GraphNodeBase', 'link-6');">GraphNodeBase</a></tt><tt class="py-op">.</tt><tt id="link-99" class="py-name"><a title="mrv.automation.attributes.RegexStringAttr.__init__
+mrv.automation.process.ProcessBase.__init__
+mrv.automation.process.WorkflowProcessBase.__init__
+mrv.automation.qa.QACheck.__init__
+mrv.automation.qa.QACheckAttribute.__init__
+mrv.automation.qa.QACheckResult.__init__
+mrv.automation.qa.QAWorkflow.__init__
+mrv.automation.report.ReportBase.__init__
+mrv.automation.workflow.DirtyException.__init__
+mrv.automation.workflow.Workflow.CallGraph.__init__
+mrv.automation.workflow.Workflow.ProcessData.__init__
+mrv.automation.workflow.Workflow.__init__
+mrv.cmd.base.SpawnedCommand.__init__
+mrv.cmd.base.SpawnedOptionParser.__init__
+mrv.conf.ConfigAccessor.__init__
+mrv.conf.ConfigChain.__init__
+mrv.conf.ConfigFile.__init__
+mrv.conf.ConfigManager.__init__
+mrv.conf.ConfigNode.__init__
+mrv.conf.DictToINIFile.__init__
+mrv.conf.DiffData.__init__
+mrv.conf.Key.__init__
+mrv.conf.Section.__init__
+mrv.conf._PropertyHolderBase.__init__
+mrv.dge.Attribute.__init__
+mrv.dge.Graph.__init__
+mrv.dge.NodeBase.__init__
+mrv.dge.plug.__init__
+mrv.dgfe.FacadeNodeBase.__init__
+mrv.dgfe.GraphNodeBase.__init__
+mrv.dgfe._IOShell.__init__
+mrv.dgfe._OIShell.__init__
+mrv.doc.base.DocGenerator.__init__
+mrv.enum.Element.__init__
+mrv.enum.Enumeration.__init__
+mrv.exc.MRVError.__init__
+mrv.interface.iChoiceDialog.__init__
+mrv.interface.iProgressIndicator.__init__
+mrv.interface.iPrompt.__init__
+mrv.maya.mdb.MEnumDescriptor.__init__
+mrv.maya.mdb.MFnCodeGeneratorBase.__init__
+mrv.maya.mdb.MMemberMap.__init__
+mrv.maya.mdb.MMethodDescriptor.__init__
+mrv.maya.nt.PluginDB.__init__
+mrv.maya.nt.geometry._SingleIndexedComponentGenerator.__init__
+mrv.maya.nt.persistence.PyPickleData.__init__
+mrv.maya.nt.persistence.StoragePluginNode.__init__
+mrv.maya.nt.set.ObjectSet._TmpSet.__init__
+mrv.maya.nt.storage.StorageBase.PyPickleValue.__init__
+mrv.maya.nt.storage.StorageBase.__init__
+mrv.maya.nt.storage.StorageNode.__init__
+mrv.maya.ref.FileReference.__init__
+mrv.maya.ui.base.BaseUI.__init__
+mrv.maya.ui.base.NamedUI.__init__
+mrv.maya.ui.browse.control.BookmarkControl.__init__
+mrv.maya.ui.browse.control.FilePathControlEditable.__init__
+mrv.maya.ui.browse.control.FileProvider.__init__
+mrv.maya.ui.browse.control.FileRootSelectorControl.__init__
+mrv.maya.ui.browse.control.StackControlBase.__init__
+mrv.maya.ui.browse.finder.Finder.__init__
+mrv.maya.ui.browse.interface.iFinderProvider.__init__
+mrv.maya.ui.browse.layout.FileOpenFinder.__init__
+mrv.maya.ui.browse.layout.FileReferenceFinder.__init__
+mrv.maya.ui.browse.layout.FileSaveFinder.__init__
+mrv.maya.ui.browse.layout.FinderLayout.__init__
+mrv.maya.ui.browse.option.FileOpenOptions.__init__
+mrv.maya.ui.dialog.ProgressWindow.__init__
+mrv.maya.ui.dialog.PromptDialog.__init__
+mrv.maya.ui.layout.Layout.__init__
+mrv.maya.ui.qa.QACheckLayout.__init__
+mrv.maya.ui.qa.QALayout.__init__
+mrv.maya.ui.util.EventSenderUI._UIEvent.__init__
+mrv.maya.ui.util.UIContainerBase.__init__
+mrv.maya.undo.DGModifier.__init__
+mrv.maya.undo.GenericOperation.__init__
+mrv.maya.undo.GenericOperationStack.__init__
+mrv.maya.undo.MuteUndo.__init__
+mrv.maya.undo.Operation.__init__
+mrv.maya.undo.StartUndo.__init__
+mrv.maya.undo.UndoCmd.__init__
+mrv.maya.undo.UndoRecorder.__init__
+mrv.maya.util.CallbackEventBase.CBStorageFunction.__init__
+mrv.maya.util.CallbackEventBase.__init__
+mrv.maya.util.StandinClass.__init__
+mrv.thread.TerminatableThread.__init__
+mrv.thread.WorkerThread.__init__
+mrv.util.And.__init__
+mrv.util.Call.__init__
+mrv.util.CallAdv.__init__
+mrv.util.CallOnDeletion.__init__
+mrv.util.Event.__init__
+mrv.util.InterfaceMaster.InterfaceBase.__init__
+mrv.util.InterfaceMaster.InterfaceDescriptor.__init__
+mrv.util.InterfaceMaster._InterfaceHandler.__init__
+mrv.util.InterfaceMaster.__init__
+mrv.util.Or.__init__
+mrv.util.PipeSeparatedFile.__init__
+mrv.util.WeakInstFunction.__init__
+unittest.FunctionTestCase.__init__
+unittest.TestCase.__init__
+unittest.TestProgram.__init__
+unittest.TestResult.__init__
+unittest.TestSuite.__init__
+unittest.TextTestRunner.__init__
+unittest._TextTestResult.__init__
+unittest._WritelnDecorator.__init__" class="py-name" href="#" onclick="return doclink('link-99', '__init__', 'link-52');">__init__</a></tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">wrappedwfl</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt id="link-100" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-100', 'kwargs', 'link-50');">kwargs</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L257"></a><tt class="py-lineno">257</tt>  <tt class="py-line">                <tt id="link-101" class="py-name" targets="Class mrv.automation.process.ProcessBase=mrv.automation.process.ProcessBase-class.html"><a title="mrv.automation.process.ProcessBase" class="py-name" href="#" onclick="return doclink('link-101', 'ProcessBase', 'link-101');">ProcessBase</a></tt><tt class="py-op">.</tt><tt id="link-102" class="py-name"><a title="mrv.automation.attributes.RegexStringAttr.__init__
+mrv.automation.process.ProcessBase.__init__
+mrv.automation.process.WorkflowProcessBase.__init__
+mrv.automation.qa.QACheck.__init__
+mrv.automation.qa.QACheckAttribute.__init__
+mrv.automation.qa.QACheckResult.__init__
+mrv.automation.qa.QAWorkflow.__init__
+mrv.automation.report.ReportBase.__init__
+mrv.automation.workflow.DirtyException.__init__
+mrv.automation.workflow.Workflow.CallGraph.__init__
+mrv.automation.workflow.Workflow.ProcessData.__init__
+mrv.automation.workflow.Workflow.__init__
+mrv.cmd.base.SpawnedCommand.__init__
+mrv.cmd.base.SpawnedOptionParser.__init__
+mrv.conf.ConfigAccessor.__init__
+mrv.conf.ConfigChain.__init__
+mrv.conf.ConfigFile.__init__
+mrv.conf.ConfigManager.__init__
+mrv.conf.ConfigNode.__init__
+mrv.conf.DictToINIFile.__init__
+mrv.conf.DiffData.__init__
+mrv.conf.Key.__init__
+mrv.conf.Section.__init__
+mrv.conf._PropertyHolderBase.__init__
+mrv.dge.Attribute.__init__
+mrv.dge.Graph.__init__
+mrv.dge.NodeBase.__init__
+mrv.dge.plug.__init__
+mrv.dgfe.FacadeNodeBase.__init__
+mrv.dgfe.GraphNodeBase.__init__
+mrv.dgfe._IOShell.__init__
+mrv.dgfe._OIShell.__init__
+mrv.doc.base.DocGenerator.__init__
+mrv.enum.Element.__init__
+mrv.enum.Enumeration.__init__
+mrv.exc.MRVError.__init__
+mrv.interface.iChoiceDialog.__init__
+mrv.interface.iProgressIndicator.__init__
+mrv.interface.iPrompt.__init__
+mrv.maya.mdb.MEnumDescriptor.__init__
+mrv.maya.mdb.MFnCodeGeneratorBase.__init__
+mrv.maya.mdb.MMemberMap.__init__
+mrv.maya.mdb.MMethodDescriptor.__init__
+mrv.maya.nt.PluginDB.__init__
+mrv.maya.nt.geometry._SingleIndexedComponentGenerator.__init__
+mrv.maya.nt.persistence.PyPickleData.__init__
+mrv.maya.nt.persistence.StoragePluginNode.__init__
+mrv.maya.nt.set.ObjectSet._TmpSet.__init__
+mrv.maya.nt.storage.StorageBase.PyPickleValue.__init__
+mrv.maya.nt.storage.StorageBase.__init__
+mrv.maya.nt.storage.StorageNode.__init__
+mrv.maya.ref.FileReference.__init__
+mrv.maya.ui.base.BaseUI.__init__
+mrv.maya.ui.base.NamedUI.__init__
+mrv.maya.ui.browse.control.BookmarkControl.__init__
+mrv.maya.ui.browse.control.FilePathControlEditable.__init__
+mrv.maya.ui.browse.control.FileProvider.__init__
+mrv.maya.ui.browse.control.FileRootSelectorControl.__init__
+mrv.maya.ui.browse.control.StackControlBase.__init__
+mrv.maya.ui.browse.finder.Finder.__init__
+mrv.maya.ui.browse.interface.iFinderProvider.__init__
+mrv.maya.ui.browse.layout.FileOpenFinder.__init__
+mrv.maya.ui.browse.layout.FileReferenceFinder.__init__
+mrv.maya.ui.browse.layout.FileSaveFinder.__init__
+mrv.maya.ui.browse.layout.FinderLayout.__init__
+mrv.maya.ui.browse.option.FileOpenOptions.__init__
+mrv.maya.ui.dialog.ProgressWindow.__init__
+mrv.maya.ui.dialog.PromptDialog.__init__
+mrv.maya.ui.layout.Layout.__init__
+mrv.maya.ui.qa.QACheckLayout.__init__
+mrv.maya.ui.qa.QALayout.__init__
+mrv.maya.ui.util.EventSenderUI._UIEvent.__init__
+mrv.maya.ui.util.UIContainerBase.__init__
+mrv.maya.undo.DGModifier.__init__
+mrv.maya.undo.GenericOperation.__init__
+mrv.maya.undo.GenericOperationStack.__init__
+mrv.maya.undo.MuteUndo.__init__
+mrv.maya.undo.Operation.__init__
+mrv.maya.undo.StartUndo.__init__
+mrv.maya.undo.UndoCmd.__init__
+mrv.maya.undo.UndoRecorder.__init__
+mrv.maya.util.CallbackEventBase.CBStorageFunction.__init__
+mrv.maya.util.CallbackEventBase.__init__
+mrv.maya.util.StandinClass.__init__
+mrv.thread.TerminatableThread.__init__
+mrv.thread.WorkerThread.__init__
+mrv.util.And.__init__
+mrv.util.Call.__init__
+mrv.util.CallAdv.__init__
+mrv.util.CallOnDeletion.__init__
+mrv.util.Event.__init__
+mrv.util.InterfaceMaster.InterfaceBase.__init__
+mrv.util.InterfaceMaster.InterfaceDescriptor.__init__
+mrv.util.InterfaceMaster._InterfaceHandler.__init__
+mrv.util.InterfaceMaster.__init__
+mrv.util.Or.__init__
+mrv.util.PipeSeparatedFile.__init__
+mrv.util.WeakInstFunction.__init__
+unittest.FunctionTestCase.__init__
+unittest.TestCase.__init__
+unittest.TestProgram.__init__
+unittest.TestResult.__init__
+unittest.TestSuite.__init__
+unittest.TextTestRunner.__init__
+unittest._TextTestResult.__init__
+unittest._WritelnDecorator.__init__" class="py-name" href="#" onclick="return doclink('link-102', '__init__', 'link-52');">__init__</a></tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">,</tt> <tt id="link-103" class="py-name"><a title="mrv.dge.NodeBase.id
+unittest.FunctionTestCase.id
+unittest.TestCase.id" class="py-name" href="#" onclick="return doclink('link-103', 'id', 'link-53');">id</a></tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt id="link-104" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-104', 'kwargs', 'link-50');">kwargs</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L258"></a><tt class="py-lineno">258</tt>  <tt class="py-line"> </tt>
+<a name="L259"></a><tt class="py-lineno">259</tt>  <tt class="py-line">                <tt class="py-comment"># adjust the ids of wrapped graph nodes with the name of their graph</tt> </tt>
+<a name="L260"></a><tt class="py-lineno">260</tt>  <tt class="py-line">                <tt class="py-comment"># NO: if this is done, some recurisve facades have issues with their attribute</tt> </tt>
+<a name="L261"></a><tt class="py-lineno">261</tt>  <tt class="py-line">                <tt class="py-comment"># names - although this could possibly be solved, renaming the nodes is in</tt> </tt>
+<a name="L262"></a><tt class="py-lineno">262</tt>  <tt class="py-line">                <tt class="py-comment"># fact not required</tt> </tt>
+<a name="L263"></a><tt class="py-lineno">263</tt>  <tt class="py-line">                <tt class="py-comment">#for node in self.wgraph.iterNodes():</tt> </tt>
+<a name="L264"></a><tt class="py-lineno">264</tt>  <tt class="py-line">                <tt class="py-comment">#       node.setID( "%s.%s" % ( id, node.id() ) )</tt> </tt>
+<a name="L265"></a><tt class="py-lineno">265</tt>  <tt class="py-line"> </tt>
+<a name="L266"></a><tt class="py-lineno">266</tt>  <tt class="py-line">                <tt class="py-comment"># override name - per instance in our case</tt> </tt>
+<a name="L267"></a><tt class="py-lineno">267</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-105" class="py-name"><a title="mrv.automation.process.ProcessBase.noun" class="py-name" href="#" onclick="return doclink('link-105', 'noun', 'link-44');">noun</a></tt> <tt class="py-op">=</tt> <tt class="py-name">wrappedwfl</tt><tt class="py-op">.</tt><tt id="link-106" class="py-name" targets="Method mrv.conf.ConfigFile.name()=mrv.conf.ConfigFile-class.html#name,Method mrv.conf.ConfigStringIO.name()=mrv.conf.ConfigStringIO-class.html#name,Method mrv.conf.DictConfigINIFile.name()=mrv.conf.DictConfigINIFile-class.html#name,Variable mrv.conf.DiffData.name=mrv.conf.DiffData-class.html#name,Method mrv.conf.ExtendedFileInterface.name()=mrv.conf.ExtendedFileInterface-class.html#name,Variable mrv.conf.Key.name=mrv.conf.Key-class.html#name,Variable mrv.conf.Section.name=mrv.conf.Section-class.html#name,Variable mrv.conf._PropertyHolderBase.name=mrv.conf._PropertyHolderBase-class.html#name,Method mrv.dge.iPlug.name()=mrv.dge.iPlug-class.html#name,Method mrv.dge.plug.name()=mrv.dge.plug-class.html#name,Method mrv.dgfe.OIFacadePlug.name()=mrv.dgfe.OIFacadePlug-class.html#name,Method mrv.enum.Element.name()=mrv.enum.Element-class.html#name,Method mrv.maya.nt.base.DagNode.name()=mrv.maya.nt.base.DagNode-class.html#name,Method mrv.maya.nt.persistence.PyPickleData.name()=mrv.maya.nt.persistence.PyPickleData-class.html#name,Class Method mrv.maya.scene.Scene.name()=mrv.maya.scene.Scene-class.html#name"><a title="mrv.conf.ConfigFile.name
+mrv.conf.ConfigStringIO.name
+mrv.conf.DictConfigINIFile.name
+mrv.conf.DiffData.name
+mrv.conf.ExtendedFileInterface.name
+mrv.conf.Key.name
+mrv.conf.Section.name
+mrv.conf._PropertyHolderBase.name
+mrv.dge.iPlug.name
+mrv.dge.plug.name
+mrv.dgfe.OIFacadePlug.name
+mrv.enum.Element.name
+mrv.maya.nt.base.DagNode.name
+mrv.maya.nt.persistence.PyPickleData.name
+mrv.maya.scene.Scene.name" class="py-name" href="#" onclick="return doclink('link-106', 'name', 'link-106');">name</a></tt> </tt>
+<a name="L268"></a><tt class="py-lineno">268</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-107" class="py-name"><a title="mrv.automation.process.ProcessBase.verb" class="py-name" href="#" onclick="return doclink('link-107', 'verb', 'link-45');">verb</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"internally computing"</tt> </tt>
+</div><a name="L269"></a><tt class="py-lineno">269</tt>  <tt class="py-line"> </tt>
+<a name="WorkflowProcessBase.createInstance"></a><div id="WorkflowProcessBase.createInstance-def"><a name="L270"></a><tt class="py-lineno">270</tt> <a class="py-toggle" href="#" id="WorkflowProcessBase.createInstance-toggle" onclick="return toggle('WorkflowProcessBase.createInstance');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.automation.process.WorkflowProcessBase-class.html#createInstance">createInstance</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="WorkflowProcessBase.createInstance-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="WorkflowProcessBase.createInstance-expanded"><a name="L271"></a><tt class="py-lineno">271</tt>  <tt class="py-line">                <tt class="py-docstring">"""Create a copy of self and return it - required due to our very special constructor"""</tt> </tt>
+<a name="L272"></a><tt class="py-lineno">272</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__class__</tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-108" class="py-name"><a title="mrv.dge.NodeBase.id
+unittest.FunctionTestCase.id
+unittest.TestCase.id" class="py-name" href="#" onclick="return doclink('link-108', 'id', 'link-53');">id</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">wflInstance</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">wgraph</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L273"></a><tt class="py-lineno">273</tt>  <tt class="py-line"> </tt>
+<a name="WorkflowProcessBase._createWrappedWfl"></a><div id="WorkflowProcessBase._createWrappedWfl-def"><a name="L274"></a><tt class="py-lineno">274</tt> <a class="py-toggle" href="#" id="WorkflowProcessBase._createWrappedWfl-toggle" onclick="return toggle('WorkflowProcessBase._createWrappedWfl');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.automation.process.WorkflowProcessBase-class.html#_createWrappedWfl">_createWrappedWfl</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">wfldir</tt><tt class="py-op">,</tt> <tt class="py-param">wflname</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="WorkflowProcessBase._createWrappedWfl-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="WorkflowProcessBase._createWrappedWfl-expanded"><a name="L275"></a><tt class="py-lineno">275</tt>  <tt class="py-line">                <tt class="py-docstring">"""</tt> </tt>
+<a name="L276"></a><tt class="py-lineno">276</tt>  <tt class="py-line"><tt class="py-docstring">                :return: our wrapped workflow instance as created by a method loading a workflow</tt> </tt>
+<a name="L277"></a><tt class="py-lineno">277</tt>  <tt class="py-line"><tt class="py-docstring">                        from a file"""</tt> </tt>
+<a name="L278"></a><tt class="py-lineno">278</tt>  <tt class="py-line">                <tt class="py-name">wfl</tt> <tt class="py-op">=</tt> <tt class="py-name">wflbase</tt><tt class="py-op">.</tt><tt id="link-109" class="py-name" targets="Function mrv.automation.base.loadWorkflowFromDotFile()=mrv.automation.base-module.html#loadWorkflowFromDotFile"><a title="mrv.automation.base.loadWorkflowFromDotFile" class="py-name" href="#" onclick="return doclink('link-109', 'loadWorkflowFromDotFile', 'link-109');">loadWorkflowFromDotFile</a></tt><tt class="py-op">(</tt> <tt id="link-110" class="py-name"><a title="mrv.path.make_path" class="py-name" href="#" onclick="return doclink('link-110', 'make_path', 'link-15');">make_path</a></tt><tt class="py-op">(</tt> <tt class="py-name">wfldir</tt> <tt class="py-op">)</tt> <tt class="py-op">/</tt> <tt class="py-name">wflname</tt> <tt class="py-op">)</tt> </tt>
+<a name="L279"></a><tt class="py-lineno">279</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">wfl</tt> </tt>
+</div><a name="L280"></a><tt class="py-lineno">280</tt>  <tt class="py-line"> </tt>
+<a name="WorkflowProcessBase.prepareProcess"></a><div id="WorkflowProcessBase.prepareProcess-def"><a name="L281"></a><tt class="py-lineno">281</tt> <a class="py-toggle" href="#" id="WorkflowProcessBase.prepareProcess-toggle" onclick="return toggle('WorkflowProcessBase.prepareProcess');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.automation.process.WorkflowProcessBase-class.html#prepareProcess">prepareProcess</a><tt class="py-op">(</tt> <tt class="py-param">self</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="WorkflowProcessBase.prepareProcess-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="WorkflowProcessBase.prepareProcess-expanded"><a name="L282"></a><tt class="py-lineno">282</tt>  <tt class="py-line">                <tt class="py-docstring">"""As we have different callgraphs, but want proper reports, just swap in the</tt> </tt>
+<a name="L283"></a><tt class="py-lineno">283</tt>  <tt class="py-line"><tt class="py-docstring">                callgraph of our own workflow to allow it to be maintained correctly when the nodes</tt> </tt>
+<a name="L284"></a><tt class="py-lineno">284</tt>  <tt class="py-line"><tt class="py-docstring">                of the wrapped graph evaluate.</tt> </tt>
+<a name="L285"></a><tt class="py-lineno">285</tt>  <tt class="py-line"><tt class="py-docstring">                </tt> </tt>
+<a name="L286"></a><tt class="py-lineno">286</tt>  <tt class="py-line"><tt class="py-docstring">                :note: this requires that we get called after the callgraph has bene initialized"""</tt> </tt>
+<a name="L287"></a><tt class="py-lineno">287</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">graph</tt><tt class="py-op">.</tt><tt class="py-name">_callgraph</tt><tt class="py-op">.</tt><tt class="py-name">number_of_nodes</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L288"></a><tt class="py-lineno">288</tt>  <tt class="py-line">                        <tt class="py-keyword">raise</tt> <tt id="link-111" class="py-name" targets="Class exceptions.AssertionError=exceptions.AssertionError-class.html"><a title="exceptions.AssertionError" class="py-name" href="#" onclick="return doclink('link-111', 'AssertionError', 'link-111');">AssertionError</a></tt><tt class="py-op">(</tt> <tt class="py-string">"Callgraph of parent workflow %r was not empty"</tt> <tt class="py-op">%</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">graph</tt> <tt class="py-op">)</tt> </tt>
+<a name="L289"></a><tt class="py-lineno">289</tt>  <tt class="py-line"> </tt>
+<a name="L290"></a><tt class="py-lineno">290</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">wgraph</tt><tt class="py-op">.</tt><tt id="link-112" class="py-name" targets="Method mrv.automation.process.ProcessBase.copyFrom()=mrv.automation.process.ProcessBase-class.html#copyFrom,Method mrv.automation.workflow.Workflow.copyFrom()=mrv.automation.workflow.Workflow-class.html#copyFrom,Method mrv.dge.Graph.copyFrom()=mrv.dge.Graph-class.html#copyFrom,Method mrv.dge.NodeBase.copyFrom()=mrv.dge.NodeBase-class.html#copyFrom,Method mrv.dgfe.FacadeNodeBase.copyFrom()=mrv.dgfe.FacadeNodeBase-class.html#copyFrom,Method mrv.interface.iDuplicatable.copyFrom()=mrv.interface.iDuplicatable-class.html#copyFrom,Method mrv.maya.nt.geometry.Mesh.copyFrom()=mrv.maya.nt.geometry.Mesh-class.html#copyFrom,Method mrv.maya.nt.storage.StorageBase.copyFrom()=mrv.maya.nt.storage.StorageBase-class.html#copyFrom,Method mrv.util.InterfaceMaster.copyFrom()=mrv.util.InterfaceMaster-class.html#copyFrom"><a title="mrv.automation.process.ProcessBase.copyFrom
+mrv.automation.workflow.Workflow.copyFrom
+mrv.dge.Graph.copyFrom
+mrv.dge.NodeBase.copyFrom
+mrv.dgfe.FacadeNodeBase.copyFrom
+mrv.interface.iDuplicatable.copyFrom
+mrv.maya.nt.geometry.Mesh.copyFrom
+mrv.maya.nt.storage.StorageBase.copyFrom
+mrv.util.InterfaceMaster.copyFrom" class="py-name" href="#" onclick="return doclink('link-112', 'copyFrom', 'link-112');">copyFrom</a></tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">graph</tt> <tt class="py-op">)</tt>                                      <tt class="py-comment"># copies required attributes</tt> </tt>
+<a name="L291"></a><tt class="py-lineno">291</tt>  <tt class="py-line"> </tt>
+<a name="L292"></a><tt class="py-lineno">292</tt>  <tt class="py-line">                <tt class="py-comment"># Prepare all our wrapped nodes</tt> </tt>
+<a name="L293"></a><tt class="py-lineno">293</tt>  <tt class="py-line">                <tt class="py-keyword">for</tt> <tt class="py-name">node</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">wgraph</tt><tt class="py-op">.</tt><tt id="link-113" class="py-name" targets="Method mrv.dge.Graph.iterNodes()=mrv.dge.Graph-class.html#iterNodes,Method mrv.maya.ns.Namespace.iterNodes()=mrv.maya.ns.Namespace-class.html#iterNodes,Method mrv.maya.ref.FileReference.iterNodes()=mrv.maya.ref.FileReference-class.html#iterNodes"><a title="mrv.dge.Graph.iterNodes
+mrv.maya.ns.Namespace.iterNodes
+mrv.maya.ref.FileReference.iterNodes" class="py-name" href="#" onclick="return doclink('link-113', 'iterNodes', 'link-113');">iterNodes</a></tt><tt class="py-op">(</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L294"></a><tt class="py-lineno">294</tt>  <tt class="py-line">                        <tt class="py-name">node</tt><tt class="py-op">.</tt><tt id="link-114" class="py-name" targets="Method mrv.automation.process.ProcessBase.prepareProcess()=mrv.automation.process.ProcessBase-class.html#prepareProcess,Method mrv.automation.process.WorkflowProcessBase.prepareProcess()=mrv.automation.process.WorkflowProcessBase-class.html#prepareProcess"><a title="mrv.automation.process.ProcessBase.prepareProcess
+mrv.automation.process.WorkflowProcessBase.prepareProcess" class="py-name" href="#" onclick="return doclink('link-114', 'prepareProcess', 'link-114');">prepareProcess</a></tt><tt class="py-op">(</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L295"></a><tt class="py-lineno">295</tt>  <tt class="py-line"> </tt>
+<a name="L296"></a><tt class="py-lineno">296</tt>  <tt class="py-line">                <tt class="py-comment"># ProcessBase.prepareProcess( self )</tt> </tt>
+<a name="L297"></a><tt class="py-lineno">297</tt>  <tt class="py-line"> </tt>
+<a name="WorkflowProcessBase._iterNodes"></a><div id="WorkflowProcessBase._iterNodes-def"><a name="L298"></a><tt class="py-lineno">298</tt> <a class="py-toggle" href="#" id="WorkflowProcessBase._iterNodes-toggle" onclick="return toggle('WorkflowProcessBase._iterNodes');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.automation.process.WorkflowProcessBase-class.html#_iterNodes">_iterNodes</a><tt class="py-op">(</tt> <tt class="py-param">self</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="WorkflowProcessBase._iterNodes-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="WorkflowProcessBase._iterNodes-expanded"><a name="L299"></a><tt class="py-lineno">299</tt>  <tt class="py-line">                <tt class="py-docstring">""":return: generator for nodes that have no output connections or no input connections """</tt> </tt>
+<a name="L300"></a><tt class="py-lineno">300</tt>  <tt class="py-line">                <tt class="py-name">noOutput</tt> <tt class="py-op">=</tt> <tt class="py-keyword">lambda</tt> <tt class="py-name">node</tt><tt class="py-op">:</tt> <tt class="py-keyword">not</tt> <tt class="py-name">node</tt><tt class="py-op">.</tt><tt id="link-115" class="py-name" targets="Method mrv.dge.NodeBase.connections()=mrv.dge.NodeBase-class.html#connections,Method mrv.dge._PlugShell.connections()=mrv.dge._PlugShell-class.html#connections,Method mrv.dgfe._IOShell.connections()=mrv.dgfe._IOShell-class.html#connections,Method mrv.maya.nt.base.DependNode.connections()=mrv.maya.nt.base.DependNode-class.html#connections"><a title="mrv.dge.NodeBase.connections
+mrv.dge._PlugShell.connections
+mrv.dgfe._IOShell.connections
+mrv.maya.nt.base.DependNode.connections" class="py-name" href="#" onclick="return doclink('link-115', 'connections', 'link-115');">connections</a></tt><tt class="py-op">(</tt> <tt class="py-number">0</tt><tt class="py-op">,</tt> <tt class="py-number">1</tt> <tt class="py-op">)</tt> </tt>
+<a name="L301"></a><tt class="py-lineno">301</tt>  <tt class="py-line">                <tt class="py-name">noInput</tt> <tt class="py-op">=</tt> <tt class="py-keyword">lambda</tt> <tt class="py-name">node</tt><tt class="py-op">:</tt> <tt class="py-keyword">not</tt> <tt class="py-name">node</tt><tt class="py-op">.</tt><tt id="link-116" class="py-name"><a title="mrv.dge.NodeBase.connections
+mrv.dge._PlugShell.connections
+mrv.dgfe._IOShell.connections
+mrv.maya.nt.base.DependNode.connections" class="py-name" href="#" onclick="return doclink('link-116', 'connections', 'link-115');">connections</a></tt><tt class="py-op">(</tt> <tt class="py-number">1</tt><tt class="py-op">,</tt> <tt class="py-number">0</tt> <tt class="py-op">)</tt> </tt>
+<a name="L302"></a><tt class="py-lineno">302</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">wgraph</tt><tt class="py-op">.</tt><tt id="link-117" class="py-name"><a title="mrv.dge.Graph.iterNodes
+mrv.maya.ns.Namespace.iterNodes
+mrv.maya.ref.FileReference.iterNodes" class="py-name" href="#" onclick="return doclink('link-117', 'iterNodes', 'link-113');">iterNodes</a></tt><tt class="py-op">(</tt> <tt class="py-name">predicate</tt> <tt class="py-op">=</tt> <tt id="link-118" class="py-name"><a title="mrv.util.Or" class="py-name" href="#" onclick="return doclink('link-118', 'Or', 'link-18');">Or</a></tt><tt class="py-op">(</tt> <tt class="py-name">noInput</tt><tt class="py-op">,</tt> <tt class="py-name">noOutput</tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L303"></a><tt class="py-lineno">303</tt>  <tt class="py-line"> </tt>
+<a name="WorkflowProcessBase._getNodePlugs"></a><div id="WorkflowProcessBase._getNodePlugs-def"><a name="L304"></a><tt class="py-lineno">304</tt> <a class="py-toggle" href="#" id="WorkflowProcessBase._getNodePlugs-toggle" onclick="return toggle('WorkflowProcessBase._getNodePlugs');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.automation.process.WorkflowProcessBase-class.html#_getNodePlugs">_getNodePlugs</a><tt class="py-op">(</tt> <tt class="py-param">self</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="WorkflowProcessBase._getNodePlugs-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="WorkflowProcessBase._getNodePlugs-expanded"><a name="L305"></a><tt class="py-lineno">305</tt>  <tt class="py-line">                <tt class="py-docstring">"""Override the base method, filtering it's output so that only unconnected plugs</tt> </tt>
+<a name="L306"></a><tt class="py-lineno">306</tt>  <tt class="py-line"><tt class="py-docstring">                will be returned"""</tt> </tt>
+<a name="L307"></a><tt class="py-lineno">307</tt>  <tt class="py-line">                <tt class="py-name">outset</tt> <tt class="py-op">=</tt> <tt class="py-name">super</tt><tt class="py-op">(</tt> <tt id="link-119" class="py-name" targets="Class mrv.automation.process.WorkflowProcessBase=mrv.automation.process.WorkflowProcessBase-class.html"><a title="mrv.automation.process.WorkflowProcessBase" class="py-name" href="#" onclick="return doclink('link-119', 'WorkflowProcessBase', 'link-119');">WorkflowProcessBase</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt> <tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-120" class="py-name" targets="Method mrv.automation.process.WorkflowProcessBase._getNodePlugs()=mrv.automation.process.WorkflowProcessBase-class.html#_getNodePlugs,Method mrv.dgfe.FacadeNodeBase._getNodePlugs()=mrv.dgfe.FacadeNodeBase-class.html#_getNodePlugs,Method mrv.dgfe.GraphNodeBase._getNodePlugs()=mrv.dgfe.GraphNodeBase-class.html#_getNodePlugs"><a title="mrv.automation.process.WorkflowProcessBase._getNodePlugs
+mrv.dgfe.FacadeNodeBase._getNodePlugs
+mrv.dgfe.GraphNodeBase._getNodePlugs" class="py-name" href="#" onclick="return doclink('link-120', '_getNodePlugs', 'link-120');">_getNodePlugs</a></tt><tt class="py-op">(</tt> <tt class="py-op">)</tt> </tt>
+<a name="L308"></a><tt class="py-lineno">308</tt>  <tt class="py-line"> </tt>
+<a name="L309"></a><tt class="py-lineno">309</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-121" class="py-name"><a title="mrv.automation.process.WorkflowProcessBase.exclude_connected_plugs" class="py-name" href="#" onclick="return doclink('link-121', 'exclude_connected_plugs', 'link-93');">exclude_connected_plugs</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L310"></a><tt class="py-lineno">310</tt>  <tt class="py-line">                        <tt class="py-name">finalset</tt> <tt class="py-op">=</tt> <tt id="link-122" class="py-name" targets="Method mrv.dge._PlugShell.set()=mrv.dge._PlugShell-class.html#set,Method mrv.dgfe._IOShell.set()=mrv.dgfe._IOShell-class.html#set,Method mrv.dgfe._OIShell.set()=mrv.dgfe._OIShell-class.html#set,Method mrv.interface.iProgressIndicator.set()=mrv.interface.iProgressIndicator-class.html#set,Method mrv.maya.nt.base.Transform.set()=mrv.maya.nt.base.Transform-class.html#set,Module mrv.maya.nt.set=mrv.maya.nt.set-module.html,Variable mrv.maya.nt.set=mrv.maya.nt-module.html#set,Module mrv.maya.ui.set=mrv.maya.ui.set-module.html"><a title="mrv.dge._PlugShell.set
+mrv.dgfe._IOShell.set
+mrv.dgfe._OIShell.set
+mrv.interface.iProgressIndicator.set
+mrv.maya.nt.base.Transform.set
+mrv.maya.nt.set
+mrv.maya.nt.set
+mrv.maya.ui.set" class="py-name" href="#" onclick="return doclink('link-122', 'set', 'link-122');">set</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L311"></a><tt class="py-lineno">311</tt>  <tt class="py-line">                        <tt class="py-keyword">for</tt> <tt class="py-name">node</tt><tt class="py-op">,</tt> <tt id="link-123" class="py-name"><a title="mrv.automation.workflow.Workflow.ProcessData.plug
+mrv.dge.plug" class="py-name" href="#" onclick="return doclink('link-123', 'plug', 'link-21');">plug</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">outset</tt><tt class="py-op">:</tt> </tt>
+<a name="L312"></a><tt class="py-lineno">312</tt>  <tt class="py-line">                                <tt class="py-name">shell</tt> <tt class="py-op">=</tt> <tt class="py-name">node</tt><tt class="py-op">.</tt><tt id="link-124" class="py-name"><a title="mrv.dge.NodeBase.toShell" class="py-name" href="#" onclick="return doclink('link-124', 'toShell', 'link-66');">toShell</a></tt><tt class="py-op">(</tt> <tt id="link-125" class="py-name"><a title="mrv.automation.workflow.Workflow.ProcessData.plug
+mrv.dge.plug" class="py-name" href="#" onclick="return doclink('link-125', 'plug', 'link-21');">plug</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L313"></a><tt class="py-lineno">313</tt>  <tt class="py-line">                                <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">shell</tt><tt class="py-op">.</tt><tt id="link-126" class="py-name" targets="Method mrv.dge._PlugShell.isConnected()=mrv.dge._PlugShell-class.html#isConnected"><a title="mrv.dge._PlugShell.isConnected" class="py-name" href="#" onclick="return doclink('link-126', 'isConnected', 'link-126');">isConnected</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L314"></a><tt class="py-lineno">314</tt>  <tt class="py-line">                                        <tt class="py-name">finalset</tt><tt class="py-op">.</tt><tt id="link-127" class="py-name" targets="Method mrv.maya.nt.set.ObjectSet.add()=mrv.maya.nt.set.ObjectSet-class.html#add,Method mrv.maya.ui.util.UIContainerBase.add()=mrv.maya.ui.util.UIContainerBase-class.html#add"><a title="mrv.maya.nt.set.ObjectSet.add
+mrv.maya.ui.util.UIContainerBase.add" class="py-name" href="#" onclick="return doclink('link-127', 'add', 'link-127');">add</a></tt><tt class="py-op">(</tt> <tt class="py-op">(</tt> <tt class="py-name">node</tt> <tt class="py-op">,</tt> <tt id="link-128" class="py-name"><a title="mrv.automation.workflow.Workflow.ProcessData.plug
+mrv.dge.plug" class="py-name" href="#" onclick="return doclink('link-128', 'plug', 'link-21');">plug</a></tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+<a name="L315"></a><tt class="py-lineno">315</tt>  <tt class="py-line">                                <tt class="py-comment"># END if shell is unconnected</tt> </tt>
+<a name="L316"></a><tt class="py-lineno">316</tt>  <tt class="py-line">                        <tt class="py-comment"># END for each node,plug pair</tt> </tt>
+<a name="L317"></a><tt class="py-lineno">317</tt>  <tt class="py-line"> </tt>
+<a name="L318"></a><tt class="py-lineno">318</tt>  <tt class="py-line">                        <tt class="py-name">outset</tt> <tt class="py-op">=</tt> <tt class="py-name">finalset</tt> </tt>
+<a name="L319"></a><tt class="py-lineno">319</tt>  <tt class="py-line">                        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-129" class="py-name" targets="Method mrv.dgfe.GraphNodeBase._addIncludeNodePlugs()=mrv.dgfe.GraphNodeBase-class.html#_addIncludeNodePlugs"><a title="mrv.dgfe.GraphNodeBase._addIncludeNodePlugs" class="py-name" href="#" onclick="return doclink('link-129', '_addIncludeNodePlugs', 'link-129');">_addIncludeNodePlugs</a></tt><tt class="py-op">(</tt> <tt class="py-name">outset</tt> <tt class="py-op">)</tt>             <tt class="py-comment"># assure we never filter include plugs</tt> </tt>
+<a name="L320"></a><tt class="py-lineno">320</tt>  <tt class="py-line">                <tt class="py-comment"># END exclude connected plugs</tt> </tt>
+<a name="L321"></a><tt class="py-lineno">321</tt>  <tt class="py-line"> </tt>
+<a name="L322"></a><tt class="py-lineno">322</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">outset</tt> </tt>
+</div></div><a name="L323"></a><tt class="py-lineno">323</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Nov 30 14:48:39 2010
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

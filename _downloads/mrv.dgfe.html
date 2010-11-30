@@ -1,0 +1,831 @@
+<html>
+<head>
+<title>mrv.dgfe</title>
+</head>
+<body>
+mrv.dgfe
+<style>
+.coverage pre {float: left; margin: 0px 1em; border: none;
+               padding: 0px; }
+.num pre { margin: 0px }
+.nocov, .nocov pre {background-color: #faa}
+.cov, .cov pre {background-color: #cfc}
+div.coverage div { clear: both; height: 1.1em}
+</style>
+<div class="stats">
+Covered: 439 lines<br/>
+Missed: 11 lines<br/>
+Skipped 356 lines<br/>
+Percent: 97 %<br/>
+
+</div>
+<div class="coverage">
+<div class="skip"><span class="num"><pre>  1</pre></span><pre># -*- coding: utf-8 -*-</pre></div>
+<div class="cov"><span class="num"><pre>  2</pre></span><pre>&quot;&quot;&quot;Contains nodes supporting facading within a dependency graph  - this can be used</pre></div>
+<div class="cov"><span class="num"><pre>  3</pre></span><pre>for container tyoes or nodes containing their own subgraph even</pre></div>
+<div class="cov"><span class="num"><pre>  4</pre></span><pre>&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  5</pre></span><pre>__docformat__ = &quot;restructuredtext&quot;</pre></div>
+<div class="skip"><span class="num"><pre>  6</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  7</pre></span><pre>from networkx import DiGraph, NetworkXError</pre></div>
+<div class="cov"><span class="num"><pre>  8</pre></span><pre>from collections import deque</pre></div>
+<div class="cov"><span class="num"><pre>  9</pre></span><pre>import inspect</pre></div>
+<div class="cov"><span class="num"><pre> 10</pre></span><pre>import weakref</pre></div>
+<div class="cov"><span class="num"><pre> 11</pre></span><pre>from util import iDuplicatable</pre></div>
+<div class="skip"><span class="num"><pre> 12</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 13</pre></span><pre>from dge import NodeBase</pre></div>
+<div class="cov"><span class="num"><pre> 14</pre></span><pre>from dge import _PlugShell</pre></div>
+<div class="cov"><span class="num"><pre> 15</pre></span><pre>from dge import iPlug</pre></div>
+<div class="cov"><span class="num"><pre> 16</pre></span><pre>from dge import Attribute</pre></div>
+<div class="skip"><span class="num"><pre> 17</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 18</pre></span><pre>__all__ = (&quot;FacadeNodeBase&quot;, &quot;GraphNodeBase&quot;, &quot;OIFacadePlug&quot;)</pre></div>
+<div class="skip"><span class="num"><pre> 19</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 20</pre></span><pre>#{ Shells</pre></div>
+<div class="skip"><span class="num"><pre> 21</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 22</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 23</pre></span><pre>class _OIShellMeta( type ):</pre></div>
+<div class="cov"><span class="num"><pre> 24</pre></span><pre>	&quot;&quot;&quot;Metaclass building the method wrappers for the _FacadeShell class - not</pre></div>
+<div class="cov"><span class="num"><pre> 25</pre></span><pre>	all methods should be overridden, just the ones important to use&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 26</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 27</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre> 28</pre></span><pre>	def createUnfacadeMethod( cls, funcname ):</pre></div>
+<div class="cov"><span class="num"><pre> 29</pre></span><pre>		def unfacadeMethod( self, *args, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre> 30</pre></span><pre>			return getattr( self._toIShell(), funcname )( *args, **kwargs )</pre></div>
+<div class="cov"><span class="num"><pre> 31</pre></span><pre>		return unfacadeMethod</pre></div>
+<div class="skip"><span class="num"><pre> 32</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 33</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre> 34</pre></span><pre>	def createFacadeMethod( cls, funcname ):</pre></div>
+<div class="cov"><span class="num"><pre> 35</pre></span><pre>		&quot;&quot;&quot;in our case, connections just are handled by our own OI plug, staying</pre></div>
+<div class="cov"><span class="num"><pre> 36</pre></span><pre>		in the main graph&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 37</pre></span><pre>		return list()</pre></div>
+<div class="skip"><span class="num"><pre> 38</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 39</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre> 40</pre></span><pre>	def createMethod( cls,funcname, facadetype ):</pre></div>
+<div class="cov"><span class="num"><pre> 41</pre></span><pre>		method = None</pre></div>
+<div class="cov"><span class="num"><pre> 42</pre></span><pre>		if facadetype == &quot;unfacade&quot;:</pre></div>
+<div class="cov"><span class="num"><pre> 43</pre></span><pre>			method = cls.createUnfacadeMethod( funcname )</pre></div>
+<div class="cov"><span class="num"><pre> 44</pre></span><pre>		else:</pre></div>
+<div class="cov"><span class="num"><pre> 45</pre></span><pre>			method = cls.createFacadeMethod( funcname )</pre></div>
+<div class="skip"><span class="num"><pre> 46</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 47</pre></span><pre>		if method: # could be none if we do not overwrite the method</pre></div>
+<div class="cov"><span class="num"><pre> 48</pre></span><pre>			method.__name__ = funcname</pre></div>
+<div class="skip"><span class="num"><pre> 49</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 50</pre></span><pre>		return method</pre></div>
+<div class="skip"><span class="num"><pre> 51</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 52</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 53</pre></span><pre>	def __new__( metacls, name, bases, clsdict ):</pre></div>
+<div class="cov"><span class="num"><pre> 54</pre></span><pre>		unfacadelist = clsdict.get( '__unfacade__' )</pre></div>
+<div class="cov"><span class="num"><pre> 55</pre></span><pre>		facadelist = clsdict.get( '__facade__' )</pre></div>
+<div class="skip"><span class="num"><pre> 56</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 57</pre></span><pre>		# create the wrapper functions for the methods that should wire to the</pre></div>
+<div class="skip"><span class="num"><pre> 58</pre></span><pre>		# original shell, thus we unfacade them</pre></div>
+<div class="cov"><span class="num"><pre> 59</pre></span><pre>		for funcnamelist, functype in ( ( unfacadelist, &quot;unfacade&quot; ), ( facadelist, &quot;facade&quot; ) ):</pre></div>
+<div class="cov"><span class="num"><pre> 60</pre></span><pre>			for funcname in funcnamelist:</pre></div>
+<div class="cov"><span class="num"><pre> 61</pre></span><pre>				method = metacls.createMethod( funcname, functype )</pre></div>
+<div class="cov"><span class="num"><pre> 62</pre></span><pre>				if method:</pre></div>
+<div class="cov"><span class="num"><pre> 63</pre></span><pre>					clsdict[ funcname ] = method</pre></div>
+<div class="skip"><span class="num"><pre> 64</pre></span><pre>			# END for each funcname in funcnamelist</pre></div>
+<div class="skip"><span class="num"><pre> 65</pre></span><pre>		# END for each type of functions</pre></div>
+<div class="skip"><span class="num"><pre> 66</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 67</pre></span><pre>		return type.__new__( metacls, name, bases, clsdict )</pre></div>
+<div class="skip"><span class="num"><pre> 68</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 69</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 70</pre></span><pre>class _IOShellMeta( _OIShellMeta ):</pre></div>
+<div class="cov"><span class="num"><pre> 71</pre></span><pre>	&quot;&quot;&quot;Metaclass wrapping all unfacade attributes on the plugshell trying</pre></div>
+<div class="cov"><span class="num"><pre> 72</pre></span><pre>	to get an input connection &quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 73</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 74</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre> 75</pre></span><pre>	def createUnfacadeMethod( cls,funcname ):</pre></div>
+<div class="cov"><span class="num"><pre> 76</pre></span><pre>		&quot;&quot;&quot;:return: wrapper method for funcname &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 77</pre></span><pre>		method = None</pre></div>
+<div class="cov"><span class="num"><pre> 78</pre></span><pre>		if funcname == &quot;get&quot;:						# drection to input</pre></div>
+<div class="cov"><span class="num"><pre> 79</pre></span><pre>			def unfacadeMethod( self, *args, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre> 80</pre></span><pre>				&quot;&quot;&quot;apply to the input shell&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 81</pre></span><pre>				# behave like the base implementation and check the internal shell</pre></div>
+<div class="skip"><span class="num"><pre> 82</pre></span><pre>				# for caches first - if it exists, we use it.</pre></div>
+<div class="skip"><span class="num"><pre> 83</pre></span><pre>				# It would have been cleared if it is affecfted by another plug being set,</pre></div>
+<div class="skip"><span class="num"><pre> 84</pre></span><pre>				# thus its either still cached or somenone set the cache.</pre></div>
+<div class="skip"><span class="num"><pre> 85</pre></span><pre>				# if there is no cache, just trace the connections upwards.</pre></div>
+<div class="skip"><span class="num"><pre> 86</pre></span><pre>				# This means for get we specifiaclly override the normal &quot;original last&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 87</pre></span><pre>				# behaviour to allow greater flexibility</pre></div>
+<div class="cov"><span class="num"><pre> 88</pre></span><pre>				oshell = self._getOriginalShell( )</pre></div>
+<div class="cov"><span class="num"><pre> 89</pre></span><pre>				if oshell.hasCache():</pre></div>
+<div class="cov"><span class="num"><pre> 90</pre></span><pre>					return oshell.cache()</pre></div>
+<div class="skip"><span class="num"><pre> 91</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 92</pre></span><pre>				return getattr( self._getShells( &quot;input&quot; )[0], funcname )( *args, **kwargs )</pre></div>
+<div class="cov"><span class="num"><pre> 93</pre></span><pre>			method = unfacadeMethod</pre></div>
+<div class="cov"><span class="num"><pre> 94</pre></span><pre>		else:										# direction to output</pre></div>
+<div class="cov"><span class="num"><pre> 95</pre></span><pre>			def unfacadeMethod( self, *args, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre> 96</pre></span><pre>				&quot;&quot;&quot;Clear caches of all output plugs as well&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 97</pre></span><pre>				for shell in self._getShells( &quot;output&quot; ):</pre></div>
+<div class="cov"><span class="num"><pre> 98</pre></span><pre>					getattr( shell, funcname )( *args, **kwargs )</pre></div>
+<div class="skip"><span class="num"><pre> 99</pre></span><pre>			# END unfacade method</pre></div>
+<div class="cov"><span class="num"><pre>100</pre></span><pre>			method = unfacadeMethod</pre></div>
+<div class="skip"><span class="num"><pre>101</pre></span><pre>		# END funk type handling</pre></div>
+<div class="cov"><span class="num"><pre>102</pre></span><pre>		return method</pre></div>
+<div class="skip"><span class="num"><pre>103</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>104</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre>105</pre></span><pre>	def createFacadeMethod( cls, funcname ):</pre></div>
+<div class="cov"><span class="num"><pre>106</pre></span><pre>		&quot;&quot;&quot;Call the main shell's function&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>107</pre></span><pre>		def facadeMethod( self, *args, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>108</pre></span><pre>			return getattr( self._getOriginalShell( ), funcname )( *args, **kwargs )</pre></div>
+<div class="cov"><span class="num"><pre>109</pre></span><pre>		return facadeMethod</pre></div>
+<div class="skip"><span class="num"><pre>110</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>111</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>112</pre></span><pre>class _OIShell( _PlugShell ):</pre></div>
+<div class="cov"><span class="num"><pre>113</pre></span><pre>	&quot;&quot;&quot;All connections from and to the FacadeNode must actually start and end there.</pre></div>
+<div class="cov"><span class="num"><pre>114</pre></span><pre>	Iteration over internal plugShells is not allowed.</pre></div>
+<div class="cov"><span class="num"><pre>115</pre></span><pre>	Thus we override only the methods that matter and assure that the call is handed</pre></div>
+<div class="cov"><span class="num"><pre>116</pre></span><pre>	to the acutal internal plugshell.</pre></div>
+<div class="cov"><span class="num"><pre>117</pre></span><pre>	We know everything we require as we have been fed with an oiplug</pre></div>
+<div class="skip"><span class="num"><pre>118</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>119</pre></span><pre>	 * node = facacde node</pre></div>
+<div class="cov"><span class="num"><pre>120</pre></span><pre>	 * plug = oiplug containing inode and iplug ( internal node and internal plug )</pre></div>
+<div class="cov"><span class="num"><pre>121</pre></span><pre>	 * The internal node allows us to hand in calls to the native internal shell</pre></div>
+<div class="cov"><span class="num"><pre>122</pre></span><pre>	&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>123</pre></span><pre>	# list all methods that should not be a facade to our facade node</pre></div>
+<div class="cov"><span class="num"><pre>124</pre></span><pre>	__unfacade__ = [ 'set', 'get', 'clearCache', 'hasCache','setCache', 'cache' ]</pre></div>
+<div class="skip"><span class="num"><pre>125</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>126</pre></span><pre>	# keep this list uptodate - otherwise a default shell will be used for the missing</pre></div>
+<div class="skip"><span class="num"><pre>127</pre></span><pre>	# function</pre></div>
+<div class="skip"><span class="num"><pre>128</pre></span><pre>	# TODO: parse the plugshell class itself to get the functions automatically</pre></div>
+<div class="cov"><span class="num"><pre>129</pre></span><pre>	__facade__ = [ 'connect','disconnect','input', 'outputs','connections',</pre></div>
+<div class="cov"><span class="num"><pre>130</pre></span><pre>					'iterShells' ]</pre></div>
+<div class="skip"><span class="num"><pre>131</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>132</pre></span><pre>	__metaclass__ = _OIShellMeta</pre></div>
+<div class="skip"><span class="num"><pre>133</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>134</pre></span><pre>	def __init__( self, *args ):</pre></div>
+<div class="cov"><span class="num"><pre>135</pre></span><pre>		&quot;&quot;&quot;Sanity checking&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>136</pre></span><pre>		if not isinstance( args[1], OIFacadePlug ):</pre></div>
+<div class="nocov"><span class="num"><pre>137</pre></span><pre>			raise AssertionError( &quot;Invalid PlugType: Need %r, got %r (%s)&quot; % ( OIFacadePlug, args[1].__class__ , args[1]) )</pre></div>
+<div class="skip"><span class="num"><pre>138</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>139</pre></span><pre>		# NOTE deprecated in python 2.6 and without effect in our case</pre></div>
+<div class="cov"><span class="num"><pre>140</pre></span><pre>		super( _OIShell, self ).__init__( *args )</pre></div>
+<div class="skip"><span class="num"><pre>141</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>142</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>143</pre></span><pre>	def __repr__ ( self ):</pre></div>
+<div class="cov"><span class="num"><pre>144</pre></span><pre>		&quot;&quot;&quot;Cut away our name in the possible oiplug ( printing an unnecessary long name then )&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>145</pre></span><pre>		plugname = str( self.plug )</pre></div>
+<div class="cov"><span class="num"><pre>146</pre></span><pre>		nodename = str( self.node )</pre></div>
+<div class="cov"><span class="num"><pre>147</pre></span><pre>		plugname = plugname.replace( nodename+'.', &quot;&quot; )</pre></div>
+<div class="cov"><span class="num"><pre>148</pre></span><pre>		return &quot;%s.%s&quot; % ( nodename, plugname )</pre></div>
+<div class="skip"><span class="num"><pre>149</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>150</pre></span><pre>	def _toIShell( self ):</pre></div>
+<div class="cov"><span class="num"><pre>151</pre></span><pre>		&quot;&quot;&quot;:return: convert ourselves to the real shell actually behind this facade plug&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>152</pre></span><pre>		# must return original shell, otherwise call would be handed out again</pre></div>
+<div class="cov"><span class="num"><pre>153</pre></span><pre>		return self.plug.inode.shellcls.origshellcls( self.plug.inode, self.plug.iplug )</pre></div>
+<div class="skip"><span class="num"><pre>154</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>155</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>156</pre></span><pre>class _IOShell( _PlugShell ):</pre></div>
+<div class="cov"><span class="num"><pre>157</pre></span><pre>	&quot;&quot;&quot;This callable class, when called, will create a IOShell using the</pre></div>
+<div class="cov"><span class="num"><pre>158</pre></span><pre>	actual facade node, not the one given as input. This allows it to have the</pre></div>
+<div class="cov"><span class="num"><pre>159</pre></span><pre>	facade system handle the plugshell, or simply satisfy the original request&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>160</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>161</pre></span><pre>	__unfacade__ = [  'get', 'clearCache' ]</pre></div>
+<div class="skip"><span class="num"><pre>162</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>163</pre></span><pre>	# keep this list uptodate - otherwise a default shell will be used for the missing</pre></div>
+<div class="skip"><span class="num"><pre>164</pre></span><pre>	# function</pre></div>
+<div class="skip"><span class="num"><pre>165</pre></span><pre>	# TODO: parse the plugshell class itself to get the functions automatically</pre></div>
+<div class="cov"><span class="num"><pre>166</pre></span><pre>	__facade__ = [ 'set','hasCache','setCache', 'cache',</pre></div>
+<div class="cov"><span class="num"><pre>167</pre></span><pre>					'connect','disconnect','input','connections','outputs',</pre></div>
+<div class="cov"><span class="num"><pre>168</pre></span><pre>					'iterShells' ]</pre></div>
+<div class="skip"><span class="num"><pre>169</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>170</pre></span><pre>	__metaclass__ = _IOShellMeta</pre></div>
+<div class="skip"><span class="num"><pre>171</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>172</pre></span><pre>	def __init__( self, *args ):</pre></div>
+<div class="cov"><span class="num"><pre>173</pre></span><pre>		&quot;&quot;&quot;Initialize this instance - we can be in creator mode or in shell mode.</pre></div>
+<div class="cov"><span class="num"><pre>174</pre></span><pre>		ShellMode: we behave like a shell but apply customizations, true if 3 args ( node, plug, origshellcls )</pre></div>
+<div class="cov"><span class="num"><pre>175</pre></span><pre>		CreatorMode: we only create shells of our type in ShellMode, true if 2 args</pre></div>
+<div class="skip"><span class="num"><pre>176</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>177</pre></span><pre>		:param args:</pre></div>
+<div class="cov"><span class="num"><pre>178</pre></span><pre>		 * origshellcls[0] = the shell class used on the manipulated node before we , must always be set as last arg</pre></div>
+<div class="cov"><span class="num"><pre>179</pre></span><pre>		 * facadenode[1] = the facadenode we are connected to</pre></div>
+<div class="skip"><span class="num"><pre>180</pre></span><pre>		 </pre></div>
+<div class="cov"><span class="num"><pre>181</pre></span><pre>		:todo: optimize by creating the unfacade methods exactly as we need them and bind the respective instance</pre></div>
+<div class="cov"><span class="num"><pre>182</pre></span><pre>			methods - currently this is solved with a simple if conditiion.</pre></div>
+<div class="cov"><span class="num"><pre>183</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>184</pre></span><pre>		# find whether we are in shell mode or in class mode - depending on the</pre></div>
+<div class="skip"><span class="num"><pre>185</pre></span><pre>		# types of the args</pre></div>
+<div class="skip"><span class="num"><pre>186</pre></span><pre>		# CLASS MODE</pre></div>
+<div class="cov"><span class="num"><pre>187</pre></span><pre>		if hasattr( args[0], '__call__' ) or isinstance( args[0], type ):</pre></div>
+<div class="cov"><span class="num"><pre>188</pre></span><pre>			self.origshellcls = args[0]</pre></div>
+<div class="cov"><span class="num"><pre>189</pre></span><pre>			self.facadenode = args[1]</pre></div>
+<div class="cov"><span class="num"><pre>190</pre></span><pre>			self.iomap = dict() 							# plugname -&gt; oiplug</pre></div>
+<div class="cov"><span class="num"><pre>191</pre></span><pre>			super( _IOShell, self ).__init__(  )			# initialize empty</pre></div>
+<div class="skip"><span class="num"><pre>192</pre></span><pre>		# END class mode</pre></div>
+<div class="skip"><span class="num"><pre>193</pre></span><pre>		#else:</pre></div>
+<div class="skip"><span class="num"><pre>194</pre></span><pre>		# NOTE: This is deprecated in python 2.6 and doesnt do anything in our case</pre></div>
+<div class="skip"><span class="num"><pre>195</pre></span><pre>			# we do not do anything special in shell mode ( at least value-wise</pre></div>
+<div class="skip"><span class="num"><pre>196</pre></span><pre>		#	super( _IOShell, self ).__init__( *args )	# init base</pre></div>
+<div class="skip"><span class="num"><pre>197</pre></span><pre>		# END INSTANCE ( SHELL ) MODE</pre></div>
+<div class="skip"><span class="num"><pre>198</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>199</pre></span><pre>	def __call__( self, *args ):</pre></div>
+<div class="cov"><span class="num"><pre>200</pre></span><pre>		&quot;&quot;&quot;This equals a constructor call to the shell class on the wrapped node.</pre></div>
+<div class="cov"><span class="num"><pre>201</pre></span><pre>		Simply return an ordinary shell at its base, but we catch some callbacks</pre></div>
+<div class="cov"><span class="num"><pre>202</pre></span><pre>		This applies to everything but connection handling</pre></div>
+<div class="skip"><span class="num"><pre>203</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>204</pre></span><pre>		:note: the shells we create are default ones with some extra handlers</pre></div>
+<div class="cov"><span class="num"><pre>205</pre></span><pre>			for exceptions&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>206</pre></span><pre>		return self.__class__( *args )</pre></div>
+<div class="skip"><span class="num"><pre>207</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>208</pre></span><pre>	#{ Helpers</pre></div>
+<div class="skip"><span class="num"><pre>209</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>210</pre></span><pre>	def _getoiplug( self ):</pre></div>
+<div class="cov"><span class="num"><pre>211</pre></span><pre>		&quot;&quot;&quot;:return: oiplug suitable for this shell or None&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>212</pre></span><pre>		try:</pre></div>
+<div class="skip"><span class="num"><pre>213</pre></span><pre>			# cannot use weak references, don't want to use strong references</pre></div>
+<div class="cov"><span class="num"><pre>214</pre></span><pre>			return self.node.shellcls.iomap[ self.plug.name() ]</pre></div>
+<div class="cov"><span class="num"><pre>215</pre></span><pre>		except KeyError:</pre></div>
+<div class="skip"><span class="num"><pre>216</pre></span><pre>			# plug not on facadenode - this is fine as we get always called</pre></div>
+<div class="cov"><span class="num"><pre>217</pre></span><pre>			pass</pre></div>
+<div class="skip"><span class="num"><pre>218</pre></span><pre>		#except AttributeError:</pre></div>
+<div class="skip"><span class="num"><pre>219</pre></span><pre>		# TODO: take that back in once we use weak references or proper ids again ... lets see</pre></div>
+<div class="skip"><span class="num"><pre>220</pre></span><pre>		#	# facade node does not know an io plug - assure we do not try again</pre></div>
+<div class="skip"><span class="num"><pre>221</pre></span><pre>		#	del( self.node.shellcls[ self.plug.name() ] )</pre></div>
+<div class="skip"><span class="num"><pre>222</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>223</pre></span><pre>		return None</pre></div>
+<div class="skip"><span class="num"><pre>224</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>225</pre></span><pre>	def _getOriginalShell( self ):</pre></div>
+<div class="cov"><span class="num"><pre>226</pre></span><pre>		&quot;&quot;&quot;:return: instance of the original shell class that was replaced by our instance&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>227</pre></span><pre>		return self.node.shellcls.origshellcls( self.node, self.plug )</pre></div>
+<div class="skip"><span class="num"><pre>228</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>229</pre></span><pre>	def _getTopFacadeNodeShell( self ):</pre></div>
+<div class="cov"><span class="num"><pre>230</pre></span><pre>		&quot;&quot;&quot;Recursive method to find the first facade parent having an OI shell</pre></div>
+<div class="skip"><span class="num"><pre>231</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>232</pre></span><pre>		:return: topmost facade node shell or None if we are not a managed plug&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>233</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>234</pre></span><pre>		# otherwise we have found the topmost parent</pre></div>
+<div class="nocov"><span class="num"><pre>235</pre></span><pre>		return facadeNodeShell</pre></div>
+<div class="skip"><span class="num"><pre>236</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>237</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>238</pre></span><pre>	def _getShells( self, shelltype ):</pre></div>
+<div class="cov"><span class="num"><pre>239</pre></span><pre>		&quot;&quot;&quot;:return: list of ( outside ) shells, depending on the shelltype and availability.</pre></div>
+<div class="cov"><span class="num"><pre>240</pre></span><pre>			If no outside shell is avaiable, return the actual shell only</pre></div>
+<div class="cov"><span class="num"><pre>241</pre></span><pre>			As facade nodes can be nested, we have to check each level of nesting</pre></div>
+<div class="cov"><span class="num"><pre>242</pre></span><pre>			for connections into the outside world - if available, we use these, otherwise</pre></div>
+<div class="cov"><span class="num"><pre>243</pre></span><pre>			we stay 'inside'</pre></div>
+<div class="skip"><span class="num"><pre>244</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>245</pre></span><pre>		:param shelltype: &quot;input&quot; - outside input shell</pre></div>
+<div class="cov"><span class="num"><pre>246</pre></span><pre>			&quot;output&quot; - output shells, and the default shell&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>247</pre></span><pre>		if not isinstance( self.node.shellcls, _IOShell ):</pre></div>
+<div class="nocov"><span class="num"><pre>248</pre></span><pre>			raise AssertionError( &quot;Shellclass of %s must be _IOShell, but is %s&quot; % ( self.node, type( self.node.shellcls ) ) )</pre></div>
+<div class="skip"><span class="num"><pre>249</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>250</pre></span><pre>		# GET FACADE SHELL</pre></div>
+<div class="skip"><span class="num"><pre>251</pre></span><pre>		####################</pre></div>
+<div class="skip"><span class="num"><pre>252</pre></span><pre>		# get the oiplug on our node</pre></div>
+<div class="cov"><span class="num"><pre>253</pre></span><pre>		oiplug = self._getoiplug( )</pre></div>
+<div class="cov"><span class="num"><pre>254</pre></span><pre>		if not oiplug:</pre></div>
+<div class="skip"><span class="num"><pre>255</pre></span><pre>			# plug not on facadenode, just ignore and return the original shell</pre></div>
+<div class="cov"><span class="num"><pre>256</pre></span><pre>			return [ self._getOriginalShell( ) ]</pre></div>
+<div class="skip"><span class="num"><pre>257</pre></span><pre>		# END if there is no cached oiplug</pre></div>
+<div class="skip"><span class="num"><pre>258</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>259</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>260</pre></span><pre>		# Use the facade node shell type - we need to try to get connections now,</pre></div>
+<div class="skip"><span class="num"><pre>261</pre></span><pre>		# either inputs or outputs on our facade node. In case it is facaded</pre></div>
+<div class="skip"><span class="num"><pre>262</pre></span><pre>		# as well, we just use a default shell that will definetly handle connections</pre></div>
+<div class="skip"><span class="num"><pre>263</pre></span><pre>		# the way we expect it</pre></div>
+<div class="cov"><span class="num"><pre>264</pre></span><pre>		facadeNodeShell = self.node.shellcls.facadenode.toShell( oiplug )</pre></div>
+<div class="skip"><span class="num"><pre>265</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>266</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>267</pre></span><pre>		# NESTED FACADE NODES SPECIAL CASE !</pre></div>
+<div class="skip"><span class="num"><pre>268</pre></span><pre>		######################################</pre></div>
+<div class="skip"><span class="num"><pre>269</pre></span><pre>		# If a facade node is nested inside of another facade node, it will put</pre></div>
+<div class="skip"><span class="num"><pre>270</pre></span><pre>		# it's IO shell above our OI shell.</pre></div>
+<div class="skip"><span class="num"><pre>271</pre></span><pre>		# IOShells do not return connections - get a normal shell then</pre></div>
+<div class="cov"><span class="num"><pre>272</pre></span><pre>		connectionShell = facadeNodeShell</pre></div>
+<div class="cov"><span class="num"><pre>273</pre></span><pre>		if facadeNodeShell.__class__ is _IOShell:</pre></div>
+<div class="cov"><span class="num"><pre>274</pre></span><pre>			connectionShell = _PlugShell( facadeNodeShell.node, facadeNodeShell.plug )</pre></div>
+<div class="skip"><span class="num"><pre>275</pre></span><pre>		# END nested facade node special handling</pre></div>
+<div class="skip"><span class="num"><pre>276</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>277</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>278</pre></span><pre>		outShells = list()</pre></div>
+<div class="cov"><span class="num"><pre>279</pre></span><pre>		if shelltype == &quot;input&quot;:</pre></div>
+<div class="skip"><span class="num"><pre>280</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>281</pre></span><pre>			# HIGHER LEVEL INPUT SHELLS</pre></div>
+<div class="skip"><span class="num"><pre>282</pre></span><pre>			############################</pre></div>
+<div class="skip"><span class="num"><pre>283</pre></span><pre>			# if we are nested, use an imput connection of our parent as they</pre></div>
+<div class="skip"><span class="num"><pre>284</pre></span><pre>			# override lower level connections</pre></div>
+<div class="cov"><span class="num"><pre>285</pre></span><pre>			if not connectionShell is facadeNodeShell:</pre></div>
+<div class="cov"><span class="num"><pre>286</pre></span><pre>				aboveLevelInputShells = facadeNodeShell._getShells( shelltype )</pre></div>
+<div class="skip"><span class="num"><pre>287</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>288</pre></span><pre>				# this is either the real input shell, or the original shell of the toplevel</pre></div>
+<div class="skip"><span class="num"><pre>289</pre></span><pre>				# By convention, we return the facadeshell that is connected to the input</pre></div>
+<div class="skip"><span class="num"><pre>290</pre></span><pre>				# in rval[1]</pre></div>
+<div class="skip"><span class="num"><pre>291</pre></span><pre>				# The method that calls us only uses array index [0], which is the shell it needs !</pre></div>
+<div class="skip"><span class="num"><pre>292</pre></span><pre>				# We just use the length as internal flag !</pre></div>
+<div class="cov"><span class="num"><pre>293</pre></span><pre>				if len( aboveLevelInputShells ) == 2:		# top level orverride !</pre></div>
+<div class="cov"><span class="num"><pre>294</pre></span><pre>					return aboveLevelInputShells</pre></div>
+<div class="skip"><span class="num"><pre>295</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>296</pre></span><pre>			# END aquire TL Input</pre></div>
+<div class="skip"><span class="num"><pre>297</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>298</pre></span><pre>			# still here means no toplevel override</pre></div>
+<div class="skip"><span class="num"><pre>299</pre></span><pre>			# TRY OUR LEVEL INPUT</pre></div>
+<div class="cov"><span class="num"><pre>300</pre></span><pre>			inputShell = connectionShell.input( )</pre></div>
+<div class="skip"><span class="num"><pre>301</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>302</pre></span><pre>			if inputShell:</pre></div>
+<div class="skip"><span class="num"><pre>303</pre></span><pre>				# FLAGGED RETURN VALUE : this indicates to our callers that</pre></div>
+<div class="skip"><span class="num"><pre>304</pre></span><pre>				# we have found a good input on our level and want to use it.</pre></div>
+<div class="skip"><span class="num"><pre>305</pre></span><pre>				# if the caller is the metaclass wrapper, it will only use the outshell[0]</pre></div>
+<div class="skip"><span class="num"><pre>306</pre></span><pre>				# anyways and not bother</pre></div>
+<div class="cov"><span class="num"><pre>307</pre></span><pre>				outShells.append( inputShell )</pre></div>
+<div class="cov"><span class="num"><pre>308</pre></span><pre>				outShells.append( self )</pre></div>
+<div class="cov"><span class="num"><pre>309</pre></span><pre>			else:</pre></div>
+<div class="cov"><span class="num"><pre>310</pre></span><pre>				outShells.append( self._getOriginalShell( ) )</pre></div>
+<div class="skip"><span class="num"><pre>311</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>312</pre></span><pre>		# END outside INPUT shell handling</pre></div>
+<div class="cov"><span class="num"><pre>313</pre></span><pre>		else:</pre></div>
+<div class="cov"><span class="num"><pre>314</pre></span><pre>			outShells.extend( connectionShell.outputs( ) )</pre></div>
+<div class="skip"><span class="num"><pre>315</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>316</pre></span><pre>			# ADD 'INSIDE' ORIGINAL SHELL</pre></div>
+<div class="skip"><span class="num"><pre>317</pre></span><pre>			# always allow our 'inside' level to get informed as well</pre></div>
+<div class="cov"><span class="num"><pre>318</pre></span><pre>			outShells.append( self._getOriginalShell( ) )</pre></div>
+<div class="skip"><span class="num"><pre>319</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>320</pre></span><pre>			# NESTED SHELL SPECIAL CASE</pre></div>
+<div class="skip"><span class="num"><pre>321</pre></span><pre>			##############################</pre></div>
+<div class="skip"><span class="num"><pre>322</pre></span><pre>			# query the IO Parent Shell for the shells on its level and add them</pre></div>
+<div class="cov"><span class="num"><pre>323</pre></span><pre>			if not connectionShell is facadeNodeShell:</pre></div>
+<div class="cov"><span class="num"><pre>324</pre></span><pre>				outShells.extend( facadeNodeShell._getShells( shelltype ) )</pre></div>
+<div class="skip"><span class="num"><pre>325</pre></span><pre>		# END outside OUTPUT shell handling</pre></div>
+<div class="skip"><span class="num"><pre>326</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>327</pre></span><pre>		return outShells</pre></div>
+<div class="skip"><span class="num"><pre>328</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>329</pre></span><pre>	# } END helpers</pre></div>
+<div class="skip"><span class="num"><pre>330</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>331</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>332</pre></span><pre># END shells</pre></div>
+<div class="skip"><span class="num"><pre>333</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>334</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>335</pre></span><pre>#{ Nodes</pre></div>
+<div class="skip"><span class="num"><pre>336</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>337</pre></span><pre>class FacadeNodeBase( NodeBase ):</pre></div>
+<div class="cov"><span class="num"><pre>338</pre></span><pre>	&quot;&quot;&quot;Node having no own plugs, but retrieves them by querying other other nodes</pre></div>
+<div class="cov"><span class="num"><pre>339</pre></span><pre>	and claiming its his own ones.</pre></div>
+<div class="skip"><span class="num"><pre>340</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>341</pre></span><pre>	Using a non-default shell it is possibly to guide all calls through to the</pre></div>
+<div class="cov"><span class="num"><pre>342</pre></span><pre>	virtual PlugShell.</pre></div>
+<div class="skip"><span class="num"><pre>343</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>344</pre></span><pre>	Derived classes must override _plugshells which will be queried when</pre></div>
+<div class="cov"><span class="num"><pre>345</pre></span><pre>	plugs or plugshells are requested. This node will cache the result and do</pre></div>
+<div class="cov"><span class="num"><pre>346</pre></span><pre>	everything required to integrate itself.</pre></div>
+<div class="skip"><span class="num"><pre>347</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>348</pre></span><pre>	It lies in the nature of this class that the plugs are dependent on a specific instance</pre></div>
+<div class="cov"><span class="num"><pre>349</pre></span><pre>	of this node, thus classmethods of NodeBase have been overridden with instance versions</pre></div>
+<div class="cov"><span class="num"><pre>350</pre></span><pre>	of it.</pre></div>
+<div class="skip"><span class="num"><pre>351</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>352</pre></span><pre>	The facade node keeps a plug map allowing it to map plug-shells it got from</pre></div>
+<div class="cov"><span class="num"><pre>353</pre></span><pre>	you back to the original shell respectively. If the map has been missed,</pre></div>
+<div class="cov"><span class="num"><pre>354</pre></span><pre>	your node will be asked for information.</pre></div>
+<div class="skip"><span class="num"><pre>355</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>356</pre></span><pre>	:note: facades are intrusive for the nodes they are facading - thus the nodes</pre></div>
+<div class="cov"><span class="num"><pre>357</pre></span><pre>		returned by `_getNodePlugs` will be altered. Namely the instance will get a</pre></div>
+<div class="cov"><span class="num"><pre>358</pre></span><pre>		shellcls and plug override to allow us to hook into the callchain. Thus you should have</pre></div>
+<div class="cov"><span class="num"><pre>359</pre></span><pre>		your own instance of the node - otherwise things might behave differently for</pre></div>
+<div class="cov"><span class="num"><pre>360</pre></span><pre>		others using your nodes from another angle</pre></div>
+<div class="skip"><span class="num"><pre>361</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>362</pre></span><pre>	:note: this class could also be used for facades Container nodes that provide</pre></div>
+<div class="cov"><span class="num"><pre>363</pre></span><pre>		an interface to their internal nodes&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>364</pre></span><pre>	shellcls = _OIShell		# overriden from NodeBase</pre></div>
+<div class="skip"><span class="num"><pre>365</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>366</pre></span><pre>	#{ Configuration</pre></div>
+<div class="cov"><span class="num"><pre>367</pre></span><pre>	caching_enabled = True						# if true, the facade may cache plugs once queried</pre></div>
+<div class="skip"><span class="num"><pre>368</pre></span><pre>	#} END configuration</pre></div>
+<div class="skip"><span class="num"><pre>369</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>370</pre></span><pre>	def __init__( self, *args, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>371</pre></span><pre>		&quot;&quot;&quot; Initialize the instance&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>372</pre></span><pre>		self._cachedOIPlugs = list()							# simple list of names</pre></div>
+<div class="cov"><span class="num"><pre>373</pre></span><pre>		NodeBase.__init__( self, *args, **kwargs )</pre></div>
+<div class="skip"><span class="num"><pre>374</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>375</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>376</pre></span><pre>	def __getattr__( self, attr ):</pre></div>
+<div class="cov"><span class="num"><pre>377</pre></span><pre>		&quot;&quot;&quot;:return: shell on attr made from our plugs - we do not have real ones, so we</pre></div>
+<div class="cov"><span class="num"><pre>378</pre></span><pre>			need to call plugs and find it by name</pre></div>
+<div class="skip"><span class="num"><pre>379</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>380</pre></span><pre>		:note: to make this work, you should always name the plug names equal to their</pre></div>
+<div class="cov"><span class="num"><pre>381</pre></span><pre>			class attribute&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>382</pre></span><pre>		check_ambigious = not attr.startswith( OIFacadePlug._fp_prefix )	# non long names are not garantueed to be unique</pre></div>
+<div class="skip"><span class="num"><pre>383</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>384</pre></span><pre>		candidates = list()</pre></div>
+<div class="cov"><span class="num"><pre>385</pre></span><pre>		for plug in self.plugs( ):</pre></div>
+<div class="cov"><span class="num"><pre>386</pre></span><pre>			if plug.name() == attr or plug.iplug.name() == attr:</pre></div>
+<div class="cov"><span class="num"><pre>387</pre></span><pre>				shell = self.toShell( plug )</pre></div>
+<div class="cov"><span class="num"><pre>388</pre></span><pre>				if not check_ambigious:</pre></div>
+<div class="cov"><span class="num"><pre>389</pre></span><pre>					return shell</pre></div>
+<div class="cov"><span class="num"><pre>390</pre></span><pre>				candidates.append( shell )</pre></div>
+<div class="skip"><span class="num"><pre>391</pre></span><pre>			# END if plugname matches</pre></div>
+<div class="skip"><span class="num"><pre>392</pre></span><pre>		# END for each of our plugs</pre></div>
+<div class="skip"><span class="num"><pre>393</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>394</pre></span><pre>		if not candidates:</pre></div>
+<div class="cov"><span class="num"><pre>395</pre></span><pre>			raise AttributeError( &quot;Attribute %s does not exist on %s&quot; % (attr,self) )</pre></div>
+<div class="skip"><span class="num"><pre>396</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>397</pre></span><pre>		if len( candidates ) == 1:</pre></div>
+<div class="cov"><span class="num"><pre>398</pre></span><pre>			return candidates[0]</pre></div>
+<div class="skip"><span class="num"><pre>399</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>400</pre></span><pre>		# must be more ...</pre></div>
+<div class="cov"><span class="num"><pre>401</pre></span><pre>		raise AttributeError( &quot;More than one plug with the local name %s exist on %s - use the long name, i.e. %snode_attr&quot; % ( attr, self, OIFacadePlug._fp_prefix ) )</pre></div>
+<div class="skip"><span class="num"><pre>402</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>403</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>404</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>405</pre></span><pre>	def copyFrom( self, other, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>406</pre></span><pre>		&quot;&quot;&quot;Actually, it does nothing because our plugs are linked to the internal</pre></div>
+<div class="cov"><span class="num"><pre>407</pre></span><pre>		nodes in a quite complex way. The good thing is that this is just a cache that</pre></div>
+<div class="cov"><span class="num"><pre>408</pre></span><pre>		will be updated once someone queries connections again.</pre></div>
+<div class="cov"><span class="num"><pre>409</pre></span><pre>		Basically it comes down to the graph duplicating itself using node and plug</pre></div>
+<div class="cov"><span class="num"><pre>410</pre></span><pre>		methods instead of just doing his 'internal' magic&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>411</pre></span><pre>		pass</pre></div>
+<div class="skip"><span class="num"><pre>412</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>413</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>414</pre></span><pre>	#{ To be Subclass-Implemented</pre></div>
+<div class="skip"><span class="num"><pre>415</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>416</pre></span><pre>	def _getNodePlugs( self ):</pre></div>
+<div class="cov"><span class="num"><pre>417</pre></span><pre>		&quot;&quot;&quot;Implement this as if it was your plugs method - it will be called by the</pre></div>
+<div class="cov"><span class="num"><pre>418</pre></span><pre>		base - your result needs processing before it can be returned</pre></div>
+<div class="skip"><span class="num"><pre>419</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>420</pre></span><pre>		:return: list( tuple( node, plug ) )</pre></div>
+<div class="cov"><span class="num"><pre>421</pre></span><pre>			if you have an existing node that the plug or shell  you gave is from,</pre></div>
+<div class="cov"><span class="num"><pre>422</pre></span><pre>			return it in the tuple, otherwise set it to a node with a shell that allows you</pre></div>
+<div class="cov"><span class="num"><pre>423</pre></span><pre>			to handle it - the only time the node is required is when it is used in and with</pre></div>
+<div class="cov"><span class="num"><pre>424</pre></span><pre>			the shells of the node's own shell class.</pre></div>
+<div class="skip"><span class="num"><pre>425</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>426</pre></span><pre>			The node will be altered slightly to allow input of your facade to be reached</pre></div>
+<div class="cov"><span class="num"><pre>427</pre></span><pre>			from the inside</pre></div>
+<div class="skip"><span class="num"><pre>428</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>429</pre></span><pre>		:note: a predicate is not supported as it must be applied on the converted</pre></div>
+<div class="cov"><span class="num"><pre>430</pre></span><pre>			plugs, not on the ones you hand out&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>431</pre></span><pre>		raise NotImplementedError( &quot;Needs to be implemented in SubClass&quot; )</pre></div>
+<div class="skip"><span class="num"><pre>432</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>433</pre></span><pre>	#} END to be subclass implemented</pre></div>
+<div class="skip"><span class="num"><pre>434</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>435</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>436</pre></span><pre>	def plugs( self, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>437</pre></span><pre>		&quot;&quot;&quot;Calls `_getNodePlugs` method to ask you to actuallly return your</pre></div>
+<div class="cov"><span class="num"><pre>438</pre></span><pre>		actual nodes and plugs or shells.</pre></div>
+<div class="cov"><span class="num"><pre>439</pre></span><pre>		We prepare the returned value to assure we are being called in certain occasion,</pre></div>
+<div class="cov"><span class="num"><pre>440</pre></span><pre>		which actually glues outside and inside worlds together &quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>441</pre></span><pre>		# check args - currently only predicate is supported</pre></div>
+<div class="cov"><span class="num"><pre>442</pre></span><pre>		predicate = kwargs.pop( 'predicate', lambda x: True )</pre></div>
+<div class="skip"><span class="num"><pre>443</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>444</pre></span><pre>		if kwargs:		# still args that we do not know ?</pre></div>
+<div class="nocov"><span class="num"><pre>445</pre></span><pre>			raise AssertionError( &quot;Unhandled arguments found  - update this method: %s&quot; % kwargs.keys() )</pre></div>
+<div class="skip"><span class="num"><pre>446</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>447</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>448</pre></span><pre>		# HAND OUT CACHE</pre></div>
+<div class="skip"><span class="num"><pre>449</pre></span><pre>		#################</pre></div>
+<div class="cov"><span class="num"><pre>450</pre></span><pre>		if self._cachedOIPlugs:</pre></div>
+<div class="cov"><span class="num"><pre>451</pre></span><pre>			outresult = list()</pre></div>
+<div class="cov"><span class="num"><pre>452</pre></span><pre>			for oiplug in self._cachedOIPlugs:</pre></div>
+<div class="cov"><span class="num"><pre>453</pre></span><pre>				if predicate( oiplug ):</pre></div>
+<div class="cov"><span class="num"><pre>454</pre></span><pre>					outresult.append( oiplug )</pre></div>
+<div class="skip"><span class="num"><pre>455</pre></span><pre>			# END for each cached plug</pre></div>
+<div class="cov"><span class="num"><pre>456</pre></span><pre>			return outresult</pre></div>
+<div class="skip"><span class="num"><pre>457</pre></span><pre>		# END for each cached plug</pre></div>
+<div class="skip"><span class="num"><pre>458</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>459</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>460</pre></span><pre>		# GATHER PLUGS FROM SUBCLASS</pre></div>
+<div class="skip"><span class="num"><pre>461</pre></span><pre>		##############################</pre></div>
+<div class="cov"><span class="num"><pre>462</pre></span><pre>		yourResult = self._getNodePlugs( )</pre></div>
+<div class="skip"><span class="num"><pre>463</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>464</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>465</pre></span><pre>		def toFacadePlug( node, plug ):</pre></div>
+<div class="cov"><span class="num"><pre>466</pre></span><pre>			if isinstance( plug, OIFacadePlug )\</pre></div>
+<div class="cov"><span class="num"><pre>467</pre></span><pre>			and self is plug.inode.shellcls.facadenode: 		# we can wrap other facade nodes as well</pre></div>
+<div class="nocov"><span class="num"><pre>468</pre></span><pre>				return plug</pre></div>
+<div class="cov"><span class="num"><pre>469</pre></span><pre>			return OIFacadePlug( node, plug )</pre></div>
+<div class="skip"><span class="num"><pre>470</pre></span><pre>		# END to facade plug helper</pre></div>
+<div class="skip"><span class="num"><pre>471</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>472</pre></span><pre>		# PROCESS RETURNED PLUGS</pre></div>
+<div class="cov"><span class="num"><pre>473</pre></span><pre>		finalres = list()</pre></div>
+<div class="cov"><span class="num"><pre>474</pre></span><pre>		for orignode, plug in yourResult:</pre></div>
+<div class="cov"><span class="num"><pre>475</pre></span><pre>			oiplug = toFacadePlug( orignode, plug )</pre></div>
+<div class="skip"><span class="num"><pre>476</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>477</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>478</pre></span><pre>			# Cache all plugs, ignoring the predicate</pre></div>
+<div class="cov"><span class="num"><pre>479</pre></span><pre>			if self.caching_enabled:</pre></div>
+<div class="cov"><span class="num"><pre>480</pre></span><pre>				self._cachedOIPlugs.append( oiplug )</pre></div>
+<div class="skip"><span class="num"><pre>481</pre></span><pre>			# END cache update</pre></div>
+<div class="skip"><span class="num"><pre>482</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>483</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>484</pre></span><pre>			# MODIFY NODE INSTANCE</pre></div>
+<div class="skip"><span class="num"><pre>485</pre></span><pre>			##################################################</pre></div>
+<div class="skip"><span class="num"><pre>486</pre></span><pre>			# Allowing us to get callbacks once the node is used inside of the internal</pre></div>
+<div class="skip"><span class="num"><pre>487</pre></span><pre>			# structures</pre></div>
+<div class="skip"><span class="num"><pre>488</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>489</pre></span><pre>			# ADD FACADE SHELL CLASS</pre></div>
+<div class="skip"><span class="num"><pre>490</pre></span><pre>			############################</pre></div>
+<div class="skip"><span class="num"><pre>491</pre></span><pre>			# This can also handle facaded facade nodes, as they have the type</pre></div>
+<div class="skip"><span class="num"><pre>492</pre></span><pre>			# of _IOShell as shellcls, but no instance</pre></div>
+<div class="cov"><span class="num"><pre>493</pre></span><pre>			if not isinstance( orignode.shellcls, _IOShell ):</pre></div>
+<div class="cov"><span class="num"><pre>494</pre></span><pre>				classShellCls = orignode.shellcls</pre></div>
+<div class="cov"><span class="num"><pre>495</pre></span><pre>				orignode.shellcls = _IOShell( classShellCls, self )</pre></div>
+<div class="skip"><span class="num"><pre>496</pre></span><pre>				# END for each shell to reconnect</pre></div>
+<div class="skip"><span class="num"><pre>497</pre></span><pre>			# END if we have to swap in our facadeIOShell</pre></div>
+<div class="skip"><span class="num"><pre>498</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>499</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>500</pre></span><pre>			# update facade shell class ( inst ) cache so that it can map our internal</pre></div>
+<div class="skip"><span class="num"><pre>501</pre></span><pre>			# plug to the io plug on the outside node</pre></div>
+<div class="skip"><span class="num"><pre>502</pre></span><pre>			# cannot create weakref to tuple type unfortunately - use name instead</pre></div>
+<div class="cov"><span class="num"><pre>503</pre></span><pre>			orignode.shellcls.iomap[ oiplug.iplug.name() ] = oiplug</pre></div>
+<div class="skip"><span class="num"><pre>504</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>505</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>506</pre></span><pre>			# UPDATE CONNECTIONS ( per plug, not per node )</pre></div>
+<div class="skip"><span class="num"><pre>507</pre></span><pre>			##########################</pre></div>
+<div class="skip"><span class="num"><pre>508</pre></span><pre>			# update all connections with the new shells - they are required when</pre></div>
+<div class="skip"><span class="num"><pre>509</pre></span><pre>			# walking the affects tree, as existing ones will be taken instead of</pre></div>
+<div class="skip"><span class="num"><pre>510</pre></span><pre>			# our new shell then.</pre></div>
+<div class="cov"><span class="num"><pre>511</pre></span><pre>			internalshell = orignode.toShell( oiplug.iplug )</pre></div>
+<div class="cov"><span class="num"><pre>512</pre></span><pre>			all_shell_cons = internalshell.connections( 1, 1 )	 				# now we get old shells</pre></div>
+<div class="skip"><span class="num"><pre>513</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>514</pre></span><pre>			# disconnect and reconnect with new</pre></div>
+<div class="cov"><span class="num"><pre>515</pre></span><pre>			for edge in all_shell_cons:</pre></div>
+<div class="cov"><span class="num"><pre>516</pre></span><pre>				nedge = list( ( None, None ) )</pre></div>
+<div class="cov"><span class="num"><pre>517</pre></span><pre>				created_shell = False</pre></div>
+<div class="skip"><span class="num"><pre>518</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>519</pre></span><pre>				for i,shell in enumerate( edge ):</pre></div>
+<div class="cov"><span class="num"><pre>520</pre></span><pre>					nedge[ i ] = shell</pre></div>
+<div class="skip"><span class="num"><pre>521</pre></span><pre>					# its enough to just have an io shell here, it just assures</pre></div>
+<div class="skip"><span class="num"><pre>522</pre></span><pre>					# our callbacks</pre></div>
+<div class="skip"><span class="num"><pre>523</pre></span><pre>					# edges are always ordered start-&gt;end - we could be any of these</pre></div>
+<div class="skip"><span class="num"><pre>524</pre></span><pre>					# thus we have to check before</pre></div>
+<div class="cov"><span class="num"><pre>525</pre></span><pre>					if shell == internalshell and not isinstance( shell, _IOShell ) :</pre></div>
+<div class="cov"><span class="num"><pre>526</pre></span><pre>						nedge[ i ] = shell.node.toShell( shell.plug )</pre></div>
+<div class="cov"><span class="num"><pre>527</pre></span><pre>						created_shell = True</pre></div>
+<div class="skip"><span class="num"><pre>528</pre></span><pre>				# END for each shell in edge</pre></div>
+<div class="skip"><span class="num"><pre>529</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>530</pre></span><pre>				if created_shell:</pre></div>
+<div class="cov"><span class="num"><pre>531</pre></span><pre>					edge[0].disconnect( edge[1] )</pre></div>
+<div class="cov"><span class="num"><pre>532</pre></span><pre>					nedge[0].connect( nedge[1] )</pre></div>
+<div class="skip"><span class="num"><pre>533</pre></span><pre>				# END new shell needs connection</pre></div>
+<div class="skip"><span class="num"><pre>534</pre></span><pre>			# END for each edge to update</pre></div>
+<div class="skip"><span class="num"><pre>535</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>536</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>537</pre></span><pre>			# ONLY AFTER EVERYTHING HAS BEEN UPDATED, WE MAY DROP IT</pre></div>
+<div class="skip"><span class="num"><pre>538</pre></span><pre>			##########################################################</pre></div>
+<div class="cov"><span class="num"><pre>539</pre></span><pre>			if not predicate( oiplug ):</pre></div>
+<div class="cov"><span class="num"><pre>540</pre></span><pre>				continue</pre></div>
+<div class="skip"><span class="num"><pre>541</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>542</pre></span><pre>			finalres.append( oiplug )</pre></div>
+<div class="skip"><span class="num"><pre>543</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>544</pre></span><pre>		# END for each orignode,plug in result</pre></div>
+<div class="skip"><span class="num"><pre>545</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>546</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>547</pre></span><pre>		# the final result has everything nicely put back together, but</pre></div>
+<div class="skip"><span class="num"><pre>548</pre></span><pre>		# it has been altered as well</pre></div>
+<div class="cov"><span class="num"><pre>549</pre></span><pre>		return finalres</pre></div>
+<div class="skip"><span class="num"><pre>550</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>551</pre></span><pre>	def clearPlugCache( self ):</pre></div>
+<div class="cov"><span class="num"><pre>552</pre></span><pre>		&quot;&quot;&quot;if a cache has been build as caching is enabled, this method clears</pre></div>
+<div class="cov"><span class="num"><pre>553</pre></span><pre>		the cache forcing it to be updated on the next demand</pre></div>
+<div class="skip"><span class="num"><pre>554</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>555</pre></span><pre>		:note: this could be more efficient by just deleting plugs that are</pre></div>
+<div class="cov"><span class="num"><pre>556</pre></span><pre>			not required anymore, but probably this method can expect the whole</pre></div>
+<div class="cov"><span class="num"><pre>557</pre></span><pre>			cache to be deleted right away ... so its fine&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>558</pre></span><pre>		self._cachedOIPlugs = list()</pre></div>
+<div class="skip"><span class="num"><pre>559</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>560</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>561</pre></span><pre>class GraphNodeBase( FacadeNodeBase ):</pre></div>
+<div class="cov"><span class="num"><pre>562</pre></span><pre>	&quot;&quot;&quot;A node wrapping a graph, allowing it to be nested within the node</pre></div>
+<div class="cov"><span class="num"><pre>563</pre></span><pre>	All inputs and outputs on this node are purely virtual, thus they internally connect</pre></div>
+<div class="cov"><span class="num"><pre>564</pre></span><pre>	to the wrapped graph.</pre></div>
+<div class="skip"><span class="num"><pre>565</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>566</pre></span><pre>	:todo: tests deletion of graphnodes and see whether they are being garbage collected.</pre></div>
+<div class="cov"><span class="num"><pre>567</pre></span><pre>		It should work with the new collector as it can handle cyclic references - these</pre></div>
+<div class="cov"><span class="num"><pre>568</pre></span><pre>		strong cycles we have a lot in this structure. Weakrefs will not work for nested</pre></div>
+<div class="cov"><span class="num"><pre>569</pre></span><pre>		facade nodes as they are tuples not allowing weak refs.</pre></div>
+<div class="cov"><span class="num"><pre>570</pre></span><pre>	&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>571</pre></span><pre>	#{ Configuration</pre></div>
+<div class="cov"><span class="num"><pre>572</pre></span><pre>	duplicate_wrapped_graph	 = True			# an independent copy of the wrapped graph usually is required - duplication assures that ( or the caller )</pre></div>
+<div class="cov"><span class="num"><pre>573</pre></span><pre>	allow_auto_plugs = True					# if True, plugs can be found automatically by iterating nodes on the graph and using their plugs</pre></div>
+<div class="cov"><span class="num"><pre>574</pre></span><pre>	ignore_failed_includes = False			# if True, node will not raise if a plug to be included cannot be found</pre></div>
+<div class="skip"><span class="num"><pre>575</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>576</pre></span><pre>	# list of node.plug strings ( like &quot;node.inName&quot; ) and/or node names ( like &quot;node&quot; )</pre></div>
+<div class="skip"><span class="num"><pre>577</pre></span><pre>	# defining the plugs you  would like to specifically include on the facade</pre></div>
+<div class="skip"><span class="num"><pre>578</pre></span><pre>	# If just a name is given, the node name is assumed and all plugs on that node will be included</pre></div>
+<div class="cov"><span class="num"><pre>579</pre></span><pre>	include = list()</pre></div>
+<div class="skip"><span class="num"><pre>580</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>581</pre></span><pre>	# same as include, but matching nodes/plugs will be excluded</pre></div>
+<div class="cov"><span class="num"><pre>582</pre></span><pre>	exclude = list()</pre></div>
+<div class="skip"><span class="num"><pre>583</pre></span><pre>	#}END configuration</pre></div>
+<div class="skip"><span class="num"><pre>584</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>585</pre></span><pre>	def __init__( self, wrappedGraph, *args, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>586</pre></span><pre>		&quot;&quot;&quot; Initialize the instance</pre></div>
+<div class="cov"><span class="num"><pre>587</pre></span><pre>		:param wrappedGraph: graph we are wrapping&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>588</pre></span><pre>		self.wgraph = wrappedGraph</pre></div>
+<div class="cov"><span class="num"><pre>589</pre></span><pre>		if self.duplicate_wrapped_graph:</pre></div>
+<div class="cov"><span class="num"><pre>590</pre></span><pre>			self.wgraph = self.wgraph.duplicate( )</pre></div>
+<div class="skip"><span class="num"><pre>591</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>592</pre></span><pre>		FacadeNodeBase.__init__( self, *args, **kwargs )</pre></div>
+<div class="skip"><span class="num"><pre>593</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>594</pre></span><pre>	def createInstance( self , **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>595</pre></span><pre>		&quot;&quot;&quot;Create a copy of self and return it&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>596</pre></span><pre>		return self.__class__( self.wgraph )	# graph will be duplicated in the constructor</pre></div>
+<div class="skip"><span class="num"><pre>597</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>598</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>599</pre></span><pre>	#{ Base Methods</pre></div>
+<div class="skip"><span class="num"><pre>600</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>601</pre></span><pre>	def _iterNodes( self ):</pre></div>
+<div class="cov"><span class="num"><pre>602</pre></span><pre>		&quot;&quot;&quot;:return: generator for nodes in our graph</pre></div>
+<div class="cov"><span class="num"><pre>603</pre></span><pre>		:note: derived classes could override this to just return a filtered view on</pre></div>
+<div class="cov"><span class="num"><pre>604</pre></span><pre>			their nodes&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>605</pre></span><pre>		return self.wgraph.iterNodes( )</pre></div>
+<div class="skip"><span class="num"><pre>606</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>607</pre></span><pre>	#} END base</pre></div>
+<div class="skip"><span class="num"><pre>608</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>609</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>610</pre></span><pre>	def _addIncludeNodePlugs( self, outset ):</pre></div>
+<div class="cov"><span class="num"><pre>611</pre></span><pre>		&quot;&quot;&quot;Add the plugs defined in include to the given output list&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>612</pre></span><pre>		missingplugs = list()</pre></div>
+<div class="cov"><span class="num"><pre>613</pre></span><pre>		nodes = self.wgraph.nodes()</pre></div>
+<div class="cov"><span class="num"><pre>614</pre></span><pre>		nodenames = [ str( node ) for node in nodes ]</pre></div>
+<div class="skip"><span class="num"><pre>615</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>616</pre></span><pre>		for nodeplugname in self.include:</pre></div>
+<div class="cov"><span class="num"><pre>617</pre></span><pre>			nodename = plugname = None</pre></div>
+<div class="skip"><span class="num"><pre>618</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>619</pre></span><pre>			# INCLUDE WHOLE NODE HANDLING</pre></div>
+<div class="skip"><span class="num"><pre>620</pre></span><pre>			##############################</pre></div>
+<div class="cov"><span class="num"><pre>621</pre></span><pre>			if nodeplugname.find( '.' ) == -1 :</pre></div>
+<div class="cov"><span class="num"><pre>622</pre></span><pre>				nodename = nodeplugname</pre></div>
+<div class="cov"><span class="num"><pre>623</pre></span><pre>			else:</pre></div>
+<div class="cov"><span class="num"><pre>624</pre></span><pre>				nodename, plugname = tuple( nodeplugname.split( &quot;.&quot; ) )</pre></div>
+<div class="skip"><span class="num"><pre>625</pre></span><pre>			# END wholenode check</pre></div>
+<div class="skip"><span class="num"><pre>626</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>627</pre></span><pre>			# FIND NODE INSTANCE</pre></div>
+<div class="skip"><span class="num"><pre>628</pre></span><pre>			######################</pre></div>
+<div class="cov"><span class="num"><pre>629</pre></span><pre>			try:</pre></div>
+<div class="cov"><span class="num"><pre>630</pre></span><pre>				index = nodenames.index( nodename )</pre></div>
+<div class="cov"><span class="num"><pre>631</pre></span><pre>				node = nodes[ index ]</pre></div>
+<div class="cov"><span class="num"><pre>632</pre></span><pre>			except ValueError:</pre></div>
+<div class="cov"><span class="num"><pre>633</pre></span><pre>				missingplugs.append( nodeplugname )</pre></div>
+<div class="cov"><span class="num"><pre>634</pre></span><pre>				continue</pre></div>
+<div class="skip"><span class="num"><pre>635</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>636</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>637</pre></span><pre>			# ADD INCLUDE PLUGS</pre></div>
+<div class="skip"><span class="num"><pre>638</pre></span><pre>			###################</pre></div>
+<div class="cov"><span class="num"><pre>639</pre></span><pre>			if not plugname:</pre></div>
+<div class="cov"><span class="num"><pre>640</pre></span><pre>				outset.update( ( (node,plug) for plug in node.plugs() ) )</pre></div>
+<div class="cov"><span class="num"><pre>641</pre></span><pre>			else:</pre></div>
+<div class="skip"><span class="num"><pre>642</pre></span><pre>				# find matching plugs</pre></div>
+<div class="cov"><span class="num"><pre>643</pre></span><pre>				try:</pre></div>
+<div class="cov"><span class="num"><pre>644</pre></span><pre>					plug = getattr( node, plugname ).plug</pre></div>
+<div class="nocov"><span class="num"><pre>645</pre></span><pre>				except AttributeError:</pre></div>
+<div class="nocov"><span class="num"><pre>646</pre></span><pre>					missingplugs.append( nodeplugname )</pre></div>
+<div class="cov"><span class="num"><pre>647</pre></span><pre>				else:</pre></div>
+<div class="skip"><span class="num"><pre>648</pre></span><pre>					# finally append the located plug</pre></div>
+<div class="cov"><span class="num"><pre>649</pre></span><pre>					outset.add( ( node , plug ) )</pre></div>
+<div class="cov"><span class="num"><pre>650</pre></span><pre>					continue</pre></div>
+<div class="skip"><span class="num"><pre>651</pre></span><pre>			# END whole node handling</pre></div>
+<div class="skip"><span class="num"><pre>652</pre></span><pre>		# END for each nodeplug name</pre></div>
+<div class="skip"><span class="num"><pre>653</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>654</pre></span><pre>		if not self.ignore_failed_includes and missingplugs:</pre></div>
+<div class="cov"><span class="num"><pre>655</pre></span><pre>			msg = &quot;%s: Could not find following include plugs: %s&quot; % ( self, &quot;,&quot;.join( missingplugs ) )</pre></div>
+<div class="cov"><span class="num"><pre>656</pre></span><pre>			raise AssertionError( msg )</pre></div>
+<div class="skip"><span class="num"><pre>657</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>658</pre></span><pre>	def _removeExcludedPlugs( self, outset ):</pre></div>
+<div class="cov"><span class="num"><pre>659</pre></span><pre>		&quot;&quot;&quot;remove the plugs from our exclude list and modify the outset&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>660</pre></span><pre>		if not self.exclude:</pre></div>
+<div class="cov"><span class="num"><pre>661</pre></span><pre>			return</pre></div>
+<div class="skip"><span class="num"><pre>662</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>663</pre></span><pre>		excludepairs = set()</pre></div>
+<div class="cov"><span class="num"><pre>664</pre></span><pre>		excludeNameTuples = [ tuple( plugname.split( &quot;.&quot; ) ) for plugname in self.exclude ]</pre></div>
+<div class="cov"><span class="num"><pre>665</pre></span><pre>		for node,plug in outset:</pre></div>
+<div class="cov"><span class="num"><pre>666</pre></span><pre>			for nodeplugname  in self.exclude:</pre></div>
+<div class="skip"><span class="num"><pre>667</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>668</pre></span><pre>				nodename = plugname = None</pre></div>
+<div class="cov"><span class="num"><pre>669</pre></span><pre>				if nodeplugname.find( '.' ) == -1:			# node mode</pre></div>
+<div class="cov"><span class="num"><pre>670</pre></span><pre>					nodename = nodeplugname</pre></div>
+<div class="cov"><span class="num"><pre>671</pre></span><pre>				else:</pre></div>
+<div class="cov"><span class="num"><pre>672</pre></span><pre>					nodename,plugname = nodeplugname.split( '.' ) # node plug mode</pre></div>
+<div class="skip"><span class="num"><pre>673</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>674</pre></span><pre>				if nodename == str( node ) and ( not plugname or plugname == plug.name() ):</pre></div>
+<div class="cov"><span class="num"><pre>675</pre></span><pre>					excludepairs.add( ( node,plug ) )</pre></div>
+<div class="skip"><span class="num"><pre>676</pre></span><pre>			# END for each nodename.plugname to exclude</pre></div>
+<div class="skip"><span class="num"><pre>677</pre></span><pre>		# END for each node,plug pair</pre></div>
+<div class="skip"><span class="num"><pre>678</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>679</pre></span><pre>		# substract our pairs accordingly to modify the set</pre></div>
+<div class="cov"><span class="num"><pre>680</pre></span><pre>		outset -= excludepairs</pre></div>
+<div class="skip"><span class="num"><pre>681</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>682</pre></span><pre>	def _getNodePlugs( self ):</pre></div>
+<div class="cov"><span class="num"><pre>683</pre></span><pre>		&quot;&quot;&quot;:return: all plugs on nodes we wrap ( as node,plug tuple )&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>684</pre></span><pre>		outset = set()</pre></div>
+<div class="skip"><span class="num"><pre>685</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>686</pre></span><pre>		# get the included plugs</pre></div>
+<div class="cov"><span class="num"><pre>687</pre></span><pre>		self._addIncludeNodePlugs( outset )</pre></div>
+<div class="skip"><span class="num"><pre>688</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>689</pre></span><pre>		if self.allow_auto_plugs:</pre></div>
+<div class="cov"><span class="num"><pre>690</pre></span><pre>			for node in self._iterNodes():</pre></div>
+<div class="cov"><span class="num"><pre>691</pre></span><pre>				plugresult = node.plugs(  )</pre></div>
+<div class="cov"><span class="num"><pre>692</pre></span><pre>				outset.update( set( ( (node,plug) for plug in plugresult ) ) )</pre></div>
+<div class="skip"><span class="num"><pre>693</pre></span><pre>				# END update lut map</pre></div>
+<div class="skip"><span class="num"><pre>694</pre></span><pre>			# END for node in nodes</pre></div>
+<div class="skip"><span class="num"><pre>695</pre></span><pre>		# END allow auto plugs</pre></div>
+<div class="skip"><span class="num"><pre>696</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>697</pre></span><pre>		# remove excluded plugs</pre></div>
+<div class="cov"><span class="num"><pre>698</pre></span><pre>		self._removeExcludedPlugs( outset )</pre></div>
+<div class="skip"><span class="num"><pre>699</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>700</pre></span><pre>		# the rest of the nitty gritty details, the base class will deal</pre></div>
+<div class="cov"><span class="num"><pre>701</pre></span><pre>		return outset</pre></div>
+<div class="skip"><span class="num"><pre>702</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>703</pre></span><pre>#} END nodes</pre></div>
+<div class="skip"><span class="num"><pre>704</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>705</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>706</pre></span><pre>#{ Plugs</pre></div>
+<div class="cov"><span class="num"><pre>707</pre></span><pre>class OIFacadePlug( tuple , iPlug ):</pre></div>
+<div class="cov"><span class="num"><pre>708</pre></span><pre>	&quot;&quot;&quot;Facade Plugs are meant to be stored on instance level overriding the respective</pre></div>
+<div class="cov"><span class="num"><pre>709</pre></span><pre>	class level plug descriptor.</pre></div>
+<div class="cov"><span class="num"><pre>710</pre></span><pre>	If used directly, it will facade the internal affects relationships and just return</pre></div>
+<div class="cov"><span class="num"><pre>711</pre></span><pre>	what really is affected on the facade node</pre></div>
+<div class="skip"><span class="num"><pre>712</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>713</pre></span><pre>	Additionally they are associated to a node instance, and can thus be used to</pre></div>
+<div class="cov"><span class="num"><pre>714</pre></span><pre>	find the original node once the plug is used in an OI facacde shell</pre></div>
+<div class="skip"><span class="num"><pre>715</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>716</pre></span><pre>	Its a tuple as it will be more memory efficient that way. Additionally one</pre></div>
+<div class="cov"><span class="num"><pre>717</pre></span><pre>	automatically has a proper hash and comparison if the same objects come together</pre></div>
+<div class="cov"><span class="num"><pre>718</pre></span><pre>	&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>719</pre></span><pre>	_fp_prefix = &quot;_FP_&quot;</pre></div>
+<div class="skip"><span class="num"><pre>720</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>721</pre></span><pre>	#{ Object Overridden Methods</pre></div>
+<div class="skip"><span class="num"><pre>722</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>723</pre></span><pre>	def __new__( cls, *args ):</pre></div>
+<div class="cov"><span class="num"><pre>724</pre></span><pre>		&quot;&quot;&quot;Store only weakrefs, throw if we do not get 3 inputs</pre></div>
+<div class="skip"><span class="num"><pre>725</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>726</pre></span><pre>		:param args:</pre></div>
+<div class="cov"><span class="num"><pre>727</pre></span><pre>			 * arg[0] = internal node</pre></div>
+<div class="cov"><span class="num"><pre>728</pre></span><pre>			 * arg[1] = internal plug&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>729</pre></span><pre>		count = 2</pre></div>
+<div class="cov"><span class="num"><pre>730</pre></span><pre>		if len( args ) != count:</pre></div>
+<div class="nocov"><span class="num"><pre>731</pre></span><pre>			raise AssertionError( &quot;Invalid Argument count, should be %i, was %i&quot; % ( count, len( args ) ) )</pre></div>
+<div class="skip"><span class="num"><pre>732</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>733</pre></span><pre>		#return tuple.__new__( cls, ( weakref.ref( arg ) for arg in args ) )</pre></div>
+<div class="cov"><span class="num"><pre>734</pre></span><pre>		return tuple.__new__( cls,  args )		# NOTE: have to use string refs for recursive facade plugs</pre></div>
+<div class="skip"><span class="num"><pre>735</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>736</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>737</pre></span><pre>	def __getattr__( self, attr ):</pre></div>
+<div class="cov"><span class="num"><pre>738</pre></span><pre>		&quot;&quot;&quot; Allow easy attribute access</pre></div>
+<div class="cov"><span class="num"><pre>739</pre></span><pre>		inode: the internal node</pre></div>
+<div class="cov"><span class="num"><pre>740</pre></span><pre>		iplug: the internal plug</pre></div>
+<div class="skip"><span class="num"><pre>741</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>742</pre></span><pre>		Thus we must:</pre></div>
+<div class="cov"><span class="num"><pre>743</pre></span><pre>		 - Act as IOFacade returning additional information</pre></div>
+<div class="skip"><span class="num"><pre>744</pre></span><pre>		 </pre></div>
+<div class="cov"><span class="num"><pre>745</pre></span><pre>		 - Act as original plug for attribute access</pre></div>
+<div class="skip"><span class="num"><pre>746</pre></span><pre>		 </pre></div>
+<div class="cov"><span class="num"><pre>747</pre></span><pre>		This will work as long as the method names are unique</pre></div>
+<div class="cov"><span class="num"><pre>748</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>749</pre></span><pre>		if attr == 'inode':</pre></div>
+<div class="cov"><span class="num"><pre>750</pre></span><pre>			return self[0]</pre></div>
+<div class="cov"><span class="num"><pre>751</pre></span><pre>		if attr == 'iplug':</pre></div>
+<div class="cov"><span class="num"><pre>752</pre></span><pre>			return self[1]</pre></div>
+<div class="skip"><span class="num"><pre>753</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>754</pre></span><pre>		# still here ? try to return a value on the original plug</pre></div>
+<div class="cov"><span class="num"><pre>755</pre></span><pre>		return getattr( self.iplug, attr )</pre></div>
+<div class="skip"><span class="num"><pre>756</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>757</pre></span><pre>	#} END object overridden methods</pre></div>
+<div class="skip"><span class="num"><pre>758</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>759</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>760</pre></span><pre>	def name( self ):</pre></div>
+<div class="cov"><span class="num"><pre>761</pre></span><pre>		&quot;&quot;&quot; Get name of facade plug</pre></div>
+<div class="skip"><span class="num"><pre>762</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>763</pre></span><pre>		:return: name of (internal) plug - must be a unique key, unique enough</pre></div>
+<div class="cov"><span class="num"><pre>764</pre></span><pre>			to allow connections to several nodes of the same type&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>765</pre></span><pre>		return &quot;%s%s_%s&quot; % ( self._fp_prefix, self.inode, self.iplug )</pre></div>
+<div class="skip"><span class="num"><pre>766</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>767</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>768</pre></span><pre>	def _affectedList( self, direction ):</pre></div>
+<div class="cov"><span class="num"><pre>769</pre></span><pre>		&quot;&quot;&quot; Get affected shells into the given direction</pre></div>
+<div class="skip"><span class="num"><pre>770</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>771</pre></span><pre>		:return: list of all oiplugs looking in direction, if</pre></div>
+<div class="cov"><span class="num"><pre>772</pre></span><pre>			plugtestfunc says: False, do not prune the given shell&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>773</pre></span><pre>		these = lambda shell: shell.plug is self.iplug or not isinstance( shell, _IOShell ) or shell._getoiplug() is None</pre></div>
+<div class="skip"><span class="num"><pre>774</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>775</pre></span><pre>		iterShells = self.inode.toShell( self.iplug ).iterShells( direction=direction, prune = these, visit_once=True )</pre></div>
+<div class="cov"><span class="num"><pre>776</pre></span><pre>		outlist = [ shell._getoiplug() for shell in iterShells ]</pre></div>
+<div class="skip"><span class="num"><pre>777</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>778</pre></span><pre>		return outlist</pre></div>
+<div class="skip"><span class="num"><pre>779</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>780</pre></span><pre>	def affects( self, otherplug ):</pre></div>
+<div class="cov"><span class="num"><pre>781</pre></span><pre>		&quot;&quot;&quot;Affects relationships will be set on the original plug only&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>782</pre></span><pre>		return self.iplug.affects( otherplug )</pre></div>
+<div class="skip"><span class="num"><pre>783</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>784</pre></span><pre>	def affected( self ):</pre></div>
+<div class="cov"><span class="num"><pre>785</pre></span><pre>		&quot;&quot;&quot;Walk the internal affects using an internal plugshell</pre></div>
+<div class="skip"><span class="num"><pre>786</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>787</pre></span><pre>		:note: only output plugs can be affected - this is a rule followed throughout the system</pre></div>
+<div class="cov"><span class="num"><pre>788</pre></span><pre>		:return: tuple containing affected plugs ( plugs that are affected by our value )&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>789</pre></span><pre>		return self._affectedList( &quot;down&quot; )</pre></div>
+<div class="skip"><span class="num"><pre>790</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>791</pre></span><pre>	def affectedBy( self ):</pre></div>
+<div class="cov"><span class="num"><pre>792</pre></span><pre>		&quot;&quot;&quot;Walk the graph upwards and return all input plugs that are being facaded</pre></div>
+<div class="cov"><span class="num"><pre>793</pre></span><pre>		:return: tuple containing plugs that affect us ( plugs affecting our value )&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>794</pre></span><pre>		return self._affectedList( &quot;up&quot; )</pre></div>
+<div class="skip"><span class="num"><pre>795</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>796</pre></span><pre>	def providesOutput( self ):</pre></div>
+<div class="cov"><span class="num"><pre>797</pre></span><pre>		&quot;&quot;&quot;:return: True if this is an output plug that can trigger computations &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>798</pre></span><pre>		return self.iplug.providesOutput( )</pre></div>
+<div class="skip"><span class="num"><pre>799</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>800</pre></span><pre>	def providesInput( self ):</pre></div>
+<div class="cov"><span class="num"><pre>801</pre></span><pre>		&quot;&quot;&quot;:return: True if this is an input plug that will never cause computations&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>802</pre></span><pre>		return self.iplug.providesInput( )</pre></div>
+<div class="skip"><span class="num"><pre>803</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>804</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>805</pre></span><pre>#} END plugs</pre></div>
+<div class="skip"><span class="num"><pre>806</pre></span><pre></pre></div>
+</div>
+</body>
+</html>

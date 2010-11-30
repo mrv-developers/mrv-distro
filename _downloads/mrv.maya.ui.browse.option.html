@@ -1,0 +1,89 @@
+<html>
+<head>
+<title>mrv.maya.ui.browse.option</title>
+</head>
+<body>
+mrv.maya.ui.browse.option
+<style>
+.coverage pre {float: left; margin: 0px 1em; border: none;
+               padding: 0px; }
+.num pre { margin: 0px }
+.nocov, .nocov pre {background-color: #faa}
+.cov, .cov pre {background-color: #cfc}
+div.coverage div { clear: both; height: 1.1em}
+</style>
+<div class="stats">
+Covered: 20 lines<br/>
+Missed: 25 lines<br/>
+Skipped 19 lines<br/>
+Percent: 44 %<br/>
+
+</div>
+<div class="coverage">
+<div class="skip"><span class="num"><pre> 1</pre></span><pre># -*- coding: utf-8 -*-</pre></div>
+<div class="cov"><span class="num"><pre> 2</pre></span><pre>&quot;&quot;&quot;module with option implementations, to be shown in finder layouts&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 3</pre></span><pre>__docformat__ = &quot;restructuredtext&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 4</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 5</pre></span><pre>from interface import iOptions</pre></div>
+<div class="cov"><span class="num"><pre> 6</pre></span><pre>import mrv.maya.ui as ui</pre></div>
+<div class="cov"><span class="num"><pre> 7</pre></span><pre>import mrv.maya</pre></div>
+<div class="cov"><span class="num"><pre> 8</pre></span><pre>import mrv.maya.util</pre></div>
+<div class="cov"><span class="num"><pre> 9</pre></span><pre>Mel = mrv.maya.Mel</pre></div>
+<div class="cov"><span class="num"><pre>10</pre></span><pre>opts = mrv.maya.util.optionvars</pre></div>
+<div class="skip"><span class="num"><pre>11</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>12</pre></span><pre>class FileOpenOptions(ui.ColumnLayout, iOptions):</pre></div>
+<div class="cov"><span class="num"><pre>13</pre></span><pre>	&quot;&quot;&quot;Options implementation providing options useful during file-open&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>14</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>15</pre></span><pre>	#{ Configuration</pre></div>
+<div class="cov"><span class="num"><pre>16</pre></span><pre>	kOVExecuteScriptNodes = 'fileExecuteSN'</pre></div>
+<div class="cov"><span class="num"><pre>17</pre></span><pre>	kOVIgnoreVersion = 'fileOpenIgnoreVersion'</pre></div>
+<div class="cov"><span class="num"><pre>18</pre></span><pre>	kOVSelectivePreload = 'fileSelPreload'</pre></div>
+<div class="cov"><span class="num"><pre>19</pre></span><pre>	kOVRefLoadSetting = 'fileOpenRefLoadSetting'</pre></div>
+<div class="skip"><span class="num"><pre>20</pre></span><pre>	#} END configuration</pre></div>
+<div class="skip"><span class="num"><pre>21</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>22</pre></span><pre>	def __init__(self):</pre></div>
+<div class="nocov"><span class="num"><pre>23</pre></span><pre>		self._create_ui_elements()</pre></div>
+<div class="nocov"><span class="num"><pre>24</pre></span><pre>		self._restore_saved_values()</pre></div>
+<div class="skip"><span class="num"><pre>25</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>26</pre></span><pre>	def _create_ui_elements(self):</pre></div>
+<div class="nocov"><span class="num"><pre>27</pre></span><pre>		self.cbScriptNodes = ui.CheckBox(label=&quot;Execute ScriptNodes&quot;, value=1)   </pre></div>
+<div class="nocov"><span class="num"><pre>28</pre></span><pre>		self.cbIgnoreVersion = ui.CheckBox(label=&quot;Ignore Version&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>29</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>30</pre></span><pre>		self.omReference = ui.OptionMenu(label=&quot;Load Settings&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>31</pre></span><pre>	</pre></div>
+<div class="nocov"><span class="num"><pre>32</pre></span><pre>		ui.MenuItem(label=&quot;Load Default References&quot;)</pre></div>
+<div class="nocov"><span class="num"><pre>33</pre></span><pre>		ui.MenuItem(label=&quot;Load All References&quot;)</pre></div>
+<div class="nocov"><span class="num"><pre>34</pre></span><pre>		ui.MenuItem(label=&quot;Load Top References&quot;)</pre></div>
+<div class="nocov"><span class="num"><pre>35</pre></span><pre>		ui.MenuItem(label=&quot;Load No References&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>36</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>37</pre></span><pre>		self.cbSelectivePreload = ui.CheckBox(label=&quot;Selective Preload&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>38</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>39</pre></span><pre>	def _restore_saved_values(self):</pre></div>
+<div class="nocov"><span class="num"><pre>40</pre></span><pre>		self.cbScriptNodes.p_value = opts.get(self.kOVExecuteScriptNodes, True)</pre></div>
+<div class="nocov"><span class="num"><pre>41</pre></span><pre>		self.cbIgnoreVersion.p_value = opts.get(self.kOVIgnoreVersion, False)</pre></div>
+<div class="nocov"><span class="num"><pre>42</pre></span><pre>		self.cbSelectivePreload.p_value = opts.get(self.kOVSelectivePreload, False)</pre></div>
+<div class="nocov"><span class="num"><pre>43</pre></span><pre>		self.omReference.p_select = opts.get(self.kOVRefLoadSetting, 1)</pre></div>
+<div class="skip"><span class="num"><pre>44</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>45</pre></span><pre>	def fileOptions(self):</pre></div>
+<div class="cov"><span class="num"><pre>46</pre></span><pre>		&quot;&quot;&quot;:return: dict with keyword options reflecting the settings of the</pre></div>
+<div class="cov"><span class="num"><pre>47</pre></span><pre>		interface. These should be given to the file command&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>48</pre></span><pre>		options = dict()</pre></div>
+<div class="nocov"><span class="num"><pre>49</pre></span><pre>		options['ignoreVersion'] = self.cbIgnoreVersion.p_value</pre></div>
+<div class="nocov"><span class="num"><pre>50</pre></span><pre>		options['executeScriptNodes'] = self.cbScriptNodes.p_value</pre></div>
+<div class="skip"><span class="num"><pre>51</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>52</pre></span><pre>		# TODO: Handle selective Preload !</pre></div>
+<div class="skip"><span class="num"><pre>53</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>54</pre></span><pre>		# TODO: use conditionals to work in older maya versions as well</pre></div>
+<div class="nocov"><span class="num"><pre>55</pre></span><pre>		refsl = self.omReference.p_sl</pre></div>
+<div class="nocov"><span class="num"><pre>56</pre></span><pre>		if refsl == 2:</pre></div>
+<div class="nocov"><span class="num"><pre>57</pre></span><pre>			options['loadAllReferences'] = True</pre></div>
+<div class="nocov"><span class="num"><pre>58</pre></span><pre>		elif refsl == 3:</pre></div>
+<div class="nocov"><span class="num"><pre>59</pre></span><pre>			options['loadReferenceDepth'] = &quot;topOnly&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>60</pre></span><pre>		elif refsl == 4:</pre></div>
+<div class="nocov"><span class="num"><pre>61</pre></span><pre>			options['loadNoReferences'] = True</pre></div>
+<div class="skip"><span class="num"><pre>62</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>63</pre></span><pre>		return options</pre></div>
+<div class="skip"><span class="num"><pre>64</pre></span><pre></pre></div>
+</div>
+</body>
+</html>

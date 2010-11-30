@@ -1,0 +1,575 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Installation &mdash; mrv v1.0.1-develop documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '#',
+        VERSION:     '1.0.1-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="top" title="mrv v1.0.1-develop documentation" href="index.html" />
+    <link rel="next" title="Getting Started" href="gettingstarted.html" />
+    <link rel="prev" title="About" href="about.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="gettingstarted.html" title="Getting Started"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="about.html" title="About"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">mrv v1.0.1-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p>MRV can be installed in multiple flavors and in multiple ways. At first the mere amount of combinations might be staggering, but this guide will help you to narrow the options down according to your specific needs and permission level.</p>
+<p>Another good news is, that this guide in fact explains how to install new python software in general, and can be applied not only to mrv, but to most other pure python package out there. If you know one, you know &#8216;em all.</p>
+<p>First of all, if you want to develop using MRV, its recommended to jump right to the <a class="reference external" href="develop/environment.html#install-label"><em>developer installation</em></a>. This guide continues with installation instructions for those who seek a quick look or those who want to install MRV based software.</p>
+<p>Basically, installing the Package <a class="footnote-reference" href="#id7" id="id1">[1]</a> is as simple as putting it into your python interpreter&#8217;s <tt class="docutils literal"><span class="pre">PYTHONPATH</span></tt>, this guide only makes the effort trying to show you the most common ways to do it.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you want to skip all the reading at first, you may also watch the <a class="reference external" href="http://www.youtube.com/user/ByronBates99#p/c/D0F37129CE775529">MRV Installation Guide on Youtube</a> - you may choose your platform there.</p>
+</div>
+<div class="section" id="preliminary-considerations">
+<h2>Preliminary Considerations<a class="headerlink" href="#preliminary-considerations" title="Permalink to this headline">¶</a></h2>
+<p>All you need to use the Package <a class="footnote-reference" href="#id7" id="id2">[1]</a> is a python interpreter compatible to your maya version. There you may choose between using the system&#8217;s python interpreter, or the one shipped with maya, called <em>mayapy</em>.</p>
+<div class="section" id="cpython-vs-mayapy">
+<h3>CPython vs. Mayapy<a class="headerlink" href="#cpython-vs-mayapy" title="Permalink to this headline">¶</a></h3>
+<p>MRV&#8217;s recommended development interpreter is the <strong>system&#8217;s python interpreter</strong>, <tt class="docutils literal"><span class="pre">cpython</span></tt>, because:</p>
+<ul class="simple">
+<li>it starts slightly faster (as tested on linux) than mayapy</li>
+<li>its easier to install auxiliary packages using <a class="reference external" href="http://pypi.python.org/pypi/setuptools">easy_install</a> or your platforms package manager (linux and OSX). This implies that <a class="reference external" href="tools.html#imrv-label"><em>imrv</em></a> will work much more easily.</li>
+<li>you can flexibly choose the maya version to run if you have multiple installed</li>
+</ul>
+<p>Disadvantages on non-linux platforms are that:</p>
+<ul class="simple">
+<li>it must be compiled for the same architecture as your maya version. Maya 64 will need a 64 bit version of the interpreter for instance.</li>
+</ul>
+<p>If the latter statement is an issue for you, you will just want to go with <tt class="docutils literal"><span class="pre">mayapy</span></tt> instead, which is a bit more restricted and less flexible, but fully functional as well.</p>
+<div class="section" id="compatibility">
+<h4>Compatibility<a class="headerlink" href="#compatibility" title="Permalink to this headline">¶</a></h4>
+<p>Besides the fact that <tt class="docutils literal"><span class="pre">cpython</span></tt> must be compiled for the same architecture as your maya installation, i.e. 32bit or 64bit, it must also be compatible with maya&#8217;s python binding.</p>
+<ul class="simple">
+<li>Python <strong>2.4</strong> will work with <strong>Maya 8.5</strong></li>
+<li>Python <strong>2.5</strong> will work with <strong>Maya 2008 and 2009</strong></li>
+<li>Python <strong>2.6</strong> will work with <strong>Maya 2010 and 2011</strong></li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">On windows, the system interpreter appears to only work if python 2.6 is used, but it might crash on 2.5 or earlier. MRV can always use <tt class="docutils literal"><span class="pre">mayapy</span></tt> as a fallback though.</p>
+</div>
+</div>
+<div class="section" id="python-executable-names">
+<h4>Python Executable Names<a class="headerlink" href="#python-executable-names" title="Permalink to this headline">¶</a></h4>
+<p>The <a class="reference external" href="tools.html#mrv-label"><em>mrv script</em></a> can be seen as something like a launchpad as it will configure mrv and derived projects, as well as the process&#8217; environment, to allow maya standalone to be started properly. In that sense, it is much like a more general <tt class="docutils literal"><span class="pre">mayapy</span></tt> which serves the same purpose.</p>
+<p>Coming with its duties of adjusting the python process&#8217; environment, it needs python to be restarted, possibly in a different version. To accomplish this, it will use the python executables in your PATH.</p>
+<p>On linux, this is automatically being handled for you, and mrv will find the expected executables named <tt class="docutils literal"><span class="pre">python&lt;version&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;version&gt;</span></tt> being 2.4, 2.5 or 2.6, if these are installed.</p>
+<p>On windows, usually only the last installed python executable is in the PATH. To help mrv, you need to copy <tt class="docutils literal"><span class="pre">python.exe</span></tt> of the python installation of your choice and rename the copy to <tt class="docutils literal"><span class="pre">python&lt;version&gt;.exe</span></tt> where <tt class="docutils literal"><span class="pre">&lt;version&gt;</span></tt> is <tt class="docutils literal"><span class="pre">24</span></tt> , <tt class="docutils literal"><span class="pre">25</span></tt> , or <tt class="docutils literal"><span class="pre">26</span></tt>. If <tt class="docutils literal"><span class="pre">mrv</span></tt> cannot find the executable, it will try to use <tt class="docutils literal"><span class="pre">mayapy</span></tt> instead.</p>
+</div>
+</div>
+<div class="section" id="finding-your-installation-method">
+<h3>Finding your Installation Method<a class="headerlink" href="#finding-your-installation-method" title="Permalink to this headline">¶</a></h3>
+<p>The best way to install the Package <a class="footnote-reference" href="#id7" id="id3">[1]</a> differs depending on the target audience. The following list of statements will resolve to viable options sorted by convenience if you follow down the branch that matches your situation:</p>
+<ul class="simple">
+<li>Install it just for me</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>I have root/administrator permissions</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>I want to use the system&#8217;s interpreter</li>
+</ul>
+<blockquote>
+<ol class="arabic simple">
+<li><a class="reference internal" href="#easy-install-with-setuptools">Easy Install with Setuptools</a></li>
+<li><a class="reference internal" href="#auto-install-with-distutils">Auto-Install with Distutils</a></li>
+<li><a class="reference internal" href="#manual-installation">Manual Installation</a></li>
+</ol>
+</blockquote>
+<ul class="simple">
+<li>I want/have to use Mayapy</li>
+</ul>
+<blockquote>
+<ol class="arabic simple">
+<li><a class="reference internal" href="#auto-install-with-distutils">Auto-Install with Distutils</a></li>
+<li><a class="reference internal" href="#manual-installation">Manual Installation</a></li>
+</ol>
+</blockquote>
+</blockquote>
+<ul class="simple">
+<li>I may not change the system</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li><a class="reference internal" href="#manual-pythonpath-label"><em>Manual Installation (PYTHONPATH)</em></a></li>
+</ul>
+</blockquote>
+</blockquote>
+<ul class="simple">
+<li>Install it for several people at once</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li><a class="reference internal" href="#manual-pythonpath-label"><em>Manual Installation (PYTHONPATH)</em></a></li>
+<li><em>Of course one could repeat single-person installation routines for several people, but this sort of uncontrolled redundancy is not advisable in most cases.</em></li>
+</ul>
+</blockquote>
+</div>
+</div>
+<div class="section" id="easy-install-with-setuptools">
+<h2>Easy Install with Setuptools<a class="headerlink" href="#easy-install-with-setuptools" title="Permalink to this headline">¶</a></h2>
+<p>This installation type works for use with the system&#8217;s python interpreter, and usually root or administrator privileges are required. At the end of the procedure, MRV will be installed on your system.</p>
+<p>If you have <a class="reference external" href="http://pypi.python.org/pypi/setuptools">easy_install</a> on your <em>linux</em> or <em>osx</em> system, it is as easy as typing into a shell <a class="footnote-reference" href="#id9" id="id4">[3]</a>:</p>
+<div class="highlight-python"><pre>$ easy_install[-&lt;py-version&gt;] mrv</pre>
+</div>
+<p>Where the optional <em>&lt;py-version&gt;</em> is 2.4, 2.5 or 2.6. If it worked, you should be able to run <tt class="docutils literal"><span class="pre">mrv</span></tt> and <tt class="docutils literal"><span class="pre">imrv</span></tt> right away:</p>
+<div class="highlight-python"><pre>$ mrv&lt;py-version&gt; -c "import mrv.maya.all"
+$ imrv&lt;py-version&gt;</pre>
+</div>
+<p>On a <em>windows system</em>, its the command prompt you would use:</p>
+<div class="highlight-python"><pre>&gt; cd c:\Python&lt;py-version&gt;\Scripts
+&gt; easy_install.exe mrv</pre>
+</div>
+<p>To verify mrv is installed correctly, you can execute the mrv script:</p>
+<div class="highlight-python"><pre>&gt; ..\python.exe mrv -c "import mrv.maya.all"</pre>
+</div>
+<p>Getting <strong>imrv</strong> to work with this setup on windows, please read the dedicated <a class="reference internal" href="#imrv">IMRV</a> section.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you don&#8217;t have an easy_install binary yet, you can install it <a class="reference external" href="http://pypi.python.org/pypi/setuptools">via the setuptools</a>. The windows installation claims being for 32 bit installations only, but it works fine in 64 bit python installations as well.</p>
+</div>
+</div>
+<div class="section" id="retrieving-mrv">
+<h2>Retrieving MRV<a class="headerlink" href="#retrieving-mrv" title="Permalink to this headline">¶</a></h2>
+<p>All the following installation methods require you to retrieve a copy of the MRV distribution. There are two ways to do that, the most common one is to download a zip archive. The less common, but more sophisticated one is to clone a git distribution repository, including the advantage to make updates to MRV very easy.</p>
+<p>The installation topics assume you have MRV downloaded and extracted already.</p>
+<div class="section" id="archive">
+<span id="install-archive-label"></span><h3>Archive<a class="headerlink" href="#archive" title="Permalink to this headline">¶</a></h3>
+<p>You can download a zip archive at one of the following sources:</p>
+<dl class="docutils">
+<dt>Python Package Index:</dt>
+<dd><a class="reference external" href="http://pypi.python.org/pypi/MRV">http://pypi.python.org/pypi/MRV</a></dd>
+<dt>GitHub:</dt>
+<dd><a class="reference external" href="http://github.com/Byron/mrv-distro/downloads">http://github.com/Byron/mrv-distro/downloads</a></dd>
+</dl>
+<p>Extract the archive into a folder of your choice.</p>
+</div>
+<div class="section" id="using-git">
+<h3>(Using) Git<a class="headerlink" href="#using-git" title="Permalink to this headline">¶</a></h3>
+<p>Using a shell of your choice, checkout the git repository keeping the mrv source distribution:</p>
+<div class="highlight-python"><pre>$ git clone git://github.com/Byron/mrv-distro.git mrv</pre>
+</div>
+<p>On windows, the commandline would be the same, except that you would use the &#8216;Git Bash Here&#8217; on a folder in the Explorer first to obtain a shell.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The mrv source distribution repository is not meant for mrv development. If you intend to alter mrv&#8217;s sources, please proceed to the <a class="reference internal" href="#developer-installation">Developer Installation</a>.</p>
+</div>
+</div>
+<div class="section" id="auto-install-with-distutils">
+<span id="autoinstall-label"></span><h3>Auto-Install with Distutils<a class="headerlink" href="#auto-install-with-distutils" title="Permalink to this headline">¶</a></h3>
+<p>In all cases, you need root or administrator permissions to proceed, a shell <a class="footnote-reference" href="#id9" id="id5">[3]</a> (<em>linux</em> and <em>osx</em>) or a command prompt, within which you change the directory to your the folder containing the downloaded MRV files:</p>
+<div class="highlight-python"><pre>$ cd /path/to/mrv</pre>
+</div>
+<p>On windows:</p>
+<div class="highlight-python"><pre>&gt; cd c:\path\to\mrv</pre>
+</div>
+<p>Now you execute the <tt class="docutils literal"><span class="pre">setup.py</span></tt> script with the <tt class="docutils literal"><span class="pre">install</span></tt> command given. The python interpreter used to do that determines the installation location, hence here is where you will decide whether you want to install mrv in <tt class="docutils literal"><span class="pre">cpython</span></tt> or <tt class="docutils literal"><span class="pre">mayapy</span></tt> <a class="footnote-reference" href="#id8" id="id6">[2]</a>.</p>
+<p><strong>System Interpreter Linux + OSX</strong>:</p>
+<div class="highlight-python"><pre>$ # Installation using the system interpreter ( Linux and OSX )
+$ sudo python&lt;py-version&gt; setup.py install
+$ # Verify mrv works
+$ mrv&lt;py-version&gt; -c "import mrv.maya.all"</pre>
+</div>
+<p><strong>Mayapy Linux</strong>:</p>
+<div class="highlight-python"><pre>$ # Installation using mayapy on linux
+$ sudo /usr/autodesk/maya&lt;version&gt;/bin/mayapy setup.py install
+$ # Verify mrv works
+$ /usr/autodesk/maya&lt;version&gt;/bin/mrv -c "import mrv.maya.all"</pre>
+</div>
+<p><strong>Mayapy OSX</strong>:</p>
+<div class="highlight-python"><pre>$ # Installation using mayapy on osx
+$ sudo /Applications/Autodesk/maya&lt;version&gt;/Maya.app/Contents/bin/mayapy setup.py install
+$ # Verify mrv works ... yes, the path is real !
+$ /Applications/Autodesk/maya&lt;version&gt;/Maya.app/Contents/Frameworks/Python.framework/Versions/Current/bin/mrv -c "import mrv.maya.all"</pre>
+</div>
+<p>Replace <tt class="docutils literal"><span class="pre">&lt;py-version&gt;</span></tt> with <tt class="docutils literal"><span class="pre">2.4</span></tt>, <tt class="docutils literal"><span class="pre">2.5</span></tt> or <tt class="docutils literal"><span class="pre">2.6</span></tt>, and <tt class="docutils literal"><span class="pre">&lt;version&gt;</span></tt> with your maya version respectively.</p>
+<p>On <strong>windows</strong>, you would instead enter something like this for the <strong>system interpreter installation</strong>:</p>
+<div class="highlight-python"><pre>&gt; # Installation using the system interpreter
+&gt; C:\Python&lt;py-version&gt;\python.exe setup.py install
+&gt; # Verify mrv works
+&gt; c:\Python&lt;py-version&gt;\python.exe c:\Python&lt;py-version\Scripts\mrv -c "import mrv.maya.all"</pre>
+</div>
+<p>whereas the following is used for the <strong>windows-mayapy</strong> installation:</p>
+<div class="highlight-python"><pre>&gt; # Installation using mayapy
+&gt; "C:\Program Files[ (x86)]\Autodesk\Maya&lt;version&gt;\bin\mayapy.exe" setup.py install
+&gt; # Verify it works - the mrv and imrv scripts are not available in mayapy for windows unless you install them manually
+&gt; "C:\Program Files[ (x86)]\Autodesk\Maya&lt;version&gt;\bin\mayapy.exe" -c "mrv.maya.all"</pre>
+</div>
+<p>Replace <tt class="docutils literal"><span class="pre">&lt;py-version&gt;</span></tt> with the version of your installed interpreter, usually  <tt class="docutils literal"><span class="pre">24</span></tt> , <tt class="docutils literal"><span class="pre">25</span></tt> or <tt class="docutils literal"><span class="pre">26</span></tt>. Alternatively, replace``&lt;version&gt;`` with the maya version you want to use.</p>
+<p>To use <tt class="docutils literal"><span class="pre">imrv</span></tt>, some additional work will be needed, please read about it in the <a class="reference internal" href="#imrv-install-label"><em>IMRV installation section</em></a>.</p>
+</div>
+<div class="section" id="manual-installation">
+<h3>Manual Installation<a class="headerlink" href="#manual-installation" title="Permalink to this headline">¶</a></h3>
+<p>Doing a manual installation would be done for one of the following reasons:</p>
+<ul class="simple">
+<li>You have no root/administrator permissions and need to put mrv into a non-standard directory</li>
+<li>You want to setup mrv in a central location on the network to make it usable by multiple clients</li>
+<li>You keep all additional python modules in a central directory to keep them independent of the actual maya or python version used, which works fine for pure python modules.</li>
+</ul>
+<p><strong>Before continuing</strong>, make sure that your toplevel mrv folder, the one which contains the <tt class="docutils literal"><span class="pre">setup.py</span></tt> script, is named <tt class="docutils literal"><span class="pre">mrv</span></tt>. This is not the case if your extracted it from an archive.</p>
+<p>At this point, the <a class="reference external" href="tools.html#mrv-label"><em>mrv script</em></a> is already operational, which means that you can use the mrv framework if you start your own scripts through <tt class="docutils literal"><span class="pre">mrv</span></tt>.</p>
+<p>To use MRV as a framework within your python installation, you need to make sure it is in your python path. The previous installation methods essentially put MRV into an existing PYTHONPATH location, but it is also possible to alter the PYTHONPATH by changing the environment variable.</p>
+<div class="section" id="pythonpath">
+<span id="manual-pythonpath-label"></span><h4>PYTHONPATH<a class="headerlink" href="#pythonpath" title="Permalink to this headline">¶</a></h4>
+<p>The PYTHONPATH environment variable contains the path in which python tries to find its modules, similar to the PATH in which executables are searched by the system.</p>
+<p>To make it available to a python installation, you can change it in three spots which differ in their area of effect:</p>
+<ol class="arabic simple">
+<li><strong>Maya.env</strong></li>
+</ol>
+<blockquote>
+<ul class="simple">
+<li>Does not require root or administrator permissions</li>
+<li>Affects only the respective Maya installation <em>excluding</em> <tt class="docutils literal"><span class="pre">mayapy</span></tt>, hence you can only use MRV if maya is started in gui or batch mode.</li>
+<li>To make the changes</li>
+</ul>
+<blockquote>
+<ol class="arabic simple">
+<li>Locate the <tt class="docutils literal"><span class="pre">Maya.env</span></tt> file, <tt class="docutils literal"><span class="pre">&lt;version&gt;</span></tt> is the desired maya version:</li>
+</ol>
+<blockquote>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">~/maya/&lt;version&gt;</span></tt> (<em>linux</em>)</li>
+<li><tt class="docutils literal"><span class="pre">~/Library/Preferences/Autodesk/maya/&lt;version&gt;</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">C:\Documents</span> <span class="pre">and</span> <span class="pre">Settings\&lt;your_account&gt;\My</span> <span class="pre">Documents\maya\&lt;version&gt;</span></tt></li>
+</ul>
+</blockquote>
+<ol class="arabic simple" start="2">
+<li>In your favorite text-editor, add or edit the line as follows:</li>
+</ol>
+<blockquote>
+<ul>
+<li><p class="first">On Linux and OSX:</p>
+<div class="highlight-python"><pre>SEP = :
+PYTHONPATH = /path/to/directory/with/mrvroot$SEP/what/was/here/previously
+# i.e. PYTHONPATH = /home/yourname/maya_python_modules$SEP/mnt/other/maya_python_modules
+# where 'maya_python_modules' contains the folder 'mrv'</pre>
+</div>
+</li>
+<li><p class="first">On Windows:</p>
+<div class="highlight-python"><pre>PYTHONPATH = X:/path/to/directory/with/mrvroot;Z:/what/was/here/before
+# i.e. PYTHONPATH = C:/maya_python_modules;Z:/maya_python_modules
+# where 'maya_python_modules' contains the folder 'mrv'</pre>
+</div>
+</li>
+</ul>
+</blockquote>
+</blockquote>
+</blockquote>
+<ol class="arabic simple" start="2">
+<li><strong>Shell Profile</strong></li>
+</ol>
+<blockquote>
+<ul class="simple">
+<li>Does not require root or administrator permissions</li>
+<li>Affects <em>all</em> python interpreters, including <tt class="docutils literal"><span class="pre">maya</span></tt> and <tt class="docutils literal"><span class="pre">mayapy</span></tt>  that are launched from within the shell</li>
+<li>To make the changes</li>
+</ul>
+<blockquote>
+<ul>
+<li><p class="first">As the shells are different on linux and OSX, it really depends on your actual platform which file you have to alter to obtain a session-independent change. This is why we focus on the <strong>bash</strong> as a very common shell, and change the PYTHONPATH only temporarily. The code presented here would move into your respective shell configuration file, commonly named <tt class="docutils literal"><span class="pre">~/.bashrc</span></tt> or <tt class="docutils literal"><span class="pre">~/.bash_profile</span></tt>:</p>
+<div class="highlight-python"><pre>$ export PYTHONPATH=/path/to/directory/with/mrvroot:$PYTHONPATH
+$ i.e. export PYTHONPATH=~/maya_python_modules:$PYTHONPATH
+# where 'maya_python_modules' contains the folder 'mrv'</pre>
+</div>
+</li>
+</ul>
+</blockquote>
+</blockquote>
+<ol class="arabic simple" start="3">
+<li><strong>System Wide</strong></li>
+</ol>
+<blockquote>
+<ul class="simple">
+<li>The system wide installation requires root permissions on linux. On windows system variables may be changed on per account basis without administrator permissions, but you will need these for changes that affect all accounts on the machine.</li>
+<li>As these changes usually require higher level permissions, and as people having these usually know how to set environment variables, I will not go into any details here. I ... refuse :P.</li>
+</ul>
+</blockquote>
+</div>
+<div class="section" id="site-packages">
+<h4>Site-Packages<a class="headerlink" href="#site-packages" title="Permalink to this headline">¶</a></h4>
+<p>The <tt class="docutils literal"><span class="pre">site-packages</span></tt> folder is part of your python installation and is in the PYTHONPATH natively. If you want to put MRV in there, and if you have appropriate permissions to do so, please see the <a class="reference internal" href="#autoinstall-label"><em>auto-installation section</em></a>.</p>
+</div>
+</div>
+</div>
+<div class="section" id="imrv">
+<span id="imrv-install-label"></span><h2>IMRV<a class="headerlink" href="#imrv" title="Permalink to this headline">¶</a></h2>
+<p>IMRV is a tool starting an <a class="reference external" href="http://ipython.scipy.org/moin/">interactive python interpreter</a> session based on <strong>IPython</strong>, providing full maya python and mrv framework support. It is a great companion to quickly test objects for functionality, read docstrings, and to help building up some confidence for your new development framework as it becomes more approachable.</p>
+<p>Please note that the following guide will do its best to explain the installation for the <em>system&#8217;s python interpreter</em> only, as it allows using easy_install. As a bonus, the installation on windows will be discussed in detail as well. Describing the installation for the non-default <tt class="docutils literal"><span class="pre">mayapy</span></tt> interpreter on all platforms lies beyond the scope of this text though.</p>
+<ul class="simple">
+<li><strong>Coming from easy_install on windows</strong></li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>Easy install cannot install ipython on windows, instead you have to do it manually using installers which basically copy files into place.</li>
+<li><a class="reference internal" href="#installing-ipython-on-windows">Installing IPython on Windows</a></li>
+</ul>
+</blockquote>
+<ul class="simple">
+<li><strong>Coming from easy_install linux and osx</strong></li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>Actually you shouldn&#8217;t be here as easy_install will have retrieved everything required to use <tt class="docutils literal"><span class="pre">ipython</span></tt> and <tt class="docutils literal"><span class="pre">imrv</span></tt> on your system.</li>
+</ul>
+</blockquote>
+<ul class="simple">
+<li><strong>Coming from distutils (linux and osx)</strong></li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>Now it is time to use <a class="reference external" href="http://pypi.python.org/pypi/setuptools">easy_install</a> as it makes installing ipython as easy.</li>
+<li><a class="reference internal" href="#installing-ipython-on-linux-and-osx">Installing IPython on Linux and OSX</a></li>
+</ul>
+</blockquote>
+<ul class="simple">
+<li><strong>Coming from distutils (windows)</strong></li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li><a class="reference internal" href="#installing-ipython-on-windows">Installing IPython on Windows</a></li>
+</ul>
+</blockquote>
+<ul class="simple">
+<li><strong>Coming from the manual installation (all platforms)</strong></li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>If you have root or administrator permissions for your platform, you will have to use them now.</li>
+<li><a class="reference internal" href="#installing-ipython-on-windows">Installing IPython on Windows</a></li>
+<li><a class="reference internal" href="#installing-ipython-on-linux-and-osx">Installing IPython on Linux and OSX</a></li>
+</ul>
+</blockquote>
+<div class="section" id="installing-ipython-on-windows">
+<h3>Installing IPython on Windows<a class="headerlink" href="#installing-ipython-on-windows" title="Permalink to this headline">¶</a></h3>
+<p>In order to safe you from some trouble, its recommended to watch the <a class="reference external" href="http://www.youtube.com/user/ByronBates99#p/c/D0F37129CE775529">MRV for Windows Installation Guide on Youtube</a> first, the written documentation only accompanies the video.</p>
+<p>To install ipython on windows, you need to download two installers matching your python version.</p>
+<blockquote>
+<ul class="simple">
+<li>ipython: <a class="reference external" href="http://ipython.scipy.org/moin/Download">http://ipython.scipy.org/moin/Download</a> ( works for 32 and 64 bit )</li>
+<li>pyreadline: <a class="reference external" href="https://launchpad.net/pyreadline/+download">https://launchpad.net/pyreadline/+download</a> ( works for 32 and 64 bit )</li>
+</ul>
+</blockquote>
+<p>Install both packages into your respective python installation. To verify the installation, open a command prompt and execute:</p>
+<div class="highlight-python"><pre>&gt; cd x:\Python&lt;py-version&gt;\Scripts
+&gt; ipython.exe</pre>
+</div>
+<p>If you see colors, it worked, if not, you are most likely to need <tt class="docutils literal"><span class="pre">ctypes</span></tt>, which can be downloaded here: <a class="reference external" href="http://sourceforge.net/projects/ctypes/files">http://sourceforge.net/projects/ctypes/files</a> .</p>
+<p>When retrying to start ipython, it should be colored now. Now you can start ipython as follows:</p>
+<div class="highlight-python"><pre>&gt; ..\python.exe imrv [maya-version]</pre>
+</div>
+<p>The given <tt class="docutils literal"><span class="pre">maya-version</span></tt> must cause MRV to start the python version that you just installed ipython for, i.e. <tt class="docutils literal"><span class="pre">imrv</span> <span class="pre">2010</span></tt> will cause <tt class="docutils literal"><span class="pre">python26.exe</span></tt> to be executed.</p>
+</div>
+<div class="section" id="installing-ipython-on-linux-and-osx">
+<h3>Installing IPython on Linux and OSX<a class="headerlink" href="#installing-ipython-on-linux-and-osx" title="Permalink to this headline">¶</a></h3>
+<p>Using <a class="reference external" href="http://pypi.python.org/pypi/setuptools">easy_install</a>, the ipython installation couldn&#8217;t be easier. You need root permissions and an internet connection for the following line to execute:</p>
+<div class="highlight-python"><pre>$ sudo easy_install-&lt;py-version&gt; ipython
+
+$ # verify it worked
+$ ipython
+
+$ # imrv should work as well
+$ imrv&lt;py-version&gt;</pre>
+</div>
+</div>
+</div>
+<div class="section" id="upgrading">
+<h2>Upgrading<a class="headerlink" href="#upgrading" title="Permalink to this headline">¶</a></h2>
+<p>Having a clear upgrade path is important to make updates easy. Software isn&#8217;t static unless it is dead.</p>
+<p>The best way to do it depends on the way you previously installed MRV:</p>
+<ul class="simple">
+<li><strong>easy_install</strong></li>
+</ul>
+<blockquote>
+<ul>
+<li><p class="first">Use the easy_install executable on your system to execute the following in a shell or command prompt:</p>
+<div class="highlight-python"><pre>$ easy_install -U mrv
+&gt; easy_install.exe -U mrv</pre>
+</div>
+</li>
+</ul>
+</blockquote>
+<ul class="simple">
+<li><strong>(Using) Git</strong></li>
+</ul>
+<blockquote>
+<ul>
+<li><p class="first">Enter the git repository you cloned previously and execute the following in a shell or windows git bash:</p>
+<div class="highlight-python"><pre>$ git fetch origin
+$ git merge origin/mrv-src</pre>
+</div>
+</li>
+</ul>
+</blockquote>
+<ul class="simple">
+<li><strong>Archive</strong></li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>Obtain the latest version in a compressed archive from one of the sources <a class="reference internal" href="#install-archive-label"><em>listed here</em></a> and extract it into the same place.</li>
+</ul>
+</blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is potentially unsafe to do so without prior deletion of the original folder as files may be deleted or renamed in the new archive, causing trouble if &#8216;merged&#8217; into an older release&#8217;s folder.</p>
+</div>
+</div>
+<div class="section" id="developer-installation">
+<h2>Developer Installation<a class="headerlink" href="#developer-installation" title="Permalink to this headline">¶</a></h2>
+<p>As a (future) developer, please have a look at the dedicated development section for detailed information on how to <a class="reference external" href="develop/index.html#development-label"><em>get MRV (Preview) up and running</em></a>.</p>
+<hr class="docutils" />
+<table class="docutils footnote" frame="void" id="id7" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[1]</td><td><em>(<a class="fn-backref" href="#id1">1</a>, <a class="fn-backref" href="#id2">2</a>, <a class="fn-backref" href="#id3">3</a>)</em> The package may be MRV itself or a &#8216;derived&#8217; package that uses MRV as framework.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id8" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id6">[2]</a></td><td>Yes, technically &#8216;mayapy&#8217; is cpython as well, but I needed a good short name for &#8216;System&#8217;s Python Interpreter&#8217;, any suggestions ?</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id9" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[3]</td><td><em>(<a class="fn-backref" href="#id4">1</a>, <a class="fn-backref" href="#id5">2</a>)</em> A shell on OSX is provided by the terminal application. Enter &#8216;terminal&#8217; in spotlight to start it if it is your first time.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#">Installation</a><ul>
+<li><a class="reference external" href="#preliminary-considerations">Preliminary Considerations</a><ul>
+<li><a class="reference external" href="#cpython-vs-mayapy">CPython vs. Mayapy</a><ul>
+<li><a class="reference external" href="#compatibility">Compatibility</a></li>
+<li><a class="reference external" href="#python-executable-names">Python Executable Names</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#finding-your-installation-method">Finding your Installation Method</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#easy-install-with-setuptools">Easy Install with Setuptools</a></li>
+<li><a class="reference external" href="#retrieving-mrv">Retrieving MRV</a><ul>
+<li><a class="reference external" href="#archive">Archive</a></li>
+<li><a class="reference external" href="#using-git">(Using) Git</a></li>
+<li><a class="reference external" href="#auto-install-with-distutils">Auto-Install with Distutils</a></li>
+<li><a class="reference external" href="#manual-installation">Manual Installation</a><ul>
+<li><a class="reference external" href="#pythonpath">PYTHONPATH</a></li>
+<li><a class="reference external" href="#site-packages">Site-Packages</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference external" href="#imrv">IMRV</a><ul>
+<li><a class="reference external" href="#installing-ipython-on-windows">Installing IPython on Windows</a></li>
+<li><a class="reference external" href="#installing-ipython-on-linux-and-osx">Installing IPython on Linux and OSX</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#upgrading">Upgrading</a></li>
+<li><a class="reference external" href="#developer-installation">Developer Installation</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="about.html"
+                                  title="previous chapter">About</a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="gettingstarted.html"
+                                  title="next chapter">Getting Started</a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="_sources/install.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="gettingstarted.html" title="Getting Started"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="about.html" title="About"
+             >previous</a> |</li>
+        <li><a href="index.html">mrv v1.0.1-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Nov 30, 2010.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

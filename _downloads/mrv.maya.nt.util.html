@@ -1,0 +1,88 @@
+<html>
+<head>
+<title>mrv.maya.nt.util</title>
+</head>
+<body>
+mrv.maya.nt.util
+<style>
+.coverage pre {float: left; margin: 0px 1em; border: none;
+               padding: 0px; }
+.num pre { margin: 0px }
+.nocov, .nocov pre {background-color: #faa}
+.cov, .cov pre {background-color: #cfc}
+div.coverage div { clear: both; height: 1.1em}
+</style>
+<div class="stats">
+Covered: 42 lines<br/>
+Missed: 0 lines<br/>
+Skipped 21 lines<br/>
+Percent: 100 %<br/>
+
+</div>
+<div class="coverage">
+<div class="skip"><span class="num"><pre> 1</pre></span><pre># -*- coding: utf-8 -*-</pre></div>
+<div class="cov"><span class="num"><pre> 2</pre></span><pre>&quot;&quot;&quot;General utility methods&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 3</pre></span><pre>__docformat__ = &quot;restructuredtext&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 4</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 5</pre></span><pre>import maya.OpenMaya as api</pre></div>
+<div class="cov"><span class="num"><pre> 6</pre></span><pre>import mrv.maya.undo as undo</pre></div>
+<div class="skip"><span class="num"><pre> 7</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 8</pre></span><pre>MScriptUtil = api.MScriptUtil</pre></div>
+<div class="skip"><span class="num"><pre> 9</pre></span><pre>#{ Decorators</pre></div>
+<div class="skip"><span class="num"><pre>10</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>11</pre></span><pre>#} END decorators</pre></div>
+<div class="skip"><span class="num"><pre>12</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>13</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>14</pre></span><pre>#{ Conversion Methods</pre></div>
+<div class="cov"><span class="num"><pre>15</pre></span><pre>def in_double3_out_vector(function):</pre></div>
+<div class="cov"><span class="num"><pre>16</pre></span><pre>	&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>17</pre></span><pre>	:return: MVector containing result of function with signature </pre></div>
+<div class="cov"><span class="num"><pre>18</pre></span><pre>		function(double [3])&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>19</pre></span><pre>	su = MScriptUtil()</pre></div>
+<div class="cov"><span class="num"><pre>20</pre></span><pre>	su.createFromDouble(0.0, 0.0, 0.0)</pre></div>
+<div class="cov"><span class="num"><pre>21</pre></span><pre>	ptr = su.asDoublePtr()</pre></div>
+<div class="cov"><span class="num"><pre>22</pre></span><pre>	function(ptr)</pre></div>
+<div class="skip"><span class="num"><pre>23</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>24</pre></span><pre>	return api.MVector(su.getDoubleArrayItem(ptr,0), su.getDoubleArrayItem(ptr,1), su.getDoubleArrayItem(ptr,2))</pre></div>
+<div class="skip"><span class="num"><pre>25</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>26</pre></span><pre>def in_two_floats_out_tuple(function):</pre></div>
+<div class="cov"><span class="num"><pre>27</pre></span><pre>	&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>28</pre></span><pre>	:return: tuple containing result of function with signature </pre></div>
+<div class="cov"><span class="num"><pre>29</pre></span><pre>		function(float&amp; f1, float&amp; f2)&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>30</pre></span><pre>	suf1 = MScriptUtil()	# keep it, otherwise it might deinitialize its memory</pre></div>
+<div class="cov"><span class="num"><pre>31</pre></span><pre>	suf2 = MScriptUtil()</pre></div>
+<div class="cov"><span class="num"><pre>32</pre></span><pre>	pf1 = suf1.asFloatPtr()</pre></div>
+<div class="cov"><span class="num"><pre>33</pre></span><pre>	pf2 = suf2.asFloatPtr()</pre></div>
+<div class="skip"><span class="num"><pre>34</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>35</pre></span><pre>	function(pf1, pf2)</pre></div>
+<div class="skip"><span class="num"><pre>36</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>37</pre></span><pre>	return (MScriptUtil.getFloat(pf1), MScriptUtil.getFloat(pf2))</pre></div>
+<div class="skip"><span class="num"><pre>38</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>39</pre></span><pre>def in_double3_as_vector(function, vec_value):</pre></div>
+<div class="cov"><span class="num"><pre>40</pre></span><pre>	&quot;&quot;&quot;Set the value in vec_value to passed in function as double [3] and </pre></div>
+<div class="cov"><span class="num"><pre>41</pre></span><pre>	return the result&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>42</pre></span><pre>	su = MScriptUtil()</pre></div>
+<div class="cov"><span class="num"><pre>43</pre></span><pre>	su.createFromList([vec_value.x, vec_value.y, vec_value.z], 3)</pre></div>
+<div class="cov"><span class="num"><pre>44</pre></span><pre>	ptr = su.asDoublePtr()</pre></div>
+<div class="cov"><span class="num"><pre>45</pre></span><pre>	return function(ptr)</pre></div>
+<div class="skip"><span class="num"><pre>46</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>47</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>48</pre></span><pre>def undoable_in_double3_as_vector(function, vec_old_value, vec_new_value):</pre></div>
+<div class="cov"><span class="num"><pre>49</pre></span><pre>	&quot;&quot;&quot;function supports the signature function(double [3] const) and will </pre></div>
+<div class="cov"><span class="num"><pre>50</pre></span><pre>	change the underlying instance to the respective values as retrieved </pre></div>
+<div class="cov"><span class="num"><pre>51</pre></span><pre>	from the passed in vector.</pre></div>
+<div class="cov"><span class="num"><pre>52</pre></span><pre>	The calling method must be enclosed in an undoable decorator.</pre></div>
+<div class="skip"><span class="num"><pre>53</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>54</pre></span><pre>	:param vec_old_value: vector with the old value of the corresponding getX method</pre></div>
+<div class="cov"><span class="num"><pre>55</pre></span><pre>	:param vec_new_value: vector with new value that is to be set&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>56</pre></span><pre>	op = undo.GenericOperation()</pre></div>
+<div class="cov"><span class="num"><pre>57</pre></span><pre>	op.setDoitCmd( in_double3_as_vector, function, vec_new_value)</pre></div>
+<div class="cov"><span class="num"><pre>58</pre></span><pre>	op.setUndoitCmd( in_double3_as_vector, function, vec_old_value )</pre></div>
+<div class="cov"><span class="num"><pre>59</pre></span><pre>	return op.doIt()</pre></div>
+<div class="skip"><span class="num"><pre>60</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>61</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>62</pre></span><pre>#}END conversion methods</pre></div>
+<div class="skip"><span class="num"><pre>63</pre></span><pre></pre></div>
+</div>
+</body>
+</html>

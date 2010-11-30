@@ -1,0 +1,541 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>The Setup Script &mdash; mrv v1.0.1-develop documentation</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.1-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="top" title="mrv v1.0.1-develop documentation" href="../../index.html" />
+    <link rel="up" title="Distribution" href="index.html" />
+    <link rel="next" title="The Documentation Generator" href="docs.html" />
+    <link rel="prev" title="Project Information Module" href="pinfo.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="docs.html" title="The Documentation Generator"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pinfo.html" title="Project Information Module"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Development</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Distribution</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="the-setup-script">
+<span id="setup-label"></span><h1>The Setup Script<a class="headerlink" href="#the-setup-script" title="Permalink to this headline">¶</a></h1>
+<p><tt class="docutils literal"><span class="pre">setup.py</span></tt> is the default name for the <a class="reference external" href="http://docs.python.org/distutils">distutils</a> compatible script which drives the distribution and installation process. Python comes with a selection of setup-subcommands which may be configured independently.</p>
+<p>MRV has re-implemented parts of the distutils to integrate unit testing, documentation generation and git into the distribution process.</p>
+<p>In the following, a complete list of overridden or newly added subcommands will be presented including a detailed description of their flags. If a subcommand shows special behavior, it is documented in a dedicated <strong>Specials</strong> section. This kind of behavior can only be altered by providing an alternative implementation which involves deriving from the respective implementation and overriding class level members or methods.</p>
+<p>The main class, <tt class="docutils literal"><span class="pre">Distribution</span></tt>, manages its subcommands and can be seen as command root which doesn&#8217;t do anything itself, but runs subcommands to do the actual work. Flags have been added to it to provide MRV specific information to the distribution system.</p>
+<p>A short example should illustrate how to call <tt class="docutils literal"><span class="pre">setup.py</span></tt> in general, and how flags map to the <tt class="docutils literal"><span class="pre">Distribution</span></tt> and to <a class="reference internal" href="#subcommands">Subcommands</a>:</p>
+<div class="highlight-python"><pre>$ python setup.py --use-git=1 --regression-tests=1 clean --all sdist --format=zip --dist-remotes=distro,hubdistro --root-remotes=hub</pre>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">--use-git</span></tt> and <tt class="docutils literal"><span class="pre">--regression-tests</span></tt> flags are given to the <tt class="docutils literal"><span class="pre">Distribution</span></tt> instance to serve as general information for subcommands or to trigger general events, such as to run all regression tests.</p>
+<p><tt class="docutils literal"><span class="pre">clean</span></tt> is the first subcommand to trigger the deletion of previously written distribution files. As subcommands are executed in order of appearance, the cleaning will happen before the <tt class="docutils literal"><span class="pre">sdist</span></tt> command is executed, which will create a source distribution and push the results to the given git remotes.</p>
+<p>To show help, you may use the <tt class="docutils literal"><span class="pre">--help</span></tt> flag:</p>
+<div class="highlight-python"><pre>$ # show help for setup in general
+$ python setup.py --help
+
+$ # show help for a specific subcommand
+$ python setup.py sdist --help</pre>
+</div>
+<p>For more examples of how to perform common tasks, see the <a class="reference external" href="workflow.html"><em>workflow document</em></a>.</p>
+<p>When documenting command flags, they are given in the form:</p>
+<blockquote>
+<dl class="cmdoption">
+<dt id="cmdoption--long-name">
+<tt class="descname">--long-name</tt><tt class="descclassname"> (-s)</tt><a class="headerlink" href="#cmdoption--long-name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</blockquote>
+<p>to indicate their long and short names. If the flag takes arguments, it is indicated by &#8216;=&#8217;:</p>
+<blockquote>
+<dl class="cmdoption">
+<dt id="cmdoption--flag-with-argument">
+<tt class="descname">--flag-with-argument</tt><tt class="descclassname">=VALUE (-f)</tt><a class="headerlink" href="#cmdoption--flag-with-argument" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</blockquote>
+<p>The type of the <em>VALUE</em> is usually documented specifically, and is accepted by the short command flag as well.</p>
+<div class="section" id="intimacies-of-sdist-build-py-and-install">
+<span id="setup-intimacies-label"></span><h2>Intimacies of sdist, build_py, and install<a class="headerlink" href="#intimacies-of-sdist-build-py-and-install" title="Permalink to this headline">¶</a></h2>
+<p>Before diving into the actual command flags and special features, its important to understand the differences and implications between the major subcommands, namely <tt class="docutils literal"><span class="pre">sdist</span></tt>, <tt class="docutils literal"><span class="pre">build</span></tt> and <tt class="docutils literal"><span class="pre">install</span></tt>.</p>
+<p>First of all, sdist and build are detached from each other when it comes to specifying the set of files to put into the distribution. <tt class="docutils literal"><span class="pre">sdist</span></tt> uses an easy to handle <a class="reference internal" href="#manifest-in">MANIFEST.in</a> template, whereas <tt class="docutils literal"><span class="pre">build</span></tt>, more specifically <tt class="docutils literal"><span class="pre">build_py</span></tt> which is called by <tt class="docutils literal"><span class="pre">build</span></tt>, uses the <tt class="docutils literal"><span class="pre">packages</span></tt> and <tt class="docutils literal"><span class="pre">package_data</span></tt> keyword passed to the <tt class="docutils literal"><span class="pre">setup</span></tt> routine of your <tt class="docutils literal"><span class="pre">setup.py</span></tt> script.</p>
+<p>The question may arise why you would bother dealing with the <tt class="docutils literal"><span class="pre">build</span></tt> setup if you only want to provide source installations anyway ? The answer lies hidden in the way the final command, <tt class="docutils literal"><span class="pre">install</span></tt> works.</p>
+<p>But first, lets just assume we have prepared the <tt class="docutils literal"><span class="pre">MANIFEST.in</span></tt> and some basic configuration in the <a class="reference external" href="pinfo.html"><em>info module</em></a>, and create an <tt class="docutils literal"><span class="pre">sdist</span></tt> distribution whose archive we upload to <a class="reference external" href="http://pypi.python.org/pypi">pypi</a>. The user wanting to install your project will simply run ...</p>
+<div class="highlight-python"><pre>$ easy_install your_project</pre>
+</div>
+<p>... which happens right before things go wrong. Easy_install, or any user who called <tt class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">install</span></tt> in the extracted zip distribution of yours, will call the <tt class="docutils literal"><span class="pre">install</span></tt> subcommand which in turn calls <tt class="docutils literal"><span class="pre">build</span></tt>.</p>
+<p>Yes, it calls the <tt class="docutils literal"><span class="pre">build</span></tt> command in your source distribution which means that it must be setup, or at least tested, as well.</p>
+<p>Depending on the complexity of your project, this is easier or harder, but as you will learn in the <a class="reference external" href="workflow.html"><em>workflow document</em></a>, its all manageable, and ... what&#8217;s done is done, the fame will be all yours !</p>
+</div>
+<div class="section" id="distribution-flags">
+<span id="distribution-flags-label"></span><h2>Distribution Flags<a class="headerlink" href="#distribution-flags" title="Permalink to this headline">¶</a></h2>
+<p>When calling the <tt class="docutils literal"><span class="pre">setup.py</span></tt> script, what happens is that a <tt class="docutils literal"><span class="pre">Distribution</span></tt> instance will be created that in turn handles the keyword arguments given to the <tt class="docutils literal"><span class="pre">setup</span></tt> routine within the <tt class="docutils literal"><span class="pre">setup.py</span></tt> script. Afterwards it reads the <a class="reference external" href="http://docs.python.org/distutils/configfile.html">setup.cfg</a> configuration file which may override the previous keyword arguments. Finally, the instance parses the commandline arguments to learn about the subcommands to call, as well as additional overrides coming directly from the commandline.</p>
+<p>As a summary, this is how to configure the distribution instance, items mentioned later override changes done by items mentioned earlier:</p>
+<ul class="simple">
+<li>Keyword Arguments given to <tt class="docutils literal"><span class="pre">setup</span></tt> routine</li>
+<li>key-value pairs read from the <a class="reference external" href="http://docs.python.org/distutils/configfile.html">setup.cfg</a> file</li>
+<li>Commandline arguments given to the <em>setup.py</em> script.</li>
+</ul>
+<p>The <tt class="docutils literal"><span class="pre">Distribution</span></tt> instance keeps information about the overall operation to perform, as well as the commands to invoke to achieve this, hence it delegates most work and serves information and general functionality to its subcommands.</p>
+<p>In MRV, the <tt class="docutils literal"><span class="pre">Distribution</span></tt> instance holds additional information about the project itself as accumulated in the <a class="reference external" href="pinfo.html"><em>info module</em></a>, global flags to enable the usage of git or to run regression tests before any operation begins.</p>
+<ul>
+<li><dl class="cmdoption">
+<dt id="cmdoption--maya-version">
+<tt class="descname">--maya-version</tt><tt class="descclassname">=VERSION (-m)</tt><a class="headerlink" href="#cmdoption--maya-version" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>Specifies the maya version for which to make the build, like <tt class="docutils literal"><span class="pre">2011</span></tt> or <tt class="docutils literal"><span class="pre">8.5</span></tt>. This information is only used if build_py is to byte-compile all sources, the python version to use for the compilation is deduced by the given maya version.</li>
+</ul>
+</blockquote>
+<ul>
+<li><dl class="cmdoption">
+<dt id="cmdoption--use-git">
+<tt class="descname">--use-git</tt><tt class="descclassname">=0|1 (-g)</tt><a class="headerlink" href="#cmdoption--use-git" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>If use-git is set to 1, default 0, subcommands will put their results into the underlying git repository and attempt to push them to the remotes configured either by the <a class="reference internal" href="#git">Git</a> Command Bases or interactively.</li>
+</ul>
+</blockquote>
+<ul>
+<li><dl class="cmdoption">
+<dt id="cmdoption--force-git-tag">
+<tt class="descname">--force-git-tag</tt><tt class="descclassname"> (-f)</tt><a class="headerlink" href="#cmdoption--force-git-tag" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>If specified, the tag generated by the system may be forcibly created and possibly overwrite and existing tag with the same name pointing to a different commit. This flag is intended for beta or preview versions which change a lot, and usually don&#8217;t require a version increment ( and the associated commit altering the <tt class="docutils literal"><span class="pre">info.py</span></tt> module ).</li>
+<li>If not specified, tags are required to be unique, and the system will guide you through its interactive commandline interface to accomplish this, possibly incrementing the version information for you.</li>
+<li><em>Note:</em> Will only be taken into consideration if the <tt class="docutils literal"><span class="pre">string</span></tt> descriptor of your version, like <tt class="docutils literal"><span class="pre">preview</span></tt>, is actually set and non-empty.</li>
+</ul>
+</blockquote>
+<ul>
+<li><dl class="cmdoption">
+<dt id="cmdoption--regression-tests">
+<tt class="descname">--regression-tests</tt><tt class="descclassname">=0|1 (-t)</tt><a class="headerlink" href="#cmdoption--regression-tests" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>If set to 1, default 0, full regression tests will be run before a subcommand is called. If one test fails, the whole operation will abort.</li>
+<li>It is recommended to specify this flag when creating release versions of your software at least. If affordable, it should be enabled for all types of distributions.</li>
+<li>The program used to run the regression tests specified in the <a class="reference external" href="pinfo.html"><em>info module</em></a>, but is most commonly <a class="reference external" href="../../tools.html#tmrvr-label"><em>tmrvr</em></a>.</li>
+</ul>
+</blockquote>
+<ul>
+<li><dl class="cmdoption">
+<dt id="cmdoption--add-requires">
+<tt class="descname">--add-requires</tt><tt class="descclassname">=ID[,ID...] (-r)</tt><a class="headerlink" href="#cmdoption--add-requires" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>If specified, the given list of comma separated ids will be added to the existing list of <tt class="docutils literal"><span class="pre">requires</span></tt> ids as given to the setup() routine.</li>
+<li>Use this in conjunction with the <tt class="docutils literal"><span class="pre">--package-search-dirs=</span></tt> flag, as you might want to specify your external dependencies using <tt class="docutils literal"><span class="pre">add-requires</span></tt> if you don&#8217;t put them into your distribution directly.</li>
+</ul>
+</blockquote>
+<ul>
+<li><dl class="cmdoption">
+<dt id="cmdoption--package-search-dirs">
+<tt class="descname">--package-search-dirs</tt><tt class="descclassname">=DIR[,DIR...] (-p)</tt><a class="headerlink" href="#cmdoption--package-search-dirs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>If set to a comma separated list of directories relative to the project root, these directories will be specifically searched for additional python packges. The option defaults to search the <strong>ext</strong> directory otherwise.</li>
+<li>To disable this option entirely, specify <tt class="docutils literal"><span class="pre">--package-search-dirs=</span></tt></li>
+<li><em>Note:</em> Is only effective when creating <a class="reference external" href="build_py">build</a> distributions.</li>
+</ul>
+</blockquote>
+<div class="section" id="specials">
+<h3>Specials<a class="headerlink" href="#specials" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>If packages are not explicitly specified using the <tt class="docutils literal"><span class="pre">packages</span></tt> keyword of the setup() routine, packages will be automatically searched under the root package of this project. The search is affected by the <tt class="docutils literal"><span class="pre">--package-search-dirs</span></tt> flag as well.</li>
+<li>The default <tt class="docutils literal"><span class="pre">package_data</span></tt> keyword argument for setup() was extended.</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>Patterns which point to a directory will automatically be expanded to include all subdirectories and files. Previously only file patterns could be specified. For example, a directory structure like <tt class="docutils literal"><span class="pre">dir/data</span></tt>, <tt class="docutils literal"><span class="pre">dir/subdir/data2</span></tt> can be included as package data just by specifying <tt class="docutils literal"><span class="pre">dir</span></tt> as pattern.</li>
+<li>Patterns may be prefixed with an exclamation mark (<tt class="docutils literal"><span class="pre">!</span></tt>) to exclude files which match the pattern after the &#8216;<tt class="docutils literal"><span class="pre">!</span></tt>&#8216;. This is useful to exclude portions of paths that you previously included using the directory expansion. To exclude the <tt class="docutils literal"><span class="pre">data2</span></tt> file from the previous example, you would specify the <tt class="docutils literal"><span class="pre">!dir/subdir/data2</span></tt> pattern, which may be a glob as well.</li>
+<li>Please note that the <tt class="docutils literal"><span class="pre">packge_data</span></tt> is specified on distribution level, but is in fact used by <a class="reference internal" href="#build-py">build_py</a>, and has no effect on <a class="reference internal" href="#sdist">sdist</a>.</li>
+</ul>
+</blockquote>
+<ul class="simple">
+<li>Git was integrated into the distribution process, see <a class="reference internal" href="#git-handling">Git Handling</a>.</li>
+</ul>
+</div>
+<div class="section" id="git-handling">
+<span id="setup-git-label"></span><h3>Git Handling<a class="headerlink" href="#git-handling" title="Permalink to this headline">¶</a></h3>
+<p>The MRV distribution integrates git and its repositories into the workflow. Instead of just creating archives to upload on <a class="reference external" href="http://pypi.python.org/pypi">pypi</a> for example, it allows you to record the archive contents in dedicated repositories, or your project repository, and keep automatically generated tags and commit information, meshing together your distribution history. The git integration helps tremendously to avoid confusion and to track your distributions correctly. In order to associate the actual build with the source commit it was created from, it will be written into the <tt class="docutils literal"><span class="pre">info</span> <span class="pre">module</span></tt> of the distribution. The default line:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">src_commit_sha</span> <span class="o">=</span> <span class="s">&#39;0&#39;</span><span class="o">*</span><span class="mi">40</span>
+</pre></div>
+</div>
+<p>becomes ...:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">src_commit_sha</span> <span class="o">=</span> <span class="s">&#39;&lt;40 character sha&gt;&#39;</span>
+</pre></div>
+</div>
+<p>... in the info module of your distribution. This makes sure that even for preview or beta releases which do not increment the version, you will not loose the information about the source commit.</p>
+<p>Subcommands supporting the <a class="reference internal" href="#git">Git</a> Command Base will store their files into the <em>closest</em> git repository they can find, in a branch composed of the project name and the type of the distribution, such as <tt class="docutils literal"><span class="pre">mrv-src</span></tt>, <tt class="docutils literal"><span class="pre">mrv-py2.6</span></tt> or <tt class="docutils literal"><span class="pre">mrv-doc</span></tt>. The <em>closest</em> git repository is the one found when walking the distribution output path upwards. This is at least the project root repository into which you commit your own code, but may be a repository that you have put into the path yourself. If you want a separate repository for all builds you create, you could setup a git repository  in the <em>build</em> directory for instance.
+No matter into which repository the data is being added, it will be totally separated from your own source code history and commits, contained in their own branches, which looks more like having a sub-repository.</p>
+<p>The <a class="reference internal" href="#git">Git</a> Command Base allows to specify remotes to push the data to. It distinguishes between the distribution-remotes and root-remotes. Distribution remotes are destined to catch only the data meant for distribution, root-remotes will receive your newly created tag and new commits as stored in the root repository. The root-remote would most commonly be the remote you always push to when submitting your source.</p>
+<p>If <tt class="docutils literal"><span class="pre">--use-git</span></tt> is 1, the distribution will make sure that your current commit in the root repository is appropriately tagged who is named in accordance to the currently set version. If the version needs to be incremented as a tag with that name already exists, you will be guided through that process using interactive prompts, helping you to conveniently change the version string to generate a unique tag name.</p>
+<p>The created git tag will be used to mark the exact commit you are going to distribute. All subcommands will use variations of this tag name as well.</p>
+<p>See the <a class="reference external" href="workflow.html"><em>workflow document</em></a> for some actual examples</p>
+</div>
+</div>
+<div class="section" id="subcommands">
+<h2>Subcommands<a class="headerlink" href="#subcommands" title="Permalink to this headline">¶</a></h2>
+<p>MRV&#8217;s distribution system consists of setup subcommands which are partially overriding default ones, or which are new and specific to MRV. The latter ones are marked with <em>- new -</em>.</p>
+<p>As some commands share the same set of flags, these flag-sets are combined in so called <a class="reference internal" href="#command-bases">Command Bases</a>.</p>
+<div class="section" id="build-py">
+<h3>build_py<a class="headerlink" href="#build-py" title="Permalink to this headline">¶</a></h3>
+<p>The <tt class="docutils literal"><span class="pre">build_py</span></tt> subcommand is in charge of creating builds of pure python modules and of copying module specific data into the build directory. On the way, it may also byte-compile the sources and remove the originals in order to create binary-only builds.</p>
+<p>Both, the <a class="reference internal" href="#git">Git</a> Command Base as well as <a class="reference external" href="Testing">post-testing</a> Command Base are supported. The latter one becomes especially interesting if you only build a subset of your project and need to assure that this subset is still working as expected.</p>
+<p>When byte-compiling python modules using the <tt class="docutils literal"><span class="pre">--optimize=1|2</span></tt> flag as well as the <tt class="docutils literal"><span class="pre">--compile</span></tt> flag, the <tt class="docutils literal"><span class="pre">--maya-version</span></tt> needs to be set on the <a class="reference internal" href="#distribution-flags-label"><em>Distribution</em></a> as well.</p>
+<ul>
+<li><dl class="cmdoption">
+<dt id="cmdoption--exclude-from-compile">
+<tt class="descname">--exclude-from-compile</tt><tt class="descclassname">=FILE_GLOB[,FILE_GLOB...] (-e)</tt><a class="headerlink" href="#cmdoption--exclude-from-compile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>If given a comma separated list of file globs, all python modules matching these will not be compiled, but left as source file.</li>
+<li>Use this flag to prevent python modules which are scripted maya plugins from being compiled, as maya may have trouble loading these otherwise.</li>
+</ul>
+</blockquote>
+<ul>
+<li><dl class="cmdoption">
+<dt id="cmdoption--exclude-items">
+<tt class="descname">--exclude-items</tt><tt class="descclassname">=MODULE[,MODULE...] (-m)</tt><a class="headerlink" href="#cmdoption--exclude-items" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>If given a comma separated list of modules, like <tt class="docutils literal"><span class="pre">.module.</span></tt>, <tt class="docutils literal"><span class="pre">modu</span></tt> or <tt class="docutils literal"><span class="pre">full.module.name</span></tt>, all packages, modules and data files associated with them will be pruned from the build if they contain the given module as a <em>substring</em>. The more specific your module name, the less matches you will have and vice-versa.</li>
+<li>Use this flag to reduce the amount of files that are put into the build directory, similar, but much less convenient, to the <em>MANIFEST.in</em> file the <a class="reference internal" href="#sdist">sdist</a> command supports.</li>
+</ul>
+</blockquote>
+<div class="section" id="id1">
+<h4>Specials<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>When byte-compiling modules, the resulting <tt class="docutils literal"><span class="pre">*.pyo</span></tt> files will be renamed to <tt class="docutils literal"><span class="pre">*.pyc</span></tt> as many tools in the python world don&#8217;t properly deal with <em>pyo</em> files.</li>
+<li>If optimization is set for byte-compilation with the <tt class="docutils literal"><span class="pre">optimize=1|2</span></tt> flag, test modules ( all modules with <tt class="docutils literal"><span class="pre">.test</span></tt> in their name ) will be pruned automatically.</li>
+<li>When byte compiling, the source file will be removed in the build directory to allow binary-only distributions. Please note that in this case, one distribution must be created per python version, namely 2.4, 2.5 and 2.6 to support maya 8.5 to 2011 respectively.</li>
+<li>Supports the <a class="reference internal" href="#git">Git</a> Command Base</li>
+<li>Supports the <a class="reference external" href="Testing">Testing</a> Command Base</li>
+</ul>
+</div>
+</div>
+<div class="section" id="build-scripts">
+<h3>build_scripts<a class="headerlink" href="#build-scripts" title="Permalink to this headline">¶</a></h3>
+<p>This command is a subcommand of <tt class="docutils literal"><span class="pre">build</span></tt> and called after <a class="reference internal" href="#build-py">build_py</a> to prepare files designated as executable scripts. These will be made executable ( on posix systems ) and will be rewritten.</p>
+<p>This implementation improves the scripts processing such that it will append the respective python version to the script file, i.e. <tt class="docutils literal"><span class="pre">mrv</span></tt> becomes <tt class="docutils literal"><span class="pre">mrv2.6</span></tt> when mangled by a python 2.6 interpreter. This becomes important when scripts are installed on the system as it is totally viable to use different mrv versions in different interpreters. To prevent confusion, the respective python versions are enforced in the file name.</p>
+<ul>
+<li><dl class="cmdoption">
+<dt id="cmdoption--exclude-scripts">
+<tt class="descname">--exclude-scripts</tt><tt class="descclassname">=SCRIPT_PATH[,SCRIPT_PATH...] (-e)</tt><a class="headerlink" href="#cmdoption--exclude-scripts" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>Exclude the given comma separated list of script paths, i.e. <tt class="docutils literal"><span class="pre">bin/mrv</span></tt>, from being handled by this command. This will prevent it from being installed as well. This does not cause the given scripts to be excluded in your build directory too.</li>
+<li>Use this flag if you would like a given set of your executable scripts to be included in your build, but to define a subset which should not be installed when invoked together with the <a class="reference internal" href="#install">install</a> command. For example, <tt class="docutils literal"><span class="pre">test/bin/tmrv</span></tt> is excluded that way as the normal user won&#8217;t need it on his system, but it is part of the distribution.</li>
+</ul>
+</blockquote>
+</div>
+<div class="section" id="sdist">
+<h3>sdist<a class="headerlink" href="#sdist" title="Permalink to this headline">¶</a></h3>
+<p>This command will create source distributions from your root project tree and is entirely unrelated to the <a class="reference internal" href="#build-py">build_py</a> subcommand.</p>
+<p>Reading the <strong>MANIFEST.in</strong> template file, it generates a list of files being saved to the <strong>MANIFEST</strong> file, which will then be used to copy the named files into the source distribution folder.</p>
+<p>This folder can be put into a compressed archive and/or be pushed into git repositories.</p>
+<p>Besides providing git support for source distributions through the <a class="reference internal" href="#git">Git</a> Command Base, it is also possible to run the unit test framework within the newly created source distribution to verify all files are in a consistent state. This is made available through the <a class="reference external" href="Testing">Testing</a> Command Base.</p>
+<p>Everything else is handled by the <cite>sdist</cite> default implementation.</p>
+<div class="section" id="id2">
+<h4>Specials<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Supports the <a class="reference internal" href="#git">Git</a> Command Base</li>
+<li>Supports the <a class="reference external" href="Testing">Testing</a> Command Base</li>
+</ul>
+</div>
+<div class="section" id="manifest-in">
+<span id="setup-manifestin-label"></span><h4>MANIFEST.in<a class="headerlink" href="#manifest-in" title="Permalink to this headline">¶</a></h4>
+<p>The <em>MANIFEST.in</em> file acts as a template for the automated creation of the <em>MANIFEST</em> file which contains all files to be included in the source distribution.</p>
+<p>All valid statements can be found in the <a class="reference external" href="http://docs.python.org/distutils/commandref.html#sdist-cmd">distutils online documentation</a>.</p>
+</div>
+</div>
+<div class="section" id="install">
+<h3>Install<a class="headerlink" href="#install" title="Permalink to this headline">¶</a></h3>
+<p>The <tt class="docutils literal"><span class="pre">install</span></tt> command was overridden to assure the byte-compilation is done by <a class="reference internal" href="#build-py">build_py</a> and not by the install command itself.</p>
+<p>Its good to know that <tt class="docutils literal"><span class="pre">install</span></tt> internally calls <cite>build</cite> which in turn triggers a set of other build related subcommands. Hence a build will be created when installing, everything in the build directory is copied into the respective installation location on your platform.</p>
+<p>Everything else is handled by the default implementation.</p>
+</div>
+<div class="section" id="docdist-new">
+<h3>docdist <em>- new -</em><a class="headerlink" href="#docdist-new" title="Permalink to this headline">¶</a></h3>
+<p>The <tt class="docutils literal"><span class="pre">docdist</span></tt> command allows to build documentation using <a class="reference external" href="docs.html"><em>makedoc</em></a>, which needs to be pointed at by the <a class="reference external" href="pinfo.html"><em>info module</em></a>.</p>
+<p>You have the option to create and possibly reuse docs in your main repository, or create documentation as build directly in your build or source distribution output directory.</p>
+<p>The build of the documentation is skipped if the last build version matches the currently set version. The version of the individual documentation parts is indicated by the <em>.version_info files in the *doc</em> directory.</p>
+<p>The documentation output can be put into a zip-archive or into a git repository using the <a class="reference internal" href="#git">Git</a> Command Base.</p>
+<ul>
+<li><dl class="cmdoption">
+<dt id="cmdoption--zip-archive">
+<tt class="descname">--zip-archive</tt><tt class="descclassname"> (-z)</tt><a class="headerlink" href="#cmdoption--zip-archive" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>If set, a zip archive containing all generated documentation, including the <em>index.html</em>, will be put into your distribution output folder, usually <tt class="docutils literal"><span class="pre">dist</span></tt>.</li>
+</ul>
+</blockquote>
+<ul>
+<li><dl class="cmdoption">
+<dt id="cmdoption--from-build-version">
+<tt class="descname">--from-build-version</tt><tt class="descclassname"> (-b)</tt><a class="headerlink" href="#cmdoption--from-build-version" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>If set, the documentation will be built in the output directory as generated by <strong>build_py</strong> ( invoked by <strong>build</strong>) or <strong>sdist</strong>.</li>
+<li>Should be used if your build or sdist output differs from your actual project contents, for example if you only distribute a subset of your modules. If this is not the case, its recommended not to set this flag as you can reuse documentation you might have already build for your currently set project version.</li>
+<li><strong>Be aware</strong> that if you are using the <tt class="docutils literal"><span class="pre">--force-git-tag</span></tt> distribution flag, without specifying the <tt class="docutils literal"><span class="pre">--from-build-version</span></tt> flag, it is likely that your documentation appears to be uptodate although the code changed in fact. In this case, you have to manually clean the documentation to force a rebuild.</li>
+</ul>
+</blockquote>
+</div>
+</div>
+<div class="section" id="command-bases">
+<h2>Command Bases<a class="headerlink" href="#command-bases" title="Permalink to this headline">¶</a></h2>
+<p>Command Bases provide general functionality used by multiple Subcommands.</p>
+<div class="section" id="git">
+<h3>Git<a class="headerlink" href="#git" title="Permalink to this headline">¶</a></h3>
+<p>The git command base allows to configure to which remotes the distribution data should be pushed to. The remotes you name must be setup already using <tt class="docutils literal"><span class="pre">git</span> <span class="pre">add</span> <span class="pre">remote</span> <span class="pre">...</span></tt>, using a url instead of the remote name is not allowed.</p>
+<p>If the <tt class="docutils literal"><span class="pre">setup</span></tt> script&#8217;s standard output is attached to a tty, the user will be asked to confirm the selection of branches and tags to be pushed to the remotes, which includes the option to alter the selection as desired.</p>
+<ul>
+<li><dl class="cmdoption">
+<dt id="cmdoption--root-remotes">
+<tt class="descname">--root-remotes</tt><tt class="descclassname">=REMOTE[,REMOTE...] (-r)</tt><a class="headerlink" href="#cmdoption--root-remotes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>The data of the branch currently checked out in your root repository, including the tag located at the commit to which it points, will be pushed to the given list of comma separated remote names.</li>
+</ul>
+</blockquote>
+<ul>
+<li><dl class="cmdoption">
+<dt id="cmdoption--dist-remotes">
+<tt class="descname">--dist-remotes</tt><tt class="descclassname">=REMOTE[,REMOTE...] (-d)</tt><a class="headerlink" href="#cmdoption--dist-remotes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>The data of the distribution branch including the tag located at the commit to which it points will be pushed to the given comma separated list of remote names.</li>
+</ul>
+</blockquote>
+<ul>
+<li><dl class="cmdoption">
+<dt id="cmdoption--omit-release-version-for">
+<tt class="descname">--omit-release-version-for</tt><tt class="descclassname">=RELEASE_STRING[,...] (-o)</tt><a class="headerlink" href="#cmdoption--omit-release-version-for" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>If set, and if the given release string(s) matches the currently set release-string in the <a class="reference external" href="pinfo.html"><em>info module</em></a>, the major and minor version numbers will not be part of the distribution branch name.</li>
+<li>Use this create something like beta-distributions, which will keep a single branch throughout their lifetime.</li>
+</ul>
+</blockquote>
+</div>
+<div class="section" id="id3">
+<h3>Testing<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>The distributions created by <a class="reference internal" href="#build-py">build_py</a> or <a class="reference internal" href="#sdist">sdist</a> may only contain a subset of the python modules available in the root project. In that case it is vital to run the unittests in the distribution you are actually going to publish in order to verify the quality of the distribution package.</p>
+<p>The Testing Command Base provides a facility to do exactly that and makes sure your distribution fails if a test fails.</p>
+<p>Used in conjunction with the <tt class="docutils literal"><span class="pre">--regression-tests</span></tt> flag of the <a class="reference internal" href="#distribution-flags-label"><em>Distribution</em></a>, quality can be assured ( within the limits of your unit-testing framework ).</p>
+<ul>
+<li><dl class="cmdoption">
+<dt id="cmdoption--post-testing">
+<tt class="descname">--post-testing</tt><tt class="descclassname">=VERSION[,VERSION...] (-t)</tt><a class="headerlink" href="#cmdoption--post-testing" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>Run <a class="reference external" href="../../tools.html#tmrv-label"><em>tmrv</em></a> (or equivalent as configured in <a class="reference external" href="pinfo.html"><em>info module</em></a>) using the given comma separated list of maya versions, like <tt class="docutils literal"><span class="pre">8.5,2009</span></tt> on all test cases found in the test directory of your current distribution.</li>
+</ul>
+</blockquote>
+<ul>
+<li><dl class="cmdoption">
+<dt id="cmdoption--test-dir">
+<tt class="descname">--test-dir</tt><tt class="descclassname">=DIR (-d)</tt><a class="headerlink" href="#cmdoption--test-dir" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>Specified the directory which contains the test modules to run. It is specified as relative path, as the actual distribution root will be prepended to it.</li>
+<li>defaults to <tt class="docutils literal"><span class="pre">test</span></tt></li>
+</ul>
+</blockquote>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="../../index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#">The Setup Script</a><ul>
+<li><a class="reference external" href="#intimacies-of-sdist-build-py-and-install">Intimacies of sdist, build_py, and install</a></li>
+<li><a class="reference external" href="#distribution-flags">Distribution Flags</a><ul>
+<li><a class="reference external" href="#specials">Specials</a></li>
+<li><a class="reference external" href="#git-handling">Git Handling</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#subcommands">Subcommands</a><ul>
+<li><a class="reference external" href="#build-py">build_py</a><ul>
+<li><a class="reference external" href="#id1">Specials</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#build-scripts">build_scripts</a></li>
+<li><a class="reference external" href="#sdist">sdist</a><ul>
+<li><a class="reference external" href="#id2">Specials</a></li>
+<li><a class="reference external" href="#manifest-in">MANIFEST.in</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#install">Install</a></li>
+<li><a class="reference external" href="#docdist-new">docdist <em>- new -</em></a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#command-bases">Command Bases</a><ul>
+<li><a class="reference external" href="#git">Git</a></li>
+<li><a class="reference external" href="#id3">Testing</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="pinfo.html"
+                                  title="previous chapter">Project Information Module</a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="docs.html"
+                                  title="next chapter">The Documentation Generator</a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../../_sources/develop/distribute/setup.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="docs.html" title="The Documentation Generator"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pinfo.html" title="Project Information Module"
+             >previous</a> |</li>
+        <li><a href="../../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Development</a> &raquo;</li>
+          <li><a href="index.html" >Distribution</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Nov 30, 2010.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

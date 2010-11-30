@@ -1,0 +1,891 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>mrv.interface.iProgressIndicator</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="mrv-module.html">Package&nbsp;mrv</a> ::
+        <a href="mrv.interface-module.html" onclick="show_private();">Module&nbsp;interface</a> ::
+        Class&nbsp;iProgressIndicator
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="mrv.interface.iProgressIndicator-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class iProgressIndicator</h1><p class="nomargin-top"><span class="codelink"><a href="mrv.interface-pysrc.html#iProgressIndicator">source&nbsp;code</a></span></p>
+<pre class="base-tree">
+object --+    
+         |    
+ <a href="mrv.interface.Interface-class.html">Interface</a> --+
+             |
+            <strong class="uidshort">iProgressIndicator</strong>
+</pre>
+
+<hr />
+Interface allowing to submit progress information
+The default implementation just prints the respective messages
+Additionally you may query whether the computation has been cancelled by the user
+
+<hr />
+<div class="fields">      <p><strong>Note:</strong>
+        this interface is a simple progress indicator itself, and can do some computations
+for you if you use the get() method yourself
+      </p>
+</div><!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.interface.Interface-class.html">Interface</a></code></b>:
+      <code><a href="mrv.interface.Interface-class.html#supports">supports</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__str__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Initialization</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.interface.iProgressIndicator-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">min</span>=<span class="summary-sig-default">0</span>,
+        <span class="summary-sig-arg">max</span>=<span class="summary-sig-default">100</span>,
+        <span class="summary-sig-arg">is_relative</span>=<span class="summary-sig-default">True</span>,
+        <span class="summary-sig-arg">may_abort</span>=<span class="summary-sig-default">False</span>,
+        <span class="summary-sig-arg">round_robin</span>=<span class="summary-sig-default">False</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      x.__init__(...) initializes x; see x.__class__.__doc__ for signature</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.interface-pysrc.html#iProgressIndicator.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="begin"></a><span class="summary-sig-name">begin</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      intiialize the progress indicator before calling <a href="mrv.interface.iProgressIndicator-class.html#set" class="link">set</a></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.interface-pysrc.html#iProgressIndicator.begin">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="end"></a><span class="summary-sig-name">end</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      indicate that you are done with the progress indicator - this must be your last
+call to the interface</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.interface-pysrc.html#iProgressIndicator.end">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Edit</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.interface.iProgressIndicator-class.html#refresh" class="summary-sig-name">refresh</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">message</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Refresh the progress indicator so that it represents its values on screen.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.interface-pysrc.html#iProgressIndicator.refresh">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.interface.iProgressIndicator-class.html#set" class="summary-sig-name">set</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">value</span>,
+        <span class="summary-sig-arg">message</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">omit_refresh</span>=<span class="summary-sig-default">False</span>)</span><br />
+      Set the progress of the progress indicator to the given value</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.interface-pysrc.html#iProgressIndicator.set">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setRange"></a><span class="summary-sig-name">setRange</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">min</span>,
+        <span class="summary-sig-arg">max</span>)</span><br />
+      set the range within we expect our progress to occour</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.interface-pysrc.html#iProgressIndicator.setRange">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.interface.iProgressIndicator-class.html#setRoundRobin" class="summary-sig-name">setRoundRobin</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">round_robin</span>)</span><br />
+      Set if round-robin mode should be used.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.interface-pysrc.html#iProgressIndicator.setRoundRobin">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setRelative"></a><span class="summary-sig-name">setRelative</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">state</span>)</span><br />
+      enable or disable relative progress computations</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.interface-pysrc.html#iProgressIndicator.setRelative">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setAbortable"></a><span class="summary-sig-name">setAbortable</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">state</span>)</span><br />
+      If state is True, the progress may be interrupted, if false it cannot
+be interrupted</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.interface-pysrc.html#iProgressIndicator.setAbortable">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.interface.iProgressIndicator-class.html#setup" class="summary-sig-name">setup</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">range</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">relative</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">abortable</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">begin</span>=<span class="summary-sig-default">True</span>,
+        <span class="summary-sig-arg">round_robin</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Multifunctional, all in one convenience method setting all important attributes
+at once.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.interface-pysrc.html#iProgressIndicator.setup">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Query</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.interface.iProgressIndicator-class.html#get" class="summary-sig-name">get</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns:
+the current progress value</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.interface-pysrc.html#iProgressIndicator.get">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.interface.iProgressIndicator-class.html#value" class="summary-sig-name">value</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns:
+current progress as it is stored internally, without regarding
+the range or round-robin options.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.interface-pysrc.html#iProgressIndicator.value">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.interface.iProgressIndicator-class.html#range" class="summary-sig-name">range</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns:
+tuple( min, max ) value</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.interface-pysrc.html#iProgressIndicator.range">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.interface.iProgressIndicator-class.html#roundRobin" class="summary-sig-name">roundRobin</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns:
+True if roundRobin mode is enabled</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.interface-pysrc.html#iProgressIndicator.roundRobin">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.interface.iProgressIndicator-class.html#prefix" class="summary-sig-name">prefix</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">value</span>)</span><br />
+      Returns:
+a prefix indicating the progress according to the current range
+and given value</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.interface-pysrc.html#iProgressIndicator.prefix">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.interface.iProgressIndicator-class.html#isAbortable" class="summary-sig-name">isAbortable</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns:
+True if the process may be cancelled</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.interface-pysrc.html#iProgressIndicator.isAbortable">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.interface.iProgressIndicator-class.html#isRelative" class="summary-sig-name">isRelative</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns:
+true if internal progress computations are relative, False if
+they are treated as absolute values</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.interface-pysrc.html#iProgressIndicator.isRelative">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.interface.iProgressIndicator-class.html#isCancelRequested" class="summary-sig-name">isCancelRequested</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns:
+true if the operation should be aborted</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.interface-pysrc.html#iProgressIndicator.isCancelRequested">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">min</span>=<span class="sig-default">0</span>,
+        <span class="sig-arg">max</span>=<span class="sig-default">100</span>,
+        <span class="sig-arg">is_relative</span>=<span class="sig-default">True</span>,
+        <span class="sig-arg">may_abort</span>=<span class="sig-default">False</span>,
+        <span class="sig-arg">round_robin</span>=<span class="sig-default">False</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.interface-pysrc.html#iProgressIndicator.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>x.__init__(...) initializes x; see x.__class__.__doc__ for 
+  signature</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>min</code></strong> - the minimum progress value</li>
+        <li><strong class="pname"><code>max</code></strong> - the maximum progress value</li>
+        <li><strong class="pname"><code>is_relative</code></strong> - if True, the values given will be scaled to a range of 0-100,
+if False no adjustments will be done</li>
+        <li><strong class="pname"><code>round_robin</code></strong> - see <a href="mrv.interface.iProgressIndicator-class.html#setRoundRobin" class="link">setRoundRobin</a></li>
+        <li><strong class="pname"><code>kwargs</code></strong> - additional arguments being ignored</li>
+    </ul></dd>
+    <dt>Overrides:
+        object.__init__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="refresh"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">refresh</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">message</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.interface-pysrc.html#iProgressIndicator.refresh">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Refresh the progress indicator so that it represents its values on screen.
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>message</code></strong> - message passed along by the user</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="set"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">value</span>,
+        <span class="sig-arg">message</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">omit_refresh</span>=<span class="sig-default">False</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.interface-pysrc.html#iProgressIndicator.set">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Set the progress of the progress indicator to the given value
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>value</code></strong> - progress value ( min&lt;=value&lt;=max )</li>
+        <li><strong class="pname"><code>message</code></strong> - optional message you would like to give to the user</li>
+        <li><strong class="pname"><code>omit_refresh</code></strong> - by default, the progress indicator refreshes on set,
+if False, you have to call refresh manually after you set the value</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="setRoundRobin"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">setRoundRobin</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">round_robin</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.interface-pysrc.html#iProgressIndicator.setRoundRobin">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Set if round-robin mode should be used.
+If True, values exceeding the maximum range will be wrapped and
+start at the minimum range
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="setup"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">setup</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">range</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">relative</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">abortable</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">begin</span>=<span class="sig-default">True</span>,
+        <span class="sig-arg">round_robin</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.interface-pysrc.html#iProgressIndicator.setup">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Multifunctional, all in one convenience method setting all important attributes
+at once. This allows setting up the progress indicator with one call instead of many
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>range</code></strong> - Tuple( min, max ) - start ane end of progress indicator range</li>
+        <li><strong class="pname"><code>relative</code></strong> - equivalent to <a href="mrv.interface.iProgressIndicator-class.html#setRelative" class="link">setRelative</a></li>
+        <li><strong class="pname"><code>abortable</code></strong> - equivalent to <a href="mrv.interface.iProgressIndicator-class.html#setAbortable" class="link">setAbortable</a></li>
+        <li><strong class="pname"><code>round_robin</code></strong> - equivalent to <a href="mrv.interface.iProgressIndicator-class.html#setRoundRobin" class="link">setRoundRobin</a></li>
+        <li><strong class="pname"><code>begin</code></strong> - if True, <a href="mrv.interface.iProgressIndicator-class.html#begin" class="link">begin</a> will be called as well</li>
+    </ul></dd>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        If a kw argument is None, it will not be set
+      </p>
+</div></td></tr></table>
+</div>
+<a name="get"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.interface-pysrc.html#iProgressIndicator.get">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>the current progress value</dd>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        if set to relative mode, values will range
+from 0.0 to 100.0.
+Values will always be within the ones returned by <a href="mrv.interface.iProgressIndicator-class.html#range" class="link">range</a>
+      </p>
+</div></td></tr></table>
+</div>
+<a name="value"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">value</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.interface-pysrc.html#iProgressIndicator.value">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>current progress as it is stored internally, without regarding
+the range or round-robin options.</dd>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        This allows you to use this instance as a counter without concern to
+the range and round-robin settings
+      </p>
+</div></td></tr></table>
+</div>
+<a name="range"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">range</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.interface-pysrc.html#iProgressIndicator.range">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>tuple( min, max ) value</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="roundRobin"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">roundRobin</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.interface-pysrc.html#iProgressIndicator.roundRobin">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>True if roundRobin mode is enabled</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="prefix"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">prefix</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">value</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.interface-pysrc.html#iProgressIndicator.prefix">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>a prefix indicating the progress according to the current range
+and given value</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="isAbortable"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">isAbortable</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.interface-pysrc.html#iProgressIndicator.isAbortable">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>True if the process may be cancelled</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="isRelative"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">isRelative</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.interface-pysrc.html#iProgressIndicator.isRelative">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>true if internal progress computations are relative, False if
+they are treated as absolute values</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="isCancelRequested"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">isCancelRequested</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.interface-pysrc.html#iProgressIndicator.isCancelRequested">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>true if the operation should be aborted</dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Nov 30 14:48:32 2010
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

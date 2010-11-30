@@ -1,0 +1,145 @@
+<html>
+<head>
+<title>mrv.maya.ui.typ</title>
+</head>
+<body>
+mrv.maya.ui.typ
+<style>
+.coverage pre {float: left; margin: 0px 1em; border: none;
+               padding: 0px; }
+.num pre { margin: 0px }
+.nocov, .nocov pre {background-color: #faa}
+.cov, .cov pre {background-color: #cfc}
+div.coverage div { clear: both; height: 1.1em}
+</style>
+<div class="stats">
+Covered: 69 lines<br/>
+Missed: 1 lines<br/>
+Skipped 50 lines<br/>
+Percent: 98 %<br/>
+
+</div>
+<div class="coverage">
+<div class="skip"><span class="num"><pre>  1</pre></span><pre># -*- coding: utf-8 -*-</pre></div>
+<div class="cov"><span class="num"><pre>  2</pre></span><pre>&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  3</pre></span><pre>Module containing helpers to create the UI types at runtime.</pre></div>
+<div class="cov"><span class="num"><pre>  4</pre></span><pre>&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  5</pre></span><pre>__docformat__ = &quot;restructuredtext&quot;</pre></div>
+<div class="skip"><span class="num"><pre>  6</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  7</pre></span><pre>import mrv.maya as mrvmaya</pre></div>
+<div class="cov"><span class="num"><pre>  8</pre></span><pre>from mrv.util import uncapitalize</pre></div>
+<div class="cov"><span class="num"><pre>  9</pre></span><pre>import mrv.maya.util as mutil</pre></div>
+<div class="cov"><span class="num"><pre> 10</pre></span><pre>from mrv.path import make_path</pre></div>
+<div class="cov"><span class="num"><pre> 11</pre></span><pre>_uipackage = __import__( &quot;mrv.maya.ui&quot;, globals(), locals(), ['ui'] )</pre></div>
+<div class="cov"><span class="num"><pre> 12</pre></span><pre>import maya.cmds as mcmds</pre></div>
+<div class="cov"><span class="num"><pre> 13</pre></span><pre>from util import propertyQE, EventSenderUI</pre></div>
+<div class="skip"><span class="num"><pre> 14</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 15</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 16</pre></span><pre># CACHES</pre></div>
+<div class="cov"><span class="num"><pre> 17</pre></span><pre>_typetree = None</pre></div>
+<div class="cov"><span class="num"><pre> 18</pre></span><pre>_typemap = { &quot;floatingWindow&quot; : &quot;window&quot;, &quot;field&quot; : &quot;textField&quot; }</pre></div>
+<div class="skip"><span class="num"><pre> 19</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 20</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 21</pre></span><pre>#{ Initialization</pre></div>
+<div class="cov"><span class="num"><pre> 22</pre></span><pre>def init_classhierarchy( ):</pre></div>
+<div class="cov"><span class="num"><pre> 23</pre></span><pre>	&quot;&quot;&quot; Read a simple hiearchy file and create an Indexed tree from it&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 24</pre></span><pre>	mfile = make_path( __file__ ).parent().parent() / &quot;cache/UICommandsHierachy.hf&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 25</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 26</pre></span><pre>	# STORE THE TYPE TREE</pre></div>
+<div class="cov"><span class="num"><pre> 27</pre></span><pre>	global _typetree</pre></div>
+<div class="cov"><span class="num"><pre> 28</pre></span><pre>	_typetree = mrvmaya.dag_tree_from_tuple_list( mrvmaya.tuple_list_from_file( mfile ) )</pre></div>
+<div class="skip"><span class="num"><pre> 29</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 30</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 31</pre></span><pre>def initWrappers( ):</pre></div>
+<div class="cov"><span class="num"><pre> 32</pre></span><pre>	&quot;&quot;&quot; Create Standin Classes that will delay the creation of the actual class till</pre></div>
+<div class="cov"><span class="num"><pre> 33</pre></span><pre>	the first instance is requested&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 34</pre></span><pre>	mrvmaya.initWrappers( _uipackage.__dict__, _typetree.nodes_iter(), MetaClassCreatorUI )</pre></div>
+<div class="skip"><span class="num"><pre> 35</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 36</pre></span><pre>#} END initialization</pre></div>
+<div class="skip"><span class="num"><pre> 37</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 38</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 39</pre></span><pre>class MetaClassCreatorUI( mutil.MetaClassCreator ):</pre></div>
+<div class="cov"><span class="num"><pre> 40</pre></span><pre>	&quot;&quot;&quot; Builds the base hierarchy for the given classname based on our</pre></div>
+<div class="cov"><span class="num"><pre> 41</pre></span><pre>	typetree.</pre></div>
+<div class="cov"><span class="num"><pre> 42</pre></span><pre>	Additional support for :</pre></div>
+<div class="skip"><span class="num"><pre> 43</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 44</pre></span><pre>	**AUTOMATIC PROPERTY GENERATION**:</pre></div>
+<div class="cov"><span class="num"><pre> 45</pre></span><pre>	 - if flags are simple get and set properties, these can be listed in the</pre></div>
+<div class="cov"><span class="num"><pre> 46</pre></span><pre>	   _properties_ attribute ( list ). These must be queriable and editable</pre></div>
+<div class="skip"><span class="num"><pre> 47</pre></span><pre>	    </pre></div>
+<div class="cov"><span class="num"><pre> 48</pre></span><pre>	 - Properties will be available as:</pre></div>
+<div class="cov"><span class="num"><pre> 49</pre></span><pre>	   inst.p_myProperty to access myProperty ( equivalent to cmd -q|e -myProperty</pre></div>
+<div class="skip"><span class="num"><pre> 50</pre></span><pre>	  	</pre></div>
+<div class="cov"><span class="num"><pre> 51</pre></span><pre>	 - This only works if our class knows it's mel command in the __melcmd__ member</pre></div>
+<div class="cov"><span class="num"><pre> 52</pre></span><pre>	   variable - inheritance for it does not work</pre></div>
+<div class="skip"><span class="num"><pre> 53</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 54</pre></span><pre>	**AUTOMATIC UI-EVENT GENERATION**:</pre></div>
+<div class="cov"><span class="num"><pre> 55</pre></span><pre>	 - define names of mel events in _events_ as list of names</pre></div>
+<div class="skip"><span class="num"><pre> 56</pre></span><pre>	 </pre></div>
+<div class="cov"><span class="num"><pre> 57</pre></span><pre>	 - these will be converted into Events sitting at attribute names like</pre></div>
+<div class="cov"><span class="num"><pre> 58</pre></span><pre>	   e_eventName ( for even called 'eventName'</pre></div>
+<div class="skip"><span class="num"><pre> 59</pre></span><pre>	 	</pre></div>
+<div class="cov"><span class="num"><pre> 60</pre></span><pre>	 - assign an event:</pre></div>
+<div class="cov"><span class="num"><pre> 61</pre></span><pre>	   windowinstance.e_restoreCommand = func</pre></div>
+<div class="cov"><span class="num"><pre> 62</pre></span><pre>	   whereas func takes: ``func( windowinstance, *args, **kwargs )``</pre></div>
+<div class="skip"><span class="num"><pre> 63</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 64</pre></span><pre>	**ADDITIONAL CONFIGURAITON**:</pre></div>
+<div class="cov"><span class="num"><pre> 65</pre></span><pre>	 - strong_event_handlers:</pre></div>
+<div class="cov"><span class="num"><pre> 66</pre></span><pre>	 	if True, events will use strong references to their handlers</pre></div>
+<div class="skip"><span class="num"><pre> 67</pre></span><pre>	 </pre></div>
+<div class="cov"><span class="num"><pre> 68</pre></span><pre>	&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 69</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 70</pre></span><pre>	melcmd_attrname = '__melcmd__'</pre></div>
+<div class="skip"><span class="num"><pre> 71</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 72</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 73</pre></span><pre>	def __new__( metacls, name, bases, clsdict ):</pre></div>
+<div class="cov"><span class="num"><pre> 74</pre></span><pre>		&quot;&quot;&quot; Called to create the class with name &quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 75</pre></span><pre>		# HANDLE MEL COMMAND</pre></div>
+<div class="skip"><span class="num"><pre> 76</pre></span><pre>		#######################</pre></div>
+<div class="cov"><span class="num"><pre> 77</pre></span><pre>		cmdname = uncapitalize( name )</pre></div>
+<div class="cov"><span class="num"><pre> 78</pre></span><pre>		if hasattr( mcmds, cmdname ):</pre></div>
+<div class="cov"><span class="num"><pre> 79</pre></span><pre>			melcmd = getattr( mcmds, cmdname )</pre></div>
+<div class="cov"><span class="num"><pre> 80</pre></span><pre>			clsmelcmd = staticmethod( melcmd )</pre></div>
+<div class="cov"><span class="num"><pre> 81</pre></span><pre>			clsdict['__melcmd__'] = clsmelcmd</pre></div>
+<div class="cov"><span class="num"><pre> 82</pre></span><pre>		else:</pre></div>
+<div class="cov"><span class="num"><pre> 83</pre></span><pre>			pass # don't bother, can be one of our own classes that will</pre></div>
+<div class="skip"><span class="num"><pre> 84</pre></span><pre>			#raise ValueError( &quot;Did not find command for &quot; + cmdname )</pre></div>
+<div class="skip"><span class="num"><pre> 85</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 86</pre></span><pre>		# HANDLE PROPERTIES</pre></div>
+<div class="skip"><span class="num"><pre> 87</pre></span><pre>		####################</pre></div>
+<div class="skip"><span class="num"><pre> 88</pre></span><pre>		# read the properties attribute to find names to automatically create</pre></div>
+<div class="skip"><span class="num"><pre> 89</pre></span><pre>		# query and edit properties</pre></div>
+<div class="cov"><span class="num"><pre> 90</pre></span><pre>		propertynames = clsdict.get( &quot;_properties_&quot;, list() )</pre></div>
+<div class="cov"><span class="num"><pre> 91</pre></span><pre>		for pname in propertynames:</pre></div>
+<div class="cov"><span class="num"><pre> 92</pre></span><pre>			attrname = &quot;p_%s&quot; % pname</pre></div>
+<div class="skip"><span class="num"><pre> 93</pre></span><pre>			# allow user overrides</pre></div>
+<div class="cov"><span class="num"><pre> 94</pre></span><pre>			if attrname not in clsdict:</pre></div>
+<div class="cov"><span class="num"><pre> 95</pre></span><pre>				clsdict[ attrname ] = propertyQE( pname )</pre></div>
+<div class="skip"><span class="num"><pre> 96</pre></span><pre>		# END for each property</pre></div>
+<div class="skip"><span class="num"><pre> 97</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 98</pre></span><pre>		# HANDLE EVENTS</pre></div>
+<div class="skip"><span class="num"><pre> 99</pre></span><pre>		##################</pre></div>
+<div class="skip"><span class="num"><pre>100</pre></span><pre>		# read the event description and create Event instances that will</pre></div>
+<div class="skip"><span class="num"><pre>101</pre></span><pre>		# register themselves on first use, allowing multiple listeners per maya event</pre></div>
+<div class="cov"><span class="num"><pre>102</pre></span><pre>		eventnames = clsdict.get( &quot;_events_&quot;, list() )</pre></div>
+<div class="cov"><span class="num"><pre>103</pre></span><pre>		event_kwargs = dict()</pre></div>
+<div class="cov"><span class="num"><pre>104</pre></span><pre>		if clsdict.get( &quot;strong_event_handlers&quot;, False ):</pre></div>
+<div class="nocov"><span class="num"><pre>105</pre></span><pre>			event_kwargs[ &quot;weak&quot; ] = False</pre></div>
+<div class="skip"><span class="num"><pre>106</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>107</pre></span><pre>		for ename in eventnames:</pre></div>
+<div class="cov"><span class="num"><pre>108</pre></span><pre>			attrname = &quot;e_%s&quot; % ename</pre></div>
+<div class="skip"><span class="num"><pre>109</pre></span><pre>			# allow user overrides</pre></div>
+<div class="cov"><span class="num"><pre>110</pre></span><pre>			if attrname not in clsdict:</pre></div>
+<div class="cov"><span class="num"><pre>111</pre></span><pre>				clsdict[ attrname ] = EventSenderUI._UIEvent( ename, **event_kwargs )</pre></div>
+<div class="skip"><span class="num"><pre>112</pre></span><pre>		# END for each event name</pre></div>
+<div class="skip"><span class="num"><pre>113</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>114</pre></span><pre>		newcls = super( MetaClassCreatorUI, metacls ).__new__( _typetree, _uipackage,</pre></div>
+<div class="cov"><span class="num"><pre>115</pre></span><pre>																metacls, name, bases, clsdict )</pre></div>
+<div class="skip"><span class="num"><pre>116</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>117</pre></span><pre>		return newcls</pre></div>
+<div class="skip"><span class="num"><pre>118</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>119</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>120</pre></span><pre></pre></div>
+</div>
+</body>
+</html>

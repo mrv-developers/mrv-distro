@@ -1,0 +1,84 @@
+<html>
+<head>
+<title>mrv.automation.report</title>
+</head>
+<body>
+mrv.automation.report
+<style>
+.coverage pre {float: left; margin: 0px 1em; border: none;
+               padding: 0px; }
+.num pre { margin: 0px }
+.nocov, .nocov pre {background-color: #faa}
+.cov, .cov pre {background-color: #cfc}
+div.coverage div { clear: both; height: 1.1em}
+</style>
+<div class="stats">
+Covered: 34 lines<br/>
+Missed: 1 lines<br/>
+Skipped 24 lines<br/>
+Percent: 97 %<br/>
+
+</div>
+<div class="coverage">
+<div class="skip"><span class="num"><pre> 1</pre></span><pre># -*- coding: utf-8 -*-</pre></div>
+<div class="cov"><span class="num"><pre> 2</pre></span><pre>&quot;&quot;&quot;contains report implementations allowing to analyse the callgraph of &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 3</pre></span><pre>__docformat__ = &quot;restructuredtext&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 4</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 5</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 6</pre></span><pre>class ReportBase( object ):</pre></div>
+<div class="cov"><span class="num"><pre> 7</pre></span><pre>	&quot;&quot;&quot;Provides main interface for all reports as well as the basic implementation&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 8</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 9</pre></span><pre>	#{ Overridden Methods</pre></div>
+<div class="cov"><span class="num"><pre>10</pre></span><pre>	def __init__( self, callgraph ):</pre></div>
+<div class="cov"><span class="num"><pre>11</pre></span><pre>		&quot;&quot;&quot;intiialize the report with the given callgraph&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>12</pre></span><pre>		self._callgraph = callgraph</pre></div>
+<div class="skip"><span class="num"><pre>13</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>14</pre></span><pre>	#} END overridden Methods</pre></div>
+<div class="skip"><span class="num"><pre>15</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>16</pre></span><pre>	#{ Report Methods</pre></div>
+<div class="skip"><span class="num"><pre>17</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>18</pre></span><pre>	def makeReport( self ):</pre></div>
+<div class="cov"><span class="num"><pre>19</pre></span><pre>		&quot;&quot;&quot;:return: report as result of a prior Callgraph analysis&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>20</pre></span><pre>		raise NotImplementedError( &quot;This method needs to be implemented by subclasses&quot; )</pre></div>
+<div class="skip"><span class="num"><pre>21</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>22</pre></span><pre>	#} END report methods</pre></div>
+<div class="skip"><span class="num"><pre>23</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>24</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>25</pre></span><pre>class Plan( ReportBase ):</pre></div>
+<div class="cov"><span class="num"><pre>26</pre></span><pre>	&quot;&quot;&quot;Create a plan-like text describing how the target is being made&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>27</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>28</pre></span><pre>	def _analyseCallgraph( self  ):</pre></div>
+<div class="cov"><span class="num"><pre>29</pre></span><pre>		&quot;&quot;&quot;Create a list of ProcessData instances that reflects the call order&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>30</pre></span><pre>		kwargs = {}</pre></div>
+<div class="cov"><span class="num"><pre>31</pre></span><pre>		kwargs[ 'reverse' ] = True</pre></div>
+<div class="cov"><span class="num"><pre>32</pre></span><pre>		return self._callgraph.toCallList( **kwargs )</pre></div>
+<div class="skip"><span class="num"><pre>33</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>34</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>35</pre></span><pre>	def makeReport( self, headline=None ):</pre></div>
+<div class="cov"><span class="num"><pre>36</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>37</pre></span><pre>		:return: list of strings ( lines ) resembling a plan-like formatting</pre></div>
+<div class="cov"><span class="num"><pre>38</pre></span><pre>			of the call graph</pre></div>
+<div class="cov"><span class="num"><pre>39</pre></span><pre>		:param headline: line to be given as first line &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>40</pre></span><pre>		cl = self._analyseCallgraph( )</pre></div>
+<div class="skip"><span class="num"><pre>41</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>42</pre></span><pre>		out = []</pre></div>
+<div class="cov"><span class="num"><pre>43</pre></span><pre>		if headline:</pre></div>
+<div class="cov"><span class="num"><pre>44</pre></span><pre>			out.append( headline )</pre></div>
+<div class="skip"><span class="num"><pre>45</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>46</pre></span><pre>		for i,pedge in enumerate( cl ):</pre></div>
+<div class="cov"><span class="num"><pre>47</pre></span><pre>			sp,ep = pedge</pre></div>
+<div class="cov"><span class="num"><pre>48</pre></span><pre>			i += 1 		# plans start at 1</pre></div>
+<div class="skip"><span class="num"><pre>49</pre></span><pre>			# its an edge</pre></div>
+<div class="cov"><span class="num"><pre>50</pre></span><pre>			if ep:</pre></div>
+<div class="cov"><span class="num"><pre>51</pre></span><pre>				line = &quot;%i. %s provides %r through %s to %s&quot; % ( i, sp.process.id(), sp.result(), sp.plug, ep.process.noun )</pre></div>
+<div class="cov"><span class="num"><pre>52</pre></span><pre>			else:</pre></div>
+<div class="skip"><span class="num"><pre>53</pre></span><pre>				# its root</pre></div>
+<div class="cov"><span class="num"><pre>54</pre></span><pre>				line = &quot;%i. %s %s %r when asked for %s&quot; % ( i, sp.process.id(), sp.process.verb, sp.result(), sp.plug )</pre></div>
+<div class="cov"><span class="num"><pre>55</pre></span><pre>			out.append( line )</pre></div>
+<div class="skip"><span class="num"><pre>56</pre></span><pre>		# END for each process data edge</pre></div>
+<div class="cov"><span class="num"><pre>57</pre></span><pre>		return out</pre></div>
+<div class="skip"><span class="num"><pre>58</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>59</pre></span><pre></pre></div>
+</div>
+</body>
+</html>

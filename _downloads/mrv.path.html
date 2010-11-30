@@ -1,0 +1,1265 @@
+<html>
+<head>
+<title>mrv.path</title>
+</head>
+<body>
+mrv.path
+<style>
+.coverage pre {float: left; margin: 0px 1em; border: none;
+               padding: 0px; }
+.num pre { margin: 0px }
+.nocov, .nocov pre {background-color: #faa}
+.cov, .cov pre {background-color: #cfc}
+div.coverage div { clear: both; height: 1.1em}
+</style>
+<div class="stats">
+Covered: 348 lines<br/>
+Missed: 554 lines<br/>
+Skipped 338 lines<br/>
+Percent: 38 %<br/>
+
+</div>
+<div class="coverage">
+<div class="skip"><span class="num"><pre>   1</pre></span><pre># -*- coding: utf-8 -*-</pre></div>
+<div class="nocov"><span class="num"><pre>   2</pre></span><pre>&quot;&quot;&quot;path.py - An object representing a path to a file or directory.</pre></div>
+<div class="skip"><span class="num"><pre>   3</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>   4</pre></span><pre>Example:</pre></div>
+<div class="nocov"><span class="num"><pre>   5</pre></span><pre>	&gt;&gt;&gt; from path import path</pre></div>
+<div class="nocov"><span class="num"><pre>   6</pre></span><pre>	&gt;&gt;&gt; d = path('/home/guido/bin')</pre></div>
+<div class="nocov"><span class="num"><pre>   7</pre></span><pre>	&gt;&gt;&gt; for f in d.files('*.py'):</pre></div>
+<div class="nocov"><span class="num"><pre>   8</pre></span><pre>	&gt;&gt;&gt;		f.chmod(0755)</pre></div>
+<div class="skip"><span class="num"><pre>   9</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>  10</pre></span><pre>This module requires Python 2.4 or later.</pre></div>
+<div class="skip"><span class="num"><pre>  11</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>  12</pre></span><pre>TODO</pre></div>
+<div class="nocov"><span class="num"><pre>  13</pre></span><pre>----</pre></div>
+<div class="nocov"><span class="num"><pre>  14</pre></span><pre>   - Tree-walking functions don't avoid symlink loops.	Matt Harrison sent me a patch for this.</pre></div>
+<div class="nocov"><span class="num"><pre>  15</pre></span><pre>   - Tree-walking functions can't ignore errors.  Matt Harrison asked for this.</pre></div>
+<div class="skip"><span class="num"><pre>  16</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>  17</pre></span><pre>   - Two people asked for path.chdir().	 This just seems wrong to me,</pre></div>
+<div class="nocov"><span class="num"><pre>  18</pre></span><pre>	 I dunno.  chdir() is moderately evil anyway.</pre></div>
+<div class="skip"><span class="num"><pre>  19</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>  20</pre></span><pre>   - Bug in write_text().  It doesn't support Universal newline mode.</pre></div>
+<div class="nocov"><span class="num"><pre>  21</pre></span><pre>   - Better error message in listdir() when self isn't a</pre></div>
+<div class="nocov"><span class="num"><pre>  22</pre></span><pre>	 directory. (On Windows, the error message really sucks.)</pre></div>
+<div class="nocov"><span class="num"><pre>  23</pre></span><pre>   - Make sure everything has a good docstringc.</pre></div>
+<div class="nocov"><span class="num"><pre>  24</pre></span><pre>   - Add methods for regex find and replace.</pre></div>
+<div class="nocov"><span class="num"><pre>  25</pre></span><pre>   - guess_content_type() method?</pre></div>
+<div class="nocov"><span class="num"><pre>  26</pre></span><pre>   - Could add split() and join() methods that generate warnings.</pre></div>
+<div class="nocov"><span class="num"><pre>  27</pre></span><pre>&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>  28</pre></span><pre>from __future__ import generators</pre></div>
+<div class="nocov"><span class="num"><pre>  29</pre></span><pre>__docformat__ = &quot;restructuredtext&quot;</pre></div>
+<div class="skip"><span class="num"><pre>  30</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>  31</pre></span><pre>__license__='Freeware'</pre></div>
+<div class="skip"><span class="num"><pre>  32</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>  33</pre></span><pre>import sys</pre></div>
+<div class="nocov"><span class="num"><pre>  34</pre></span><pre>import logging</pre></div>
+<div class="nocov"><span class="num"><pre>  35</pre></span><pre>import os</pre></div>
+<div class="nocov"><span class="num"><pre>  36</pre></span><pre>import fnmatch</pre></div>
+<div class="nocov"><span class="num"><pre>  37</pre></span><pre>import glob</pre></div>
+<div class="nocov"><span class="num"><pre>  38</pre></span><pre>import shutil</pre></div>
+<div class="nocov"><span class="num"><pre>  39</pre></span><pre>import codecs</pre></div>
+<div class="nocov"><span class="num"><pre>  40</pre></span><pre>import re</pre></div>
+<div class="nocov"><span class="num"><pre>  41</pre></span><pre>from interface import iDagItem</pre></div>
+<div class="nocov"><span class="num"><pre>  42</pre></span><pre>log = logging.getLogger(&quot;mrv.path&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>  43</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>  44</pre></span><pre>__version__ = '3.0'</pre></div>
+<div class="nocov"><span class="num"><pre>  45</pre></span><pre>__all__ = ['Path', 'BasePath', 'make_path']</pre></div>
+<div class="skip"><span class="num"><pre>  46</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>  47</pre></span><pre># Platform-specific support for path.owner</pre></div>
+<div class="nocov"><span class="num"><pre>  48</pre></span><pre>if os.name == 'nt':</pre></div>
+<div class="nocov"><span class="num"><pre>  49</pre></span><pre>	try:</pre></div>
+<div class="nocov"><span class="num"><pre>  50</pre></span><pre>		import win32security</pre></div>
+<div class="nocov"><span class="num"><pre>  51</pre></span><pre>	except ImportError:</pre></div>
+<div class="nocov"><span class="num"><pre>  52</pre></span><pre>		win32security = None</pre></div>
+<div class="nocov"><span class="num"><pre>  53</pre></span><pre>else:</pre></div>
+<div class="nocov"><span class="num"><pre>  54</pre></span><pre>	try:</pre></div>
+<div class="nocov"><span class="num"><pre>  55</pre></span><pre>		import pwd</pre></div>
+<div class="nocov"><span class="num"><pre>  56</pre></span><pre>	except ImportError:</pre></div>
+<div class="nocov"><span class="num"><pre>  57</pre></span><pre>		pwd = None</pre></div>
+<div class="skip"><span class="num"><pre>  58</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>  59</pre></span><pre># Pre-2.3 support.	Are unicode filenames supported?</pre></div>
+<div class="nocov"><span class="num"><pre>  60</pre></span><pre>_base = str</pre></div>
+<div class="nocov"><span class="num"><pre>  61</pre></span><pre>_getcwd = os.getcwd</pre></div>
+<div class="nocov"><span class="num"><pre>  62</pre></span><pre>try:</pre></div>
+<div class="nocov"><span class="num"><pre>  63</pre></span><pre>	if os.path.supports_unicode_filenames:</pre></div>
+<div class="nocov"><span class="num"><pre>  64</pre></span><pre>		_base = unicode</pre></div>
+<div class="nocov"><span class="num"><pre>  65</pre></span><pre>		_getcwd = os.getcwdu</pre></div>
+<div class="nocov"><span class="num"><pre>  66</pre></span><pre>except AttributeError:</pre></div>
+<div class="nocov"><span class="num"><pre>  67</pre></span><pre>	pass</pre></div>
+<div class="skip"><span class="num"><pre>  68</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>  69</pre></span><pre># Pre-2.3 workaround for booleans</pre></div>
+<div class="nocov"><span class="num"><pre>  70</pre></span><pre>try:</pre></div>
+<div class="nocov"><span class="num"><pre>  71</pre></span><pre>	True, False</pre></div>
+<div class="nocov"><span class="num"><pre>  72</pre></span><pre>except NameError:</pre></div>
+<div class="nocov"><span class="num"><pre>  73</pre></span><pre>	True, False = 1, 0</pre></div>
+<div class="skip"><span class="num"><pre>  74</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>  75</pre></span><pre># Pre-2.3 workaround for basestring.</pre></div>
+<div class="nocov"><span class="num"><pre>  76</pre></span><pre>try:</pre></div>
+<div class="nocov"><span class="num"><pre>  77</pre></span><pre>	basestring</pre></div>
+<div class="nocov"><span class="num"><pre>  78</pre></span><pre>except NameError:</pre></div>
+<div class="nocov"><span class="num"><pre>  79</pre></span><pre>	basestring = (str, unicode)</pre></div>
+<div class="skip"><span class="num"><pre>  80</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>  81</pre></span><pre># Universal newline support</pre></div>
+<div class="nocov"><span class="num"><pre>  82</pre></span><pre>_textmode = 'r'</pre></div>
+<div class="nocov"><span class="num"><pre>  83</pre></span><pre>if hasattr(file, 'newlines'):</pre></div>
+<div class="nocov"><span class="num"><pre>  84</pre></span><pre>	_textmode = 'U'</pre></div>
+<div class="skip"><span class="num"><pre>  85</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>  86</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>  87</pre></span><pre># cache used for path expansion</pre></div>
+<div class="nocov"><span class="num"><pre>  88</pre></span><pre>_varprog = re.compile(r'\$(\w+|\{[^}]*\})')</pre></div>
+<div class="skip"><span class="num"><pre>  89</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>  90</pre></span><pre>class TreeWalkWarning(Warning):</pre></div>
+<div class="nocov"><span class="num"><pre>  91</pre></span><pre>	pass</pre></div>
+<div class="skip"><span class="num"><pre>  92</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>  93</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>  94</pre></span><pre>class Path( _base, iDagItem ):</pre></div>
+<div class="nocov"><span class="num"><pre>  95</pre></span><pre>	&quot;&quot;&quot; Represents a filesystem path.</pre></div>
+<div class="skip"><span class="num"><pre>  96</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>  97</pre></span><pre>	For documentation on individual methods, consult their</pre></div>
+<div class="nocov"><span class="num"><pre>  98</pre></span><pre>	counterparts in os.path.</pre></div>
+<div class="nocov"><span class="num"><pre>  99</pre></span><pre>	&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 100</pre></span><pre>	# Configuration</pre></div>
+<div class="nocov"><span class="num"><pre> 101</pre></span><pre>	sep = None</pre></div>
+<div class="nocov"><span class="num"><pre> 102</pre></span><pre>	osep = None</pre></div>
+<div class="skip"><span class="num"><pre> 103</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre> 104</pre></span><pre>	#{ Special Python methods</pre></div>
+<div class="skip"><span class="num"><pre> 105</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 106</pre></span><pre>	def __repr__(self):</pre></div>
+<div class="cov"><span class="num"><pre> 107</pre></span><pre>		return '%s(%s)' % ( self.__class__.__name__, _base.__repr__(self) )</pre></div>
+<div class="skip"><span class="num"><pre> 108</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 109</pre></span><pre>	# Adding a path and a string yields a path.</pre></div>
+<div class="nocov"><span class="num"><pre> 110</pre></span><pre>	def __add__(self, more):</pre></div>
+<div class="cov"><span class="num"><pre> 111</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre> 112</pre></span><pre>			resultStr = _base.__add__(self, more)</pre></div>
+<div class="nocov"><span class="num"><pre> 113</pre></span><pre>		except TypeError:  #Python bug</pre></div>
+<div class="nocov"><span class="num"><pre> 114</pre></span><pre>			resultStr = NotImplemented</pre></div>
+<div class="cov"><span class="num"><pre> 115</pre></span><pre>		if resultStr is NotImplemented:</pre></div>
+<div class="nocov"><span class="num"><pre> 116</pre></span><pre>			return resultStr</pre></div>
+<div class="cov"><span class="num"><pre> 117</pre></span><pre>		return self.__class__(resultStr)</pre></div>
+<div class="skip"><span class="num"><pre> 118</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 119</pre></span><pre>	def __radd__(self, other):</pre></div>
+<div class="cov"><span class="num"><pre> 120</pre></span><pre>		if isinstance(other, basestring):</pre></div>
+<div class="cov"><span class="num"><pre> 121</pre></span><pre>			return self.__class__(other.__add__(self))</pre></div>
+<div class="nocov"><span class="num"><pre> 122</pre></span><pre>		else:</pre></div>
+<div class="nocov"><span class="num"><pre> 123</pre></span><pre>			return NotImplemented</pre></div>
+<div class="skip"><span class="num"><pre> 124</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 125</pre></span><pre>	# The / operator joins paths.</pre></div>
+<div class="nocov"><span class="num"><pre> 126</pre></span><pre>	def __div__(self, rel):</pre></div>
+<div class="nocov"><span class="num"><pre> 127</pre></span><pre>		&quot;&quot;&quot; fp.__div__(rel) == fp / rel == fp.joinpath(rel)</pre></div>
+<div class="skip"><span class="num"><pre> 128</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 129</pre></span><pre>		Join two path components, adding a separator character if</pre></div>
+<div class="nocov"><span class="num"><pre> 130</pre></span><pre>		needed.</pre></div>
+<div class="nocov"><span class="num"><pre> 131</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 132</pre></span><pre>		return self.__class__(os.path.join(self, rel))</pre></div>
+<div class="skip"><span class="num"><pre> 133</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 134</pre></span><pre>	# Make the / operator work even when true division is enabled.</pre></div>
+<div class="nocov"><span class="num"><pre> 135</pre></span><pre>	__truediv__ = __div__</pre></div>
+<div class="skip"><span class="num"><pre> 136</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 137</pre></span><pre>	def __eq__( self, other ):</pre></div>
+<div class="nocov"><span class="num"><pre> 138</pre></span><pre>		&quot;&quot;&quot;Comparison method with expanded variables, just to assure</pre></div>
+<div class="nocov"><span class="num"><pre> 139</pre></span><pre>		the comparison yields the results we would expect&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 140</pre></span><pre>		return unicode(self._expandvars(self)) == unicode(self._expandvars(unicode(other)))</pre></div>
+<div class="skip"><span class="num"><pre> 141</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 142</pre></span><pre>	def __ne__( self, other ):</pre></div>
+<div class="cov"><span class="num"><pre> 143</pre></span><pre>		return not self.__eq__( other )</pre></div>
+<div class="skip"><span class="num"><pre> 144</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 145</pre></span><pre>	def __hash__( self ):</pre></div>
+<div class="nocov"><span class="num"><pre> 146</pre></span><pre>		&quot;&quot;&quot;Expanded hash method&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 147</pre></span><pre>		return hash(unicode(self._expandvars(self)))</pre></div>
+<div class="skip"><span class="num"><pre> 148</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 149</pre></span><pre>	#} END Special Python methods</pre></div>
+<div class="skip"><span class="num"><pre> 150</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 151</pre></span><pre>	@classmethod</pre></div>
+<div class="nocov"><span class="num"><pre> 152</pre></span><pre>	def set_separator(cls, sep):</pre></div>
+<div class="nocov"><span class="num"><pre> 153</pre></span><pre>		&quot;&quot;&quot;Set this type to support the given separator as general path separator&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 154</pre></span><pre>		if sep not in &quot;/\\&quot;:</pre></div>
+<div class="nocov"><span class="num"><pre> 155</pre></span><pre>			raise ValueError(&quot;Invalid path separator&quot;, sep)</pre></div>
+<div class="cov"><span class="num"><pre> 156</pre></span><pre>		cls.sep = sep</pre></div>
+<div class="cov"><span class="num"><pre> 157</pre></span><pre>		cls.osep = (sep == '/' and '\\') or &quot;/&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 158</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre> 159</pre></span><pre>		# setup path conversion as necessary</pre></div>
+<div class="cov"><span class="num"><pre> 160</pre></span><pre>		global Path</pre></div>
+<div class="cov"><span class="num"><pre> 161</pre></span><pre>		if os.path.sep != cls.sep:</pre></div>
+<div class="cov"><span class="num"><pre> 162</pre></span><pre>			Path = ConversionPath</pre></div>
+<div class="cov"><span class="num"><pre> 163</pre></span><pre>		else:</pre></div>
+<div class="cov"><span class="num"><pre> 164</pre></span><pre>			Path = BasePath</pre></div>
+<div class="skip"><span class="num"><pre> 165</pre></span><pre>		# END handle Path type</pre></div>
+<div class="skip"><span class="num"><pre> 166</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 167</pre></span><pre>	@classmethod</pre></div>
+<div class="nocov"><span class="num"><pre> 168</pre></span><pre>	def getcwd(cls):</pre></div>
+<div class="nocov"><span class="num"><pre> 169</pre></span><pre>		&quot;&quot;&quot;:return: the current working directory as a path object. &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 170</pre></span><pre>		return cls(_getcwd())</pre></div>
+<div class="skip"><span class="num"><pre> 171</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 172</pre></span><pre>	#{ iDagItem Implementation</pre></div>
+<div class="skip"><span class="num"><pre> 173</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 174</pre></span><pre>	def parent( self ):</pre></div>
+<div class="nocov"><span class="num"><pre> 175</pre></span><pre>		&quot;&quot;&quot;:return: the parent directory of this Path or None if this is the root&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 176</pre></span><pre>		parent = self.dirname()</pre></div>
+<div class="cov"><span class="num"><pre> 177</pre></span><pre>		if parent == self:</pre></div>
+<div class="cov"><span class="num"><pre> 178</pre></span><pre>			return None</pre></div>
+<div class="cov"><span class="num"><pre> 179</pre></span><pre>		return parent</pre></div>
+<div class="skip"><span class="num"><pre> 180</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 181</pre></span><pre>	def children( self, predicate = lambda p: True, pattern = None ):</pre></div>
+<div class="cov"><span class="num"><pre> 182</pre></span><pre>		&quot;&quot;&quot;:return: child paths as retrieved by queryiing the file system.</pre></div>
+<div class="cov"><span class="num"><pre> 183</pre></span><pre>		:note: files cannot have children, and willl return an empty array accordingly</pre></div>
+<div class="cov"><span class="num"><pre> 184</pre></span><pre>		:param predicate: return p if predicate( p ) returns True</pre></div>
+<div class="cov"><span class="num"><pre> 185</pre></span><pre>		:param pattern: list only elements that match the given simple  pattern</pre></div>
+<div class="cov"><span class="num"><pre> 186</pre></span><pre>			i.e. *.*&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 187</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre> 188</pre></span><pre>			children = self.listdir( pattern )</pre></div>
+<div class="nocov"><span class="num"><pre> 189</pre></span><pre>		except OSError:</pre></div>
+<div class="nocov"><span class="num"><pre> 190</pre></span><pre>			return list()</pre></div>
+<div class="skip"><span class="num"><pre> 191</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 192</pre></span><pre>		return [ c for c in children if predicate( c ) ]</pre></div>
+<div class="skip"><span class="num"><pre> 193</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 194</pre></span><pre>	#} END idagitem implementation</pre></div>
+<div class="skip"><span class="num"><pre> 195</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 196</pre></span><pre>	#{ Operations on path strings.</pre></div>
+<div class="skip"><span class="num"><pre> 197</pre></span><pre>	</pre></div>
+<div class="nocov"><span class="num"><pre> 198</pre></span><pre>	@classmethod</pre></div>
+<div class="nocov"><span class="num"><pre> 199</pre></span><pre>	def _expandvars(cls, path):</pre></div>
+<div class="nocov"><span class="num"><pre> 200</pre></span><pre>		&quot;&quot;&quot;Internal version returning a string only representing the non-recursively</pre></div>
+<div class="nocov"><span class="num"><pre> 201</pre></span><pre>		expanded variable</pre></div>
+<div class="skip"><span class="num"><pre> 202</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre> 203</pre></span><pre>		:note: It is a slightly changed copy of the version in posixfile</pre></div>
+<div class="nocov"><span class="num"><pre> 204</pre></span><pre>			as the windows version was implemented differently ( it expands</pre></div>
+<div class="nocov"><span class="num"><pre> 205</pre></span><pre>			variables to an empty space which is undesireable )&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 206</pre></span><pre>		if '$' not in path:</pre></div>
+<div class="cov"><span class="num"><pre> 207</pre></span><pre>			return path</pre></div>
+<div class="skip"><span class="num"><pre> 208</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 209</pre></span><pre>		i = 0</pre></div>
+<div class="cov"><span class="num"><pre> 210</pre></span><pre>		while True:</pre></div>
+<div class="cov"><span class="num"><pre> 211</pre></span><pre>			m = _varprog.search(path, i)</pre></div>
+<div class="cov"><span class="num"><pre> 212</pre></span><pre>			if not m:</pre></div>
+<div class="cov"><span class="num"><pre> 213</pre></span><pre>				break</pre></div>
+<div class="cov"><span class="num"><pre> 214</pre></span><pre>			i, j = m.span(0)</pre></div>
+<div class="cov"><span class="num"><pre> 215</pre></span><pre>			name = m.group(1)</pre></div>
+<div class="cov"><span class="num"><pre> 216</pre></span><pre>			if name.startswith('{') and name.endswith('}'):</pre></div>
+<div class="nocov"><span class="num"><pre> 217</pre></span><pre>				name = name[1:-1]</pre></div>
+<div class="cov"><span class="num"><pre> 218</pre></span><pre>			if name in os.environ:</pre></div>
+<div class="cov"><span class="num"><pre> 219</pre></span><pre>				tail = path[j:]</pre></div>
+<div class="cov"><span class="num"><pre> 220</pre></span><pre>				path = path[:i] + os.environ[name]</pre></div>
+<div class="cov"><span class="num"><pre> 221</pre></span><pre>				i = len(path)</pre></div>
+<div class="cov"><span class="num"><pre> 222</pre></span><pre>				path += tail</pre></div>
+<div class="cov"><span class="num"><pre> 223</pre></span><pre>			else:</pre></div>
+<div class="cov"><span class="num"><pre> 224</pre></span><pre>				i = j</pre></div>
+<div class="skip"><span class="num"><pre> 225</pre></span><pre>			# END handle variable exists in environ</pre></div>
+<div class="skip"><span class="num"><pre> 226</pre></span><pre>		# END loop forever</pre></div>
+<div class="cov"><span class="num"><pre> 227</pre></span><pre>		return path	</pre></div>
+<div class="skip"><span class="num"><pre> 228</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 229</pre></span><pre>	@classmethod</pre></div>
+<div class="nocov"><span class="num"><pre> 230</pre></span><pre>	def _expandvars_deep(cls, path):</pre></div>
+<div class="nocov"><span class="num"><pre> 231</pre></span><pre>		&quot;&quot;&quot;As above, but recursively expands as many variables as possible&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 232</pre></span><pre>		rval = cls._expandvars(path)</pre></div>
+<div class="cov"><span class="num"><pre> 233</pre></span><pre>		while str(rval) != str(path):</pre></div>
+<div class="cov"><span class="num"><pre> 234</pre></span><pre>			path = rval</pre></div>
+<div class="cov"><span class="num"><pre> 235</pre></span><pre>			rval = cls._expandvars(path)</pre></div>
+<div class="skip"><span class="num"><pre> 236</pre></span><pre>		# END expansion loop</pre></div>
+<div class="cov"><span class="num"><pre> 237</pre></span><pre>		return rval</pre></div>
+<div class="skip"><span class="num"><pre> 238</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 239</pre></span><pre>	isabs = os.path.isabs</pre></div>
+<div class="cov"><span class="num"><pre> 240</pre></span><pre>	def abspath(self):		 return self.__class__(os.path.abspath(self._expandvars(self)))</pre></div>
+<div class="cov"><span class="num"><pre> 241</pre></span><pre>	def normcase(self):		 return self.__class__(os.path.normcase(self))</pre></div>
+<div class="cov"><span class="num"><pre> 242</pre></span><pre>	def normpath(self):		 return self.__class__(os.path.normpath(self))</pre></div>
+<div class="cov"><span class="num"><pre> 243</pre></span><pre>	def realpath(self):		 return self.__class__(os.path.realpath(self._expandvars(self)))</pre></div>
+<div class="cov"><span class="num"><pre> 244</pre></span><pre>	def expanduser(self):	 return self.__class__(os.path.expanduser(self))</pre></div>
+<div class="cov"><span class="num"><pre> 245</pre></span><pre>	def expandvars(self):	 return self.__class__(self._expandvars(self))</pre></div>
+<div class="cov"><span class="num"><pre> 246</pre></span><pre>	def dirname(self):		 return self.__class__(os.path.dirname(self))</pre></div>
+<div class="nocov"><span class="num"><pre> 247</pre></span><pre>	basename = os.path.basename</pre></div>
+<div class="skip"><span class="num"><pre> 248</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 249</pre></span><pre>	def expandvars_deep(self):</pre></div>
+<div class="nocov"><span class="num"><pre> 250</pre></span><pre>		&quot;&quot;&quot;Expands all environment variables recursively&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 251</pre></span><pre>		return type(self)(self._expandvars_deep(self))</pre></div>
+<div class="skip"><span class="num"><pre> 252</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre> 253</pre></span><pre>	def expandvars_deep_or_raise(self):</pre></div>
+<div class="nocov"><span class="num"><pre> 254</pre></span><pre>		&quot;&quot;&quot;Expands all environment variables recursively, and raises ValueError</pre></div>
+<div class="nocov"><span class="num"><pre> 255</pre></span><pre>		if the path still contains variables afterwards&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 256</pre></span><pre>		rval = self.expandvars_deep()</pre></div>
+<div class="cov"><span class="num"><pre> 257</pre></span><pre>		if rval.containsvars():</pre></div>
+<div class="cov"><span class="num"><pre> 258</pre></span><pre>			raise ValueError(&quot;Failed to expand all environment variables in %r, got %r&quot; % (self, rval))</pre></div>
+<div class="cov"><span class="num"><pre> 259</pre></span><pre>		return rval</pre></div>
+<div class="skip"><span class="num"><pre> 260</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 261</pre></span><pre>	def expand(self):</pre></div>
+<div class="nocov"><span class="num"><pre> 262</pre></span><pre>		&quot;&quot;&quot; Clean up a filename by calling expandvars() and expanduser()</pre></div>
+<div class="skip"><span class="num"><pre> 263</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 264</pre></span><pre>		This is commonly everything needed to clean up a filename</pre></div>
+<div class="nocov"><span class="num"><pre> 265</pre></span><pre>		read from a configuration file, for example.</pre></div>
+<div class="skip"><span class="num"><pre> 266</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre> 267</pre></span><pre>		If you are not interested in trailing slashes, you should call</pre></div>
+<div class="nocov"><span class="num"><pre> 268</pre></span><pre>		normpath() on the resulting Path as well.</pre></div>
+<div class="nocov"><span class="num"><pre> 269</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 270</pre></span><pre>		return self.expandvars().expanduser()</pre></div>
+<div class="skip"><span class="num"><pre> 271</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 272</pre></span><pre>	def containsvars( self ):</pre></div>
+<div class="nocov"><span class="num"><pre> 273</pre></span><pre>		&quot;&quot;&quot;:return: True if this path contains environment variables&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 274</pre></span><pre>		return self.find( '$' ) != -1</pre></div>
+<div class="skip"><span class="num"><pre> 275</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre> 276</pre></span><pre>	def expand_or_raise(self):</pre></div>
+<div class="nocov"><span class="num"><pre> 277</pre></span><pre>		&quot;&quot;&quot;:return: Copy of self with all variables expanded ( using `expand` )</pre></div>
+<div class="nocov"><span class="num"><pre> 278</pre></span><pre>		non-recursively !</pre></div>
+<div class="skip"><span class="num"><pre> 279</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre> 280</pre></span><pre>		:raise ValueError: If we could not expand all environment variables as</pre></div>
+<div class="nocov"><span class="num"><pre> 281</pre></span><pre>			their values where missing in the environment&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 282</pre></span><pre>		rval = self.expand()</pre></div>
+<div class="cov"><span class="num"><pre> 283</pre></span><pre>		if str(rval) == str(self) and rval.containsvars():</pre></div>
+<div class="cov"><span class="num"><pre> 284</pre></span><pre>			raise ValueError(&quot;Failed to expand all environment variables in %r, got %r&quot; % (self, rval))</pre></div>
+<div class="cov"><span class="num"><pre> 285</pre></span><pre>		return rval</pre></div>
+<div class="skip"><span class="num"><pre> 286</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 287</pre></span><pre>	def namebase(self):</pre></div>
+<div class="nocov"><span class="num"><pre> 288</pre></span><pre>		&quot;&quot;&quot;The same as path.basename(), but with one file extension stripped off.</pre></div>
+<div class="skip"><span class="num"><pre> 289</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 290</pre></span><pre>		For example, path('/home/guido/python.tar.gz').name		== 'python.tar.gz',</pre></div>
+<div class="nocov"><span class="num"><pre> 291</pre></span><pre>		but			 path('/home/guido/python.tar.gz').namebase == 'python.tar'&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 292</pre></span><pre>		base, ext = os.path.splitext(self.basename())</pre></div>
+<div class="cov"><span class="num"><pre> 293</pre></span><pre>		return base</pre></div>
+<div class="skip"><span class="num"><pre> 294</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 295</pre></span><pre>	def ext(self):</pre></div>
+<div class="nocov"><span class="num"><pre> 296</pre></span><pre>		&quot;&quot;&quot; The file extension, for example '.py'. &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 297</pre></span><pre>		f, ext = os.path.splitext(_base(self))</pre></div>
+<div class="cov"><span class="num"><pre> 298</pre></span><pre>		return ext</pre></div>
+<div class="skip"><span class="num"><pre> 299</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 300</pre></span><pre>	def drive(self):</pre></div>
+<div class="nocov"><span class="num"><pre> 301</pre></span><pre>		&quot;&quot;&quot; The drive specifier, for example 'C:'.</pre></div>
+<div class="nocov"><span class="num"><pre> 302</pre></span><pre>		This is always empty on systems that don't use drive specifiers.</pre></div>
+<div class="nocov"><span class="num"><pre> 303</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 304</pre></span><pre>		drive, r = os.path.splitdrive(self)</pre></div>
+<div class="cov"><span class="num"><pre> 305</pre></span><pre>		return self.__class__(drive)</pre></div>
+<div class="skip"><span class="num"><pre> 306</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 307</pre></span><pre>	def splitpath(self):</pre></div>
+<div class="nocov"><span class="num"><pre> 308</pre></span><pre>		&quot;&quot;&quot; p.splitpath() -&gt; Return (p.parent(), p.basename()). &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 309</pre></span><pre>		parent, child = os.path.split(self)</pre></div>
+<div class="cov"><span class="num"><pre> 310</pre></span><pre>		return self.__class__(parent), child</pre></div>
+<div class="skip"><span class="num"><pre> 311</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 312</pre></span><pre>	def splitdrive(self):</pre></div>
+<div class="nocov"><span class="num"><pre> 313</pre></span><pre>		&quot;&quot;&quot; p.splitdrive() -&gt; Return (p.drive, &lt;the rest of p&gt;).</pre></div>
+<div class="skip"><span class="num"><pre> 314</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 315</pre></span><pre>		Split the drive specifier from this path.  If there is</pre></div>
+<div class="nocov"><span class="num"><pre> 316</pre></span><pre>		no drive specifier, p.drive is empty, so the return value</pre></div>
+<div class="nocov"><span class="num"><pre> 317</pre></span><pre>		is simply (path(''), p).  This is always the case on Unix.</pre></div>
+<div class="nocov"><span class="num"><pre> 318</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 319</pre></span><pre>		drive, rel = os.path.splitdrive(self)</pre></div>
+<div class="cov"><span class="num"><pre> 320</pre></span><pre>		return self.__class__(drive), rel</pre></div>
+<div class="skip"><span class="num"><pre> 321</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 322</pre></span><pre>	def splitext(self):</pre></div>
+<div class="nocov"><span class="num"><pre> 323</pre></span><pre>		&quot;&quot;&quot; p.splitext() -&gt; Return (p.stripext(), p.ext).</pre></div>
+<div class="skip"><span class="num"><pre> 324</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 325</pre></span><pre>		Split the filename extension from this path and return</pre></div>
+<div class="nocov"><span class="num"><pre> 326</pre></span><pre>		the two parts.	Either part may be empty.</pre></div>
+<div class="skip"><span class="num"><pre> 327</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 328</pre></span><pre>		The extension is everything from '.' to the end of the</pre></div>
+<div class="nocov"><span class="num"><pre> 329</pre></span><pre>		last path segment.	This has the property that if</pre></div>
+<div class="nocov"><span class="num"><pre> 330</pre></span><pre>		(a, b) == p.splitext(), then a + b == p.</pre></div>
+<div class="nocov"><span class="num"><pre> 331</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 332</pre></span><pre>		filename, ext = os.path.splitext(self)</pre></div>
+<div class="cov"><span class="num"><pre> 333</pre></span><pre>		return self.__class__(filename), ext</pre></div>
+<div class="skip"><span class="num"><pre> 334</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 335</pre></span><pre>	def stripext(self):</pre></div>
+<div class="nocov"><span class="num"><pre> 336</pre></span><pre>		&quot;&quot;&quot; p.stripext() -&gt; Remove one file extension from the path.</pre></div>
+<div class="skip"><span class="num"><pre> 337</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 338</pre></span><pre>		For example, path('/home/guido/python.tar.gz').stripext()</pre></div>
+<div class="nocov"><span class="num"><pre> 339</pre></span><pre>		returns path('/home/guido/python.tar').</pre></div>
+<div class="nocov"><span class="num"><pre> 340</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 341</pre></span><pre>		return self.splitext()[0]</pre></div>
+<div class="skip"><span class="num"><pre> 342</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 343</pre></span><pre>	if hasattr(os.path, 'splitunc'):</pre></div>
+<div class="nocov"><span class="num"><pre> 344</pre></span><pre>		def splitunc(self):</pre></div>
+<div class="nocov"><span class="num"><pre> 345</pre></span><pre>			unc, rest = os.path.splitunc(self)</pre></div>
+<div class="nocov"><span class="num"><pre> 346</pre></span><pre>			return self.__class__(unc), rest</pre></div>
+<div class="skip"><span class="num"><pre> 347</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 348</pre></span><pre>		def isunshared(self):</pre></div>
+<div class="nocov"><span class="num"><pre> 349</pre></span><pre>			unc, r = os.path.splitunc(self)</pre></div>
+<div class="nocov"><span class="num"><pre> 350</pre></span><pre>			return self.__class__(unc)</pre></div>
+<div class="skip"><span class="num"><pre> 351</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 352</pre></span><pre>	def joinpath(self, *args):</pre></div>
+<div class="nocov"><span class="num"><pre> 353</pre></span><pre>		&quot;&quot;&quot; Join two or more path components, adding a separator</pre></div>
+<div class="nocov"><span class="num"><pre> 354</pre></span><pre>		character (os.sep) if needed.  Returns a new path</pre></div>
+<div class="nocov"><span class="num"><pre> 355</pre></span><pre>		object.&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 356</pre></span><pre>		return self.__class__(os.path.join(self, *args))</pre></div>
+<div class="skip"><span class="num"><pre> 357</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 358</pre></span><pre>	def splitall(self):</pre></div>
+<div class="nocov"><span class="num"><pre> 359</pre></span><pre>		&quot;&quot;&quot; Return a list of the path components in this path.</pre></div>
+<div class="skip"><span class="num"><pre> 360</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 361</pre></span><pre>		The first item in the list will be a path.	Its value will be</pre></div>
+<div class="nocov"><span class="num"><pre> 362</pre></span><pre>		either os.curdir, os.pardir, empty, or the root directory of</pre></div>
+<div class="nocov"><span class="num"><pre> 363</pre></span><pre>		this path (for example, '/' or 'C:\\').	 The other items in</pre></div>
+<div class="nocov"><span class="num"><pre> 364</pre></span><pre>		the list will be strings.</pre></div>
+<div class="skip"><span class="num"><pre> 365</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 366</pre></span><pre>		path.path.joinpath(\*result) can possibly yield the original path, depending </pre></div>
+<div class="nocov"><span class="num"><pre> 367</pre></span><pre>		on the input.&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 368</pre></span><pre>		parts = list()</pre></div>
+<div class="cov"><span class="num"><pre> 369</pre></span><pre>		loc = self</pre></div>
+<div class="cov"><span class="num"><pre> 370</pre></span><pre>		while loc != os.curdir and loc != os.pardir:</pre></div>
+<div class="cov"><span class="num"><pre> 371</pre></span><pre>			prev = loc</pre></div>
+<div class="cov"><span class="num"><pre> 372</pre></span><pre>			loc, child = prev.splitpath()</pre></div>
+<div class="cov"><span class="num"><pre> 373</pre></span><pre>			if loc == prev:</pre></div>
+<div class="cov"><span class="num"><pre> 374</pre></span><pre>				break</pre></div>
+<div class="cov"><span class="num"><pre> 375</pre></span><pre>			parts.append(child)</pre></div>
+<div class="cov"><span class="num"><pre> 376</pre></span><pre>		parts.append(loc)</pre></div>
+<div class="cov"><span class="num"><pre> 377</pre></span><pre>		parts.reverse()</pre></div>
+<div class="cov"><span class="num"><pre> 378</pre></span><pre>		return parts</pre></div>
+<div class="skip"><span class="num"><pre> 379</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 380</pre></span><pre>	def relpath(self):</pre></div>
+<div class="nocov"><span class="num"><pre> 381</pre></span><pre>		&quot;&quot;&quot; Return this path as a relative path,</pre></div>
+<div class="nocov"><span class="num"><pre> 382</pre></span><pre>		originating from the current working directory.</pre></div>
+<div class="nocov"><span class="num"><pre> 383</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 384</pre></span><pre>		return self.relpathto(os.getcwd())</pre></div>
+<div class="skip"><span class="num"><pre> 385</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 386</pre></span><pre>	def relpathto(self, dest):</pre></div>
+<div class="nocov"><span class="num"><pre> 387</pre></span><pre>		&quot;&quot;&quot; Return a relative path from self to dest.</pre></div>
+<div class="skip"><span class="num"><pre> 388</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 389</pre></span><pre>		If there is no relative path from self to dest, for example if</pre></div>
+<div class="nocov"><span class="num"><pre> 390</pre></span><pre>		they reside on different drives in Windows, then this returns</pre></div>
+<div class="nocov"><span class="num"><pre> 391</pre></span><pre>		dest.abspath().</pre></div>
+<div class="nocov"><span class="num"><pre> 392</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 393</pre></span><pre>		# on windows, abspath returns \\ paths even if / paths are given.</pre></div>
+<div class="skip"><span class="num"><pre> 394</pre></span><pre>		# On linux this is not the case ... thanks</pre></div>
+<div class="cov"><span class="num"><pre> 395</pre></span><pre>		splitter = (os.name == 'nt' and _ossep) or self.sep</pre></div>
+<div class="cov"><span class="num"><pre> 396</pre></span><pre>		def commonprefix(m):</pre></div>
+<div class="cov"><span class="num"><pre> 397</pre></span><pre>			if not m: return ''</pre></div>
+<div class="cov"><span class="num"><pre> 398</pre></span><pre>			s1 = min(m)</pre></div>
+<div class="cov"><span class="num"><pre> 399</pre></span><pre>			s2 = max(m)</pre></div>
+<div class="cov"><span class="num"><pre> 400</pre></span><pre>			for i, c in enumerate(s1):</pre></div>
+<div class="cov"><span class="num"><pre> 401</pre></span><pre>				if c != s2[i]:</pre></div>
+<div class="cov"><span class="num"><pre> 402</pre></span><pre>					return s1[:i]</pre></div>
+<div class="cov"><span class="num"><pre> 403</pre></span><pre>			return s1</pre></div>
+<div class="skip"><span class="num"><pre> 404</pre></span><pre>		# END common prefix </pre></div>
+<div class="skip"><span class="num"><pre> 405</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 406</pre></span><pre>		start_list = os.path.abspath(dest).split(splitter)</pre></div>
+<div class="cov"><span class="num"><pre> 407</pre></span><pre>		path_list = os.path.abspath(self._expandvars(self)).split(splitter)</pre></div>
+<div class="skip"><span class="num"><pre> 408</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre> 409</pre></span><pre>		# Work out how much of the filepath is shared by start and path.</pre></div>
+<div class="cov"><span class="num"><pre> 410</pre></span><pre>		i = len(commonprefix([start_list, path_list]))</pre></div>
+<div class="skip"><span class="num"><pre> 411</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 412</pre></span><pre>		rel_list = [os.pardir] * (len(start_list)-i) + path_list[i:]</pre></div>
+<div class="cov"><span class="num"><pre> 413</pre></span><pre>		if not rel_list:</pre></div>
+<div class="cov"><span class="num"><pre> 414</pre></span><pre>			return os.curdir</pre></div>
+<div class="cov"><span class="num"><pre> 415</pre></span><pre>		return self.__class__(os.path.join(*rel_list))</pre></div>
+<div class="skip"><span class="num"><pre> 416</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre> 417</pre></span><pre>	def relpathfrom(self, dest):</pre></div>
+<div class="nocov"><span class="num"><pre> 418</pre></span><pre>		&quot;&quot;&quot; Return a relative path from dest to self&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 419</pre></span><pre>		return self.__class__(dest).relpathto(self)</pre></div>
+<div class="skip"><span class="num"><pre> 420</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 421</pre></span><pre>	def convert_separators(self):</pre></div>
+<div class="nocov"><span class="num"><pre> 422</pre></span><pre>		&quot;&quot;&quot;:return: Version of self with all separators set to be 'sep'. The difference</pre></div>
+<div class="nocov"><span class="num"><pre> 423</pre></span><pre>		to normpath is that it does not cut trailing separators&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 424</pre></span><pre>		return self.__class__(self.replace(self.osep, self.sep))</pre></div>
+<div class="skip"><span class="num"><pre> 425</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 426</pre></span><pre>	def tolinuxpath(self):</pre></div>
+<div class="nocov"><span class="num"><pre> 427</pre></span><pre>		&quot;&quot;&quot;:return: A path using only slashes as path separator&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 428</pre></span><pre>		return self.__class__(self.replace(&quot;\\&quot;, &quot;/&quot;))</pre></div>
+<div class="skip"><span class="num"><pre> 429</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 430</pre></span><pre>	def tonative( self ):</pre></div>
+<div class="nocov"><span class="num"><pre> 431</pre></span><pre>		r&quot;&quot;&quot;Convert the path separator to the type required by the current operating</pre></div>
+<div class="nocov"><span class="num"><pre> 432</pre></span><pre>		system - on windows / becomes \ and on linux \ becomes /</pre></div>
+<div class="skip"><span class="num"><pre> 433</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre> 434</pre></span><pre>		:return: native version of self&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 435</pre></span><pre>		s = &quot;\\&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 436</pre></span><pre>		d = &quot;/&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 437</pre></span><pre>		if sys.platform.startswith( &quot;win&quot; ):</pre></div>
+<div class="nocov"><span class="num"><pre> 438</pre></span><pre>			s = &quot;/&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 439</pre></span><pre>			d = &quot;\\&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 440</pre></span><pre>		return Path( self.replace( s, d ) )</pre></div>
+<div class="skip"><span class="num"><pre> 441</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 442</pre></span><pre>	#} END Operations on path strings</pre></div>
+<div class="skip"><span class="num"><pre> 443</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 444</pre></span><pre>	#{ Listing, searching, walking, and matching</pre></div>
+<div class="skip"><span class="num"><pre> 445</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 446</pre></span><pre>	def listdir(self, pattern=None):</pre></div>
+<div class="nocov"><span class="num"><pre> 447</pre></span><pre>		&quot;&quot;&quot;return list of items in this directory.</pre></div>
+<div class="skip"><span class="num"><pre> 448</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 449</pre></span><pre>		Use D.files() or D.dirs() instead if you want a listing</pre></div>
+<div class="nocov"><span class="num"><pre> 450</pre></span><pre>		of just files or just subdirectories.</pre></div>
+<div class="skip"><span class="num"><pre> 451</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 452</pre></span><pre>		The elements of the list are path objects.</pre></div>
+<div class="skip"><span class="num"><pre> 453</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 454</pre></span><pre>		With the optional 'pattern' argument, this only lists</pre></div>
+<div class="nocov"><span class="num"><pre> 455</pre></span><pre>		items whose names match the given pattern.</pre></div>
+<div class="nocov"><span class="num"><pre> 456</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 457</pre></span><pre>		names = os.listdir(self._expandvars(self))</pre></div>
+<div class="cov"><span class="num"><pre> 458</pre></span><pre>		if pattern is not None:</pre></div>
+<div class="cov"><span class="num"><pre> 459</pre></span><pre>			names = fnmatch.filter(names, pattern)</pre></div>
+<div class="cov"><span class="num"><pre> 460</pre></span><pre>		return [self / child for child in names]</pre></div>
+<div class="skip"><span class="num"><pre> 461</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 462</pre></span><pre>	def dirs(self, pattern=None):</pre></div>
+<div class="nocov"><span class="num"><pre> 463</pre></span><pre>		&quot;&quot;&quot; D.dirs() -&gt; List of this directory's subdirectories.</pre></div>
+<div class="skip"><span class="num"><pre> 464</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 465</pre></span><pre>		The elements of the list are path objects.</pre></div>
+<div class="nocov"><span class="num"><pre> 466</pre></span><pre>		This does not walk recursively into subdirectories</pre></div>
+<div class="nocov"><span class="num"><pre> 467</pre></span><pre>		(but see path.walkdirs).</pre></div>
+<div class="skip"><span class="num"><pre> 468</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 469</pre></span><pre>		With the optional ``pattern`` argument, this only lists</pre></div>
+<div class="nocov"><span class="num"><pre> 470</pre></span><pre>		directories whose names match the given pattern.  For</pre></div>
+<div class="nocov"><span class="num"><pre> 471</pre></span><pre>		example, d.dirs(&quot;build-\*&quot;).</pre></div>
+<div class="nocov"><span class="num"><pre> 472</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 473</pre></span><pre>		return [p for p in self.listdir(pattern) if p.isdir()]</pre></div>
+<div class="skip"><span class="num"><pre> 474</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 475</pre></span><pre>	def files(self, pattern=None):</pre></div>
+<div class="nocov"><span class="num"><pre> 476</pre></span><pre>		&quot;&quot;&quot; D.files() -&gt; List of the files in this directory.</pre></div>
+<div class="skip"><span class="num"><pre> 477</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 478</pre></span><pre>		The elements of the list are path objects.</pre></div>
+<div class="nocov"><span class="num"><pre> 479</pre></span><pre>		This does not walk into subdirectories (see path.walkfiles).</pre></div>
+<div class="skip"><span class="num"><pre> 480</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 481</pre></span><pre>		With the optional ``pattern`` argument, this only lists files</pre></div>
+<div class="nocov"><span class="num"><pre> 482</pre></span><pre>		whose names match the given pattern.  For example,</pre></div>
+<div class="nocov"><span class="num"><pre> 483</pre></span><pre>		d.files(&quot;\*.pyc&quot;).</pre></div>
+<div class="nocov"><span class="num"><pre> 484</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 485</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 486</pre></span><pre>		return [p for p in self.listdir(pattern) if p.isfile()]</pre></div>
+<div class="skip"><span class="num"><pre> 487</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 488</pre></span><pre>	def walk(self, pattern=None, errors='strict', predicate=lambda p: True):</pre></div>
+<div class="cov"><span class="num"><pre> 489</pre></span><pre>		&quot;&quot;&quot;create iterator over files and subdirs, recursively.</pre></div>
+<div class="skip"><span class="num"><pre> 490</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 491</pre></span><pre>		The iterator yields path objects naming each child item of</pre></div>
+<div class="cov"><span class="num"><pre> 492</pre></span><pre>		this directory and its descendants.</pre></div>
+<div class="skip"><span class="num"><pre> 493</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 494</pre></span><pre>		It performs a depth-first traversal of the directory tree.</pre></div>
+<div class="cov"><span class="num"><pre> 495</pre></span><pre>		Each directory is returned just before all its children.</pre></div>
+<div class="skip"><span class="num"><pre> 496</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 497</pre></span><pre>		:param pattern: fnmatch compatible pattern or None</pre></div>
+<div class="cov"><span class="num"><pre> 498</pre></span><pre>		:param errors: controls behavior when an</pre></div>
+<div class="cov"><span class="num"><pre> 499</pre></span><pre>			error occurs.  The default is 'strict', which causes an</pre></div>
+<div class="cov"><span class="num"><pre> 500</pre></span><pre>			exception.	The other allowed values are 'warn', which</pre></div>
+<div class="cov"><span class="num"><pre> 501</pre></span><pre>			reports the error via log.warn(), and 'ignore'.</pre></div>
+<div class="cov"><span class="num"><pre> 502</pre></span><pre>		:param predicate: returns True for each Path p to be yielded by iterator</pre></div>
+<div class="cov"><span class="num"><pre> 503</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 504</pre></span><pre>		if errors not in ('strict', 'warn', 'ignore'):</pre></div>
+<div class="cov"><span class="num"><pre> 505</pre></span><pre>			raise ValueError(&quot;invalid errors parameter&quot;)</pre></div>
+<div class="skip"><span class="num"><pre> 506</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 507</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre> 508</pre></span><pre>			childList = self.listdir()</pre></div>
+<div class="cov"><span class="num"><pre> 509</pre></span><pre>		except Exception:</pre></div>
+<div class="cov"><span class="num"><pre> 510</pre></span><pre>			if errors == 'ignore':</pre></div>
+<div class="cov"><span class="num"><pre> 511</pre></span><pre>				return</pre></div>
+<div class="cov"><span class="num"><pre> 512</pre></span><pre>			elif errors == 'warn':</pre></div>
+<div class="cov"><span class="num"><pre> 513</pre></span><pre>				log.warn(</pre></div>
+<div class="cov"><span class="num"><pre> 514</pre></span><pre>					&quot;Unable to list directory '%s': %s&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 515</pre></span><pre>					% (self, sys.exc_info()[1]))</pre></div>
+<div class="cov"><span class="num"><pre> 516</pre></span><pre>				childList = list()</pre></div>
+<div class="cov"><span class="num"><pre> 517</pre></span><pre>			else:</pre></div>
+<div class="cov"><span class="num"><pre> 518</pre></span><pre>				raise</pre></div>
+<div class="skip"><span class="num"><pre> 519</pre></span><pre>			# END handle errors value</pre></div>
+<div class="skip"><span class="num"><pre> 520</pre></span><pre>		# END listdir exception handling</pre></div>
+<div class="skip"><span class="num"><pre> 521</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 522</pre></span><pre>		for child in childList:</pre></div>
+<div class="cov"><span class="num"><pre> 523</pre></span><pre>			if ( pattern is None or child.fnmatch(pattern) ) and predicate(child):</pre></div>
+<div class="cov"><span class="num"><pre> 524</pre></span><pre>				yield child</pre></div>
+<div class="skip"><span class="num"><pre> 525</pre></span><pre>				</pre></div>
+<div class="cov"><span class="num"><pre> 526</pre></span><pre>			try:</pre></div>
+<div class="cov"><span class="num"><pre> 527</pre></span><pre>				isdir = child.isdir()</pre></div>
+<div class="nocov"><span class="num"><pre> 528</pre></span><pre>			except Exception:</pre></div>
+<div class="nocov"><span class="num"><pre> 529</pre></span><pre>				isdir = False</pre></div>
+<div class="nocov"><span class="num"><pre> 530</pre></span><pre>				if errors == 'ignore':</pre></div>
+<div class="nocov"><span class="num"><pre> 531</pre></span><pre>					pass</pre></div>
+<div class="nocov"><span class="num"><pre> 532</pre></span><pre>				elif errors == 'warn':</pre></div>
+<div class="nocov"><span class="num"><pre> 533</pre></span><pre>					log.warn(</pre></div>
+<div class="nocov"><span class="num"><pre> 534</pre></span><pre>						&quot;Unable to access '%s': %s&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 535</pre></span><pre>						% (child, sys.exc_info()[1]))</pre></div>
+<div class="nocov"><span class="num"><pre> 536</pre></span><pre>				else:</pre></div>
+<div class="nocov"><span class="num"><pre> 537</pre></span><pre>					raise</pre></div>
+<div class="skip"><span class="num"><pre> 538</pre></span><pre>				# END handle errors value</pre></div>
+<div class="skip"><span class="num"><pre> 539</pre></span><pre>			# END directory access exception handling</pre></div>
+<div class="skip"><span class="num"><pre> 540</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre> 541</pre></span><pre>			if not isdir:</pre></div>
+<div class="cov"><span class="num"><pre> 542</pre></span><pre>				continue</pre></div>
+<div class="skip"><span class="num"><pre> 543</pre></span><pre>				</pre></div>
+<div class="cov"><span class="num"><pre> 544</pre></span><pre>			for item in child.walk(pattern, errors, predicate):</pre></div>
+<div class="cov"><span class="num"><pre> 545</pre></span><pre>				yield item</pre></div>
+<div class="skip"><span class="num"><pre> 546</pre></span><pre>			# END for each item</pre></div>
+<div class="skip"><span class="num"><pre> 547</pre></span><pre>		# END for each child in childlist</pre></div>
+<div class="skip"><span class="num"><pre> 548</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 549</pre></span><pre>	def walkdirs(self, pattern=None, errors='strict', predicate=lambda p: True):</pre></div>
+<div class="cov"><span class="num"><pre> 550</pre></span><pre>		&quot;&quot;&quot; D.walkdirs() -&gt; iterator over subdirs, recursively.</pre></div>
+<div class="cov"><span class="num"><pre> 551</pre></span><pre>		see `walk` for a parameter description &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 552</pre></span><pre>		pred = lambda p: p.isdir() and predicate(p)</pre></div>
+<div class="cov"><span class="num"><pre> 553</pre></span><pre>		return self.walk(pattern, errors, pred)</pre></div>
+<div class="skip"><span class="num"><pre> 554</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 555</pre></span><pre>	def walkfiles(self, pattern=None, errors='strict', predicate=lambda p: True):</pre></div>
+<div class="cov"><span class="num"><pre> 556</pre></span><pre>		&quot;&quot;&quot; D.walkfiles() -&gt; iterator over files in D, recursively.</pre></div>
+<div class="cov"><span class="num"><pre> 557</pre></span><pre>		see `walk` for a parameter description&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 558</pre></span><pre>		pred = lambda p: p.isfile() and predicate(p)</pre></div>
+<div class="cov"><span class="num"><pre> 559</pre></span><pre>		return self.walk(pattern, errors, pred)</pre></div>
+<div class="skip"><span class="num"><pre> 560</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre> 561</pre></span><pre>	def fnmatch(self, pattern):</pre></div>
+<div class="nocov"><span class="num"><pre> 562</pre></span><pre>		&quot;&quot;&quot; Return True if self.basename() matches the given pattern.</pre></div>
+<div class="skip"><span class="num"><pre> 563</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 564</pre></span><pre>		pattern - A filename pattern with wildcards,</pre></div>
+<div class="nocov"><span class="num"><pre> 565</pre></span><pre>			for example &quot;\*.py&quot;.</pre></div>
+<div class="nocov"><span class="num"><pre> 566</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 567</pre></span><pre>		pathexpanded = self.expandvars()</pre></div>
+<div class="cov"><span class="num"><pre> 568</pre></span><pre>		return fnmatch.fnmatch(pathexpanded.basename(), pattern)</pre></div>
+<div class="skip"><span class="num"><pre> 569</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 570</pre></span><pre>	def glob(self, pattern):</pre></div>
+<div class="nocov"><span class="num"><pre> 571</pre></span><pre>		&quot;&quot;&quot; Return a list of path objects that match the pattern.</pre></div>
+<div class="skip"><span class="num"><pre> 572</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 573</pre></span><pre>		pattern - a path relative to this directory, with wildcards.</pre></div>
+<div class="skip"><span class="num"><pre> 574</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 575</pre></span><pre>		For example, path('/users').glob('*/bin/*') returns a list</pre></div>
+<div class="nocov"><span class="num"><pre> 576</pre></span><pre>		of all the files users have in their bin directories.</pre></div>
+<div class="nocov"><span class="num"><pre> 577</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 578</pre></span><pre>		cls = self.__class__</pre></div>
+<div class="cov"><span class="num"><pre> 579</pre></span><pre>		pathexpanded = self.expandvars()</pre></div>
+<div class="cov"><span class="num"><pre> 580</pre></span><pre>		return [cls(s) for s in glob.glob(_base(pathexpanded / pattern))]</pre></div>
+<div class="skip"><span class="num"><pre> 581</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 582</pre></span><pre>	#} END Listing, searching, walking and watching</pre></div>
+<div class="skip"><span class="num"><pre> 583</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 584</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 585</pre></span><pre>	#{ Reading or writing an entire file at once</pre></div>
+<div class="skip"><span class="num"><pre> 586</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 587</pre></span><pre>	def open(self, *args, **kwargs):</pre></div>
+<div class="nocov"><span class="num"><pre> 588</pre></span><pre>		&quot;&quot;&quot; Open this file.	 Return a file object. &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 589</pre></span><pre>		return open(self._expandvars(self), *args, **kwargs)</pre></div>
+<div class="skip"><span class="num"><pre> 590</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 591</pre></span><pre>	def bytes(self):</pre></div>
+<div class="nocov"><span class="num"><pre> 592</pre></span><pre>		&quot;&quot;&quot; Open this file, read all bytes, return them as a string. &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 593</pre></span><pre>		f = self.open('rb')</pre></div>
+<div class="cov"><span class="num"><pre> 594</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre> 595</pre></span><pre>			return f.read()</pre></div>
+<div class="cov"><span class="num"><pre> 596</pre></span><pre>		finally:</pre></div>
+<div class="cov"><span class="num"><pre> 597</pre></span><pre>			f.close()</pre></div>
+<div class="skip"><span class="num"><pre> 598</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 599</pre></span><pre>	def write_bytes(self, bytes, append=False):</pre></div>
+<div class="nocov"><span class="num"><pre> 600</pre></span><pre>		&quot;&quot;&quot; Open this file and write the given bytes to it.</pre></div>
+<div class="skip"><span class="num"><pre> 601</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 602</pre></span><pre>		Default behavior is to overwrite any existing file.</pre></div>
+<div class="nocov"><span class="num"><pre> 603</pre></span><pre>		Call p.write_bytes(bytes, append=True) to append instead.</pre></div>
+<div class="nocov"><span class="num"><pre> 604</pre></span><pre>		:return: self</pre></div>
+<div class="nocov"><span class="num"><pre> 605</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 606</pre></span><pre>		if append:</pre></div>
+<div class="cov"><span class="num"><pre> 607</pre></span><pre>			mode = 'ab'</pre></div>
+<div class="cov"><span class="num"><pre> 608</pre></span><pre>		else:</pre></div>
+<div class="cov"><span class="num"><pre> 609</pre></span><pre>			mode = 'wb'</pre></div>
+<div class="cov"><span class="num"><pre> 610</pre></span><pre>		f = self.open(mode)</pre></div>
+<div class="cov"><span class="num"><pre> 611</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre> 612</pre></span><pre>			f.write(bytes)</pre></div>
+<div class="cov"><span class="num"><pre> 613</pre></span><pre>		finally:</pre></div>
+<div class="cov"><span class="num"><pre> 614</pre></span><pre>			f.close()</pre></div>
+<div class="skip"><span class="num"><pre> 615</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre> 616</pre></span><pre>		return self</pre></div>
+<div class="skip"><span class="num"><pre> 617</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 618</pre></span><pre>	def text(self, encoding=None, errors='strict'):</pre></div>
+<div class="nocov"><span class="num"><pre> 619</pre></span><pre>		r&quot;&quot;&quot; Open this file, read it in, return the content as a string.</pre></div>
+<div class="skip"><span class="num"><pre> 620</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 621</pre></span><pre>		This uses &quot;U&quot; mode in Python 2.3 and later, so &quot;\r\n&quot; and &quot;\r&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 622</pre></span><pre>		are automatically translated to '\n'.</pre></div>
+<div class="skip"><span class="num"><pre> 623</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 624</pre></span><pre>		Optional arguments:</pre></div>
+<div class="nocov"><span class="num"><pre> 625</pre></span><pre>		 * encoding - The Unicode encoding (or character set) of</pre></div>
+<div class="nocov"><span class="num"><pre> 626</pre></span><pre>		   the file.  If present, the content of the file is</pre></div>
+<div class="nocov"><span class="num"><pre> 627</pre></span><pre>		   decoded and returned as a unicode object; otherwise</pre></div>
+<div class="nocov"><span class="num"><pre> 628</pre></span><pre>		   it is returned as an 8-bit str.</pre></div>
+<div class="nocov"><span class="num"><pre> 629</pre></span><pre>		 * errors - How to handle Unicode errors; see help(str.decode)</pre></div>
+<div class="nocov"><span class="num"><pre> 630</pre></span><pre>		   for the options.  Default is 'strict'.</pre></div>
+<div class="nocov"><span class="num"><pre> 631</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 632</pre></span><pre>		mode = 'U'	# we are in python 2.4 at least</pre></div>
+<div class="skip"><span class="num"><pre> 633</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 634</pre></span><pre>		f = None</pre></div>
+<div class="cov"><span class="num"><pre> 635</pre></span><pre>		if encoding is None:</pre></div>
+<div class="cov"><span class="num"><pre> 636</pre></span><pre>			f = self.open(mode)</pre></div>
+<div class="cov"><span class="num"><pre> 637</pre></span><pre>		else:</pre></div>
+<div class="cov"><span class="num"><pre> 638</pre></span><pre>			f = codecs.open(self, 'r', encoding, errors)</pre></div>
+<div class="skip"><span class="num"><pre> 639</pre></span><pre>		# END handle encoding</pre></div>
+<div class="skip"><span class="num"><pre> 640</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 641</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre> 642</pre></span><pre>			return f.read()</pre></div>
+<div class="cov"><span class="num"><pre> 643</pre></span><pre>		finally:</pre></div>
+<div class="cov"><span class="num"><pre> 644</pre></span><pre>			f.close()</pre></div>
+<div class="skip"><span class="num"><pre> 645</pre></span><pre>		# END handle file read</pre></div>
+<div class="skip"><span class="num"><pre> 646</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 647</pre></span><pre>	def write_text(self, text, encoding=None, errors='strict', linesep=os.linesep, append=False):</pre></div>
+<div class="nocov"><span class="num"><pre> 648</pre></span><pre>		r&quot;&quot;&quot; Write the given text to this file.</pre></div>
+<div class="skip"><span class="num"><pre> 649</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 650</pre></span><pre>		The default behavior is to overwrite any existing file;</pre></div>
+<div class="nocov"><span class="num"><pre> 651</pre></span><pre>		to append instead, use the 'append=True' keyword argument.</pre></div>
+<div class="skip"><span class="num"><pre> 652</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 653</pre></span><pre>		There are two differences between path.write_text() and</pre></div>
+<div class="nocov"><span class="num"><pre> 654</pre></span><pre>		path.write_bytes(): newline handling and Unicode handling.</pre></div>
+<div class="nocov"><span class="num"><pre> 655</pre></span><pre>		See below.</pre></div>
+<div class="skip"><span class="num"><pre> 656</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 657</pre></span><pre>		**Parameters**:</pre></div>
+<div class="nocov"><span class="num"><pre> 658</pre></span><pre>		  - text - str/unicode - The text to be written.</pre></div>
+<div class="skip"><span class="num"><pre> 659</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 660</pre></span><pre>		  - encoding - str - The Unicode encoding that will be used.</pre></div>
+<div class="nocov"><span class="num"><pre> 661</pre></span><pre>			This is ignored if 'text' isn't a Unicode string.</pre></div>
+<div class="skip"><span class="num"><pre> 662</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 663</pre></span><pre>		  - errors - str - How to handle Unicode encoding errors.</pre></div>
+<div class="nocov"><span class="num"><pre> 664</pre></span><pre>			Default is 'strict'.  See help(unicode.encode) for the</pre></div>
+<div class="nocov"><span class="num"><pre> 665</pre></span><pre>			options.  This is ignored if 'text' isn't a Unicode</pre></div>
+<div class="nocov"><span class="num"><pre> 666</pre></span><pre>			string.</pre></div>
+<div class="skip"><span class="num"><pre> 667</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 668</pre></span><pre>		  - linesep - keyword argument - str/unicode - The sequence of</pre></div>
+<div class="nocov"><span class="num"><pre> 669</pre></span><pre>			characters to be used to mark end-of-line.	The default is</pre></div>
+<div class="nocov"><span class="num"><pre> 670</pre></span><pre>			os.linesep.	 You can also specify None; this means to</pre></div>
+<div class="nocov"><span class="num"><pre> 671</pre></span><pre>			leave all newlines as they are in 'text'.</pre></div>
+<div class="skip"><span class="num"><pre> 672</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 673</pre></span><pre>		  - append - keyword argument - bool - Specifies what to do if</pre></div>
+<div class="nocov"><span class="num"><pre> 674</pre></span><pre>			the file already exists (True: append to the end of it;</pre></div>
+<div class="nocov"><span class="num"><pre> 675</pre></span><pre>			False: overwrite it.)  The default is False.</pre></div>
+<div class="skip"><span class="num"><pre> 676</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 677</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 678</pre></span><pre>		**Newline handling**:</pre></div>
+<div class="nocov"><span class="num"><pre> 679</pre></span><pre>		 - write_text() converts all standard end-of-line sequences</pre></div>
+<div class="nocov"><span class="num"><pre> 680</pre></span><pre>			(&quot;\n&quot;, &quot;\r&quot;, and &quot;\r\n&quot;) to your platforms default end-of-line</pre></div>
+<div class="nocov"><span class="num"><pre> 681</pre></span><pre>			sequence (see os.linesep; on Windows, for example, the</pre></div>
+<div class="nocov"><span class="num"><pre> 682</pre></span><pre>			end-of-line marker is &quot;\r\n&quot;).</pre></div>
+<div class="skip"><span class="num"><pre> 683</pre></span><pre>	</pre></div>
+<div class="nocov"><span class="num"><pre> 684</pre></span><pre>		 - If you don't like your platform's default, you can override it</pre></div>
+<div class="nocov"><span class="num"><pre> 685</pre></span><pre>			using the &quot;linesep=&quot; keyword argument.	If you specifically want</pre></div>
+<div class="nocov"><span class="num"><pre> 686</pre></span><pre>			write_text() to preserve the newlines as-is, use &quot;linesep=None&quot;.</pre></div>
+<div class="skip"><span class="num"><pre> 687</pre></span><pre>	</pre></div>
+<div class="nocov"><span class="num"><pre> 688</pre></span><pre>		 - This applies to Unicode text the same as to 8-bit text, except</pre></div>
+<div class="nocov"><span class="num"><pre> 689</pre></span><pre>			there are additional standard Unicode end-of-line sequences, check </pre></div>
+<div class="nocov"><span class="num"><pre> 690</pre></span><pre>			the code to see them.</pre></div>
+<div class="skip"><span class="num"><pre> 691</pre></span><pre>	</pre></div>
+<div class="nocov"><span class="num"><pre> 692</pre></span><pre>		 - (This is slightly different from when you open a file for</pre></div>
+<div class="nocov"><span class="num"><pre> 693</pre></span><pre>			writing with fopen(filename, &quot;w&quot;) in C or file(filename, &quot;w&quot;)</pre></div>
+<div class="nocov"><span class="num"><pre> 694</pre></span><pre>			in Python.)</pre></div>
+<div class="skip"><span class="num"><pre> 695</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 696</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 697</pre></span><pre>		**Unicode**:</pre></div>
+<div class="nocov"><span class="num"><pre> 698</pre></span><pre>			If &quot;text&quot; isn't Unicode, then apart from newline handling, the</pre></div>
+<div class="nocov"><span class="num"><pre> 699</pre></span><pre>			bytes are written verbatim to the file.	 The &quot;encoding&quot; and</pre></div>
+<div class="nocov"><span class="num"><pre> 700</pre></span><pre>			'errors' arguments are not used and must be omitted.</pre></div>
+<div class="skip"><span class="num"><pre> 701</pre></span><pre>	</pre></div>
+<div class="nocov"><span class="num"><pre> 702</pre></span><pre>			If 'text' is Unicode, it is first converted to bytes using the</pre></div>
+<div class="nocov"><span class="num"><pre> 703</pre></span><pre>			specified 'encoding' (or the default encoding if 'encoding'</pre></div>
+<div class="nocov"><span class="num"><pre> 704</pre></span><pre>			isn't specified).  The 'errors' argument applies only to this</pre></div>
+<div class="nocov"><span class="num"><pre> 705</pre></span><pre>			conversion.</pre></div>
+<div class="skip"><span class="num"><pre> 706</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre> 707</pre></span><pre>		:return: self</pre></div>
+<div class="nocov"><span class="num"><pre> 708</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 709</pre></span><pre>		bytes = &quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 710</pre></span><pre>		if isinstance(text, unicode):</pre></div>
+<div class="cov"><span class="num"><pre> 711</pre></span><pre>			if linesep is not None:</pre></div>
+<div class="skip"><span class="num"><pre> 712</pre></span><pre>				# Convert all standard end-of-line sequences to</pre></div>
+<div class="skip"><span class="num"><pre> 713</pre></span><pre>				# ordinary newline characters.</pre></div>
+<div class="cov"><span class="num"><pre> 714</pre></span><pre>				text = (text.replace(u'\r\n', u'\n')</pre></div>
+<div class="cov"><span class="num"><pre> 715</pre></span><pre>							.replace(u'\r\x85', u'\n')</pre></div>
+<div class="cov"><span class="num"><pre> 716</pre></span><pre>							.replace(u'\r', u'\n')</pre></div>
+<div class="cov"><span class="num"><pre> 717</pre></span><pre>							.replace(u'\x85', u'\n')</pre></div>
+<div class="cov"><span class="num"><pre> 718</pre></span><pre>							.replace(u'\u2028', u'\n'))</pre></div>
+<div class="cov"><span class="num"><pre> 719</pre></span><pre>				text = text.replace(u'\n', linesep)</pre></div>
+<div class="cov"><span class="num"><pre> 720</pre></span><pre>			if encoding is None:</pre></div>
+<div class="nocov"><span class="num"><pre> 721</pre></span><pre>				encoding = sys.getdefaultencoding()</pre></div>
+<div class="cov"><span class="num"><pre> 722</pre></span><pre>			bytes = text.encode(encoding, errors)</pre></div>
+<div class="cov"><span class="num"><pre> 723</pre></span><pre>		else:</pre></div>
+<div class="skip"><span class="num"><pre> 724</pre></span><pre>			# It is an error to specify an encoding if 'text' is</pre></div>
+<div class="skip"><span class="num"><pre> 725</pre></span><pre>			# an 8-bit string.</pre></div>
+<div class="cov"><span class="num"><pre> 726</pre></span><pre>			assert encoding is None</pre></div>
+<div class="skip"><span class="num"><pre> 727</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 728</pre></span><pre>			if linesep is not None:</pre></div>
+<div class="cov"><span class="num"><pre> 729</pre></span><pre>				text = (text.replace('\r\n', '\n')</pre></div>
+<div class="cov"><span class="num"><pre> 730</pre></span><pre>							.replace('\r', '\n'))</pre></div>
+<div class="cov"><span class="num"><pre> 731</pre></span><pre>				bytes = text.replace('\n', linesep)</pre></div>
+<div class="skip"><span class="num"><pre> 732</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 733</pre></span><pre>		self.write_bytes(bytes, append)</pre></div>
+<div class="cov"><span class="num"><pre> 734</pre></span><pre>		return self</pre></div>
+<div class="skip"><span class="num"><pre> 735</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 736</pre></span><pre>	def write_lines(self, lines, encoding=None, errors='strict',</pre></div>
+<div class="nocov"><span class="num"><pre> 737</pre></span><pre>					linesep=os.linesep, append=False):</pre></div>
+<div class="nocov"><span class="num"><pre> 738</pre></span><pre>		r&quot;&quot;&quot; Write the given lines of text to this file.</pre></div>
+<div class="skip"><span class="num"><pre> 739</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 740</pre></span><pre>		By default this overwrites any existing file at this path.</pre></div>
+<div class="skip"><span class="num"><pre> 741</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 742</pre></span><pre>		This puts a platform-specific newline sequence on every line.</pre></div>
+<div class="nocov"><span class="num"><pre> 743</pre></span><pre>		See 'linesep' below.</pre></div>
+<div class="skip"><span class="num"><pre> 744</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 745</pre></span><pre>		lines - A list of strings.</pre></div>
+<div class="skip"><span class="num"><pre> 746</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 747</pre></span><pre>		encoding - A Unicode encoding to use.  This applies only if</pre></div>
+<div class="nocov"><span class="num"><pre> 748</pre></span><pre>			'lines' contains any Unicode strings.</pre></div>
+<div class="skip"><span class="num"><pre> 749</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 750</pre></span><pre>		errors - How to handle errors in Unicode encoding.	This</pre></div>
+<div class="nocov"><span class="num"><pre> 751</pre></span><pre>			also applies only to Unicode strings.</pre></div>
+<div class="skip"><span class="num"><pre> 752</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 753</pre></span><pre>		linesep - The desired line-ending.	This line-ending is</pre></div>
+<div class="nocov"><span class="num"><pre> 754</pre></span><pre>			applied to every line.	If a line already has any</pre></div>
+<div class="nocov"><span class="num"><pre> 755</pre></span><pre>			standard line ending, that will be stripped off and</pre></div>
+<div class="nocov"><span class="num"><pre> 756</pre></span><pre>			this will be used instead.	The default is os.linesep,</pre></div>
+<div class="nocov"><span class="num"><pre> 757</pre></span><pre>			which is platform-dependent ('\r\n' on Windows, '\n' on</pre></div>
+<div class="nocov"><span class="num"><pre> 758</pre></span><pre>			Unix, etc.)	 Specify None to write the lines as-is,</pre></div>
+<div class="nocov"><span class="num"><pre> 759</pre></span><pre>			like file.writelines().</pre></div>
+<div class="skip"><span class="num"><pre> 760</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 761</pre></span><pre>		Use the keyword argument append=True to append lines to the</pre></div>
+<div class="nocov"><span class="num"><pre> 762</pre></span><pre>		file.  The default is to overwrite the file.  Warning:</pre></div>
+<div class="nocov"><span class="num"><pre> 763</pre></span><pre>		When you use this with Unicode data, if the encoding of the</pre></div>
+<div class="nocov"><span class="num"><pre> 764</pre></span><pre>		existing data in the file is different from the encoding</pre></div>
+<div class="nocov"><span class="num"><pre> 765</pre></span><pre>		you specify with the encoding= parameter, the result is</pre></div>
+<div class="nocov"><span class="num"><pre> 766</pre></span><pre>		mixed-encoding data, which can really confuse someone trying</pre></div>
+<div class="nocov"><span class="num"><pre> 767</pre></span><pre>		to read the file later.</pre></div>
+<div class="skip"><span class="num"><pre> 768</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre> 769</pre></span><pre>		:return: self</pre></div>
+<div class="nocov"><span class="num"><pre> 770</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 771</pre></span><pre>		if append:</pre></div>
+<div class="nocov"><span class="num"><pre> 772</pre></span><pre>			mode = 'ab'</pre></div>
+<div class="cov"><span class="num"><pre> 773</pre></span><pre>		else:</pre></div>
+<div class="cov"><span class="num"><pre> 774</pre></span><pre>			mode = 'wb'</pre></div>
+<div class="cov"><span class="num"><pre> 775</pre></span><pre>		f = self.open(mode)</pre></div>
+<div class="cov"><span class="num"><pre> 776</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre> 777</pre></span><pre>			for line in lines:</pre></div>
+<div class="cov"><span class="num"><pre> 778</pre></span><pre>				isUnicode = isinstance(line, unicode)</pre></div>
+<div class="cov"><span class="num"><pre> 779</pre></span><pre>				if linesep is not None:</pre></div>
+<div class="skip"><span class="num"><pre> 780</pre></span><pre>					# Strip off any existing line-end and add the</pre></div>
+<div class="skip"><span class="num"><pre> 781</pre></span><pre>					# specified linesep string.</pre></div>
+<div class="cov"><span class="num"><pre> 782</pre></span><pre>					if isUnicode:</pre></div>
+<div class="nocov"><span class="num"><pre> 783</pre></span><pre>						if line[-2:] in (u'\r\n', u'\x0d\x85'):</pre></div>
+<div class="nocov"><span class="num"><pre> 784</pre></span><pre>							line = line[:-2]</pre></div>
+<div class="nocov"><span class="num"><pre> 785</pre></span><pre>						elif line[-1:] in (u'\r', u'\n',</pre></div>
+<div class="nocov"><span class="num"><pre> 786</pre></span><pre>										   u'\x85', u'\u2028'):</pre></div>
+<div class="nocov"><span class="num"><pre> 787</pre></span><pre>							line = line[:-1]</pre></div>
+<div class="cov"><span class="num"><pre> 788</pre></span><pre>					else:</pre></div>
+<div class="cov"><span class="num"><pre> 789</pre></span><pre>						if line[-2:] == '\r\n':</pre></div>
+<div class="nocov"><span class="num"><pre> 790</pre></span><pre>							line = line[:-2]</pre></div>
+<div class="cov"><span class="num"><pre> 791</pre></span><pre>						elif line[-1:] in ('\r', '\n'):</pre></div>
+<div class="nocov"><span class="num"><pre> 792</pre></span><pre>							line = line[:-1]</pre></div>
+<div class="cov"><span class="num"><pre> 793</pre></span><pre>					line += linesep</pre></div>
+<div class="cov"><span class="num"><pre> 794</pre></span><pre>				if isUnicode:</pre></div>
+<div class="nocov"><span class="num"><pre> 795</pre></span><pre>					if encoding is None:</pre></div>
+<div class="nocov"><span class="num"><pre> 796</pre></span><pre>						encoding = sys.getdefaultencoding()</pre></div>
+<div class="nocov"><span class="num"><pre> 797</pre></span><pre>					line = line.encode(encoding, errors)</pre></div>
+<div class="cov"><span class="num"><pre> 798</pre></span><pre>				f.write(line)</pre></div>
+<div class="cov"><span class="num"><pre> 799</pre></span><pre>		finally:</pre></div>
+<div class="cov"><span class="num"><pre> 800</pre></span><pre>			f.close()</pre></div>
+<div class="skip"><span class="num"><pre> 801</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre> 802</pre></span><pre>		return self</pre></div>
+<div class="skip"><span class="num"><pre> 803</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 804</pre></span><pre>	def lines(self, encoding=None, errors='strict', retain=True):</pre></div>
+<div class="nocov"><span class="num"><pre> 805</pre></span><pre>		r&quot;&quot;&quot; Open this file, read all lines, return them in a list.</pre></div>
+<div class="skip"><span class="num"><pre> 806</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 807</pre></span><pre>		Optional arguments:</pre></div>
+<div class="nocov"><span class="num"><pre> 808</pre></span><pre>			 * encoding: The Unicode encoding (or character set) of</pre></div>
+<div class="nocov"><span class="num"><pre> 809</pre></span><pre>				the file.  The default is None, meaning the content</pre></div>
+<div class="nocov"><span class="num"><pre> 810</pre></span><pre>				of the file is read as 8-bit characters and returned</pre></div>
+<div class="nocov"><span class="num"><pre> 811</pre></span><pre>				as a list of (non-Unicode) str objects.</pre></div>
+<div class="skip"><span class="num"><pre> 812</pre></span><pre>				</pre></div>
+<div class="nocov"><span class="num"><pre> 813</pre></span><pre>			 * errors: How to handle Unicode errors; see help(str.decode)</pre></div>
+<div class="nocov"><span class="num"><pre> 814</pre></span><pre>				for the options.  Default is 'strict'</pre></div>
+<div class="skip"><span class="num"><pre> 815</pre></span><pre>				</pre></div>
+<div class="nocov"><span class="num"><pre> 816</pre></span><pre>			 * retain: If true, retain newline characters; but all newline</pre></div>
+<div class="nocov"><span class="num"><pre> 817</pre></span><pre>				character combinations (&quot;\r&quot;, &quot;\n&quot;, &quot;\r\n&quot;) are</pre></div>
+<div class="nocov"><span class="num"><pre> 818</pre></span><pre>				translated to &quot;\n&quot;.	 If false, newline characters are</pre></div>
+<div class="nocov"><span class="num"><pre> 819</pre></span><pre>				stripped off.  Default is True.</pre></div>
+<div class="skip"><span class="num"><pre> 820</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre> 821</pre></span><pre>		This uses &quot;U&quot; mode in Python 2.3 and later.</pre></div>
+<div class="nocov"><span class="num"><pre> 822</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 823</pre></span><pre>		if encoding is None and retain:</pre></div>
+<div class="cov"><span class="num"><pre> 824</pre></span><pre>			f = self.open(_textmode)</pre></div>
+<div class="cov"><span class="num"><pre> 825</pre></span><pre>			try:</pre></div>
+<div class="cov"><span class="num"><pre> 826</pre></span><pre>				return f.readlines()</pre></div>
+<div class="cov"><span class="num"><pre> 827</pre></span><pre>			finally:</pre></div>
+<div class="cov"><span class="num"><pre> 828</pre></span><pre>				f.close()</pre></div>
+<div class="cov"><span class="num"><pre> 829</pre></span><pre>		else:</pre></div>
+<div class="cov"><span class="num"><pre> 830</pre></span><pre>			return self.text(encoding, errors).splitlines(retain)</pre></div>
+<div class="skip"><span class="num"><pre> 831</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 832</pre></span><pre>	def digest(self, hashobject):</pre></div>
+<div class="nocov"><span class="num"><pre> 833</pre></span><pre>		&quot;&quot;&quot; Calculate the  hash for this file using the given hashobject. It must </pre></div>
+<div class="nocov"><span class="num"><pre> 834</pre></span><pre>		support the 'update' and 'digest' methods.</pre></div>
+<div class="skip"><span class="num"><pre> 835</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 836</pre></span><pre>		:note: This reads through the entire file.</pre></div>
+<div class="nocov"><span class="num"><pre> 837</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 838</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 839</pre></span><pre>		f = self.open('rb')</pre></div>
+<div class="cov"><span class="num"><pre> 840</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre> 841</pre></span><pre>			while True:</pre></div>
+<div class="cov"><span class="num"><pre> 842</pre></span><pre>				d = f.read(8192)</pre></div>
+<div class="cov"><span class="num"><pre> 843</pre></span><pre>				if not d:</pre></div>
+<div class="cov"><span class="num"><pre> 844</pre></span><pre>					break</pre></div>
+<div class="cov"><span class="num"><pre> 845</pre></span><pre>				hashobject.update(d)</pre></div>
+<div class="cov"><span class="num"><pre> 846</pre></span><pre>		finally:</pre></div>
+<div class="cov"><span class="num"><pre> 847</pre></span><pre>			f.close()</pre></div>
+<div class="skip"><span class="num"><pre> 848</pre></span><pre>		# END assure file gets closed</pre></div>
+<div class="skip"><span class="num"><pre> 849</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 850</pre></span><pre>		return hashobject.digest()</pre></div>
+<div class="skip"><span class="num"><pre> 851</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 852</pre></span><pre>	#} END Reading or writing an enitre file at once</pre></div>
+<div class="skip"><span class="num"><pre> 853</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 854</pre></span><pre>	#{ Methods for querying the filesystem</pre></div>
+<div class="skip"><span class="num"><pre> 855</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 856</pre></span><pre>	exists = lambda self: os.path.exists( self._expandvars(self) )</pre></div>
+<div class="nocov"><span class="num"><pre> 857</pre></span><pre>	if hasattr(os.path, 'lexists'):</pre></div>
+<div class="cov"><span class="num"><pre> 858</pre></span><pre>		lexists = lambda self: os.path.lexists( self._expandvars(self) )</pre></div>
+<div class="cov"><span class="num"><pre> 859</pre></span><pre>	isdir = lambda self: os.path.isdir( self._expandvars(self) )</pre></div>
+<div class="cov"><span class="num"><pre> 860</pre></span><pre>	isfile = lambda self: os.path.isfile( self._expandvars(self) )</pre></div>
+<div class="cov"><span class="num"><pre> 861</pre></span><pre>	islink = lambda self: os.path.islink( self._expandvars(self) )</pre></div>
+<div class="cov"><span class="num"><pre> 862</pre></span><pre>	ismount = lambda self: os.path.ismount( self._expandvars(self) )</pre></div>
+<div class="skip"><span class="num"><pre> 863</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 864</pre></span><pre>	if hasattr(os.path, 'samefile'):</pre></div>
+<div class="cov"><span class="num"><pre> 865</pre></span><pre>		samefile = lambda self, other: os.path.samefile( self._expandvars(self), other )</pre></div>
+<div class="skip"><span class="num"><pre> 866</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 867</pre></span><pre>	atime = lambda self: os.path.getatime( self._expandvars(self) )</pre></div>
+<div class="cov"><span class="num"><pre> 868</pre></span><pre>	mtime = lambda self: os.path.getmtime( self._expandvars(self) )</pre></div>
+<div class="nocov"><span class="num"><pre> 869</pre></span><pre>	if hasattr(os.path, 'getctime'):</pre></div>
+<div class="cov"><span class="num"><pre> 870</pre></span><pre>		ctime = lambda self: os.path.getctime( self._expandvars(self) )</pre></div>
+<div class="nocov"><span class="num"><pre> 871</pre></span><pre>	size = lambda self: os.path.getsize( self._expandvars(self) )</pre></div>
+<div class="skip"><span class="num"><pre> 872</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 873</pre></span><pre>	if hasattr(os, 'access'):</pre></div>
+<div class="nocov"><span class="num"><pre> 874</pre></span><pre>		def access(self, mode):</pre></div>
+<div class="nocov"><span class="num"><pre> 875</pre></span><pre>			&quot;&quot;&quot; Return true if current user has access to this path.</pre></div>
+<div class="skip"><span class="num"><pre> 876</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 877</pre></span><pre>			mode - One of the constants os.F_OK, os.R_OK, os.W_OK, os.X_OK</pre></div>
+<div class="nocov"><span class="num"><pre> 878</pre></span><pre>			&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 879</pre></span><pre>			return os.access(self._expandvars(self), mode)</pre></div>
+<div class="skip"><span class="num"><pre> 880</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 881</pre></span><pre>	def stat(self):</pre></div>
+<div class="nocov"><span class="num"><pre> 882</pre></span><pre>		&quot;&quot;&quot; Perform a stat() system call on this path. &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 883</pre></span><pre>		return os.stat(self._expandvars(self))</pre></div>
+<div class="skip"><span class="num"><pre> 884</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 885</pre></span><pre>	def lstat(self):</pre></div>
+<div class="nocov"><span class="num"><pre> 886</pre></span><pre>		&quot;&quot;&quot; Like path.stat(), but do not follow symbolic links. &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 887</pre></span><pre>		return os.lstat(self._expandvars(self))</pre></div>
+<div class="skip"><span class="num"><pre> 888</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 889</pre></span><pre>	def owner(self):</pre></div>
+<div class="nocov"><span class="num"><pre> 890</pre></span><pre>		&quot;&quot;&quot; Return the name of the owner of this file or directory.</pre></div>
+<div class="skip"><span class="num"><pre> 891</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 892</pre></span><pre>		This follows symbolic links.</pre></div>
+<div class="skip"><span class="num"><pre> 893</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 894</pre></span><pre>		On Windows, this returns a name of the form ur'DOMAIN\User Name'.</pre></div>
+<div class="nocov"><span class="num"><pre> 895</pre></span><pre>		On Windows, a group can own a file or directory.</pre></div>
+<div class="nocov"><span class="num"><pre> 896</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 897</pre></span><pre>		if os.name == 'nt':</pre></div>
+<div class="nocov"><span class="num"><pre> 898</pre></span><pre>			if win32security is None:</pre></div>
+<div class="nocov"><span class="num"><pre> 899</pre></span><pre>				raise Exception(&quot;path.owner requires win32all to be installed&quot;)</pre></div>
+<div class="nocov"><span class="num"><pre> 900</pre></span><pre>			desc = win32security.GetFileSecurity(</pre></div>
+<div class="nocov"><span class="num"><pre> 901</pre></span><pre>				self, win32security.OWNER_SECURITY_INFORMATION)</pre></div>
+<div class="nocov"><span class="num"><pre> 902</pre></span><pre>			sid = desc.GetSecurityDescriptorOwner()</pre></div>
+<div class="nocov"><span class="num"><pre> 903</pre></span><pre>			account, domain, typecode = win32security.LookupAccountSid(None, sid)</pre></div>
+<div class="nocov"><span class="num"><pre> 904</pre></span><pre>			return domain + u'\\' + account</pre></div>
+<div class="cov"><span class="num"><pre> 905</pre></span><pre>		else:</pre></div>
+<div class="cov"><span class="num"><pre> 906</pre></span><pre>			if pwd is None:</pre></div>
+<div class="nocov"><span class="num"><pre> 907</pre></span><pre>				raise NotImplementedError(&quot;path.owner is not implemented on this platform.&quot;)</pre></div>
+<div class="cov"><span class="num"><pre> 908</pre></span><pre>			st = self.stat()</pre></div>
+<div class="cov"><span class="num"><pre> 909</pre></span><pre>			return pwd.getpwuid(st.st_uid).pw_name</pre></div>
+<div class="skip"><span class="num"><pre> 910</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 911</pre></span><pre>	if hasattr(os, 'statvfs'):</pre></div>
+<div class="nocov"><span class="num"><pre> 912</pre></span><pre>		def statvfs(self):</pre></div>
+<div class="nocov"><span class="num"><pre> 913</pre></span><pre>			&quot;&quot;&quot; Perform a statvfs() system call on this path. &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 914</pre></span><pre>			return os.statvfs(self._expandvars(self))</pre></div>
+<div class="skip"><span class="num"><pre> 915</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 916</pre></span><pre>	if hasattr(os, 'pathconf'):</pre></div>
+<div class="nocov"><span class="num"><pre> 917</pre></span><pre>		def pathconf(self, name):</pre></div>
+<div class="nocov"><span class="num"><pre> 918</pre></span><pre>			&quot;&quot;&quot;see os.pathconf&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 919</pre></span><pre>			return os.pathconf(self._expandvars(self), name)</pre></div>
+<div class="skip"><span class="num"><pre> 920</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 921</pre></span><pre>	def isWritable( self ):</pre></div>
+<div class="nocov"><span class="num"><pre> 922</pre></span><pre>		&quot;&quot;&quot;:return: true if the file can be written to&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 923</pre></span><pre>		if not self.exists():</pre></div>
+<div class="nocov"><span class="num"><pre> 924</pre></span><pre>			return False		# assure we do not create anything not already there</pre></div>
+<div class="skip"><span class="num"><pre> 925</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 926</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre> 927</pre></span><pre>			fileobj = self.open( 'a' )</pre></div>
+<div class="cov"><span class="num"><pre> 928</pre></span><pre>		except:</pre></div>
+<div class="cov"><span class="num"><pre> 929</pre></span><pre>			return False</pre></div>
+<div class="cov"><span class="num"><pre> 930</pre></span><pre>		else:</pre></div>
+<div class="cov"><span class="num"><pre> 931</pre></span><pre>			fileobj.close()</pre></div>
+<div class="cov"><span class="num"><pre> 932</pre></span><pre>			return True</pre></div>
+<div class="skip"><span class="num"><pre> 933</pre></span><pre>		# END handle file open</pre></div>
+<div class="skip"><span class="num"><pre> 934</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 935</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 936</pre></span><pre>	#} END Methods for querying the filesystem</pre></div>
+<div class="skip"><span class="num"><pre> 937</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 938</pre></span><pre>	#{ Modifying operations on files and directories</pre></div>
+<div class="skip"><span class="num"><pre> 939</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 940</pre></span><pre>	def setutime(self, times):</pre></div>
+<div class="nocov"><span class="num"><pre> 941</pre></span><pre>		&quot;&quot;&quot; Set the access and modified times of this file.</pre></div>
+<div class="skip"><span class="num"><pre> 942</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre> 943</pre></span><pre>		:return: self&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 944</pre></span><pre>		os.utime(self._expandvars(self), times)</pre></div>
+<div class="cov"><span class="num"><pre> 945</pre></span><pre>		return self</pre></div>
+<div class="skip"><span class="num"><pre> 946</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 947</pre></span><pre>	def chmod(self, mode):</pre></div>
+<div class="nocov"><span class="num"><pre> 948</pre></span><pre>		&quot;&quot;&quot;Change file mode</pre></div>
+<div class="skip"><span class="num"><pre> 949</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre> 950</pre></span><pre>		:return: self&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 951</pre></span><pre>		os.chmod(self._expandvars(self), mode)</pre></div>
+<div class="cov"><span class="num"><pre> 952</pre></span><pre>		return self</pre></div>
+<div class="skip"><span class="num"><pre> 953</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 954</pre></span><pre>	if hasattr(os, 'chown'):</pre></div>
+<div class="nocov"><span class="num"><pre> 955</pre></span><pre>		def chown(self, uid, gid):</pre></div>
+<div class="nocov"><span class="num"><pre> 956</pre></span><pre>			&quot;&quot;&quot;Change file ownership</pre></div>
+<div class="skip"><span class="num"><pre> 957</pre></span><pre>			</pre></div>
+<div class="nocov"><span class="num"><pre> 958</pre></span><pre>			:return: self&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 959</pre></span><pre>			os.chown(self._expandvars(self), uid, gid)</pre></div>
+<div class="nocov"><span class="num"><pre> 960</pre></span><pre>			return self</pre></div>
+<div class="skip"><span class="num"><pre> 961</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 962</pre></span><pre>	def rename(self, new):</pre></div>
+<div class="nocov"><span class="num"><pre> 963</pre></span><pre>		&quot;&quot;&quot;os.rename</pre></div>
+<div class="skip"><span class="num"><pre> 964</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre> 965</pre></span><pre>		:return: Path to new file&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 966</pre></span><pre>		os.rename(self._expandvars(self), new)</pre></div>
+<div class="cov"><span class="num"><pre> 967</pre></span><pre>		return type(self)(new)</pre></div>
+<div class="skip"><span class="num"><pre> 968</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 969</pre></span><pre>	def renames(self, new):</pre></div>
+<div class="nocov"><span class="num"><pre> 970</pre></span><pre>		&quot;&quot;&quot;os.renames, super rename</pre></div>
+<div class="skip"><span class="num"><pre> 971</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre> 972</pre></span><pre>		:return: Path to new file&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 973</pre></span><pre>		os.renames(self._expandvars(self), new)</pre></div>
+<div class="cov"><span class="num"><pre> 974</pre></span><pre>		return type(self)(new)</pre></div>
+<div class="skip"><span class="num"><pre> 975</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 976</pre></span><pre>	#} END Modifying operations on files and directories</pre></div>
+<div class="skip"><span class="num"><pre> 977</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 978</pre></span><pre>	#{ Create/delete operations on directories</pre></div>
+<div class="skip"><span class="num"><pre> 979</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 980</pre></span><pre>	def mkdir(self, mode=0777):</pre></div>
+<div class="nocov"><span class="num"><pre> 981</pre></span><pre>		&quot;&quot;&quot;Make this directory, fail if it already exists</pre></div>
+<div class="skip"><span class="num"><pre> 982</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre> 983</pre></span><pre>		:return: self&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 984</pre></span><pre>		os.mkdir(self._expandvars(self), mode)</pre></div>
+<div class="cov"><span class="num"><pre> 985</pre></span><pre>		return self</pre></div>
+<div class="skip"><span class="num"><pre> 986</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 987</pre></span><pre>	def makedirs(self, mode=0777):</pre></div>
+<div class="nocov"><span class="num"><pre> 988</pre></span><pre>		&quot;&quot;&quot;Smarter makedir, see os.makedirs</pre></div>
+<div class="skip"><span class="num"><pre> 989</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre> 990</pre></span><pre>		:return: self&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 991</pre></span><pre>		os.makedirs(self._expandvars(self), mode)</pre></div>
+<div class="cov"><span class="num"><pre> 992</pre></span><pre>		return self</pre></div>
+<div class="skip"><span class="num"><pre> 993</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 994</pre></span><pre>	def rmdir(self):</pre></div>
+<div class="nocov"><span class="num"><pre> 995</pre></span><pre>		&quot;&quot;&quot;Remove this empty directory</pre></div>
+<div class="skip"><span class="num"><pre> 996</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre> 997</pre></span><pre>		:return: self&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 998</pre></span><pre>		os.rmdir(self._expandvars(self))</pre></div>
+<div class="cov"><span class="num"><pre> 999</pre></span><pre>		return self</pre></div>
+<div class="skip"><span class="num"><pre>1000</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>1001</pre></span><pre>	def removedirs(self):</pre></div>
+<div class="nocov"><span class="num"><pre>1002</pre></span><pre>		&quot;&quot;&quot;see os.removedirs</pre></div>
+<div class="skip"><span class="num"><pre>1003</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>1004</pre></span><pre>		:return: self&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1005</pre></span><pre>		os.removedirs(self._expandvars(self))</pre></div>
+<div class="cov"><span class="num"><pre>1006</pre></span><pre>		return self</pre></div>
+<div class="skip"><span class="num"><pre>1007</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1008</pre></span><pre>	#} END Create/delete operations on directories</pre></div>
+<div class="skip"><span class="num"><pre>1009</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1010</pre></span><pre>	#{ Modifying operations on files</pre></div>
+<div class="skip"><span class="num"><pre>1011</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>1012</pre></span><pre>	def touch(self, flags = os.O_WRONLY | os.O_CREAT, mode = 0666):</pre></div>
+<div class="nocov"><span class="num"><pre>1013</pre></span><pre>		&quot;&quot;&quot; Set the access/modified times of this file to the current time.</pre></div>
+<div class="nocov"><span class="num"><pre>1014</pre></span><pre>		Create the file if it does not exist.</pre></div>
+<div class="skip"><span class="num"><pre>1015</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>1016</pre></span><pre>		:return: self</pre></div>
+<div class="nocov"><span class="num"><pre>1017</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1018</pre></span><pre>		fd = os.open(self._expandvars(self), flags, mode)</pre></div>
+<div class="cov"><span class="num"><pre>1019</pre></span><pre>		os.close(fd)</pre></div>
+<div class="cov"><span class="num"><pre>1020</pre></span><pre>		os.utime(self._expandvars(self), None)</pre></div>
+<div class="cov"><span class="num"><pre>1021</pre></span><pre>		return self</pre></div>
+<div class="skip"><span class="num"><pre>1022</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>1023</pre></span><pre>	def remove(self):</pre></div>
+<div class="nocov"><span class="num"><pre>1024</pre></span><pre>		&quot;&quot;&quot;Remove this file</pre></div>
+<div class="skip"><span class="num"><pre>1025</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>1026</pre></span><pre>		:return: self&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1027</pre></span><pre>		os.remove(self._expandvars(self))</pre></div>
+<div class="cov"><span class="num"><pre>1028</pre></span><pre>		return self</pre></div>
+<div class="skip"><span class="num"><pre>1029</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>1030</pre></span><pre>	def unlink(self):</pre></div>
+<div class="nocov"><span class="num"><pre>1031</pre></span><pre>		&quot;&quot;&quot;unlink this file</pre></div>
+<div class="skip"><span class="num"><pre>1032</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>1033</pre></span><pre>		:return: self&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1034</pre></span><pre>		os.unlink(self._expandvars(self))</pre></div>
+<div class="cov"><span class="num"><pre>1035</pre></span><pre>		return self</pre></div>
+<div class="skip"><span class="num"><pre>1036</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1037</pre></span><pre>	#} END Modifying operations on files</pre></div>
+<div class="skip"><span class="num"><pre>1038</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1039</pre></span><pre>	#{ Links</pre></div>
+<div class="skip"><span class="num"><pre>1040</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>1041</pre></span><pre>	if hasattr(os, 'link'):</pre></div>
+<div class="nocov"><span class="num"><pre>1042</pre></span><pre>		def link(self, newpath):</pre></div>
+<div class="nocov"><span class="num"><pre>1043</pre></span><pre>			&quot;&quot;&quot; Create a hard link at 'newpath', pointing to this file. </pre></div>
+<div class="skip"><span class="num"><pre>1044</pre></span><pre>			</pre></div>
+<div class="nocov"><span class="num"><pre>1045</pre></span><pre>			:return: Path to newpath&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1046</pre></span><pre>			os.link(self._expandvars(self), newpath)</pre></div>
+<div class="cov"><span class="num"><pre>1047</pre></span><pre>			return type(self)(newpath)</pre></div>
+<div class="skip"><span class="num"><pre>1048</pre></span><pre>			</pre></div>
+<div class="skip"><span class="num"><pre>1049</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>1050</pre></span><pre>	if hasattr(os, 'symlink'):</pre></div>
+<div class="nocov"><span class="num"><pre>1051</pre></span><pre>		def symlink(self, newlink):</pre></div>
+<div class="nocov"><span class="num"><pre>1052</pre></span><pre>			&quot;&quot;&quot; Create a symbolic link at 'newlink', pointing here. </pre></div>
+<div class="skip"><span class="num"><pre>1053</pre></span><pre>			</pre></div>
+<div class="nocov"><span class="num"><pre>1054</pre></span><pre>			:return: Path to newlink&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1055</pre></span><pre>			os.symlink(self._expandvars(self), newlink)</pre></div>
+<div class="cov"><span class="num"><pre>1056</pre></span><pre>			return type(self)(newlink)</pre></div>
+<div class="skip"><span class="num"><pre>1057</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>1058</pre></span><pre>	if hasattr(os, 'readlink'):</pre></div>
+<div class="nocov"><span class="num"><pre>1059</pre></span><pre>		def readlink(self):</pre></div>
+<div class="nocov"><span class="num"><pre>1060</pre></span><pre>			&quot;&quot;&quot; Return the path to which this symbolic link points.</pre></div>
+<div class="skip"><span class="num"><pre>1061</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>1062</pre></span><pre>			The result may be an absolute or a relative path.</pre></div>
+<div class="nocov"><span class="num"><pre>1063</pre></span><pre>			&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1064</pre></span><pre>			return self.__class__(os.readlink(self._expandvars(self)))</pre></div>
+<div class="skip"><span class="num"><pre>1065</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>1066</pre></span><pre>		def readlinkabs(self):</pre></div>
+<div class="nocov"><span class="num"><pre>1067</pre></span><pre>			&quot;&quot;&quot; Return the path to which this symbolic link points.</pre></div>
+<div class="skip"><span class="num"><pre>1068</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>1069</pre></span><pre>			The result is always an absolute path.</pre></div>
+<div class="nocov"><span class="num"><pre>1070</pre></span><pre>			&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1071</pre></span><pre>			p = self.readlink()</pre></div>
+<div class="cov"><span class="num"><pre>1072</pre></span><pre>			if p.isabs():</pre></div>
+<div class="cov"><span class="num"><pre>1073</pre></span><pre>				return p</pre></div>
+<div class="nocov"><span class="num"><pre>1074</pre></span><pre>			else:</pre></div>
+<div class="nocov"><span class="num"><pre>1075</pre></span><pre>				return (self.parent() / p).abspath()</pre></div>
+<div class="skip"><span class="num"><pre>1076</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1077</pre></span><pre>	#} END Links</pre></div>
+<div class="skip"><span class="num"><pre>1078</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1079</pre></span><pre>	#{ High-level functions from shutil</pre></div>
+<div class="skip"><span class="num"><pre>1080</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>1081</pre></span><pre>	def copyfile(self, dest):</pre></div>
+<div class="nocov"><span class="num"><pre>1082</pre></span><pre>		&quot;&quot;&quot;Copy self to dest</pre></div>
+<div class="skip"><span class="num"><pre>1083</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>1084</pre></span><pre>		:return: Path to dest&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1085</pre></span><pre>		shutil.copyfile( self._expandvars(self), dest )</pre></div>
+<div class="cov"><span class="num"><pre>1086</pre></span><pre>		return type(self)(dest)</pre></div>
+<div class="skip"><span class="num"><pre>1087</pre></span><pre>	</pre></div>
+<div class="nocov"><span class="num"><pre>1088</pre></span><pre>	def copymode(self, dest):</pre></div>
+<div class="nocov"><span class="num"><pre>1089</pre></span><pre>		&quot;&quot;&quot;Copy our mode to dest</pre></div>
+<div class="skip"><span class="num"><pre>1090</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>1091</pre></span><pre>		:return: Path to dest&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1092</pre></span><pre>		shutil.copymode( self._expandvars(self), dest )</pre></div>
+<div class="cov"><span class="num"><pre>1093</pre></span><pre>		return type(self)(dest)</pre></div>
+<div class="skip"><span class="num"><pre>1094</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>1095</pre></span><pre>	def copystat(self, dest):</pre></div>
+<div class="nocov"><span class="num"><pre>1096</pre></span><pre>		&quot;&quot;&quot;Copy our stats to dest</pre></div>
+<div class="skip"><span class="num"><pre>1097</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>1098</pre></span><pre>		:return: Path to dest&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1099</pre></span><pre>		shutil.copystat( self._expandvars(self), dest )</pre></div>
+<div class="cov"><span class="num"><pre>1100</pre></span><pre>		return type(self)(dest)</pre></div>
+<div class="skip"><span class="num"><pre>1101</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>1102</pre></span><pre>	def copy(self, dest):</pre></div>
+<div class="nocov"><span class="num"><pre>1103</pre></span><pre>		&quot;&quot;&quot;Copy data and source bits to dest</pre></div>
+<div class="skip"><span class="num"><pre>1104</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>1105</pre></span><pre>		:return: Path to dest&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>1106</pre></span><pre>		shutil.copy( self._expandvars(self), dest )</pre></div>
+<div class="nocov"><span class="num"><pre>1107</pre></span><pre>		return type(self)(dest)</pre></div>
+<div class="skip"><span class="num"><pre>1108</pre></span><pre>	</pre></div>
+<div class="nocov"><span class="num"><pre>1109</pre></span><pre>	def copy2(self, dest):</pre></div>
+<div class="nocov"><span class="num"><pre>1110</pre></span><pre>		&quot;&quot;&quot;Shutil.copy2 self to dest</pre></div>
+<div class="skip"><span class="num"><pre>1111</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>1112</pre></span><pre>		:return: Path to dest&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>1113</pre></span><pre>		shutil.copy2( self._expandvars(self), dest )</pre></div>
+<div class="nocov"><span class="num"><pre>1114</pre></span><pre>		return type(self)(dest)</pre></div>
+<div class="skip"><span class="num"><pre>1115</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>1116</pre></span><pre>	def copytree(self, dest, **kwargs):</pre></div>
+<div class="nocov"><span class="num"><pre>1117</pre></span><pre>		&quot;&quot;&quot;Deep copy this file or directory to destination</pre></div>
+<div class="skip"><span class="num"><pre>1118</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>1119</pre></span><pre>		:param kwargs: passed to shutil.copytree</pre></div>
+<div class="nocov"><span class="num"><pre>1120</pre></span><pre>		:return: Path to dest&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1121</pre></span><pre>		shutil.copytree( self._expandvars(self), dest, **kwargs )</pre></div>
+<div class="cov"><span class="num"><pre>1122</pre></span><pre>		return type(self)(dest)</pre></div>
+<div class="skip"><span class="num"><pre>1123</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>1124</pre></span><pre>	if hasattr(shutil, 'move'):</pre></div>
+<div class="nocov"><span class="num"><pre>1125</pre></span><pre>		def move(self, dest):</pre></div>
+<div class="nocov"><span class="num"><pre>1126</pre></span><pre>			&quot;&quot;&quot;Move self to dest</pre></div>
+<div class="skip"><span class="num"><pre>1127</pre></span><pre>			</pre></div>
+<div class="nocov"><span class="num"><pre>1128</pre></span><pre>			:return: Path to dest&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1129</pre></span><pre>			shutil.move( self._expandvars(self), dest )</pre></div>
+<div class="cov"><span class="num"><pre>1130</pre></span><pre>			return type(self)(dest)</pre></div>
+<div class="skip"><span class="num"><pre>1131</pre></span><pre>			</pre></div>
+<div class="nocov"><span class="num"><pre>1132</pre></span><pre>	def rmtree(self, **kwargs):</pre></div>
+<div class="nocov"><span class="num"><pre>1133</pre></span><pre>		&quot;&quot;&quot;Remove self recursively</pre></div>
+<div class="skip"><span class="num"><pre>1134</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>1135</pre></span><pre>		:param kwargs: passed to shutil.rmtree</pre></div>
+<div class="nocov"><span class="num"><pre>1136</pre></span><pre>		:return: self&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1137</pre></span><pre>		shutil.rmtree( self._expandvars(self),  **kwargs )</pre></div>
+<div class="cov"><span class="num"><pre>1138</pre></span><pre>		return self</pre></div>
+<div class="skip"><span class="num"><pre>1139</pre></span><pre>			</pre></div>
+<div class="skip"><span class="num"><pre>1140</pre></span><pre>	#} END High-Level</pre></div>
+<div class="skip"><span class="num"><pre>1141</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1142</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1143</pre></span><pre>	#{ Special stuff from os</pre></div>
+<div class="nocov"><span class="num"><pre>1144</pre></span><pre>	if hasattr(os, 'chroot'):</pre></div>
+<div class="nocov"><span class="num"><pre>1145</pre></span><pre>		def chroot(self):</pre></div>
+<div class="nocov"><span class="num"><pre>1146</pre></span><pre>			&quot;&quot;&quot;Change the root directory path</pre></div>
+<div class="skip"><span class="num"><pre>1147</pre></span><pre>			</pre></div>
+<div class="nocov"><span class="num"><pre>1148</pre></span><pre>			:return: self&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>1149</pre></span><pre>			os.chroot(self._expandvars(self))</pre></div>
+<div class="nocov"><span class="num"><pre>1150</pre></span><pre>			return self</pre></div>
+<div class="skip"><span class="num"><pre>1151</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>1152</pre></span><pre>	if hasattr(os, 'startfile'):</pre></div>
+<div class="nocov"><span class="num"><pre>1153</pre></span><pre>		def startfile(self):</pre></div>
+<div class="nocov"><span class="num"><pre>1154</pre></span><pre>			&quot;&quot;&quot;see os.startfile</pre></div>
+<div class="skip"><span class="num"><pre>1155</pre></span><pre>			</pre></div>
+<div class="nocov"><span class="num"><pre>1156</pre></span><pre>			:return: self&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>1157</pre></span><pre>			os.startfile(self._expandvars(self))</pre></div>
+<div class="nocov"><span class="num"><pre>1158</pre></span><pre>			return self</pre></div>
+<div class="skip"><span class="num"><pre>1159</pre></span><pre>	#} END Special stuff from os</pre></div>
+<div class="skip"><span class="num"><pre>1160</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>1161</pre></span><pre>#{ utilities</pre></div>
+<div class="nocov"><span class="num"><pre>1162</pre></span><pre>_ossep = os.path.sep</pre></div>
+<div class="nocov"><span class="num"><pre>1163</pre></span><pre>_oossep = (_ossep == &quot;/&quot; and &quot;\\&quot;) or &quot;/&quot;</pre></div>
+<div class="skip"><span class="num"><pre>1164</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>1165</pre></span><pre>def _to_os_path(path):</pre></div>
+<div class="nocov"><span class="num"><pre>1166</pre></span><pre>	&quot;&quot;&quot;:return: string being an os compatible path&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1167</pre></span><pre>	return path.replace(_oossep, _ossep)</pre></div>
+<div class="skip"><span class="num"><pre>1168</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>1169</pre></span><pre>#} END utilities</pre></div>
+<div class="skip"><span class="num"><pre>1170</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1171</pre></span><pre># backup original class</pre></div>
+<div class="nocov"><span class="num"><pre>1172</pre></span><pre>BasePath = Path</pre></div>
+<div class="skip"><span class="num"><pre>1173</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>1174</pre></span><pre>class ConversionPath(BasePath):</pre></div>
+<div class="nocov"><span class="num"><pre>1175</pre></span><pre>	&quot;&quot;&quot;On windows, python represents paths with backslashes, within maya though, </pre></div>
+<div class="nocov"><span class="num"><pre>1176</pre></span><pre>	these are slashes We want to keep the original representation, but allow</pre></div>
+<div class="nocov"><span class="num"><pre>1177</pre></span><pre>	the methods to work nonetheless.&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>1178</pre></span><pre>	def __div__(self, rel):</pre></div>
+<div class="cov"><span class="num"><pre>1179</pre></span><pre>		return self.joinpath(rel)</pre></div>
+<div class="skip"><span class="num"><pre>1180</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>1181</pre></span><pre>	@classmethod</pre></div>
+<div class="nocov"><span class="num"><pre>1182</pre></span><pre>	def _expandvars(cls, path):</pre></div>
+<div class="skip"><span class="num"><pre>1183</pre></span><pre>		# when expanding, we might get operating system separators into the path, which</pre></div>
+<div class="skip"><span class="num"><pre>1184</pre></span><pre>		# have to be replaced to our actual one</pre></div>
+<div class="cov"><span class="num"><pre>1185</pre></span><pre>		return super(ConversionPath, cls)._expandvars(path).replace(cls.osep, cls.sep)</pre></div>
+<div class="skip"><span class="num"><pre>1186</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>1187</pre></span><pre>	def _from_os_path(self, path):</pre></div>
+<div class="nocov"><span class="num"><pre>1188</pre></span><pre>		&quot;&quot;&quot;:return: path with separators matching to our configuration&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1189</pre></span><pre>		return path.replace(self.osep, self.sep)</pre></div>
+<div class="skip"><span class="num"><pre>1190</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>1191</pre></span><pre>	def abspath(self):</pre></div>
+<div class="cov"><span class="num"><pre>1192</pre></span><pre>		return self.__class__(self._from_os_path(_to_os_path(os.path.abspath(self))))</pre></div>
+<div class="skip"><span class="num"><pre>1193</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>1194</pre></span><pre>	def normpath(self):</pre></div>
+<div class="cov"><span class="num"><pre>1195</pre></span><pre>		return self.__class__(self._from_os_path(os.path.normpath(self)))</pre></div>
+<div class="skip"><span class="num"><pre>1196</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>1197</pre></span><pre>	def joinpath(self, *args):</pre></div>
+<div class="cov"><span class="num"><pre>1198</pre></span><pre>		return self.__class__(self._from_os_path(os.path.join(self, *args)))</pre></div>
+<div class="skip"><span class="num"><pre>1199</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>1200</pre></span><pre>	def relpathto(self, dest):</pre></div>
+<div class="cov"><span class="num"><pre>1201</pre></span><pre>		rval = super(ConversionPath, self).relpathto(dest)</pre></div>
+<div class="cov"><span class="num"><pre>1202</pre></span><pre>		return type(self)(self._from_os_path(rval))</pre></div>
+<div class="skip"><span class="num"><pre>1203</pre></span><pre>	</pre></div>
+<div class="nocov"><span class="num"><pre>1204</pre></span><pre>	def dirname(self):</pre></div>
+<div class="cov"><span class="num"><pre>1205</pre></span><pre>		return self.__class__(self._from_os_path(os.path.dirname(_to_os_path(self))))</pre></div>
+<div class="skip"><span class="num"><pre>1206</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>1207</pre></span><pre>	def basename(self):</pre></div>
+<div class="cov"><span class="num"><pre>1208</pre></span><pre>		return type(self)(self._from_os_path(os.path.basename(_to_os_path(self))))</pre></div>
+<div class="skip"><span class="num"><pre>1209</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>1210</pre></span><pre>	def splitpath(self):</pre></div>
+<div class="cov"><span class="num"><pre>1211</pre></span><pre>		parent, child = os.path.split(_to_os_path(self))</pre></div>
+<div class="cov"><span class="num"><pre>1212</pre></span><pre>		return type(self)(self._from_os_path(parent)), child</pre></div>
+<div class="skip"><span class="num"><pre>1213</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>1214</pre></span><pre>	# { Special Methods</pre></div>
+<div class="nocov"><span class="num"><pre>1215</pre></span><pre>	if hasattr(os.path, 'splitunc'):</pre></div>
+<div class="nocov"><span class="num"><pre>1216</pre></span><pre>		def splitunc(self):</pre></div>
+<div class="nocov"><span class="num"><pre>1217</pre></span><pre>			return super(ConversionPath, self).splitunc()</pre></div>
+<div class="skip"><span class="num"><pre>1218</pre></span><pre>			</pre></div>
+<div class="nocov"><span class="num"><pre>1219</pre></span><pre>		def isunshared(self):</pre></div>
+<div class="nocov"><span class="num"><pre>1220</pre></span><pre>			return super(ConversionPath, self).isunshared()</pre></div>
+<div class="skip"><span class="num"><pre>1221</pre></span><pre>	# } END special methods</pre></div>
+<div class="skip"><span class="num"><pre>1222</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>1223</pre></span><pre># END handle backslashes</pre></div>
+<div class="skip"><span class="num"><pre>1224</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1225</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1226</pre></span><pre>#{ Utilities </pre></div>
+<div class="nocov"><span class="num"><pre>1227</pre></span><pre>def make_path(path):</pre></div>
+<div class="nocov"><span class="num"><pre>1228</pre></span><pre>	&quot;&quot;&quot;:return: A path instance of the correct type</pre></div>
+<div class="nocov"><span class="num"><pre>1229</pre></span><pre>	:note: use this constructor if you use the Path.set_separator method at runtime</pre></div>
+<div class="nocov"><span class="num"><pre>1230</pre></span><pre>		to assure you will always create instances of the actual type, and not only</pre></div>
+<div class="nocov"><span class="num"><pre>1231</pre></span><pre>		of the type you imported last&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1232</pre></span><pre>	return Path(path)</pre></div>
+<div class="skip"><span class="num"><pre>1233</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1234</pre></span><pre>#} END utilities</pre></div>
+<div class="skip"><span class="num"><pre>1235</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1236</pre></span><pre># assure separator is set</pre></div>
+<div class="skip"><span class="num"><pre>1237</pre></span><pre>################################</pre></div>
+<div class="nocov"><span class="num"><pre>1238</pre></span><pre>Path.set_separator(os.path.sep)</pre></div>
+<div class="skip"><span class="num"><pre>1239</pre></span><pre>################################</pre></div>
+<div class="skip"><span class="num"><pre>1240</pre></span><pre></pre></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,309 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Plugs and Attributes &mdash; mrv v1.0.1-develop documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.1-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="mrv v1.0.1-develop documentation" href="../index.html" />
+    <link rel="up" title="Usage" href="index.html" />
+    <link rel="next" title="Mesh Component Iteration" href="mesh.html" />
+    <link rel="prev" title="Nodes" href="nodes.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="mesh.html" title="Mesh Component Iteration"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="nodes.html" title="Nodes"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Usage</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="plugs-and-attributes">
+<h1>Plugs and Attributes<a class="headerlink" href="#plugs-and-attributes" title="Permalink to this headline">¶</a></h1>
+<p>Persons without experience with the MayaAPI might be confused at first as MEL always uses the term <tt class="docutils literal"><span class="pre">attr</span></tt> when dealing with plugs <em>and</em> attributes. The MayaAPI, as well as MRV differentiate these.</p>
+<blockquote>
+<ul class="simple">
+<li>Attributes define the type of data to be stored, its name and a suitable default value. They do not hold any other data themselves.</li>
+<li>Plugs allow accessing Data as identified by an attribute on a given Node. plugs are valid only if they refer to a valid Node and one of the Node&#8217;s attributes. Plugs can be connected to each other, input connections are exclusive, hence a plug may have multiple output connection, but only one input connection.</li>
+</ul>
+</blockquote>
+<div class="section" id="plugs">
+<h2>Plugs<a class="headerlink" href="#plugs" title="Permalink to this headline">¶</a></h2>
+<p>To access data on a node, you need to retrieve a plug to it, which is represented by the patched API type <tt class="docutils literal"><span class="pre">MPlug</span></tt>. Whenever you deal with data and connections within MRV, you deal with plugs:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">translate</span><span class="p">,</span> <span class="n">api</span><span class="o">.</span><span class="n">MPlug</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">p</span><span class="o">.</span><span class="n">translate</span> <span class="o">==</span> <span class="n">p</span><span class="o">.</span><span class="n">findPlug</span><span class="p">(</span><span class="s">&#39;t&#39;</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">p</span><span class="o">.</span><span class="n">t</span> <span class="o">==</span> <span class="n">p</span><span class="o">.</span><span class="n">translate</span>
+</pre></div>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">MPlug</span></tt> type has been extended with various convenience methods which are well worth an separate study, here we focus on the most important functionality only.</p>
+<div class="section" id="connections">
+<h3>Connections<a class="headerlink" href="#connections" title="Permalink to this headline">¶</a></h3>
+<p>Connect and disconnect plugs using simple, chainable methods:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">p</span><span class="o">.</span><span class="n">tx</span><span class="o">.</span><span class="n">mconnectTo</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">ty</span><span class="p">)</span><span class="o">.</span><span class="n">mconnectTo</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">tz</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">p</span><span class="o">.</span><span class="n">tx</span><span class="o">.</span><span class="n">misConnectedTo</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">ty</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">p</span><span class="o">.</span><span class="n">ty</span><span class="o">.</span><span class="n">misConnectedTo</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">tz</span><span class="p">)</span>
+<span class="k">assert</span> <span class="ow">not</span> <span class="n">p</span><span class="o">.</span><span class="n">tz</span><span class="o">.</span><span class="n">misConnectedTo</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">ty</span><span class="p">)</span>
+
+<span class="n">p</span><span class="o">.</span><span class="n">tx</span><span class="o">.</span><span class="n">mdisconnectFrom</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">ty</span><span class="p">)</span><span class="o">.</span><span class="n">mdisconnectFrom</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">tz</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">ty</span><span class="o">.</span><span class="n">minputs</span><span class="p">())</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">tz</span><span class="o">.</span><span class="n">minputs</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span>
+<span class="k">assert</span> <span class="n">p</span><span class="o">.</span><span class="n">tz</span><span class="o">.</span><span class="n">minput</span><span class="p">()</span><span class="o">.</span><span class="n">isNull</span><span class="p">()</span>
+
+<span class="n">p</span><span class="o">.</span><span class="n">tx</span><span class="o">.</span><span class="n">mconnectTo</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">tz</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">ty</span><span class="o">.</span><span class="n">mconnectTo</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">tz</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>     <span class="c"># raises as tz is already connected</span>
+<span class="n">p</span><span class="o">.</span><span class="n">ty</span><span class="o">.</span><span class="n">mconnectTo</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">tz</span><span class="p">)</span>                  <span class="c"># force the connection, force defaults True</span>
+<span class="n">p</span><span class="o">.</span><span class="n">tz</span><span class="o">.</span><span class="n">mdisconnect</span><span class="p">()</span>                     <span class="c"># disconnect all</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="querying-values">
+<h3>Querying Values<a class="headerlink" href="#querying-values" title="Permalink to this headline">¶</a></h3>
+<p>Primitive values, like ints, floats, values with units as well as strings can easily be retrieved using one of the dedicated <tt class="docutils literal"><span class="pre">MPlug.asType</span></tt> functions:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">tx</span><span class="o">.</span><span class="n">asFloat</span><span class="p">(),</span> <span class="nb">float</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">outTime</span><span class="o">.</span><span class="n">asMTime</span><span class="p">(),</span> <span class="n">api</span><span class="o">.</span><span class="n">MTime</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>All other data is returned as an MObject serving as a container for the possibly copied data. Data-specific function sets can operate on this data. You need to know which function set is actually compatible with the <tt class="docutils literal"><span class="pre">MObject</span></tt> at hand, or use a MRV data wrapper:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ninst</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">getInstanceNumber</span><span class="p">()</span>
+<span class="k">assert</span> <span class="n">p</span><span class="o">.</span><span class="n">isInstancedAttribute</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">attribute</span><span class="p">(</span><span class="s">&#39;wm&#39;</span><span class="p">))</span>
+<span class="n">pewm</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">worldMatrix</span><span class="o">.</span><span class="n">elementByLogicalIndex</span><span class="p">(</span><span class="n">ninst</span><span class="p">)</span>
+
+<span class="n">matfn</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">MFnMatrixData</span><span class="p">(</span><span class="n">pewm</span><span class="o">.</span><span class="n">asMObject</span><span class="p">())</span>
+<span class="n">matrix</span> <span class="o">=</span> <span class="n">matfn</span><span class="o">.</span><span class="n">matrix</span><span class="p">()</span>                       <span class="c"># wrap data manually</span>
+
+<span class="n">dat</span> <span class="o">=</span> <span class="n">pewm</span><span class="o">.</span><span class="n">masData</span><span class="p">()</span>                          <span class="c"># or get a wrapped version right away</span>
+<span class="k">assert</span> <span class="n">matrix</span> <span class="o">==</span> <span class="n">dat</span><span class="o">.</span><span class="n">matrix</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Wrapping data automatically using <tt class="docutils literal"><span class="pre">masData</span></tt> is relatively inefficient as all known data function sets will be tried for a compatible one. Afterwards the data is copied into a <tt class="docutils literal"><span class="pre">Data</span></tt> compatible object which gives convenient access to the data ( this can be very inefficient depending on how the data type is actually implemented ). If you favor performance over convenience, initialize the respective MFnFunctionSet yourself.</p>
+</div>
+</div>
+<div class="section" id="setting-values">
+<h3>Setting Values<a class="headerlink" href="#setting-values" title="Permalink to this headline">¶</a></h3>
+<p>Primitive value types can be handled easily using their corresponding <tt class="docutils literal"><span class="pre">MPlug.setType</span></tt> functions. Please note that the methods prefixed with &#8216;m&#8217; are MRV specific and feature undo support:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">newx</span> <span class="o">=</span> <span class="mf">10.0</span>
+<span class="n">p</span><span class="o">.</span><span class="n">tx</span><span class="o">.</span><span class="n">msetDouble</span><span class="p">(</span><span class="n">newx</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">p</span><span class="o">.</span><span class="n">tx</span><span class="o">.</span><span class="n">asDouble</span><span class="p">()</span> <span class="o">==</span> <span class="n">newx</span>
+</pre></div>
+</div>
+<p>All other types need to be created and adjusted using their respective data function sets. The following example extracts mesh data defining a cube, deletes a face, creates a new mesh shape to be filled with the adjusted data so that it shows up in the scene:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">meshdata</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">outMesh</span><span class="o">.</span><span class="n">asMObject</span><span class="p">()</span>
+<span class="n">meshfn</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">MFnMesh</span><span class="p">(</span><span class="n">meshdata</span><span class="p">)</span>
+<span class="n">meshfn</span><span class="o">.</span><span class="n">deleteFace</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>                        <span class="c"># delete one face of copied cube data</span>
+<span class="k">assert</span> <span class="n">meshfn</span><span class="o">.</span><span class="n">numPolygons</span><span class="p">()</span> <span class="o">==</span> <span class="mi">5</span>
+
+<span class="n">mc</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">()</span>                                 <span class="c"># create new empty mesh to</span>
+<span class="n">mc</span><span class="o">.</span><span class="n">cachedInMesh</span><span class="o">.</span><span class="n">msetMObject</span><span class="p">(</span><span class="n">meshdata</span><span class="p">)</span>       <span class="c"># hold the new mesh in the scene</span>
+<span class="k">assert</span> <span class="n">mc</span><span class="o">.</span><span class="n">numPolygons</span><span class="p">()</span> <span class="o">==</span> <span class="mi">5</span>
+<span class="k">assert</span> <span class="n">m</span><span class="o">.</span><span class="n">numPolygons</span><span class="p">()</span> <span class="o">==</span> <span class="mi">6</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">As you see, the mesh data extracted initially has been copied at some point - if the data type does not implement copy-on-write, this can be very inefficient on large meshes, especially if you are just examining the data without any intention to alter it.</p>
+</div>
+</div>
+<div class="section" id="compound-plugs-and-plug-arrays">
+<h3>Compound Plugs and Plug-Arrays<a class="headerlink" href="#compound-plugs-and-plug-arrays" title="Permalink to this headline">¶</a></h3>
+<p>Compound Attributes are attributes which by themselves only serve as a parent for one or more child attributes. Array attributes are attributes which can have any amount of homogeneous elements. Compound- and Array Attributes can be combined to create complex special purpose Attribute types.</p>
+<p>The <tt class="docutils literal"><span class="pre">MPlug</span></tt> type has functions to traverse the plugs of the corresponding attributes</p>
+<p>A simple example for a compound plug is the translate attribute of a transform, which has 3 child plugs, translateX, translateY and translatZ.</p>
+<p>Array plugs are used to access the transform&#8217;s worldMatrix data, which contains one world matrix per instance of the transform.</p>
+<p>The following example shows the traversal of these attribute types:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ptc</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">mchildren</span><span class="p">()</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">ptc</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span>
+<span class="k">assert</span> <span class="p">(</span><span class="n">ptc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">p</span><span class="o">.</span><span class="n">tx</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">ptc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">p</span><span class="o">.</span><span class="n">ty</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">ptc</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">p</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">mchildByName</span><span class="p">(</span><span class="s">&#39;tz&#39;</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">p</span><span class="o">.</span><span class="n">tx</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span> <span class="o">==</span> <span class="n">p</span><span class="o">.</span><span class="n">t</span>
+<span class="k">assert</span> <span class="n">p</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">isCompound</span><span class="p">()</span>
+<span class="k">assert</span> <span class="n">p</span><span class="o">.</span><span class="n">tx</span><span class="o">.</span><span class="n">isChild</span><span class="p">()</span>
+
+<span class="k">assert</span> <span class="n">p</span><span class="o">.</span><span class="n">wm</span><span class="o">.</span><span class="n">isArray</span><span class="p">()</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">wm</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+
+<span class="k">for</span> <span class="n">element_plug</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">wm</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">element_plug</span><span class="o">.</span><span class="n">isElement</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="graph-travseral">
+<h3>Graph Travseral<a class="headerlink" href="#graph-travseral" title="Permalink to this headline">¶</a></h3>
+<p>Using the <tt class="docutils literal"><span class="pre">miter(Input|Output)Graph</span></tt> methods, complex and fast traversals of the dependency graph are made easy:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">mihistory</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">inMesh</span><span class="o">.</span><span class="n">miterInputGraph</span><span class="p">())</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">mihistory</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span>
+<span class="k">assert</span> <span class="n">mihistory</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">inMesh</span>
+<span class="k">assert</span> <span class="n">mihistory</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">pc</span><span class="o">.</span><span class="n">output</span>        <span class="c"># ignore groupparts</span>
+
+<span class="n">pcfuture</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pc</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">miterOutputGraph</span><span class="p">())</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">pcfuture</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span>
+<span class="k">assert</span> <span class="n">pcfuture</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">pc</span><span class="o">.</span><span class="n">output</span>
+<span class="k">assert</span> <span class="n">pcfuture</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">inMesh</span>          <span class="c"># ignore groupparts</span>
+</pre></div>
+</div>
+<p>Please note that the traversal can be configured in many ways to meet your specific requirements, as it is implemented by <tt class="docutils literal"><span class="pre">iterGraph</span></tt>.</p>
+</div>
+</div>
+<div class="section" id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">¶</a></h2>
+<p>As attributes are just describing the type and further meta information of data, their most interesting purpose is to create new attributes which can be customized to fully suit your needs.</p>
+<p>The following example will use facilities of MRV to create a complex attribute.</p>
+<ul class="simple">
+<li>master ( Compound, Array )</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>String</li>
+<li>Point ( double3, Compound )</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>x ( double )</li>
+<li>y ( double )</li>
+<li>z ( double )</li>
+</ul>
+</blockquote>
+<ul class="simple">
+<li>message ( Message, Array )</li>
+</ul>
+</blockquote>
+<p>The code looks like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">cattr</span> <span class="o">=</span> <span class="n">CompoundAttribute</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;compound&quot;</span><span class="p">,</span> <span class="s">&quot;co&quot;</span><span class="p">)</span>
+<span class="n">cattr</span><span class="o">.</span><span class="n">setArray</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">cattr</span><span class="p">:</span>
+        <span class="n">sattr</span> <span class="o">=</span> <span class="n">TypedAttribute</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;string&quot;</span><span class="p">,</span> <span class="s">&quot;str&quot;</span><span class="p">,</span> <span class="n">Data</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">kString</span><span class="p">)</span>
+        <span class="n">pattr</span> <span class="o">=</span> <span class="n">NumericAttribute</span><span class="o">.</span><span class="n">createPoint</span><span class="p">(</span><span class="s">&quot;point&quot;</span><span class="p">,</span> <span class="s">&quot;p&quot;</span><span class="p">)</span>
+        <span class="n">mattr</span> <span class="o">=</span> <span class="n">MessageAttribute</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;message&quot;</span><span class="p">,</span> <span class="s">&quot;msg&quot;</span><span class="p">)</span>
+        <span class="n">mattr</span><span class="o">.</span><span class="n">setArray</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+
+        <span class="n">cattr</span><span class="o">.</span><span class="n">addChild</span><span class="p">(</span><span class="n">sattr</span><span class="p">)</span>
+        <span class="n">cattr</span><span class="o">.</span><span class="n">addChild</span><span class="p">(</span><span class="n">pattr</span><span class="p">)</span>
+        <span class="n">cattr</span><span class="o">.</span><span class="n">addChild</span><span class="p">(</span><span class="n">mattr</span><span class="p">)</span>
+<span class="c"># END compound attribute</span>
+</pre></div>
+</div>
+<p>Now the only thing left to do is to add the newly created attribute to a node:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">n</span> <span class="o">=</span> <span class="n">Network</span><span class="p">()</span>
+<span class="n">n</span><span class="o">.</span><span class="n">addAttribute</span><span class="p">(</span><span class="n">cattr</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">n</span><span class="o">.</span><span class="n">compound</span><span class="o">.</span><span class="n">isArray</span><span class="p">()</span>
+<span class="k">assert</span> <span class="n">n</span><span class="o">.</span><span class="n">compound</span><span class="o">.</span><span class="n">isCompound</span><span class="p">()</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">compound</span><span class="o">.</span><span class="n">children</span><span class="p">())</span> <span class="o">==</span> <span class="mi">3</span>
+<span class="k">assert</span> <span class="n">n</span><span class="o">.</span><span class="n">compound</span><span class="p">[</span><span class="s">&#39;mymessage&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isArray</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Finally, remove the attribute - either using the attribute we kept, <tt class="docutils literal"><span class="pre">cattr</span></tt> or by finding the attribute:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">n</span><span class="o">.</span><span class="n">removeAttribute</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">compound</span><span class="o">.</span><span class="n">attribute</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="../index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#">Plugs and Attributes</a><ul>
+<li><a class="reference external" href="#plugs">Plugs</a><ul>
+<li><a class="reference external" href="#connections">Connections</a></li>
+<li><a class="reference external" href="#querying-values">Querying Values</a></li>
+<li><a class="reference external" href="#setting-values">Setting Values</a></li>
+<li><a class="reference external" href="#compound-plugs-and-plug-arrays">Compound Plugs and Plug-Arrays</a></li>
+<li><a class="reference external" href="#graph-travseral">Graph Travseral</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#attributes">Attributes</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="nodes.html"
+                                  title="previous chapter">Nodes</a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="mesh.html"
+                                  title="next chapter">Mesh Component Iteration</a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/usage/plugs.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mesh.html" title="Mesh Component Iteration"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="nodes.html" title="Nodes"
+             >previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li>
+          <li><a href="index.html" >Usage</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Nov 30, 2010.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

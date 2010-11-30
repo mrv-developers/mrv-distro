@@ -1,0 +1,2246 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>mrv.automation.workflow &mdash; mrv v1.0.1-develop documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.1-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="mrv v1.0.1-develop documentation" href="../index.html" />
+    <link rel="next" title="mrv.automation.attributes" href="mrv.automation.attributes.html" />
+    <link rel="prev" title="mrv.automation.report" href="mrv.automation.report.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.automation.attributes.html" title="mrv.automation.attributes"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mrv.automation.report.html" title="mrv.automation.report"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-mrv.automation.workflow">
+<h1><tt class="xref docutils literal"><span class="pre">mrv.automation.workflow</span></tt><a class="headerlink" href="#module-mrv.automation.workflow" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="api/mrv.automation.workflow-module.html">Epydoc: mrv.automation.workflow</a></p>
+<p>Contains workflow classes that conenct processes in a di - graph</p>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="api/mrv.automation.workflow-module.html#Graph">Epydoc: mrv.automation.workflow</a></p>
+<dl class="class">
+<dt id="mrv.automation.workflow.Graph">
+<em class="property">class </em><tt class="descclassname">mrv.automation.workflow.</tt><tt class="descname">Graph</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">networkx.classes.digraph.DiGraph</span></tt>, <a title="mrv.interface.iDuplicatable" class="reference external" href="mrv.interface.html#mrv.interface.iDuplicatable"><tt class="xref docutils literal"><span class="pre">mrv.interface.iDuplicatable</span></tt></a></p>
+<p>Holds the nodes and their connections</p>
+<p>Nodes are kept in a separate list whereas the plug connections are kept
+in the underlying DiGraph</p>
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.addNode">
+<tt class="descname">addNode</tt><big>(</big><em>node</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.addNode" title="Permalink to this definition">¶</a></dt>
+<dd>Add a new node instance to the graph
+:note: node membership is exclusive, thus node instances
+can only be in one graph at a time
+:return: self, for chained calls</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.automation.workflow.Graph.addSep">
+<em class="property">classmethod </em><tt class="descname">addSep</tt><big>(</big><em>item</em>, <em>sep</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.addSep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">item with separator added to it ( just once )</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">operates best on strings</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>item</em> &#8211; item to add separator to</li>
+<li><em>sep</em> &#8211; the separator</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.add_cycle">
+<tt class="descname">add_cycle</tt><big>(</big><em>nlist</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.add_cycle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.add_edge">
+<tt class="descname">add_edge</tt><big>(</big><em>u</em>, <em>v</em>, <em>attr_dict=None</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.add_edge" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.add_edges_from">
+<tt class="descname">add_edges_from</tt><big>(</big><em>ebunch</em>, <em>attr_dict=None</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.add_edges_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.add_node">
+<tt class="descname">add_node</tt><big>(</big><em>n</em>, <em>attr_dict=None</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.add_node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.add_nodes_from">
+<tt class="descname">add_nodes_from</tt><big>(</big><em>nodes</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.add_nodes_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.add_path">
+<tt class="descname">add_path</tt><big>(</big><em>nlist</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.add_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.add_star">
+<tt class="descname">add_star</tt><big>(</big><em>nlist</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.add_star" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.add_weighted_edges_from">
+<tt class="descname">add_weighted_edges_from</tt><big>(</big><em>ebunch</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.add_weighted_edges_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.adjacency_iter">
+<tt class="descname">adjacency_iter</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.adjacency_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.adjacency_list">
+<tt class="descname">adjacency_list</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.adjacency_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.basename">
+<tt class="descname">basename</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.basename" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">basename of this path, &#8216;/hello/world&#8217; -&gt; &#8216;world&#8217;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.children">
+<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee848&gt;</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.children" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of intermediate children of path, [ child1 , child2 ]</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; return True to include x in result</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">the child objects returned are supposed to be valid paths, not just relative paths</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.childrenDeep">
+<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee668&gt;</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.childrenDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of all children of path, [ child1 , child2 ]</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>order</em> &#8211; order enumeration</li>
+<li><em>predicate</em> &#8211; returns true if x may be returned</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">the child objects returned are supposed to be valid paths, not just relative paths</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.clear">
+<tt class="descname">clear</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.clear" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.clearCache">
+<tt class="descname">clearCache</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.clearCache" title="Permalink to this definition">¶</a></dt>
+<dd>Clear the cache of all nodes in the graph - this forces the graph
+to reevaluate on the next request</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.connect">
+<tt class="descname">connect</tt><big>(</big><em>sourceshell</em>, <em>destinationshell</em>, <em>force=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect this plug to destinationshell such that destinationshell is an input plug for our output</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>sourceshell</em> &#8211; PlugShell being source of the connection</li>
+<li><em>destinationshell</em> &#8211; PlugShell being destination of the connection</li>
+<li><em>force</em> &#8211; if False, existing connections to destinationshell will not be broken, but an exception is raised
+if True, existing connection may be broken</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">self on success, allows chained connections</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises PlugAlreadyConnected:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first">if destinationshell is connected and force is False</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises PlugIncompatible:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">if destinationshell does not appear to be compatible to this one</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.copy">
+<tt class="descname">copy</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.copy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.copyFrom">
+<tt class="descname">copyFrom</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.copyFrom" title="Permalink to this definition">¶</a></dt>
+<dd>Duplicate all data from other graph into this one, create a duplicate
+of the nodes as well</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.copyTo">
+<tt class="descname">copyTo</tt><big>(</big><em>instance</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.copyTo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy the values of ourselves onto the given instance which must be an
+instance of our class to be compatible.
+Only the common classes will be copied to instance</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">altered instance</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">instance will be altered during the process</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.copyToOther">
+<tt class="descname">copyToOther</tt><big>(</big><em>instance</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.copyToOther" title="Permalink to this definition">¶</a></dt>
+<dd>As <cite>copyTo</cite>, but does only require the objects to have a common base.
+It will match the actually compatible base classes and call <cite>copyFrom</cite>
+if possible.
+As more checking is performed, this method performs worse than <cite>copyTo</cite></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.createInstance">
+<tt class="descname">createInstance</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.createInstance" title="Permalink to this definition">¶</a></dt>
+<dd>Create a copy of self and return it</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.degree">
+<tt class="descname">degree</tt><big>(</big><em>nbunch=None</em>, <em>with_labels=False</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.degree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.degree_iter">
+<tt class="descname">degree_iter</tt><big>(</big><em>nbunch=None</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.degree_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.disconnect">
+<tt class="descname">disconnect</tt><big>(</big><em>sourceshell</em>, <em>destinationshell</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.disconnect" title="Permalink to this definition">¶</a></dt>
+<dd>Remove the connection between sourceshell to destinationshell if they are connected
+:note: does not raise if no connection is present</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.duplicate">
+<tt class="descname">duplicate</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.duplicate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements a c-style copy constructor by creating a new instance of self
+and applying the <cite>copyFrom</cite> methods from base to all classes implementing the copyfrom
+method. Thus we will call the method directly on the class</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>args</em> &#8211; passed to <cite>copyFrom</cite> and <cite>createInstance</cite> method to give additional directions</li>
+<li><em>kwargs</em> &#8211; see param args</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.edges">
+<tt class="descname">edges</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.edges_iter">
+<tt class="descname">edges_iter</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.edges_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.fullChildName">
+<tt class="descname">fullChildName</tt><big>(</big><em>childname</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.fullChildName" title="Permalink to this definition">¶</a></dt>
+<dd>Add the given name to the string version of our instance
+:return: string with childname added like name _sep childname</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.get_edge_data">
+<tt class="descname">get_edge_data</tt><big>(</big><em>u</em>, <em>v</em>, <em>default=None</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.get_edge_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.hasNode">
+<tt class="descname">hasNode</tt><big>(</big><em>node</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.hasNode" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if the node is in this graph, false otherwise</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.has_edge">
+<tt class="descname">has_edge</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.has_edge" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.has_node">
+<tt class="descname">has_node</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.has_node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.has_predecessor">
+<tt class="descname">has_predecessor</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.has_predecessor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.has_successor">
+<tt class="descname">has_successor</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.has_successor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.in_degree">
+<tt class="descname">in_degree</tt><big>(</big><em>nbunch=None</em>, <em>with_labels=False</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.in_degree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.in_degree_iter">
+<tt class="descname">in_degree_iter</tt><big>(</big><em>nbunch=None</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.in_degree_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.in_edges">
+<tt class="descname">in_edges</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.in_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.in_edges_iter">
+<tt class="descname">in_edges_iter</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.in_edges_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.input">
+<tt class="descname">input</tt><big>(</big><em>plugshell</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.input" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the connected input plug of plugshell or None if there is no such connection</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">input plugs have on plug at most, output plugs can have more than one connected plug</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.isPartOf">
+<tt class="descname">isPartOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.isPartOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if self is a part of other, and thus can be found in other</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings only</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.isRoot">
+<tt class="descname">isRoot</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.isRoot" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this path is the root of the DAG</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.isRootOf">
+<tt class="descname">isRootOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.isRootOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True other starts with self</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">we assume other has the same type as self, thus the same separator</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.is_directed">
+<tt class="descname">is_directed</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.is_directed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.is_multigraph">
+<tt class="descname">is_multigraph</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.is_multigraph" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.iterConnectedNodes">
+<tt class="descname">iterConnectedNodes</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x3271c08&gt;</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.iterConnectedNodes" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">generator returning all nodes that are connected in this graph,
+in no particular order.
+For an ordered itereration, use <cite>iterShells</cite>.</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; if True for node, it will be returned</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.iterNodes">
+<tt class="descname">iterNodes</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x3271b18&gt;</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.iterNodes" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">generator returning all nodes in this graph</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; if True for node, it will be returned</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">there is no particular order</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.iterParents">
+<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee2a8&gt;</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.iterParents" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">generator retrieving all parents up to the root</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; returns True for all x that you want to be returned</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.nbunch_iter">
+<tt class="descname">nbunch_iter</tt><big>(</big><em>nbunch=None</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.nbunch_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.neighbors">
+<tt class="descname">neighbors</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.neighbors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.neighbors_iter">
+<tt class="descname">neighbors_iter</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.neighbors_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.nodeByID">
+<tt class="descname">nodeByID</tt><big>(</big><em>nodeID</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.nodeByID" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">instance of a node according to the given node id</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises NameError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if no such node exists in graph</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.nodes">
+<tt class="descname">nodes</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.nodes" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">immutable copy of the nodes used in the graph</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.nodes_iter">
+<tt class="descname">nodes_iter</tt><big>(</big><em>data=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.nodes_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.nodes_with_selfloops">
+<tt class="descname">nodes_with_selfloops</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.nodes_with_selfloops" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.numNodes">
+<tt class="descname">numNodes</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.numNodes" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">number of nodes in the graph</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.number_of_edges">
+<tt class="descname">number_of_edges</tt><big>(</big><em>u=None</em>, <em>v=None</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.number_of_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.number_of_nodes">
+<tt class="descname">number_of_nodes</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.number_of_nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.number_of_selfloops">
+<tt class="descname">number_of_selfloops</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.number_of_selfloops" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.order">
+<tt class="descname">order</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.order" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.out_degree">
+<tt class="descname">out_degree</tt><big>(</big><em>nbunch=None</em>, <em>with_labels=False</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.out_degree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.out_degree_iter">
+<tt class="descname">out_degree_iter</tt><big>(</big><em>nbunch=None</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.out_degree_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.out_edges">
+<tt class="descname">out_edges</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.out_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.out_edges_iter">
+<tt class="descname">out_edges_iter</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.out_edges_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.outputs">
+<tt class="descname">outputs</tt><big>(</big><em>plugshell</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x3275050&gt;</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.outputs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">a list of plugs being the destination of the connection to plugshell</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; plug will only be returned if predicate is true for it - shells will be passed in</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.parent">
+<tt class="descname">parent</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.parent" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">parent of this path, &#8216;/hello/world&#8217; -&gt; &#8216;/hello&#8217; or None if this path
+is the dag&#8217;s root</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.parentDeep">
+<tt class="descname">parentDeep</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.parentDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">all parents of this path, &#8216;/hello/my/world&#8217; -&gt; [ &#8216;/hello/my&#8217;,&#8217;/hello&#8217; ]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.predecessors">
+<tt class="descname">predecessors</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.predecessors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.predecessors_iter">
+<tt class="descname">predecessors_iter</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.predecessors_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.removeNode">
+<tt class="descname">removeNode</tt><big>(</big><em>node</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.removeNode" title="Permalink to this definition">¶</a></dt>
+<dd>Remove the given node from the graph ( if it exists in it )</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.remove_edge">
+<tt class="descname">remove_edge</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.remove_edge" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.remove_edges_from">
+<tt class="descname">remove_edges_from</tt><big>(</big><em>ebunch</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.remove_edges_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.remove_node">
+<tt class="descname">remove_node</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.remove_node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.remove_nodes_from">
+<tt class="descname">remove_nodes_from</tt><big>(</big><em>nbunch</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.remove_nodes_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.reverse">
+<tt class="descname">reverse</tt><big>(</big><em>copy=True</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.reverse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.root">
+<tt class="descname">root</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.root" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the root of the DAG - it has no further parents</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.selfloop_edges">
+<tt class="descname">selfloop_edges</tt><big>(</big><em>data=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.selfloop_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.size">
+<tt class="descname">size</tt><big>(</big><em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.subgraph">
+<tt class="descname">subgraph</tt><big>(</big><em>nbunch</em>, <em>copy=True</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.subgraph" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.successors">
+<tt class="descname">successors</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.successors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.successors_iter">
+<tt class="descname">successors_iter</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.successors_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.supports">
+<tt class="descname">supports</tt><big>(</big><em>interface_type</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.supports" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this instance supports the interface of the given type</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>interface_type</em> &#8211; Type of the interface you require this instance 
+to support</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Must be used in case you only have a weak reference of your interface
+instance or proxy which is a case where the ordinary isinstance( obj, iInterface )
+will not work</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.to_directed">
+<tt class="descname">to_directed</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.to_directed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.to_undirected">
+<tt class="descname">to_undirected</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.to_undirected" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Graph.writeDot">
+<tt class="descname">writeDot</tt><big>(</big><em>fileOrPath</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Graph.writeDot" title="Permalink to this definition">¶</a></dt>
+<dd>Write the connections in self to the given file object or path
+:todo: remove if no longer needed</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.automation.workflow.Workflow-class.html">Epydoc: mrv.automation.workflow.Workflow</a></p>
+<dl class="class">
+<dt id="mrv.automation.workflow.Workflow">
+<em class="property">class </em><tt class="descclassname">mrv.automation.workflow.</tt><tt class="descname">Workflow</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.dge.Graph" class="reference external" href="mrv.dge.html#mrv.dge.Graph"><tt class="xref docutils literal"><span class="pre">mrv.dge.Graph</span></tt></a></p>
+<p>Implements a workflow as connected processes</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">if you have to access the processes directly, use the DiGraph methods</td>
+</tr>
+</tbody>
+</table>
+<dl class="class">
+<dt id="mrv.automation.workflow.Workflow.CallGraph">
+<em class="property">class </em><tt class="descname">CallGraph</tt><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">networkx.classes.digraph.DiGraph</span></tt></p>
+<p>Simple wrapper storing a call graph, keeping the root at which the call started</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">this class is specialized to be used by workflows, its not general for that purpose</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.add_cycle">
+<tt class="descname">add_cycle</tt><big>(</big><em>nlist</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.add_cycle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.add_edge">
+<tt class="descname">add_edge</tt><big>(</big><em>u</em>, <em>v</em>, <em>attr_dict=None</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.add_edge" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.add_edges_from">
+<tt class="descname">add_edges_from</tt><big>(</big><em>ebunch</em>, <em>attr_dict=None</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.add_edges_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.add_node">
+<tt class="descname">add_node</tt><big>(</big><em>n</em>, <em>attr_dict=None</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.add_node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.add_nodes_from">
+<tt class="descname">add_nodes_from</tt><big>(</big><em>nodes</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.add_nodes_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.add_path">
+<tt class="descname">add_path</tt><big>(</big><em>nlist</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.add_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.add_star">
+<tt class="descname">add_star</tt><big>(</big><em>nlist</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.add_star" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.add_weighted_edges_from">
+<tt class="descname">add_weighted_edges_from</tt><big>(</big><em>ebunch</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.add_weighted_edges_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.adjacency_iter">
+<tt class="descname">adjacency_iter</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.adjacency_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.adjacency_list">
+<tt class="descname">adjacency_list</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.adjacency_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.callRoot">
+<tt class="descname">callRoot</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.callRoot" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">root at which the call started</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.callstackSize">
+<tt class="descname">callstackSize</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.callstackSize" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">length of the callstack</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.clear">
+<tt class="descname">clear</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.clear" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.copy">
+<tt class="descname">copy</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.copy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.degree">
+<tt class="descname">degree</tt><big>(</big><em>nbunch=None</em>, <em>with_labels=False</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.degree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.degree_iter">
+<tt class="descname">degree_iter</tt><big>(</big><em>nbunch=None</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.degree_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.edges">
+<tt class="descname">edges</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.edges_iter">
+<tt class="descname">edges_iter</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.edges_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.endCall">
+<tt class="descname">endCall</tt><big>(</big><em>result</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.endCall" title="Permalink to this definition">¶</a></dt>
+<dd><p>End the call start started previously</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>result</em> &#8211; the result of the call</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.get_edge_data">
+<tt class="descname">get_edge_data</tt><big>(</big><em>u</em>, <em>v</em>, <em>default=None</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.get_edge_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.has_edge">
+<tt class="descname">has_edge</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.has_edge" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.has_node">
+<tt class="descname">has_node</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.has_node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.has_predecessor">
+<tt class="descname">has_predecessor</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.has_predecessor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.has_successor">
+<tt class="descname">has_successor</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.has_successor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.in_degree">
+<tt class="descname">in_degree</tt><big>(</big><em>nbunch=None</em>, <em>with_labels=False</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.in_degree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.in_degree_iter">
+<tt class="descname">in_degree_iter</tt><big>(</big><em>nbunch=None</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.in_degree_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.in_edges">
+<tt class="descname">in_edges</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.in_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.in_edges_iter">
+<tt class="descname">in_edges_iter</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.in_edges_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.is_directed">
+<tt class="descname">is_directed</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.is_directed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.is_multigraph">
+<tt class="descname">is_multigraph</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.is_multigraph" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.nbunch_iter">
+<tt class="descname">nbunch_iter</tt><big>(</big><em>nbunch=None</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.nbunch_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.neighbors">
+<tt class="descname">neighbors</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.neighbors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.neighbors_iter">
+<tt class="descname">neighbors_iter</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.neighbors_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.nodes">
+<tt class="descname">nodes</tt><big>(</big><em>data=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.nodes_iter">
+<tt class="descname">nodes_iter</tt><big>(</big><em>data=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.nodes_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.nodes_with_selfloops">
+<tt class="descname">nodes_with_selfloops</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.nodes_with_selfloops" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.number_of_edges">
+<tt class="descname">number_of_edges</tt><big>(</big><em>u=None</em>, <em>v=None</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.number_of_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.number_of_nodes">
+<tt class="descname">number_of_nodes</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.number_of_nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.number_of_selfloops">
+<tt class="descname">number_of_selfloops</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.number_of_selfloops" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.order">
+<tt class="descname">order</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.order" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.out_degree">
+<tt class="descname">out_degree</tt><big>(</big><em>nbunch=None</em>, <em>with_labels=False</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.out_degree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.out_degree_iter">
+<tt class="descname">out_degree_iter</tt><big>(</big><em>nbunch=None</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.out_degree_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.out_edges">
+<tt class="descname">out_edges</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.out_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.out_edges_iter">
+<tt class="descname">out_edges_iter</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.out_edges_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.predecessors">
+<tt class="descname">predecessors</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.predecessors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.predecessors_iter">
+<tt class="descname">predecessors_iter</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.predecessors_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.remove_edge">
+<tt class="descname">remove_edge</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.remove_edge" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.remove_edges_from">
+<tt class="descname">remove_edges_from</tt><big>(</big><em>ebunch</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.remove_edges_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.remove_node">
+<tt class="descname">remove_node</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.remove_node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.remove_nodes_from">
+<tt class="descname">remove_nodes_from</tt><big>(</big><em>nbunch</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.remove_nodes_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.reverse">
+<tt class="descname">reverse</tt><big>(</big><em>copy=True</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.reverse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.selfloop_edges">
+<tt class="descname">selfloop_edges</tt><big>(</big><em>data=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.selfloop_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.size">
+<tt class="descname">size</tt><big>(</big><em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.startCall">
+<tt class="descname">startCall</tt><big>(</big><em>pdata</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.startCall" title="Permalink to this definition">¶</a></dt>
+<dd>Add a call of a process</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.subgraph">
+<tt class="descname">subgraph</tt><big>(</big><em>nbunch</em>, <em>copy=True</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.subgraph" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.successors">
+<tt class="descname">successors</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.successors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.successors_iter">
+<tt class="descname">successors_iter</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.successors_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.toCallList">
+<tt class="descname">toCallList</tt><big>(</big><em>reverse=True</em>, <em>pruneIfTrue=&lt;function &lt;lambda&gt; at 0x341b140&gt;</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.toCallList" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">flattened version of graph as list of ProcessData edges in call order , having
+the root as last element of the list</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>pruneIfTrue</em> &#8211; Function taking ProcessData to return true if the node
+should be pruned from the result</li>
+<li><em>reverse</em> &#8211; if true, the calllist will be properly reversed ( taking childre into account</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.to_directed">
+<tt class="descname">to_directed</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.to_directed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.CallGraph.to_undirected">
+<tt class="descname">to_undirected</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.CallGraph.to_undirected" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mrv.automation.workflow.Workflow.ProcessData">
+<em class="property">class </em><tt class="descclassname">Workflow.</tt><tt class="descname">ProcessData</tt><big>(</big><em>process</em>, <em>plug</em>, <em>mode</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.ProcessData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>Allows to store additional information with each process called during the workflow</p>
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.ProcessData.elapsed">
+<tt class="descname">elapsed</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.ProcessData.elapsed" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">time to process the call</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.automation.workflow.Workflow.ProcessData.endtime">
+<tt class="descname">endtime</tt><a class="headerlink" href="#mrv.automation.workflow.Workflow.ProcessData.endtime" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.automation.workflow.Workflow.ProcessData.exception">
+<tt class="descname">exception</tt><a class="headerlink" href="#mrv.automation.workflow.Workflow.ProcessData.exception" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.automation.workflow.Workflow.ProcessData.index">
+<tt class="descname">index</tt><a class="headerlink" href="#mrv.automation.workflow.Workflow.ProcessData.index" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.automation.workflow.Workflow.ProcessData.mode">
+<tt class="descname">mode</tt><a class="headerlink" href="#mrv.automation.workflow.Workflow.ProcessData.mode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.automation.workflow.Workflow.ProcessData.plug">
+<tt class="descname">plug</tt><a class="headerlink" href="#mrv.automation.workflow.Workflow.ProcessData.plug" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.automation.workflow.Workflow.ProcessData.process">
+<tt class="descname">process</tt><a class="headerlink" href="#mrv.automation.workflow.Workflow.ProcessData.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.ProcessData.result">
+<tt class="descname">result</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.ProcessData.result" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">result stored in this instance, or None if it is not present or not alive</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.ProcessData.setResult">
+<tt class="descname">setResult</tt><big>(</big><em>result</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.ProcessData.setResult" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the given result</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">uses weak references as the tracking structure should not cause a possible
+mutation of the program flow ( as instances stay alive although code expects it to be
+deleted</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.automation.workflow.Workflow.ProcessData.starttime">
+<tt class="descname">starttime</tt><a class="headerlink" href="#mrv.automation.workflow.Workflow.ProcessData.starttime" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.addNode">
+<tt class="descclassname">Workflow.</tt><tt class="descname">addNode</tt><big>(</big><em>node</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.addNode" title="Permalink to this definition">¶</a></dt>
+<dd>Add a new node instance to the graph
+:note: node membership is exclusive, thus node instances
+can only be in one graph at a time
+:return: self, for chained calls</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.automation.workflow.Workflow.addSep">
+<em class="property">classmethod </em><tt class="descclassname">Workflow.</tt><tt class="descname">addSep</tt><big>(</big><em>item</em>, <em>sep</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.addSep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">item with separator added to it ( just once )</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">operates best on strings</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>item</em> &#8211; item to add separator to</li>
+<li><em>sep</em> &#8211; the separator</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.add_cycle">
+<tt class="descclassname">Workflow.</tt><tt class="descname">add_cycle</tt><big>(</big><em>nlist</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.add_cycle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.add_edge">
+<tt class="descclassname">Workflow.</tt><tt class="descname">add_edge</tt><big>(</big><em>u</em>, <em>v</em>, <em>attr_dict=None</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.add_edge" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.add_edges_from">
+<tt class="descclassname">Workflow.</tt><tt class="descname">add_edges_from</tt><big>(</big><em>ebunch</em>, <em>attr_dict=None</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.add_edges_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.add_node">
+<tt class="descclassname">Workflow.</tt><tt class="descname">add_node</tt><big>(</big><em>n</em>, <em>attr_dict=None</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.add_node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.add_nodes_from">
+<tt class="descclassname">Workflow.</tt><tt class="descname">add_nodes_from</tt><big>(</big><em>nodes</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.add_nodes_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.add_path">
+<tt class="descclassname">Workflow.</tt><tt class="descname">add_path</tt><big>(</big><em>nlist</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.add_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.add_star">
+<tt class="descclassname">Workflow.</tt><tt class="descname">add_star</tt><big>(</big><em>nlist</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.add_star" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.add_weighted_edges_from">
+<tt class="descclassname">Workflow.</tt><tt class="descname">add_weighted_edges_from</tt><big>(</big><em>ebunch</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.add_weighted_edges_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.adjacency_iter">
+<tt class="descclassname">Workflow.</tt><tt class="descname">adjacency_iter</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.adjacency_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.adjacency_list">
+<tt class="descclassname">Workflow.</tt><tt class="descname">adjacency_list</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.adjacency_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.basename">
+<tt class="descclassname">Workflow.</tt><tt class="descname">basename</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.basename" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">basename of this path, &#8216;/hello/world&#8217; -&gt; &#8216;world&#8217;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.callgraph">
+<tt class="descclassname">Workflow.</tt><tt class="descname">callgraph</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.callgraph" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">current callgraph instance</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">its strictly read-only and may not be changed</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.children">
+<tt class="descclassname">Workflow.</tt><tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee848&gt;</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.children" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of intermediate children of path, [ child1 , child2 ]</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; return True to include x in result</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">the child objects returned are supposed to be valid paths, not just relative paths</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.childrenDeep">
+<tt class="descclassname">Workflow.</tt><tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee668&gt;</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.childrenDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of all children of path, [ child1 , child2 ]</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>order</em> &#8211; order enumeration</li>
+<li><em>predicate</em> &#8211; returns true if x may be returned</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">the child objects returned are supposed to be valid paths, not just relative paths</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.clear">
+<tt class="descclassname">Workflow.</tt><tt class="descname">clear</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.clear" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.clearCache">
+<tt class="descclassname">Workflow.</tt><tt class="descname">clearCache</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.clearCache" title="Permalink to this definition">¶</a></dt>
+<dd>Clear the cache of all nodes in the graph - this forces the graph
+to reevaluate on the next request</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.connect">
+<tt class="descclassname">Workflow.</tt><tt class="descname">connect</tt><big>(</big><em>sourceshell</em>, <em>destinationshell</em>, <em>force=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect this plug to destinationshell such that destinationshell is an input plug for our output</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>sourceshell</em> &#8211; PlugShell being source of the connection</li>
+<li><em>destinationshell</em> &#8211; PlugShell being destination of the connection</li>
+<li><em>force</em> &#8211; if False, existing connections to destinationshell will not be broken, but an exception is raised
+if True, existing connection may be broken</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">self on success, allows chained connections</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises PlugAlreadyConnected:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first">if destinationshell is connected and force is False</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises PlugIncompatible:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">if destinationshell does not appear to be compatible to this one</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.copy">
+<tt class="descclassname">Workflow.</tt><tt class="descname">copy</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.copy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.copyFrom">
+<tt class="descclassname">Workflow.</tt><tt class="descname">copyFrom</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.copyFrom" title="Permalink to this definition">¶</a></dt>
+<dd>Only mode is required</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.copyTo">
+<tt class="descclassname">Workflow.</tt><tt class="descname">copyTo</tt><big>(</big><em>instance</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.copyTo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy the values of ourselves onto the given instance which must be an
+instance of our class to be compatible.
+Only the common classes will be copied to instance</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">altered instance</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">instance will be altered during the process</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.copyToOther">
+<tt class="descclassname">Workflow.</tt><tt class="descname">copyToOther</tt><big>(</big><em>instance</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.copyToOther" title="Permalink to this definition">¶</a></dt>
+<dd>As <cite>copyTo</cite>, but does only require the objects to have a common base.
+It will match the actually compatible base classes and call <cite>copyFrom</cite>
+if possible.
+As more checking is performed, this method performs worse than <cite>copyTo</cite></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.createInstance">
+<tt class="descclassname">Workflow.</tt><tt class="descname">createInstance</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.createInstance" title="Permalink to this definition">¶</a></dt>
+<dd>Create a copy of self and return it</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.createReportInstance">
+<tt class="descclassname">Workflow.</tt><tt class="descname">createReportInstance</tt><big>(</big><em>reportType</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.createReportInstance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a report instance that describes how the previous target was made</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>reportType</em> &#8211; Report to populate with information - it must be a Plan based
+class that can be instantiated and populated with call information.
+A report analyses the call dependency graph generated during dg evaluation
+and presents it.</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">report instance whose makeReport method can be called to retrieve it</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.degree">
+<tt class="descclassname">Workflow.</tt><tt class="descname">degree</tt><big>(</big><em>nbunch=None</em>, <em>with_labels=False</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.degree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.degree_iter">
+<tt class="descclassname">Workflow.</tt><tt class="descname">degree_iter</tt><big>(</big><em>nbunch=None</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.degree_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.disconnect">
+<tt class="descclassname">Workflow.</tt><tt class="descname">disconnect</tt><big>(</big><em>sourceshell</em>, <em>destinationshell</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.disconnect" title="Permalink to this definition">¶</a></dt>
+<dd>Remove the connection between sourceshell to destinationshell if they are connected
+:note: does not raise if no connection is present</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.duplicate">
+<tt class="descclassname">Workflow.</tt><tt class="descname">duplicate</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.duplicate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements a c-style copy constructor by creating a new instance of self
+and applying the <cite>copyFrom</cite> methods from base to all classes implementing the copyfrom
+method. Thus we will call the method directly on the class</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>args</em> &#8211; passed to <cite>copyFrom</cite> and <cite>createInstance</cite> method to give additional directions</li>
+<li><em>kwargs</em> &#8211; see param args</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.edges">
+<tt class="descclassname">Workflow.</tt><tt class="descname">edges</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.edges_iter">
+<tt class="descclassname">Workflow.</tt><tt class="descname">edges_iter</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.edges_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.fullChildName">
+<tt class="descclassname">Workflow.</tt><tt class="descname">fullChildName</tt><big>(</big><em>childname</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.fullChildName" title="Permalink to this definition">¶</a></dt>
+<dd>Add the given name to the string version of our instance
+:return: string with childname added like name _sep childname</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.get_edge_data">
+<tt class="descclassname">Workflow.</tt><tt class="descname">get_edge_data</tt><big>(</big><em>u</em>, <em>v</em>, <em>default=None</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.get_edge_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.hasNode">
+<tt class="descclassname">Workflow.</tt><tt class="descname">hasNode</tt><big>(</big><em>node</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.hasNode" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if the node is in this graph, false otherwise</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.has_edge">
+<tt class="descclassname">Workflow.</tt><tt class="descname">has_edge</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.has_edge" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.has_node">
+<tt class="descclassname">Workflow.</tt><tt class="descname">has_node</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.has_node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.has_predecessor">
+<tt class="descclassname">Workflow.</tt><tt class="descname">has_predecessor</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.has_predecessor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.has_successor">
+<tt class="descclassname">Workflow.</tt><tt class="descname">has_successor</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.has_successor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.in_degree">
+<tt class="descclassname">Workflow.</tt><tt class="descname">in_degree</tt><big>(</big><em>nbunch=None</em>, <em>with_labels=False</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.in_degree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.in_degree_iter">
+<tt class="descclassname">Workflow.</tt><tt class="descname">in_degree_iter</tt><big>(</big><em>nbunch=None</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.in_degree_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.in_edges">
+<tt class="descclassname">Workflow.</tt><tt class="descname">in_edges</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.in_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.in_edges_iter">
+<tt class="descclassname">Workflow.</tt><tt class="descname">in_edges_iter</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.in_edges_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.input">
+<tt class="descclassname">Workflow.</tt><tt class="descname">input</tt><big>(</big><em>plugshell</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.input" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the connected input plug of plugshell or None if there is no such connection</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">input plugs have on plug at most, output plugs can have more than one connected plug</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.isPartOf">
+<tt class="descclassname">Workflow.</tt><tt class="descname">isPartOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.isPartOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if self is a part of other, and thus can be found in other</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings only</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.isRoot">
+<tt class="descclassname">Workflow.</tt><tt class="descname">isRoot</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.isRoot" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this path is the root of the DAG</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.isRootOf">
+<tt class="descclassname">Workflow.</tt><tt class="descname">isRootOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.isRootOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True other starts with self</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">we assume other has the same type as self, thus the same separator</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.is_directed">
+<tt class="descclassname">Workflow.</tt><tt class="descname">is_directed</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.is_directed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.is_multigraph">
+<tt class="descclassname">Workflow.</tt><tt class="descname">is_multigraph</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.is_multigraph" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.iterConnectedNodes">
+<tt class="descclassname">Workflow.</tt><tt class="descname">iterConnectedNodes</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x3271c08&gt;</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.iterConnectedNodes" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">generator returning all nodes that are connected in this graph,
+in no particular order.
+For an ordered itereration, use <cite>iterShells</cite>.</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; if True for node, it will be returned</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.iterNodes">
+<tt class="descclassname">Workflow.</tt><tt class="descname">iterNodes</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x3271b18&gt;</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.iterNodes" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">generator returning all nodes in this graph</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; if True for node, it will be returned</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">there is no particular order</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.iterParents">
+<tt class="descclassname">Workflow.</tt><tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee2a8&gt;</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.iterParents" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">generator retrieving all parents up to the root</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; returns True for all x that you want to be returned</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.makeDirtyReport">
+<tt class="descclassname">Workflow.</tt><tt class="descname">makeDirtyReport</tt><big>(</big><em>target</em>, <em>mode='single'</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.makeDirtyReport" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of tuple( shell, DirtyReport|None )
+If a process ( shell.node ) is dirty, a dirty report will be given explaining
+why the process is dirty and needs an update</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>target</em> &#8211; target you which to check for it&#8217;s dirty state</li>
+<li><em>mode</em> &#8211; <ul>
+<li>single - only the process assigned to evaluate target will be checked</li>
+<li><dl class="first docutils">
+<dt>multi - as single, but the whole callgraph will be checked, starting</dt>
+<dd>at the first node, stepping down the callgraph. This gives a per
+node dirty report.</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>deep - try to evaluate target, but fail if one process in the target&#8217;s</dt>
+<dd>call history is dirty</dd>
+</dl>
+</li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.makeTarget">
+<tt class="descclassname">Workflow.</tt><tt class="descname">makeTarget</tt><big>(</big><em>target</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.makeTarget" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>target</em> &#8211; target to make - can be class or instance</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">result when producing the target</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.makeTargets">
+<tt class="descclassname">Workflow.</tt><tt class="descname">makeTargets</tt><big>(</big><em>targetList</em>, <em>errstream=None</em>, <em>donestream=None</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.makeTargets" title="Permalink to this definition">¶</a></dt>
+<dd><p>batch module compatible method allowing to make mutliple targets at once</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>targetList</em> &#8211; iterable providing the targets to make</li>
+<li><em>errstream</em> &#8211; object with file interface allowing to log errors that occurred
+during operation</li>
+<li><em>donestream</em> &#8211; if list, targets successfully done will be appended to it, if
+it is a stream, the string representation will be wrtten to it</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.nbunch_iter">
+<tt class="descclassname">Workflow.</tt><tt class="descname">nbunch_iter</tt><big>(</big><em>nbunch=None</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.nbunch_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.neighbors">
+<tt class="descclassname">Workflow.</tt><tt class="descname">neighbors</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.neighbors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.neighbors_iter">
+<tt class="descclassname">Workflow.</tt><tt class="descname">neighbors_iter</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.neighbors_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.nodeByID">
+<tt class="descclassname">Workflow.</tt><tt class="descname">nodeByID</tt><big>(</big><em>nodeID</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.nodeByID" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">instance of a node according to the given node id</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises NameError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if no such node exists in graph</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.nodes">
+<tt class="descclassname">Workflow.</tt><tt class="descname">nodes</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.nodes" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">immutable copy of the nodes used in the graph</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.nodes_iter">
+<tt class="descclassname">Workflow.</tt><tt class="descname">nodes_iter</tt><big>(</big><em>data=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.nodes_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.nodes_with_selfloops">
+<tt class="descclassname">Workflow.</tt><tt class="descname">nodes_with_selfloops</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.nodes_with_selfloops" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.numNodes">
+<tt class="descclassname">Workflow.</tt><tt class="descname">numNodes</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.numNodes" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">number of nodes in the graph</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.number_of_edges">
+<tt class="descclassname">Workflow.</tt><tt class="descname">number_of_edges</tt><big>(</big><em>u=None</em>, <em>v=None</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.number_of_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.number_of_nodes">
+<tt class="descclassname">Workflow.</tt><tt class="descname">number_of_nodes</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.number_of_nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.number_of_selfloops">
+<tt class="descclassname">Workflow.</tt><tt class="descname">number_of_selfloops</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.number_of_selfloops" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.order">
+<tt class="descclassname">Workflow.</tt><tt class="descname">order</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.order" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.out_degree">
+<tt class="descclassname">Workflow.</tt><tt class="descname">out_degree</tt><big>(</big><em>nbunch=None</em>, <em>with_labels=False</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.out_degree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.out_degree_iter">
+<tt class="descclassname">Workflow.</tt><tt class="descname">out_degree_iter</tt><big>(</big><em>nbunch=None</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.out_degree_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.out_edges">
+<tt class="descclassname">Workflow.</tt><tt class="descname">out_edges</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.out_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.out_edges_iter">
+<tt class="descclassname">Workflow.</tt><tt class="descname">out_edges_iter</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.out_edges_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.outputs">
+<tt class="descclassname">Workflow.</tt><tt class="descname">outputs</tt><big>(</big><em>plugshell</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x3275050&gt;</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.outputs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">a list of plugs being the destination of the connection to plugshell</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; plug will only be returned if predicate is true for it - shells will be passed in</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.parent">
+<tt class="descclassname">Workflow.</tt><tt class="descname">parent</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.parent" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">parent of this path, &#8216;/hello/world&#8217; -&gt; &#8216;/hello&#8217; or None if this path
+is the dag&#8217;s root</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.parentDeep">
+<tt class="descclassname">Workflow.</tt><tt class="descname">parentDeep</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.parentDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">all parents of this path, &#8216;/hello/my/world&#8217; -&gt; [ &#8216;/hello/my&#8217;,&#8217;/hello&#8217; ]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.predecessors">
+<tt class="descclassname">Workflow.</tt><tt class="descname">predecessors</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.predecessors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.predecessors_iter">
+<tt class="descclassname">Workflow.</tt><tt class="descname">predecessors_iter</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.predecessors_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.removeNode">
+<tt class="descclassname">Workflow.</tt><tt class="descname">removeNode</tt><big>(</big><em>node</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.removeNode" title="Permalink to this definition">¶</a></dt>
+<dd>Remove the given node from the graph ( if it exists in it )</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.remove_edge">
+<tt class="descclassname">Workflow.</tt><tt class="descname">remove_edge</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.remove_edge" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.remove_edges_from">
+<tt class="descclassname">Workflow.</tt><tt class="descname">remove_edges_from</tt><big>(</big><em>ebunch</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.remove_edges_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.remove_node">
+<tt class="descclassname">Workflow.</tt><tt class="descname">remove_node</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.remove_node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.remove_nodes_from">
+<tt class="descclassname">Workflow.</tt><tt class="descname">remove_nodes_from</tt><big>(</big><em>nbunch</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.remove_nodes_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.reverse">
+<tt class="descclassname">Workflow.</tt><tt class="descname">reverse</tt><big>(</big><em>copy=True</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.reverse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.root">
+<tt class="descclassname">Workflow.</tt><tt class="descname">root</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.root" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the root of the DAG - it has no further parents</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.selfloop_edges">
+<tt class="descclassname">Workflow.</tt><tt class="descname">selfloop_edges</tt><big>(</big><em>data=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.selfloop_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.size">
+<tt class="descclassname">Workflow.</tt><tt class="descname">size</tt><big>(</big><em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.subgraph">
+<tt class="descclassname">Workflow.</tt><tt class="descname">subgraph</tt><big>(</big><em>nbunch</em>, <em>copy=True</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.subgraph" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.successors">
+<tt class="descclassname">Workflow.</tt><tt class="descname">successors</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.successors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.successors_iter">
+<tt class="descclassname">Workflow.</tt><tt class="descname">successors_iter</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.successors_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.supports">
+<tt class="descclassname">Workflow.</tt><tt class="descname">supports</tt><big>(</big><em>interface_type</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.supports" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this instance supports the interface of the given type</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>interface_type</em> &#8211; Type of the interface you require this instance 
+to support</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Must be used in case you only have a weak reference of your interface
+instance or proxy which is a case where the ordinary isinstance( obj, iInterface )
+will not work</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.targetRating">
+<tt class="descclassname">Workflow.</tt><tt class="descname">targetRating</tt><big>(</big><em>target</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.targetRating" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">int range(0,255) indicating how well a target can be made
+0 means not at all, 255 means perfect.</p>
+<p>Return value is tuple ( rate, PlugShell ), containing the process and plug with the
+highest rating or None if rate is 0</p>
+<p>Walk the dependency graph such that leaf nodes have higher ratings than
+non-leaf nodes</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">you can use the <cite>process.ProcessBase</cite> enumeration for comparison</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.targetSupportList">
+<tt class="descclassname">Workflow.</tt><tt class="descname">targetSupportList</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.targetSupportList" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of all supported target type</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">this method is for informational purposes only</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.to_directed">
+<tt class="descclassname">Workflow.</tt><tt class="descname">to_directed</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.to_directed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.to_undirected">
+<tt class="descclassname">Workflow.</tt><tt class="descname">to_undirected</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.to_undirected" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.Workflow.writeDot">
+<tt class="descclassname">Workflow.</tt><tt class="descname">writeDot</tt><big>(</big><em>fileOrPath</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.Workflow.writeDot" title="Permalink to this definition">¶</a></dt>
+<dd>Write the connections in self to the given file object or path
+:todo: remove if no longer needed</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="exceptions">
+<h2>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="api/mrv.automation.workflow-module.html#ComputeError">Epydoc: mrv.automation.workflow</a></p>
+<dl class="class">
+<dt id="mrv.automation.workflow.ComputeError">
+<em class="property">class </em><tt class="descclassname">mrv.automation.workflow.</tt><tt class="descname">ComputeError</tt><a class="headerlink" href="#mrv.automation.workflow.ComputeError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+<p>Thrown if the computation done by a plug failed by an unknown exception
+It will be passed on in the exception</p>
+<dl class="attribute">
+<dt id="mrv.automation.workflow.ComputeError.args">
+<tt class="descname">args</tt><a class="headerlink" href="#mrv.automation.workflow.ComputeError.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.automation.workflow.ComputeError.message">
+<tt class="descname">message</tt><a class="headerlink" href="#mrv.automation.workflow.ComputeError.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.automation.workflow.DirtyException-class.html">Epydoc: mrv.automation.workflow.DirtyException</a></p>
+<dl class="class">
+<dt id="mrv.automation.workflow.DirtyException">
+<em class="property">class </em><tt class="descclassname">mrv.automation.workflow.</tt><tt class="descname">DirtyException</tt><big>(</big><em>report=''</em><big>)</big><a class="headerlink" href="#mrv.automation.workflow.DirtyException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+<p>Exception thrown when system is in dirty query mode and the process detects
+that it is dirty.</p>
+<p>The exception can also contain a report that will be returned using the
+makeReport function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Thus exeption class must NOT be derived from ComputeError as it will be caught
+by the DG engine and mis-interpreted - unknown exceptions will just be passed on by it</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="mrv.automation.workflow.DirtyException.args">
+<tt class="descname">args</tt><a class="headerlink" href="#mrv.automation.workflow.DirtyException.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.workflow.DirtyException.makeReport">
+<tt class="descname">makeReport</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.workflow.DirtyException.makeReport" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">printable report, usually a string or some object that
+responds to str() appropriately</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.automation.workflow.DirtyException.message">
+<tt class="descname">message</tt><a class="headerlink" href="#mrv.automation.workflow.DirtyException.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.automation.workflow.DirtyException.report">
+<tt class="descname">report</tt><a class="headerlink" href="#mrv.automation.workflow.DirtyException.report" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.automation.workflow.TargetError-class.html">Epydoc: mrv.automation.workflow.TargetError</a></p>
+<dl class="class">
+<dt id="mrv.automation.workflow.TargetError">
+<em class="property">class </em><tt class="descclassname">mrv.automation.workflow.</tt><tt class="descname">TargetError</tt><a class="headerlink" href="#mrv.automation.workflow.TargetError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">exceptions.ValueError</span></tt></p>
+<p>Thrown if target is now supported by the workflow ( and thus cannot be made )</p>
+<dl class="attribute">
+<dt id="mrv.automation.workflow.TargetError.args">
+<tt class="descname">args</tt><a class="headerlink" href="#mrv.automation.workflow.TargetError.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.automation.workflow.TargetError.message">
+<tt class="descname">message</tt><a class="headerlink" href="#mrv.automation.workflow.TargetError.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="../index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#"><tt class="docutils literal"><span class="pre">mrv.automation.workflow</span></tt></a><ul>
+<li><a class="reference external" href="#classes">Classes</a></li>
+<li><a class="reference external" href="#exceptions">Exceptions</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="mrv.automation.report.html"
+                                  title="previous chapter"><tt class="docutils literal docutils literal docutils literal"><span class="pre">mrv.automation.report</span></tt></a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="mrv.automation.attributes.html"
+                                  title="next chapter"><tt class="docutils literal docutils literal docutils literal"><span class="pre">mrv.automation.attributes</span></tt></a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/generated/mrv.automation.workflow.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.automation.attributes.html" title="mrv.automation.attributes"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mrv.automation.report.html" title="mrv.automation.report"
+             >previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Nov 30, 2010.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

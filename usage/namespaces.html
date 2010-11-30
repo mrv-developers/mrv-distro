@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Namespaces &mdash; mrv v1.0.1-develop documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.1-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="mrv v1.0.1-develop documentation" href="../index.html" />
+    <link rel="up" title="Usage" href="index.html" />
+    <link rel="next" title="References" href="references.html" />
+    <link rel="prev" title="Selections" href="select.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="references.html" title="References"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="select.html" title="Selections"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Usage</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="namespaces">
+<h1>Namespaces<a class="headerlink" href="#namespaces" title="Permalink to this headline">¶</a></h1>
+<p>Namespaces provide a separate room for Nodes to exist in, hence they help to reduce the probability of name clashes when handling references or when importing files. Namespaces may be nested, hence they are forming a hierarchy that you may traverse using the <tt class="docutils literal"><span class="pre">mrv.interface.iDagItem</span></tt> interface.</p>
+<p>Handling namespaces is straightforward, you may retrieve the namespace of a node, create and rename namespaces as well as query their objects:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">mrv.maya.ns</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="k">assert</span> <span class="n">p</span><span class="o">.</span><span class="n">namespace</span><span class="p">()</span> <span class="o">==</span> <span class="n">RootNamespace</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">RootNamespace</span><span class="o">.</span><span class="n">children</span><span class="p">())</span> <span class="o">==</span> <span class="mi">2</span>     <span class="c"># we created 2 namespaces implicitly with objects</span>
+
+<span class="n">barns</span> <span class="o">=</span> <span class="n">Namespace</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;foo:bar&quot;</span><span class="p">)</span>
+<span class="n">foons</span> <span class="o">=</span> <span class="n">barns</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">RootNamespace</span><span class="o">.</span><span class="n">children</span><span class="p">())</span> <span class="o">==</span> <span class="mi">3</span>
+
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">barns</span><span class="o">.</span><span class="n">iterNodes</span><span class="p">()))</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">RootNamespace</span><span class="o">.</span><span class="n">iterNodes</span><span class="p">()))</span> <span class="o">!=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>Although you can set the namespace of individual nodes, it is also possible to move all objects in one namespace to another:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">m</span><span class="o">.</span><span class="n">setNamespace</span><span class="p">(</span><span class="n">barns</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">m</span><span class="o">.</span><span class="n">namespace</span><span class="p">()</span> <span class="o">==</span> <span class="n">barns</span>
+
+<span class="n">barns</span><span class="o">.</span><span class="n">moveNodes</span><span class="p">(</span><span class="n">foons</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">foons</span><span class="o">.</span><span class="n">iterNodes</span><span class="p">()</span><span class="o">.</span><span class="n">next</span><span class="p">()</span> <span class="o">==</span> <span class="n">m</span>
+</pre></div>
+</div>
+<p>Renaming of namespaces as well as their deletion is supported as well.:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">foons</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+<span class="k">assert</span> <span class="ow">not</span> <span class="n">barns</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">foons</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+<span class="k">assert</span> <span class="n">m</span><span class="o">.</span><span class="n">namespace</span><span class="p">()</span> <span class="o">==</span> <span class="n">RootNamespace</span>
+
+<span class="n">subns</span> <span class="o">=</span> <span class="n">Namespace</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;sub&quot;</span><span class="p">)</span>
+<span class="n">subnsrenamed</span> <span class="o">=</span> <span class="n">subns</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s">&quot;bar&quot;</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">subnsrenamed</span> <span class="o">!=</span> <span class="n">subns</span>
+<span class="k">assert</span> <span class="n">subnsrenamed</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">subns</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Its worth noting that namespace objects are immutable, and renaming a namespace will not alter the original instance.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="select.html"
+                                  title="previous chapter">Selections</a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="references.html"
+                                  title="next chapter">References</a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/usage/namespaces.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="references.html" title="References"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="select.html" title="Selections"
+             >previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li>
+          <li><a href="index.html" >Usage</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Nov 30, 2010.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

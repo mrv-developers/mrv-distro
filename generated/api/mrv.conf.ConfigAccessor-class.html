@@ -1,0 +1,1168 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>mrv.conf.ConfigAccessor</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="mrv-module.html">Package&nbsp;mrv</a> ::
+        <a href="mrv.conf-module.html">Module&nbsp;conf</a> ::
+        Class&nbsp;ConfigAccessor
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="mrv.conf.ConfigAccessor-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class ConfigAccessor</h1><p class="nomargin-top"><span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor">source&nbsp;code</a></span></p>
+<pre class="base-tree">
+object --+
+         |
+        <strong class="uidshort">ConfigAccessor</strong>
+</pre>
+
+<hr />
+<p>Provides full access to the Configuration</p>
+<dl class="rst-docutils">
+<dt><strong>Differences to ConfigParser</strong>:</dt>
+<dd><p class="rst-first">As the functionality and featureset is very different from the original
+ConfigParser implementation, this class does not support the interface directly.
+It contains functions to create original ConfigParser able to fully write and alter
+the contained data in an unchecked manner.</p>
+<p class="rst-last">Additional Exceptions have been defined to cover extended functionality.</p>
+</dd>
+<dt><strong>Sources and Nodes</strong>:</dt>
+<dd>Each input providing configuration data is stored in a node. This node
+knows about its writable state. Nodes that are not writable can be altered in memory,
+but the changes cannot be written back to the source.
+This does not impose a problem though as changes will be applied as long as there is
+one writable node in the chain - due to the inheritance scheme applied by the configmanager,
+the final configuration result will match the changes applied at runtime.</dd>
+<dt><strong>Additional Information</strong>:</dt>
+<dd>The term configuration is rather complex though
+configuration is based on an extended INI file format
+its not fully compatible, but slightly more narrow regarding allowed input to support extended functionality
+configuration is read from file-like objects
+a list of file-like objects creates a configuration chain
+keys have properties attached to them defining how they behave when being overridden
+once all the INI configurations have been read and processed, one can access
+the configuration as if it was just in one file.
+Direct access is obtained though <a href="mrv.conf.Key-class.html" class="link">Key</a> and <a href="mrv.conf.Section-class.html" class="link">Section</a> objects
+Keys and Sections have property attributes of type <a href="mrv.conf.Section-class.html" class="link">Section</a>
+Their keys and values are used to further define key merging behaviour for example</dd>
+</dl>
+
+<hr />
+<div class="fields">      <p><strong>Note:</strong>
+        The configaccessor should only be used in conjunction with the <a href="mrv.conf.ConfigManager-class.html" class="link">ConfigManager</a>
+      </p>
+</div><!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.conf.ConfigAccessor-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Initialize instance variables</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.conf.ConfigAccessor-class.html#__repr__" class="summary-sig-name">__repr__</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      repr(x)</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor.__repr__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.conf.ConfigAccessor-class.html#_parseProperties" class="summary-sig-name" onclick="show_private();">_parseProperties</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Analyse the freshly parsed configuration chain and add the found properties
+to the respective sections and keys</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor._parseProperties">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__str__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;IO Interface</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.conf.ConfigAccessor-class.html#readfp" class="summary-sig-name">readfp</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">filefporlist</span>,
+        <span class="summary-sig-arg">close_fp</span>=<span class="summary-sig-default">True</span>)</span><br />
+      Read the configuration from the file like object(s) representing INI files.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor.readfp">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.conf.ConfigAccessor-class.html#write" class="summary-sig-name">write</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">close_fp</span>=<span class="summary-sig-default">True</span>)</span><br />
+      During initialization in <a href="mrv.conf.ConfigAccessor-class.html#readfp" class="link">readfp</a>, <a href="mrv.conf.ExtendedFileInterface-class.html" class="link">ExtendedFileInterface</a> objects have been passed in - these
+will now be used to write back the current state of the configuration - the files will be
+opened for writing if possible.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor.write">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Transformations</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.conf.ConfigAccessor-class.html#flatten" class="summary-sig-name">flatten</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">fp</span>)</span><br />
+      Copy all our members into a new ConfigAccessor which only has one node, instead of N nodes</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor.flatten">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Iterators</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.conf.ConfigAccessor-class.html#sectionIterator" class="summary-sig-name">sectionIterator</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns:
+iterator returning all sections</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor.sectionIterator">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.conf.ConfigAccessor-class.html#keyIterator" class="summary-sig-name">keyIterator</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns:
+iterator returning tuples of (<a href="mrv.conf.Key-class.html" class="link">Key</a>,`Section`) pairs</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor.keyIterator">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Utitlities</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.conf.ConfigAccessor-class.html#isEmpty" class="summary-sig-name">isEmpty</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns:
+True if the accessor does not stor information</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor.isEmpty">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;General Access ( disregarding writable state )</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.conf.ConfigAccessor-class.html#hasSection" class="summary-sig-name">hasSection</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>)</span><br />
+      Returns:
+True if the given section exists</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor.hasSection">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.conf.ConfigAccessor-class.html#section" class="summary-sig-name">section</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">section</span>)</span><br />
+      Returns:
+first section with name</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor.section">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.conf.ConfigAccessor-class.html#keyDefault" class="summary-sig-name">keyDefault</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">sectionname</span>,
+        <span class="summary-sig-arg">keyname</span>,
+        <span class="summary-sig-arg">value</span>)</span><br />
+      Convenience Function: get key with keyname in first section with sectionname with the key's value being initialized to value if it did not exist.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor.keyDefault">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.conf.ConfigAccessor-class.html#keysByName" class="summary-sig-name">keysByName</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>)</span><br />
+      Returns:
+List of  (<a href="mrv.conf.Key-class.html" class="link">Key</a>,`Section`) tuples of key(s) matching name found in section, or empty list</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor.keysByName">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="iterateKeysByName"></a><span class="summary-sig-name">iterateKeysByName</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>)</span><br />
+      As <a href="mrv.conf.ConfigAccessor-class.html#keysByName" class="link">keysByName</a>, but returns an iterator instead</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor.iterateKeysByName">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.conf.ConfigAccessor-class.html#get" class="summary-sig-name">get</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">key_id</span>,
+        <span class="summary-sig-arg">default</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Convenience function allowing to easily specify the key you wish to retrieve
+with the option to provide a default value</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor.get">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Operators</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__getitem__"></a><span class="summary-sig-name">__getitem__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">key</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor.__getitem__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Structure Adjustments Respecting Writable State</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.conf.ConfigAccessor-class.html#sectionDefault" class="summary-sig-name">sectionDefault</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">section</span>)</span><br />
+      Returns:
+section with given name.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor.sectionDefault">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.conf.ConfigAccessor-class.html#removeSection" class="summary-sig-name">removeSection</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>)</span><br />
+      Completely remove the given section name from all nodes in our configuration</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor.removeSection">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.conf.ConfigAccessor-class.html#mergeSection" class="summary-sig-name">mergeSection</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">section</span>)</span><br />
+      Merge and/or add the given section into our chain of nodes.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor.mergeSection">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS METHODS ==================== -->
+<a name="section-ClassMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.conf.ConfigAccessor-class.html#_isProperty" class="summary-sig-name" onclick="show_private();">_isProperty</a>(<span class="summary-sig-arg">cls</span>,
+        <span class="summary-sig-arg">propname</span>)</span><br />
+      Returns:
+true if propname appears to be an attribute</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor._isProperty">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.conf.ConfigAccessor-class.html#_getNameTuple" class="summary-sig-name" onclick="show_private();">_getNameTuple</a>(<span class="summary-sig-arg">cls</span>,
+        <span class="summary-sig-arg">propname</span>)</span><br />
+      Returns:
+[sectionname,keyname], sectionname can be None</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor._getNameTuple">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_configChain"></a><span class="summary-name">_configChain</span>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Initialize instance variables
+  <dl class="fields">
+    <dt>Overrides:
+        object.__init__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__repr__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__repr__</span>(<span class="sig-arg">self</span>)</span>
+    <br /><em class="fname">(Representation operator)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor.__repr__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>repr(x)</p>
+  <dl class="fields">
+    <dt>Overrides:
+        object.__repr__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_isProperty"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_isProperty</span>(<span class="sig-arg">cls</span>,
+        <span class="sig-arg">propname</span>)</span>
+    <br /><em class="fname">Class Method</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor._isProperty">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>true if propname appears to be an attribute</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_getNameTuple"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_getNameTuple</span>(<span class="sig-arg">cls</span>,
+        <span class="sig-arg">propname</span>)</span>
+    <br /><em class="fname">Class Method</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor._getNameTuple">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>[sectionname,keyname], sectionname can be None</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_parseProperties"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_parseProperties</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor._parseProperties">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Analyse the freshly parsed configuration chain and add the found properties
+to the respective sections and keys
+  <dl class="fields">
+    <dt>Raises:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code><strong class='fraise'><a href="mrv.conf.ConfigParsingPropertyError-class.html">ConfigParsingPropertyError</a></strong></code></li>
+    </ul></dd>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        we are userfriendly regarding the error handling - if there is an invlid
+property, we warn and simply ignore it - for the system it will stay just a key and will
+thus be written back to the file as required
+      </p>
+</div></td></tr></table>
+</div>
+<a name="readfp"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">readfp</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">filefporlist</span>,
+        <span class="sig-arg">close_fp</span>=<span class="sig-default">True</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor.readfp">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Read the configuration from the file like object(s) representing INI files.
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>filefporlist</code></strong> - single file like object or list of such</li>
+        <li><strong class="pname"><code>close_fp</code></strong> - if True, the file-like object will be closed before the method returns,
+but only for file-like objects that have actually been processed</li>
+    </ul></dd>
+    <dt>Raises:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code><strong class='fraise'><a href="mrv.conf.ConfigParsingError-class.html">ConfigParsingError</a></strong></code></li>
+    </ul></dd>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        This will overwrite and discard all existing configuration.
+      </p>
+</div></td></tr></table>
+</div>
+<a name="write"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">write</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">close_fp</span>=<span class="sig-default">True</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor.write">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <dl class="rst-docutils">
+<dt>Write current state back to files.</dt>
+<dd>During initialization in <a href="mrv.conf.ConfigAccessor-class.html#readfp" class="link">readfp</a>, <a href="mrv.conf.ExtendedFileInterface-class.html" class="link">ExtendedFileInterface</a> objects have been passed in - these
+will now be used to write back the current state of the configuration - the files will be
+opened for writing if possible.</dd>
+</dl>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>close_fp</code></strong> - close the file-object after writing to it</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>list of names of files that have actually been written - as files can be read-only
+this list might be smaller than the amount of nodes in the accessor.</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="flatten"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">flatten</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">fp</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor.flatten">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Copy all our members into a new ConfigAccessor which only has one node, instead of N nodes</p>
+<p>By default, a configuration can be made up of several different sources that create a chain.
+Each source can redefine and alter values previously defined by other sources.</p>
+<p>A flattened chain though does only conist of one of such node containing concrete values that
+can quickly be accessed.</p>
+<p>Flattened configurations are provided by the <a href="mrv.conf.ConfigManager-class.html" class="link">ConfigManager</a>.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>fp</code></strong> - file-like object that will be used as storage once the configuration is written</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>Flattened copy of self</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="sectionIterator"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">sectionIterator</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor.sectionIterator">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>iterator returning all sections</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="keyIterator"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">keyIterator</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor.keyIterator">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>iterator returning tuples of (<a href="mrv.conf.Key-class.html" class="link">Key</a>,`Section`) pairs</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="isEmpty"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">isEmpty</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor.isEmpty">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>True if the accessor does not stor information</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="hasSection"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">hasSection</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">name</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor.hasSection">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>True if the given section exists</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="section"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">section</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">section</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor.section">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>first section with name</dd>
+    <dt>Raises:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code><strong class='fraise'>NoSectionError</strong></code> - if the requested section name does not exist</li>
+    </ul></dd>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        as there might be several nodes defining the section for inheritance,
+you might not get the desired results unless this config accessor acts on a
+<a href="mrv.conf.ConfigAccessor-class.html#flatten" class="link">flatten</a> ed list.
+      </p>
+</div></td></tr></table>
+</div>
+<a name="keyDefault"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">keyDefault</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">sectionname</span>,
+        <span class="sig-arg">keyname</span>,
+        <span class="sig-arg">value</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor.keyDefault">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Convenience Function: get key with keyname in first section with sectionname with the key's value being initialized to value if it did not exist.
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>sectionname</code></strong> - the name of the sectionname the key is supposed to be in - it will be created if needed</li>
+        <li><strong class="pname"><code>keyname</code></strong> - the name of the key you wish to find</li>
+        <li><strong class="pname"><code>value</code></strong> - the value you wish to receive as as default if the key has to be created.
+It can be a list of values as well, basically anything that <a href="mrv.conf.Key-class.html" class="link">Key</a> allows as value</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd><a href="mrv.conf.Key-class.html" class="link">Key</a></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="keysByName"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">keysByName</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">name</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor.keysByName">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>name</code></strong> - the name of the key you wish to find</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>List of  (<a href="mrv.conf.Key-class.html" class="link">Key</a>,`Section`) tuples of key(s) matching name found in section, or empty list</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">key_id</span>,
+        <span class="sig-arg">default</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor.get">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Convenience function allowing to easily specify the key you wish to retrieve
+with the option to provide a default value
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>key_id</code></strong> - string specifying a key, either as <tt class="rst-docutils literal">sectionname.keyname</tt>
+or <tt class="rst-docutils literal">keyname</tt>.
+In case you specify a section, the key must reside in the given section,
+if only a keyname is given, it may reside in any section</li>
+        <li><strong class="pname"><code>default</code></strong> - Default value to be given to a newly created key in case
+there is no existing value. If None, the method may raise in case the given
+key_id does not exist.</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd><a href="mrv.conf.Key-class.html" class="link">Key</a> instance whose value may be queried through its <tt class="rst-docutils literal">value</tt> or
+<tt class="rst-docutils literal">values</tt> attributes</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="sectionDefault"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">sectionDefault</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">section</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor.sectionDefault">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>section with given name.</dd>
+    <dt>Raises:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code><strong class='fraise'>IOError</strong></code> - If section does not exist and it cannot be created as the configuration is readonly</li>
+    </ul></dd>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        the section will be created if it does not yet exist
+      </p>
+</div></td></tr></table>
+</div>
+<a name="removeSection"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">removeSection</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">name</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor.removeSection">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Completely remove the given section name from all nodes in our configuration
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>the number of nodes that did <em>not</em> allow the section to be removed as they are read-only, thus
+0 will be returned if everything was alright</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="mergeSection"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">mergeSection</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">section</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.conf-pysrc.html#ConfigAccessor.mergeSection">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Merge and/or add the given section into our chain of nodes. The first writable node will be used
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>name of the file source that has received the section</dd>
+    <dt>Raises:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code><strong class='fraise'>IOError</strong></code> - if no writable node was found</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Nov 30 14:48:31 2010
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

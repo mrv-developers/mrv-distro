@@ -1,0 +1,236 @@
+<html>
+<head>
+<title>mrv</title>
+</head>
+<body>
+mrv
+<style>
+.coverage pre {float: left; margin: 0px 1em; border: none;
+               padding: 0px; }
+.num pre { margin: 0px }
+.nocov, .nocov pre {background-color: #faa}
+.cov, .cov pre {background-color: #cfc}
+div.coverage div { clear: both; height: 1.1em}
+</style>
+<div class="stats">
+Covered: 26 lines<br/>
+Missed: 100 lines<br/>
+Skipped 85 lines<br/>
+Percent: 20 %<br/>
+
+</div>
+<div class="coverage">
+<div class="skip"><span class="num"><pre>  1</pre></span><pre># -*- coding: utf-8 -*-</pre></div>
+<div class="nocov"><span class="num"><pre>  2</pre></span><pre>&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>  3</pre></span><pre>Initialize mrv system assisting development, debugging and maintenance</pre></div>
+<div class="skip"><span class="num"><pre>  4</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>  5</pre></span><pre>	- install general `decorator` into __builtin__ namespace</pre></div>
+<div class="nocov"><span class="num"><pre>  6</pre></span><pre>&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>  7</pre></span><pre>import __builtin__</pre></div>
+<div class="nocov"><span class="num"><pre>  8</pre></span><pre>import logging</pre></div>
+<div class="nocov"><span class="num"><pre>  9</pre></span><pre>import logging.config</pre></div>
+<div class="nocov"><span class="num"><pre> 10</pre></span><pre>log = logging.getLogger(&quot;mrv&quot;)</pre></div>
+<div class="skip"><span class="num"><pre> 11</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 12</pre></span><pre>__all__ = (&quot;init_modules&quot;, )</pre></div>
+<div class="skip"><span class="num"><pre> 13</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 14</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 15</pre></span><pre>import os, sys</pre></div>
+<div class="nocov"><span class="num"><pre> 16</pre></span><pre>from path import Path</pre></div>
+<div class="skip"><span class="num"><pre> 17</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 18</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 19</pre></span><pre>#{ Common</pre></div>
+<div class="nocov"><span class="num"><pre> 20</pre></span><pre>def init_modules( filepath, moduleprefix, recurse=False, self_module = None):</pre></div>
+<div class="nocov"><span class="num"><pre> 21</pre></span><pre>	&quot;&quot;&quot; Call '__initialize' functions in submodules of module at filepath if they exist</pre></div>
+<div class="nocov"><span class="num"><pre> 22</pre></span><pre>	These functions should setup the module to be ready for work, its a callback informing</pre></div>
+<div class="nocov"><span class="num"><pre> 23</pre></span><pre>	the submodules that the super module is being requested. They return a True value if</pre></div>
+<div class="nocov"><span class="num"><pre> 24</pre></span><pre>	the initialization was performed, or a False one if they weren't for some reason.</pre></div>
+<div class="nocov"><span class="num"><pre> 25</pre></span><pre>	Throw to indicate error.</pre></div>
+<div class="nocov"><span class="num"><pre> 26</pre></span><pre>	:param filepath: your module module.__file__ value</pre></div>
+<div class="nocov"><span class="num"><pre> 27</pre></span><pre>	:param moduleprefix: prefix like &quot;super.yourmodule.&quot; leading to the submodules from</pre></div>
+<div class="nocov"><span class="num"><pre> 28</pre></span><pre>	an available system include path</pre></div>
+<div class="nocov"><span class="num"><pre> 29</pre></span><pre>	:param recurse: if True, method will recursively initialize submodules</pre></div>
+<div class="nocov"><span class="num"><pre> 30</pre></span><pre>	:param self_module: if not None, it must be the module that called this function.</pre></div>
+<div class="nocov"><span class="num"><pre> 31</pre></span><pre>	It will be given to the __initialize functions as first arguments allowing </pre></div>
+<div class="nocov"><span class="num"><pre> 32</pre></span><pre>	them to operate on functions of their own module - importing their own </pre></div>
+<div class="nocov"><span class="num"><pre> 33</pre></span><pre>	module is not yet possible as it is in the course of being intialized itself.</pre></div>
+<div class="nocov"><span class="num"><pre> 34</pre></span><pre>	The module will be given only to intermediate submodules in case recurse is True.</pre></div>
+<div class="nocov"><span class="num"><pre> 35</pre></span><pre>	:note: in this moment, all submodules will be 'pulled' in&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 36</pre></span><pre>	moduledir = Path( filepath  ).parent()</pre></div>
+<div class="cov"><span class="num"><pre> 37</pre></span><pre>	moduleitems = moduledir.listdir( )</pre></div>
+<div class="cov"><span class="num"><pre> 38</pre></span><pre>	moduleitems.sort()					# assure we have the same order on every system</pre></div>
+<div class="cov"><span class="num"><pre> 39</pre></span><pre>	extensions = ( &quot;.py&quot;, &quot;.pyc&quot;, &quot;.pyo&quot; )</pre></div>
+<div class="cov"><span class="num"><pre> 40</pre></span><pre>	initialized_modules = set()</pre></div>
+<div class="skip"><span class="num"><pre> 41</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 42</pre></span><pre>	if not moduleprefix.endswith( &quot;.&quot; ):</pre></div>
+<div class="cov"><span class="num"><pre> 43</pre></span><pre>		moduleprefix += &quot;.&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 44</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 45</pre></span><pre>	# import each module</pre></div>
+<div class="cov"><span class="num"><pre> 46</pre></span><pre>	for path in moduleitems:</pre></div>
+<div class="skip"><span class="num"><pre> 47</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 48</pre></span><pre>		# SUB-PACKAGE ?</pre></div>
+<div class="cov"><span class="num"><pre> 49</pre></span><pre>		if path.isdir( ):</pre></div>
+<div class="cov"><span class="num"><pre> 50</pre></span><pre>			if not recurse:</pre></div>
+<div class="cov"><span class="num"><pre> 51</pre></span><pre>				continue</pre></div>
+<div class="skip"><span class="num"><pre> 52</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 53</pre></span><pre>			packageinitfile = None</pre></div>
+<div class="nocov"><span class="num"><pre> 54</pre></span><pre>			for ext in extensions:</pre></div>
+<div class="nocov"><span class="num"><pre> 55</pre></span><pre>				testpackageinitfile = path / &quot;__init__%s&quot; % ext</pre></div>
+<div class="nocov"><span class="num"><pre> 56</pre></span><pre>				if testpackageinitfile.exists():</pre></div>
+<div class="nocov"><span class="num"><pre> 57</pre></span><pre>					packageinitfile = testpackageinitfile</pre></div>
+<div class="nocov"><span class="num"><pre> 58</pre></span><pre>					break</pre></div>
+<div class="skip"><span class="num"><pre> 59</pre></span><pre>				# END if packageinit file exists</pre></div>
+<div class="skip"><span class="num"><pre> 60</pre></span><pre>			# END for each possible extension</pre></div>
+<div class="skip"><span class="num"><pre> 61</pre></span><pre>			</pre></div>
+<div class="skip"><span class="num"><pre> 62</pre></span><pre>			# skip non-existing ones</pre></div>
+<div class="nocov"><span class="num"><pre> 63</pre></span><pre>			if not packageinitfile:</pre></div>
+<div class="nocov"><span class="num"><pre> 64</pre></span><pre>				continue</pre></div>
+<div class="skip"><span class="num"><pre> 65</pre></span><pre>			</pre></div>
+<div class="nocov"><span class="num"><pre> 66</pre></span><pre>			init_modules( packageinitfile, moduleprefix + path.basename(), recurse=True )</pre></div>
+<div class="nocov"><span class="num"><pre> 67</pre></span><pre>			continue</pre></div>
+<div class="skip"><span class="num"><pre> 68</pre></span><pre>		# END path handling</pre></div>
+<div class="skip"><span class="num"><pre> 69</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 70</pre></span><pre>		if path.ext() not in extensions:</pre></div>
+<div class="nocov"><span class="num"><pre> 71</pre></span><pre>			continue</pre></div>
+<div class="skip"><span class="num"><pre> 72</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 73</pre></span><pre>		modulename = path.namebase()</pre></div>
+<div class="cov"><span class="num"><pre> 74</pre></span><pre>		if modulename.startswith( &quot;_&quot; ) or modulename.startswith( &quot;.&quot; ) or modulename in ('all', 'mdb'):</pre></div>
+<div class="cov"><span class="num"><pre> 75</pre></span><pre>			continue</pre></div>
+<div class="skip"><span class="num"><pre> 76</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 77</pre></span><pre>		fullModuleName = moduleprefix + modulename</pre></div>
+<div class="cov"><span class="num"><pre> 78</pre></span><pre>		if fullModuleName in initialized_modules:</pre></div>
+<div class="cov"><span class="num"><pre> 79</pre></span><pre>			continue</pre></div>
+<div class="skip"><span class="num"><pre> 80</pre></span><pre>		# END prevent duplicate initialization due to different endings</pre></div>
+<div class="cov"><span class="num"><pre> 81</pre></span><pre>		initialized_modules.add(fullModuleName)</pre></div>
+<div class="cov"><span class="num"><pre> 82</pre></span><pre>		module = __import__( fullModuleName , globals(), locals(), [ modulename ] )</pre></div>
+<div class="skip"><span class="num"><pre> 83</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 84</pre></span><pre>		# call init</pre></div>
+<div class="cov"><span class="num"><pre> 85</pre></span><pre>		args = ( self_module and [ self_module ] ) or tuple()</pre></div>
+<div class="cov"><span class="num"><pre> 86</pre></span><pre>		if hasattr( module, &quot;__initialize&quot; ):</pre></div>
+<div class="cov"><span class="num"><pre> 87</pre></span><pre>			res = module.__initialize( *args )</pre></div>
+<div class="cov"><span class="num"><pre> 88</pre></span><pre>			if res:</pre></div>
+<div class="cov"><span class="num"><pre> 89</pre></span><pre>				log.info(&quot;Initialized &quot; + module.__name__)</pre></div>
+<div class="skip"><span class="num"><pre> 90</pre></span><pre>			# EMD handle result</pre></div>
+<div class="skip"><span class="num"><pre> 91</pre></span><pre>	# END for each file or dir</pre></div>
+<div class="skip"><span class="num"><pre> 92</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 93</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 94</pre></span><pre>#} END common</pre></div>
+<div class="skip"><span class="num"><pre> 95</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 96</pre></span><pre>#{ Initialization</pre></div>
+<div class="skip"><span class="num"><pre> 97</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 98</pre></span><pre>def _remove_empty_syspath_entries():</pre></div>
+<div class="nocov"><span class="num"><pre> 99</pre></span><pre>	&quot;&quot;&quot;fix sys.path: if there are empty entries and our cwd is the mrvroot</pre></div>
+<div class="nocov"><span class="num"><pre>100</pre></span><pre>	we will be in trouble as we try to import our own 'maya' module which </pre></div>
+<div class="nocov"><span class="num"><pre>101</pre></span><pre>	will not provide the original maya packages of course</pre></div>
+<div class="skip"><span class="num"><pre>102</pre></span><pre>	</pre></div>
+<div class="nocov"><span class="num"><pre>103</pre></span><pre>	:note: only for internal use - code was moved into a method as it needs </pre></div>
+<div class="nocov"><span class="num"><pre>104</pre></span><pre>		to be called again from maya.__init__&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>105</pre></span><pre>	while '' in sys.path:</pre></div>
+<div class="nocov"><span class="num"><pre>106</pre></span><pre>		sys.path.remove('')</pre></div>
+<div class="skip"><span class="num"><pre>107</pre></span><pre>	# END while we have whitespace</pre></div>
+<div class="skip"><span class="num"><pre>108</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>109</pre></span><pre>def _init_syspath( ):</pre></div>
+<div class="nocov"><span class="num"><pre>110</pre></span><pre>	&quot;&quot;&quot; Initialize the path such that additional modules can be found&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>111</pre></span><pre>	import site</pre></div>
+<div class="nocov"><span class="num"><pre>112</pre></span><pre>	mrvroot = mrvroot = os.path.dirname( __file__ )</pre></div>
+<div class="skip"><span class="num"><pre>113</pre></span><pre>	</pre></div>
+<div class="nocov"><span class="num"><pre>114</pre></span><pre>	_remove_empty_syspath_entries()</pre></div>
+<div class="skip"><span class="num"><pre>115</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>116</pre></span><pre>	# process additional site-packackes</pre></div>
+<div class="skip"><span class="num"><pre>117</pre></span><pre>	# The startup script may add additional site-package paths, but if these</pre></div>
+<div class="skip"><span class="num"><pre>118</pre></span><pre>	# are non-default, they will not be handled which leads to an incomplete </pre></div>
+<div class="skip"><span class="num"><pre>119</pre></span><pre>	# environment. Hence we process them.</pre></div>
+<div class="skip"><span class="num"><pre>120</pre></span><pre>	# Fortunately, the function handles multiple initializations gracefully</pre></div>
+<div class="nocov"><span class="num"><pre>121</pre></span><pre>	for syspath in sys.path[:]:</pre></div>
+<div class="nocov"><span class="num"><pre>122</pre></span><pre>		if syspath.endswith('site-packages'):</pre></div>
+<div class="nocov"><span class="num"><pre>123</pre></span><pre>			site.addsitedir(syspath, set(sys.path))</pre></div>
+<div class="skip"><span class="num"><pre>124</pre></span><pre>		# END found site-packages path</pre></div>
+<div class="skip"><span class="num"><pre>125</pre></span><pre>	# END for each path to possibly initialize</pre></div>
+<div class="skip"><span class="num"><pre>126</pre></span><pre>	</pre></div>
+<div class="nocov"><span class="num"><pre>127</pre></span><pre>	if sys.platform == 'darwin':</pre></div>
+<div class="skip"><span class="num"><pre>128</pre></span><pre>		# in order to have a chance to get the setuptools going, </pre></div>
+<div class="skip"><span class="num"><pre>129</pre></span><pre>		# add the default python library to the path.</pre></div>
+<div class="nocov"><span class="num"><pre>130</pre></span><pre>		sys.path.append(&quot;/System/Library/Frameworks/Python.framework/Versions/%s/Extras/lib/python&quot;%sys.version[:3])</pre></div>
+<div class="skip"><span class="num"><pre>131</pre></span><pre>	# END desperate hack</pre></div>
+<div class="skip"><span class="num"><pre>132</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>133</pre></span><pre>	# get external base</pre></div>
+<div class="nocov"><span class="num"><pre>134</pre></span><pre>	extbase = os.path.join( mrvroot, &quot;ext&quot; )</pre></div>
+<div class="skip"><span class="num"><pre>135</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>136</pre></span><pre>	# pyparsing</pre></div>
+<div class="nocov"><span class="num"><pre>137</pre></span><pre>	pyparsing = os.path.join( extbase, &quot;pyparsing&quot;, &quot;src&quot; )</pre></div>
+<div class="skip"><span class="num"><pre>138</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>139</pre></span><pre>	# pydot</pre></div>
+<div class="nocov"><span class="num"><pre>140</pre></span><pre>	pydot = os.path.join( extbase, &quot;pydot&quot; )</pre></div>
+<div class="skip"><span class="num"><pre>141</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>142</pre></span><pre>	# networkx</pre></div>
+<div class="nocov"><span class="num"><pre>143</pre></span><pre>	networkxpath = os.path.join( extbase, &quot;networkx&quot; )</pre></div>
+<div class="skip"><span class="num"><pre>144</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>145</pre></span><pre>	# add all to the path</pre></div>
+<div class="nocov"><span class="num"><pre>146</pre></span><pre>	sys.path.append( pyparsing )</pre></div>
+<div class="nocov"><span class="num"><pre>147</pre></span><pre>	sys.path.append( pydot )</pre></div>
+<div class="nocov"><span class="num"><pre>148</pre></span><pre>	sys.path.append( networkxpath )</pre></div>
+<div class="skip"><span class="num"><pre>149</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>150</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>151</pre></span><pre># end __init_syspath</pre></div>
+<div class="skip"><span class="num"><pre>152</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>153</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>154</pre></span><pre>def _init_configProvider( ):</pre></div>
+<div class="nocov"><span class="num"><pre>155</pre></span><pre>	&quot;&quot;&quot; Install the configuration provider system</pre></div>
+<div class="skip"><span class="num"><pre>156</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>157</pre></span><pre>	This allows values and settings to be stored in a convenient way. &quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>158</pre></span><pre>	pass</pre></div>
+<div class="skip"><span class="num"><pre>159</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>160</pre></span><pre>def _init_internationalization( ):</pre></div>
+<div class="nocov"><span class="num"><pre>161</pre></span><pre>	&quot;&quot;&quot;Install internationalization module</pre></div>
+<div class="skip"><span class="num"><pre>162</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>163</pre></span><pre>	Using the default python gettext module, internationalization compatibility</pre></div>
+<div class="nocov"><span class="num"><pre>164</pre></span><pre>	can be garantueed.</pre></div>
+<div class="skip"><span class="num"><pre>165</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>166</pre></span><pre>	Will map the '_' function to translate enclosed strings &quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>167</pre></span><pre>	import gettext</pre></div>
+<div class="nocov"><span class="num"><pre>168</pre></span><pre>	gettext.install( &quot;mrv&quot; )</pre></div>
+<div class="skip"><span class="num"><pre>169</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>170</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>171</pre></span><pre>def _init_logging( ):</pre></div>
+<div class="nocov"><span class="num"><pre>172</pre></span><pre>	&quot;&quot;&quot; Initialize the default mrv logging interface</pre></div>
+<div class="skip"><span class="num"><pre>173</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>174</pre></span><pre>	The logging interface unifies the way messages for the end user are handled</pre></div>
+<div class="nocov"><span class="num"><pre>175</pre></span><pre>	and assure a flexible message handling.</pre></div>
+<div class="skip"><span class="num"><pre>176</pre></span><pre>	</pre></div>
+<div class="nocov"><span class="num"><pre>177</pre></span><pre>	:note: will not raise even if the logging module could not be setup</pre></div>
+<div class="skip"><span class="num"><pre>178</pre></span><pre>	</pre></div>
+<div class="nocov"><span class="num"><pre>179</pre></span><pre>	:note: in the current implementation, it is based on the default python logging</pre></div>
+<div class="nocov"><span class="num"><pre>180</pre></span><pre>		package&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>181</pre></span><pre>	logcfgfile = os.environ.get('MRV_LOGGING_INI', None)</pre></div>
+<div class="nocov"><span class="num"><pre>182</pre></span><pre>	if logcfgfile is None:</pre></div>
+<div class="nocov"><span class="num"><pre>183</pre></span><pre>		return</pre></div>
+<div class="skip"><span class="num"><pre>184</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>185</pre></span><pre>	try:</pre></div>
+<div class="nocov"><span class="num"><pre>186</pre></span><pre>		logcfgfile = Path(logcfgfile).expand_or_raise()</pre></div>
+<div class="nocov"><span class="num"><pre>187</pre></span><pre>		logging.config.fileConfig(logcfgfile)</pre></div>
+<div class="nocov"><span class="num"><pre>188</pre></span><pre>	except Exception, e:</pre></div>
+<div class="nocov"><span class="num"><pre>189</pre></span><pre>		print &quot;Failed to apply logging configuration at %s with error: %s&quot; % (logcfgfile, str(e))</pre></div>
+<div class="nocov"><span class="num"><pre>190</pre></span><pre>	else:</pre></div>
+<div class="nocov"><span class="num"><pre>191</pre></span><pre>		log.debug(&quot;Initialized logging configuration from file at %s&quot; % logcfgfile)</pre></div>
+<div class="skip"><span class="num"><pre>192</pre></span><pre>	# END exception handling</pre></div>
+<div class="skip"><span class="num"><pre>193</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>194</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>195</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>196</pre></span><pre>def _init_python( ):</pre></div>
+<div class="nocov"><span class="num"><pre>197</pre></span><pre>	&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>198</pre></span><pre>	Assure that certain python classes have the least possible amount of compatablity</pre></div>
+<div class="nocov"><span class="num"><pre>199</pre></span><pre>	so that we can work with them</pre></div>
+<div class="nocov"><span class="num"><pre>200</pre></span><pre>	&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>201</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>202</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>203</pre></span><pre>#} END initialization</pre></div>
+<div class="skip"><span class="num"><pre>204</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>205</pre></span><pre># INITIALIZE</pre></div>
+<div class="skip"><span class="num"><pre>206</pre></span><pre>#############</pre></div>
+<div class="nocov"><span class="num"><pre>207</pre></span><pre>_init_syspath( )</pre></div>
+<div class="nocov"><span class="num"><pre>208</pre></span><pre>_init_configProvider( )</pre></div>
+<div class="nocov"><span class="num"><pre>209</pre></span><pre>_init_internationalization( )</pre></div>
+<div class="nocov"><span class="num"><pre>210</pre></span><pre>_init_logging( )</pre></div>
+<div class="nocov"><span class="num"><pre>211</pre></span><pre>_init_python( )</pre></div>
+</div>
+</body>
+</html>

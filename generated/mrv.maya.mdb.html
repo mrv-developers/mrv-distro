@@ -1,0 +1,795 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>mrv.maya.mdb &mdash; mrv v1.0.1-develop documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.1-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="mrv v1.0.1-develop documentation" href="../index.html" />
+    <link rel="next" title="mrv.maya.util" href="mrv.maya.util.html" />
+    <link rel="prev" title="mrv.info" href="mrv.info.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.util.html" title="mrv.maya.util"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mrv.info.html" title="mrv.info"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-mrv.maya.mdb">
+<h1><tt class="xref docutils literal"><span class="pre">mrv.maya.mdb</span></tt><a class="headerlink" href="#module-mrv.maya.mdb" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="api/mrv.maya.mdb-module.html">Epydoc: mrv.maya.mdb</a></p>
+<p>Provides classes and functions operating on the MayaAPI class database</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">note:</th><td class="field-body">This module must not be auto-initialized as it assumes its parent package to 
+be present already</td>
+</tr>
+<tr class="field"><th class="field-name">note:</th><td class="field-body">The implementation is considered internal and may change any time unless stated
+otherwise.</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mrv.maya.mdb._createTmpNode">
+<tt class="descclassname">mrv.maya.mdb.</tt><tt class="descname">_createTmpNode</tt><big>(</big><em>nodetype</em><big>)</big><a class="headerlink" href="#mrv.maya.mdb._createTmpNode" title="Permalink to this definition">¶</a></dt>
+<dd>Return tuple(mobject, modifier) for the nodetype or raise RuntimeError
+doIt has not yet been called on the modifier, hence the mobject is temporary</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.mdb._iterAllNodeTypes">
+<tt class="descclassname">mrv.maya.mdb.</tt><tt class="descname">_iterAllNodeTypes</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.mdb._iterAllNodeTypes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns iterator which yield tuple(nodeTypeName, MObject, modifier) triplets
+of nodeTypes, with an MObjects instance of it, created with the given modifier, 
+one for each node type available to maya.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">skips manipulators as they tend to crash maya on creation ( perhaps its only
+one which does that, but its not that important )</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.mdb.apiModules">
+<tt class="descclassname">mrv.maya.mdb.</tt><tt class="descname">apiModules</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.mdb.apiModules" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">tuple of api modules containing MayaAPI classes</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">This takes a moment to load as it will import many api modules. Delay 
+the call as much as possible</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.mdb.cacheFilePath">
+<tt class="descclassname">mrv.maya.mdb.</tt><tt class="descname">cacheFilePath</tt><big>(</big><em>filename</em>, <em>ext</em>, <em>use_version=False</em><big>)</big><a class="headerlink" href="#mrv.maya.mdb.cacheFilePath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return path to cache file from which you would initialize data structures</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>use_version</em> &#8211; if true, the maya version will be appended to the filename</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.mdb.createDagNodeHierarchy">
+<tt class="descclassname">mrv.maya.mdb.</tt><tt class="descname">createDagNodeHierarchy</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.mdb.createDagNodeHierarchy" title="Permalink to this definition">¶</a></dt>
+<dd>Parse the nodes hierarchy file and return a <cite>DAGTree</cite> with its data
+:return: <cite>DAGTree</cite></dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.mdb.createTypeNameToMfnClsMap">
+<tt class="descclassname">mrv.maya.mdb.</tt><tt class="descname">createTypeNameToMfnClsMap</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.mdb.createTypeNameToMfnClsMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a file associating node type names with the best compatible MFn function 
+set and return a dictionary with the data</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">dict(((nodeTypeNameStr : api.MFnCls), ...)) dictionary with nodetypeName
+MFn class mapping</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.mdb.extractMFnFunctions">
+<tt class="descclassname">mrv.maya.mdb.</tt><tt class="descname">extractMFnFunctions</tt><big>(</big><em>mfncls</em><big>)</big><a class="headerlink" href="#mrv.maya.mdb.extractMFnFunctions" title="Permalink to this definition">¶</a></dt>
+<dd>Extract callables from mfncls, sorted into static methods and instance methods
+:return: tuple(list(callable_staticmethod, ...), list(callable_instancemethod, ...))</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.mdb.generateNodeHierarchy">
+<tt class="descclassname">mrv.maya.mdb.</tt><tt class="descname">generateNodeHierarchy</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.mdb.generateNodeHierarchy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the node-hierarchy for the current version based on all node types 
+which can be created in maya.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">tuple(DAGTree, typeToMFnClsNameList)</p>
+<ul class="simple">
+<li>DAGTree representing the type hierarchy</li>
+<li>list represents typeName to MFnClassName associations</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">should only be run as part of the upgrade process to prepare MRV for  a
+new maya release. Otherwise the nodetype tree will be read from a cache</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.mdb.hasMEnumeration">
+<tt class="descclassname">mrv.maya.mdb.</tt><tt class="descname">hasMEnumeration</tt><big>(</big><em>mfncls</em><big>)</big><a class="headerlink" href="#mrv.maya.mdb.hasMEnumeration" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if the given mfncls has at least one enumeration</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.mdb.headerPath">
+<tt class="descclassname">mrv.maya.mdb.</tt><tt class="descname">headerPath</tt><big>(</big><em>apiname</em><big>)</big><a class="headerlink" href="#mrv.maya.mdb.headerPath" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">Path to file containing the c++ header of the given apiclass&#8217; name.
+The file will not be verified, hence it may be inaccessible</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>apiname</em> &#8211; string name, like &#8216;MFnBase&#8217;</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises ValueError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if MAYA_LOCATION is not set</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.mdb.make_path">
+<tt class="descclassname">mrv.maya.mdb.</tt><tt class="descname">make_path</tt><big>(</big><em>path</em><big>)</big><a class="headerlink" href="#mrv.maya.mdb.make_path" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">A path instance of the correct type</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">use this constructor if you use the Path.set_separator method at runtime
+to assure you will always create instances of the actual type, and not only
+of the type you imported last</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.mdb.mfnDBPath">
+<tt class="descclassname">mrv.maya.mdb.</tt><tt class="descname">mfnDBPath</tt><big>(</big><em>mfnclsname</em><big>)</big><a class="headerlink" href="#mrv.maya.mdb.mfnDBPath" title="Permalink to this definition">¶</a></dt>
+<dd>Generate a path to a database file containing mfn wrapping information</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.mdb.nodeHierarchyFile">
+<tt class="descclassname">mrv.maya.mdb.</tt><tt class="descname">nodeHierarchyFile</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.mdb.nodeHierarchyFile" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">Path to the node hierarchy file of the currently active maya version</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.mdb.writeMfnDBCacheFiles">
+<tt class="descclassname">mrv.maya.mdb.</tt><tt class="descname">writeMfnDBCacheFiles</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.mdb.writeMfnDBCacheFiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a simple Memberlist of available mfn classes and their members
+to allow a simple human-editable way of adjusting which methods will be added
+to the Nodes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">currently writes information about all known api modules</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="api/mrv.maya.mdb.CppHeaderParser-class.html">Epydoc: mrv.maya.mdb.CppHeaderParser</a></p>
+<dl class="class">
+<dt id="mrv.maya.mdb.CppHeaderParser">
+<em class="property">class </em><tt class="descclassname">mrv.maya.mdb.</tt><tt class="descname">CppHeaderParser</tt><a class="headerlink" href="#mrv.maya.mdb.CppHeaderParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>Simplistic regex based parser which will extract information from the file
+it was initialized with.</p>
+<p>For now its so simple that there is no more than one method</p>
+<dl class="classmethod">
+<dt id="mrv.maya.mdb.CppHeaderParser.parseAndExtract">
+<em class="property">classmethod </em><tt class="descname">parseAndExtract</tt><big>(</big><em>header_filepath</em>, <em>parse_enums=True</em><big>)</big><a class="headerlink" href="#mrv.maya.mdb.CppHeaderParser.parseAndExtract" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the given header file and return the parsed information</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>header_filepath</em> &#8211; Path pointing to the given header file. Its currently
+assumed to be 7 bit ascii</li>
+<li><em>parse_enums</em> &#8211; If True, enumerations will be parsed from the file. If 
+False, the enumeration tuple in the return value will be empty.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">Currently we can only parse non-anonymous enumerations !</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">tuple(tuple(MEnumDescriptor, ...), )</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.mdb.MEnumDescriptor-class.html">Epydoc: mrv.maya.mdb.MEnumDescriptor</a></p>
+<dl class="class">
+<dt id="mrv.maya.mdb.MEnumDescriptor">
+<em class="property">class </em><tt class="descclassname">mrv.maya.mdb.</tt><tt class="descname">MEnumDescriptor</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#mrv.maya.mdb.MEnumDescriptor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">list</span></tt></p>
+<p>Is an ordered list of enumeration names without its values, together
+with the name of the enumeration type</p>
+<dl class="attribute">
+<dt id="mrv.maya.mdb.MEnumDescriptor.append">
+<tt class="descname">append</tt><a class="headerlink" href="#mrv.maya.mdb.MEnumDescriptor.append" title="Permalink to this definition">¶</a></dt>
+<dd>L.append(object) &#8211; append object to end</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.mdb.MEnumDescriptor.count">
+<tt class="descname">count</tt><a class="headerlink" href="#mrv.maya.mdb.MEnumDescriptor.count" title="Permalink to this definition">¶</a></dt>
+<dd>L.count(value) -&gt; integer &#8211; return number of occurrences of value</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.mdb.MEnumDescriptor.extend">
+<tt class="descname">extend</tt><a class="headerlink" href="#mrv.maya.mdb.MEnumDescriptor.extend" title="Permalink to this definition">¶</a></dt>
+<dd>L.extend(iterable) &#8211; extend list by appending elements from the iterable</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.mdb.MEnumDescriptor.index">
+<tt class="descname">index</tt><a class="headerlink" href="#mrv.maya.mdb.MEnumDescriptor.index" title="Permalink to this definition">¶</a></dt>
+<dd>L.index(value, [start, [stop]]) -&gt; integer &#8211; return first index of value.
+Raises ValueError if the value is not present.</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.mdb.MEnumDescriptor.insert">
+<tt class="descname">insert</tt><a class="headerlink" href="#mrv.maya.mdb.MEnumDescriptor.insert" title="Permalink to this definition">¶</a></dt>
+<dd>L.insert(index, object) &#8211; insert object before index</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.mdb.MEnumDescriptor.name">
+<tt class="descname">name</tt><a class="headerlink" href="#mrv.maya.mdb.MEnumDescriptor.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.mdb.MEnumDescriptor.pop">
+<tt class="descname">pop</tt><a class="headerlink" href="#mrv.maya.mdb.MEnumDescriptor.pop" title="Permalink to this definition">¶</a></dt>
+<dd>L.pop([index]) -&gt; item &#8211; remove and return item at index (default last).
+Raises IndexError if list is empty or index is out of range.</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.mdb.MEnumDescriptor.remove">
+<tt class="descname">remove</tt><a class="headerlink" href="#mrv.maya.mdb.MEnumDescriptor.remove" title="Permalink to this definition">¶</a></dt>
+<dd>L.remove(value) &#8211; remove first occurrence of value.
+Raises ValueError if the value is not present.</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.mdb.MEnumDescriptor.reverse">
+<tt class="descname">reverse</tt><a class="headerlink" href="#mrv.maya.mdb.MEnumDescriptor.reverse" title="Permalink to this definition">¶</a></dt>
+<dd>L.reverse() &#8211; reverse <em>IN PLACE</em></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.mdb.MEnumDescriptor.sort">
+<tt class="descname">sort</tt><a class="headerlink" href="#mrv.maya.mdb.MEnumDescriptor.sort" title="Permalink to this definition">¶</a></dt>
+<dd>L.sort(cmp=None, key=None, reverse=False) &#8211; stable sort <em>IN PLACE</em>;
+cmp(x, y) -&gt; -1, 0, 1</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.mdb.MFnCodeGeneratorBase-class.html">Epydoc: mrv.maya.mdb.MFnCodeGeneratorBase</a></p>
+<dl class="class">
+<dt id="mrv.maya.mdb.MFnCodeGeneratorBase">
+<em class="property">class </em><tt class="descclassname">mrv.maya.mdb.</tt><tt class="descname">MFnCodeGeneratorBase</tt><big>(</big><em>module_dict</em><big>)</big><a class="headerlink" href="#mrv.maya.mdb.MFnCodeGeneratorBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>Define the interface and common utility methods to generate a string defining 
+code for a given MFnMethod according to the meta data provided by an <cite>MMethodDescriptor</cite>.</p>
+<p>Once instantiated, it can create any number of methods</p>
+<dl class="method">
+<dt id="mrv.maya.mdb.MFnCodeGeneratorBase.generateMFnClsMethodWrapper">
+<tt class="descname">generateMFnClsMethodWrapper</tt><big>(</big><em>source_method_name</em>, <em>target_method_name</em>, <em>mfn_fun_name</em>, <em>method_descriptor</em>, <em>flags=0</em><big>)</big><a class="headerlink" href="#mrv.maya.mdb.MFnCodeGeneratorBase.generateMFnClsMethodWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">string containing the code for the wrapper method as configured by the 
+method descriptor</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>source_method_name</em> &#8211; Original name of the method - this is the name under which 
+it was requested.</li>
+<li><em>target_method_name</em> &#8211; Name of the method in the returned code string</li>
+<li><em>mfn_fun_name</em> &#8211; original name of the MFn function</li>
+<li><em>method_descriptor</em> &#8211; instance of <cite>MMethodDescriptor</cite></li>
+<li><em>flags</em> &#8211; bit flags providing additional information, depending on the actual 
+implementation. Unsupported flags are ignored.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.mdb.MFnCodeGeneratorBase.module_dict">
+<tt class="descname">module_dict</tt><a class="headerlink" href="#mrv.maya.mdb.MFnCodeGeneratorBase.module_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.mdb.MMemberMap-class.html">Epydoc: mrv.maya.mdb.MMemberMap</a></p>
+<dl class="class">
+<dt id="mrv.maya.mdb.MMemberMap">
+<em class="property">class </em><tt class="descclassname">mrv.maya.mdb.</tt><tt class="descname">MMemberMap</tt><big>(</big><em>filepath=None</em>, <em>parse_enums=False</em><big>)</big><a class="headerlink" href="#mrv.maya.mdb.MMemberMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">UserDict.UserDict</span></tt></p>
+<p>Simple accessor for MFnDatabase access
+Direct access like db[funcname] returns an entry object with all values</p>
+<p><strong>Globals</strong>:
+The __globals__ entry in MFn db files allows to pass additional options.
+Currently there are no supported flags</p>
+<dl class="method">
+<dt id="mrv.maya.mdb.MMemberMap.clear">
+<tt class="descname">clear</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.mdb.MMemberMap.clear" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.mdb.MMemberMap.copy">
+<tt class="descname">copy</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.mdb.MMemberMap.copy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.mdb.MMemberMap.createEntry">
+<tt class="descname">createEntry</tt><big>(</big><em>funcname</em><big>)</big><a class="headerlink" href="#mrv.maya.mdb.MMemberMap.createEntry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an entry for the given function, or return the existing one</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">Entry object for funcname</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.maya.mdb.MMemberMap.fromkeys">
+<em class="property">classmethod </em><tt class="descname">fromkeys</tt><big>(</big><em>iterable</em>, <em>value=None</em><big>)</big><a class="headerlink" href="#mrv.maya.mdb.MMemberMap.fromkeys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.mdb.MMemberMap.get">
+<tt class="descname">get</tt><big>(</big><em>key</em>, <em>failobj=None</em><big>)</big><a class="headerlink" href="#mrv.maya.mdb.MMemberMap.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.mdb.MMemberMap.has_key">
+<tt class="descname">has_key</tt><big>(</big><em>key</em><big>)</big><a class="headerlink" href="#mrv.maya.mdb.MMemberMap.has_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.mdb.MMemberMap.items">
+<tt class="descname">items</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.mdb.MMemberMap.items" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.mdb.MMemberMap.iteritems">
+<tt class="descname">iteritems</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.mdb.MMemberMap.iteritems" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.mdb.MMemberMap.iterkeys">
+<tt class="descname">iterkeys</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.mdb.MMemberMap.iterkeys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.mdb.MMemberMap.itervalues">
+<tt class="descname">itervalues</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.mdb.MMemberMap.itervalues" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.mdb.MMemberMap.keys">
+<tt class="descname">keys</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.mdb.MMemberMap.keys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.mdb.MMemberMap.methodByName">
+<tt class="descname">methodByName</tt><big>(</big><em>funcname</em><big>)</big><a class="headerlink" href="#mrv.maya.mdb.MMemberMap.methodByName" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">Tuple( mfnfuncname, entry )
+original mfnclass function name paired with the
+db entry containing more information</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises KeyError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if no such function exists</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.mdb.MMemberMap.mfnFunc">
+<tt class="descname">mfnFunc</tt><big>(</big><em>funcname</em><big>)</big><a class="headerlink" href="#mrv.maya.mdb.MMemberMap.mfnFunc" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">mfn functionname corresponding to the ( possibly renamed ) funcname</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.mdb.MMemberMap.pop">
+<tt class="descname">pop</tt><big>(</big><em>key</em>, <em>*args</em><big>)</big><a class="headerlink" href="#mrv.maya.mdb.MMemberMap.pop" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.mdb.MMemberMap.popitem">
+<tt class="descname">popitem</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.mdb.MMemberMap.popitem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.mdb.MMemberMap.setdefault">
+<tt class="descname">setdefault</tt><big>(</big><em>key</em>, <em>failobj=None</em><big>)</big><a class="headerlink" href="#mrv.maya.mdb.MMemberMap.setdefault" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.mdb.MMemberMap.update">
+<tt class="descname">update</tt><big>(</big><em>dict=None</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.mdb.MMemberMap.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.mdb.MMemberMap.values">
+<tt class="descname">values</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.mdb.MMemberMap.values" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.mdb.MMemberMap.writeToFile">
+<tt class="descname">writeToFile</tt><big>(</big><em>filepath</em><big>)</big><a class="headerlink" href="#mrv.maya.mdb.MMemberMap.writeToFile" title="Permalink to this definition">¶</a></dt>
+<dd>Write our database contents to the given file</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.mdb.MMethodDescriptor-class.html">Epydoc: mrv.maya.mdb.MMethodDescriptor</a></p>
+<dl class="class">
+<dt id="mrv.maya.mdb.MMethodDescriptor">
+<em class="property">class </em><tt class="descclassname">mrv.maya.mdb.</tt><tt class="descname">MMethodDescriptor</tt><big>(</big><em>flag=''</em>, <em>rvalfunc=None</em>, <em>newname=''</em><big>)</big><a class="headerlink" href="#mrv.maya.mdb.MMethodDescriptor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>Contains meta-information about a given method according to data read from 
+the MFnDatabase</p>
+<dl class="attribute">
+<dt id="mrv.maya.mdb.MMethodDescriptor.flag">
+<tt class="descname">flag</tt><a class="headerlink" href="#mrv.maya.mdb.MMethodDescriptor.flag" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.mdb.MMethodDescriptor.newname">
+<tt class="descname">newname</tt><a class="headerlink" href="#mrv.maya.mdb.MMethodDescriptor.newname" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.mdb.MMethodDescriptor.rvalfunc">
+<tt class="descname">rvalfunc</tt><a class="headerlink" href="#mrv.maya.mdb.MMethodDescriptor.rvalfunc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.mdb-module.html#PipeSeparatedFile">Epydoc: mrv.maya.mdb</a></p>
+<dl class="class">
+<dt id="mrv.maya.mdb.PipeSeparatedFile">
+<em class="property">class </em><tt class="descclassname">mrv.maya.mdb.</tt><tt class="descname">PipeSeparatedFile</tt><big>(</big><em>fileobj</em><big>)</big><a class="headerlink" href="#mrv.maya.mdb.PipeSeparatedFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>Read and write simple pipe separated files.</p>
+<p>The number of column must remain the same per line
+<strong>Format</strong>:</p>
+<blockquote>
+val11 | val2 | valn
+...</blockquote>
+<dl class="method">
+<dt id="mrv.maya.mdb.PipeSeparatedFile.beginReading">
+<tt class="descname">beginReading</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.mdb.PipeSeparatedFile.beginReading" title="Permalink to this definition">¶</a></dt>
+<dd>Start reading the file</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.mdb.PipeSeparatedFile.beginWriting">
+<tt class="descname">beginWriting</tt><big>(</big><em>columnSizes</em><big>)</big><a class="headerlink" href="#mrv.maya.mdb.PipeSeparatedFile.beginWriting" title="Permalink to this definition">¶</a></dt>
+<dd><p>intiialize the writing process</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>columnSizes</em> &#8211; list of ints defining the size in characters for each column you plan to feed</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">When done writing, you have to close the file object yourself ( there is no endWriting method here )</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.mdb.PipeSeparatedFile.readColumnLine">
+<tt class="descname">readColumnLine</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.mdb.PipeSeparatedFile.readColumnLine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generator reading one line after another, returning the stripped columns</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">tuple of stripped column strings</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises ValueError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if the column count changes between the lines</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.mdb.PipeSeparatedFile.writeTokens">
+<tt class="descname">writeTokens</tt><big>(</big><em>tokens</em><big>)</big><a class="headerlink" href="#mrv.maya.mdb.PipeSeparatedFile.writeTokens" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write the list of tokens to the file accordingly</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>tokens</em> &#8211; one token per column that you want to write</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises TypeError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">If column count changed between successive calls</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.mdb.PythonMFnCodeGenerator-class.html">Epydoc: mrv.maya.mdb.PythonMFnCodeGenerator</a></p>
+<dl class="class">
+<dt id="mrv.maya.mdb.PythonMFnCodeGenerator">
+<em class="property">class </em><tt class="descclassname">mrv.maya.mdb.</tt><tt class="descname">PythonMFnCodeGenerator</tt><big>(</big><em>module_dict</em><big>)</big><a class="headerlink" href="#mrv.maya.mdb.PythonMFnCodeGenerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.maya.mdb.MFnCodeGeneratorBase" class="reference internal" href="#mrv.maya.mdb.MFnCodeGeneratorBase"><tt class="xref docutils literal"><span class="pre">mrv.maya.mdb.MFnCodeGeneratorBase</span></tt></a></p>
+<p>Specialization to generate python code</p>
+<p><strong>Flags</strong>:</p>
+<blockquote>
+<ul>
+<li><dl class="first docutils">
+<dt>kDirectCall:</dt>
+<dd><p class="first last">If set, the call return the actual mfn method in the best case, which is 
+a call as direct as it gets. A possibly negative side-effect would be that
+it the MFnMethod caches the function set and actual MObject/MDagPath, which 
+can be dangerous if held too long</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>kIsMObject:</dt>
+<dd><p class="first last">If set, the type we create the method for is not derived from Node, but 
+from MObject. This hint is required in order to generate correct calling code.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>kIsDagNode:</dt>
+<dd><p class="first last">If set, the type we create the method for is derived from DagNode</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>kIsStatic:</dt>
+<dd><p class="first last">If set, the method to be wrapped is considered static, no self is needed, nor
+any object.
+NOTE: This flag is likely to be removed as it should be part of the method_descriptor, 
+for now though it does not provide that information so we pass it in.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>kWithDocs:</dt>
+<dd><p class="first last">If set, a doc string will be generated the method. In future, this information
+will come from the method descriptor. Please note that docs should only be attaced
+in interactive modes, otherwise its a waste of memory.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</blockquote>
+<dl class="method">
+<dt id="mrv.maya.mdb.PythonMFnCodeGenerator.generateMFnClsMethodWrapper">
+<tt class="descname">generateMFnClsMethodWrapper</tt><big>(</big><em>source_method_name</em>, <em>target_method_name</em>, <em>mfn_fun_name</em>, <em>method_descriptor</em>, <em>flags=0</em><big>)</big><a class="headerlink" href="#mrv.maya.mdb.PythonMFnCodeGenerator.generateMFnClsMethodWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates code as python string which can be used to compile a function. It assumes the following 
+globals to be existing once evaluated: mfncls, mfn_fun, [rvalfunc]
+Currently supports the following data within method_descriptor:</p>
+<blockquote>
+<ul class="simple">
+<li>method_descriptor.rvalfunc</li>
+</ul>
+</blockquote>
+<p>as well as all flags except kIsStatic.
+:raise ValueError: if flags are incompatible with each other</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.mdb.PythonMFnCodeGenerator.generateMFnClsMethodWrapperMethod">
+<tt class="descname">generateMFnClsMethodWrapperMethod</tt><big>(</big><em>source_method_name</em>, <em>target_method_name</em>, <em>mfncls</em>, <em>mfn_fun</em>, <em>method_descriptor</em>, <em>flags=0</em><big>)</big><a class="headerlink" href="#mrv.maya.mdb.PythonMFnCodeGenerator.generateMFnClsMethodWrapperMethod" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">python function suitable to be installed on a class</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>mfncls</em> &#8211; MFnFunction set class from which the method was retrieved.</li>
+<li><em>mfn_fun</em> &#8211; function as retrieved from the function set&#8217;s dict. Its a bare function.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">For all other args, see <cite>MFnCodeGeneratorBase.generateMFnClsMethodWrapper</cite></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.mdb.PythonMFnCodeGenerator.module_dict">
+<tt class="descname">module_dict</tt><a class="headerlink" href="#mrv.maya.mdb.PythonMFnCodeGenerator.module_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="../index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#"><tt class="docutils literal"><span class="pre">mrv.maya.mdb</span></tt></a><ul>
+<li><a class="reference external" href="#functions">Functions</a></li>
+<li><a class="reference external" href="#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="mrv.info.html"
+                                  title="previous chapter"><tt class="docutils literal docutils literal"><span class="pre">mrv.info</span></tt></a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="mrv.maya.util.html"
+                                  title="next chapter"><tt class="docutils literal"><span class="pre">mrv.maya.util</span></tt></a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/generated/mrv.maya.mdb.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.util.html" title="mrv.maya.util"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mrv.info.html" title="mrv.info"
+             >previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Nov 30, 2010.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

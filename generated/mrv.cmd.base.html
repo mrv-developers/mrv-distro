@@ -1,0 +1,820 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>mrv.cmd.base &mdash; mrv v1.0.1-develop documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.1-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="mrv v1.0.1-develop documentation" href="../index.html" />
+    <link rel="next" title="mrv.cmd.spcmd" href="mrv.cmd.spcmd.html" />
+    <link rel="prev" title="mrv.automation.qa" href="mrv.automation.qa.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.cmd.spcmd.html" title="mrv.cmd.spcmd"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mrv.automation.qa.html" title="mrv.automation.qa"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-mrv.cmd.base">
+<h1><tt class="xref docutils literal"><span class="pre">mrv.cmd.base</span></tt><a class="headerlink" href="#module-mrv.cmd.base" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="api/mrv.cmd.base-module.html">Epydoc: mrv.cmd.base</a></p>
+<p>Contains routines required to initialize mrv</p>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mrv.cmd.base._execute">
+<tt class="descclassname">mrv.cmd.base.</tt><tt class="descname">_execute</tt><big>(</big><em>executable</em>, <em>args</em><big>)</big><a class="headerlink" href="#mrv.cmd.base._execute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform the actual execution of the executable with the given args.
+This method does whatever is required to get it right on windows, which is 
+the only reason this method exists !</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>args</em> &#8211; arguments, without the executable as first argument</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">does not return</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.cmd.base.available_maya_versions">
+<tt class="descclassname">mrv.cmd.base.</tt><tt class="descname">available_maya_versions</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.cmd.base.available_maya_versions" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of installed maya versions which are locally available -</td>
+</tr>
+</tbody>
+</table>
+<p>they can be used in methods that require the maya_version to be given. 
+Versions are ordered such that the latest version is given last.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.cmd.base.exec_maya_binary">
+<tt class="descclassname">mrv.cmd.base.</tt><tt class="descname">exec_maya_binary</tt><big>(</big><em>args</em>, <em>maya_version</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.exec_maya_binary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace this process with the maya executable as specified by maya_version.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>args</em> &#8211; The arguments to be provided to maya</li>
+<li><em>maya_version</em> &#8211; Float identifying the maya version to be launched</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Rase environmenterror:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">if the respective maya version could not be found</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.cmd.base.exec_python_interpreter">
+<tt class="descclassname">mrv.cmd.base.</tt><tt class="descname">exec_python_interpreter</tt><big>(</big><em>args</em>, <em>maya_version</em>, <em>mayapy_only=False</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.exec_python_interpreter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace this process with a python process as determined by the given options.
+This will either be the respective python interpreter, or mayapy.
+If it works, the function does not return</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>args</em> &#8211; remaining arguments which should be passed to the process</li>
+<li><em>maya_version</em> &#8211; float indicating the maya version to use</li>
+<li><em>mayapy_only</em> &#8211; If True, only mayapy will be considered for startup.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Use this option in case the python interpreter crashes for some reason.
+:raise EnvironmentError: If no suitable executable could be started</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.cmd.base.find_mrv_script">
+<tt class="descclassname">mrv.cmd.base.</tt><tt class="descname">find_mrv_script</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.find_mrv_script" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find an mrv script of the given name. This method should be used if you 
+want to figure out where the mrv executable with the given name is located.
+The returned path is either relative or absolute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">Path to script</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises EnvironmentError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if the executable could not be found</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Currently it only looks for executables, but handles projects</td>
+</tr>
+</tbody>
+</table>
+<p>which use mrv as a subproject</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.cmd.base.init_environment">
+<tt class="descclassname">mrv.cmd.base.</tt><tt class="descname">init_environment</tt><big>(</big><em>args</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.init_environment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Intialize MRV up to the point where we can replace this process with the 
+one we prepared</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>args</em> &#8211; commandline arguments excluding the executable ( usually first arg )</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">tuple(use_this_interpreter, maya_version, args) tuple of Bool, maya_version, and the remaining args
+The boolean indicates whether we have to reuse this interpreter, as it is mayapy</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.cmd.base.is_supported_maya_version">
+<tt class="descclassname">mrv.cmd.base.</tt><tt class="descname">is_supported_maya_version</tt><big>(</big><em>version</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.is_supported_maya_version" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if version is a supported maya version</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>version</em> &#8211; float which is either 8.5 or 2008 to 20XX</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.cmd.base.log_exception">
+<tt class="descclassname">mrv.cmd.base.</tt><tt class="descname">log_exception</tt><big>(</big><em>func</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.log_exception" title="Permalink to this definition">¶</a></dt>
+<dd>Assures that exceptions result in a logging message.
+Currently only works with a SpawnedCommand as we need a log instance.
+On error, the server exits with status 64</dd></dl>
+
+<dl class="function">
+<dt id="mrv.cmd.base.make_path">
+<tt class="descclassname">mrv.cmd.base.</tt><tt class="descname">make_path</tt><big>(</big><em>path</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.make_path" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">A path instance of the correct type</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">use this constructor if you use the Path.set_separator method at runtime
+to assure you will always create instances of the actual type, and not only
+of the type you imported last</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.cmd.base.mangle_args">
+<tt class="descclassname">mrv.cmd.base.</tt><tt class="descname">mangle_args</tt><big>(</big><em>args</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.mangle_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enclose arguments in quotes if they contain spaces ... on windows only
+:return: tuple of possibly modified arguments</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Todo:</th><td class="field-body">remove this function, its unused</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.cmd.base.mangle_executable">
+<tt class="descclassname">mrv.cmd.base.</tt><tt class="descname">mangle_executable</tt><big>(</big><em>executable</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.mangle_executable" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">possibly adjusted path to executable in order to allow its execution
+This currently only kicks in on windows as we can&#8217;t handle spaces properly.</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Will change working dir</td>
+</tr>
+<tr class="field"><th class="field-name">Todo:</th><td class="field-body">remove this function, its unused</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.cmd.base.maya_location">
+<tt class="descclassname">mrv.cmd.base.</tt><tt class="descname">maya_location</tt><big>(</big><em>maya_version</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.maya_location" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">string path to the existing maya installation directory for the</td>
+</tr>
+</tbody>
+</table>
+<p>given maya version
+:raise EnvironmentError: if it was not found</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.cmd.base.mayapy_maya_version">
+<tt class="descclassname">mrv.cmd.base.</tt><tt class="descname">mayapy_maya_version</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.cmd.base.mayapy_maya_version" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">float representing the maya version of the currently running</td>
+</tr>
+</tbody>
+</table>
+<p>mayapy interpreter. 
+:raise EnvironmentError: If called from a &#8216;normal&#8217; python interpreter</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.cmd.base.parse_maya_version">
+<tt class="descclassname">mrv.cmd.base.</tt><tt class="descname">parse_maya_version</tt><big>(</big><em>arg</em>, <em>default</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.parse_maya_version" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">tuple(bool, version) tuple of bool indicating whether the version could</td>
+</tr>
+</tbody>
+</table>
+<p>be parsed and was valid, and a float representing the parsed or default version.
+:param default: The desired default maya version</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.cmd.base.python_executable">
+<tt class="descclassname">mrv.cmd.base.</tt><tt class="descname">python_executable</tt><big>(</big><em>py_version=None</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.python_executable" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">name or path to python executable in this system, deals with</td>
+</tr>
+</tbody>
+</table>
+<p>linux and windows specials</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.cmd.base.python_version_of">
+<tt class="descclassname">mrv.cmd.base.</tt><tt class="descname">python_version_of</tt><big>(</big><em>maya_version</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.python_version_of" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">python version matching the given maya version</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises EnvironmentError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">If there is no known matching python version</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.cmd.base.update_env_path">
+<tt class="descclassname">mrv.cmd.base.</tt><tt class="descname">update_env_path</tt><big>(</big><em>environment</em>, <em>env_var</em>, <em>value</em>, <em>append=False</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.update_env_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the given env_var to the given value, but append the existing value
+to it using the system path separator</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>append</em> &#8211; if True, value will be appended to existing values, otherwise it will 
+be prepended</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.cmd.base.update_maya_environment">
+<tt class="descclassname">mrv.cmd.base.</tt><tt class="descname">update_maya_environment</tt><big>(</big><em>maya_version</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.update_maya_environment" title="Permalink to this definition">¶</a></dt>
+<dd>Configure os.environ to allow Maya to run in standalone mode
+:param maya_version: The maya version to prepare to run, either 8.5 or 2008 to 
+20XX. This requires the respective maya version to be installed in a default location.
+:raise EnvironmentError: If the platform is unsupported or if the maya installation could not be found</dd></dl>
+
+<dl class="function">
+<dt id="mrv.cmd.base.uses_mayapy">
+<tt class="descclassname">mrv.cmd.base.</tt><tt class="descname">uses_mayapy</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.cmd.base.uses_mayapy" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if the executable is mayapy</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="api/mrv.cmd.base-module.html#Path">Epydoc: mrv.cmd.base</a></p>
+<p><a class="reference external" href="api/mrv.cmd.base.SpawnedCommand-class.html">Epydoc: mrv.cmd.base.SpawnedCommand</a></p>
+<dl class="class">
+<dt id="mrv.cmd.base.SpawnedCommand">
+<em class="property">class </em><tt class="descclassname">mrv.cmd.base.</tt><tt class="descname">SpawnedCommand</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedCommand" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>Implements a command which can be started easily by specifying a class path
+such as package.cmd.module.CommandClass whose instance should be started in 
+a standalone process.</p>
+<p>The target command must be derived from this class and must implement the 
+&#8216;execute&#8217; method.</p>
+<p>To use this class, derive from it and change the configuration variables
+accordingly.</p>
+<p>The instance will always own a logger instance at its member called &#8216;log&#8217;, 
+the configuration will be applied according to k_log_application_id</p>
+<p>The parser used to parse all options is vailable at its member called &#8216;parser&#8217;, 
+its set during <tt class="docutils literal"><span class="pre">option_parser</span></tt></p>
+<p>The instance may also be created within an existing process and 
+executed manually - in that case it will not exit automatically if a 
+serious event occours</p>
+<dl class="classmethod">
+<dt id="mrv.cmd.base.SpawnedCommand.daemonize">
+<em class="property">classmethod </em><tt class="descname">daemonize</tt><big>(</big><em>*args</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedCommand.daemonize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Damonize the spawned command, passing <a href="#id1"><span class="problematic" id="id2">*</span></a>args to the instanciated command&#8217;s
+execute method.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">None in calling process, no return in the daemon
+as sys.exit will be called.</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">see configuration variables prefixed with _daemon_</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">based on Chad J. Schroeder createDaemon method, 
+see <a class="reference external" href="http://code.activestate.com/recipes/278731-creating-a-daemon-the-python-way">http://code.activestate.com/recipes/278731-creating-a-daemon-the-python-way</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedCommand.execute">
+<tt class="descname">execute</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedCommand.execute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.cmd.base.SpawnedCommand.log">
+<tt class="descname">log</tt><a class="headerlink" href="#mrv.cmd.base.SpawnedCommand.log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedCommand.option_parser">
+<tt class="descname">option_parser</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedCommand.option_parser" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">OptionParser Instance containing all supported options</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Should be overridden by subclass to add additional options and 
+option groups themselves after calling the base class implementation</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.cmd.base.SpawnedCommand.parser">
+<tt class="descname">parser</tt><a class="headerlink" href="#mrv.cmd.base.SpawnedCommand.parser" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.cmd.base.SpawnedCommand.spawn">
+<em class="property">classmethod </em><tt class="descname">spawn</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedCommand.spawn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Spawn a new standalone process of this command type
+Additional arguments passed to the command process</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>kwargs</em> &#8211; Additional keyword arguments to be passed to Subprocess.Popen, 
+use it to configure your IO</td>
+</tr>
+</tbody>
+</table>
+<p>Returns: Subprocess.Popen instance</p>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.cmd.base.SpawnedHelpFormatter-class.html">Epydoc: mrv.cmd.base.SpawnedHelpFormatter</a></p>
+<dl class="class">
+<dt id="mrv.cmd.base.SpawnedHelpFormatter">
+<em class="property">class </em><tt class="descclassname">mrv.cmd.base.</tt><tt class="descname">SpawnedHelpFormatter</tt><big>(</big><em>indent_increment=0</em>, <em>max_help_position=24</em>, <em>width=None</em>, <em>short_first=0</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedHelpFormatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">optparse.TitledHelpFormatter</span></tt></p>
+<p>Formatter assuring our help looks good</p>
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedHelpFormatter.dedent">
+<tt class="descname">dedent</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedHelpFormatter.dedent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedHelpFormatter.expand_default">
+<tt class="descname">expand_default</tt><big>(</big><em>option</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedHelpFormatter.expand_default" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedHelpFormatter.format_description">
+<tt class="descname">format_description</tt><big>(</big><em>description</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedHelpFormatter.format_description" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedHelpFormatter.format_epilog">
+<tt class="descname">format_epilog</tt><big>(</big><em>epilog</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedHelpFormatter.format_epilog" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedHelpFormatter.format_heading">
+<tt class="descname">format_heading</tt><big>(</big><em>heading</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedHelpFormatter.format_heading" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedHelpFormatter.format_option">
+<tt class="descname">format_option</tt><big>(</big><em>option</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedHelpFormatter.format_option" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedHelpFormatter.format_option_strings">
+<tt class="descname">format_option_strings</tt><big>(</big><em>option</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedHelpFormatter.format_option_strings" title="Permalink to this definition">¶</a></dt>
+<dd>Return a comma-separated list of option strings &amp; metavariables.</dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedHelpFormatter.format_usage">
+<tt class="descname">format_usage</tt><big>(</big><em>usage</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedHelpFormatter.format_usage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedHelpFormatter.indent">
+<tt class="descname">indent</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedHelpFormatter.indent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedHelpFormatter.set_long_opt_delimiter">
+<tt class="descname">set_long_opt_delimiter</tt><big>(</big><em>delim</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedHelpFormatter.set_long_opt_delimiter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedHelpFormatter.set_parser">
+<tt class="descname">set_parser</tt><big>(</big><em>parser</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedHelpFormatter.set_parser" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedHelpFormatter.set_short_opt_delimiter">
+<tt class="descname">set_short_opt_delimiter</tt><big>(</big><em>delim</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedHelpFormatter.set_short_opt_delimiter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedHelpFormatter.store_option_strings">
+<tt class="descname">store_option_strings</tt><big>(</big><em>parser</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedHelpFormatter.store_option_strings" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.cmd.base.SpawnedOptionParser-class.html">Epydoc: mrv.cmd.base.SpawnedOptionParser</a></p>
+<dl class="class">
+<dt id="mrv.cmd.base.SpawnedOptionParser">
+<em class="property">class </em><tt class="descclassname">mrv.cmd.base.</tt><tt class="descname">SpawnedOptionParser</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedOptionParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">optparse.OptionParser</span></tt></p>
+<p>Customized version to ease use of SpawnedCommand</p>
+<p>Initialized with the &#8216;spawned&#8217; keyword in addition 
+to the default keywords to prevent a system exit</p>
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedOptionParser.add_option">
+<tt class="descname">add_option</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedOptionParser.add_option" title="Permalink to this definition">¶</a></dt>
+<dd>add_option(Option)
+add_option(opt_str, ..., kwarg=val, ...)</dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedOptionParser.add_option_group">
+<tt class="descname">add_option_group</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedOptionParser.add_option_group" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedOptionParser.add_options">
+<tt class="descname">add_options</tt><big>(</big><em>option_list</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedOptionParser.add_options" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedOptionParser.check_values">
+<tt class="descname">check_values</tt><big>(</big><em>values</em>, <em>args</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedOptionParser.check_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>check_values(values : Values, args : [string])
+-&gt; (values : Values, args : [string])</p>
+<p>Check that the supplied option values and leftover arguments are
+valid.  Returns the option values and leftover arguments
+(possibly adjusted, possibly completely new &#8211; whatever you
+like).  Default implementation just returns the passed-in
+values; subclasses may override as desired.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedOptionParser.destroy">
+<tt class="descname">destroy</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedOptionParser.destroy" title="Permalink to this definition">¶</a></dt>
+<dd>Declare that you are done with this OptionParser.  This cleans up
+reference cycles so the OptionParser (and all objects referenced by
+it) can be garbage-collected promptly.  After calling destroy(), the
+OptionParser is unusable.</dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedOptionParser.disable_interspersed_args">
+<tt class="descname">disable_interspersed_args</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedOptionParser.disable_interspersed_args" title="Permalink to this definition">¶</a></dt>
+<dd>Set parsing to stop on the first non-option. Use this if
+you have a command processor which runs another command that
+has options of its own and you want to make sure these options
+don&#8217;t get confused.</dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedOptionParser.enable_interspersed_args">
+<tt class="descname">enable_interspersed_args</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedOptionParser.enable_interspersed_args" title="Permalink to this definition">¶</a></dt>
+<dd>Set parsing to not stop on the first non-option, allowing
+interspersing switches with command arguments. This is the
+default behavior. See also disable_interspersed_args() and the
+class documentation description of the attribute
+allow_interspersed_args.</dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedOptionParser.error">
+<tt class="descname">error</tt><big>(</big><em>msg</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedOptionParser.error" title="Permalink to this definition">¶</a></dt>
+<dd><p>error(msg : string)</p>
+<p>Print a usage message incorporating &#8216;msg&#8217; to stderr and exit.
+If you override this in a subclass, it should not return &#8211; it
+should either exit or raise an exception.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedOptionParser.exit">
+<tt class="descname">exit</tt><big>(</big><em>status=0</em>, <em>msg=None</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedOptionParser.exit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedOptionParser.expand_prog_name">
+<tt class="descname">expand_prog_name</tt><big>(</big><em>s</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedOptionParser.expand_prog_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedOptionParser.format_description">
+<tt class="descname">format_description</tt><big>(</big><em>formatter</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedOptionParser.format_description" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedOptionParser.format_epilog">
+<tt class="descname">format_epilog</tt><big>(</big><em>formatter</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedOptionParser.format_epilog" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedOptionParser.format_help">
+<tt class="descname">format_help</tt><big>(</big><em>formatter=None</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedOptionParser.format_help" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedOptionParser.format_option_help">
+<tt class="descname">format_option_help</tt><big>(</big><em>formatter=None</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedOptionParser.format_option_help" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedOptionParser.get_default_values">
+<tt class="descname">get_default_values</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedOptionParser.get_default_values" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedOptionParser.get_description">
+<tt class="descname">get_description</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedOptionParser.get_description" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedOptionParser.get_option">
+<tt class="descname">get_option</tt><big>(</big><em>opt_str</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedOptionParser.get_option" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedOptionParser.get_option_group">
+<tt class="descname">get_option_group</tt><big>(</big><em>opt_str</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedOptionParser.get_option_group" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedOptionParser.get_prog_name">
+<tt class="descname">get_prog_name</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedOptionParser.get_prog_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedOptionParser.get_usage">
+<tt class="descname">get_usage</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedOptionParser.get_usage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedOptionParser.get_version">
+<tt class="descname">get_version</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedOptionParser.get_version" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedOptionParser.has_option">
+<tt class="descname">has_option</tt><big>(</big><em>opt_str</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedOptionParser.has_option" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedOptionParser.parse_args">
+<tt class="descname">parse_args</tt><big>(</big><em>args=None</em>, <em>values=None</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedOptionParser.parse_args" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>parse_args(args <span class="classifier-delimiter">:</span> <span class="classifier">[string] = sys.argv[1:],</span></dt>
+<dd>values : Values = None)</dd>
+</dl>
+<p>-&gt; (values : Values, args : [string])</p>
+<p>Parse the command-line options found in &#8216;args&#8217; (default:
+sys.argv[1:]).  Any errors result in a call to &#8216;error()&#8217;, which
+by default prints the usage message to stderr and calls
+sys.exit() with an error message.  On success returns a pair
+(values, args) where &#8216;values&#8217; is an Values instance (with all
+your option values) and &#8216;args&#8217; is the list of arguments left
+over after parsing options.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedOptionParser.print_help">
+<tt class="descname">print_help</tt><big>(</big><em>file=None</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedOptionParser.print_help" title="Permalink to this definition">¶</a></dt>
+<dd><p>print_help(file : file = stdout)</p>
+<p>Print an extended help message, listing all options and any
+help text provided with them, to &#8216;file&#8217; (default stdout).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedOptionParser.print_usage">
+<tt class="descname">print_usage</tt><big>(</big><em>file=None</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedOptionParser.print_usage" title="Permalink to this definition">¶</a></dt>
+<dd><p>print_usage(file : file = stdout)</p>
+<p>Print the usage message for the current program (self.usage) to
+&#8216;file&#8217; (default stdout).  Any occurrence of the string &#8220;%prog&#8221; in
+self.usage is replaced with the name of the current program
+(basename of sys.argv[0]).  Does nothing if self.usage is empty
+or not defined.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedOptionParser.print_version">
+<tt class="descname">print_version</tt><big>(</big><em>file=None</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedOptionParser.print_version" title="Permalink to this definition">¶</a></dt>
+<dd><p>print_version(file : file = stdout)</p>
+<p>Print the version message for this program (self.version) to
+&#8216;file&#8217; (default stdout).  As with print_usage(), any occurrence
+of &#8220;%prog&#8221; in self.version is replaced by the current program&#8217;s
+name.  Does nothing if self.version is empty or undefined.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedOptionParser.remove_option">
+<tt class="descname">remove_option</tt><big>(</big><em>opt_str</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedOptionParser.remove_option" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedOptionParser.set_conflict_handler">
+<tt class="descname">set_conflict_handler</tt><big>(</big><em>handler</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedOptionParser.set_conflict_handler" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedOptionParser.set_default">
+<tt class="descname">set_default</tt><big>(</big><em>dest</em>, <em>value</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedOptionParser.set_default" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedOptionParser.set_defaults">
+<tt class="descname">set_defaults</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedOptionParser.set_defaults" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedOptionParser.set_description">
+<tt class="descname">set_description</tt><big>(</big><em>description</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedOptionParser.set_description" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedOptionParser.set_process_default_values">
+<tt class="descname">set_process_default_values</tt><big>(</big><em>process</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedOptionParser.set_process_default_values" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.cmd.base.SpawnedOptionParser.set_usage">
+<tt class="descname">set_usage</tt><big>(</big><em>usage</em><big>)</big><a class="headerlink" href="#mrv.cmd.base.SpawnedOptionParser.set_usage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="../index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#"><tt class="docutils literal"><span class="pre">mrv.cmd.base</span></tt></a><ul>
+<li><a class="reference external" href="#functions">Functions</a></li>
+<li><a class="reference external" href="#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="mrv.automation.qa.html"
+                                  title="previous chapter"><tt class="docutils literal docutils literal docutils literal"><span class="pre">mrv.automation.qa</span></tt></a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="mrv.cmd.spcmd.html"
+                                  title="next chapter"><tt class="docutils literal"><span class="pre">mrv.cmd.spcmd</span></tt></a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/generated/mrv.cmd.base.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.cmd.spcmd.html" title="mrv.cmd.spcmd"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mrv.automation.qa.html" title="mrv.automation.qa"
+             >previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Nov 30, 2010.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

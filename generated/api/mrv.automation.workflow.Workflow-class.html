@@ -1,0 +1,1181 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>mrv.automation.workflow.Workflow</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="mrv-module.html">Package&nbsp;mrv</a> ::
+        <a href="mrv.automation-module.html">Package&nbsp;automation</a> ::
+        <a href="mrv.automation.workflow-module.html">Module&nbsp;workflow</a> ::
+        Class&nbsp;Workflow
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="mrv.automation.workflow.Workflow-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class Workflow</h1><p class="nomargin-top"><span class="codelink"><a href="mrv.automation.workflow-pysrc.html#Workflow">source&nbsp;code</a></span></p>
+<pre class="base-tree">
+                  object --+            
+                           |            
+networkx.classes.graph.Graph --+        
+                               |        
+networkx.classes.digraph.DiGraph --+    
+                                   |    
+                  object --+       |    
+                           |       |    
+         <a href="mrv.interface.Interface-class.html">interface.Interface</a> --+   |    
+                               |   |    
+         <a href="mrv.interface.iDuplicatable-class.html">interface.iDuplicatable</a> --+    
+                                   |    
+                           <a href="mrv.dge.Graph-class.html">dge.Graph</a> --+
+                                       |
+                                      <strong class="uidshort">Workflow</strong>
+</pre>
+
+<dl><dt>Known Subclasses:</dt>
+<dd>
+      <ul class="subclass-list">
+<li><a href="mrv.automation.qa.QAWorkflow-class.html">qa.QAWorkflow</a></li>  </ul>
+</dd></dl>
+
+<hr />
+Implements a workflow as connected processes
+
+<hr />
+<div class="fields">      <p><strong>Note:</strong>
+        if you have to access the processes directly, use the DiGraph methods
+      </p>
+</div><!-- ==================== NESTED CLASSES ==================== -->
+<a name="section-NestedClasses"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Nested Classes</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-NestedClasses"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Utility Classes</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="mrv.automation.workflow.Workflow.ProcessData-class.html" class="summary-name">ProcessData</a><br />
+      Allows to store additional information with each process called during the workflow
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="mrv.automation.workflow.Workflow.CallGraph-class.html" class="summary-name">CallGraph</a><br />
+      Simple wrapper storing a call graph, keeping the root at which the call started
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.automation.workflow.Workflow-class.html#__str__" class="summary-sig-name">__str__</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      str(x)</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.automation.workflow-pysrc.html#Workflow.__str__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.automation.workflow.Workflow-class.html#_populateFromGraph" class="summary-sig-name" onclick="show_private();">_populateFromGraph</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">graph</span>)</span><br />
+      Parse the networkx graph and populate ourselves with the respective process
+instances as described by the graph</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.automation.workflow-pysrc.html#Workflow._populateFromGraph">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>networkx.classes.digraph.DiGraph</code></b>:
+      <code>add_edge</code>,
+      <code>add_edges_from</code>,
+      <code>add_node</code>,
+      <code>add_nodes_from</code>,
+      <code>clear</code>,
+      <code>degree_iter</code>,
+      <code>edges_iter</code>,
+      <code>has_predecessor</code>,
+      <code>has_successor</code>,
+      <code>in_degree</code>,
+      <code>in_degree_iter</code>,
+      <code>in_edges</code>,
+      <code>in_edges_iter</code>,
+      <code>is_directed</code>,
+      <code>is_multigraph</code>,
+      <code>neighbors</code>,
+      <code>neighbors_iter</code>,
+      <code>out_degree</code>,
+      <code>out_degree_iter</code>,
+      <code>out_edges</code>,
+      <code>out_edges_iter</code>,
+      <code>predecessors</code>,
+      <code>predecessors_iter</code>,
+      <code>remove_edge</code>,
+      <code>remove_edges_from</code>,
+      <code>remove_node</code>,
+      <code>remove_nodes_from</code>,
+      <code>reverse</code>,
+      <code>subgraph</code>,
+      <code>successors</code>,
+      <code>successors_iter</code>,
+      <code>to_directed</code>,
+      <code>to_undirected</code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>networkx.classes.graph.Graph</code></b>:
+      <code>__contains__</code>,
+      <code>__getitem__</code>,
+      <code>__iter__</code>,
+      <code>__len__</code>,
+      <code>add_cycle</code>,
+      <code>add_path</code>,
+      <code>add_star</code>,
+      <code>add_weighted_edges_from</code>,
+      <code>adjacency_iter</code>,
+      <code>adjacency_list</code>,
+      <code>copy</code>,
+      <code>degree</code>,
+      <code>edges</code>,
+      <code>get_edge_data</code>,
+      <code>has_edge</code>,
+      <code>has_node</code>,
+      <code>nbunch_iter</code>,
+      <code>nodes_iter</code>,
+      <code>nodes_with_selfloops</code>,
+      <code>number_of_edges</code>,
+      <code>number_of_nodes</code>,
+      <code>number_of_selfloops</code>,
+      <code>order</code>,
+      <code>selfloop_edges</code>,
+      <code>size</code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.interface.iDuplicatable-class.html">interface.iDuplicatable</a></code></b>:
+      <code><a href="mrv.interface.iDuplicatable-class.html#copyTo">copyTo</a></code>,
+      <code><a href="mrv.interface.iDuplicatable-class.html#copyToOther">copyToOther</a></code>,
+      <code><a href="mrv.interface.iDuplicatable-class.html#duplicate">duplicate</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.interface.Interface-class.html">interface.Interface</a></code></b>:
+      <code><a href="mrv.interface.Interface-class.html#supports">supports</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Main Interface</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.automation.workflow.Workflow-class.html#makeTarget" class="summary-sig-name">makeTarget</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">target</span>)</span><br />
+      Returns:
+result when producing the target</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.automation.workflow-pysrc.html#Workflow.makeTarget">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.automation.workflow.Workflow-class.html#makeTargets" class="summary-sig-name">makeTargets</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">targetList</span>,
+        <span class="summary-sig-arg">errstream</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">donestream</span>=<span class="summary-sig-default">None</span>)</span><br />
+      batch module compatible method allowing to make mutliple targets at once</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.automation.workflow-pysrc.html#Workflow.makeTargets">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_evaluateDirtyState"></a><span class="summary-sig-name">_evaluateDirtyState</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">outputplug</span>,
+        <span class="summary-sig-arg">processmode</span>)</span><br />
+      Evaluate the given plug in process mode and return a dirty report tuple
+as used by <a href="mrv.automation.workflow.Workflow-class.html#makeDirtyReport" class="link">makeDirtyReport</a></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.automation.workflow-pysrc.html#Workflow._evaluateDirtyState">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.automation.workflow.Workflow-class.html#makeDirtyReport" class="summary-sig-name">makeDirtyReport</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">target</span>,
+        <span class="summary-sig-arg">mode</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">single</code><code class="variable-quote">'</code></span>)</span><br />
+      Returns:
+list of tuple( shell, DirtyReport|None )
+If a process ( shell.node ) is dirty, a dirty report will be given explaining
+why the process is dirty and needs an update</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.automation.workflow-pysrc.html#Workflow.makeDirtyReport">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.automation.workflow.Workflow-class.html#_clearState" class="summary-sig-name" onclick="show_private();">_clearState</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">global_evaluation_mode</span>)</span><br />
+      Clear the previous state and re-initialize this instance getting ready
+for a new instance</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.automation.workflow-pysrc.html#Workflow._clearState">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.automation.workflow.Workflow-class.html#_setupProcess" class="summary-sig-name" onclick="show_private();">_setupProcess</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">target</span>,
+        <span class="summary-sig-arg">globalmode</span>)</span><br />
+      Setup the workflow's dg such that the returned output shell can be queried
+to evaluate target</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.automation.workflow-pysrc.html#Workflow._setupProcess">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.automation.workflow.Workflow-class.html#_evaluate" class="summary-sig-name" onclick="show_private();">_evaluate</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">target</span>,
+        <span class="summary-sig-arg">processmode</span>,
+        <span class="summary-sig-arg">globalmode</span>)</span><br />
+      Make or update the target using a process in our workflow</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.automation.workflow-pysrc.html#Workflow._evaluate">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.automation.workflow.Workflow-class.html#createReportInstance" class="summary-sig-name">createReportInstance</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">reportType</span>)</span><br />
+      Create a report instance that describes how the previous target was made</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.automation.workflow-pysrc.html#Workflow.createReportInstance">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Query</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.automation.workflow.Workflow-class.html#targetSupportList" class="summary-sig-name">targetSupportList</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns:
+list of all supported target type</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.automation.workflow-pysrc.html#Workflow.targetSupportList">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.automation.workflow.Workflow-class.html#targetRating" class="summary-sig-name">targetRating</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">target</span>)</span><br />
+      Returns:
+int range(0,255) indicating how well a target can be made
+0 means not at all, 255 means perfect.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.automation.workflow-pysrc.html#Workflow.targetRating">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.automation.workflow.Workflow-class.html#callgraph" class="summary-sig-name">callgraph</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns:
+current callgraph instance</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.automation.workflow-pysrc.html#Workflow.callgraph">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.dge.Graph-class.html">dge.Graph</a></code></b>:
+      <code><a href="mrv.dge.Graph-class.html#hasNode">hasNode</a></code>,
+      <code><a href="mrv.dge.Graph-class.html#iterConnectedNodes">iterConnectedNodes</a></code>,
+      <code><a href="mrv.dge.Graph-class.html#iterNodes">iterNodes</a></code>,
+      <code><a href="mrv.dge.Graph-class.html#nodeByID">nodeByID</a></code>,
+      <code><a href="mrv.dge.Graph-class.html#nodes">nodes</a></code>,
+      <code><a href="mrv.dge.Graph-class.html#numNodes">numNodes</a></code>
+      </p>
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8"  class="private">
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Internal Process Interface</th></tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.automation.workflow.Workflow-class.html#_isDryRun" class="summary-sig-name" onclick="show_private();">_isDryRun</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns:
+True if the current computation is a dry run</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.automation.workflow-pysrc.html#Workflow._isDryRun">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.automation.workflow.Workflow-class.html#_trackOutputQueryStart" class="summary-sig-name" onclick="show_private();">_trackOutputQueryStart</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">process</span>,
+        <span class="summary-sig-arg">plug</span>,
+        <span class="summary-sig-arg">mode</span>)</span><br />
+      Called by process base to indicate the start of a call of curProcess to targetProcess
+This method tracks the actual call path taken through the graph ( which is dependent on the
+dirty state of the prcoesses, allowing to walk it depth first to resolve the calls.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.automation.workflow-pysrc.html#Workflow._trackOutputQueryStart">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_trackOutputQueryEnd"></a><span class="summary-sig-name">_trackOutputQueryEnd</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">result</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Track that the process just finished its computation - thus the previously active process
+should be on top of the stack again</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.automation.workflow-pysrc.html#Workflow._trackOutputQueryEnd">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Overridden Object Methods</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.automation.workflow.Workflow-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Initalized base class</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.automation.workflow-pysrc.html#Workflow.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.dge.Graph-class.html">dge.Graph</a></code></b>:
+      <code><a href="mrv.dge.Graph-class.html#__del__">__del__</a></code>,
+      <code><a href="mrv.dge.Graph-class.html#__getattr__">__getattr__</a></code>
+      </p>
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Debugging</th></tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.dge.Graph-class.html">dge.Graph</a></code></b>:
+      <code><a href="mrv.dge.Graph-class.html#writeDot">writeDot</a></code>
+      </p>
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;iDuplicatable Interface</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.automation.workflow.Workflow-class.html#copyFrom" class="summary-sig-name">copyFrom</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>)</span><br />
+      Only mode is required</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.automation.workflow-pysrc.html#Workflow.copyFrom">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.dge.Graph-class.html">dge.Graph</a></code></b>:
+      <code><a href="mrv.dge.Graph-class.html#createInstance">createInstance</a></code>
+      </p>
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Node Handling</th></tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.dge.Graph-class.html">dge.Graph</a></code></b>:
+      <code><a href="mrv.dge.Graph-class.html#addNode">addNode</a></code>,
+      <code><a href="mrv.dge.Graph-class.html#clearCache">clearCache</a></code>,
+      <code><a href="mrv.dge.Graph-class.html#removeNode">removeNode</a></code>
+      </p>
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Connecitons</th></tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.dge.Graph-class.html">dge.Graph</a></code></b>:
+      <code><a href="mrv.dge.Graph-class.html#connect">connect</a></code>,
+      <code><a href="mrv.dge.Graph-class.html#disconnect">disconnect</a></code>,
+      <code><a href="mrv.dge.Graph-class.html#input">input</a></code>,
+      <code><a href="mrv.dge.Graph-class.html#outputs">outputs</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.automation.workflow-pysrc.html#Workflow.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Initalized base class
+  <dl class="fields">
+    <dt>Overrides:
+        object.__init__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__str__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__str__</span>(<span class="sig-arg">self</span>)</span>
+    <br /><em class="fname">(Informal representation operator)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.automation.workflow-pysrc.html#Workflow.__str__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>str(x)</p>
+  <dl class="fields">
+    <dt>Overrides:
+        object.__str__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="copyFrom"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">copyFrom</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">other</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.automation.workflow-pysrc.html#Workflow.copyFrom">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Only mode is required
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="mrv.interface.iDuplicatable-class.html#copyFrom">interface.iDuplicatable.copyFrom</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="makeTarget"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">makeTarget</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">target</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.automation.workflow-pysrc.html#Workflow.makeTarget">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>target</code></strong> - target to make - can be class or instance</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>result when producing the target</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="makeTargets"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">makeTargets</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">targetList</span>,
+        <span class="sig-arg">errstream</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">donestream</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.automation.workflow-pysrc.html#Workflow.makeTargets">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  batch module compatible method allowing to make mutliple targets at once
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>targetList</code></strong> - iterable providing the targets to make</li>
+        <li><strong class="pname"><code>errstream</code></strong> - object with file interface allowing to log errors that occurred
+during operation</li>
+        <li><strong class="pname"><code>donestream</code></strong> - if list, targets successfully done will be appended to it, if
+it is a stream, the string representation will be wrtten to it</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="makeDirtyReport"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">makeDirtyReport</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">target</span>,
+        <span class="sig-arg">mode</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">single</code><code class="variable-quote">'</code></span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.automation.workflow-pysrc.html#Workflow.makeDirtyReport">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>target</code></strong> - target you which to check for it's dirty state</li>
+        <li><strong class="pname"><code>mode</code></strong> - <ul>
+<li><p class="rst-first">single - only the process assigned to evaluate target will be checked</p>
+</li>
+<li><dl class="rst-first rst-docutils">
+<dt>multi - as single, but the whole callgraph will be checked, starting</dt>
+<dd><p class="rst-first rst-last">at the first node, stepping down the callgraph. This gives a per
+node dirty report.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="rst-first rst-docutils">
+<dt>deep - try to evaluate target, but fail if one process in the target's</dt>
+<dd><p class="rst-first rst-last">call history is dirty</p>
+</dd>
+</dl>
+</li>
+</ul></li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>list of tuple( shell, DirtyReport|None )
+If a process ( shell.node ) is dirty, a dirty report will be given explaining
+why the process is dirty and needs an update</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_clearState"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_clearState</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">global_evaluation_mode</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.automation.workflow-pysrc.html#Workflow._clearState">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Clear the previous state and re-initialize this instance getting ready
+for a new instance
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>global_evaluation_mode</code></strong> - evaluation mode to be used</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_setupProcess"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_setupProcess</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">target</span>,
+        <span class="sig-arg">globalmode</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.automation.workflow-pysrc.html#Workflow._setupProcess">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Setup the workflow's dg such that the returned output shell can be queried
+to evaluate target
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>globalmode</code></strong> - mode with which all other processes will be handling
+their input calls</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_evaluate"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_evaluate</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">target</span>,
+        <span class="sig-arg">processmode</span>,
+        <span class="sig-arg">globalmode</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.automation.workflow-pysrc.html#Workflow._evaluate">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Make or update the target using a process in our workflow
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>processmode</code></strong> - the mode with which to call the initial process</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>tuple( shell, result ) - plugshell queried to get the result</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="createReportInstance"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">createReportInstance</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">reportType</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.automation.workflow-pysrc.html#Workflow.createReportInstance">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Create a report instance that describes how the previous target was made
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>reportType</code></strong> - Report to populate with information - it must be a Plan based
+class that can be instantiated and populated with call information.
+A report analyses the call dependency graph generated during dg evaluation
+and presents it.</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>report instance whose makeReport method can be called to retrieve it</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="targetSupportList"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">targetSupportList</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.automation.workflow-pysrc.html#Workflow.targetSupportList">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>list of all supported target type</dd>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        this method is for informational purposes only
+      </p>
+</div></td></tr></table>
+</div>
+<a name="targetRating"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">targetRating</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">target</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.automation.workflow-pysrc.html#Workflow.targetRating">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd><p>int range(0,255) indicating how well a target can be made
+0 means not at all, 255 means perfect.</p>
+<p>Return value is tuple ( rate, PlugShell ), containing the process and plug with the
+highest rating or None if rate is 0</p>
+<p>Walk the dependency graph such that leaf nodes have higher ratings than
+non-leaf nodes</p></dd>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        you can use the <a href="mrv.automation.process.ProcessBase-class.html" class="link">process.ProcessBase</a> enumeration for comparison
+      </p>
+</div></td></tr></table>
+</div>
+<a name="callgraph"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">callgraph</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.automation.workflow-pysrc.html#Workflow.callgraph">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>current callgraph instance</dd>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        its strictly read-only and may not be changed
+      </p>
+</div></td></tr></table>
+</div>
+<a name="_isDryRun"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_isDryRun</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.automation.workflow-pysrc.html#Workflow._isDryRun">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>True if the current computation is a dry run</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_trackOutputQueryStart"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_trackOutputQueryStart</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">process</span>,
+        <span class="sig-arg">plug</span>,
+        <span class="sig-arg">mode</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.automation.workflow-pysrc.html#Workflow._trackOutputQueryStart">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Called by process base to indicate the start of a call of curProcess to targetProcess
+This method tracks the actual call path taken through the graph ( which is dependent on the
+dirty state of the prcoesses, allowing to walk it depth first to resolve the calls.
+This also allows to create precise reports telling how to achieve a certain goal
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="_populateFromGraph"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_populateFromGraph</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">graph</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.automation.workflow-pysrc.html#Workflow._populateFromGraph">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Parse the networkx graph and populate ourselves with the respective process
+instances as described by the graph
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>graph</code></strong> - networkx graph whose nodes are process names to be found in the processes
+module</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Nov 30 14:48:31 2010
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
