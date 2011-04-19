@@ -11,7 +11,7 @@ import os
 ## Version Info 
 # See http://docs.python.org/library/sys.html#sys.version_info for more information
 #               major, minor, micro, releaselevel, serial
-version = (1,     0,     1,     'develop',        0)
+version = (1,     0,     2,     'develop',        0)
 
 # The short name for your project, important for your documentation headline as 
 # well as for the name of your distribution archives and git heads.
@@ -42,7 +42,7 @@ license = "BSD License"
 
 # The sha belonging to the commit which created this release.
 # Will only be set in actual release versions, and must never be set manually
-src_commit_sha = 'fb9dbcd82c18020f2ba0487f48fae62390292148'
+src_commit_sha = '11da41f7f5cd77df46a363006094605437758582'
 
 
 # PATH INFORMATION
