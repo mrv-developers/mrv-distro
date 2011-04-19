@@ -5,13 +5,13 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>mrv.maya.nt.persistence &mdash; mrv v1.0.1-develop documentation</title>
+    <title>mrv.maya.nt.persistence &mdash; mrv v1.0.2-develop documentation</title>
     <link rel="stylesheet" href="../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.0.1-develop',
+        VERSION:     '1.0.2-develop',
         COLLAPSE_MODINDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -20,7 +20,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
-    <link rel="top" title="mrv v1.0.1-develop documentation" href="../index.html" />
+    <link rel="top" title="mrv v1.0.2-develop documentation" href="../index.html" />
     <link rel="next" title="mrv.maya.nt.apipatch" href="mrv.maya.nt.apipatch.html" />
     <link rel="prev" title="mrv.maya.nt.set" href="mrv.maya.nt.set.html" /> 
   </head>
@@ -40,7 +40,7 @@
         <li class="right" >
           <a href="mrv.maya.nt.set.html" title="mrv.maya.nt.set"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li> 
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -66,20 +66,27 @@ ourselves although the system is not quite there yet.</dd></dl>
 
 <dl class="function">
 <dt id="mrv.maya.nt.persistence.createStorageAttribute">
-<tt class="descclassname">mrv.maya.nt.persistence.</tt><tt class="descname">createStorageAttribute</tt><big>(</big><em>dataType</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.createStorageAttribute" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">mrv.maya.nt.persistence.</tt><tt class="descname">createStorageAttribute</tt><big>(</big><em>dataType</em>, <em>name_prefix=''</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.createStorageAttribute" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method creates an Attribute in a configuration suitable to be used
 with the <tt class="docutils literal"><span class="pre">StorageBase</span></tt> interface.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Note:</th><td class="field-body">this allows your own plugin node to receive storage compatibility</td>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">this allows your own plugin node to receive storage compatibility</p>
+</td>
 </tr>
-<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>dataType</em> &#8211; the type of the typed attribute - either MTypeID or MFnData enumeration
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>dataType</em> &#8211; the type of the typed attribute - either MTypeID or MFnData enumeration
 An MTypeID must point to a valid and already registered plugin data.
-In order for the <tt class="docutils literal"><span class="pre">StorageBase</span></tt> interface to work, it must by <tt class="docutils literal"><span class="pre">PyPickleData.kPluginDataId</span></tt>.</td>
+In order for the <tt class="docutils literal"><span class="pre">StorageBase</span></tt> interface to work, it must by <tt class="docutils literal"><span class="pre">PyPickleData.kPluginDataId</span></tt>.</li>
+<li><em>name_prefix</em> &#8211; string to be used as prefix for all short and long attribute names. 
+Useful if you want to have more than one storage attributes.</li>
+</ul>
+</td>
 </tr>
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body">attribute api object of its master compound attribute</td>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">attribute api object of its master compound attribute</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -121,7 +128,7 @@ by the API Docs</p>
 the copy constructor, even if you retrieve a const data reference, where this would not be
 required actually. This is fine for most uses</td>
 </tr>
-<tr class="field"><th class="field-name">Note:</th><td class="field-body">as the datatype is reference based, undo is currently not supported ( or does not
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">as the datatype is reference based, undo is currently not supported (or does not
 work as it is expected to do</td>
 </tr>
 </tbody>
@@ -208,6 +215,11 @@ It returns a string of a single char ... which is not the same :) !</td>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.className">
+<tt class="descname">className</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.className" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="mrv.maya.nt.persistence.StoragePluginNode.compute">
 <tt class="descname">compute</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.compute" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -240,6 +252,11 @@ It returns a string of a single char ... which is not the same :) !</td>
 <dl class="method">
 <dt id="mrv.maya.nt.persistence.StoragePluginNode.existWithoutOutConnections">
 <tt class="descname">existWithoutOutConnections</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.existWithoutOutConnections" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.getFilesToArchive">
+<tt class="descname">getFilesToArchive</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.getFilesToArchive" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -435,12 +452,12 @@ It returns a string of a single char ... which is not the same :) !</td>
         <li class="right" >
           <a href="mrv.maya.nt.set.html" title="mrv.maya.nt.set"
              >previous</a> |</li>
-        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li> 
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
       &copy; Copyright Sebastian Thiel.
-      Last updated on Nov 30, 2010.
+      Last updated on Apr 19, 2011.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
     </div>
   </body>

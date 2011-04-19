@@ -40,7 +40,7 @@ Percent: 97 %<br/>
 <div class="cov"><span class="num"><pre> 18</pre></span><pre>__all__ = (&quot;createReference&quot;, &quot;listReferences&quot;, &quot;FileReference&quot;, &quot;FileReferenceError&quot;)</pre></div>
 <div class="skip"><span class="num"><pre> 19</pre></span><pre></pre></div>
 <div class="skip"><span class="num"><pre> 20</pre></span><pre>#{ Exceptions</pre></div>
-<div class="cov"><span class="num"><pre> 21</pre></span><pre>class FileReferenceError( MRVError ):</pre></div>
+<div class="cov"><span class="num"><pre> 21</pre></span><pre>class FileReferenceError(MRVError):</pre></div>
 <div class="cov"><span class="num"><pre> 22</pre></span><pre>	pass</pre></div>
 <div class="skip"><span class="num"><pre> 23</pre></span><pre></pre></div>
 <div class="skip"><span class="num"><pre> 24</pre></span><pre>#}</pre></div>
@@ -48,32 +48,32 @@ Percent: 97 %<br/>
 <div class="skip"><span class="num"><pre> 26</pre></span><pre></pre></div>
 <div class="skip"><span class="num"><pre> 27</pre></span><pre>#{ Utilities </pre></div>
 <div class="skip"><span class="num"><pre> 28</pre></span><pre></pre></div>
-<div class="cov"><span class="num"><pre> 29</pre></span><pre>def createReference( *args, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre> 29</pre></span><pre>def createReference(*args, **kwargs):</pre></div>
 <div class="cov"><span class="num"><pre> 30</pre></span><pre>	&quot;&quot;&quot;create a new reference, see `FileReference.create` for more information&quot;&quot;&quot;</pre></div>
 <div class="cov"><span class="num"><pre> 31</pre></span><pre>	return FileReference.create(*args, **kwargs)</pre></div>
 <div class="skip"><span class="num"><pre> 32</pre></span><pre></pre></div>
-<div class="cov"><span class="num"><pre> 33</pre></span><pre>def listReferences( *args, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre> 33</pre></span><pre>def listReferences(*args, **kwargs):</pre></div>
 <div class="cov"><span class="num"><pre> 34</pre></span><pre>	&quot;&quot;&quot;List intermediate references of in the scene, see `FileReference.ls` for </pre></div>
 <div class="cov"><span class="num"><pre> 35</pre></span><pre>	more information&quot;&quot;&quot;</pre></div>
-<div class="cov"><span class="num"><pre> 36</pre></span><pre>	return FileReference.ls( *args, **kwargs )</pre></div>
+<div class="cov"><span class="num"><pre> 36</pre></span><pre>	return FileReference.ls(*args, **kwargs)</pre></div>
 <div class="skip"><span class="num"><pre> 37</pre></span><pre></pre></div>
 <div class="skip"><span class="num"><pre> 38</pre></span><pre>#} END utilities </pre></div>
 <div class="skip"><span class="num"><pre> 39</pre></span><pre></pre></div>
 <div class="skip"><span class="num"><pre> 40</pre></span><pre></pre></div>
-<div class="cov"><span class="num"><pre> 41</pre></span><pre>class FileReference( iDagItem ):</pre></div>
+<div class="cov"><span class="num"><pre> 41</pre></span><pre>class FileReference(iDagItem):</pre></div>
 <div class="cov"><span class="num"><pre> 42</pre></span><pre>	&quot;&quot;&quot;Represents a Maya file reference</pre></div>
 <div class="skip"><span class="num"><pre> 43</pre></span><pre>	</pre></div>
 <div class="cov"><span class="num"><pre> 44</pre></span><pre>	:note: do not cache these instances but get a fresh one when you have to work with it</pre></div>
 <div class="cov"><span class="num"><pre> 45</pre></span><pre>	:note: as FileReference is also a iDagItem, all the respective methods, especially for</pre></div>
 <div class="cov"><span class="num"><pre> 46</pre></span><pre>		parent/child iteration and query can be used as well&quot;&quot;&quot;</pre></div>
-<div class="cov"><span class="num"><pre> 47</pre></span><pre>	editTypes = [	'setAttr','addAttr','deleteAttr','connectAttr','disconnectAttr','parent' ]</pre></div>
+<div class="cov"><span class="num"><pre> 47</pre></span><pre>	editTypes = [	'setAttr','addAttr','deleteAttr','connectAttr','disconnectAttr','parent']</pre></div>
 <div class="cov"><span class="num"><pre> 48</pre></span><pre>	_sep = '/'					# iDagItem configuration</pre></div>
 <div class="cov"><span class="num"><pre> 49</pre></span><pre>	__slots__ = '_refnode'</pre></div>
 <div class="skip"><span class="num"><pre> 50</pre></span><pre></pre></div>
 <div class="cov"><span class="num"><pre> 51</pre></span><pre>	@classmethod</pre></div>
-<div class="cov"><span class="num"><pre> 52</pre></span><pre>	def _splitCopyNumber( cls, path ):</pre></div>
-<div class="cov"><span class="num"><pre> 53</pre></span><pre>		&quot;&quot;&quot;:return: ( path, copynumber ), copynumber is at least 0 &quot;&quot;&quot;</pre></div>
-<div class="cov"><span class="num"><pre> 54</pre></span><pre>		lbraceindex = path.rfind( '{' )</pre></div>
+<div class="cov"><span class="num"><pre> 52</pre></span><pre>	def _splitCopyNumber(cls, path):</pre></div>
+<div class="cov"><span class="num"><pre> 53</pre></span><pre>		&quot;&quot;&quot;:return: (path, copynumber), copynumber is at least 0 &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 54</pre></span><pre>		lbraceindex = path.rfind('{')</pre></div>
 <div class="cov"><span class="num"><pre> 55</pre></span><pre>		if lbraceindex == -1:</pre></div>
 <div class="cov"><span class="num"><pre> 56</pre></span><pre>			return (path, 0)</pre></div>
 <div class="skip"><span class="num"><pre> 57</pre></span><pre>		# END handle no brace found</pre></div>
@@ -81,25 +81,25 @@ Percent: 97 %<br/>
 <div class="cov"><span class="num"><pre> 59</pre></span><pre>		return (path[:lbraceindex], int(path[lbraceindex+1:-1]))</pre></div>
 <div class="skip"><span class="num"><pre> 60</pre></span><pre></pre></div>
 <div class="skip"><span class="num"><pre> 61</pre></span><pre>	#{ Object Overrides</pre></div>
-<div class="cov"><span class="num"><pre> 62</pre></span><pre>	def __init__( self, filepath = None, refnode = None ):</pre></div>
+<div class="cov"><span class="num"><pre> 62</pre></span><pre>	def __init__(self, filepath = None, refnode = None):</pre></div>
 <div class="cov"><span class="num"><pre> 63</pre></span><pre>		if refnode:</pre></div>
 <div class="cov"><span class="num"><pre> 64</pre></span><pre>			self._refnode = str(refnode)</pre></div>
 <div class="cov"><span class="num"><pre> 65</pre></span><pre>		elif filepath:</pre></div>
-<div class="cov"><span class="num"><pre> 66</pre></span><pre>			self._refnode = cmds.referenceQuery( filepath, rfn=1 )</pre></div>
+<div class="cov"><span class="num"><pre> 66</pre></span><pre>			self._refnode = cmds.referenceQuery(filepath, rfn=1)</pre></div>
 <div class="nocov"><span class="num"><pre> 67</pre></span><pre>		else:</pre></div>
-<div class="nocov"><span class="num"><pre> 68</pre></span><pre>			raise ValueError( &quot;Specify either filepath or refnode to initialize the instance from&quot; )</pre></div>
+<div class="nocov"><span class="num"><pre> 68</pre></span><pre>			raise ValueError(&quot;Specify either filepath or refnode to initialize the instance from&quot;)</pre></div>
 <div class="skip"><span class="num"><pre> 69</pre></span><pre>		# END handle input</pre></div>
 <div class="skip"><span class="num"><pre> 70</pre></span><pre></pre></div>
-<div class="cov"><span class="num"><pre> 71</pre></span><pre>	def __eq__( self, other ):</pre></div>
+<div class="cov"><span class="num"><pre> 71</pre></span><pre>	def __eq__(self, other):</pre></div>
 <div class="cov"><span class="num"><pre> 72</pre></span><pre>		&quot;&quot;&quot;Special treatment for other filereferences&quot;&quot;&quot;</pre></div>
 <div class="skip"><span class="num"><pre> 73</pre></span><pre>		# need equal copy numbers as well as equal paths - the refnode encapsulates all this</pre></div>
-<div class="cov"><span class="num"><pre> 74</pre></span><pre>		if isinstance( other, FileReference ):</pre></div>
+<div class="cov"><span class="num"><pre> 74</pre></span><pre>		if isinstance(other, FileReference):</pre></div>
 <div class="cov"><span class="num"><pre> 75</pre></span><pre>			return self._refnode == other._refnode</pre></div>
 <div class="skip"><span class="num"><pre> 76</pre></span><pre></pre></div>
 <div class="cov"><span class="num"><pre> 77</pre></span><pre>		return self.path() == other</pre></div>
 <div class="skip"><span class="num"><pre> 78</pre></span><pre></pre></div>
-<div class="cov"><span class="num"><pre> 79</pre></span><pre>	def __ne__( self, other ):</pre></div>
-<div class="nocov"><span class="num"><pre> 80</pre></span><pre>		return not self.__eq__( other )</pre></div>
+<div class="cov"><span class="num"><pre> 79</pre></span><pre>	def __ne__(self, other):</pre></div>
+<div class="nocov"><span class="num"><pre> 80</pre></span><pre>		return not self.__eq__(other)</pre></div>
 <div class="skip"><span class="num"><pre> 81</pre></span><pre></pre></div>
 <div class="cov"><span class="num"><pre> 82</pre></span><pre>	def __hash__(self):</pre></div>
 <div class="cov"><span class="num"><pre> 83</pre></span><pre>		return hash(self.path(copynumber=1))</pre></div>
@@ -114,7 +114,7 @@ Percent: 97 %<br/>
 <div class="skip"><span class="num"><pre> 92</pre></span><pre></pre></div>
 <div class="skip"><span class="num"><pre> 93</pre></span><pre>	#{ Reference Adjustments </pre></div>
 <div class="cov"><span class="num"><pre> 94</pre></span><pre>	@classmethod</pre></div>
-<div class="cov"><span class="num"><pre> 95</pre></span><pre>	def create( cls, filepath, namespace=None, load = True, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre> 95</pre></span><pre>	def create(cls, filepath, namespace=None, load = True, **kwargs):</pre></div>
 <div class="cov"><span class="num"><pre> 96</pre></span><pre>		&quot;&quot;&quot;Create a reference with the given namespace</pre></div>
 <div class="skip"><span class="num"><pre> 97</pre></span><pre>		</pre></div>
 <div class="cov"><span class="num"><pre> 98</pre></span><pre>		:param filepath: path describing the reference file location</pre></div>
@@ -125,22 +125,22 @@ Percent: 97 %<br/>
 <div class="cov"><span class="num"><pre>103</pre></span><pre>		:param kwargs: passed to file command</pre></div>
 <div class="cov"><span class="num"><pre>104</pre></span><pre>		:raise ValueError: if the namespace does already exist</pre></div>
 <div class="cov"><span class="num"><pre>105</pre></span><pre>		:raise RuntimeError: if the reference could not be created&quot;&quot;&quot;</pre></div>
-<div class="cov"><span class="num"><pre>106</pre></span><pre>		filepath = make_path( cls._splitCopyNumber( filepath )[0] )</pre></div>
+<div class="cov"><span class="num"><pre>106</pre></span><pre>		filepath = make_path(cls._splitCopyNumber(filepath)[0])</pre></div>
 <div class="skip"><span class="num"><pre>107</pre></span><pre></pre></div>
-<div class="cov"><span class="num"><pre>108</pre></span><pre>		def nsfunc( base, i ):</pre></div>
+<div class="cov"><span class="num"><pre>108</pre></span><pre>		def nsfunc(base, i):</pre></div>
 <div class="cov"><span class="num"><pre>109</pre></span><pre>			if not i: return base</pre></div>
-<div class="cov"><span class="num"><pre>110</pre></span><pre>			return &quot;%s%i&quot; % ( base,i )</pre></div>
+<div class="cov"><span class="num"><pre>110</pre></span><pre>			return &quot;%s%i&quot; % (base,i)</pre></div>
 <div class="skip"><span class="num"><pre>111</pre></span><pre></pre></div>
 <div class="cov"><span class="num"><pre>112</pre></span><pre>		ns = namespace</pre></div>
 <div class="cov"><span class="num"><pre>113</pre></span><pre>		if not ns:										# assure unique namespace</pre></div>
 <div class="cov"><span class="num"><pre>114</pre></span><pre>			nsbasename = filepath.stripext().basename()</pre></div>
-<div class="cov"><span class="num"><pre>115</pre></span><pre>			ns = Namespace.findUnique( nsbasename, incrementFunc = nsfunc )</pre></div>
+<div class="cov"><span class="num"><pre>115</pre></span><pre>			ns = Namespace.findUnique(nsbasename, incrementFunc = nsfunc)</pre></div>
 <div class="cov"><span class="num"><pre>116</pre></span><pre>		else:</pre></div>
-<div class="cov"><span class="num"><pre>117</pre></span><pre>			ns = Namespace( ns )		# assure we have a namespace object</pre></div>
+<div class="cov"><span class="num"><pre>117</pre></span><pre>			ns = Namespace(ns)		# assure we have a namespace object</pre></div>
 <div class="skip"><span class="num"><pre>118</pre></span><pre></pre></div>
-<div class="cov"><span class="num"><pre>119</pre></span><pre>		ns = ns.relativeTo( Namespace( Namespace.rootpath ) )</pre></div>
+<div class="cov"><span class="num"><pre>119</pre></span><pre>		ns = ns.relativeTo(Namespace(Namespace.rootpath))</pre></div>
 <div class="cov"><span class="num"><pre>120</pre></span><pre>		if ns.exists():</pre></div>
-<div class="nocov"><span class="num"><pre>121</pre></span><pre>			raise ValueError( &quot;Namespace %s for %s does already exist&quot; % (ns,filepath) )</pre></div>
+<div class="nocov"><span class="num"><pre>121</pre></span><pre>			raise ValueError(&quot;Namespace %s for %s does already exist&quot; % (ns,filepath))</pre></div>
 <div class="skip"><span class="num"><pre>122</pre></span><pre></pre></div>
 <div class="skip"><span class="num"><pre>123</pre></span><pre>		# assure we keep the current namespace</pre></div>
 <div class="cov"><span class="num"><pre>124</pre></span><pre>		prevns = Namespace.current()</pre></div>
@@ -150,15 +150,15 @@ Percent: 97 %<br/>
 <div class="cov"><span class="num"><pre>128</pre></span><pre>		kwargs.pop('reference', kwargs.pop('r', None))</pre></div>
 <div class="cov"><span class="num"><pre>129</pre></span><pre>		kwargs.pop('deferReference', kwargs.pop('dr', None))</pre></div>
 <div class="cov"><span class="num"><pre>130</pre></span><pre>		try:</pre></div>
-<div class="cov"><span class="num"><pre>131</pre></span><pre>			createdRefpath = cmds.file( filepath, ns=str(ns),r=1,dr=not load, **kwargs )</pre></div>
+<div class="cov"><span class="num"><pre>131</pre></span><pre>			createdRefpath = cmds.file(filepath, ns=str(ns),r=1,dr=not load, **kwargs)</pre></div>
 <div class="cov"><span class="num"><pre>132</pre></span><pre>		finally:</pre></div>
-<div class="cov"><span class="num"><pre>133</pre></span><pre>			prevns.setCurrent( )</pre></div>
+<div class="cov"><span class="num"><pre>133</pre></span><pre>			prevns.setCurrent()</pre></div>
 <div class="skip"><span class="num"><pre>134</pre></span><pre>		# END assure we keep the namespace</pre></div>
 <div class="skip"><span class="num"><pre>135</pre></span><pre></pre></div>
-<div class="cov"><span class="num"><pre>136</pre></span><pre>		return FileReference( createdRefpath )</pre></div>
+<div class="cov"><span class="num"><pre>136</pre></span><pre>		return FileReference(createdRefpath)</pre></div>
 <div class="skip"><span class="num"><pre>137</pre></span><pre>		</pre></div>
 <div class="cov"><span class="num"><pre>138</pre></span><pre>	@undo.notundoable</pre></div>
-<div class="cov"><span class="num"><pre>139</pre></span><pre>	def remove( self, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>139</pre></span><pre>	def remove(self, **kwargs):</pre></div>
 <div class="cov"><span class="num"><pre>140</pre></span><pre>		&quot;&quot;&quot; Remove the given reference from the scene</pre></div>
 <div class="skip"><span class="num"><pre>141</pre></span><pre>		</pre></div>
 <div class="cov"><span class="num"><pre>142</pre></span><pre>		:note: assures that no namespaces of that reference are left, remaining objects</pre></div>
@@ -166,27 +166,27 @@ Percent: 97 %<br/>
 <div class="cov"><span class="num"><pre>144</pre></span><pre>			This fails if there are referenced objects in the subnamespace - we currently </pre></div>
 <div class="cov"><span class="num"><pre>145</pre></span><pre>			ignore that issue as the main reference removal worked at that point.</pre></div>
 <div class="cov"><span class="num"><pre>146</pre></span><pre>		:note: kwargs passed to namespace.delete &quot;&quot;&quot;</pre></div>
-<div class="cov"><span class="num"><pre>147</pre></span><pre>		ns = self.namespace( )</pre></div>
-<div class="cov"><span class="num"><pre>148</pre></span><pre>		cmds.file( self.path( copynumber=1 ), rr=1 )</pre></div>
+<div class="cov"><span class="num"><pre>147</pre></span><pre>		ns = self.namespace()</pre></div>
+<div class="cov"><span class="num"><pre>148</pre></span><pre>		cmds.file(self.path(copynumber=1), rr=1)</pre></div>
 <div class="cov"><span class="num"><pre>149</pre></span><pre>		try:</pre></div>
-<div class="cov"><span class="num"><pre>150</pre></span><pre>			ns.delete( **kwargs )</pre></div>
+<div class="cov"><span class="num"><pre>150</pre></span><pre>			ns.delete(**kwargs)</pre></div>
 <div class="nocov"><span class="num"><pre>151</pre></span><pre>		except RuntimeError:</pre></div>
 <div class="nocov"><span class="num"><pre>152</pre></span><pre>			pass</pre></div>
 <div class="skip"><span class="num"><pre>153</pre></span><pre></pre></div>
 <div class="cov"><span class="num"><pre>154</pre></span><pre>	@undo.notundoable</pre></div>
-<div class="cov"><span class="num"><pre>155</pre></span><pre>	def replace( self, filepath ):</pre></div>
+<div class="cov"><span class="num"><pre>155</pre></span><pre>	def replace(self, filepath):</pre></div>
 <div class="cov"><span class="num"><pre>156</pre></span><pre>		&quot;&quot;&quot;Replace this reference with filepath</pre></div>
 <div class="skip"><span class="num"><pre>157</pre></span><pre>		</pre></div>
 <div class="cov"><span class="num"><pre>158</pre></span><pre>		:param filepath: the path to the file to replace this reference with</pre></div>
 <div class="cov"><span class="num"><pre>159</pre></span><pre>			Reference instances will be handled as well.</pre></div>
 <div class="cov"><span class="num"><pre>160</pre></span><pre>		:return: self&quot;&quot;&quot;</pre></div>
 <div class="cov"><span class="num"><pre>161</pre></span><pre>		filepath = (isinstance(filepath, type(self)) and filepath.path()) or filepath</pre></div>
-<div class="cov"><span class="num"><pre>162</pre></span><pre>		filepath = self._splitCopyNumber( filepath )[0]</pre></div>
-<div class="cov"><span class="num"><pre>163</pre></span><pre>		cmds.file( filepath, lr=self._refnode )</pre></div>
+<div class="cov"><span class="num"><pre>162</pre></span><pre>		filepath = self._splitCopyNumber(filepath)[0]</pre></div>
+<div class="cov"><span class="num"><pre>163</pre></span><pre>		cmds.file(filepath, lr=self._refnode)</pre></div>
 <div class="cov"><span class="num"><pre>164</pre></span><pre>		return self</pre></div>
 <div class="skip"><span class="num"><pre>165</pre></span><pre></pre></div>
 <div class="cov"><span class="num"><pre>166</pre></span><pre>	@undo.notundoable</pre></div>
-<div class="cov"><span class="num"><pre>167</pre></span><pre>	def importRef( self, depth=0 ):</pre></div>
+<div class="cov"><span class="num"><pre>167</pre></span><pre>	def importRef(self, depth=0):</pre></div>
 <div class="cov"><span class="num"><pre>168</pre></span><pre>		&quot;&quot;&quot;Import the reference until the given depth is reached</pre></div>
 <div class="skip"><span class="num"><pre>169</pre></span><pre>		</pre></div>
 <div class="cov"><span class="num"><pre>170</pre></span><pre>		:param depth:</pre></div>
@@ -195,33 +195,33 @@ Percent: 97 %<br/>
 <div class="cov"><span class="num"><pre>173</pre></span><pre>			 	all its children are on the same level as self was before import</pre></div>
 <div class="cov"><span class="num"><pre>174</pre></span><pre>		:return: list of FileReference objects that are now in the root namespace - this</pre></div>
 <div class="cov"><span class="num"><pre>175</pre></span><pre>			  list could be empty if all subreferences are fully imported&quot;&quot;&quot;</pre></div>
-<div class="cov"><span class="num"><pre>176</pre></span><pre>		def importRecursive( reference, curdepth, maxdepth ):</pre></div>
+<div class="cov"><span class="num"><pre>176</pre></span><pre>		def importRecursive(reference, curdepth, maxdepth):</pre></div>
 <div class="skip"><span class="num"><pre>177</pre></span><pre>			# load ref</pre></div>
-<div class="cov"><span class="num"><pre>178</pre></span><pre>			reference.setLoaded( True )</pre></div>
+<div class="cov"><span class="num"><pre>178</pre></span><pre>			reference.setLoaded(True)</pre></div>
 <div class="cov"><span class="num"><pre>179</pre></span><pre>			children = reference.children()</pre></div>
-<div class="cov"><span class="num"><pre>180</pre></span><pre>			cmds.file( reference.path(copynumber=1), importReference=1 )</pre></div>
+<div class="cov"><span class="num"><pre>180</pre></span><pre>			cmds.file(reference.path(copynumber=1), importReference=1)</pre></div>
 <div class="skip"><span class="num"><pre>181</pre></span><pre></pre></div>
 <div class="cov"><span class="num"><pre>182</pre></span><pre>			if curdepth == maxdepth:</pre></div>
 <div class="cov"><span class="num"><pre>183</pre></span><pre>				return children</pre></div>
 <div class="skip"><span class="num"><pre>184</pre></span><pre></pre></div>
-<div class="cov"><span class="num"><pre>185</pre></span><pre>			outsubrefs = []</pre></div>
+<div class="cov"><span class="num"><pre>185</pre></span><pre>			outsubrefs = list()</pre></div>
 <div class="cov"><span class="num"><pre>186</pre></span><pre>			for childref in children:</pre></div>
-<div class="cov"><span class="num"><pre>187</pre></span><pre>				outsubrefs.extend( importRecursive( childref, curdepth+1, maxdepth ) )</pre></div>
+<div class="cov"><span class="num"><pre>187</pre></span><pre>				outsubrefs.extend(importRecursive(childref, curdepth+1, maxdepth))</pre></div>
 <div class="skip"><span class="num"><pre>188</pre></span><pre></pre></div>
 <div class="cov"><span class="num"><pre>189</pre></span><pre>			return outsubrefs</pre></div>
 <div class="skip"><span class="num"><pre>190</pre></span><pre>		# END importRecursive</pre></div>
 <div class="skip"><span class="num"><pre>191</pre></span><pre></pre></div>
-<div class="cov"><span class="num"><pre>192</pre></span><pre>		return importRecursive( self, 0, depth )</pre></div>
+<div class="cov"><span class="num"><pre>192</pre></span><pre>		return importRecursive(self, 0, depth)</pre></div>
 <div class="skip"><span class="num"><pre>193</pre></span><pre></pre></div>
 <div class="skip"><span class="num"><pre>194</pre></span><pre>	# } END reference adjustments</pre></div>
 <div class="skip"><span class="num"><pre>195</pre></span><pre></pre></div>
 <div class="skip"><span class="num"><pre>196</pre></span><pre>	#{ Listing</pre></div>
 <div class="skip"><span class="num"><pre>197</pre></span><pre></pre></div>
 <div class="cov"><span class="num"><pre>198</pre></span><pre>	@classmethod</pre></div>
-<div class="cov"><span class="num"><pre>199</pre></span><pre>	def fromPaths( cls, paths, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>199</pre></span><pre>	def fromPaths(cls, paths, **kwargs):</pre></div>
 <div class="cov"><span class="num"><pre>200</pre></span><pre>		&quot;&quot;&quot;Find the reference for each path in paths. If you provide the path X</pre></div>
 <div class="cov"><span class="num"><pre>201</pre></span><pre>		2 times, but you only have one reference to X, the return value will be </pre></div>
-<div class="cov"><span class="num"><pre>202</pre></span><pre>		[ FileReference(X), None ] as there are less references than provided paths.</pre></div>
+<div class="cov"><span class="num"><pre>202</pre></span><pre>		[FileReference(X), None] as there are less references than provided paths.</pre></div>
 <div class="skip"><span class="num"><pre>203</pre></span><pre>		</pre></div>
 <div class="cov"><span class="num"><pre>204</pre></span><pre>		:param paths: a list of paths or references whose references in the scene </pre></div>
 <div class="cov"><span class="num"><pre>205</pre></span><pre>			should be returned. In case a reference is found, its plain path will be </pre></div>
@@ -235,53 +235,53 @@ Percent: 97 %<br/>
 <div class="cov"><span class="num"><pre>213</pre></span><pre>				This way, an MA file will be matched with an MB file. </pre></div>
 <div class="cov"><span class="num"><pre>214</pre></span><pre>				The references returned will still have their extension original extension.</pre></div>
 <div class="skip"><span class="num"><pre>215</pre></span><pre>			</pre></div>
-<div class="cov"><span class="num"><pre>216</pre></span><pre>		:return: list( FileReference|None, ... )</pre></div>
+<div class="cov"><span class="num"><pre>216</pre></span><pre>		:return: list(FileReference|None, ...)</pre></div>
 <div class="cov"><span class="num"><pre>217</pre></span><pre>			if a filereference was found for given occurrence of Path, it will be returned</pre></div>
 <div class="cov"><span class="num"><pre>218</pre></span><pre>			at index of the current path in the input paths, otherwise it is None.</pre></div>
-<div class="cov"><span class="num"><pre>219</pre></span><pre>		:note: zip( paths, result ) to get a corresponding tuple list associating each input path</pre></div>
+<div class="cov"><span class="num"><pre>219</pre></span><pre>		:note: zip(paths, result) to get a corresponding tuple list associating each input path</pre></div>
 <div class="cov"><span class="num"><pre>220</pre></span><pre>			with the located reference&quot;&quot;&quot;</pre></div>
-<div class="cov"><span class="num"><pre>221</pre></span><pre>		if not isinstance( paths, (list,tuple) ) or hasattr( paths, 'next' ):</pre></div>
-<div class="nocov"><span class="num"><pre>222</pre></span><pre>			raise TypeError( &quot;paths must be tuple, was %s&quot; % type( paths ) )</pre></div>
+<div class="cov"><span class="num"><pre>221</pre></span><pre>		if not isinstance(paths, (list,tuple)) or hasattr(paths, 'next'):</pre></div>
+<div class="nocov"><span class="num"><pre>222</pre></span><pre>			raise TypeError(&quot;paths must be tuple, was %s&quot; % type(paths))</pre></div>
 <div class="skip"><span class="num"><pre>223</pre></span><pre></pre></div>
-<div class="cov"><span class="num"><pre>224</pre></span><pre>		ignore_ext = kwargs.pop( &quot;ignore_extension&quot;, False )</pre></div>
-<div class="cov"><span class="num"><pre>225</pre></span><pre>		refs = cls.ls( **kwargs )</pre></div>
+<div class="cov"><span class="num"><pre>224</pre></span><pre>		ignore_ext = kwargs.pop(&quot;ignore_extension&quot;, False)</pre></div>
+<div class="cov"><span class="num"><pre>225</pre></span><pre>		refs = cls.ls(**kwargs)</pre></div>
 <div class="skip"><span class="num"><pre>226</pre></span><pre></pre></div>
 <div class="skip"><span class="num"><pre>227</pre></span><pre>		# build dict for fast lookup</pre></div>
 <div class="skip"><span class="num"><pre>228</pre></span><pre>		# It will keep each reference</pre></div>
 <div class="cov"><span class="num"><pre>229</pre></span><pre>		lut = dict()</pre></div>
-<div class="cov"><span class="num"><pre>230</pre></span><pre>		pathscp = [ (isinstance(p, cls) and p.path()) or make_path(p) for p in paths ]</pre></div>
+<div class="cov"><span class="num"><pre>230</pre></span><pre>		pathscp = [(isinstance(p, cls) and p.path()) or make_path(p) for p in paths]</pre></div>
 <div class="skip"><span class="num"><pre>231</pre></span><pre>		</pre></div>
 <div class="cov"><span class="num"><pre>232</pre></span><pre>		conv = lambda f: f</pre></div>
 <div class="cov"><span class="num"><pre>233</pre></span><pre>		if ignore_ext:</pre></div>
 <div class="cov"><span class="num"><pre>234</pre></span><pre>			conv = lambda f: f.expandvars().splitext()[0]</pre></div>
 <div class="skip"><span class="num"><pre>235</pre></span><pre>		# END ignore extension converter</pre></div>
 <div class="skip"><span class="num"><pre>236</pre></span><pre>		</pre></div>
-<div class="cov"><span class="num"><pre>237</pre></span><pre>		def countTuple( filepath, lut ):</pre></div>
-<div class="cov"><span class="num"><pre>238</pre></span><pre>			count = lut.get( filepath, 0 )</pre></div>
-<div class="cov"><span class="num"><pre>239</pre></span><pre>			lut[ filepath ] = count + 1</pre></div>
-<div class="cov"><span class="num"><pre>240</pre></span><pre>			return ( filepath , count )</pre></div>
+<div class="cov"><span class="num"><pre>237</pre></span><pre>		def countTuple(filepath, lut):</pre></div>
+<div class="cov"><span class="num"><pre>238</pre></span><pre>			count = lut.get(filepath, 0)</pre></div>
+<div class="cov"><span class="num"><pre>239</pre></span><pre>			lut[filepath] = count + 1</pre></div>
+<div class="cov"><span class="num"><pre>240</pre></span><pre>			return (filepath , count)</pre></div>
 <div class="skip"><span class="num"><pre>241</pre></span><pre>		# END utility</pre></div>
 <div class="skip"><span class="num"><pre>242</pre></span><pre>		</pre></div>
 <div class="cov"><span class="num"><pre>243</pre></span><pre>		clut = dict()</pre></div>
 <div class="cov"><span class="num"><pre>244</pre></span><pre>		for ref in refs:</pre></div>
-<div class="cov"><span class="num"><pre>245</pre></span><pre>			lut[ countTuple(conv(ref.path()), clut) ] = ref			# keys have no ext</pre></div>
+<div class="cov"><span class="num"><pre>245</pre></span><pre>			lut[countTuple(conv(ref.path()), clut)] = ref			# keys have no ext</pre></div>
 <div class="skip"><span class="num"><pre>246</pre></span><pre>		# END for each ref to put into lut</pre></div>
 <div class="skip"><span class="num"><pre>247</pre></span><pre>		</pre></div>
 <div class="cov"><span class="num"><pre>248</pre></span><pre>		clut.clear()</pre></div>
-<div class="cov"><span class="num"><pre>249</pre></span><pre>		for i,path in enumerate( pathscp ):</pre></div>
+<div class="cov"><span class="num"><pre>249</pre></span><pre>		for i,path in enumerate(pathscp):</pre></div>
 <div class="cov"><span class="num"><pre>250</pre></span><pre>			pathscp[i] = countTuple(conv(path), clut)</pre></div>
 <div class="skip"><span class="num"><pre>251</pre></span><pre>		# END for each path to prepare</pre></div>
 <div class="skip"><span class="num"><pre>252</pre></span><pre>		</pre></div>
 <div class="cov"><span class="num"><pre>253</pre></span><pre>		outlist = list()</pre></div>
 <div class="cov"><span class="num"><pre>254</pre></span><pre>		for path in pathscp:</pre></div>
-<div class="cov"><span class="num"><pre>255</pre></span><pre>			ref_or_none = lut.get( path, None )</pre></div>
-<div class="cov"><span class="num"><pre>256</pre></span><pre>			outlist.append( ref_or_none )</pre></div>
+<div class="cov"><span class="num"><pre>255</pre></span><pre>			ref_or_none = lut.get(path, None)</pre></div>
+<div class="cov"><span class="num"><pre>256</pre></span><pre>			outlist.append(ref_or_none)</pre></div>
 <div class="skip"><span class="num"><pre>257</pre></span><pre>			# no need to delete the keys as they have to be unique anyway</pre></div>
 <div class="skip"><span class="num"><pre>258</pre></span><pre>		# END for each path to find</pre></div>
 <div class="cov"><span class="num"><pre>259</pre></span><pre>		return outlist</pre></div>
 <div class="skip"><span class="num"><pre>260</pre></span><pre></pre></div>
 <div class="cov"><span class="num"><pre>261</pre></span><pre>	@classmethod</pre></div>
-<div class="cov"><span class="num"><pre>262</pre></span><pre>	def ls( cls, rootReference = &quot;&quot;, predicate = lambda x: True):</pre></div>
+<div class="cov"><span class="num"><pre>262</pre></span><pre>	def ls(cls, rootReference = &quot;&quot;, predicate = lambda x: True):</pre></div>
 <div class="cov"><span class="num"><pre>263</pre></span><pre>		&quot;&quot;&quot;list all references in the scene or under the given root</pre></div>
 <div class="skip"><span class="num"><pre>264</pre></span><pre>		</pre></div>
 <div class="cov"><span class="num"><pre>265</pre></span><pre>		:param rootReference: if not empty, the references below it will be returned.</pre></div>
@@ -294,21 +294,21 @@ Percent: 97 %<br/>
 <div class="cov"><span class="num"><pre>272</pre></span><pre>			rootReference = rootReference.path(copynumber=1)</pre></div>
 <div class="skip"><span class="num"><pre>273</pre></span><pre>		# END handle non-string type</pre></div>
 <div class="cov"><span class="num"><pre>274</pre></span><pre>		out = list()</pre></div>
-<div class="cov"><span class="num"><pre>275</pre></span><pre>		for reffile in cmds.file( str( rootReference ), q=1, r=1 ):</pre></div>
-<div class="cov"><span class="num"><pre>276</pre></span><pre>			refinst = FileReference( filepath = reffile )</pre></div>
-<div class="cov"><span class="num"><pre>277</pre></span><pre>			if predicate( refinst ):</pre></div>
-<div class="cov"><span class="num"><pre>278</pre></span><pre>				out.append( refinst )</pre></div>
+<div class="cov"><span class="num"><pre>275</pre></span><pre>		for reffile in cmds.file(str(rootReference), q=1, r=1):</pre></div>
+<div class="cov"><span class="num"><pre>276</pre></span><pre>			refinst = FileReference(filepath = reffile)</pre></div>
+<div class="cov"><span class="num"><pre>277</pre></span><pre>			if predicate(refinst):</pre></div>
+<div class="cov"><span class="num"><pre>278</pre></span><pre>				out.append(refinst)</pre></div>
 <div class="skip"><span class="num"><pre>279</pre></span><pre>		# END for each reference file</pre></div>
 <div class="cov"><span class="num"><pre>280</pre></span><pre>		return out</pre></div>
 <div class="skip"><span class="num"><pre>281</pre></span><pre></pre></div>
 <div class="cov"><span class="num"><pre>282</pre></span><pre>	@classmethod</pre></div>
-<div class="cov"><span class="num"><pre>283</pre></span><pre>	def lsDeep( cls, predicate = lambda x: True, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>283</pre></span><pre>	def lsDeep(cls, predicate = lambda x: True, **kwargs):</pre></div>
 <div class="cov"><span class="num"><pre>284</pre></span><pre>		&quot;&quot;&quot;Return all references recursively</pre></div>
 <div class="skip"><span class="num"><pre>285</pre></span><pre>		</pre></div>
 <div class="cov"><span class="num"><pre>286</pre></span><pre>		:param kwargs: support for arguments as in `ls`, hence you can use the </pre></div>
 <div class="cov"><span class="num"><pre>287</pre></span><pre>			rootReference flag to restrict the set of returned FileReferences.&quot;&quot;&quot;</pre></div>
 <div class="cov"><span class="num"><pre>288</pre></span><pre>		kwargs['predicate'] = predicate</pre></div>
-<div class="cov"><span class="num"><pre>289</pre></span><pre>		refs = cls.ls( **kwargs )</pre></div>
+<div class="cov"><span class="num"><pre>289</pre></span><pre>		refs = cls.ls(**kwargs)</pre></div>
 <div class="cov"><span class="num"><pre>290</pre></span><pre>		out = refs</pre></div>
 <div class="cov"><span class="num"><pre>291</pre></span><pre>		for ref in refs:</pre></div>
 <div class="cov"><span class="num"><pre>292</pre></span><pre>			out.extend(ref.childrenDeep(order=cls.kOrder_BreadthFirst, predicate=predicate))</pre></div>
@@ -317,14 +317,14 @@ Percent: 97 %<br/>
 <div class="skip"><span class="num"><pre>295</pre></span><pre>	#} listing</pre></div>
 <div class="skip"><span class="num"><pre>296</pre></span><pre>	</pre></div>
 <div class="skip"><span class="num"><pre>297</pre></span><pre>	#{ Nodes Query</pre></div>
-<div class="cov"><span class="num"><pre>298</pre></span><pre>	def iterNodes( self, *args, **kwargs):</pre></div>
+<div class="cov"><span class="num"><pre>298</pre></span><pre>	def iterNodes(self, *args, **kwargs):</pre></div>
 <div class="cov"><span class="num"><pre>299</pre></span><pre>		&quot;&quot;&quot;Creates iterator over nodes in this reference</pre></div>
 <div class="skip"><span class="num"><pre>300</pre></span><pre>		</pre></div>
 <div class="cov"><span class="num"><pre>301</pre></span><pre>		:param args: MFn.kType filter ids to be used to pre-filter all nodes.</pre></div>
 <div class="cov"><span class="num"><pre>302</pre></span><pre>			If you know what you are looking for, setting this can greatly improve </pre></div>
 <div class="cov"><span class="num"><pre>303</pre></span><pre>			performance !</pre></div>
 <div class="cov"><span class="num"><pre>304</pre></span><pre>		:param kwargs: additional kwargs will be passed to either `iterDagNodes`</pre></div>
-<div class="cov"><span class="num"><pre>305</pre></span><pre>			or `iterDgNodes` ( dag = False ). The following additional kwargs may</pre></div>
+<div class="cov"><span class="num"><pre>305</pre></span><pre>			or `iterDgNodes` (dag = False). The following additional kwargs may</pre></div>
 <div class="cov"><span class="num"><pre>306</pre></span><pre>			be specified:</pre></div>
 <div class="skip"><span class="num"><pre>307</pre></span><pre>			</pre></div>
 <div class="cov"><span class="num"><pre>308</pre></span><pre>			 * asNode: </pre></div>
@@ -361,7 +361,7 @@ Percent: 97 %<br/>
 <div class="cov"><span class="num"><pre>339</pre></span><pre>		assembliesInReference = kwargs.pop('assembliesInReference', False)</pre></div>
 <div class="skip"><span class="num"><pre>340</pre></span><pre>		</pre></div>
 <div class="skip"><span class="num"><pre>341</pre></span><pre>		</pre></div>
-<div class="cov"><span class="num"><pre>342</pre></span><pre>		if ( assemblies or assembliesInReference ) and not dag:</pre></div>
+<div class="cov"><span class="num"><pre>342</pre></span><pre>		if (assemblies or assembliesInReference) and not dag:</pre></div>
 <div class="cov"><span class="num"><pre>343</pre></span><pre>			raise ValueError(&quot;Cannot list assemblies of any kind if dag is not specified&quot;)</pre></div>
 <div class="skip"><span class="num"><pre>344</pre></span><pre>		</pre></div>
 <div class="cov"><span class="num"><pre>345</pre></span><pre>		if assemblies and assembliesInReference:</pre></div>
@@ -439,7 +439,7 @@ Percent: 97 %<br/>
 <div class="skip"><span class="num"><pre>417</pre></span><pre></pre></div>
 <div class="skip"><span class="num"><pre>418</pre></span><pre>	#{ Edit</pre></div>
 <div class="cov"><span class="num"><pre>419</pre></span><pre>	@undo.notundoable</pre></div>
-<div class="cov"><span class="num"><pre>420</pre></span><pre>	def cleanup( self, unresolvedEdits = True, editTypes = editTypes ):</pre></div>
+<div class="cov"><span class="num"><pre>420</pre></span><pre>	def cleanup(self, unresolvedEdits = True, editTypes = editTypes):</pre></div>
 <div class="cov"><span class="num"><pre>421</pre></span><pre>		&quot;&quot;&quot;remove unresolved edits or all edits on this reference</pre></div>
 <div class="skip"><span class="num"><pre>422</pre></span><pre>		</pre></div>
 <div class="cov"><span class="num"><pre>423</pre></span><pre>		:param unresolvedEdits: if True, only dangling connections will be removed,</pre></div>
@@ -452,7 +452,7 @@ Percent: 97 %<br/>
 <div class="cov"><span class="num"><pre>430</pre></span><pre>			self.setLoaded(False)</pre></div>
 <div class="skip"><span class="num"><pre>431</pre></span><pre></pre></div>
 <div class="cov"><span class="num"><pre>432</pre></span><pre>		for etype in editTypes:</pre></div>
-<div class="cov"><span class="num"><pre>433</pre></span><pre>			cmds.file( cr=self._refnode, editCommand=etype )</pre></div>
+<div class="cov"><span class="num"><pre>433</pre></span><pre>			cmds.file(cr=self._refnode, editCommand=etype)</pre></div>
 <div class="skip"><span class="num"><pre>434</pre></span><pre></pre></div>
 <div class="cov"><span class="num"><pre>435</pre></span><pre>		if not unresolvedEdits:</pre></div>
 <div class="cov"><span class="num"><pre>436</pre></span><pre>			self.setLoaded(wasloaded)</pre></div>
@@ -460,13 +460,13 @@ Percent: 97 %<br/>
 <div class="cov"><span class="num"><pre>438</pre></span><pre>		return self</pre></div>
 <div class="skip"><span class="num"><pre>439</pre></span><pre></pre></div>
 <div class="cov"><span class="num"><pre>440</pre></span><pre>	@undo.notundoable</pre></div>
-<div class="cov"><span class="num"><pre>441</pre></span><pre>	def setLocked( self, state ):</pre></div>
+<div class="cov"><span class="num"><pre>441</pre></span><pre>	def setLocked(self, state):</pre></div>
 <div class="cov"><span class="num"><pre>442</pre></span><pre>		&quot;&quot;&quot;Set the reference to be locked or unlocked</pre></div>
 <div class="skip"><span class="num"><pre>443</pre></span><pre>		</pre></div>
 <div class="cov"><span class="num"><pre>444</pre></span><pre>		:param state: if True, the reference is locked , if False its unlocked and</pre></div>
 <div class="cov"><span class="num"><pre>445</pre></span><pre>			can be altered</pre></div>
 <div class="cov"><span class="num"><pre>446</pre></span><pre>		:return: self&quot;&quot;&quot;</pre></div>
-<div class="cov"><span class="num"><pre>447</pre></span><pre>		if self.isLocked( ) == state:</pre></div>
+<div class="cov"><span class="num"><pre>447</pre></span><pre>		if self.isLocked() == state:</pre></div>
 <div class="nocov"><span class="num"><pre>448</pre></span><pre>			return</pre></div>
 <div class="skip"><span class="num"><pre>449</pre></span><pre></pre></div>
 <div class="skip"><span class="num"><pre>450</pre></span><pre>		# unload ref</pre></div>
@@ -474,7 +474,7 @@ Percent: 97 %<br/>
 <div class="cov"><span class="num"><pre>452</pre></span><pre>		self.setLoaded(False)</pre></div>
 <div class="skip"><span class="num"><pre>453</pre></span><pre></pre></div>
 <div class="skip"><span class="num"><pre>454</pre></span><pre>		# set locked</pre></div>
-<div class="cov"><span class="num"><pre>455</pre></span><pre>		cmds.setAttr( self._refnode+&quot;.locked&quot;, state )</pre></div>
+<div class="cov"><span class="num"><pre>455</pre></span><pre>		cmds.setAttr(self._refnode+&quot;.locked&quot;, state)</pre></div>
 <div class="skip"><span class="num"><pre>456</pre></span><pre></pre></div>
 <div class="skip"><span class="num"><pre>457</pre></span><pre>		# reset the loading state</pre></div>
 <div class="cov"><span class="num"><pre>458</pre></span><pre>		self.setLoaded(wasloaded)</pre></div>
@@ -482,53 +482,53 @@ Percent: 97 %<br/>
 <div class="cov"><span class="num"><pre>460</pre></span><pre>		return self</pre></div>
 <div class="skip"><span class="num"><pre>461</pre></span><pre></pre></div>
 <div class="cov"><span class="num"><pre>462</pre></span><pre>	@undo.notundoable</pre></div>
-<div class="cov"><span class="num"><pre>463</pre></span><pre>	def setLoaded( self, state ):</pre></div>
+<div class="cov"><span class="num"><pre>463</pre></span><pre>	def setLoaded(self, state):</pre></div>
 <div class="cov"><span class="num"><pre>464</pre></span><pre>		&quot;&quot;&quot;set the reference loaded or unloaded</pre></div>
 <div class="skip"><span class="num"><pre>465</pre></span><pre>		</pre></div>
 <div class="cov"><span class="num"><pre>466</pre></span><pre>		:param state: True = unload reference, True = load reference </pre></div>
 <div class="cov"><span class="num"><pre>467</pre></span><pre>		:return: self&quot;&quot;&quot;</pre></div>
 <div class="skip"><span class="num"><pre>468</pre></span><pre></pre></div>
-<div class="cov"><span class="num"><pre>469</pre></span><pre>		if state == self.isLoaded( ):			# already desired state</pre></div>
+<div class="cov"><span class="num"><pre>469</pre></span><pre>		if state == self.isLoaded():			# already desired state</pre></div>
 <div class="cov"><span class="num"><pre>470</pre></span><pre>			return</pre></div>
 <div class="skip"><span class="num"><pre>471</pre></span><pre></pre></div>
 <div class="cov"><span class="num"><pre>472</pre></span><pre>		if state:</pre></div>
-<div class="cov"><span class="num"><pre>473</pre></span><pre>			cmds.file( loadReference=self._refnode )</pre></div>
+<div class="cov"><span class="num"><pre>473</pre></span><pre>			cmds.file(loadReference=self._refnode)</pre></div>
 <div class="cov"><span class="num"><pre>474</pre></span><pre>		else:</pre></div>
-<div class="cov"><span class="num"><pre>475</pre></span><pre>			cmds.file( unloadReference=self._refnode )</pre></div>
+<div class="cov"><span class="num"><pre>475</pre></span><pre>			cmds.file(unloadReference=self._refnode)</pre></div>
 <div class="skip"><span class="num"><pre>476</pre></span><pre></pre></div>
 <div class="cov"><span class="num"><pre>477</pre></span><pre>		return self</pre></div>
 <div class="skip"><span class="num"><pre>478</pre></span><pre></pre></div>
 <div class="cov"><span class="num"><pre>479</pre></span><pre>	@undo.notundoable</pre></div>
-<div class="cov"><span class="num"><pre>480</pre></span><pre>	def setNamespace( self, namespace ):</pre></div>
+<div class="cov"><span class="num"><pre>480</pre></span><pre>	def setNamespace(self, namespace):</pre></div>
 <div class="cov"><span class="num"><pre>481</pre></span><pre>		&quot;&quot;&quot;set the reference to use the given namespace</pre></div>
 <div class="skip"><span class="num"><pre>482</pre></span><pre>		</pre></div>
 <div class="cov"><span class="num"><pre>483</pre></span><pre>		:param namespace: Namespace instance or name of the short namespace</pre></div>
 <div class="cov"><span class="num"><pre>484</pre></span><pre>		:raise RuntimeError: if namespace already exists or if reference is not root</pre></div>
 <div class="cov"><span class="num"><pre>485</pre></span><pre>		:return: self&quot;&quot;&quot;</pre></div>
 <div class="cov"><span class="num"><pre>486</pre></span><pre>		shortname = namespace</pre></div>
-<div class="cov"><span class="num"><pre>487</pre></span><pre>		if isinstance( namespace, Namespace ):</pre></div>
-<div class="nocov"><span class="num"><pre>488</pre></span><pre>			shortname = namespace.basename( )</pre></div>
+<div class="cov"><span class="num"><pre>487</pre></span><pre>		if isinstance(namespace, Namespace):</pre></div>
+<div class="nocov"><span class="num"><pre>488</pre></span><pre>			shortname = namespace.basename()</pre></div>
 <div class="skip"><span class="num"><pre>489</pre></span><pre></pre></div>
 <div class="skip"><span class="num"><pre>490</pre></span><pre>		# set the namespace</pre></div>
-<div class="cov"><span class="num"><pre>491</pre></span><pre>		cmds.file( self.path(copynumber=1), e=1, ns=shortname )</pre></div>
+<div class="cov"><span class="num"><pre>491</pre></span><pre>		cmds.file(self.path(copynumber=1), e=1, ns=shortname)</pre></div>
 <div class="skip"><span class="num"><pre>492</pre></span><pre>		</pre></div>
 <div class="cov"><span class="num"><pre>493</pre></span><pre>		return self</pre></div>
 <div class="skip"><span class="num"><pre>494</pre></span><pre></pre></div>
 <div class="skip"><span class="num"><pre>495</pre></span><pre>	#}END edit</pre></div>
 <div class="skip"><span class="num"><pre>496</pre></span><pre></pre></div>
-<div class="cov"><span class="num"><pre>497</pre></span><pre>	def parent( self ):</pre></div>
+<div class="cov"><span class="num"><pre>497</pre></span><pre>	def parent(self):</pre></div>
 <div class="cov"><span class="num"><pre>498</pre></span><pre>		&quot;&quot;&quot;:return: the parent reference of this instance or None if we are root&quot;&quot;&quot;</pre></div>
-<div class="cov"><span class="num"><pre>499</pre></span><pre>		parentrfn = cmds.referenceQuery( self._refnode, rfn=1, p=1 )</pre></div>
+<div class="cov"><span class="num"><pre>499</pre></span><pre>		parentrfn = cmds.referenceQuery(self._refnode, rfn=1, p=1)</pre></div>
 <div class="cov"><span class="num"><pre>500</pre></span><pre>		if not parentrfn:</pre></div>
 <div class="cov"><span class="num"><pre>501</pre></span><pre>			return None</pre></div>
-<div class="cov"><span class="num"><pre>502</pre></span><pre>		return FileReference( refnode = parentrfn )</pre></div>
+<div class="cov"><span class="num"><pre>502</pre></span><pre>		return FileReference(refnode = parentrfn)</pre></div>
 <div class="skip"><span class="num"><pre>503</pre></span><pre></pre></div>
-<div class="cov"><span class="num"><pre>504</pre></span><pre>	def children( self , predicate = lambda x: True ):</pre></div>
+<div class="cov"><span class="num"><pre>504</pre></span><pre>	def children(self , predicate = lambda x: True):</pre></div>
 <div class="cov"><span class="num"><pre>505</pre></span><pre>		&quot;&quot;&quot; :return: all intermediate child references of this instance &quot;&quot;&quot;</pre></div>
-<div class="cov"><span class="num"><pre>506</pre></span><pre>		return self.ls( rootReference = self, predicate = predicate )</pre></div>
+<div class="cov"><span class="num"><pre>506</pre></span><pre>		return self.ls(rootReference = self, predicate = predicate)</pre></div>
 <div class="skip"><span class="num"><pre>507</pre></span><pre></pre></div>
 <div class="skip"><span class="num"><pre>508</pre></span><pre>	#{ Query</pre></div>
-<div class="cov"><span class="num"><pre>509</pre></span><pre>	def exists( self ):</pre></div>
+<div class="cov"><span class="num"><pre>509</pre></span><pre>	def exists(self):</pre></div>
 <div class="cov"><span class="num"><pre>510</pre></span><pre>		&quot;&quot;&quot;:return: True if our file reference exists in maya&quot;&quot;&quot;</pre></div>
 <div class="cov"><span class="num"><pre>511</pre></span><pre>		try:</pre></div>
 <div class="cov"><span class="num"><pre>512</pre></span><pre>			self.path(copynumber=1)</pre></div>
@@ -537,47 +537,47 @@ Percent: 97 %<br/>
 <div class="cov"><span class="num"><pre>515</pre></span><pre>		else:</pre></div>
 <div class="cov"><span class="num"><pre>516</pre></span><pre>			return True</pre></div>
 <div class="skip"><span class="num"><pre>517</pre></span><pre></pre></div>
-<div class="cov"><span class="num"><pre>518</pre></span><pre>	def isLocked( self ):</pre></div>
+<div class="cov"><span class="num"><pre>518</pre></span><pre>	def isLocked(self):</pre></div>
 <div class="cov"><span class="num"><pre>519</pre></span><pre>		&quot;&quot;&quot;:return: True if reference is locked&quot;&quot;&quot;</pre></div>
-<div class="cov"><span class="num"><pre>520</pre></span><pre>		return cmds.getAttr( self._refnode + &quot;.locked&quot; )</pre></div>
+<div class="cov"><span class="num"><pre>520</pre></span><pre>		return cmds.getAttr(self._refnode + &quot;.locked&quot;)</pre></div>
 <div class="skip"><span class="num"><pre>521</pre></span><pre></pre></div>
-<div class="cov"><span class="num"><pre>522</pre></span><pre>	def isLoaded( self ):</pre></div>
+<div class="cov"><span class="num"><pre>522</pre></span><pre>	def isLoaded(self):</pre></div>
 <div class="cov"><span class="num"><pre>523</pre></span><pre>		&quot;&quot;&quot;:return: True if the reference is loaded&quot;&quot;&quot;</pre></div>
-<div class="cov"><span class="num"><pre>524</pre></span><pre>		return cmds.file( rfn=self._refnode, q=1, dr=1 ) == False</pre></div>
+<div class="cov"><span class="num"><pre>524</pre></span><pre>		return cmds.file(rfn=self._refnode, q=1, dr=1) == False</pre></div>
 <div class="skip"><span class="num"><pre>525</pre></span><pre></pre></div>
-<div class="cov"><span class="num"><pre>526</pre></span><pre>	def copynumber( self ):</pre></div>
+<div class="cov"><span class="num"><pre>526</pre></span><pre>	def copynumber(self):</pre></div>
 <div class="cov"><span class="num"><pre>527</pre></span><pre>		&quot;&quot;&quot;:return: the references copy number - starting at 0 for the first reference</pre></div>
 <div class="cov"><span class="num"><pre>528</pre></span><pre>		:note: we do not cache the copy number as mayas internal numbering can change on</pre></div>
 <div class="cov"><span class="num"><pre>529</pre></span><pre>			when references change - the only stable thing is the reference node name&quot;&quot;&quot;</pre></div>
-<div class="cov"><span class="num"><pre>530</pre></span><pre>		return self._splitCopyNumber( self.path(copynumber=1) )[1]</pre></div>
+<div class="cov"><span class="num"><pre>530</pre></span><pre>		return self._splitCopyNumber(self.path(copynumber=1))[1]</pre></div>
 <div class="skip"><span class="num"><pre>531</pre></span><pre></pre></div>
-<div class="cov"><span class="num"><pre>532</pre></span><pre>	def namespace( self ):</pre></div>
+<div class="cov"><span class="num"><pre>532</pre></span><pre>	def namespace(self):</pre></div>
 <div class="cov"><span class="num"><pre>533</pre></span><pre>		&quot;&quot;&quot;:return: namespace object of the full namespace holding all objects in this reference&quot;&quot;&quot;</pre></div>
 <div class="cov"><span class="num"><pre>534</pre></span><pre>		fullpath = self.path(copynumber=1)</pre></div>
-<div class="cov"><span class="num"><pre>535</pre></span><pre>		refspace = cmds.file( fullpath, q=1, ns=1 )</pre></div>
-<div class="cov"><span class="num"><pre>536</pre></span><pre>		parentspace = cmds.file( fullpath, q=1, pns=1 )[0]		# returns lists, although its always just one string</pre></div>
+<div class="cov"><span class="num"><pre>535</pre></span><pre>		refspace = cmds.file(fullpath, q=1, ns=1)</pre></div>
+<div class="cov"><span class="num"><pre>536</pre></span><pre>		parentspace = cmds.file(fullpath, q=1, pns=1)[0]		# returns lists, although its always just one string</pre></div>
 <div class="cov"><span class="num"><pre>537</pre></span><pre>		if parentspace:</pre></div>
 <div class="cov"><span class="num"><pre>538</pre></span><pre>			parentspace += &quot;:&quot;</pre></div>
 <div class="skip"><span class="num"><pre>539</pre></span><pre>		# END handle parent namespace</pre></div>
-<div class="cov"><span class="num"><pre>540</pre></span><pre>		return Namespace( &quot;:&quot; + parentspace + refspace )</pre></div>
+<div class="cov"><span class="num"><pre>540</pre></span><pre>		return Namespace(&quot;:&quot; + parentspace + refspace)</pre></div>
 <div class="skip"><span class="num"><pre>541</pre></span><pre></pre></div>
-<div class="cov"><span class="num"><pre>542</pre></span><pre>	def path( self, copynumber=False, unresolved = False ):</pre></div>
+<div class="cov"><span class="num"><pre>542</pre></span><pre>	def path(self, copynumber=False, unresolved = False):</pre></div>
 <div class="cov"><span class="num"><pre>543</pre></span><pre>		&quot;&quot;&quot;:return: Path object with the path containing the reference's data</pre></div>
 <div class="cov"><span class="num"><pre>544</pre></span><pre>		:param copynumber: If True, the returned path will include the copy number.</pre></div>
 <div class="cov"><span class="num"><pre>545</pre></span><pre>			As it will be a path object, it might not be fully usable in that state</pre></div>
 <div class="cov"><span class="num"><pre>546</pre></span><pre>		:param unresolved: see `ls`</pre></div>
 <div class="cov"><span class="num"><pre>547</pre></span><pre>		:note: we always query it from maya as our numbers change if some other</pre></div>
 <div class="cov"><span class="num"><pre>548</pre></span><pre>			reference is being removed and cannot be trusted&quot;&quot;&quot;</pre></div>
-<div class="cov"><span class="num"><pre>549</pre></span><pre>		path_str = cmds.referenceQuery( self._refnode, f=1, un=unresolved )</pre></div>
+<div class="cov"><span class="num"><pre>549</pre></span><pre>		path_str = cmds.referenceQuery(self._refnode, f=1, un=unresolved)</pre></div>
 <div class="cov"><span class="num"><pre>550</pre></span><pre>		if not copynumber:</pre></div>
-<div class="cov"><span class="num"><pre>551</pre></span><pre>			path_str = self._splitCopyNumber( path_str )[0]</pre></div>
+<div class="cov"><span class="num"><pre>551</pre></span><pre>			path_str = self._splitCopyNumber(path_str)[0]</pre></div>
 <div class="skip"><span class="num"><pre>552</pre></span><pre>		# END handle copy number</pre></div>
 <div class="cov"><span class="num"><pre>553</pre></span><pre>		return make_path(path_str)</pre></div>
 <div class="skip"><span class="num"><pre>554</pre></span><pre></pre></div>
-<div class="cov"><span class="num"><pre>555</pre></span><pre>	def referenceNode( self ):</pre></div>
+<div class="cov"><span class="num"><pre>555</pre></span><pre>	def referenceNode(self):</pre></div>
 <div class="cov"><span class="num"><pre>556</pre></span><pre>		&quot;&quot;&quot;:return: wrapped reference node managing this reference&quot;&quot;&quot;</pre></div>
 <div class="cov"><span class="num"><pre>557</pre></span><pre>		import mrv.maya.nt as nt</pre></div>
-<div class="cov"><span class="num"><pre>558</pre></span><pre>		return nt.NodeFromStr( self._refnode )</pre></div>
+<div class="cov"><span class="num"><pre>558</pre></span><pre>		return nt.NodeFromStr(self._refnode)</pre></div>
 <div class="skip"><span class="num"><pre>559</pre></span><pre></pre></div>
 <div class="skip"><span class="num"><pre>560</pre></span><pre>	#}END query methods</pre></div>
 <div class="skip"><span class="num"><pre>561</pre></span><pre></pre></div>

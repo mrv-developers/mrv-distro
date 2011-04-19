@@ -62,27 +62,29 @@
 <!-- ==================== CLASS DESCRIPTION ==================== -->
 <h1 class="epydoc">Class DagNode</h1><p class="nomargin-top"><span class="codelink"><a href="mrv.maya.nt.base-pysrc.html#DagNode">source&nbsp;code</a></span></p>
 <pre class="base-tree">
-             object --+            
-                      |            
-                   <a href="mrv.maya.nt.base.Node-class.html">Node</a> --+        
-                          |        
-         object --+       |        
-                  |       |        
-<a href="mrv.interface.Interface-class.html">interface.Interface</a> --+   |        
-                      |   |        
-<a href="mrv.interface.iDuplicatable-class.html">interface.iDuplicatable</a> --+        
-                          |        
-                 <a href="mrv.maya.nt.base.DependNode-class.html">DependNode</a> --+    
-                              |    
-                         <a href="mrv.maya.nt.base.Entity-class.html">Entity</a> --+
-                                  |
-                 object --+       |
-                          |       |
-        <a href="mrv.interface.Interface-class.html">interface.Interface</a> --+   |
-                              |   |
-             <a href="mrv.interface.iDagItem-class.html">interface.iDagItem</a> --+
-                                  |
-                                 <strong class="uidshort">DagNode</strong>
+             object --+                
+                      |                
+                   <a href="mrv.maya.nt.base.Node-class.html">Node</a> --+            
+                          |            
+         object --+       |            
+                  |       |            
+<a href="mrv.interface.Interface-class.html">interface.Interface</a> --+   |            
+                      |   |            
+<a href="mrv.interface.iDuplicatable-class.html">interface.iDuplicatable</a> --+            
+                          |            
+                 <a href="mrv.maya.nt.base.DependNode-class.html">DependNode</a> --+        
+                              |        
+                  <a href="mrv.maya.nt.base.ContainerBase-class.html" onclick="show_private();">ContainerBase</a> --+    
+                                  |    
+                             <a href="mrv.maya.nt.base.Entity-class.html">Entity</a> --+
+                                      |
+                     object --+       |
+                              |       |
+            <a href="mrv.interface.Interface-class.html">interface.Interface</a> --+   |
+                                  |   |
+                 <a href="mrv.interface.iDagItem-class.html">interface.iDagItem</a> --+
+                                      |
+                                     <strong class="uidshort">DagNode</strong>
 </pre>
 
 <hr />
@@ -114,7 +116,7 @@ Implements access to DAG nodes
           <td><span class="summary-sig"><a href="mrv.maya.nt.base.DagNode-class.html#__getitem__" class="summary-sig-name">__getitem__</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">index</span>)</span><br />
       Returns:
-if index &gt;= 0: Node( child )  at index</td>
+if index &gt;= 0: Node(child)  at index</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="mrv.maya.nt.base-pysrc.html#DagNode.__getitem__">source&nbsp;code</a></span>
             
@@ -132,7 +134,7 @@ if index &gt;= 0: Node( child )  at index</td>
         <tr>
           <td><span class="summary-sig"><a href="mrv.maya.nt.base.DagNode-class.html#name" class="summary-sig-name">name</a>(<span class="summary-sig-arg">self</span>)</span><br />
       Returns:
-fully qualified ( long ) name of this dag node</td>
+fully qualified (long) name of this dag node</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="mrv.maya.nt.base-pysrc.html#DagNode.name">source&nbsp;code</a></span>
             
@@ -295,7 +297,7 @@ possibly relative to the optional parentnode</td>
         <span class="summary-sig-arg">renameOnClash</span>=<span class="summary-sig-default">True</span>,
         <span class="summary-sig-arg">raiseOnInstance</span>=<span class="summary-sig-default">True</span>,
         <span class="summary-sig-arg">keepWorldSpace</span>=<span class="summary-sig-default">False</span>)</span><br />
-      Change the parent of all nodes ( also instances ) to be located below parentnode</td>
+      Change the parent of all nodes (also instances) to be located below parentnode</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="mrv.maya.nt.base-pysrc.html#DagNode.reparent">source&nbsp;code</a></span>
             
@@ -351,7 +353,7 @@ possibly relative to the optional parentnode</td>
           <td><span class="summary-sig"><a href="mrv.maya.nt.base.DagNode-class.html#removeChild" class="summary-sig-name">removeChild</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">childNode</span>,
         <span class="summary-sig-arg">allowZeroParents</span>=<span class="summary-sig-default">False</span>)</span><br />
-      remove the given childNode ( being a child of this node ) from our child list, effectively
+      remove the given childNode (being a child of this node) from our child list, effectively
 parenting it under world !</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="mrv.maya.nt.base-pysrc.html#DagNode.removeChild">source&nbsp;code</a></span>
@@ -587,7 +589,7 @@ parents are templated</td>
         <span class="summary-sig-arg">plugName</span>)</span><br />
       Returns:
 the override display value actually identified by plugName affecting
-the given object ( that should be a leaf node for the result you see in the viewport.</td>
+the given object (that should be a leaf node for the result you see in the viewport.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="mrv.maya.nt.base-pysrc.html#DagNode.displayOverrideValue">source&nbsp;code</a></span>
             
@@ -819,7 +821,7 @@ child of self at index</td>
         <tr>
           <td><span class="summary-sig"><a href="mrv.maya.nt.base.DagNode-class.html#iterInstances" class="summary-sig-name">iterInstances</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">excludeSelf</span>=<span class="summary-sig-default">False</span>)</span><br />
-      Get iterator over all ( direct and indirect )instances of this node</td>
+      Get iterator over all (direct and indirect)instances of this node</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="mrv.maya.nt.base-pysrc.html#DagNode.iterInstances">source&nbsp;code</a></span>
             
@@ -1270,9 +1272,9 @@ Valid inputs are Node, DagNode, MObject and MDagPath instances.
   
   <dl class="fields">
     <dt>Returns:</dt>
-        <dd><p>if index &gt;= 0: Node( child )  at index</p>
+        <dd><p>if index &gt;= 0: Node(child)  at index</p>
 <ul class="rst-simple">
-<li>if index &lt; 0: Node parent at  -(index+1)( if walking up the hierarchy )</li>
+<li>if index &lt; 0: Node parent at  -(index+1)(if walking up the hierarchy)</li>
 <li>If index is string, use DependNodes implementation</li>
 </ul></dd>
   </dl>
@@ -1352,13 +1354,13 @@ parentnode</li>
     </td>
   </tr></table>
   
-  <p>Change the parent of all nodes ( also instances ) to be located below parentnode</p>
+  <p>Change the parent of all nodes (also instances) to be located below parentnode</p>
 <p>:return : copy of self pointing to the new dag path self</p>
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
         <li><strong class="pname"><code>parentnode</code></strong> - Node instance of transform under which this node should be parented to
-if None, node will be reparented under the root ( which only works for transforms )</li>
+if None, node will be reparented under the root (which only works for transforms)</li>
         <li><strong class="pname"><code>renameOnClash</code></strong> - resolve nameclashes by automatically renaming the node to make it unique</li>
         <li><strong class="pname"><code>raiseOnInstance</code></strong> - if True, this method will raise if you try to reparent an instanced object.
 If false, instanced objects will be merged into the newly created path under parentnode, effectively
@@ -1458,7 +1460,7 @@ if this is not what you want, use the addChild method instead as it can properly
     </td>
   </tr></table>
   
-  remove the given childNode ( being a child of this node ) from our child list, effectively
+  remove the given childNode (being a child of this node) from our child list, effectively
 parenting it under world !
   <dl class="fields">
     <dt>Parameters:</dt>
@@ -1477,7 +1479,7 @@ dag paths leads to it. If False, transforms will just be reparented under the wo
 <div class="fields">      <strong>Notes:</strong>
       <ul class="nomargin-top">
         <li>
-        to prevent the child ( if transform ) to dangle in unknown space if the last instance
+        to prevent the child (if transform) to dangle in unknown space if the last instance
 is to be removed, it will instead be reparented to world.
         </li>
         <li>
@@ -1513,7 +1515,7 @@ is to be removed, it will instead be reparented to world.
         <li><strong class="pname"><code>position</code></strong> - the index to which to add the new child, kNextPos will add it as last child.
 It supports python style negative indices</li>
         <li><strong class="pname"><code>keepExistingParent</code></strong> - if True, the childNode will be instanced as it will
-have its previous parent and this one, if False, the previous parent will be removed
+have its previous parent(s) and this one, if False, the previous parent will be removed
 from the child's parent list</li>
         <li><strong class="pname"><code>renameOnClash</code></strong> - resolve nameclashes by automatically renaming the node to make it unique</li>
         <li><strong class="pname"><code>keepWorldSpace</code></strong> - see <a href="mrv.maya.nt.base.DagNode-class.html#reparent" class="link">reparent</a>, only effective if the node is not instanced</li>
@@ -1531,11 +1533,6 @@ from the child's parent list</li>
   </dl>
 <div class="fields">      <strong>Notes:</strong>
       <ul class="nomargin-top">
-        <li>
-        the keepExistingParent flag is custom implemented as it would remove all existng parentS,
-not just the one of the path behind the object ( it does not use a path, so it must remove all existing
-parents unfortunatly ! )
-        </li>
         <li>
         as maya internally handles add/remove child as instancing operation, even though
 keepExistingParent is False, it will mess up things and for a short period of time in fact
@@ -1745,7 +1742,7 @@ really change the scene, but adds undo operations
         <li>
         If meshes have tweaks applied, the duplicate will not have these tweaks and the meshes will look
 mislocated.
-Using MEL works in that case ... ( they fixed it there obviously ) , but creates invalid objects
+Using MEL works in that case ... (they fixed it there obviously) , but creates invalid objects
         </li>
       </ul>
       <strong>To Do:</strong>
@@ -1760,7 +1757,7 @@ this is far too much - dagNode.duplicate must be undoable by itself
         <li>
         duplicate should be completely reimplemented to support all mel options and actually work with
 meshes and tweaks - the underlying api duplication would still be used of course, as well as
-connections ( to sets ) and so on ...
+connections (to sets) and so on ...
         </li>
       </ul>
 </div></td></tr></table>
@@ -1875,7 +1872,7 @@ parents are templated</dd>
   <dl class="fields">
     <dt>Returns:</dt>
         <dd>the override display value actually identified by plugName affecting
-the given object ( that should be a leaf node for the result you see in the viewport.
+the given object (that should be a leaf node for the result you see in the viewport.
 The display type in effect is always the last one set in the hierarchy
 returns None display overrides are disabled</dd>
   </dl>
@@ -1928,7 +1925,7 @@ to be valid, but the path name is empty
   
   <dl class="fields">
     <dt>Returns:</dt>
-        <dd>fully qualified ( long ) name of this dag node</dd>
+        <dd>fully qualified (long) name of this dag node</dd>
   </dl>
 </td></tr></table>
 </div>
@@ -2181,7 +2178,7 @@ efficient as it uses dagpath functions to filter shapes
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>instanceNumber</code></strong> - range( 0, self.instanceCount()-1 )</li>
+        <li><strong class="pname"><code>instanceNumber</code></strong> - range(0, self.instanceCount()-1)</li>
     </ul></dd>
     <dt>Returns:</dt>
         <dd>Node to the instance identified by instanceNumber</dd>
@@ -2344,7 +2341,11 @@ we use to aquire the object
         <dd>the original DagPath attached to this Node - it's not wrapped
 for performance</dd>
   </dl>
-</td></tr></table>
+<div class="fields">      <p><strong>Note:</strong>
+        If you plan to alter it, make sure you copy it using the
+MDagPath(node.dagPath()) construct !
+      </p>
+</div></td></tr></table>
 </div>
 <a name="apiObject"></a>
 <div>
@@ -2385,7 +2386,7 @@ for performance</dd>
     </td>
   </tr></table>
   
-  Get iterator over all ( direct and indirect )instances of this node
+  Get iterator over all (direct and indirect)instances of this node
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
@@ -2431,7 +2432,7 @@ the list of items</li>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Tue Nov 30 14:48:33 2010
+    Generated by Epydoc 3.0.1 on Tue Apr 19 15:39:13 2011
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

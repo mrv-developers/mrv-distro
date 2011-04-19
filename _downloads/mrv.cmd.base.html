@@ -13,10 +13,10 @@ mrv.cmd.base
 div.coverage div { clear: both; height: 1.1em}
 </style>
 <div class="stats">
-Covered: 244 lines<br/>
-Missed: 238 lines<br/>
-Skipped 387 lines<br/>
-Percent: 50 %<br/>
+Covered: 246 lines<br/>
+Missed: 247 lines<br/>
+Skipped 394 lines<br/>
+Percent: 49 %<br/>
 
 </div>
 <div class="coverage">
@@ -44,851 +44,869 @@ Percent: 50 %<br/>
 <div class="cov"><span class="num"><pre> 22</pre></span><pre>	2008: 2.5, </pre></div>
 <div class="cov"><span class="num"><pre> 23</pre></span><pre>	2009: 2.5, </pre></div>
 <div class="cov"><span class="num"><pre> 24</pre></span><pre>	2010: 2.6,</pre></div>
-<div class="cov"><span class="num"><pre> 25</pre></span><pre>	2011: 2.6</pre></div>
-<div class="cov"><span class="num"><pre> 26</pre></span><pre>}</pre></div>
-<div class="skip"><span class="num"><pre> 27</pre></span><pre></pre></div>
-<div class="skip"><span class="num"><pre> 28</pre></span><pre>#} END globals</pre></div>
-<div class="skip"><span class="num"><pre> 29</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 25</pre></span><pre>	2011: 2.6,</pre></div>
+<div class="cov"><span class="num"><pre> 26</pre></span><pre>	2012: 2.6</pre></div>
+<div class="cov"><span class="num"><pre> 27</pre></span><pre>}</pre></div>
+<div class="skip"><span class="num"><pre> 28</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 29</pre></span><pre>#} END globals</pre></div>
 <div class="skip"><span class="num"><pre> 30</pre></span><pre></pre></div>
-<div class="skip"><span class="num"><pre> 31</pre></span><pre>#{ Maya-Intiialization</pre></div>
-<div class="skip"><span class="num"><pre> 32</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre> 33</pre></span><pre>def is_supported_maya_version(version):</pre></div>
-<div class="cov"><span class="num"><pre> 34</pre></span><pre>	&quot;&quot;&quot;:return: True if version is a supported maya version</pre></div>
-<div class="cov"><span class="num"><pre> 35</pre></span><pre>	:param version: float which is either 8.5 or 2008 to 20XX&quot;&quot;&quot;</pre></div>
-<div class="cov"><span class="num"><pre> 36</pre></span><pre>	if version == 8.5:</pre></div>
-<div class="cov"><span class="num"><pre> 37</pre></span><pre>		return True</pre></div>
-<div class="skip"><span class="num"><pre> 38</pre></span><pre>		</pre></div>
-<div class="cov"><span class="num"><pre> 39</pre></span><pre>	return str(version)[:2] == &quot;20&quot;</pre></div>
-<div class="skip"><span class="num"><pre> 40</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre> 41</pre></span><pre>def uses_mayapy():</pre></div>
-<div class="cov"><span class="num"><pre> 42</pre></span><pre>	&quot;&quot;&quot;:return: True if the executable is mayapy&quot;&quot;&quot;</pre></div>
-<div class="nocov"><span class="num"><pre> 43</pre></span><pre>	try:</pre></div>
-<div class="nocov"><span class="num"><pre> 44</pre></span><pre>		mayapy_maya_version()</pre></div>
-<div class="nocov"><span class="num"><pre> 45</pre></span><pre>		return True</pre></div>
-<div class="nocov"><span class="num"><pre> 46</pre></span><pre>	except EnvironmentError:</pre></div>
-<div class="nocov"><span class="num"><pre> 47</pre></span><pre>		return False</pre></div>
-<div class="skip"><span class="num"><pre> 48</pre></span><pre>	# END handle exceptions</pre></div>
-<div class="skip"><span class="num"><pre> 49</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre> 50</pre></span><pre>def mayapy_maya_version():</pre></div>
-<div class="cov"><span class="num"><pre> 51</pre></span><pre>	&quot;&quot;&quot;:return: float representing the maya version of the currently running </pre></div>
-<div class="cov"><span class="num"><pre> 52</pre></span><pre>	mayapy interpreter. </pre></div>
-<div class="cov"><span class="num"><pre> 53</pre></span><pre>	:raise EnvironmentError: If called from a 'normal' python interpreter&quot;&quot;&quot;</pre></div>
-<div class="nocov"><span class="num"><pre> 54</pre></span><pre>	if 'maya' not in sys.executable.lower():</pre></div>
-<div class="nocov"><span class="num"><pre> 55</pre></span><pre>		raise EnvironmentError(&quot;Not running mayapy&quot;)</pre></div>
-<div class="skip"><span class="num"><pre> 56</pre></span><pre>	# END quick first check </pre></div>
-<div class="skip"><span class="num"><pre> 57</pre></span><pre>	</pre></div>
-<div class="nocov"><span class="num"><pre> 58</pre></span><pre>	exec_path = make_path(os.path.realpath(sys.executable))	# Maya is capitalized on windows</pre></div>
-<div class="nocov"><span class="num"><pre> 59</pre></span><pre>	try:</pre></div>
-<div class="nocov"><span class="num"><pre> 60</pre></span><pre>		version_token = [ t[4:] for t in exec_path.splitall() if t.lower().startswith('maya') ][0]</pre></div>
-<div class="nocov"><span class="num"><pre> 61</pre></span><pre>	except IndexError:</pre></div>
-<div class="nocov"><span class="num"><pre> 62</pre></span><pre>		raise EnvironmentError(&quot;Not running mayapy or invalid path mayapy path: %s&quot; % exec_path)</pre></div>
-<div class="skip"><span class="num"><pre> 63</pre></span><pre>	# END handle errors</pre></div>
-<div class="skip"><span class="num"><pre> 64</pre></span><pre>	</pre></div>
-<div class="nocov"><span class="num"><pre> 65</pre></span><pre>	if version_token.endswith('-x64'):</pre></div>
-<div class="nocov"><span class="num"><pre> 66</pre></span><pre>		version_token = version_token[:-4]</pre></div>
-<div class="skip"><span class="num"><pre> 67</pre></span><pre>	# END handle 64 bit paths</pre></div>
-<div class="skip"><span class="num"><pre> 68</pre></span><pre>	</pre></div>
-<div class="nocov"><span class="num"><pre> 69</pre></span><pre>	return float(version_token)</pre></div>
-<div class="skip"><span class="num"><pre> 70</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre> 71</pre></span><pre>def parse_maya_version(arg, default):</pre></div>
-<div class="cov"><span class="num"><pre> 72</pre></span><pre>	&quot;&quot;&quot;:return: tuple(bool, version) tuple of bool indicating whether the version could </pre></div>
-<div class="cov"><span class="num"><pre> 73</pre></span><pre>	be parsed and was valid, and a float representing the parsed or default version.</pre></div>
-<div class="cov"><span class="num"><pre> 74</pre></span><pre>	:param default: The desired default maya version&quot;&quot;&quot;</pre></div>
-<div class="cov"><span class="num"><pre> 75</pre></span><pre>	parsed_arg = False</pre></div>
-<div class="cov"><span class="num"><pre> 76</pre></span><pre>	version = default</pre></div>
-<div class="cov"><span class="num"><pre> 77</pre></span><pre>	try:</pre></div>
-<div class="cov"><span class="num"><pre> 78</pre></span><pre>		candidate = float(arg)</pre></div>
-<div class="cov"><span class="num"><pre> 79</pre></span><pre>		if is_supported_maya_version(candidate):</pre></div>
-<div class="cov"><span class="num"><pre> 80</pre></span><pre>			parsed_arg, version = True, candidate</pre></div>
-<div class="cov"><span class="num"><pre> 81</pre></span><pre>		else:</pre></div>
-<div class="cov"><span class="num"><pre> 82</pre></span><pre>			pass</pre></div>
-<div class="skip"><span class="num"><pre> 83</pre></span><pre>			# in that case, we don't claim the arg and just use the default</pre></div>
-<div class="skip"><span class="num"><pre> 84</pre></span><pre>		# END handle candidate</pre></div>
-<div class="cov"><span class="num"><pre> 85</pre></span><pre>	except ValueError:</pre></div>
-<div class="cov"><span class="num"><pre> 86</pre></span><pre>		pass</pre></div>
-<div class="skip"><span class="num"><pre> 87</pre></span><pre>	# END exception handling</pre></div>
-<div class="skip"><span class="num"><pre> 88</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre> 89</pre></span><pre>	return parsed_arg, version</pre></div>
-<div class="skip"><span class="num"><pre> 90</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre> 91</pre></span><pre>def python_version_of(maya_version):</pre></div>
-<div class="cov"><span class="num"><pre> 92</pre></span><pre>	&quot;&quot;&quot;:return: python version matching the given maya version</pre></div>
-<div class="cov"><span class="num"><pre> 93</pre></span><pre>	:raise EnvironmentError: If there is no known matching python version&quot;&quot;&quot;</pre></div>
-<div class="cov"><span class="num"><pre> 94</pre></span><pre>	try:</pre></div>
-<div class="cov"><span class="num"><pre> 95</pre></span><pre>		return maya_to_py_version_map[maya_version]</pre></div>
-<div class="cov"><span class="num"><pre> 96</pre></span><pre>	except KeyError:</pre></div>
-<div class="cov"><span class="num"><pre> 97</pre></span><pre>		raise EnvironmentError(&quot;Do not know python version matching the given maya version %g&quot; % maya_version) </pre></div>
-<div class="skip"><span class="num"><pre> 98</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre> 99</pre></span><pre>def update_env_path(environment, env_var, value, append=False):</pre></div>
-<div class="cov"><span class="num"><pre>100</pre></span><pre>	&quot;&quot;&quot;Set the given env_var to the given value, but append the existing value</pre></div>
-<div class="cov"><span class="num"><pre>101</pre></span><pre>	to it using the system path separator</pre></div>
-<div class="skip"><span class="num"><pre>102</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre>103</pre></span><pre>	:param append: if True, value will be appended to existing values, otherwise it will </pre></div>
-<div class="cov"><span class="num"><pre>104</pre></span><pre>		be prepended&quot;&quot;&quot;</pre></div>
-<div class="nocov"><span class="num"><pre>105</pre></span><pre>	curval = environment.get(env_var, None)</pre></div>
-<div class="skip"><span class="num"><pre>106</pre></span><pre>	# rule out empty strings</pre></div>
-<div class="nocov"><span class="num"><pre>107</pre></span><pre>	if curval:</pre></div>
-<div class="nocov"><span class="num"><pre>108</pre></span><pre>		if append:</pre></div>
-<div class="nocov"><span class="num"><pre>109</pre></span><pre>			value = curval + os.pathsep + value</pre></div>
-<div class="nocov"><span class="num"><pre>110</pre></span><pre>		else:</pre></div>
-<div class="nocov"><span class="num"><pre>111</pre></span><pre>			value = value + os.pathsep + curval</pre></div>
-<div class="skip"><span class="num"><pre>112</pre></span><pre>		# END handle append</pre></div>
-<div class="skip"><span class="num"><pre>113</pre></span><pre>	# END handle existing value</pre></div>
-<div class="nocov"><span class="num"><pre>114</pre></span><pre>	environment[env_var] = value</pre></div>
-<div class="skip"><span class="num"><pre>115</pre></span><pre></pre></div>
-<div class="cov"><span class="num"><pre>116</pre></span><pre>def available_maya_versions():</pre></div>
-<div class="cov"><span class="num"><pre>117</pre></span><pre>	&quot;&quot;&quot;:return: list of installed maya versions which are locally available - </pre></div>
-<div class="cov"><span class="num"><pre>118</pre></span><pre>	they can be used in methods that require the maya_version to be given. </pre></div>
-<div class="cov"><span class="num"><pre>119</pre></span><pre>	Versions are ordered such that the latest version is given last.&quot;&quot;&quot;</pre></div>
-<div class="cov"><span class="num"><pre>120</pre></span><pre>	versions = list()</pre></div>
-<div class="cov"><span class="num"><pre>121</pre></span><pre>	for version_candidate in sorted(maya_to_py_version_map.keys()):</pre></div>
-<div class="cov"><span class="num"><pre>122</pre></span><pre>		try:</pre></div>
-<div class="cov"><span class="num"><pre>123</pre></span><pre>			loc = maya_location(version_candidate)</pre></div>
-<div class="cov"><span class="num"><pre>124</pre></span><pre>			versions.append(version_candidate)</pre></div>
-<div class="nocov"><span class="num"><pre>125</pre></span><pre>		except Exception:</pre></div>
-<div class="nocov"><span class="num"><pre>126</pre></span><pre>			pass</pre></div>
-<div class="skip"><span class="num"><pre>127</pre></span><pre>		# END check maya location</pre></div>
-<div class="skip"><span class="num"><pre>128</pre></span><pre>	# END for each version</pre></div>
-<div class="cov"><span class="num"><pre>129</pre></span><pre>	return versions</pre></div>
-<div class="skip"><span class="num"><pre>130</pre></span><pre></pre></div>
-<div class="cov"><span class="num"><pre>131</pre></span><pre>def maya_location(maya_version):</pre></div>
-<div class="cov"><span class="num"><pre>132</pre></span><pre>	&quot;&quot;&quot;:return: string path to the existing maya installation directory for the </pre></div>
-<div class="cov"><span class="num"><pre>133</pre></span><pre>	given maya version</pre></div>
-<div class="cov"><span class="num"><pre>134</pre></span><pre>	:raise EnvironmentError: if it was not found&quot;&quot;&quot;</pre></div>
-<div class="cov"><span class="num"><pre>135</pre></span><pre>	mayaroot = None</pre></div>
-<div class="cov"><span class="num"><pre>136</pre></span><pre>	suffix = ''</pre></div>
-<div class="skip"><span class="num"><pre>137</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre>138</pre></span><pre>	if sys.platform.startswith('linux'):</pre></div>
-<div class="cov"><span class="num"><pre>139</pre></span><pre>		mayaroot = &quot;/usr/autodesk/maya&quot;</pre></div>
-<div class="cov"><span class="num"><pre>140</pre></span><pre>		if os.path.isdir('/lib64'):</pre></div>
-<div class="cov"><span class="num"><pre>141</pre></span><pre>			suffix = &quot;-x64&quot;</pre></div>
-<div class="skip"><span class="num"><pre>142</pre></span><pre>		# END handle 64 bit systems</pre></div>
-<div class="nocov"><span class="num"><pre>143</pre></span><pre>	elif sys.platform == 'darwin':</pre></div>
-<div class="nocov"><span class="num"><pre>144</pre></span><pre>		mayaroot = &quot;/Applications/Autodesk/maya&quot;</pre></div>
-<div class="nocov"><span class="num"><pre>145</pre></span><pre>	elif sys.platform.startswith('win'):</pre></div>
-<div class="skip"><span class="num"><pre>146</pre></span><pre>		# try to find it in all kinds of program files, prefer 64 bit versions</pre></div>
-<div class="nocov"><span class="num"><pre>147</pre></span><pre>		tried_paths = list()</pre></div>
-<div class="nocov"><span class="num"><pre>148</pre></span><pre>		for envvar in ('PROGRAMW6432', 'PROGRAMFILES','PROGRAMFILES(X86)'):</pre></div>
-<div class="nocov"><span class="num"><pre>149</pre></span><pre>			if envvar not in os.environ: </pre></div>
-<div class="nocov"><span class="num"><pre>150</pre></span><pre>				continue</pre></div>
-<div class="nocov"><span class="num"><pre>151</pre></span><pre>			basepath = make_path(os.environ[envvar]) / &quot;Autodesk&quot;</pre></div>
-<div class="nocov"><span class="num"><pre>152</pre></span><pre>			if basepath.isdir():</pre></div>
-<div class="nocov"><span class="num"><pre>153</pre></span><pre>				mayaroot = basepath / 'Maya'</pre></div>
-<div class="nocov"><span class="num"><pre>154</pre></span><pre>				break</pre></div>
-<div class="skip"><span class="num"><pre>155</pre></span><pre>			# END if we have found Autodesk installations</pre></div>
-<div class="nocov"><span class="num"><pre>156</pre></span><pre>			tried_paths.append(basepath)</pre></div>
-<div class="skip"><span class="num"><pre>157</pre></span><pre>		# END for each envvar</pre></div>
-<div class="nocov"><span class="num"><pre>158</pre></span><pre>		if mayaroot is None:</pre></div>
-<div class="nocov"><span class="num"><pre>159</pre></span><pre>			raise EnvironmentError(&quot;Could not find any maya installation, searched %s&quot; % (', '.join(tried_paths)))</pre></div>
-<div class="skip"><span class="num"><pre>160</pre></span><pre>	# END os specific adjustments</pre></div>
-<div class="skip"><span class="num"><pre>161</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre>162</pre></span><pre>	if mayaroot is None:</pre></div>
-<div class="nocov"><span class="num"><pre>163</pre></span><pre>		raise EnvironmentError(&quot;Current platform %r is unsupported&quot; % sys.platform)</pre></div>
-<div class="skip"><span class="num"><pre>164</pre></span><pre>	# END assure existance of maya root</pre></div>
-<div class="skip"><span class="num"><pre>165</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre>166</pre></span><pre>	mayalocation = &quot;%s%g%s&quot; % (mayaroot, maya_version, suffix)</pre></div>
-<div class="skip"><span class="num"><pre>167</pre></span><pre>	</pre></div>
-<div class="skip"><span class="num"><pre>168</pre></span><pre>	# OSX special handling</pre></div>
-<div class="cov"><span class="num"><pre>169</pre></span><pre>	if sys.platform == 'darwin':</pre></div>
-<div class="nocov"><span class="num"><pre>170</pre></span><pre>		mayalocation=os.path.join(mayalocation, 'Maya.app', 'Contents')</pre></div>
-<div class="skip"><span class="num"><pre>171</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre>172</pre></span><pre>	if not os.path.isdir(mayalocation):</pre></div>
-<div class="cov"><span class="num"><pre>173</pre></span><pre>		raise EnvironmentError(&quot;Could not find maya installation at %r&quot; % mayalocation)</pre></div>
-<div class="skip"><span class="num"><pre>174</pre></span><pre>	# END verfy maya location</pre></div>
-<div class="skip"><span class="num"><pre>175</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre>176</pre></span><pre>	return mayalocation</pre></div>
-<div class="skip"><span class="num"><pre>177</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre>178</pre></span><pre>def update_maya_environment(maya_version):</pre></div>
-<div class="cov"><span class="num"><pre>179</pre></span><pre>	&quot;&quot;&quot;Configure os.environ to allow Maya to run in standalone mode</pre></div>
-<div class="cov"><span class="num"><pre>180</pre></span><pre>	:param maya_version: The maya version to prepare to run, either 8.5 or 2008 to </pre></div>
-<div class="cov"><span class="num"><pre>181</pre></span><pre>	20XX. This requires the respective maya version to be installed in a default location.</pre></div>
-<div class="cov"><span class="num"><pre>182</pre></span><pre>	:raise EnvironmentError: If the platform is unsupported or if the maya installation could not be found&quot;&quot;&quot;</pre></div>
-<div class="nocov"><span class="num"><pre>183</pre></span><pre>	py_version = python_version_of(maya_version)</pre></div>
-<div class="skip"><span class="num"><pre>184</pre></span><pre>	</pre></div>
-<div class="nocov"><span class="num"><pre>185</pre></span><pre>	pylibdir = None</pre></div>
-<div class="nocov"><span class="num"><pre>186</pre></span><pre>	envppath = &quot;PYTHONPATH&quot;</pre></div>
-<div class="skip"><span class="num"><pre>187</pre></span><pre>	</pre></div>
-<div class="nocov"><span class="num"><pre>188</pre></span><pre>	if sys.platform.startswith('linux'):</pre></div>
-<div class="nocov"><span class="num"><pre>189</pre></span><pre>		pylibdir = &quot;lib&quot;</pre></div>
-<div class="nocov"><span class="num"><pre>190</pre></span><pre>	elif sys.platform == 'darwin':</pre></div>
-<div class="nocov"><span class="num"><pre>191</pre></span><pre>		pylibdir = &quot;Frameworks/Python.framework/Versions/Current/lib&quot;</pre></div>
-<div class="nocov"><span class="num"><pre>192</pre></span><pre>	elif sys.platform.startswith('win'):</pre></div>
-<div class="nocov"><span class="num"><pre>193</pre></span><pre>		pylibdir = &quot;Python&quot;</pre></div>
-<div class="skip"><span class="num"><pre>194</pre></span><pre>	# END os specific adjustments</pre></div>
-<div class="skip"><span class="num"><pre>195</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre> 31</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 32</pre></span><pre>#{ Maya-Intiialization</pre></div>
+<div class="skip"><span class="num"><pre> 33</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 34</pre></span><pre>def is_supported_maya_version(version):</pre></div>
+<div class="cov"><span class="num"><pre> 35</pre></span><pre>	&quot;&quot;&quot;:return: True if version is a supported maya version</pre></div>
+<div class="cov"><span class="num"><pre> 36</pre></span><pre>	:param version: float which is either 8.5 or 2008 to 20XX&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 37</pre></span><pre>	if version == 8.5:</pre></div>
+<div class="cov"><span class="num"><pre> 38</pre></span><pre>		return True</pre></div>
+<div class="skip"><span class="num"><pre> 39</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 40</pre></span><pre>	return str(version)[:2] == &quot;20&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 41</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 42</pre></span><pre>def uses_mayapy():</pre></div>
+<div class="cov"><span class="num"><pre> 43</pre></span><pre>	&quot;&quot;&quot;:return: True if the executable is mayapy&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 44</pre></span><pre>	try:</pre></div>
+<div class="nocov"><span class="num"><pre> 45</pre></span><pre>		mayapy_maya_version()</pre></div>
+<div class="nocov"><span class="num"><pre> 46</pre></span><pre>		return True</pre></div>
+<div class="nocov"><span class="num"><pre> 47</pre></span><pre>	except EnvironmentError:</pre></div>
+<div class="nocov"><span class="num"><pre> 48</pre></span><pre>		return False</pre></div>
+<div class="skip"><span class="num"><pre> 49</pre></span><pre>	# END handle exceptions</pre></div>
+<div class="skip"><span class="num"><pre> 50</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 51</pre></span><pre>def mayapy_maya_version():</pre></div>
+<div class="cov"><span class="num"><pre> 52</pre></span><pre>	&quot;&quot;&quot;:return: float representing the maya version of the currently running </pre></div>
+<div class="cov"><span class="num"><pre> 53</pre></span><pre>	mayapy interpreter. </pre></div>
+<div class="cov"><span class="num"><pre> 54</pre></span><pre>	:raise EnvironmentError: If called from a 'normal' python interpreter&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 55</pre></span><pre>	if 'maya' not in sys.executable.lower():</pre></div>
+<div class="nocov"><span class="num"><pre> 56</pre></span><pre>		raise EnvironmentError(&quot;Not running mayapy&quot;)</pre></div>
+<div class="skip"><span class="num"><pre> 57</pre></span><pre>	# END quick first check </pre></div>
+<div class="skip"><span class="num"><pre> 58</pre></span><pre>	</pre></div>
+<div class="nocov"><span class="num"><pre> 59</pre></span><pre>	exec_path = make_path(os.path.realpath(sys.executable))	# Maya is capitalized on windows</pre></div>
+<div class="nocov"><span class="num"><pre> 60</pre></span><pre>	try:</pre></div>
+<div class="nocov"><span class="num"><pre> 61</pre></span><pre>		version_token = [ t[4:] for t in exec_path.splitall() if t.lower().startswith('maya') ][0]</pre></div>
+<div class="nocov"><span class="num"><pre> 62</pre></span><pre>	except IndexError:</pre></div>
+<div class="nocov"><span class="num"><pre> 63</pre></span><pre>		raise EnvironmentError(&quot;Not running mayapy or invalid path mayapy path: %s&quot; % exec_path)</pre></div>
+<div class="skip"><span class="num"><pre> 64</pre></span><pre>	# END handle errors</pre></div>
+<div class="skip"><span class="num"><pre> 65</pre></span><pre>	</pre></div>
+<div class="nocov"><span class="num"><pre> 66</pre></span><pre>	if version_token.endswith('-x64'):</pre></div>
+<div class="nocov"><span class="num"><pre> 67</pre></span><pre>		version_token = version_token[:-4]</pre></div>
+<div class="skip"><span class="num"><pre> 68</pre></span><pre>	# END handle 64 bit paths</pre></div>
+<div class="skip"><span class="num"><pre> 69</pre></span><pre>	</pre></div>
+<div class="nocov"><span class="num"><pre> 70</pre></span><pre>	return float(version_token)</pre></div>
+<div class="skip"><span class="num"><pre> 71</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 72</pre></span><pre>def parse_maya_version(arg, default):</pre></div>
+<div class="cov"><span class="num"><pre> 73</pre></span><pre>	&quot;&quot;&quot;:return: tuple(bool, version) tuple of bool indicating whether the version could </pre></div>
+<div class="cov"><span class="num"><pre> 74</pre></span><pre>	be parsed and was valid, and a float representing the parsed or default version.</pre></div>
+<div class="cov"><span class="num"><pre> 75</pre></span><pre>	:param default: The desired default maya version&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 76</pre></span><pre>	parsed_arg = False</pre></div>
+<div class="cov"><span class="num"><pre> 77</pre></span><pre>	version = default</pre></div>
+<div class="cov"><span class="num"><pre> 78</pre></span><pre>	try:</pre></div>
+<div class="cov"><span class="num"><pre> 79</pre></span><pre>		candidate = float(arg)</pre></div>
+<div class="cov"><span class="num"><pre> 80</pre></span><pre>		if is_supported_maya_version(candidate):</pre></div>
+<div class="cov"><span class="num"><pre> 81</pre></span><pre>			parsed_arg, version = True, candidate</pre></div>
+<div class="cov"><span class="num"><pre> 82</pre></span><pre>		else:</pre></div>
+<div class="cov"><span class="num"><pre> 83</pre></span><pre>			pass</pre></div>
+<div class="skip"><span class="num"><pre> 84</pre></span><pre>			# in that case, we don't claim the arg and just use the default</pre></div>
+<div class="skip"><span class="num"><pre> 85</pre></span><pre>		# END handle candidate</pre></div>
+<div class="cov"><span class="num"><pre> 86</pre></span><pre>	except ValueError:</pre></div>
+<div class="cov"><span class="num"><pre> 87</pre></span><pre>		pass</pre></div>
+<div class="skip"><span class="num"><pre> 88</pre></span><pre>	# END exception handling</pre></div>
+<div class="skip"><span class="num"><pre> 89</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 90</pre></span><pre>	return parsed_arg, version</pre></div>
+<div class="skip"><span class="num"><pre> 91</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 92</pre></span><pre>def python_version_of(maya_version):</pre></div>
+<div class="cov"><span class="num"><pre> 93</pre></span><pre>	&quot;&quot;&quot;:return: python version matching the given maya version</pre></div>
+<div class="cov"><span class="num"><pre> 94</pre></span><pre>	:raise EnvironmentError: If there is no known matching python version&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 95</pre></span><pre>	try:</pre></div>
+<div class="cov"><span class="num"><pre> 96</pre></span><pre>		return maya_to_py_version_map[maya_version]</pre></div>
+<div class="cov"><span class="num"><pre> 97</pre></span><pre>	except KeyError:</pre></div>
+<div class="cov"><span class="num"><pre> 98</pre></span><pre>		raise EnvironmentError(&quot;Do not know python version matching the given maya version %g&quot; % maya_version) </pre></div>
+<div class="skip"><span class="num"><pre> 99</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>100</pre></span><pre>def update_env_path(environment, env_var, value, append=False):</pre></div>
+<div class="cov"><span class="num"><pre>101</pre></span><pre>	&quot;&quot;&quot;Set the given env_var to the given value, but append the existing value</pre></div>
+<div class="cov"><span class="num"><pre>102</pre></span><pre>	to it using the system path separator</pre></div>
+<div class="skip"><span class="num"><pre>103</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>104</pre></span><pre>	:param append: if True, value will be appended to existing values, otherwise it will </pre></div>
+<div class="cov"><span class="num"><pre>105</pre></span><pre>		be prepended&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>106</pre></span><pre>	curval = environment.get(env_var, None)</pre></div>
+<div class="skip"><span class="num"><pre>107</pre></span><pre>	# rule out empty strings</pre></div>
+<div class="nocov"><span class="num"><pre>108</pre></span><pre>	if curval:</pre></div>
+<div class="nocov"><span class="num"><pre>109</pre></span><pre>		if append:</pre></div>
+<div class="nocov"><span class="num"><pre>110</pre></span><pre>			value = curval + os.pathsep + value</pre></div>
+<div class="nocov"><span class="num"><pre>111</pre></span><pre>		else:</pre></div>
+<div class="nocov"><span class="num"><pre>112</pre></span><pre>			value = value + os.pathsep + curval</pre></div>
+<div class="skip"><span class="num"><pre>113</pre></span><pre>		# END handle append</pre></div>
+<div class="skip"><span class="num"><pre>114</pre></span><pre>	# END handle existing value</pre></div>
+<div class="nocov"><span class="num"><pre>115</pre></span><pre>	environment[env_var] = value</pre></div>
+<div class="skip"><span class="num"><pre>116</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>117</pre></span><pre>def available_maya_versions():</pre></div>
+<div class="cov"><span class="num"><pre>118</pre></span><pre>	&quot;&quot;&quot;:return: list of installed maya versions which are locally available - </pre></div>
+<div class="cov"><span class="num"><pre>119</pre></span><pre>	they can be used in methods that require the maya_version to be given. </pre></div>
+<div class="cov"><span class="num"><pre>120</pre></span><pre>	Versions are ordered such that the latest version is given last.&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>121</pre></span><pre>	versions = list()</pre></div>
+<div class="cov"><span class="num"><pre>122</pre></span><pre>	for version_candidate in sorted(maya_to_py_version_map.keys()):</pre></div>
+<div class="cov"><span class="num"><pre>123</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre>124</pre></span><pre>			loc = maya_location(version_candidate)</pre></div>
+<div class="cov"><span class="num"><pre>125</pre></span><pre>			versions.append(version_candidate)</pre></div>
+<div class="nocov"><span class="num"><pre>126</pre></span><pre>		except Exception:</pre></div>
+<div class="nocov"><span class="num"><pre>127</pre></span><pre>			pass</pre></div>
+<div class="skip"><span class="num"><pre>128</pre></span><pre>		# END check maya location</pre></div>
+<div class="skip"><span class="num"><pre>129</pre></span><pre>	# END for each version</pre></div>
+<div class="cov"><span class="num"><pre>130</pre></span><pre>	return versions</pre></div>
+<div class="skip"><span class="num"><pre>131</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>132</pre></span><pre>def maya_location(maya_version):</pre></div>
+<div class="cov"><span class="num"><pre>133</pre></span><pre>	&quot;&quot;&quot;:return: string path to the existing maya installation directory for the </pre></div>
+<div class="cov"><span class="num"><pre>134</pre></span><pre>	given maya version</pre></div>
+<div class="cov"><span class="num"><pre>135</pre></span><pre>	:raise EnvironmentError: if it was not found&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>136</pre></span><pre>	mayaroot = None</pre></div>
+<div class="cov"><span class="num"><pre>137</pre></span><pre>	suffix = ''</pre></div>
+<div class="skip"><span class="num"><pre>138</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>139</pre></span><pre>	if sys.platform.startswith('linux'):</pre></div>
+<div class="cov"><span class="num"><pre>140</pre></span><pre>		mayaroot = &quot;/usr/autodesk/maya&quot;</pre></div>
+<div class="cov"><span class="num"><pre>141</pre></span><pre>		if os.path.isdir('/lib64'):</pre></div>
+<div class="cov"><span class="num"><pre>142</pre></span><pre>			suffix = &quot;-x64&quot;</pre></div>
+<div class="skip"><span class="num"><pre>143</pre></span><pre>		# END handle 64 bit systems</pre></div>
+<div class="nocov"><span class="num"><pre>144</pre></span><pre>	elif sys.platform == 'darwin':</pre></div>
+<div class="nocov"><span class="num"><pre>145</pre></span><pre>		mayaroot = &quot;/Applications/Autodesk/maya&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>146</pre></span><pre>	elif sys.platform.startswith('win'):</pre></div>
+<div class="skip"><span class="num"><pre>147</pre></span><pre>		# try to find it in all kinds of program files, prefer 64 bit versions</pre></div>
+<div class="nocov"><span class="num"><pre>148</pre></span><pre>		tried_paths = list()</pre></div>
+<div class="nocov"><span class="num"><pre>149</pre></span><pre>		for envvar in ('PROGRAMW6432', 'PROGRAMFILES','PROGRAMFILES(X86)'):</pre></div>
+<div class="nocov"><span class="num"><pre>150</pre></span><pre>			if envvar not in os.environ: </pre></div>
+<div class="nocov"><span class="num"><pre>151</pre></span><pre>				continue</pre></div>
+<div class="nocov"><span class="num"><pre>152</pre></span><pre>			basepath = make_path(os.environ[envvar]) / &quot;Autodesk&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>153</pre></span><pre>			if basepath.isdir():</pre></div>
+<div class="nocov"><span class="num"><pre>154</pre></span><pre>				mayaroot = basepath / 'Maya'</pre></div>
+<div class="nocov"><span class="num"><pre>155</pre></span><pre>				break</pre></div>
+<div class="skip"><span class="num"><pre>156</pre></span><pre>			# END if we have found Autodesk installations</pre></div>
+<div class="nocov"><span class="num"><pre>157</pre></span><pre>			tried_paths.append(basepath)</pre></div>
+<div class="skip"><span class="num"><pre>158</pre></span><pre>		# END for each envvar</pre></div>
+<div class="nocov"><span class="num"><pre>159</pre></span><pre>		if mayaroot is None:</pre></div>
+<div class="nocov"><span class="num"><pre>160</pre></span><pre>			raise EnvironmentError(&quot;Could not find any maya installation, searched %s&quot; % (', '.join(tried_paths)))</pre></div>
+<div class="skip"><span class="num"><pre>161</pre></span><pre>	# END os specific adjustments</pre></div>
+<div class="skip"><span class="num"><pre>162</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>163</pre></span><pre>	if mayaroot is None:</pre></div>
+<div class="nocov"><span class="num"><pre>164</pre></span><pre>		raise EnvironmentError(&quot;Current platform %r is unsupported&quot; % sys.platform)</pre></div>
+<div class="skip"><span class="num"><pre>165</pre></span><pre>	# END assure existance of maya root</pre></div>
+<div class="skip"><span class="num"><pre>166</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>167</pre></span><pre>	mayalocation = &quot;%s%g%s&quot; % (mayaroot, maya_version, suffix)</pre></div>
+<div class="skip"><span class="num"><pre>168</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>169</pre></span><pre>	# OSX special handling</pre></div>
+<div class="cov"><span class="num"><pre>170</pre></span><pre>	if sys.platform == 'darwin':</pre></div>
+<div class="nocov"><span class="num"><pre>171</pre></span><pre>		mayalocation=os.path.join(mayalocation, 'Maya.app', 'Contents')</pre></div>
+<div class="skip"><span class="num"><pre>172</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>173</pre></span><pre>	if not os.path.isdir(mayalocation):</pre></div>
+<div class="cov"><span class="num"><pre>174</pre></span><pre>		raise EnvironmentError(&quot;Could not find maya installation at %r&quot; % mayalocation)</pre></div>
+<div class="skip"><span class="num"><pre>175</pre></span><pre>	# END verfy maya location</pre></div>
+<div class="skip"><span class="num"><pre>176</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>177</pre></span><pre>	return mayalocation</pre></div>
+<div class="skip"><span class="num"><pre>178</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>179</pre></span><pre>def update_maya_environment(maya_version):</pre></div>
+<div class="cov"><span class="num"><pre>180</pre></span><pre>	&quot;&quot;&quot;Configure os.environ to allow Maya to run in standalone mode</pre></div>
+<div class="cov"><span class="num"><pre>181</pre></span><pre>	:param maya_version: The maya version to prepare to run, either 8.5 or 2008 to </pre></div>
+<div class="cov"><span class="num"><pre>182</pre></span><pre>	20XX. This requires the respective maya version to be installed in a default location.</pre></div>
+<div class="cov"><span class="num"><pre>183</pre></span><pre>	:raise EnvironmentError: If the platform is unsupported or if the maya installation could not be found&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>184</pre></span><pre>	py_version = python_version_of(maya_version)</pre></div>
+<div class="skip"><span class="num"><pre>185</pre></span><pre>	</pre></div>
+<div class="nocov"><span class="num"><pre>186</pre></span><pre>	pylibdir = None</pre></div>
+<div class="nocov"><span class="num"><pre>187</pre></span><pre>	envppath = &quot;PYTHONPATH&quot;</pre></div>
+<div class="skip"><span class="num"><pre>188</pre></span><pre>	</pre></div>
+<div class="nocov"><span class="num"><pre>189</pre></span><pre>	if sys.platform.startswith('linux'):</pre></div>
+<div class="nocov"><span class="num"><pre>190</pre></span><pre>		pylibdir = &quot;lib&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>191</pre></span><pre>	elif sys.platform == 'darwin':</pre></div>
+<div class="nocov"><span class="num"><pre>192</pre></span><pre>		pylibdir = &quot;Frameworks/Python.framework/Versions/Current/lib&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>193</pre></span><pre>	elif sys.platform.startswith('win'):</pre></div>
+<div class="nocov"><span class="num"><pre>194</pre></span><pre>		pylibdir = &quot;Python&quot;</pre></div>
+<div class="skip"><span class="num"><pre>195</pre></span><pre>	# END os specific adjustments</pre></div>
 <div class="skip"><span class="num"><pre>196</pre></span><pre>	</pre></div>
-<div class="skip"><span class="num"><pre>197</pre></span><pre>	# GET MAYA LOCATION</pre></div>
-<div class="skip"><span class="num"><pre>198</pre></span><pre>	###################</pre></div>
-<div class="nocov"><span class="num"><pre>199</pre></span><pre>	mayalocation = maya_location(maya_version)</pre></div>
-<div class="skip"><span class="num"><pre>200</pre></span><pre>	</pre></div>
-<div class="nocov"><span class="num"><pre>201</pre></span><pre>	if not os.path.isdir(mayalocation):</pre></div>
-<div class="nocov"><span class="num"><pre>202</pre></span><pre>		raise EnvironmentError(&quot;Could not find maya installation at %r&quot; % mayalocation)</pre></div>
-<div class="skip"><span class="num"><pre>203</pre></span><pre>	# END verfy maya location</pre></div>
-<div class="skip"><span class="num"><pre>204</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>197</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>198</pre></span><pre>	# GET MAYA LOCATION</pre></div>
+<div class="skip"><span class="num"><pre>199</pre></span><pre>	###################</pre></div>
+<div class="nocov"><span class="num"><pre>200</pre></span><pre>	mayalocation = maya_location(maya_version)</pre></div>
+<div class="skip"><span class="num"><pre>201</pre></span><pre>	</pre></div>
+<div class="nocov"><span class="num"><pre>202</pre></span><pre>	if not os.path.isdir(mayalocation):</pre></div>
+<div class="nocov"><span class="num"><pre>203</pre></span><pre>		raise EnvironmentError(&quot;Could not find maya installation at %r&quot; % mayalocation)</pre></div>
+<div class="skip"><span class="num"><pre>204</pre></span><pre>	# END verfy maya location</pre></div>
 <div class="skip"><span class="num"><pre>205</pre></span><pre>	</pre></div>
-<div class="nocov"><span class="num"><pre>206</pre></span><pre>	env = os.environ</pre></div>
-<div class="skip"><span class="num"><pre>207</pre></span><pre>	</pre></div>
-<div class="skip"><span class="num"><pre>208</pre></span><pre>	# ADJUST LD_LIBRARY_PATH or PATH</pre></div>
-<div class="skip"><span class="num"><pre>209</pre></span><pre>	################################</pre></div>
-<div class="skip"><span class="num"><pre>210</pre></span><pre>	# Note: if you need something like LD_PRELOAD or equivalent, add the respective</pre></div>
-<div class="skip"><span class="num"><pre>211</pre></span><pre>	# variables to the environment of this process before starting it</pre></div>
-<div class="nocov"><span class="num"><pre>212</pre></span><pre>	if sys.platform.startswith('linux'):</pre></div>
-<div class="nocov"><span class="num"><pre>213</pre></span><pre>		envld = &quot;LD_LIBRARY_PATH&quot;</pre></div>
-<div class="nocov"><span class="num"><pre>214</pre></span><pre>		ldpath = os.path.join(mayalocation, 'lib')</pre></div>
-<div class="nocov"><span class="num"><pre>215</pre></span><pre>		update_env_path(env, envld, ldpath)</pre></div>
-<div class="nocov"><span class="num"><pre>216</pre></span><pre>	elif sys.platform == 'darwin':</pre></div>
-<div class="skip"><span class="num"><pre>217</pre></span><pre>		# adjust maya location to point to the actual directtoy</pre></div>
-<div class="nocov"><span class="num"><pre>218</pre></span><pre>		dldpath = os.path.join(mayalocation, 'MacOS')</pre></div>
-<div class="nocov"><span class="num"><pre>219</pre></span><pre>		update_env_path(env, &quot;DYLD_LIBRARY_PATH&quot;, dldpath)</pre></div>
-<div class="skip"><span class="num"><pre>220</pre></span><pre>		</pre></div>
-<div class="nocov"><span class="num"><pre>221</pre></span><pre>		dldframeworkpath = os.path.join(mayalocation, 'Frameworks')</pre></div>
-<div class="nocov"><span class="num"><pre>222</pre></span><pre>		update_env_path(env, &quot;DYLD_FRAMEWORK_PATH&quot;, dldframeworkpath)</pre></div>
-<div class="skip"><span class="num"><pre>223</pre></span><pre>		</pre></div>
-<div class="nocov"><span class="num"><pre>224</pre></span><pre>		env['MAYA_NO_BUNDLE_RESOURCES'] = &quot;1&quot;</pre></div>
-<div class="skip"><span class="num"><pre>225</pre></span><pre>		</pre></div>
-<div class="skip"><span class="num"><pre>226</pre></span><pre>		# on osx, python will only use the main frameworks path and ignore </pre></div>
-<div class="skip"><span class="num"><pre>227</pre></span><pre>		# its own sitelibraries. We put them onto the PYTHONPATH for that reason</pre></div>
-<div class="skip"><span class="num"><pre>228</pre></span><pre>		# MayaRV will take care of the initialization</pre></div>
-<div class="nocov"><span class="num"><pre>229</pre></span><pre>		ppath = &quot;/Library/Python/%s/site-packages&quot; % py_version</pre></div>
-<div class="nocov"><span class="num"><pre>230</pre></span><pre>		update_env_path(env, envppath, ppath, append=True)</pre></div>
-<div class="skip"><span class="num"><pre>231</pre></span><pre>		</pre></div>
-<div class="nocov"><span class="num"><pre>232</pre></span><pre>	elif sys.platform.startswith('win'):</pre></div>
-<div class="nocov"><span class="num"><pre>233</pre></span><pre>		mayadll = os.path.join(mayalocation, 'bin')</pre></div>
-<div class="nocov"><span class="num"><pre>234</pre></span><pre>		mayapydll = os.path.join(mayalocation, 'Python', 'DLLs')</pre></div>
-<div class="nocov"><span class="num"><pre>235</pre></span><pre>		update_env_path(env, 'PATH', mayadll+os.pathsep+mayapydll, append=False)</pre></div>
-<div class="nocov"><span class="num"><pre>236</pre></span><pre>	else:</pre></div>
-<div class="nocov"><span class="num"><pre>237</pre></span><pre>		raise EnvironmentError(&quot;Current platform %s is unsupported&quot; % sys.platform)</pre></div>
-<div class="skip"><span class="num"><pre>238</pre></span><pre>	# END handle os's</pre></div>
-<div class="skip"><span class="num"><pre>239</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>206</pre></span><pre>	</pre></div>
+<div class="nocov"><span class="num"><pre>207</pre></span><pre>	env = os.environ</pre></div>
+<div class="skip"><span class="num"><pre>208</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>209</pre></span><pre>	# ADJUST LD_LIBRARY_PATH or PATH</pre></div>
+<div class="skip"><span class="num"><pre>210</pre></span><pre>	################################</pre></div>
+<div class="skip"><span class="num"><pre>211</pre></span><pre>	# Note: if you need something like LD_PRELOAD or equivalent, add the respective</pre></div>
+<div class="skip"><span class="num"><pre>212</pre></span><pre>	# variables to the environment of this process before starting it</pre></div>
+<div class="nocov"><span class="num"><pre>213</pre></span><pre>	if sys.platform.startswith('linux'):</pre></div>
+<div class="nocov"><span class="num"><pre>214</pre></span><pre>		envld = &quot;LD_LIBRARY_PATH&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>215</pre></span><pre>		ldpath = os.path.join(mayalocation, 'lib')</pre></div>
+<div class="nocov"><span class="num"><pre>216</pre></span><pre>		update_env_path(env, envld, ldpath)</pre></div>
+<div class="nocov"><span class="num"><pre>217</pre></span><pre>	elif sys.platform == 'darwin':</pre></div>
+<div class="skip"><span class="num"><pre>218</pre></span><pre>		# adjust maya location to point to the actual directtoy</pre></div>
+<div class="nocov"><span class="num"><pre>219</pre></span><pre>		dldpath = os.path.join(mayalocation, 'MacOS')</pre></div>
+<div class="nocov"><span class="num"><pre>220</pre></span><pre>		update_env_path(env, &quot;DYLD_LIBRARY_PATH&quot;, dldpath)</pre></div>
+<div class="skip"><span class="num"><pre>221</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>222</pre></span><pre>		dldframeworkpath = os.path.join(mayalocation, 'Frameworks')</pre></div>
+<div class="nocov"><span class="num"><pre>223</pre></span><pre>		update_env_path(env, &quot;DYLD_FRAMEWORK_PATH&quot;, dldframeworkpath)</pre></div>
+<div class="skip"><span class="num"><pre>224</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>225</pre></span><pre>		env['MAYA_NO_BUNDLE_RESOURCES'] = &quot;1&quot;</pre></div>
+<div class="skip"><span class="num"><pre>226</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>227</pre></span><pre>		# on osx, python will only use the main frameworks path and ignore </pre></div>
+<div class="skip"><span class="num"><pre>228</pre></span><pre>		# its own sitelibraries. We put them onto the PYTHONPATH for that reason</pre></div>
+<div class="skip"><span class="num"><pre>229</pre></span><pre>		# MayaRV will take care of the initialization</pre></div>
+<div class="nocov"><span class="num"><pre>230</pre></span><pre>		ppath = &quot;/Library/Python/%s/site-packages&quot; % py_version</pre></div>
+<div class="nocov"><span class="num"><pre>231</pre></span><pre>		update_env_path(env, envppath, ppath, append=True)</pre></div>
+<div class="skip"><span class="num"><pre>232</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>233</pre></span><pre>	elif sys.platform.startswith('win'):</pre></div>
+<div class="nocov"><span class="num"><pre>234</pre></span><pre>		mayadll = os.path.join(mayalocation, 'bin')</pre></div>
+<div class="nocov"><span class="num"><pre>235</pre></span><pre>		mayapydll = os.path.join(mayalocation, 'Python', 'DLLs')</pre></div>
+<div class="nocov"><span class="num"><pre>236</pre></span><pre>		update_env_path(env, 'PATH', mayadll+os.pathsep+mayapydll, append=False)</pre></div>
+<div class="nocov"><span class="num"><pre>237</pre></span><pre>	else:</pre></div>
+<div class="nocov"><span class="num"><pre>238</pre></span><pre>		raise EnvironmentError(&quot;Current platform %s is unsupported&quot; % sys.platform)</pre></div>
+<div class="skip"><span class="num"><pre>239</pre></span><pre>	# END handle os's</pre></div>
 <div class="skip"><span class="num"><pre>240</pre></span><pre>	</pre></div>
-<div class="skip"><span class="num"><pre>241</pre></span><pre>	# ADJUST PYTHON PATH</pre></div>
-<div class="skip"><span class="num"><pre>242</pre></span><pre>	####################</pre></div>
-<div class="skip"><span class="num"><pre>243</pre></span><pre>	# root project is already in the path, we add additional paths as well</pre></div>
-<div class="nocov"><span class="num"><pre>244</pre></span><pre>	ospd = os.path.dirname</pre></div>
-<div class="nocov"><span class="num"><pre>245</pre></span><pre>	if not sys.platform.startswith('win'):</pre></div>
-<div class="nocov"><span class="num"><pre>246</pre></span><pre>		ppath = os.path.join(mayalocation, pylibdir, &quot;python%s&quot;%py_version, &quot;site-packages&quot;)</pre></div>
-<div class="nocov"><span class="num"><pre>247</pre></span><pre>	else:</pre></div>
-<div class="nocov"><span class="num"><pre>248</pre></span><pre>		ppath = os.path.join(mayalocation, pylibdir, &quot;lib&quot;, &quot;site-packages&quot;)</pre></div>
-<div class="skip"><span class="num"><pre>249</pre></span><pre>	# END windows special handling</pre></div>
-<div class="skip"><span class="num"><pre>250</pre></span><pre>	</pre></div>
-<div class="skip"><span class="num"><pre>251</pre></span><pre>	# don't prepend, otherwise system-interpreter mrv versions will not be able</pre></div>
-<div class="skip"><span class="num"><pre>252</pre></span><pre>	# to override the possibly existing mrv version installed in maya.</pre></div>
-<div class="nocov"><span class="num"><pre>253</pre></span><pre>	update_env_path(env, envppath, ppath, append=True)</pre></div>
-<div class="skip"><span class="num"><pre>254</pre></span><pre>	</pre></div>
-<div class="skip"><span class="num"><pre>255</pre></span><pre>	# SET MAYA LOCATION</pre></div>
-<div class="skip"><span class="num"><pre>256</pre></span><pre>	###################</pre></div>
-<div class="skip"><span class="num"><pre>257</pre></span><pre>	# its important to do it here as osx adjusts it </pre></div>
-<div class="nocov"><span class="num"><pre>258</pre></span><pre>	env['MAYA_LOCATION'] = mayalocation </pre></div>
-<div class="skip"><span class="num"><pre>259</pre></span><pre>	</pre></div>
-<div class="skip"><span class="num"><pre>260</pre></span><pre>	# export the actual maya version to allow scripts to pick it up even before maya is launched</pre></div>
-<div class="nocov"><span class="num"><pre>261</pre></span><pre>	env['MRV_MAYA_VERSION'] = &quot;%g&quot; % maya_version</pre></div>
-<div class="skip"><span class="num"><pre>262</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre>263</pre></span><pre>def mangle_args(args):</pre></div>
-<div class="cov"><span class="num"><pre>264</pre></span><pre>	&quot;&quot;&quot;Enclose arguments in quotes if they contain spaces ... on windows only</pre></div>
-<div class="cov"><span class="num"><pre>265</pre></span><pre>	:return: tuple of possibly modified arguments</pre></div>
-<div class="skip"><span class="num"><pre>266</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre>267</pre></span><pre>	:todo: remove this function, its unused&quot;&quot;&quot;</pre></div>
-<div class="nocov"><span class="num"><pre>268</pre></span><pre>	if not sys.platform.startswith('win'):</pre></div>
-<div class="nocov"><span class="num"><pre>269</pre></span><pre>		return args</pre></div>
-<div class="skip"><span class="num"><pre>270</pre></span><pre>	</pre></div>
-<div class="nocov"><span class="num"><pre>271</pre></span><pre>	newargs = list()</pre></div>
-<div class="nocov"><span class="num"><pre>272</pre></span><pre>	for arg in args:</pre></div>
-<div class="nocov"><span class="num"><pre>273</pre></span><pre>		if ' ' in arg:</pre></div>
-<div class="nocov"><span class="num"><pre>274</pre></span><pre>			arg = '&quot;%s&quot;' % arg</pre></div>
-<div class="skip"><span class="num"><pre>275</pre></span><pre>		# END put quotes around strings with spaces</pre></div>
-<div class="nocov"><span class="num"><pre>276</pre></span><pre>		newargs.append(arg)</pre></div>
-<div class="skip"><span class="num"><pre>277</pre></span><pre>	# END for each arg</pre></div>
-<div class="nocov"><span class="num"><pre>278</pre></span><pre>	return tuple(newargs)</pre></div>
-<div class="skip"><span class="num"><pre>279</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre>280</pre></span><pre>def mangle_executable(executable):</pre></div>
-<div class="cov"><span class="num"><pre>281</pre></span><pre>	&quot;&quot;&quot;:return: possibly adjusted path to executable in order to allow its execution</pre></div>
-<div class="cov"><span class="num"><pre>282</pre></span><pre>		This currently only kicks in on windows as we can't handle spaces properly.</pre></div>
-<div class="skip"><span class="num"><pre>283</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre>284</pre></span><pre>	:note: Will change working dir</pre></div>
-<div class="cov"><span class="num"><pre>285</pre></span><pre>	:todo: remove this function, its unused&quot;&quot;&quot;</pre></div>
-<div class="nocov"><span class="num"><pre>286</pre></span><pre>	if not sys.platform.startswith('win'):</pre></div>
-<div class="nocov"><span class="num"><pre>287</pre></span><pre>		return executable</pre></div>
-<div class="skip"><span class="num"><pre>288</pre></span><pre>		</pre></div>
-<div class="skip"><span class="num"><pre>289</pre></span><pre>	# execv appears to call the shell, hence we make sure we handle whitespaecs</pre></div>
-<div class="skip"><span class="num"><pre>290</pre></span><pre>	# in the path, which usually happens on windows !</pre></div>
-<div class="skip"><span class="num"><pre>291</pre></span><pre>	# Problem here is that it cannot find the executable if it has a space in the</pre></div>
-<div class="skip"><span class="num"><pre>292</pre></span><pre>	# path as it will split it, and if quotes are put around, it can't find </pre></div>
-<div class="skip"><span class="num"><pre>293</pre></span><pre>	# it either. Hence we chdir into it and use a relative path</pre></div>
-<div class="nocov"><span class="num"><pre>294</pre></span><pre>	if ' ' in executable:</pre></div>
-<div class="nocov"><span class="num"><pre>295</pre></span><pre>		os.chdir(os.path.dirname(executable))</pre></div>
-<div class="nocov"><span class="num"><pre>296</pre></span><pre>		executable = os.path.basename(executable)</pre></div>
-<div class="skip"><span class="num"><pre>297</pre></span><pre>	# END handle freakin' spaces</pre></div>
-<div class="nocov"><span class="num"><pre>298</pre></span><pre>	return executable</pre></div>
-<div class="skip"><span class="num"><pre>299</pre></span><pre></pre></div>
-<div class="cov"><span class="num"><pre>300</pre></span><pre>def init_environment(args):</pre></div>
-<div class="cov"><span class="num"><pre>301</pre></span><pre>	&quot;&quot;&quot;Intialize MRV up to the point where we can replace this process with the </pre></div>
-<div class="cov"><span class="num"><pre>302</pre></span><pre>	one we prepared</pre></div>
-<div class="skip"><span class="num"><pre>303</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre>304</pre></span><pre>	:param args: commandline arguments excluding the executable ( usually first arg )</pre></div>
-<div class="cov"><span class="num"><pre>305</pre></span><pre>	:return: tuple(use_this_interpreter, maya_version, args) tuple of Bool, maya_version, and the remaining args</pre></div>
-<div class="cov"><span class="num"><pre>306</pre></span><pre>		The boolean indicates whether we have to reuse this interpreter, as it is mayapy&quot;&quot;&quot;</pre></div>
-<div class="skip"><span class="num"><pre>307</pre></span><pre>	# see if first argument is the maya version</pre></div>
-<div class="nocov"><span class="num"><pre>308</pre></span><pre>	maya_version=None</pre></div>
-<div class="nocov"><span class="num"><pre>309</pre></span><pre>	if args:</pre></div>
-<div class="nocov"><span class="num"><pre>310</pre></span><pre>		parsed_successfully, maya_version = parse_maya_version(args[0], default=None)</pre></div>
-<div class="nocov"><span class="num"><pre>311</pre></span><pre>		if parsed_successfully:</pre></div>
-<div class="skip"><span class="num"><pre>312</pre></span><pre>			# if the user wants a specific maya version, he should get it no matter what</pre></div>
-<div class="nocov"><span class="num"><pre>313</pre></span><pre>			args = args[1:]</pre></div>
-<div class="skip"><span class="num"><pre>314</pre></span><pre>		# END cut version arg</pre></div>
-<div class="skip"><span class="num"><pre>315</pre></span><pre>	# END if there are args at all</pre></div>
-<div class="skip"><span class="num"><pre>316</pre></span><pre>	</pre></div>
-<div class="skip"><span class="num"><pre>317</pre></span><pre>	# choose the newest available maya version if none was specified</pre></div>
-<div class="nocov"><span class="num"><pre>318</pre></span><pre>	if maya_version is None:</pre></div>
-<div class="skip"><span class="num"><pre>319</pre></span><pre>		# If there is no version given, and we are in mayapy, we use the maypy </pre></div>
-<div class="skip"><span class="num"><pre>320</pre></span><pre>		# version. Otherwise we use the newest available version</pre></div>
-<div class="nocov"><span class="num"><pre>321</pre></span><pre>		if uses_mayapy():</pre></div>
-<div class="nocov"><span class="num"><pre>322</pre></span><pre>			maya_version = mayapy_maya_version()</pre></div>
-<div class="skip"><span class="num"><pre>323</pre></span><pre>			# in that case, we have a valid maya environment already. This also means </pre></div>
-<div class="skip"><span class="num"><pre>324</pre></span><pre>			# that we must use this interpreter !</pre></div>
-<div class="nocov"><span class="num"><pre>325</pre></span><pre>			return (True, maya_version, tuple(args))</pre></div>
-<div class="nocov"><span class="num"><pre>326</pre></span><pre>		else:</pre></div>
-<div class="nocov"><span class="num"><pre>327</pre></span><pre>			versions = available_maya_versions()</pre></div>
-<div class="nocov"><span class="num"><pre>328</pre></span><pre>			if versions:</pre></div>
-<div class="nocov"><span class="num"><pre>329</pre></span><pre>				maya_version = versions[-1]</pre></div>
-<div class="nocov"><span class="num"><pre>330</pre></span><pre>				log.info(&quot;Using newest available maya version: %g&quot; % maya_version)</pre></div>
-<div class="skip"><span class="num"><pre>331</pre></span><pre>			# END set latest</pre></div>
-<div class="skip"><span class="num"><pre>332</pre></span><pre>		# END handle maya version</pre></div>
-<div class="skip"><span class="num"><pre>333</pre></span><pre>	# END set maya version </pre></div>
-<div class="skip"><span class="num"><pre>334</pre></span><pre>	</pre></div>
-<div class="skip"><span class="num"><pre>335</pre></span><pre>	# The user has specified a maya version to start. As mayapy sets up everything in </pre></div>
-<div class="skip"><span class="num"><pre>336</pre></span><pre>	# a distinctive way, we are kind of too late to alter that.</pre></div>
-<div class="skip"><span class="num"><pre>337</pre></span><pre>	# Hence we must prevent the user from starting different maya versions than </pre></div>
-<div class="skip"><span class="num"><pre>338</pre></span><pre>	# the one defined by mayapy.</pre></div>
-<div class="skip"><span class="num"><pre>339</pre></span><pre>	# NOTE: If we use mayapy, the things mentioned above are an issue. If we </pre></div>
-<div class="skip"><span class="num"><pre>340</pre></span><pre>	# use the delivered python-bin (linux) or Python (osx) executables, this </pre></div>
-<div class="skip"><span class="num"><pre>341</pre></span><pre>	# is not an issue. This way, its consistent among all platforms though as </pre></div>
-<div class="skip"><span class="num"><pre>342</pre></span><pre>	# windows always uses mayapy.</pre></div>
-<div class="nocov"><span class="num"><pre>343</pre></span><pre>	if uses_mayapy():</pre></div>
-<div class="nocov"><span class="num"><pre>344</pre></span><pre>		mayapy_version = mayapy_maya_version()</pre></div>
-<div class="nocov"><span class="num"><pre>345</pre></span><pre>		if mayapy_version != maya_version:</pre></div>
-<div class="nocov"><span class="num"><pre>346</pre></span><pre>			raise EnvironmentError(&quot;If using mayapy, you cannot run any other maya version than the one mayapy uses: %g&quot; % mayapy_version)</pre></div>
-<div class="skip"><span class="num"><pre>347</pre></span><pre>	# END assert version</pre></div>
-<div class="skip"><span class="num"><pre>348</pre></span><pre>	</pre></div>
-<div class="nocov"><span class="num"><pre>349</pre></span><pre>	if maya_version is None:</pre></div>
-<div class="nocov"><span class="num"><pre>350</pre></span><pre>		raise EnvironmentError(&quot;Maya version not specified on the commandline, couldn't find any maya version on this system&quot;)</pre></div>
-<div class="skip"><span class="num"><pre>351</pre></span><pre>	# END abort if not installed</pre></div>
-<div class="skip"><span class="num"><pre>352</pre></span><pre>	</pre></div>
-<div class="nocov"><span class="num"><pre>353</pre></span><pre>	update_maya_environment(maya_version)</pre></div>
-<div class="nocov"><span class="num"><pre>354</pre></span><pre>	return (False, maya_version, tuple(args))</pre></div>
-<div class="skip"><span class="num"><pre>355</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre>356</pre></span><pre>def _execute(executable, args):</pre></div>
-<div class="cov"><span class="num"><pre>357</pre></span><pre>	&quot;&quot;&quot;Perform the actual execution of the executable with the given args.</pre></div>
-<div class="cov"><span class="num"><pre>358</pre></span><pre>	This method does whatever is required to get it right on windows, which is </pre></div>
-<div class="cov"><span class="num"><pre>359</pre></span><pre>	the only reason this method exists !</pre></div>
-<div class="skip"><span class="num"><pre>360</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre>361</pre></span><pre>	:param args: arguments, without the executable as first argument</pre></div>
-<div class="cov"><span class="num"><pre>362</pre></span><pre>	:note: does not return &quot;&quot;&quot;</pre></div>
-<div class="skip"><span class="num"><pre>363</pre></span><pre>	# on windows we spawn, otherwise we don't get the interactive input right</pre></div>
-<div class="nocov"><span class="num"><pre>364</pre></span><pre>	actual_args = (executable, ) + args</pre></div>
-<div class="nocov"><span class="num"><pre>365</pre></span><pre>	if sys.platform.startswith('win'):</pre></div>
-<div class="nocov"><span class="num"><pre>366</pre></span><pre>		p = subprocess.Popen(actual_args, stdin=sys.stdin, stdout=sys.stdout, stderr=sys.stderr)</pre></div>
-<div class="nocov"><span class="num"><pre>367</pre></span><pre>		sys.exit(p.wait())</pre></div>
-<div class="nocov"><span class="num"><pre>368</pre></span><pre>	else:</pre></div>
-<div class="nocov"><span class="num"><pre>369</pre></span><pre>		os.execvp(executable, actual_args)</pre></div>
-<div class="skip"><span class="num"><pre>370</pre></span><pre>	# END handle windows</pre></div>
-<div class="skip"><span class="num"><pre>371</pre></span><pre></pre></div>
-<div class="cov"><span class="num"><pre>372</pre></span><pre>def python_executable(py_version=None):</pre></div>
-<div class="cov"><span class="num"><pre>373</pre></span><pre>	&quot;&quot;&quot;:return: name or path to python executable in this system, deals with </pre></div>
-<div class="cov"><span class="num"><pre>374</pre></span><pre>	linux and windows specials&quot;&quot;&quot;</pre></div>
-<div class="cov"><span class="num"><pre>375</pre></span><pre>	if py_version is None:</pre></div>
-<div class="cov"><span class="num"><pre>376</pre></span><pre>		return 'python'</pre></div>
-<div class="skip"><span class="num"><pre>377</pre></span><pre>	# END handle simple case</pre></div>
-<div class="skip"><span class="num"><pre>378</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre>379</pre></span><pre>	py_executable = &quot;python%g&quot; % py_version</pre></div>
-<div class="cov"><span class="num"><pre>380</pre></span><pre>	if sys.platform.startswith('win'):</pre></div>
-<div class="skip"><span class="num"><pre>381</pre></span><pre>		# so, on windows the executables don't have a . in their name, most likely</pre></div>
-<div class="skip"><span class="num"><pre>382</pre></span><pre>		# because windows threats the '.' in a special way as ... anyway. </pre></div>
-<div class="nocov"><span class="num"><pre>383</pre></span><pre>		py_executable = &quot;python%g&quot; % (py_version*10)</pre></div>
-<div class="skip"><span class="num"><pre>384</pre></span><pre>	# END win specials</pre></div>
-<div class="cov"><span class="num"><pre>385</pre></span><pre>	return py_executable</pre></div>
-<div class="skip"><span class="num"><pre>386</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre>387</pre></span><pre>def find_mrv_script(name):</pre></div>
-<div class="cov"><span class="num"><pre>388</pre></span><pre>	&quot;&quot;&quot;Find an mrv script of the given name. This method should be used if you </pre></div>
-<div class="cov"><span class="num"><pre>389</pre></span><pre>	want to figure out where the mrv executable with the given name is located.</pre></div>
-<div class="cov"><span class="num"><pre>390</pre></span><pre>	The returned path is either relative or absolute.</pre></div>
-<div class="skip"><span class="num"><pre>391</pre></span><pre></pre></div>
-<div class="cov"><span class="num"><pre>392</pre></span><pre>	:return: Path to script </pre></div>
-<div class="cov"><span class="num"><pre>393</pre></span><pre>	:raise EnvironmentError: if the executable could not be found</pre></div>
-<div class="cov"><span class="num"><pre>394</pre></span><pre>	:note: Currently it only looks for executables, but handles projects</pre></div>
-<div class="cov"><span class="num"><pre>395</pre></span><pre>	which use mrv as a subproject&quot;&quot;&quot;</pre></div>
-<div class="cov"><span class="num"><pre>396</pre></span><pre>	import mrv</pre></div>
-<div class="cov"><span class="num"><pre>397</pre></span><pre>	mrvroot = os.path.dirname(mrv.__file__)</pre></div>
-<div class="skip"><span class="num"><pre>398</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre>399</pre></span><pre>	tried_paths = list()</pre></div>
-<div class="cov"><span class="num"><pre>400</pre></span><pre>	for base in ('', 'ext', mrvroot):</pre></div>
-<div class="cov"><span class="num"><pre>401</pre></span><pre>		for subdir in ('bin', 'doc', os.path.join('test', 'bin')):</pre></div>
-<div class="cov"><span class="num"><pre>402</pre></span><pre>			path = None</pre></div>
-<div class="cov"><span class="num"><pre>403</pre></span><pre>			if base:</pre></div>
-<div class="cov"><span class="num"><pre>404</pre></span><pre>				path = os.path.join(base, subdir, name)</pre></div>
-<div class="cov"><span class="num"><pre>405</pre></span><pre>			else:</pre></div>
-<div class="cov"><span class="num"><pre>406</pre></span><pre>				path = os.path.join(subdir, name)</pre></div>
-<div class="skip"><span class="num"><pre>407</pre></span><pre>			# END handle base</pre></div>
-<div class="cov"><span class="num"><pre>408</pre></span><pre>			if os.path.isfile(path):</pre></div>
-<div class="cov"><span class="num"><pre>409</pre></span><pre>				return make_path(path)</pre></div>
-<div class="cov"><span class="num"><pre>410</pre></span><pre>			tried_paths.append(path)</pre></div>
-<div class="skip"><span class="num"><pre>411</pre></span><pre>		# END for each subdir</pre></div>
-<div class="skip"><span class="num"><pre>412</pre></span><pre>	# END for each base</pre></div>
-<div class="skip"><span class="num"><pre>413</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre>414</pre></span><pre>	raise EnvironmentError(&quot;Script named %s not found, looked at %s&quot; % (name, ', '.join(tried_paths))) </pre></div>
-<div class="skip"><span class="num"><pre>415</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre>416</pre></span><pre>def exec_python_interpreter(args, maya_version, mayapy_only=False):</pre></div>
-<div class="cov"><span class="num"><pre>417</pre></span><pre>	&quot;&quot;&quot;Replace this process with a python process as determined by the given options.</pre></div>
-<div class="cov"><span class="num"><pre>418</pre></span><pre>	This will either be the respective python interpreter, or mayapy.</pre></div>
-<div class="cov"><span class="num"><pre>419</pre></span><pre>	If it works, the function does not return</pre></div>
-<div class="skip"><span class="num"><pre>420</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre>421</pre></span><pre>	:param args: remaining arguments which should be passed to the process</pre></div>
-<div class="cov"><span class="num"><pre>422</pre></span><pre>	:param maya_version: float indicating the maya version to use</pre></div>
-<div class="cov"><span class="num"><pre>423</pre></span><pre>	:param mayapy_only: If True, only mayapy will be considered for startup.</pre></div>
-<div class="cov"><span class="num"><pre>424</pre></span><pre>	Use this option in case the python interpreter crashes for some reason.</pre></div>
-<div class="cov"><span class="num"><pre>425</pre></span><pre>	:raise EnvironmentError: If no suitable executable could be started&quot;&quot;&quot;</pre></div>
-<div class="nocov"><span class="num"><pre>426</pre></span><pre>	py_version = python_version_of(maya_version)</pre></div>
-<div class="nocov"><span class="num"><pre>427</pre></span><pre>	py_executable = python_executable(py_version) </pre></div>
-<div class="skip"><span class="num"><pre>428</pre></span><pre>	</pre></div>
-<div class="nocov"><span class="num"><pre>429</pre></span><pre>	args = tuple(args)</pre></div>
-<div class="nocov"><span class="num"><pre>430</pre></span><pre>	tried_paths = list()</pre></div>
-<div class="nocov"><span class="num"><pre>431</pre></span><pre>	try:</pre></div>
-<div class="nocov"><span class="num"><pre>432</pre></span><pre>		if mayapy_only:</pre></div>
-<div class="nocov"><span class="num"><pre>433</pre></span><pre>			raise OSError()</pre></div>
-<div class="nocov"><span class="num"><pre>434</pre></span><pre>		tried_paths.append(py_executable)</pre></div>
-<div class="nocov"><span class="num"><pre>435</pre></span><pre>		_execute(py_executable, args)</pre></div>
-<div class="nocov"><span class="num"><pre>436</pre></span><pre>	except OSError:</pre></div>
-<div class="nocov"><span class="num"><pre>437</pre></span><pre>		if not mayapy_only:</pre></div>
-<div class="nocov"><span class="num"><pre>438</pre></span><pre>			print &quot;Python interpreter named %r not found, trying mayapy ...&quot; % py_executable</pre></div>
-<div class="skip"><span class="num"><pre>439</pre></span><pre>		# END print error message</pre></div>
-<div class="nocov"><span class="num"><pre>440</pre></span><pre>		mayalocation = maya_location(maya_version)</pre></div>
-<div class="nocov"><span class="num"><pre>441</pre></span><pre>		mayapy_executable = os.path.join(mayalocation, &quot;bin&quot;, &quot;mayapy&quot;)</pre></div>
-<div class="skip"><span class="num"><pre>442</pre></span><pre>		</pre></div>
-<div class="nocov"><span class="num"><pre>443</pre></span><pre>		try:</pre></div>
-<div class="nocov"><span class="num"><pre>444</pre></span><pre>			tried_paths.append(mayapy_executable)</pre></div>
-<div class="nocov"><span class="num"><pre>445</pre></span><pre>			_execute(mayapy_executable, args)</pre></div>
-<div class="nocov"><span class="num"><pre>446</pre></span><pre>		except OSError, e:</pre></div>
-<div class="nocov"><span class="num"><pre>447</pre></span><pre>			raise EnvironmentError(&quot;Could not find suitable python interpreter at paths %s : %s&quot; % (', '.join(tried_paths), e))</pre></div>
-<div class="skip"><span class="num"><pre>448</pre></span><pre>		# END final exception handling</pre></div>
-<div class="skip"><span class="num"><pre>449</pre></span><pre>	# END exception handling</pre></div>
-<div class="skip"><span class="num"><pre>450</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre>451</pre></span><pre>def exec_maya_binary(args, maya_version):</pre></div>
-<div class="cov"><span class="num"><pre>452</pre></span><pre>	&quot;&quot;&quot;Replace this process with the maya executable as specified by maya_version.</pre></div>
-<div class="skip"><span class="num"><pre>453</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre>454</pre></span><pre>	:param args: The arguments to be provided to maya</pre></div>
-<div class="cov"><span class="num"><pre>455</pre></span><pre>	:param maya_version: Float identifying the maya version to be launched</pre></div>
-<div class="cov"><span class="num"><pre>456</pre></span><pre>	:rase EnvironmentError: if the respective maya version could not be found&quot;&quot;&quot;</pre></div>
-<div class="nocov"><span class="num"><pre>457</pre></span><pre>	mayalocation = maya_location(maya_version)</pre></div>
-<div class="nocov"><span class="num"><pre>458</pre></span><pre>	mayabin = os.path.join(mayalocation, 'bin', 'maya')</pre></div>
-<div class="skip"><span class="num"><pre>459</pre></span><pre>	</pre></div>
-<div class="skip"><span class="num"><pre>460</pre></span><pre>	# although execv would work on windows, we use our specialized _execute method </pre></div>
-<div class="skip"><span class="num"><pre>461</pre></span><pre>	# in order to keep things consistent</pre></div>
-<div class="nocov"><span class="num"><pre>462</pre></span><pre>	_execute(mayabin, tuple(args))</pre></div>
-<div class="skip"><span class="num"><pre>463</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>241</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>242</pre></span><pre>	# ADJUST PYTHON PATH</pre></div>
+<div class="skip"><span class="num"><pre>243</pre></span><pre>	####################</pre></div>
+<div class="skip"><span class="num"><pre>244</pre></span><pre>	# root project is already in the path, we add additional paths as well</pre></div>
+<div class="nocov"><span class="num"><pre>245</pre></span><pre>	ospd = os.path.dirname</pre></div>
+<div class="nocov"><span class="num"><pre>246</pre></span><pre>	if not sys.platform.startswith('win'):</pre></div>
+<div class="nocov"><span class="num"><pre>247</pre></span><pre>		ppath = os.path.join(mayalocation, pylibdir, &quot;python%s&quot;%py_version, &quot;site-packages&quot;)</pre></div>
+<div class="nocov"><span class="num"><pre>248</pre></span><pre>	else:</pre></div>
+<div class="nocov"><span class="num"><pre>249</pre></span><pre>		ppath = os.path.join(mayalocation, pylibdir, &quot;lib&quot;, &quot;site-packages&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>250</pre></span><pre>	# END windows special handling</pre></div>
+<div class="skip"><span class="num"><pre>251</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>252</pre></span><pre>	# don't prepend, otherwise system-interpreter mrv versions will not be able</pre></div>
+<div class="skip"><span class="num"><pre>253</pre></span><pre>	# to override the possibly existing mrv version installed in maya.</pre></div>
+<div class="nocov"><span class="num"><pre>254</pre></span><pre>	update_env_path(env, envppath, ppath, append=True)</pre></div>
+<div class="skip"><span class="num"><pre>255</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>256</pre></span><pre>	# SET MAYA LOCATION</pre></div>
+<div class="skip"><span class="num"><pre>257</pre></span><pre>	###################</pre></div>
+<div class="skip"><span class="num"><pre>258</pre></span><pre>	# its important to do it here as osx adjusts it </pre></div>
+<div class="nocov"><span class="num"><pre>259</pre></span><pre>	env['MAYA_LOCATION'] = mayalocation </pre></div>
+<div class="skip"><span class="num"><pre>260</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>261</pre></span><pre>	# export the actual maya version to allow scripts to pick it up even before maya is launched</pre></div>
+<div class="nocov"><span class="num"><pre>262</pre></span><pre>	env['MRV_MAYA_VERSION'] = &quot;%g&quot; % maya_version</pre></div>
+<div class="skip"><span class="num"><pre>263</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>264</pre></span><pre>def mangle_args(args):</pre></div>
+<div class="cov"><span class="num"><pre>265</pre></span><pre>	&quot;&quot;&quot;Enclose arguments in quotes if they contain spaces ... on windows only</pre></div>
+<div class="cov"><span class="num"><pre>266</pre></span><pre>	:return: tuple of possibly modified arguments</pre></div>
+<div class="skip"><span class="num"><pre>267</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>268</pre></span><pre>	:todo: remove this function, its unused&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>269</pre></span><pre>	if not sys.platform.startswith('win'):</pre></div>
+<div class="nocov"><span class="num"><pre>270</pre></span><pre>		return args</pre></div>
+<div class="skip"><span class="num"><pre>271</pre></span><pre>	</pre></div>
+<div class="nocov"><span class="num"><pre>272</pre></span><pre>	newargs = list()</pre></div>
+<div class="nocov"><span class="num"><pre>273</pre></span><pre>	for arg in args:</pre></div>
+<div class="nocov"><span class="num"><pre>274</pre></span><pre>		if ' ' in arg:</pre></div>
+<div class="nocov"><span class="num"><pre>275</pre></span><pre>			arg = '&quot;%s&quot;' % arg</pre></div>
+<div class="skip"><span class="num"><pre>276</pre></span><pre>		# END put quotes around strings with spaces</pre></div>
+<div class="nocov"><span class="num"><pre>277</pre></span><pre>		newargs.append(arg)</pre></div>
+<div class="skip"><span class="num"><pre>278</pre></span><pre>	# END for each arg</pre></div>
+<div class="nocov"><span class="num"><pre>279</pre></span><pre>	return tuple(newargs)</pre></div>
+<div class="skip"><span class="num"><pre>280</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>281</pre></span><pre>def mangle_executable(executable):</pre></div>
+<div class="cov"><span class="num"><pre>282</pre></span><pre>	&quot;&quot;&quot;:return: possibly adjusted path to executable in order to allow its execution</pre></div>
+<div class="cov"><span class="num"><pre>283</pre></span><pre>		This currently only kicks in on windows as we can't handle spaces properly.</pre></div>
+<div class="skip"><span class="num"><pre>284</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>285</pre></span><pre>	:note: Will change working dir</pre></div>
+<div class="cov"><span class="num"><pre>286</pre></span><pre>	:todo: remove this function, its unused&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>287</pre></span><pre>	if not sys.platform.startswith('win'):</pre></div>
+<div class="nocov"><span class="num"><pre>288</pre></span><pre>		return executable</pre></div>
+<div class="skip"><span class="num"><pre>289</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>290</pre></span><pre>	# execv appears to call the shell, hence we make sure we handle whitespaecs</pre></div>
+<div class="skip"><span class="num"><pre>291</pre></span><pre>	# in the path, which usually happens on windows !</pre></div>
+<div class="skip"><span class="num"><pre>292</pre></span><pre>	# Problem here is that it cannot find the executable if it has a space in the</pre></div>
+<div class="skip"><span class="num"><pre>293</pre></span><pre>	# path as it will split it, and if quotes are put around, it can't find </pre></div>
+<div class="skip"><span class="num"><pre>294</pre></span><pre>	# it either. Hence we chdir into it and use a relative path</pre></div>
+<div class="nocov"><span class="num"><pre>295</pre></span><pre>	if ' ' in executable:</pre></div>
+<div class="nocov"><span class="num"><pre>296</pre></span><pre>		os.chdir(os.path.dirname(executable))</pre></div>
+<div class="nocov"><span class="num"><pre>297</pre></span><pre>		executable = os.path.basename(executable)</pre></div>
+<div class="skip"><span class="num"><pre>298</pre></span><pre>	# END handle freakin' spaces</pre></div>
+<div class="nocov"><span class="num"><pre>299</pre></span><pre>	return executable</pre></div>
+<div class="skip"><span class="num"><pre>300</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>301</pre></span><pre>def init_environment(args):</pre></div>
+<div class="cov"><span class="num"><pre>302</pre></span><pre>	&quot;&quot;&quot;Intialize MRV up to the point where we can replace this process with the </pre></div>
+<div class="cov"><span class="num"><pre>303</pre></span><pre>	one we prepared</pre></div>
+<div class="skip"><span class="num"><pre>304</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>305</pre></span><pre>	:param args: commandline arguments excluding the executable ( usually first arg )</pre></div>
+<div class="cov"><span class="num"><pre>306</pre></span><pre>	:return: tuple(use_this_interpreter, maya_version, args) tuple of Bool, maya_version, and the remaining args</pre></div>
+<div class="cov"><span class="num"><pre>307</pre></span><pre>		The boolean indicates whether we have to reuse this interpreter, as it is mayapy&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>308</pre></span><pre>	# see if first argument is the maya version</pre></div>
+<div class="nocov"><span class="num"><pre>309</pre></span><pre>	maya_version=None</pre></div>
+<div class="nocov"><span class="num"><pre>310</pre></span><pre>	if args:</pre></div>
+<div class="nocov"><span class="num"><pre>311</pre></span><pre>		parsed_successfully, maya_version = parse_maya_version(args[0], default=None)</pre></div>
+<div class="nocov"><span class="num"><pre>312</pre></span><pre>		if parsed_successfully:</pre></div>
+<div class="skip"><span class="num"><pre>313</pre></span><pre>			# if the user wants a specific maya version, he should get it no matter what</pre></div>
+<div class="nocov"><span class="num"><pre>314</pre></span><pre>			args = args[1:]</pre></div>
+<div class="skip"><span class="num"><pre>315</pre></span><pre>		# END cut version arg</pre></div>
+<div class="skip"><span class="num"><pre>316</pre></span><pre>	# END if there are args at all</pre></div>
+<div class="skip"><span class="num"><pre>317</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>318</pre></span><pre>	# choose the newest available maya version if none was specified</pre></div>
+<div class="nocov"><span class="num"><pre>319</pre></span><pre>	if maya_version is None:</pre></div>
+<div class="skip"><span class="num"><pre>320</pre></span><pre>		# If there is no version given, and we are in mayapy, we use the maypy </pre></div>
+<div class="skip"><span class="num"><pre>321</pre></span><pre>		# version. Otherwise we use the newest available version</pre></div>
+<div class="nocov"><span class="num"><pre>322</pre></span><pre>		if uses_mayapy():</pre></div>
+<div class="nocov"><span class="num"><pre>323</pre></span><pre>			maya_version = mayapy_maya_version()</pre></div>
+<div class="skip"><span class="num"><pre>324</pre></span><pre>			# in that case, we have a valid maya environment already. This also means </pre></div>
+<div class="skip"><span class="num"><pre>325</pre></span><pre>			# that we must use this interpreter !</pre></div>
+<div class="nocov"><span class="num"><pre>326</pre></span><pre>			return (True, maya_version, tuple(args))</pre></div>
+<div class="nocov"><span class="num"><pre>327</pre></span><pre>		else:</pre></div>
+<div class="nocov"><span class="num"><pre>328</pre></span><pre>			versions = available_maya_versions()</pre></div>
+<div class="nocov"><span class="num"><pre>329</pre></span><pre>			if versions:</pre></div>
+<div class="nocov"><span class="num"><pre>330</pre></span><pre>				maya_version = versions[-1]</pre></div>
+<div class="nocov"><span class="num"><pre>331</pre></span><pre>				log.info(&quot;Using newest available maya version: %g&quot; % maya_version)</pre></div>
+<div class="skip"><span class="num"><pre>332</pre></span><pre>			# END set latest</pre></div>
+<div class="skip"><span class="num"><pre>333</pre></span><pre>		# END handle maya version</pre></div>
+<div class="skip"><span class="num"><pre>334</pre></span><pre>	# END set maya version </pre></div>
+<div class="skip"><span class="num"><pre>335</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>336</pre></span><pre>	# The user has specified a maya version to start. As mayapy sets up everything in </pre></div>
+<div class="skip"><span class="num"><pre>337</pre></span><pre>	# a distinctive way, we are kind of too late to alter that.</pre></div>
+<div class="skip"><span class="num"><pre>338</pre></span><pre>	# Hence we must prevent the user from starting different maya versions than </pre></div>
+<div class="skip"><span class="num"><pre>339</pre></span><pre>	# the one defined by mayapy.</pre></div>
+<div class="skip"><span class="num"><pre>340</pre></span><pre>	# NOTE: If we use mayapy, the things mentioned above are an issue. If we </pre></div>
+<div class="skip"><span class="num"><pre>341</pre></span><pre>	# use the delivered python-bin (linux) or Python (osx) executables, this </pre></div>
+<div class="skip"><span class="num"><pre>342</pre></span><pre>	# is not an issue. This way, its consistent among all platforms though as </pre></div>
+<div class="skip"><span class="num"><pre>343</pre></span><pre>	# windows always uses mayapy.</pre></div>
+<div class="nocov"><span class="num"><pre>344</pre></span><pre>	if uses_mayapy():</pre></div>
+<div class="nocov"><span class="num"><pre>345</pre></span><pre>		mayapy_version = mayapy_maya_version()</pre></div>
+<div class="nocov"><span class="num"><pre>346</pre></span><pre>		if mayapy_version != maya_version:</pre></div>
+<div class="nocov"><span class="num"><pre>347</pre></span><pre>			raise EnvironmentError(&quot;If using mayapy, you cannot run any other maya version than the one mayapy uses: %g&quot; % mayapy_version)</pre></div>
+<div class="skip"><span class="num"><pre>348</pre></span><pre>	# END assert version</pre></div>
+<div class="skip"><span class="num"><pre>349</pre></span><pre>	</pre></div>
+<div class="nocov"><span class="num"><pre>350</pre></span><pre>	if maya_version is None:</pre></div>
+<div class="nocov"><span class="num"><pre>351</pre></span><pre>		raise EnvironmentError(&quot;Maya version not specified on the commandline, couldn't find any maya version on this system&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>352</pre></span><pre>	# END abort if not installed</pre></div>
+<div class="skip"><span class="num"><pre>353</pre></span><pre>	</pre></div>
+<div class="nocov"><span class="num"><pre>354</pre></span><pre>	update_maya_environment(maya_version)</pre></div>
+<div class="nocov"><span class="num"><pre>355</pre></span><pre>	return (False, maya_version, tuple(args))</pre></div>
+<div class="skip"><span class="num"><pre>356</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>357</pre></span><pre>def _execute(executable, args):</pre></div>
+<div class="cov"><span class="num"><pre>358</pre></span><pre>	&quot;&quot;&quot;Perform the actual execution of the executable with the given args.</pre></div>
+<div class="cov"><span class="num"><pre>359</pre></span><pre>	This method does whatever is required to get it right on windows, which is </pre></div>
+<div class="cov"><span class="num"><pre>360</pre></span><pre>	the only reason this method exists !</pre></div>
+<div class="skip"><span class="num"><pre>361</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>362</pre></span><pre>	:param args: arguments, without the executable as first argument</pre></div>
+<div class="cov"><span class="num"><pre>363</pre></span><pre>	:note: does not return &quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>364</pre></span><pre>	# on windows we spawn, otherwise we don't get the interactive input right</pre></div>
+<div class="nocov"><span class="num"><pre>365</pre></span><pre>	actual_args = (executable, ) + args</pre></div>
+<div class="nocov"><span class="num"><pre>366</pre></span><pre>	if sys.platform.startswith('win'):</pre></div>
+<div class="nocov"><span class="num"><pre>367</pre></span><pre>		p = subprocess.Popen(actual_args, stdin=sys.stdin, stdout=sys.stdout, stderr=sys.stderr)</pre></div>
+<div class="nocov"><span class="num"><pre>368</pre></span><pre>		sys.exit(p.wait())</pre></div>
+<div class="nocov"><span class="num"><pre>369</pre></span><pre>	else:</pre></div>
+<div class="nocov"><span class="num"><pre>370</pre></span><pre>		os.execvp(executable, actual_args)</pre></div>
+<div class="skip"><span class="num"><pre>371</pre></span><pre>	# END handle windows</pre></div>
+<div class="skip"><span class="num"><pre>372</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>373</pre></span><pre>def python_executable(py_version=None):</pre></div>
+<div class="cov"><span class="num"><pre>374</pre></span><pre>	&quot;&quot;&quot;:return: name or path to python executable in this system, deals with </pre></div>
+<div class="cov"><span class="num"><pre>375</pre></span><pre>	linux and windows specials&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>376</pre></span><pre>	if py_version is None:</pre></div>
+<div class="cov"><span class="num"><pre>377</pre></span><pre>		return 'python'</pre></div>
+<div class="skip"><span class="num"><pre>378</pre></span><pre>	# END handle simple case</pre></div>
+<div class="skip"><span class="num"><pre>379</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>380</pre></span><pre>	py_executable = &quot;python%g&quot; % py_version</pre></div>
+<div class="cov"><span class="num"><pre>381</pre></span><pre>	if sys.platform.startswith('win'):</pre></div>
+<div class="skip"><span class="num"><pre>382</pre></span><pre>		# so, on windows the executables don't have a . in their name, most likely</pre></div>
+<div class="skip"><span class="num"><pre>383</pre></span><pre>		# because windows threats the '.' in a special way as ... anyway. </pre></div>
+<div class="nocov"><span class="num"><pre>384</pre></span><pre>		py_executable = &quot;python%g&quot; % (py_version*10)</pre></div>
+<div class="skip"><span class="num"><pre>385</pre></span><pre>	# END win specials</pre></div>
+<div class="cov"><span class="num"><pre>386</pre></span><pre>	return py_executable</pre></div>
+<div class="skip"><span class="num"><pre>387</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>388</pre></span><pre>def find_mrv_script(name):</pre></div>
+<div class="cov"><span class="num"><pre>389</pre></span><pre>	&quot;&quot;&quot;Find an mrv script of the given name. This method should be used if you </pre></div>
+<div class="cov"><span class="num"><pre>390</pre></span><pre>	want to figure out where the mrv executable with the given name is located.</pre></div>
+<div class="cov"><span class="num"><pre>391</pre></span><pre>	The returned path is either relative or absolute.</pre></div>
+<div class="skip"><span class="num"><pre>392</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>393</pre></span><pre>	:return: Path to script </pre></div>
+<div class="cov"><span class="num"><pre>394</pre></span><pre>	:raise EnvironmentError: if the executable could not be found</pre></div>
+<div class="cov"><span class="num"><pre>395</pre></span><pre>	:note: Currently it only looks for executables, but handles projects</pre></div>
+<div class="cov"><span class="num"><pre>396</pre></span><pre>	which use mrv as a subproject&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>397</pre></span><pre>	import mrv</pre></div>
+<div class="cov"><span class="num"><pre>398</pre></span><pre>	mrvroot = os.path.dirname(mrv.__file__)</pre></div>
+<div class="skip"><span class="num"><pre>399</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>400</pre></span><pre>	tried_paths = list()</pre></div>
+<div class="cov"><span class="num"><pre>401</pre></span><pre>	for base in ('', 'ext', mrvroot):</pre></div>
+<div class="cov"><span class="num"><pre>402</pre></span><pre>		for subdir in ('bin', 'doc', os.path.join('test', 'bin')):</pre></div>
+<div class="cov"><span class="num"><pre>403</pre></span><pre>			path = None</pre></div>
+<div class="cov"><span class="num"><pre>404</pre></span><pre>			if base:</pre></div>
+<div class="cov"><span class="num"><pre>405</pre></span><pre>				path = os.path.join(base, subdir, name)</pre></div>
+<div class="cov"><span class="num"><pre>406</pre></span><pre>			else:</pre></div>
+<div class="cov"><span class="num"><pre>407</pre></span><pre>				path = os.path.join(subdir, name)</pre></div>
+<div class="skip"><span class="num"><pre>408</pre></span><pre>			# END handle base</pre></div>
+<div class="cov"><span class="num"><pre>409</pre></span><pre>			if os.path.isfile(path):</pre></div>
+<div class="cov"><span class="num"><pre>410</pre></span><pre>				return make_path(path)</pre></div>
+<div class="cov"><span class="num"><pre>411</pre></span><pre>			tried_paths.append(path)</pre></div>
+<div class="skip"><span class="num"><pre>412</pre></span><pre>		# END for each subdir</pre></div>
+<div class="skip"><span class="num"><pre>413</pre></span><pre>	# END for each base</pre></div>
+<div class="skip"><span class="num"><pre>414</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>415</pre></span><pre>	raise EnvironmentError(&quot;Script named %s not found, looked at %s&quot; % (name, ', '.join(tried_paths))) </pre></div>
+<div class="skip"><span class="num"><pre>416</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>417</pre></span><pre>def exec_python_interpreter(args, maya_version, mayapy_only=False):</pre></div>
+<div class="cov"><span class="num"><pre>418</pre></span><pre>	&quot;&quot;&quot;Replace this process with a python process as determined by the given options.</pre></div>
+<div class="cov"><span class="num"><pre>419</pre></span><pre>	This will either be the respective python interpreter, or mayapy.</pre></div>
+<div class="cov"><span class="num"><pre>420</pre></span><pre>	If it works, the function does not return</pre></div>
+<div class="skip"><span class="num"><pre>421</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>422</pre></span><pre>	:param args: remaining arguments which should be passed to the process</pre></div>
+<div class="cov"><span class="num"><pre>423</pre></span><pre>	:param maya_version: float indicating the maya version to use</pre></div>
+<div class="cov"><span class="num"><pre>424</pre></span><pre>	:param mayapy_only: If True, only mayapy will be considered for startup.</pre></div>
+<div class="cov"><span class="num"><pre>425</pre></span><pre>	Use this option in case the python interpreter crashes for some reason.</pre></div>
+<div class="cov"><span class="num"><pre>426</pre></span><pre>	:raise EnvironmentError: If no suitable executable could be started&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>427</pre></span><pre>	py_version = python_version_of(maya_version)</pre></div>
+<div class="nocov"><span class="num"><pre>428</pre></span><pre>	py_executable = python_executable(py_version) </pre></div>
+<div class="skip"><span class="num"><pre>429</pre></span><pre>	</pre></div>
+<div class="nocov"><span class="num"><pre>430</pre></span><pre>	args = tuple(args)</pre></div>
+<div class="nocov"><span class="num"><pre>431</pre></span><pre>	tried_paths = list()</pre></div>
+<div class="nocov"><span class="num"><pre>432</pre></span><pre>	try:</pre></div>
+<div class="nocov"><span class="num"><pre>433</pre></span><pre>		if mayapy_only:</pre></div>
+<div class="nocov"><span class="num"><pre>434</pre></span><pre>			raise OSError()</pre></div>
+<div class="nocov"><span class="num"><pre>435</pre></span><pre>		tried_paths.append(py_executable)</pre></div>
+<div class="nocov"><span class="num"><pre>436</pre></span><pre>		_execute(py_executable, args)</pre></div>
+<div class="nocov"><span class="num"><pre>437</pre></span><pre>	except OSError:</pre></div>
+<div class="nocov"><span class="num"><pre>438</pre></span><pre>		if not mayapy_only:</pre></div>
+<div class="nocov"><span class="num"><pre>439</pre></span><pre>			print &quot;Python interpreter named %r not found, trying mayapy ...&quot; % py_executable</pre></div>
+<div class="skip"><span class="num"><pre>440</pre></span><pre>		# END print error message</pre></div>
+<div class="nocov"><span class="num"><pre>441</pre></span><pre>		mayalocation = maya_location(maya_version)</pre></div>
+<div class="nocov"><span class="num"><pre>442</pre></span><pre>		mayapy_executable = os.path.join(mayalocation, &quot;bin&quot;, &quot;mayapy&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>443</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>444</pre></span><pre>		try:</pre></div>
+<div class="nocov"><span class="num"><pre>445</pre></span><pre>			tried_paths.append(mayapy_executable)</pre></div>
+<div class="nocov"><span class="num"><pre>446</pre></span><pre>			_execute(mayapy_executable, args)</pre></div>
+<div class="nocov"><span class="num"><pre>447</pre></span><pre>		except OSError, e:</pre></div>
+<div class="nocov"><span class="num"><pre>448</pre></span><pre>			raise EnvironmentError(&quot;Could not find suitable python interpreter at paths %s : %s&quot; % (', '.join(tried_paths), e))</pre></div>
+<div class="skip"><span class="num"><pre>449</pre></span><pre>		# END final exception handling</pre></div>
+<div class="skip"><span class="num"><pre>450</pre></span><pre>	# END exception handling</pre></div>
+<div class="skip"><span class="num"><pre>451</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>452</pre></span><pre>def exec_maya_binary(args, maya_version):</pre></div>
+<div class="cov"><span class="num"><pre>453</pre></span><pre>	&quot;&quot;&quot;Replace this process with the maya executable as specified by maya_version.</pre></div>
+<div class="skip"><span class="num"><pre>454</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>455</pre></span><pre>	:param args: The arguments to be provided to maya</pre></div>
+<div class="cov"><span class="num"><pre>456</pre></span><pre>	:param maya_version: Float identifying the maya version to be launched</pre></div>
+<div class="cov"><span class="num"><pre>457</pre></span><pre>	:rase EnvironmentError: if the respective maya version could not be found&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>458</pre></span><pre>	mayalocation = maya_location(maya_version)</pre></div>
+<div class="nocov"><span class="num"><pre>459</pre></span><pre>	mayabin = os.path.join(mayalocation, 'bin', 'maya')</pre></div>
+<div class="skip"><span class="num"><pre>460</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>461</pre></span><pre>	# although execv would work on windows, we use our specialized _execute method </pre></div>
+<div class="skip"><span class="num"><pre>462</pre></span><pre>	# in order to keep things consistent</pre></div>
+<div class="nocov"><span class="num"><pre>463</pre></span><pre>	_execute(mayabin, tuple(args))</pre></div>
 <div class="skip"><span class="num"><pre>464</pre></span><pre>	</pre></div>
-<div class="skip"><span class="num"><pre>465</pre></span><pre>#} END Maya initialization</pre></div>
-<div class="skip"><span class="num"><pre>466</pre></span><pre></pre></div>
-<div class="skip"><span class="num"><pre>467</pre></span><pre>#{ Decorators</pre></div>
-<div class="skip"><span class="num"><pre>468</pre></span><pre></pre></div>
-<div class="cov"><span class="num"><pre>469</pre></span><pre>def log_exception( func ):</pre></div>
-<div class="cov"><span class="num"><pre>470</pre></span><pre>	&quot;&quot;&quot;Assures that exceptions result in a logging message.</pre></div>
-<div class="cov"><span class="num"><pre>471</pre></span><pre>	Currently only works with a SpawnedCommand as we need a log instance.</pre></div>
-<div class="cov"><span class="num"><pre>472</pre></span><pre>	On error, the server exits with status 64&quot;&quot;&quot;</pre></div>
-<div class="cov"><span class="num"><pre>473</pre></span><pre>	def wrapper(self, *args, **kwargs):</pre></div>
-<div class="nocov"><span class="num"><pre>474</pre></span><pre>		try:</pre></div>
-<div class="nocov"><span class="num"><pre>475</pre></span><pre>			return func(self, *args, **kwargs)</pre></div>
-<div class="nocov"><span class="num"><pre>476</pre></span><pre>		except Exception, e:</pre></div>
-<div class="nocov"><span class="num"><pre>477</pre></span><pre>			if self.parser.spawned:</pre></div>
-<div class="nocov"><span class="num"><pre>478</pre></span><pre>				self.log.critical(&quot;Program %r aborted with a unhandled exception: %s&quot; % (self.k_log_application_id, str(e)), exc_info=True)</pre></div>
-<div class="nocov"><span class="num"><pre>479</pre></span><pre>				sys.exit(64)</pre></div>
-<div class="nocov"><span class="num"><pre>480</pre></span><pre>			else:</pre></div>
-<div class="nocov"><span class="num"><pre>481</pre></span><pre>				raise</pre></div>
-<div class="skip"><span class="num"><pre>482</pre></span><pre>			# END handle sysexit gracefully</pre></div>
-<div class="skip"><span class="num"><pre>483</pre></span><pre>	# END wrapper </pre></div>
-<div class="skip"><span class="num"><pre>484</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre>485</pre></span><pre>	wrapper.__name__ = func.__name__</pre></div>
-<div class="cov"><span class="num"><pre>486</pre></span><pre>	return wrapper</pre></div>
-<div class="skip"><span class="num"><pre>487</pre></span><pre></pre></div>
-<div class="skip"><span class="num"><pre>488</pre></span><pre>#} END decorators</pre></div>
-<div class="skip"><span class="num"><pre>489</pre></span><pre></pre></div>
-<div class="skip"><span class="num"><pre>490</pre></span><pre>#{ Classes</pre></div>
-<div class="skip"><span class="num"><pre>491</pre></span><pre></pre></div>
-<div class="cov"><span class="num"><pre>492</pre></span><pre>class SpawnedHelpFormatter(optparse.TitledHelpFormatter):</pre></div>
-<div class="cov"><span class="num"><pre>493</pre></span><pre>	&quot;&quot;&quot;Formatter assuring our help looks good&quot;&quot;&quot;</pre></div>
-<div class="skip"><span class="num"><pre>494</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre>495</pre></span><pre>	def _format_text(self, text):</pre></div>
-<div class="cov"><span class="num"><pre>496</pre></span><pre>		&quot;&quot;&quot;Don't wrap the text at all&quot;&quot;&quot;</pre></div>
-<div class="nocov"><span class="num"><pre>497</pre></span><pre>		if self.parser:</pre></div>
-<div class="nocov"><span class="num"><pre>498</pre></span><pre>			text = self.parser.expand_prog_name(text)</pre></div>
-<div class="skip"><span class="num"><pre>499</pre></span><pre>		# END program name expansion if possible</pre></div>
-<div class="skip"><span class="num"><pre>500</pre></span><pre>		</pre></div>
-<div class="nocov"><span class="num"><pre>501</pre></span><pre>		if self.level == 0:</pre></div>
-<div class="nocov"><span class="num"><pre>502</pre></span><pre>			return text</pre></div>
-<div class="nocov"><span class="num"><pre>503</pre></span><pre>		lines = text.splitlines(True)</pre></div>
-<div class="nocov"><span class="num"><pre>504</pre></span><pre>		return ''.join('  '*self.level + l for l in lines)</pre></div>
-<div class="skip"><span class="num"><pre>505</pre></span><pre>		</pre></div>
-<div class="cov"><span class="num"><pre>506</pre></span><pre>	def format_usage(self, usage):</pre></div>
-<div class="nocov"><span class="num"><pre>507</pre></span><pre>		return &quot;usage: %s\n&quot; % usage</pre></div>
-<div class="skip"><span class="num"><pre>508</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>465</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>466</pre></span><pre>#} END Maya initialization</pre></div>
+<div class="skip"><span class="num"><pre>467</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>468</pre></span><pre>#{ Decorators</pre></div>
+<div class="skip"><span class="num"><pre>469</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>470</pre></span><pre>def log_exception( func ):</pre></div>
+<div class="cov"><span class="num"><pre>471</pre></span><pre>	&quot;&quot;&quot;Assures that exceptions result in a logging message.</pre></div>
+<div class="cov"><span class="num"><pre>472</pre></span><pre>	Currently only works with a SpawnedCommand as we need a log instance.</pre></div>
+<div class="cov"><span class="num"><pre>473</pre></span><pre>	On error, the server exits with status 64&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>474</pre></span><pre>	def wrapper(self, *args, **kwargs):</pre></div>
+<div class="nocov"><span class="num"><pre>475</pre></span><pre>		try:</pre></div>
+<div class="nocov"><span class="num"><pre>476</pre></span><pre>			return func(self, *args, **kwargs)</pre></div>
+<div class="nocov"><span class="num"><pre>477</pre></span><pre>		except Exception, e:</pre></div>
+<div class="nocov"><span class="num"><pre>478</pre></span><pre>			if self.parser.spawned:</pre></div>
+<div class="nocov"><span class="num"><pre>479</pre></span><pre>				self.log.critical(&quot;Program %r aborted with a unhandled exception: %s&quot; % (self.k_log_application_id, str(e)), exc_info=True)</pre></div>
+<div class="nocov"><span class="num"><pre>480</pre></span><pre>				sys.exit(64)</pre></div>
+<div class="nocov"><span class="num"><pre>481</pre></span><pre>			else:</pre></div>
+<div class="nocov"><span class="num"><pre>482</pre></span><pre>				raise</pre></div>
+<div class="skip"><span class="num"><pre>483</pre></span><pre>			# END handle sysexit gracefully</pre></div>
+<div class="skip"><span class="num"><pre>484</pre></span><pre>	# END wrapper </pre></div>
+<div class="skip"><span class="num"><pre>485</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>486</pre></span><pre>	wrapper.__name__ = func.__name__</pre></div>
+<div class="cov"><span class="num"><pre>487</pre></span><pre>	return wrapper</pre></div>
+<div class="skip"><span class="num"><pre>488</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>489</pre></span><pre>#} END decorators</pre></div>
+<div class="skip"><span class="num"><pre>490</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>491</pre></span><pre>#{ Classes</pre></div>
+<div class="skip"><span class="num"><pre>492</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>493</pre></span><pre>class SpawnedHelpFormatter(optparse.TitledHelpFormatter):</pre></div>
+<div class="cov"><span class="num"><pre>494</pre></span><pre>	&quot;&quot;&quot;Formatter assuring our help looks good&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>495</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>496</pre></span><pre>	def _format_text(self, text):</pre></div>
+<div class="cov"><span class="num"><pre>497</pre></span><pre>		&quot;&quot;&quot;Don't wrap the text at all&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>498</pre></span><pre>		if self.parser:</pre></div>
+<div class="nocov"><span class="num"><pre>499</pre></span><pre>			text = self.parser.expand_prog_name(text)</pre></div>
+<div class="skip"><span class="num"><pre>500</pre></span><pre>		# END program name expansion if possible</pre></div>
+<div class="skip"><span class="num"><pre>501</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>502</pre></span><pre>		if self.level == 0:</pre></div>
+<div class="nocov"><span class="num"><pre>503</pre></span><pre>			return text</pre></div>
+<div class="nocov"><span class="num"><pre>504</pre></span><pre>		lines = text.splitlines(True)</pre></div>
+<div class="nocov"><span class="num"><pre>505</pre></span><pre>		return ''.join('  '*self.level + l for l in lines)</pre></div>
+<div class="skip"><span class="num"><pre>506</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>507</pre></span><pre>	def format_usage(self, usage):</pre></div>
+<div class="nocov"><span class="num"><pre>508</pre></span><pre>		return &quot;usage: %s\n&quot; % usage</pre></div>
 <div class="skip"><span class="num"><pre>509</pre></span><pre></pre></div>
-<div class="cov"><span class="num"><pre>510</pre></span><pre>class SpawnedOptionParser(optparse.OptionParser):</pre></div>
-<div class="cov"><span class="num"><pre>511</pre></span><pre>	&quot;&quot;&quot;Customized version to ease use of SpawnedCommand</pre></div>
-<div class="skip"><span class="num"><pre>512</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre>513</pre></span><pre>	Initialized with the 'spawned' keyword in addition </pre></div>
-<div class="cov"><span class="num"><pre>514</pre></span><pre>	to the default keywords to prevent a system exit&quot;&quot;&quot;</pre></div>
-<div class="skip"><span class="num"><pre>515</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre>516</pre></span><pre>	def __init__(self, *args, **kwargs):</pre></div>
-<div class="nocov"><span class="num"><pre>517</pre></span><pre>		self.spawned = kwargs.pop('spawned', False)</pre></div>
-<div class="nocov"><span class="num"><pre>518</pre></span><pre>		kwargs['formatter'] = SpawnedHelpFormatter()</pre></div>
-<div class="nocov"><span class="num"><pre>519</pre></span><pre>		optparse.OptionParser.__init__(self, *args, **kwargs)</pre></div>
-<div class="skip"><span class="num"><pre>520</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre>521</pre></span><pre>	def exit(self, status=0, msg=None):</pre></div>
-<div class="nocov"><span class="num"><pre>522</pre></span><pre>		if msg:</pre></div>
-<div class="nocov"><span class="num"><pre>523</pre></span><pre>			sys.stderr.write(msg)</pre></div>
-<div class="skip"><span class="num"><pre>524</pre></span><pre>		</pre></div>
-<div class="nocov"><span class="num"><pre>525</pre></span><pre>		if self.spawned:</pre></div>
-<div class="nocov"><span class="num"><pre>526</pre></span><pre>			sys.exit(status)</pre></div>
-<div class="nocov"><span class="num"><pre>527</pre></span><pre>		else:</pre></div>
-<div class="skip"><span class="num"><pre>528</pre></span><pre>			# reraise if possible as we have not been spawned</pre></div>
-<div class="nocov"><span class="num"><pre>529</pre></span><pre>			exc_type, value, traceback = sys.exc_info()</pre></div>
-<div class="nocov"><span class="num"><pre>530</pre></span><pre>			if value:</pre></div>
-<div class="nocov"><span class="num"><pre>531</pre></span><pre>				raise</pre></div>
-<div class="nocov"><span class="num"><pre>532</pre></span><pre>			else:</pre></div>
-<div class="nocov"><span class="num"><pre>533</pre></span><pre>				raise optparse.OptParseError(msg)</pre></div>
-<div class="skip"><span class="num"><pre>534</pre></span><pre>		# END options</pre></div>
-<div class="skip"><span class="num"><pre>535</pre></span><pre>			</pre></div>
-<div class="skip"><span class="num"><pre>536</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>510</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>511</pre></span><pre>class SpawnedOptionParser(optparse.OptionParser):</pre></div>
+<div class="cov"><span class="num"><pre>512</pre></span><pre>	&quot;&quot;&quot;Customized version to ease use of SpawnedCommand</pre></div>
+<div class="skip"><span class="num"><pre>513</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>514</pre></span><pre>	Initialized with the 'spawned' keyword in addition </pre></div>
+<div class="cov"><span class="num"><pre>515</pre></span><pre>	to the default keywords to prevent a system exit&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>516</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>517</pre></span><pre>	def __init__(self, *args, **kwargs):</pre></div>
+<div class="nocov"><span class="num"><pre>518</pre></span><pre>		self.spawned = kwargs.pop('spawned', False)</pre></div>
+<div class="nocov"><span class="num"><pre>519</pre></span><pre>		kwargs['formatter'] = SpawnedHelpFormatter()</pre></div>
+<div class="nocov"><span class="num"><pre>520</pre></span><pre>		optparse.OptionParser.__init__(self, *args, **kwargs)</pre></div>
+<div class="skip"><span class="num"><pre>521</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>522</pre></span><pre>	def exit(self, status=0, msg=None):</pre></div>
+<div class="nocov"><span class="num"><pre>523</pre></span><pre>		if msg:</pre></div>
+<div class="nocov"><span class="num"><pre>524</pre></span><pre>			sys.stderr.write(msg)</pre></div>
+<div class="skip"><span class="num"><pre>525</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>526</pre></span><pre>		if self.spawned:</pre></div>
+<div class="nocov"><span class="num"><pre>527</pre></span><pre>			sys.exit(status)</pre></div>
+<div class="nocov"><span class="num"><pre>528</pre></span><pre>		else:</pre></div>
+<div class="skip"><span class="num"><pre>529</pre></span><pre>			# reraise if possible as we have not been spawned</pre></div>
+<div class="nocov"><span class="num"><pre>530</pre></span><pre>			exc_type, value, traceback = sys.exc_info()</pre></div>
+<div class="nocov"><span class="num"><pre>531</pre></span><pre>			if value:</pre></div>
+<div class="nocov"><span class="num"><pre>532</pre></span><pre>				raise</pre></div>
+<div class="nocov"><span class="num"><pre>533</pre></span><pre>			else:</pre></div>
+<div class="nocov"><span class="num"><pre>534</pre></span><pre>				raise optparse.OptParseError(msg)</pre></div>
+<div class="skip"><span class="num"><pre>535</pre></span><pre>		# END options</pre></div>
+<div class="skip"><span class="num"><pre>536</pre></span><pre>			</pre></div>
 <div class="skip"><span class="num"><pre>537</pre></span><pre></pre></div>
-<div class="cov"><span class="num"><pre>538</pre></span><pre>class SpawnedCommand(object):</pre></div>
-<div class="cov"><span class="num"><pre>539</pre></span><pre>	&quot;&quot;&quot;Implements a command which can be started easily by specifying a class path</pre></div>
-<div class="cov"><span class="num"><pre>540</pre></span><pre>	such as package.cmd.module.CommandClass whose instance should be started in </pre></div>
-<div class="cov"><span class="num"><pre>541</pre></span><pre>	a standalone process.</pre></div>
-<div class="skip"><span class="num"><pre>542</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre>543</pre></span><pre>	The target command must be derived from this class and must implement the </pre></div>
-<div class="cov"><span class="num"><pre>544</pre></span><pre>	'execute' method.</pre></div>
-<div class="skip"><span class="num"><pre>545</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre>546</pre></span><pre>	To use this class, derive from it and change the configuration variables</pre></div>
-<div class="cov"><span class="num"><pre>547</pre></span><pre>	accordingly.</pre></div>
-<div class="skip"><span class="num"><pre>548</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre>549</pre></span><pre>	The instance will always own a logger instance at its member called 'log', </pre></div>
-<div class="cov"><span class="num"><pre>550</pre></span><pre>	the configuration will be applied according to k_log_application_id</pre></div>
-<div class="skip"><span class="num"><pre>551</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre>552</pre></span><pre>	The parser used to parse all options is vailable at its member called 'parser', </pre></div>
-<div class="cov"><span class="num"><pre>553</pre></span><pre>	its set during ``option_parser``</pre></div>
-<div class="skip"><span class="num"><pre>554</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre>555</pre></span><pre>	The instance may also be created within an existing process and </pre></div>
-<div class="cov"><span class="num"><pre>556</pre></span><pre>	executed manually - in that case it will not exit automatically if a </pre></div>
-<div class="cov"><span class="num"><pre>557</pre></span><pre>	serious event occours&quot;&quot;&quot;</pre></div>
-<div class="skip"><span class="num"><pre>558</pre></span><pre>	</pre></div>
-<div class="skip"><span class="num"><pre>559</pre></span><pre>	#{ Configuration </pre></div>
-<div class="skip"><span class="num"><pre>560</pre></span><pre>	# If not None, the name will be available for printing help text, and other tasks</pre></div>
-<div class="skip"><span class="num"><pre>561</pre></span><pre>	# such as application specific initialization of modules</pre></div>
-<div class="cov"><span class="num"><pre>562</pre></span><pre>	k_log_application_id = None</pre></div>
-<div class="skip"><span class="num"><pre>563</pre></span><pre>	</pre></div>
-<div class="skip"><span class="num"><pre>564</pre></span><pre>	# path at which your class is located. It must be derived from SpawnedCommand</pre></div>
-<div class="cov"><span class="num"><pre>565</pre></span><pre>	k_class_path = &quot;package.module.YourClass&quot;</pre></div>
-<div class="skip"><span class="num"><pre>566</pre></span><pre>	</pre></div>
-<div class="skip"><span class="num"><pre>567</pre></span><pre>	# An identifier for the version of your command</pre></div>
-<div class="cov"><span class="num"><pre>568</pre></span><pre>	k_version = None</pre></div>
-<div class="skip"><span class="num"><pre>569</pre></span><pre>	</pre></div>
-<div class="skip"><span class="num"><pre>570</pre></span><pre>	# Path to the executable</pre></div>
-<div class="cov"><span class="num"><pre>571</pre></span><pre>	_exec_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'bin', 'mrv')</pre></div>
-<div class="skip"><span class="num"><pre>572</pre></span><pre>	</pre></div>
-<div class="skip"><span class="num"><pre>573</pre></span><pre>	# additional arguments to pass on to the newly created process</pre></div>
-<div class="cov"><span class="num"><pre>574</pre></span><pre>	_add_args = ['--mrv-no-maya']</pre></div>
-<div class="skip"><span class="num"><pre>575</pre></span><pre>	</pre></div>
-<div class="skip"><span class="num"><pre>576</pre></span><pre>	# The usage of your command in BMF</pre></div>
-<div class="skip"><span class="num"><pre>577</pre></span><pre>	# i.e. %prog [options]</pre></div>
-<div class="cov"><span class="num"><pre>578</pre></span><pre>	k_usage = None</pre></div>
-<div class="skip"><span class="num"><pre>579</pre></span><pre>	</pre></div>
-<div class="skip"><span class="num"><pre>580</pre></span><pre>	# a short description of your command printed below its usage</pre></div>
-<div class="cov"><span class="num"><pre>581</pre></span><pre>	k_description = None</pre></div>
-<div class="skip"><span class="num"><pre>582</pre></span><pre>	</pre></div>
-<div class="skip"><span class="num"><pre>583</pre></span><pre>	# the name of your program's actual executable</pre></div>
-<div class="cov"><span class="num"><pre>584</pre></span><pre>	k_program_name = None</pre></div>
-<div class="skip"><span class="num"><pre>585</pre></span><pre>	</pre></div>
-<div class="skip"><span class="num"><pre>586</pre></span><pre>	# File mode creation mask of the daemon.</pre></div>
-<div class="skip"><span class="num"><pre>587</pre></span><pre>	# If None, current one will not be changed</pre></div>
-<div class="cov"><span class="num"><pre>588</pre></span><pre>	_daemon_umask = None</pre></div>
-<div class="skip"><span class="num"><pre>589</pre></span><pre>	</pre></div>
-<div class="skip"><span class="num"><pre>590</pre></span><pre>	# Default working directory for the daemon.</pre></div>
-<div class="skip"><span class="num"><pre>591</pre></span><pre>	# If None, the current one will not be changed</pre></div>
-<div class="cov"><span class="num"><pre>592</pre></span><pre>	_daemon_workdir = None</pre></div>
-<div class="skip"><span class="num"><pre>593</pre></span><pre>	</pre></div>
-<div class="skip"><span class="num"><pre>594</pre></span><pre>	# Default maximum for the number of available file descriptors that we try to close</pre></div>
-<div class="cov"><span class="num"><pre>595</pre></span><pre>	_daemon_maxfd = 64</pre></div>
-<div class="skip"><span class="num"><pre>596</pre></span><pre>	</pre></div>
-<div class="skip"><span class="num"><pre>597</pre></span><pre>	# The standard I/O file descriptors are redirected to /dev/null by default.</pre></div>
-<div class="cov"><span class="num"><pre>598</pre></span><pre>	if (hasattr(os, &quot;devnull&quot;)):</pre></div>
-<div class="cov"><span class="num"><pre>599</pre></span><pre>	   _daemon_redirect_to = os.devnull</pre></div>
-<div class="nocov"><span class="num"><pre>600</pre></span><pre>	else:</pre></div>
-<div class="nocov"><span class="num"><pre>601</pre></span><pre>	   _daemon_redirect_to = &quot;/dev/null&quot;</pre></div>
-<div class="skip"><span class="num"><pre>602</pre></span><pre>	</pre></div>
-<div class="skip"><span class="num"><pre>603</pre></span><pre>	#} END configuration</pre></div>
-<div class="skip"><span class="num"><pre>604</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre>605</pre></span><pre>	__slots__ = ('parser', 'log')</pre></div>
-<div class="skip"><span class="num"><pre>606</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>538</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>539</pre></span><pre>class SpawnedCommand(object):</pre></div>
+<div class="cov"><span class="num"><pre>540</pre></span><pre>	&quot;&quot;&quot;Implements a command which can be started easily by specifying a class path</pre></div>
+<div class="cov"><span class="num"><pre>541</pre></span><pre>	such as package.cmd.module.CommandClass whose instance should be started in </pre></div>
+<div class="cov"><span class="num"><pre>542</pre></span><pre>	a standalone process.</pre></div>
+<div class="skip"><span class="num"><pre>543</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>544</pre></span><pre>	The target command must be derived from this class and must implement the </pre></div>
+<div class="cov"><span class="num"><pre>545</pre></span><pre>	'execute' method.</pre></div>
+<div class="skip"><span class="num"><pre>546</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>547</pre></span><pre>	To use this class, derive from it and change the configuration variables</pre></div>
+<div class="cov"><span class="num"><pre>548</pre></span><pre>	accordingly.</pre></div>
+<div class="skip"><span class="num"><pre>549</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>550</pre></span><pre>	The instance will always own a logger instance at its member called 'log', </pre></div>
+<div class="cov"><span class="num"><pre>551</pre></span><pre>	the configuration will be applied according to k_log_application_id</pre></div>
+<div class="skip"><span class="num"><pre>552</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>553</pre></span><pre>	The parser used to parse all options is vailable at its member called 'parser', </pre></div>
+<div class="cov"><span class="num"><pre>554</pre></span><pre>	its set during ``option_parser``</pre></div>
+<div class="skip"><span class="num"><pre>555</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>556</pre></span><pre>	The instance may also be created within an existing process and </pre></div>
+<div class="cov"><span class="num"><pre>557</pre></span><pre>	executed manually - in that case it will not exit automatically if a </pre></div>
+<div class="cov"><span class="num"><pre>558</pre></span><pre>	serious event occours&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>559</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>560</pre></span><pre>	#{ Configuration </pre></div>
+<div class="skip"><span class="num"><pre>561</pre></span><pre>	# If not None, the name will be available for printing help text, and other tasks</pre></div>
+<div class="skip"><span class="num"><pre>562</pre></span><pre>	# such as application specific initialization of modules</pre></div>
+<div class="cov"><span class="num"><pre>563</pre></span><pre>	k_log_application_id = None</pre></div>
+<div class="skip"><span class="num"><pre>564</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>565</pre></span><pre>	# path at which your class is located. It must be derived from SpawnedCommand</pre></div>
+<div class="cov"><span class="num"><pre>566</pre></span><pre>	k_class_path = &quot;package.module.YourClass&quot;</pre></div>
+<div class="skip"><span class="num"><pre>567</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>568</pre></span><pre>	# An identifier for the version of your command</pre></div>
+<div class="cov"><span class="num"><pre>569</pre></span><pre>	k_version = None</pre></div>
+<div class="skip"><span class="num"><pre>570</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>571</pre></span><pre>	# Path to the executable</pre></div>
+<div class="cov"><span class="num"><pre>572</pre></span><pre>	_exec_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'bin', 'mrv')</pre></div>
+<div class="skip"><span class="num"><pre>573</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>574</pre></span><pre>	# If set, its the directory containing your project's info file. It must be set from the</pre></div>
+<div class="skip"><span class="num"><pre>575</pre></span><pre>	# derived class, as it knows its actual position</pre></div>
+<div class="cov"><span class="num"><pre>576</pre></span><pre>	_mrv_info_dir = None</pre></div>
+<div class="skip"><span class="num"><pre>577</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>578</pre></span><pre>	# additional arguments to pass on to the newly created process</pre></div>
+<div class="cov"><span class="num"><pre>579</pre></span><pre>	_add_args = ['--mrv-no-maya']</pre></div>
+<div class="skip"><span class="num"><pre>580</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>581</pre></span><pre>	# The usage of your command in BMF</pre></div>
+<div class="skip"><span class="num"><pre>582</pre></span><pre>	# i.e. %prog [options]</pre></div>
+<div class="cov"><span class="num"><pre>583</pre></span><pre>	k_usage = None</pre></div>
+<div class="skip"><span class="num"><pre>584</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>585</pre></span><pre>	# a short description of your command printed below its usage</pre></div>
+<div class="cov"><span class="num"><pre>586</pre></span><pre>	k_description = None</pre></div>
+<div class="skip"><span class="num"><pre>587</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>588</pre></span><pre>	# the name of your program's actual executable</pre></div>
+<div class="cov"><span class="num"><pre>589</pre></span><pre>	k_program_name = None</pre></div>
+<div class="skip"><span class="num"><pre>590</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>591</pre></span><pre>	# File mode creation mask of the daemon.</pre></div>
+<div class="skip"><span class="num"><pre>592</pre></span><pre>	# If None, current one will not be changed</pre></div>
+<div class="cov"><span class="num"><pre>593</pre></span><pre>	_daemon_umask = None</pre></div>
+<div class="skip"><span class="num"><pre>594</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>595</pre></span><pre>	# Default working directory for the daemon.</pre></div>
+<div class="skip"><span class="num"><pre>596</pre></span><pre>	# If None, the current one will not be changed</pre></div>
+<div class="cov"><span class="num"><pre>597</pre></span><pre>	_daemon_workdir = None</pre></div>
+<div class="skip"><span class="num"><pre>598</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>599</pre></span><pre>	# Default maximum for the number of available file descriptors that we try to close</pre></div>
+<div class="cov"><span class="num"><pre>600</pre></span><pre>	_daemon_maxfd = 64</pre></div>
+<div class="skip"><span class="num"><pre>601</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>602</pre></span><pre>	# The standard I/O file descriptors are redirected to /dev/null by default.</pre></div>
+<div class="cov"><span class="num"><pre>603</pre></span><pre>	if (hasattr(os, &quot;devnull&quot;)):</pre></div>
+<div class="cov"><span class="num"><pre>604</pre></span><pre>	   _daemon_redirect_to = os.devnull</pre></div>
+<div class="nocov"><span class="num"><pre>605</pre></span><pre>	else:</pre></div>
+<div class="nocov"><span class="num"><pre>606</pre></span><pre>	   _daemon_redirect_to = &quot;/dev/null&quot;</pre></div>
 <div class="skip"><span class="num"><pre>607</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre>608</pre></span><pre>	def __init__(self, *args, **kwargs):</pre></div>
-<div class="cov"><span class="num"><pre>609</pre></span><pre>		&quot;&quot;&quot;</pre></div>
-<div class="cov"><span class="num"><pre>610</pre></span><pre>		:param _spawned: If True, default False, we assume we have our own process.</pre></div>
-<div class="cov"><span class="num"><pre>611</pre></span><pre>			Otherwise we will do nothing that would adjust the current process, such as:</pre></div>
-<div class="skip"><span class="num"><pre>612</pre></span><pre>			</pre></div>
-<div class="cov"><span class="num"><pre>613</pre></span><pre>			* sys.exit</pre></div>
-<div class="cov"><span class="num"><pre>614</pre></span><pre>			* change configuration of logging system&quot;&quot;&quot;</pre></div>
-<div class="nocov"><span class="num"><pre>615</pre></span><pre>		try:</pre></div>
-<div class="nocov"><span class="num"><pre>616</pre></span><pre>			super(SpawnedCommand, self).__init__(*args, **kwargs)</pre></div>
-<div class="nocov"><span class="num"><pre>617</pre></span><pre>		except TypeError:</pre></div>
-<div class="skip"><span class="num"><pre>618</pre></span><pre>			# in python 2.6 and newer, object will not accept to be called with </pre></div>
-<div class="skip"><span class="num"><pre>619</pre></span><pre>			# arguments anymore. Problem is that we don't know whether super is an </pre></div>
-<div class="skip"><span class="num"><pre>620</pre></span><pre>			# object or some mixed in type, which is a design flaw, and which breaks</pre></div>
-<div class="skip"><span class="num"><pre>621</pre></span><pre>			# code as well.</pre></div>
-<div class="nocov"><span class="num"><pre>622</pre></span><pre>			pass</pre></div>
-<div class="skip"><span class="num"><pre>623</pre></span><pre>		# END py 2.6 special case</pre></div>
-<div class="skip"><span class="num"><pre>624</pre></span><pre>		</pre></div>
-<div class="skip"><span class="num"><pre>625</pre></span><pre>		</pre></div>
-<div class="nocov"><span class="num"><pre>626</pre></span><pre>		spawned = kwargs.get('_spawned', False)</pre></div>
-<div class="nocov"><span class="num"><pre>627</pre></span><pre>		self.parser = SpawnedOptionParser(	usage=self.k_usage, version=self.k_version, </pre></div>
-<div class="nocov"><span class="num"><pre>628</pre></span><pre>											description=self.k_description,  add_help_option=True,</pre></div>
-<div class="nocov"><span class="num"><pre>629</pre></span><pre>											prog=self.k_program_name, spawned=spawned)</pre></div>
-<div class="nocov"><span class="num"><pre>630</pre></span><pre>		self.log = logging.getLogger(self.k_program_name)</pre></div>
-<div class="skip"><span class="num"><pre>631</pre></span><pre>		</pre></div>
-<div class="cov"><span class="num"><pre>632</pre></span><pre>	@classmethod</pre></div>
-<div class="cov"><span class="num"><pre>633</pre></span><pre>	def spawn(cls, *args, **kwargs):</pre></div>
-<div class="cov"><span class="num"><pre>634</pre></span><pre>		&quot;&quot;&quot;Spawn a new standalone process of this command type</pre></div>
-<div class="cov"><span class="num"><pre>635</pre></span><pre>		Additional arguments passed to the command process</pre></div>
+<div class="skip"><span class="num"><pre>608</pre></span><pre>	#} END configuration</pre></div>
+<div class="skip"><span class="num"><pre>609</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>610</pre></span><pre>	__slots__ = ('parser', 'log')</pre></div>
+<div class="skip"><span class="num"><pre>611</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>612</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>613</pre></span><pre>	def __init__(self, *args, **kwargs):</pre></div>
+<div class="cov"><span class="num"><pre>614</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>615</pre></span><pre>		:param _spawned: If True, default False, we assume we have our own process.</pre></div>
+<div class="cov"><span class="num"><pre>616</pre></span><pre>			Otherwise we will do nothing that would adjust the current process, such as:</pre></div>
+<div class="skip"><span class="num"><pre>617</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre>618</pre></span><pre>			* sys.exit</pre></div>
+<div class="cov"><span class="num"><pre>619</pre></span><pre>			* change configuration of logging system&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>620</pre></span><pre>		try:</pre></div>
+<div class="nocov"><span class="num"><pre>621</pre></span><pre>			super(SpawnedCommand, self).__init__(*args, **kwargs)</pre></div>
+<div class="nocov"><span class="num"><pre>622</pre></span><pre>		except TypeError:</pre></div>
+<div class="skip"><span class="num"><pre>623</pre></span><pre>			# in python 2.6 and newer, object will not accept to be called with </pre></div>
+<div class="skip"><span class="num"><pre>624</pre></span><pre>			# arguments anymore. Problem is that we don't know whether super is an </pre></div>
+<div class="skip"><span class="num"><pre>625</pre></span><pre>			# object or some mixed in type, which is a design flaw, and which breaks</pre></div>
+<div class="skip"><span class="num"><pre>626</pre></span><pre>			# code as well.</pre></div>
+<div class="nocov"><span class="num"><pre>627</pre></span><pre>			pass</pre></div>
+<div class="skip"><span class="num"><pre>628</pre></span><pre>		# END py 2.6 special case</pre></div>
+<div class="skip"><span class="num"><pre>629</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>630</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>631</pre></span><pre>		spawned = kwargs.get('_spawned', False)</pre></div>
+<div class="nocov"><span class="num"><pre>632</pre></span><pre>		self.parser = SpawnedOptionParser(	usage=self.k_usage, version=self.k_version, </pre></div>
+<div class="nocov"><span class="num"><pre>633</pre></span><pre>											description=self.k_description,  add_help_option=True,</pre></div>
+<div class="nocov"><span class="num"><pre>634</pre></span><pre>											prog=self.k_program_name, spawned=spawned)</pre></div>
+<div class="nocov"><span class="num"><pre>635</pre></span><pre>		self.log = logging.getLogger(self.k_program_name)</pre></div>
 <div class="skip"><span class="num"><pre>636</pre></span><pre>		</pre></div>
-<div class="cov"><span class="num"><pre>637</pre></span><pre>		:param kwargs: Additional keyword arguments to be passed to Subprocess.Popen, </pre></div>
-<div class="cov"><span class="num"><pre>638</pre></span><pre>			use it to configure your IO</pre></div>
-<div class="skip"><span class="num"><pre>639</pre></span><pre>		</pre></div>
-<div class="cov"><span class="num"><pre>640</pre></span><pre>		Returns: Subprocess.Popen instance&quot;&quot;&quot;</pre></div>
-<div class="nocov"><span class="num"><pre>641</pre></span><pre>		import spcmd</pre></div>
-<div class="nocov"><span class="num"><pre>642</pre></span><pre>		margs = [cls._exec_path, spcmd.__file__, cls.k_class_path]</pre></div>
-<div class="nocov"><span class="num"><pre>643</pre></span><pre>		margs.extend(args)</pre></div>
-<div class="nocov"><span class="num"><pre>644</pre></span><pre>		margs.extend(cls._add_args)</pre></div>
-<div class="skip"><span class="num"><pre>645</pre></span><pre>		</pre></div>
-<div class="nocov"><span class="num"><pre>646</pre></span><pre>		if os.name == 'nt':</pre></div>
-<div class="nocov"><span class="num"><pre>647</pre></span><pre>			margs.insert(0, sys.executable)</pre></div>
-<div class="skip"><span class="num"><pre>648</pre></span><pre>		# END handle windows inabilitiess</pre></div>
-<div class="skip"><span class="num"><pre>649</pre></span><pre>		</pre></div>
-<div class="nocov"><span class="num"><pre>650</pre></span><pre>		return subprocess.Popen(margs, **kwargs)</pre></div>
-<div class="skip"><span class="num"><pre>651</pre></span><pre>		</pre></div>
-<div class="cov"><span class="num"><pre>652</pre></span><pre>	@classmethod</pre></div>
-<div class="cov"><span class="num"><pre>653</pre></span><pre>	def daemonize(cls, *args):</pre></div>
-<div class="cov"><span class="num"><pre>654</pre></span><pre>		&quot;&quot;&quot;</pre></div>
-<div class="cov"><span class="num"><pre>655</pre></span><pre>		Damonize the spawned command, passing *args to the instanciated command's</pre></div>
-<div class="cov"><span class="num"><pre>656</pre></span><pre>		execute method.</pre></div>
-<div class="skip"><span class="num"><pre>657</pre></span><pre>		</pre></div>
-<div class="cov"><span class="num"><pre>658</pre></span><pre>		:return: None in calling process, no return in the daemon</pre></div>
-<div class="cov"><span class="num"><pre>659</pre></span><pre>			as sys.exit will be called.</pre></div>
-<div class="cov"><span class="num"><pre>660</pre></span><pre>		:note: see configuration variables prefixed with _daemon_</pre></div>
-<div class="cov"><span class="num"><pre>661</pre></span><pre>		:note: based on Chad J. Schroeder createDaemon method, </pre></div>
-<div class="cov"><span class="num"><pre>662</pre></span><pre>			see http://code.activestate.com/recipes/278731-creating-a-daemon-the-python-way</pre></div>
-<div class="cov"><span class="num"><pre>663</pre></span><pre>		&quot;&quot;&quot;</pre></div>
-<div class="nocov"><span class="num"><pre>664</pre></span><pre>		if sys.platform.startswith(&quot;win&quot;):</pre></div>
-<div class="nocov"><span class="num"><pre>665</pre></span><pre>			raise OSError(&quot;Cannot daemonize on windows&quot;)</pre></div>
-<div class="skip"><span class="num"><pre>666</pre></span><pre>		# END handle operating system</pre></div>
-<div class="skip"><span class="num"><pre>667</pre></span><pre>		</pre></div>
-<div class="nocov"><span class="num"><pre>668</pre></span><pre>		try:</pre></div>
-<div class="skip"><span class="num"><pre>669</pre></span><pre>			# Fork a child process so the parent can exit.	This returns control to</pre></div>
-<div class="skip"><span class="num"><pre>670</pre></span><pre>			# the command-line or shell.	It also guarantees that the child will not</pre></div>
-<div class="skip"><span class="num"><pre>671</pre></span><pre>			# be a process group leader, since the child receives a new process ID</pre></div>
-<div class="skip"><span class="num"><pre>672</pre></span><pre>			# and inherits the parent's process group ID.  This step is required</pre></div>
-<div class="skip"><span class="num"><pre>673</pre></span><pre>			# to insure that the next call to os.setsid is successful.</pre></div>
-<div class="nocov"><span class="num"><pre>674</pre></span><pre>			pid = os.fork()</pre></div>
-<div class="nocov"><span class="num"><pre>675</pre></span><pre>		except OSError, e:</pre></div>
-<div class="nocov"><span class="num"><pre>676</pre></span><pre>			raise Exception, &quot;%s [%d]&quot; % (e.strerror, e.errno)</pre></div>
-<div class="skip"><span class="num"><pre>677</pre></span><pre>	</pre></div>
-<div class="nocov"><span class="num"><pre>678</pre></span><pre>		if (pid != 0):</pre></div>
-<div class="skip"><span class="num"><pre>679</pre></span><pre>			# exit() or _exit()?</pre></div>
-<div class="skip"><span class="num"><pre>680</pre></span><pre>			# _exit is like exit(), but it doesn't call any functions registered</pre></div>
-<div class="skip"><span class="num"><pre>681</pre></span><pre>			# with atexit (and on_exit) or any registered signal handlers.	 It also</pre></div>
-<div class="skip"><span class="num"><pre>682</pre></span><pre>			# closes any open file descriptors.	 Using exit() may cause all stdio</pre></div>
-<div class="skip"><span class="num"><pre>683</pre></span><pre>			# streams to be flushed twice and any temporary files may be unexpectedly</pre></div>
-<div class="skip"><span class="num"><pre>684</pre></span><pre>			# removed.	It's therefore recommended that child branches of a fork()</pre></div>
-<div class="skip"><span class="num"><pre>685</pre></span><pre>			# and the parent branch(es) of a daemon use _exit().</pre></div>
-<div class="nocov"><span class="num"><pre>686</pre></span><pre>			return None</pre></div>
-<div class="skip"><span class="num"><pre>687</pre></span><pre>		# END exit </pre></div>
-<div class="skip"><span class="num"><pre>688</pre></span><pre>			</pre></div>
-<div class="skip"><span class="num"><pre>689</pre></span><pre>		##################</pre></div>
-<div class="skip"><span class="num"><pre>690</pre></span><pre>		# The first child.</pre></div>
-<div class="skip"><span class="num"><pre>691</pre></span><pre>		##################</pre></div>
-<div class="skip"><span class="num"><pre>692</pre></span><pre>		# To become the session leader of this new session and the process group</pre></div>
-<div class="skip"><span class="num"><pre>693</pre></span><pre>		# leader of the new process group, we call os.setsid().	The process is</pre></div>
-<div class="skip"><span class="num"><pre>694</pre></span><pre>		# also guaranteed not to have a controlling terminal.</pre></div>
-<div class="nocov"><span class="num"><pre>695</pre></span><pre>		os.setsid()</pre></div>
-<div class="skip"><span class="num"><pre>696</pre></span><pre></pre></div>
-<div class="skip"><span class="num"><pre>697</pre></span><pre>		# Is ignoring SIGHUP necessary?</pre></div>
-<div class="skip"><span class="num"><pre>698</pre></span><pre>		#</pre></div>
-<div class="skip"><span class="num"><pre>699</pre></span><pre>		# It's often suggested that the SIGHUP signal should be ignored before</pre></div>
-<div class="skip"><span class="num"><pre>700</pre></span><pre>		# the second fork to avoid premature termination of the process.	The</pre></div>
-<div class="skip"><span class="num"><pre>701</pre></span><pre>		# reason is that when the first child terminates, all processes, e.g.</pre></div>
-<div class="skip"><span class="num"><pre>702</pre></span><pre>		# the second child, in the orphaned group will be sent a SIGHUP.</pre></div>
-<div class="skip"><span class="num"><pre>703</pre></span><pre>		#</pre></div>
-<div class="skip"><span class="num"><pre>704</pre></span><pre>		# &quot;However, as part of the session management system, there are exactly</pre></div>
-<div class="skip"><span class="num"><pre>705</pre></span><pre>		# two cases where SIGHUP is sent on the death of a process:</pre></div>
-<div class="skip"><span class="num"><pre>706</pre></span><pre>		#</pre></div>
-<div class="skip"><span class="num"><pre>707</pre></span><pre>		#	 1) When the process that dies is the session leader of a session that</pre></div>
-<div class="skip"><span class="num"><pre>708</pre></span><pre>		#		 is attached to a terminal device, SIGHUP is sent to all processes</pre></div>
-<div class="skip"><span class="num"><pre>709</pre></span><pre>		#		 in the foreground process group of that terminal device.</pre></div>
-<div class="skip"><span class="num"><pre>710</pre></span><pre>		#	 2) When the death of a process causes a process group to become</pre></div>
-<div class="skip"><span class="num"><pre>711</pre></span><pre>		#		 orphaned, and one or more processes in the orphaned group are</pre></div>
-<div class="skip"><span class="num"><pre>712</pre></span><pre>		#		 stopped, then SIGHUP and SIGCONT are sent to all members of the</pre></div>
-<div class="skip"><span class="num"><pre>713</pre></span><pre>		#		 orphaned group.&quot; [2]</pre></div>
-<div class="skip"><span class="num"><pre>714</pre></span><pre>		#</pre></div>
-<div class="skip"><span class="num"><pre>715</pre></span><pre>		# The first case can be ignored since the child is guaranteed not to have</pre></div>
-<div class="skip"><span class="num"><pre>716</pre></span><pre>		# a controlling terminal.	The second case isn't so easy to dismiss.</pre></div>
-<div class="skip"><span class="num"><pre>717</pre></span><pre>		# The process group is orphaned when the first child terminates and</pre></div>
-<div class="skip"><span class="num"><pre>718</pre></span><pre>		# POSIX.1 requires that every STOPPED process in an orphaned process</pre></div>
-<div class="skip"><span class="num"><pre>719</pre></span><pre>		# group be sent a SIGHUP signal followed by a SIGCONT signal.	Since the</pre></div>
-<div class="skip"><span class="num"><pre>720</pre></span><pre>		# second child is not STOPPED though, we can safely forego ignoring the</pre></div>
-<div class="skip"><span class="num"><pre>721</pre></span><pre>		# SIGHUP signal.	In any case, there are no ill-effects if it is ignored.</pre></div>
-<div class="skip"><span class="num"><pre>722</pre></span><pre>		#</pre></div>
-<div class="skip"><span class="num"><pre>723</pre></span><pre>		# import signal			  # Set handlers for asynchronous events.</pre></div>
-<div class="skip"><span class="num"><pre>724</pre></span><pre>		# signal.signal(signal.SIGHUP, signal.SIG_IGN)</pre></div>
-<div class="skip"><span class="num"><pre>725</pre></span><pre></pre></div>
-<div class="nocov"><span class="num"><pre>726</pre></span><pre>		try:</pre></div>
-<div class="skip"><span class="num"><pre>727</pre></span><pre>			# Fork a second child and exit immediately to prevent zombies.	 This</pre></div>
-<div class="skip"><span class="num"><pre>728</pre></span><pre>			# causes the second child process to be orphaned, making the init</pre></div>
-<div class="skip"><span class="num"><pre>729</pre></span><pre>			# process responsible for its cleanup.	 And, since the first child is</pre></div>
-<div class="skip"><span class="num"><pre>730</pre></span><pre>			# a session leader without a controlling terminal, it's possible for</pre></div>
-<div class="skip"><span class="num"><pre>731</pre></span><pre>			# it to acquire one by opening a terminal in the future (System V-</pre></div>
-<div class="skip"><span class="num"><pre>732</pre></span><pre>			# based systems).	 This second fork guarantees that the child is no</pre></div>
-<div class="skip"><span class="num"><pre>733</pre></span><pre>			# longer a session leader, preventing the daemon from ever acquiring</pre></div>
-<div class="skip"><span class="num"><pre>734</pre></span><pre>			# a controlling terminal.</pre></div>
-<div class="nocov"><span class="num"><pre>735</pre></span><pre>			pid = os.fork()	# Fork a second child.</pre></div>
-<div class="nocov"><span class="num"><pre>736</pre></span><pre>		except OSError, e:</pre></div>
-<div class="nocov"><span class="num"><pre>737</pre></span><pre>			raise Exception, &quot;%s [%d]&quot; % (e.strerror, e.errno)</pre></div>
-<div class="skip"><span class="num"><pre>738</pre></span><pre></pre></div>
-<div class="nocov"><span class="num"><pre>739</pre></span><pre>		if (pid != 0):</pre></div>
-<div class="skip"><span class="num"><pre>740</pre></span><pre>			# exit() or _exit()?	 See below.</pre></div>
-<div class="nocov"><span class="num"><pre>741</pre></span><pre>			os._exit(0) # Exit parent (the first child) of the second child.</pre></div>
-<div class="skip"><span class="num"><pre>742</pre></span><pre>		# END exit second child</pre></div>
-<div class="skip"><span class="num"><pre>743</pre></span><pre>		</pre></div>
-<div class="skip"><span class="num"><pre>744</pre></span><pre>		###################</pre></div>
-<div class="skip"><span class="num"><pre>745</pre></span><pre>		# The second child.</pre></div>
-<div class="skip"><span class="num"><pre>746</pre></span><pre>		###################</pre></div>
-<div class="skip"><span class="num"><pre>747</pre></span><pre>		# Since the current working directory may be a mounted filesystem, we</pre></div>
-<div class="skip"><span class="num"><pre>748</pre></span><pre>		# avoid the issue of not being able to unmount the filesystem at</pre></div>
-<div class="skip"><span class="num"><pre>749</pre></span><pre>		# shutdown time by changing it to the root directory.</pre></div>
-<div class="nocov"><span class="num"><pre>750</pre></span><pre>		if cls._daemon_workdir is not None:</pre></div>
-<div class="nocov"><span class="num"><pre>751</pre></span><pre>			os.chdir(cls._daemon_workdir)</pre></div>
-<div class="skip"><span class="num"><pre>752</pre></span><pre>		# END set working dir</pre></div>
-<div class="skip"><span class="num"><pre>753</pre></span><pre>		</pre></div>
-<div class="skip"><span class="num"><pre>754</pre></span><pre>		# We probably don't want the file mode creation mask inherited from</pre></div>
-<div class="skip"><span class="num"><pre>755</pre></span><pre>		# the parent, so we give the child complete control over permissions.</pre></div>
-<div class="nocov"><span class="num"><pre>756</pre></span><pre>		if cls._daemon_umask is not None:</pre></div>
-<div class="nocov"><span class="num"><pre>757</pre></span><pre>			os.umask(cls._daemon_umask)</pre></div>
-<div class="skip"><span class="num"><pre>758</pre></span><pre>		# END set umask</pre></div>
-<div class="skip"><span class="num"><pre>759</pre></span><pre>			</pre></div>
-<div class="skip"><span class="num"><pre>760</pre></span><pre>		</pre></div>
-<div class="skip"><span class="num"><pre>761</pre></span><pre>	</pre></div>
-<div class="skip"><span class="num"><pre>762</pre></span><pre>		# Close all open file descriptors.	This prevents the child from keeping</pre></div>
-<div class="skip"><span class="num"><pre>763</pre></span><pre>		# open any file descriptors inherited from the parent.  There is a variety</pre></div>
-<div class="skip"><span class="num"><pre>764</pre></span><pre>		# of methods to accomplish this task.	Three are listed below.</pre></div>
-<div class="skip"><span class="num"><pre>765</pre></span><pre>		#</pre></div>
-<div class="skip"><span class="num"><pre>766</pre></span><pre>		# Try the system configuration variable, SC_OPEN_MAX, to obtain the maximum</pre></div>
-<div class="skip"><span class="num"><pre>767</pre></span><pre>		# number of open file descriptors to close.	If it doesn't exists, use</pre></div>
-<div class="skip"><span class="num"><pre>768</pre></span><pre>		# the default value (configurable).</pre></div>
-<div class="skip"><span class="num"><pre>769</pre></span><pre>		#</pre></div>
-<div class="skip"><span class="num"><pre>770</pre></span><pre>		# try:</pre></div>
-<div class="skip"><span class="num"><pre>771</pre></span><pre>		#	  maxfd = os.sysconf(&quot;SC_OPEN_MAX&quot;)</pre></div>
-<div class="skip"><span class="num"><pre>772</pre></span><pre>		# except (AttributeError, ValueError):</pre></div>
-<div class="skip"><span class="num"><pre>773</pre></span><pre>		#	  maxfd = MAXFD</pre></div>
-<div class="skip"><span class="num"><pre>774</pre></span><pre>		#</pre></div>
-<div class="skip"><span class="num"><pre>775</pre></span><pre>		# OR</pre></div>
-<div class="skip"><span class="num"><pre>776</pre></span><pre>		#</pre></div>
-<div class="skip"><span class="num"><pre>777</pre></span><pre>		# if (os.sysconf_names.has_key(&quot;SC_OPEN_MAX&quot;)):</pre></div>
-<div class="skip"><span class="num"><pre>778</pre></span><pre>		#	  maxfd = os.sysconf(&quot;SC_OPEN_MAX&quot;)</pre></div>
-<div class="skip"><span class="num"><pre>779</pre></span><pre>		# else:</pre></div>
-<div class="skip"><span class="num"><pre>780</pre></span><pre>		#	  maxfd = MAXFD</pre></div>
-<div class="skip"><span class="num"><pre>781</pre></span><pre>		#</pre></div>
-<div class="skip"><span class="num"><pre>782</pre></span><pre>		# OR</pre></div>
+<div class="cov"><span class="num"><pre>637</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre>638</pre></span><pre>	def spawn(cls, *args, **kwargs):</pre></div>
+<div class="cov"><span class="num"><pre>639</pre></span><pre>		&quot;&quot;&quot;Spawn a new standalone process of this command type</pre></div>
+<div class="cov"><span class="num"><pre>640</pre></span><pre>		Additional arguments passed to the command process</pre></div>
+<div class="skip"><span class="num"><pre>641</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>642</pre></span><pre>		:param kwargs: Additional keyword arguments to be passed to Subprocess.Popen, </pre></div>
+<div class="cov"><span class="num"><pre>643</pre></span><pre>			use it to configure your IO</pre></div>
+<div class="skip"><span class="num"><pre>644</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>645</pre></span><pre>		Returns: Subprocess.Popen instance&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>646</pre></span><pre>		import spcmd</pre></div>
+<div class="nocov"><span class="num"><pre>647</pre></span><pre>		margs = [cls._exec_path, spcmd.__file__, cls.k_class_path]</pre></div>
+<div class="nocov"><span class="num"><pre>648</pre></span><pre>		margs.extend(args)</pre></div>
+<div class="nocov"><span class="num"><pre>649</pre></span><pre>		margs.extend(cls._add_args)</pre></div>
+<div class="skip"><span class="num"><pre>650</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>651</pre></span><pre>		if os.name == 'nt':</pre></div>
+<div class="nocov"><span class="num"><pre>652</pre></span><pre>			margs.insert(0, sys.executable)</pre></div>
+<div class="skip"><span class="num"><pre>653</pre></span><pre>		# END handle windows inabilitiess</pre></div>
+<div class="skip"><span class="num"><pre>654</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>655</pre></span><pre>		old_mrvinfo_val = None</pre></div>
+<div class="nocov"><span class="num"><pre>656</pre></span><pre>		env_mrv_info = 'MRV_INFO_DIR'</pre></div>
+<div class="nocov"><span class="num"><pre>657</pre></span><pre>		if cls._mrv_info_dir is not None:</pre></div>
+<div class="nocov"><span class="num"><pre>658</pre></span><pre>			old_mrvinfo_val = os.environ.get(env_mrv_info)</pre></div>
+<div class="nocov"><span class="num"><pre>659</pre></span><pre>			os.environ[env_mrv_info] = cls._mrv_info_dir</pre></div>
+<div class="skip"><span class="num"><pre>660</pre></span><pre>		#END handle mrv_info</pre></div>
+<div class="skip"><span class="num"><pre>661</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>662</pre></span><pre>		try:</pre></div>
+<div class="nocov"><span class="num"><pre>663</pre></span><pre>			return subprocess.Popen(margs, **kwargs)</pre></div>
+<div class="nocov"><span class="num"><pre>664</pre></span><pre>		finally:</pre></div>
+<div class="nocov"><span class="num"><pre>665</pre></span><pre>			if old_mrvinfo_val is not None:</pre></div>
+<div class="nocov"><span class="num"><pre>666</pre></span><pre>				os.environ[env_mrv_info] = old_mrvinfo_val</pre></div>
+<div class="skip"><span class="num"><pre>667</pre></span><pre>			#END reset prevous value</pre></div>
+<div class="skip"><span class="num"><pre>668</pre></span><pre>		#END handle environment change</pre></div>
+<div class="skip"><span class="num"><pre>669</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>670</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre>671</pre></span><pre>	def daemonize(cls, *args):</pre></div>
+<div class="cov"><span class="num"><pre>672</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>673</pre></span><pre>		Damonize the spawned command, passing *args to the instanciated command's</pre></div>
+<div class="cov"><span class="num"><pre>674</pre></span><pre>		execute method.</pre></div>
+<div class="skip"><span class="num"><pre>675</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>676</pre></span><pre>		:return: None in calling process, no return in the daemon</pre></div>
+<div class="cov"><span class="num"><pre>677</pre></span><pre>			as sys.exit will be called.</pre></div>
+<div class="cov"><span class="num"><pre>678</pre></span><pre>		:note: see configuration variables prefixed with _daemon_</pre></div>
+<div class="cov"><span class="num"><pre>679</pre></span><pre>		:note: based on Chad J. Schroeder createDaemon method, </pre></div>
+<div class="cov"><span class="num"><pre>680</pre></span><pre>			see http://code.activestate.com/recipes/278731-creating-a-daemon-the-python-way</pre></div>
+<div class="cov"><span class="num"><pre>681</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>682</pre></span><pre>		if sys.platform.startswith(&quot;win&quot;):</pre></div>
+<div class="nocov"><span class="num"><pre>683</pre></span><pre>			raise OSError(&quot;Cannot daemonize on windows&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>684</pre></span><pre>		# END handle operating system</pre></div>
+<div class="skip"><span class="num"><pre>685</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>686</pre></span><pre>		try:</pre></div>
+<div class="skip"><span class="num"><pre>687</pre></span><pre>			# Fork a child process so the parent can exit.	This returns control to</pre></div>
+<div class="skip"><span class="num"><pre>688</pre></span><pre>			# the command-line or shell.	It also guarantees that the child will not</pre></div>
+<div class="skip"><span class="num"><pre>689</pre></span><pre>			# be a process group leader, since the child receives a new process ID</pre></div>
+<div class="skip"><span class="num"><pre>690</pre></span><pre>			# and inherits the parent's process group ID.  This step is required</pre></div>
+<div class="skip"><span class="num"><pre>691</pre></span><pre>			# to insure that the next call to os.setsid is successful.</pre></div>
+<div class="nocov"><span class="num"><pre>692</pre></span><pre>			pid = os.fork()</pre></div>
+<div class="nocov"><span class="num"><pre>693</pre></span><pre>		except OSError, e:</pre></div>
+<div class="nocov"><span class="num"><pre>694</pre></span><pre>			raise Exception, &quot;%s [%d]&quot; % (e.strerror, e.errno)</pre></div>
+<div class="skip"><span class="num"><pre>695</pre></span><pre>	</pre></div>
+<div class="nocov"><span class="num"><pre>696</pre></span><pre>		if (pid != 0):</pre></div>
+<div class="skip"><span class="num"><pre>697</pre></span><pre>			# exit() or _exit()?</pre></div>
+<div class="skip"><span class="num"><pre>698</pre></span><pre>			# _exit is like exit(), but it doesn't call any functions registered</pre></div>
+<div class="skip"><span class="num"><pre>699</pre></span><pre>			# with atexit (and on_exit) or any registered signal handlers.	 It also</pre></div>
+<div class="skip"><span class="num"><pre>700</pre></span><pre>			# closes any open file descriptors.	 Using exit() may cause all stdio</pre></div>
+<div class="skip"><span class="num"><pre>701</pre></span><pre>			# streams to be flushed twice and any temporary files may be unexpectedly</pre></div>
+<div class="skip"><span class="num"><pre>702</pre></span><pre>			# removed.	It's therefore recommended that child branches of a fork()</pre></div>
+<div class="skip"><span class="num"><pre>703</pre></span><pre>			# and the parent branch(es) of a daemon use _exit().</pre></div>
+<div class="nocov"><span class="num"><pre>704</pre></span><pre>			return None</pre></div>
+<div class="skip"><span class="num"><pre>705</pre></span><pre>		# END exit </pre></div>
+<div class="skip"><span class="num"><pre>706</pre></span><pre>			</pre></div>
+<div class="skip"><span class="num"><pre>707</pre></span><pre>		##################</pre></div>
+<div class="skip"><span class="num"><pre>708</pre></span><pre>		# The first child.</pre></div>
+<div class="skip"><span class="num"><pre>709</pre></span><pre>		##################</pre></div>
+<div class="skip"><span class="num"><pre>710</pre></span><pre>		# To become the session leader of this new session and the process group</pre></div>
+<div class="skip"><span class="num"><pre>711</pre></span><pre>		# leader of the new process group, we call os.setsid().	The process is</pre></div>
+<div class="skip"><span class="num"><pre>712</pre></span><pre>		# also guaranteed not to have a controlling terminal.</pre></div>
+<div class="nocov"><span class="num"><pre>713</pre></span><pre>		os.setsid()</pre></div>
+<div class="skip"><span class="num"><pre>714</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>715</pre></span><pre>		# Is ignoring SIGHUP necessary?</pre></div>
+<div class="skip"><span class="num"><pre>716</pre></span><pre>		#</pre></div>
+<div class="skip"><span class="num"><pre>717</pre></span><pre>		# It's often suggested that the SIGHUP signal should be ignored before</pre></div>
+<div class="skip"><span class="num"><pre>718</pre></span><pre>		# the second fork to avoid premature termination of the process.	The</pre></div>
+<div class="skip"><span class="num"><pre>719</pre></span><pre>		# reason is that when the first child terminates, all processes, e.g.</pre></div>
+<div class="skip"><span class="num"><pre>720</pre></span><pre>		# the second child, in the orphaned group will be sent a SIGHUP.</pre></div>
+<div class="skip"><span class="num"><pre>721</pre></span><pre>		#</pre></div>
+<div class="skip"><span class="num"><pre>722</pre></span><pre>		# &quot;However, as part of the session management system, there are exactly</pre></div>
+<div class="skip"><span class="num"><pre>723</pre></span><pre>		# two cases where SIGHUP is sent on the death of a process:</pre></div>
+<div class="skip"><span class="num"><pre>724</pre></span><pre>		#</pre></div>
+<div class="skip"><span class="num"><pre>725</pre></span><pre>		#	 1) When the process that dies is the session leader of a session that</pre></div>
+<div class="skip"><span class="num"><pre>726</pre></span><pre>		#		 is attached to a terminal device, SIGHUP is sent to all processes</pre></div>
+<div class="skip"><span class="num"><pre>727</pre></span><pre>		#		 in the foreground process group of that terminal device.</pre></div>
+<div class="skip"><span class="num"><pre>728</pre></span><pre>		#	 2) When the death of a process causes a process group to become</pre></div>
+<div class="skip"><span class="num"><pre>729</pre></span><pre>		#		 orphaned, and one or more processes in the orphaned group are</pre></div>
+<div class="skip"><span class="num"><pre>730</pre></span><pre>		#		 stopped, then SIGHUP and SIGCONT are sent to all members of the</pre></div>
+<div class="skip"><span class="num"><pre>731</pre></span><pre>		#		 orphaned group.&quot; [2]</pre></div>
+<div class="skip"><span class="num"><pre>732</pre></span><pre>		#</pre></div>
+<div class="skip"><span class="num"><pre>733</pre></span><pre>		# The first case can be ignored since the child is guaranteed not to have</pre></div>
+<div class="skip"><span class="num"><pre>734</pre></span><pre>		# a controlling terminal.	The second case isn't so easy to dismiss.</pre></div>
+<div class="skip"><span class="num"><pre>735</pre></span><pre>		# The process group is orphaned when the first child terminates and</pre></div>
+<div class="skip"><span class="num"><pre>736</pre></span><pre>		# POSIX.1 requires that every STOPPED process in an orphaned process</pre></div>
+<div class="skip"><span class="num"><pre>737</pre></span><pre>		# group be sent a SIGHUP signal followed by a SIGCONT signal.	Since the</pre></div>
+<div class="skip"><span class="num"><pre>738</pre></span><pre>		# second child is not STOPPED though, we can safely forego ignoring the</pre></div>
+<div class="skip"><span class="num"><pre>739</pre></span><pre>		# SIGHUP signal.	In any case, there are no ill-effects if it is ignored.</pre></div>
+<div class="skip"><span class="num"><pre>740</pre></span><pre>		#</pre></div>
+<div class="skip"><span class="num"><pre>741</pre></span><pre>		# import signal			  # Set handlers for asynchronous events.</pre></div>
+<div class="skip"><span class="num"><pre>742</pre></span><pre>		# signal.signal(signal.SIGHUP, signal.SIG_IGN)</pre></div>
+<div class="skip"><span class="num"><pre>743</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>744</pre></span><pre>		try:</pre></div>
+<div class="skip"><span class="num"><pre>745</pre></span><pre>			# Fork a second child and exit immediately to prevent zombies.	 This</pre></div>
+<div class="skip"><span class="num"><pre>746</pre></span><pre>			# causes the second child process to be orphaned, making the init</pre></div>
+<div class="skip"><span class="num"><pre>747</pre></span><pre>			# process responsible for its cleanup.	 And, since the first child is</pre></div>
+<div class="skip"><span class="num"><pre>748</pre></span><pre>			# a session leader without a controlling terminal, it's possible for</pre></div>
+<div class="skip"><span class="num"><pre>749</pre></span><pre>			# it to acquire one by opening a terminal in the future (System V-</pre></div>
+<div class="skip"><span class="num"><pre>750</pre></span><pre>			# based systems).	 This second fork guarantees that the child is no</pre></div>
+<div class="skip"><span class="num"><pre>751</pre></span><pre>			# longer a session leader, preventing the daemon from ever acquiring</pre></div>
+<div class="skip"><span class="num"><pre>752</pre></span><pre>			# a controlling terminal.</pre></div>
+<div class="nocov"><span class="num"><pre>753</pre></span><pre>			pid = os.fork()	# Fork a second child.</pre></div>
+<div class="nocov"><span class="num"><pre>754</pre></span><pre>		except OSError, e:</pre></div>
+<div class="nocov"><span class="num"><pre>755</pre></span><pre>			raise Exception, &quot;%s [%d]&quot; % (e.strerror, e.errno)</pre></div>
+<div class="skip"><span class="num"><pre>756</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>757</pre></span><pre>		if (pid != 0):</pre></div>
+<div class="skip"><span class="num"><pre>758</pre></span><pre>			# exit() or _exit()?	 See below.</pre></div>
+<div class="nocov"><span class="num"><pre>759</pre></span><pre>			os._exit(0) # Exit parent (the first child) of the second child.</pre></div>
+<div class="skip"><span class="num"><pre>760</pre></span><pre>		# END exit second child</pre></div>
+<div class="skip"><span class="num"><pre>761</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>762</pre></span><pre>		###################</pre></div>
+<div class="skip"><span class="num"><pre>763</pre></span><pre>		# The second child.</pre></div>
+<div class="skip"><span class="num"><pre>764</pre></span><pre>		###################</pre></div>
+<div class="skip"><span class="num"><pre>765</pre></span><pre>		# Since the current working directory may be a mounted filesystem, we</pre></div>
+<div class="skip"><span class="num"><pre>766</pre></span><pre>		# avoid the issue of not being able to unmount the filesystem at</pre></div>
+<div class="skip"><span class="num"><pre>767</pre></span><pre>		# shutdown time by changing it to the root directory.</pre></div>
+<div class="nocov"><span class="num"><pre>768</pre></span><pre>		if cls._daemon_workdir is not None:</pre></div>
+<div class="nocov"><span class="num"><pre>769</pre></span><pre>			os.chdir(cls._daemon_workdir)</pre></div>
+<div class="skip"><span class="num"><pre>770</pre></span><pre>		# END set working dir</pre></div>
+<div class="skip"><span class="num"><pre>771</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>772</pre></span><pre>		# We probably don't want the file mode creation mask inherited from</pre></div>
+<div class="skip"><span class="num"><pre>773</pre></span><pre>		# the parent, so we give the child complete control over permissions.</pre></div>
+<div class="nocov"><span class="num"><pre>774</pre></span><pre>		if cls._daemon_umask is not None:</pre></div>
+<div class="nocov"><span class="num"><pre>775</pre></span><pre>			os.umask(cls._daemon_umask)</pre></div>
+<div class="skip"><span class="num"><pre>776</pre></span><pre>		# END set umask</pre></div>
+<div class="skip"><span class="num"><pre>777</pre></span><pre>			</pre></div>
+<div class="skip"><span class="num"><pre>778</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>779</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>780</pre></span><pre>		# Close all open file descriptors.	This prevents the child from keeping</pre></div>
+<div class="skip"><span class="num"><pre>781</pre></span><pre>		# open any file descriptors inherited from the parent.  There is a variety</pre></div>
+<div class="skip"><span class="num"><pre>782</pre></span><pre>		# of methods to accomplish this task.	Three are listed below.</pre></div>
 <div class="skip"><span class="num"><pre>783</pre></span><pre>		#</pre></div>
-<div class="skip"><span class="num"><pre>784</pre></span><pre>		# Use the getrlimit method to retrieve the maximum file descriptor number</pre></div>
-<div class="skip"><span class="num"><pre>785</pre></span><pre>		# that can be opened by this process.	If there is not limit on the</pre></div>
-<div class="skip"><span class="num"><pre>786</pre></span><pre>		# resource, use the default value.</pre></div>
+<div class="skip"><span class="num"><pre>784</pre></span><pre>		# Try the system configuration variable, SC_OPEN_MAX, to obtain the maximum</pre></div>
+<div class="skip"><span class="num"><pre>785</pre></span><pre>		# number of open file descriptors to close.	If it doesn't exists, use</pre></div>
+<div class="skip"><span class="num"><pre>786</pre></span><pre>		# the default value (configurable).</pre></div>
 <div class="skip"><span class="num"><pre>787</pre></span><pre>		#</pre></div>
-<div class="nocov"><span class="num"><pre>788</pre></span><pre>		import resource		# Resource usage information.</pre></div>
-<div class="nocov"><span class="num"><pre>789</pre></span><pre>		maxfd = resource.getrlimit(resource.RLIMIT_NOFILE)[1]</pre></div>
-<div class="nocov"><span class="num"><pre>790</pre></span><pre>		if (maxfd == resource.RLIM_INFINITY):</pre></div>
-<div class="nocov"><span class="num"><pre>791</pre></span><pre>			maxfd = cls._daemon_maxfd</pre></div>
-<div class="skip"><span class="num"><pre>792</pre></span><pre></pre></div>
-<div class="nocov"><span class="num"><pre>793</pre></span><pre>		debug_daemon = False</pre></div>
-<div class="skip"><span class="num"><pre>794</pre></span><pre>		</pre></div>
-<div class="skip"><span class="num"><pre>795</pre></span><pre>		# Iterate through and close all file descriptors.</pre></div>
-<div class="nocov"><span class="num"><pre>796</pre></span><pre>		for fd in range(debug_daemon*3, maxfd):</pre></div>
-<div class="nocov"><span class="num"><pre>797</pre></span><pre>			try:</pre></div>
-<div class="nocov"><span class="num"><pre>798</pre></span><pre>				os.close(fd)</pre></div>
-<div class="nocov"><span class="num"><pre>799</pre></span><pre>			except OSError: # ERROR, fd wasn't open to begin with (ignored)</pre></div>
-<div class="nocov"><span class="num"><pre>800</pre></span><pre>				pass</pre></div>
-<div class="skip"><span class="num"><pre>801</pre></span><pre>		# END for each fd in range</pre></div>
-<div class="skip"><span class="num"><pre>802</pre></span><pre>	</pre></div>
-<div class="skip"><span class="num"><pre>803</pre></span><pre>		# Redirect the standard I/O file descriptors to the specified file. Since</pre></div>
-<div class="skip"><span class="num"><pre>804</pre></span><pre>		# the daemon has no controlling terminal, most daemons redirect stdin,</pre></div>
-<div class="skip"><span class="num"><pre>805</pre></span><pre>		# stdout, and stderr to /dev/null.	This is done to prevent side-effects</pre></div>
-<div class="skip"><span class="num"><pre>806</pre></span><pre>		# from reads and writes to the standard I/O file descriptors.</pre></div>
-<div class="skip"><span class="num"><pre>807</pre></span><pre>	</pre></div>
-<div class="skip"><span class="num"><pre>808</pre></span><pre>		# This call to open is guaranteed to return the lowest file descriptor,</pre></div>
-<div class="skip"><span class="num"><pre>809</pre></span><pre>		# which will be 0 (stdin), since it was closed above.</pre></div>
-<div class="nocov"><span class="num"><pre>810</pre></span><pre>		if not debug_daemon:</pre></div>
-<div class="nocov"><span class="num"><pre>811</pre></span><pre>			os.open(cls._daemon_redirect_to, os.O_RDWR)	# standard input (0)</pre></div>
+<div class="skip"><span class="num"><pre>788</pre></span><pre>		# try:</pre></div>
+<div class="skip"><span class="num"><pre>789</pre></span><pre>		#	  maxfd = os.sysconf(&quot;SC_OPEN_MAX&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>790</pre></span><pre>		# except (AttributeError, ValueError):</pre></div>
+<div class="skip"><span class="num"><pre>791</pre></span><pre>		#	  maxfd = MAXFD</pre></div>
+<div class="skip"><span class="num"><pre>792</pre></span><pre>		#</pre></div>
+<div class="skip"><span class="num"><pre>793</pre></span><pre>		# OR</pre></div>
+<div class="skip"><span class="num"><pre>794</pre></span><pre>		#</pre></div>
+<div class="skip"><span class="num"><pre>795</pre></span><pre>		# if (os.sysconf_names.has_key(&quot;SC_OPEN_MAX&quot;)):</pre></div>
+<div class="skip"><span class="num"><pre>796</pre></span><pre>		#	  maxfd = os.sysconf(&quot;SC_OPEN_MAX&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>797</pre></span><pre>		# else:</pre></div>
+<div class="skip"><span class="num"><pre>798</pre></span><pre>		#	  maxfd = MAXFD</pre></div>
+<div class="skip"><span class="num"><pre>799</pre></span><pre>		#</pre></div>
+<div class="skip"><span class="num"><pre>800</pre></span><pre>		# OR</pre></div>
+<div class="skip"><span class="num"><pre>801</pre></span><pre>		#</pre></div>
+<div class="skip"><span class="num"><pre>802</pre></span><pre>		# Use the getrlimit method to retrieve the maximum file descriptor number</pre></div>
+<div class="skip"><span class="num"><pre>803</pre></span><pre>		# that can be opened by this process.	If there is not limit on the</pre></div>
+<div class="skip"><span class="num"><pre>804</pre></span><pre>		# resource, use the default value.</pre></div>
+<div class="skip"><span class="num"><pre>805</pre></span><pre>		#</pre></div>
+<div class="nocov"><span class="num"><pre>806</pre></span><pre>		import resource		# Resource usage information.</pre></div>
+<div class="nocov"><span class="num"><pre>807</pre></span><pre>		maxfd = resource.getrlimit(resource.RLIMIT_NOFILE)[1]</pre></div>
+<div class="nocov"><span class="num"><pre>808</pre></span><pre>		if (maxfd == resource.RLIM_INFINITY):</pre></div>
+<div class="nocov"><span class="num"><pre>809</pre></span><pre>			maxfd = cls._daemon_maxfd</pre></div>
+<div class="skip"><span class="num"><pre>810</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>811</pre></span><pre>		debug_daemon = False</pre></div>
 <div class="skip"><span class="num"><pre>812</pre></span><pre>		</pre></div>
-<div class="skip"><span class="num"><pre>813</pre></span><pre>			# Duplicate standard input to standard output and standard error.</pre></div>
-<div class="nocov"><span class="num"><pre>814</pre></span><pre>			os.dup2(0, 1)			# standard output (1)</pre></div>
-<div class="nocov"><span class="num"><pre>815</pre></span><pre>			os.dup2(0, 2)			# standard error (2)</pre></div>
-<div class="skip"><span class="num"><pre>816</pre></span><pre>		# END handle standard descriptors</pre></div>
-<div class="skip"><span class="num"><pre>817</pre></span><pre>	</pre></div>
-<div class="skip"><span class="num"><pre>818</pre></span><pre>		# RUN THE SPAWNED COMMAND</pre></div>
-<div class="skip"><span class="num"><pre>819</pre></span><pre>		#########################</pre></div>
-<div class="nocov"><span class="num"><pre>820</pre></span><pre>		cmdinstance = cls(_spawned=True)</pre></div>
-<div class="nocov"><span class="num"><pre>821</pre></span><pre>		return cmdinstance._execute(*args)</pre></div>
-<div class="skip"><span class="num"><pre>822</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre>823</pre></span><pre>	def _preprocess_args(self, options, args):</pre></div>
-<div class="cov"><span class="num"><pre>824</pre></span><pre>		&quot;&quot;&quot;:return: tuple(options, args) tuple of parsed options and remaining args</pre></div>
-<div class="cov"><span class="num"><pre>825</pre></span><pre>			The arguments can be preprocessed&quot;&quot;&quot;</pre></div>
-<div class="nocov"><span class="num"><pre>826</pre></span><pre>		return options, args</pre></div>
-<div class="skip"><span class="num"><pre>827</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre>828</pre></span><pre>	def _execute(self, *args):</pre></div>
-<div class="cov"><span class="num"><pre>829</pre></span><pre>		&quot;&quot;&quot;internal method handling the basic arguments in a pre-process before </pre></div>
-<div class="cov"><span class="num"><pre>830</pre></span><pre>		calling ``execute``</pre></div>
-<div class="skip"><span class="num"><pre>831</pre></span><pre>		</pre></div>
-<div class="cov"><span class="num"><pre>832</pre></span><pre>		We will parse all options, process the default ones and pass on the </pre></div>
-<div class="cov"><span class="num"><pre>833</pre></span><pre>		call to the ``execute`` method&quot;&quot;&quot;</pre></div>
-<div class="nocov"><span class="num"><pre>834</pre></span><pre>		options, args = self._preprocess_args(*self.option_parser().parse_args(list(args)))</pre></div>
-<div class="skip"><span class="num"><pre>835</pre></span><pre>		</pre></div>
-<div class="skip"><span class="num"><pre>836</pre></span><pre>		# make sure we have a default setup at least !</pre></div>
-<div class="nocov"><span class="num"><pre>837</pre></span><pre>		logging.basicConfig()</pre></div>
-<div class="skip"><span class="num"><pre>838</pre></span><pre>		</pre></div>
-<div class="skip"><span class="num"><pre>839</pre></span><pre>		# call the subclassed method</pre></div>
-<div class="nocov"><span class="num"><pre>840</pre></span><pre>		try:</pre></div>
-<div class="nocov"><span class="num"><pre>841</pre></span><pre>			return self.execute(options, args)</pre></div>
-<div class="nocov"><span class="num"><pre>842</pre></span><pre>		except Exception, e:</pre></div>
-<div class="nocov"><span class="num"><pre>843</pre></span><pre>			if self.parser.spawned:</pre></div>
-<div class="nocov"><span class="num"><pre>844</pre></span><pre>				sys.stderr.write('%s: %s\n' % (type(e).__name__, str(e)))</pre></div>
-<div class="nocov"><span class="num"><pre>845</pre></span><pre>				sys.exit(1)</pre></div>
-<div class="nocov"><span class="num"><pre>846</pre></span><pre>			else:</pre></div>
-<div class="nocov"><span class="num"><pre>847</pre></span><pre>				raise</pre></div>
-<div class="skip"><span class="num"><pre>848</pre></span><pre>		# END help the user in case he provides invalid options</pre></div>
+<div class="skip"><span class="num"><pre>813</pre></span><pre>		# Iterate through and close all file descriptors.</pre></div>
+<div class="nocov"><span class="num"><pre>814</pre></span><pre>		for fd in range(debug_daemon*3, maxfd):</pre></div>
+<div class="nocov"><span class="num"><pre>815</pre></span><pre>			try:</pre></div>
+<div class="nocov"><span class="num"><pre>816</pre></span><pre>				os.close(fd)</pre></div>
+<div class="nocov"><span class="num"><pre>817</pre></span><pre>			except OSError: # ERROR, fd wasn't open to begin with (ignored)</pre></div>
+<div class="nocov"><span class="num"><pre>818</pre></span><pre>				pass</pre></div>
+<div class="skip"><span class="num"><pre>819</pre></span><pre>		# END for each fd in range</pre></div>
+<div class="skip"><span class="num"><pre>820</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>821</pre></span><pre>		# Redirect the standard I/O file descriptors to the specified file. Since</pre></div>
+<div class="skip"><span class="num"><pre>822</pre></span><pre>		# the daemon has no controlling terminal, most daemons redirect stdin,</pre></div>
+<div class="skip"><span class="num"><pre>823</pre></span><pre>		# stdout, and stderr to /dev/null.	This is done to prevent side-effects</pre></div>
+<div class="skip"><span class="num"><pre>824</pre></span><pre>		# from reads and writes to the standard I/O file descriptors.</pre></div>
+<div class="skip"><span class="num"><pre>825</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>826</pre></span><pre>		# This call to open is guaranteed to return the lowest file descriptor,</pre></div>
+<div class="skip"><span class="num"><pre>827</pre></span><pre>		# which will be 0 (stdin), since it was closed above.</pre></div>
+<div class="nocov"><span class="num"><pre>828</pre></span><pre>		if not debug_daemon:</pre></div>
+<div class="nocov"><span class="num"><pre>829</pre></span><pre>			os.open(cls._daemon_redirect_to, os.O_RDWR)	# standard input (0)</pre></div>
+<div class="skip"><span class="num"><pre>830</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>831</pre></span><pre>			# Duplicate standard input to standard output and standard error.</pre></div>
+<div class="nocov"><span class="num"><pre>832</pre></span><pre>			os.dup2(0, 1)			# standard output (1)</pre></div>
+<div class="nocov"><span class="num"><pre>833</pre></span><pre>			os.dup2(0, 2)			# standard error (2)</pre></div>
+<div class="skip"><span class="num"><pre>834</pre></span><pre>		# END handle standard descriptors</pre></div>
+<div class="skip"><span class="num"><pre>835</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>836</pre></span><pre>		# RUN THE SPAWNED COMMAND</pre></div>
+<div class="skip"><span class="num"><pre>837</pre></span><pre>		#########################</pre></div>
+<div class="nocov"><span class="num"><pre>838</pre></span><pre>		cmdinstance = cls(_spawned=True)</pre></div>
+<div class="nocov"><span class="num"><pre>839</pre></span><pre>		return cmdinstance._execute(*args)</pre></div>
+<div class="skip"><span class="num"><pre>840</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>841</pre></span><pre>	def _preprocess_args(self, options, args):</pre></div>
+<div class="cov"><span class="num"><pre>842</pre></span><pre>		&quot;&quot;&quot;:return: tuple(options, args) tuple of parsed options and remaining args</pre></div>
+<div class="cov"><span class="num"><pre>843</pre></span><pre>			The arguments can be preprocessed&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>844</pre></span><pre>		return options, args</pre></div>
+<div class="skip"><span class="num"><pre>845</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>846</pre></span><pre>	def _execute(self, *args):</pre></div>
+<div class="cov"><span class="num"><pre>847</pre></span><pre>		&quot;&quot;&quot;internal method handling the basic arguments in a pre-process before </pre></div>
+<div class="cov"><span class="num"><pre>848</pre></span><pre>		calling ``execute``</pre></div>
 <div class="skip"><span class="num"><pre>849</pre></span><pre>		</pre></div>
-<div class="skip"><span class="num"><pre>850</pre></span><pre>	#{ Overridable </pre></div>
-<div class="cov"><span class="num"><pre>851</pre></span><pre>	@log_exception</pre></div>
-<div class="cov"><span class="num"><pre>852</pre></span><pre>	def execute(self, options, args):</pre></div>
-<div class="cov"><span class="num"><pre>853</pre></span><pre>		&quot;&quot;&quot;Method implementing the actual functionality of the command</pre></div>
-<div class="cov"><span class="num"><pre>854</pre></span><pre>		:param options: Values instance of the optparse module</pre></div>
-<div class="cov"><span class="num"><pre>855</pre></span><pre>		:param args: remaining positional arguments passed to the process on the commandline</pre></div>
-<div class="cov"><span class="num"><pre>856</pre></span><pre>		:note: if you like to terminate, raise an exception&quot;&quot;&quot;</pre></div>
-<div class="nocov"><span class="num"><pre>857</pre></span><pre>		pass</pre></div>
-<div class="skip"><span class="num"><pre>858</pre></span><pre>	</pre></div>
-<div class="cov"><span class="num"><pre>859</pre></span><pre>	def option_parser(self):</pre></div>
-<div class="cov"><span class="num"><pre>860</pre></span><pre>		&quot;&quot;&quot;:return: OptionParser Instance containing all supported options</pre></div>
-<div class="cov"><span class="num"><pre>861</pre></span><pre>		:note: Should be overridden by subclass to add additional options and </pre></div>
-<div class="cov"><span class="num"><pre>862</pre></span><pre>			option groups themselves after calling the base class implementation&quot;&quot;&quot;</pre></div>
-<div class="nocov"><span class="num"><pre>863</pre></span><pre>		return self.parser</pre></div>
-<div class="skip"><span class="num"><pre>864</pre></span><pre>	#} END needing subclass</pre></div>
-<div class="skip"><span class="num"><pre>865</pre></span><pre>		</pre></div>
-<div class="skip"><span class="num"><pre>866</pre></span><pre>		</pre></div>
-<div class="skip"><span class="num"><pre>867</pre></span><pre>#} END classes</pre></div>
-<div class="skip"><span class="num"><pre>868</pre></span><pre></pre></div>
-<div class="skip"><span class="num"><pre>869</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>850</pre></span><pre>		We will parse all options, process the default ones and pass on the </pre></div>
+<div class="cov"><span class="num"><pre>851</pre></span><pre>		call to the ``execute`` method&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>852</pre></span><pre>		options, args = self._preprocess_args(*self.option_parser().parse_args(list(args)))</pre></div>
+<div class="skip"><span class="num"><pre>853</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>854</pre></span><pre>		# make sure we have a default setup at least !</pre></div>
+<div class="nocov"><span class="num"><pre>855</pre></span><pre>		logging.basicConfig()</pre></div>
+<div class="skip"><span class="num"><pre>856</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>857</pre></span><pre>		# call the subclassed method</pre></div>
+<div class="nocov"><span class="num"><pre>858</pre></span><pre>		try:</pre></div>
+<div class="nocov"><span class="num"><pre>859</pre></span><pre>			return self.execute(options, args)</pre></div>
+<div class="nocov"><span class="num"><pre>860</pre></span><pre>		except Exception, e:</pre></div>
+<div class="nocov"><span class="num"><pre>861</pre></span><pre>			if self.parser.spawned:</pre></div>
+<div class="nocov"><span class="num"><pre>862</pre></span><pre>				sys.stderr.write('%s: %s\n' % (type(e).__name__, str(e)))</pre></div>
+<div class="nocov"><span class="num"><pre>863</pre></span><pre>				sys.exit(1)</pre></div>
+<div class="nocov"><span class="num"><pre>864</pre></span><pre>			else:</pre></div>
+<div class="nocov"><span class="num"><pre>865</pre></span><pre>				raise</pre></div>
+<div class="skip"><span class="num"><pre>866</pre></span><pre>		# END help the user in case he provides invalid options</pre></div>
+<div class="skip"><span class="num"><pre>867</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>868</pre></span><pre>	#{ Overridable </pre></div>
+<div class="cov"><span class="num"><pre>869</pre></span><pre>	@log_exception</pre></div>
+<div class="cov"><span class="num"><pre>870</pre></span><pre>	def execute(self, options, args):</pre></div>
+<div class="cov"><span class="num"><pre>871</pre></span><pre>		&quot;&quot;&quot;Method implementing the actual functionality of the command</pre></div>
+<div class="cov"><span class="num"><pre>872</pre></span><pre>		:param options: Values instance of the optparse module</pre></div>
+<div class="cov"><span class="num"><pre>873</pre></span><pre>		:param args: remaining positional arguments passed to the process on the commandline</pre></div>
+<div class="cov"><span class="num"><pre>874</pre></span><pre>		:note: if you like to terminate, raise an exception&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>875</pre></span><pre>		pass</pre></div>
+<div class="skip"><span class="num"><pre>876</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>877</pre></span><pre>	def option_parser(self):</pre></div>
+<div class="cov"><span class="num"><pre>878</pre></span><pre>		&quot;&quot;&quot;:return: OptionParser Instance containing all supported options</pre></div>
+<div class="cov"><span class="num"><pre>879</pre></span><pre>		:note: Should be overridden by subclass to add additional options and </pre></div>
+<div class="cov"><span class="num"><pre>880</pre></span><pre>			option groups themselves after calling the base class implementation&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>881</pre></span><pre>		return self.parser</pre></div>
+<div class="skip"><span class="num"><pre>882</pre></span><pre>	#} END needing subclass</pre></div>
+<div class="skip"><span class="num"><pre>883</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>884</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>885</pre></span><pre>#} END classes</pre></div>
+<div class="skip"><span class="num"><pre>886</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>887</pre></span><pre></pre></div>
 </div>
 </body>
 </html>

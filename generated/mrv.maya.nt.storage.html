@@ -5,13 +5,13 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>mrv.maya.nt.storage &mdash; mrv v1.0.1-develop documentation</title>
+    <title>mrv.maya.nt.storage &mdash; mrv v1.0.2-develop documentation</title>
     <link rel="stylesheet" href="../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.0.1-develop',
+        VERSION:     '1.0.2-develop',
         COLLAPSE_MODINDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -20,7 +20,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
-    <link rel="top" title="mrv v1.0.1-develop documentation" href="../index.html" />
+    <link rel="top" title="mrv v1.0.2-develop documentation" href="../index.html" />
     <link rel="next" title="mrv.maya.nt.geometry" href="mrv.maya.nt.geometry.html" />
     <link rel="prev" title="mrv.maya.nt.util" href="mrv.maya.nt.util.html" /> 
   </head>
@@ -40,7 +40,7 @@
         <li class="right" >
           <a href="mrv.maya.nt.util.html" title="mrv.maya.nt.util"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li> 
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -56,6 +56,23 @@
 mrv and derived nodes.</p>
 <div class="section" id="functions">
 <h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mrv.maya.nt.storage._makeElementPlug">
+<tt class="descclassname">mrv.maya.nt.storage.</tt><tt class="descname">_makeElementPlug</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage._makeElementPlug" title="Permalink to this definition">¶</a></dt>
+<dd>Find an empty logical plug index and return the newly created
+logical plug with given dataID - unconditionally</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.nt.storage.clearAllData">
+<tt class="descclassname">mrv.maya.nt.storage.</tt><tt class="descname">clearAllData</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.clearAllData" title="Permalink to this definition">¶</a></dt>
+<dd>Empty all data storage plugs beneath the given masterPlug. Message connections are currently
+not affected</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.nt.storage.clearDataPlug">
+<tt class="descclassname">mrv.maya.nt.storage.</tt><tt class="descname">clearDataPlug</tt><big>(</big><em>vdplug</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.clearDataPlug" title="Permalink to this definition">¶</a></dt>
+<dd>Clear the data in the given value data plug</dd></dl>
+
 <dl class="function">
 <dt id="mrv.maya.nt.storage.createNode">
 <tt class="descclassname">mrv.maya.nt.storage.</tt><tt class="descname">createNode</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.createNode" title="Permalink to this definition">¶</a></dt>
@@ -95,11 +112,28 @@ otherwise names might be ambiguous ! This method will assume absolute paths !</p
 <tr><td>&nbsp;</td><td class="field-body"><p class="first">If name of desired node clashes as existing node has different type</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">As this method is checking a lot and tries to be smart, its relatively slow ( creates ~1200 nodes / s )</p>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">As this method is checking a lot and tries to be smart, its relatively slow (creates ~1200 nodes / s)</p>
 </td>
 </tr>
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the newly create Node</p>
 </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.nt.storage.dataIDs">
+<tt class="descclassname">mrv.maya.nt.storage.</tt><tt class="descname">dataIDs</tt><big>(</big><em>masterPlug</em>, <em>data_prefix=''</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.dataIDs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of all data ids available in the given master plug</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>data_prefix</em> &#8211; the string prefix of data names which must match with the prefix
+of the data id to be returned, with the matching prefix pruned. 
+By default, all data ids will match</td>
 </tr>
 </tbody>
 </table>
@@ -147,6 +181,148 @@ as the used algorithm is totally different and inferior to the mel implementaito
 </table>
 </dd></dl>
 
+<dl class="function">
+<dt id="mrv.maya.nt.storage.deleteObjectSet">
+<tt class="descclassname">mrv.maya.nt.storage.</tt><tt class="descname">deleteObjectSet</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.deleteObjectSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete the object set at the given message data plug, at the given setIndex
+:note: use this method to delete your sets instead of manual deletion as it will automatically</p>
+<blockquote>
+remove the managed partition in case the last set is being deleted</blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.nt.storage.findStoragePlug">
+<tt class="descclassname">mrv.maya.nt.storage.</tt><tt class="descname">findStoragePlug</tt><big>(</big><em>masterPlug</em>, <em>dataID</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.findStoragePlug" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">compound plug containing all data and connections for the given dataID</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>masterPlug</em> &#8211; compound plug containing all data</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.nt.storage.makePlug">
+<tt class="descclassname">mrv.maya.nt.storage.</tt><tt class="descname">makePlug</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.makePlug" title="Permalink to this definition">¶</a></dt>
+<dd><p>retrieve or create a plug that corresponds to the given dataID
+:param dataID: string identifier
+:return: the created data plug, containing subplugs dval and dmsg</p>
+<blockquote>
+for generic data and  message connections respectively</blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.nt.storage.objectSet">
+<tt class="descclassname">mrv.maya.nt.storage.</tt><tt class="descname">objectSet</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.objectSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get an object set identified with setIndex at the given dataId</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>mdplug</em> &#8211; data message plug whose object set to handle</li>
+<li><em>setIndex</em> &#8211; logical index at which the set will be connected to our message plug array</li>
+<li><em>autoCreate</em> &#8211; if True, a set will be created if it does not yet exist</li>
+<li><em>setPrefix</em> &#8211; if given, the string will be used as prefix for the name of newly created
+object sets</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises ValueError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first">if a set does not exist at setIndex and autoCreate is False</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises AttributeError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first">if the plug did not exist (and autocreate is False)</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">method is implicitly undoable if autoCreate is True, this also means that you cannot
+explicitly undo this operation as you do not know if undo has been queued or not</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">newly created sets will automatically use partitions if one of the sets does</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.nt.storage.partition">
+<tt class="descclassname">mrv.maya.nt.storage.</tt><tt class="descname">partition</tt><big>(</big><em>mdplug</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.partition" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">parition node attached to the sets of the given message data plug or None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.nt.storage.setPartition">
+<tt class="descclassname">mrv.maya.nt.storage.</tt><tt class="descname">setPartition</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.setPartition" title="Permalink to this definition">¶</a></dt>
+<dd>Make all sets of the given data message plug use a partition or not
+:param state: if True, a partition will be used, if False, it will be disabled
+:note: this method makes sure that all sets are hooked up to the partition
+:raise ValueError: If we did not have a single set to which to add to the partition
+:raise AttributeError: If the dataID has never had sets
+:return: if state is True, the name of the possibly created (or existing) partition</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.nt.storage.setsByPlug">
+<tt class="descclassname">mrv.maya.nt.storage.</tt><tt class="descname">setsByPlug</tt><big>(</big><em>mdplug</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.setsByPlug" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">all objectSets stored at the given message data plug</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.nt.storage.storagePlug">
+<tt class="descclassname">mrv.maya.nt.storage.</tt><tt class="descname">storagePlug</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.storagePlug" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">plug of the given type, either as tuple of two plugs or the plug
+specified by plugType</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>masterPlug</em> &#8211; masterPlug to search for data</li>
+<li><em>dataID</em> &#8211; the name of the plug to be returned</li>
+<li><em>plugType</em> &#8211; StorageBase.kMessage: return message array plug only
+StorageBase.kValue: return python pickle array plug only
+StorageBase.kStorage: return the storage plug itself containing message and the value plug
+StorageBase.kFlags return plug to integer which can be used as storage for bitflags to accompany the id
+None: return (picklePlug , messagePlug)</li>
+<li><em>autoCreate</em> &#8211; if True, a plug with the given dataID will be created if it does not
+yet exist</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises AttributeError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first">if a plug with dataID does not exist and default value is None</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises TypeError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">if  plugtype unknown</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </div>
 <div class="section" id="classes">
 <h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
@@ -170,6 +346,11 @@ Use this general class to create data wrap objects - it will return a class of t
 <dl class="method">
 <dt id="mrv.maya.nt.storage.Data.assign">
 <tt class="descname">assign</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.Data.assign" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.Data.className">
+<tt class="descname">className</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.Data.className" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="classmethod">
@@ -261,7 +442,7 @@ reside on the undo queue</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.storage.DependNode.addTo">
-<tt class="descname">addTo</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x53dd950&gt; &gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.DependNode.addTo" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">addTo</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x44cffb0&gt; &gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.DependNode.addTo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add ourselves to the given set</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -324,7 +505,7 @@ in order to return the name of their leaf node</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.storage.DependNode.children">
-<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee848&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.DependNode.children" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a39ed8&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.DependNode.children" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -341,7 +522,7 @@ in order to return the name of their leaf node</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.storage.DependNode.childrenDeep">
-<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee668&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.DependNode.childrenDeep" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c050&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.DependNode.childrenDeep" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -363,6 +544,11 @@ in order to return the name of their leaf node</td>
 </dd></dl>
 
 <dl class="method">
+<dt id="mrv.maya.nt.storage.DependNode.className">
+<tt class="descname">className</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.DependNode.className" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="mrv.maya.nt.storage.DependNode.classification">
 <tt class="descname">classification</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.DependNode.classification" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -376,9 +562,9 @@ in order to return the name of their leaf node</td>
 <tbody valign="top">
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of object set compatible Nodes having self as member</td>
 </tr>
-<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>setFilter</em> &#8211; tuple( apiType, use_exact_type ) - the combination of the
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>setFilter</em> &#8211; tuple(apiType, use_exact_type) - the combination of the
 desired api type and the exact type flag allow precise control whether you which
-to get only renderable shading engines, only objectfSets ( tuple[1] = True ),
+to get only renderable shading engines, only objectfSets (tuple[1] = True),
 or all objects supporting the given object type.
 Its preset to only return shading engines</td>
 </tr>
@@ -544,7 +730,7 @@ implementation</p>
 </td>
 </tr>
 <tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">undo could be implemented for dg nodes - but for reasons of consistency, its disabled here -
-who knows how much it will crap out after a while as duplicate is not undoable ( mel command )  -
+who knows how much it will crap out after a while as duplicate is not undoable (mel command)  -
 it never really worked to undo a mel command from within python, executed using a dgmodifier - unfortunately
 it does not return any result making it hard to find the newly duplicated object !</p>
 </td>
@@ -603,7 +789,7 @@ function set comes first</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.storage.DependNode.isMemberOf">
-<tt class="descname">isMemberOf</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x5433ee0&gt; &gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.DependNode.isMemberOf" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">isMemberOf</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x442aea0&gt; &gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.DependNode.isMemberOf" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -680,7 +866,7 @@ function set comes first</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.storage.DependNode.iterParents">
-<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee2a8&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.DependNode.iterParents" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c230&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.DependNode.iterParents" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -740,7 +926,7 @@ is the dag&#8217;s root</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body">name ( str ) of file this node is coming from - it could contain
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">name (str) of file this node is coming from - it could contain
 a copy number as {x}</td>
 </tr>
 <tr class="field"><th class="field-name">Note:</th><td class="field-body">will raise if the node is not referenced, use isReferenced to figure
@@ -766,7 +952,7 @@ that out</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.storage.DependNode.removeFrom">
-<tt class="descname">removeFrom</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x5241670&gt; &gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.DependNode.removeFrom" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">removeFrom</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x456f830&gt; &gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.DependNode.removeFrom" title="Permalink to this definition">¶</a></dt>
 <dd><p>remove ourselves to the given set</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -866,9 +1052,9 @@ rename the object.</p>
 <tbody valign="top">
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of object set compatible Nodes having self as member</td>
 </tr>
-<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>setFilter</em> &#8211; tuple( apiType, use_exact_type ) - the combination of the
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>setFilter</em> &#8211; tuple(apiType, use_exact_type) - the combination of the
 desired api type and the exact type flag allow precise control whether you which
-to get only renderable shading engines, only objectfSets ( tuple[1] = True ),
+to get only renderable shading engines, only objectfSets (tuple[1] = True),
 or all objects supporting the given object type.
 Its preset to only return shading engines</td>
 </tr>
@@ -900,6 +1086,283 @@ will not work</td>
 </tbody>
 </table>
 </dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.nt.storage-module.html#MFnDependencyNode">Epydoc: mrv.maya.nt.storage</a></p>
+<dl class="class">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode">
+<em class="property">class </em><tt class="descclassname">mrv.maya.nt.storage.</tt><tt class="descname">MFnDependencyNode</tt><big>(</big><em>*args</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">maya.OpenMaya.MFnBase</span></tt></p>
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.addAttribute">
+<tt class="descname">addAttribute</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.addAttribute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.allocateFlag">
+<tt class="descname">allocateFlag</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.allocateFlag" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.attribute">
+<tt class="descname">attribute</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.attribute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.attributeClass">
+<tt class="descname">attributeClass</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.attributeClass" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.attributeCount">
+<tt class="descname">attributeCount</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.attributeCount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.canBeWritten">
+<tt class="descname">canBeWritten</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.canBeWritten" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.className">
+<tt class="descname">className</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.className" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.classification">
+<tt class="descname">classification</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.classification" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.create">
+<tt class="descname">create</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.create" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.deallocateAllFlags">
+<tt class="descname">deallocateAllFlags</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.deallocateAllFlags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.deallocateFlag">
+<tt class="descname">deallocateFlag</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.deallocateFlag" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.dgCallbackIds">
+<tt class="descname">dgCallbackIds</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.dgCallbackIds" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.dgCallbacks">
+<tt class="descname">dgCallbacks</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.dgCallbacks" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.dgTimer">
+<tt class="descname">dgTimer</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.dgTimer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.dgTimerOff">
+<tt class="descname">dgTimerOff</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.dgTimerOff" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.dgTimerOn">
+<tt class="descname">dgTimerOn</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.dgTimerOn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.dgTimerQueryState">
+<tt class="descname">dgTimerQueryState</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.dgTimerQueryState" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.dgTimerReset">
+<tt class="descname">dgTimerReset</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.dgTimerReset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.findAlias">
+<tt class="descname">findAlias</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.findAlias" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.findPlug">
+<tt class="descname">findPlug</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.findPlug" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.getAffectedAttributes">
+<tt class="descname">getAffectedAttributes</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.getAffectedAttributes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.getAffectedByAttributes">
+<tt class="descname">getAffectedByAttributes</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.getAffectedByAttributes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.getAliasAttr">
+<tt class="descname">getAliasAttr</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.getAliasAttr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.getAliasList">
+<tt class="descname">getAliasList</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.getAliasList" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.getConnections">
+<tt class="descname">getConnections</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.getConnections" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.hasAttribute">
+<tt class="descname">hasAttribute</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.hasAttribute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.hasObj">
+<tt class="descname">hasObj</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.hasObj" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.hasUniqueName">
+<tt class="descname">hasUniqueName</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.hasUniqueName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.icon">
+<tt class="descname">icon</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.icon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.isDefaultNode">
+<tt class="descname">isDefaultNode</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.isDefaultNode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.isFlagSet">
+<tt class="descname">isFlagSet</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.isFlagSet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.isFromReferencedFile">
+<tt class="descname">isFromReferencedFile</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.isFromReferencedFile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.isLocked">
+<tt class="descname">isLocked</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.isLocked" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.isNewAttribute">
+<tt class="descname">isNewAttribute</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.isNewAttribute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.isShared">
+<tt class="descname">isShared</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.isShared" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.name">
+<tt class="descname">name</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.object">
+<tt class="descname">object</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.object" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.parentNamespace">
+<tt class="descname">parentNamespace</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.parentNamespace" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.pluginName">
+<tt class="descname">pluginName</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.pluginName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.plugsAlias">
+<tt class="descname">plugsAlias</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.plugsAlias" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.removeAttribute">
+<tt class="descname">removeAttribute</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.removeAttribute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.reorderedAttribute">
+<tt class="descname">reorderedAttribute</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.reorderedAttribute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.setAlias">
+<tt class="descname">setAlias</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.setAlias" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.setDoNotWrite">
+<tt class="descname">setDoNotWrite</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.setDoNotWrite" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.setFlag">
+<tt class="descname">setFlag</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.setFlag" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.setIcon">
+<tt class="descname">setIcon</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.setIcon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.setLocked">
+<tt class="descname">setLocked</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.setLocked" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.setName">
+<tt class="descname">setName</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.setName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.setObject">
+<tt class="descname">setObject</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.setObject" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.thisown">
+<tt class="descname">thisown</tt><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.thisown" title="Permalink to this definition">¶</a></dt>
+<dd>The membership flag</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.type">
+<tt class="descname">type</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.typeId">
+<tt class="descname">typeId</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.typeId" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.typeName">
+<tt class="descname">typeName</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.typeName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.MFnDependencyNode.userNode">
+<tt class="descname">userNode</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.MFnDependencyNode.userNode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -1094,7 +1557,7 @@ of type component instance ( Single|Double|TripleIndexComponent )</li>
 
 <dl class="method">
 <dt id="mrv.maya.nt.storage.ObjectSet.addTo">
-<tt class="descname">addTo</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x53dd950&gt; &gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.ObjectSet.addTo" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">addTo</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x44cffb0&gt; &gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.ObjectSet.addTo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add ourselves to the given set</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1157,7 +1620,7 @@ in order to return the name of their leaf node</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.storage.ObjectSet.children">
-<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee848&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.ObjectSet.children" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a39ed8&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.ObjectSet.children" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1174,7 +1637,7 @@ in order to return the name of their leaf node</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.storage.ObjectSet.childrenDeep">
-<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee668&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.ObjectSet.childrenDeep" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c050&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.ObjectSet.childrenDeep" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1194,6 +1657,11 @@ in order to return the name of their leaf node</td>
 </tbody>
 </table>
 </dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.ObjectSet.className">
+<tt class="descname">className</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.ObjectSet.className" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="method">
 <dt id="mrv.maya.nt.storage.ObjectSet.classification">
@@ -1223,9 +1691,9 @@ in order to return the name of their leaf node</td>
 <tbody valign="top">
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of object set compatible Nodes having self as member</td>
 </tr>
-<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>setFilter</em> &#8211; tuple( apiType, use_exact_type ) - the combination of the
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>setFilter</em> &#8211; tuple(apiType, use_exact_type) - the combination of the
 desired api type and the exact type flag allow precise control whether you which
-to get only renderable shading engines, only objectfSets ( tuple[1] = True ),
+to get only renderable shading engines, only objectfSets (tuple[1] = True),
 or all objects supporting the given object type.
 Its preset to only return shading engines</td>
 </tr>
@@ -1431,7 +1899,7 @@ implementation</p>
 </td>
 </tr>
 <tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">undo could be implemented for dg nodes - but for reasons of consistency, its disabled here -
-who knows how much it will crap out after a while as duplicate is not undoable ( mel command )  -
+who knows how much it will crap out after a while as duplicate is not undoable (mel command)  -
 it never really worked to undo a mel command from within python, executed using a dgmodifier - unfortunately
 it does not return any result making it hard to find the newly duplicated object !</p>
 </td>
@@ -1601,7 +2069,7 @@ set with objects</p>
 
 <dl class="method">
 <dt id="mrv.maya.nt.storage.ObjectSet.isMember">
-<tt class="descname">isMember</tt><big>(</big><em>obj</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x5435de0&gt; &gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.ObjectSet.isMember" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">isMember</tt><big>(</big><em>obj</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x471d3f0&gt; &gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.ObjectSet.isMember" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1622,7 +2090,7 @@ It returns true for components that are not actually in the givne shading group<
 
 <dl class="method">
 <dt id="mrv.maya.nt.storage.ObjectSet.isMemberOf">
-<tt class="descname">isMemberOf</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x5433ee0&gt; &gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.ObjectSet.isMemberOf" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">isMemberOf</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x442aea0&gt; &gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.ObjectSet.isMemberOf" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1745,7 +2213,7 @@ It returns true for components that are not actually in the givne shading group<
 
 <dl class="method">
 <dt id="mrv.maya.nt.storage.ObjectSet.iterParents">
-<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee2a8&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.ObjectSet.iterParents" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c230&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.ObjectSet.iterParents" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1852,7 +2320,7 @@ is the dag&#8217;s root</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body">name ( str ) of file this node is coming from - it could contain
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">name (str) of file this node is coming from - it could contain
 a copy number as {x}</td>
 </tr>
 <tr class="field"><th class="field-name">Note:</th><td class="field-body">will raise if the node is not referenced, use isReferenced to figure
@@ -1878,7 +2346,7 @@ that out</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.storage.ObjectSet.removeFrom">
-<tt class="descname">removeFrom</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x5241670&gt; &gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.ObjectSet.removeFrom" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">removeFrom</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x456f830&gt; &gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.ObjectSet.removeFrom" title="Permalink to this definition">¶</a></dt>
 <dd><p>remove ourselves to the given set</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2055,9 +2523,9 @@ rename the object.</p>
 <tbody valign="top">
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of object set compatible Nodes having self as member</td>
 </tr>
-<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>setFilter</em> &#8211; tuple( apiType, use_exact_type ) - the combination of the
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>setFilter</em> &#8211; tuple(apiType, use_exact_type) - the combination of the
 desired api type and the exact type flag allow precise control whether you which
-to get only renderable shading engines, only objectfSets ( tuple[1] = True ),
+to get only renderable shading engines, only objectfSets (tuple[1] = True),
 or all objects supporting the given object type.
 Its preset to only return shading engines</td>
 </tr>
@@ -2164,7 +2632,7 @@ by the API Docs</p>
 the copy constructor, even if you retrieve a const data reference, where this would not be
 required actually. This is fine for most uses</td>
 </tr>
-<tr class="field"><th class="field-name">Note:</th><td class="field-body">as the datatype is reference based, undo is currently not supported ( or does not
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">as the datatype is reference based, undo is currently not supported (or does not
 work as it is expected to do</td>
 </tr>
 </tbody>
@@ -2232,7 +2700,7 @@ It returns a string of a single char ... which is not the same :) !</td>
 <p><a class="reference external" href="api/mrv.maya.nt.storage.StorageBase-class.html">Epydoc: mrv.maya.nt.storage.StorageBase</a></p>
 <dl class="class">
 <dt id="mrv.maya.nt.storage.StorageBase">
-<em class="property">class </em><tt class="descclassname">mrv.maya.nt.storage.</tt><tt class="descname">StorageBase</tt><big>(</big><em>attrprefix=''</em>, <em>mayaNode=None</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageBase" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">mrv.maya.nt.storage.</tt><tt class="descname">StorageBase</tt><big>(</big><em>data_prefix=''</em>, <em>maya_node=None</em>, <em>attr_prefix=''</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageBase" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a title="mrv.interface.iDuplicatable" class="reference external" href="mrv.interface.html#mrv.interface.iDuplicatable"><tt class="xref docutils literal"><span class="pre">mrv.interface.iDuplicatable</span></tt></a></p>
 <p>A storage node contains a set of attributes allowing it to store
 python data and objects being stored in a pickled format upon file save.
@@ -2240,18 +2708,19 @@ Additionally you can store connections.
 Nodes used with this interface must be compatible to the following attribute scheme.
 To create that scheme, use <cite>createStorageAttribute</cite></p>
 <p><strong>Attribute Setup</strong>:</p>
-<div class="highlight-python"><pre>( shortname ( description ) [ data type ] )
-dta ( data )[ multi compound ]
-        id ( data id )[ string ]
-        type ( data type ) [ int ]      # for your own use, store bitflags to specify attribute
-        dval ( data value ) [ python pickle ]
-        dmsg ( data message )[ multi message ]</pre>
+<div class="highlight-python"><pre>(shortname (description) [data type])
+dta (data)[multi compound]
+        id (data id)[string]
+        type (data type) [int]  # for your own use, store bitflags to specify attribute
+        dval (data value) [python pickle]
+        dmsg (data message)[multi message]</pre>
 </div>
 <p><strong>Configuration</strong>:</p>
-<div class="highlight-python"><pre>attrprefix: will prefix every attribute during attr set and get - this allows
-        several clients to access the same storage base ( on the same node for example )
+<div class="highlight-python"><pre>data_prefix: will prefix every value name when setting and getting values - this allows
+        several clients to use the same storage attribute (on the same node for example)
         It acts like a namespace
-mayaNode: the maya node holding the actual attributes</pre>
+attr_prefix: prefixes the actual maya attribute to access
+maya_node: the maya node holding the actual attributes</pre>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2274,18 +2743,13 @@ creates its attributes</td>
 <p>Wrapper object prividing native access to the wrapped python pickle object
 and to the corresponding value plug, providing utlity methods for easier handling</p>
 <dl class="method">
-<dt id="mrv.maya.nt.storage.StorageBase.PyPickleValue.valueChanged">
-<tt class="descname">valueChanged</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageBase.PyPickleValue.valueChanged" title="Permalink to this definition">¶</a></dt>
-<dd><p>Will be called automatically if the underlying value changed if
-the node of the underlying plug is referenced</p>
-<table class="docutils field-list" frame="void" rules="none">
+<dt id="mrv.maya.nt.storage.StorageBase.PyPickleValue.isReferenced">
+<tt class="descname">isReferenced</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageBase.PyPickleValue.isReferenced" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Note:</th><td class="field-body">this method will only be called once during the lifetime of this object if it changes,
-as its enough to trigger reference to write the value if it changes once.
-Getting and setting data is expensive as there is a tracking dict in the background
-being spawned with internally created copies.</td>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if the data is from a referenced plug</td>
 </tr>
 </tbody>
 </table>
@@ -2325,8 +2789,6 @@ being spawned with internally created copies.</td>
 <tbody valign="top">
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body">our attribute prefix</td>
 </tr>
-<tr class="field"><th class="field-name">Note:</th><td class="field-body">it is read-only to assure we will never &#8216;forget&#8217; about our data</td>
-</tr>
 </tbody>
 </table>
 </dd></dl>
@@ -2346,7 +2808,7 @@ being spawned with internally created copies.</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.storage.StorageBase.children">
-<tt class="descclassname">StorageBase.</tt><tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee848&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageBase.children" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">StorageBase.</tt><tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a39ed8&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageBase.children" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2363,7 +2825,7 @@ being spawned with internally created copies.</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.storage.StorageBase.childrenDeep">
-<tt class="descclassname">StorageBase.</tt><tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee668&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageBase.childrenDeep" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">StorageBase.</tt><tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c050&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageBase.childrenDeep" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2387,18 +2849,10 @@ being spawned with internally created copies.</td>
 <dl class="method">
 <dt id="mrv.maya.nt.storage.StorageBase.clearAllData">
 <tt class="descclassname">StorageBase.</tt><tt class="descname">clearAllData</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageBase.clearAllData" title="Permalink to this definition">¶</a></dt>
-<dd><p>empty the whole storage, creating new python storage data to assure
-nothing is still referenced</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Note:</th><td class="field-body">use this method if you want to make sure your node
-is empty after it has been duplicated ( would usually be done in the
-postContructor</td>
-</tr>
-</tbody>
-</table>
+<dd><p>see <tt class="docutils literal"><span class="pre">clearAllData</span></tt> module level method
+:note: use this method if you want to make sure your node</p>
+<blockquote>
+is empty after it has been duplicated (would usually be done in the postContructor</blockquote>
 </dd></dl>
 
 <dl class="method">
@@ -2424,7 +2878,7 @@ be made. If False, a deep copy will be made</dd>
 </ul>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Note:</th><td class="field-body">only does so if the attribute prefixes actually match ( which should be
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">only does so if the attribute and data prefixes actually match (which should be
 the case if we get here, checking for it anyway</td>
 </tr>
 <tr class="field"><th class="field-name">Note:</th><td class="field-body">as pickle data always copies by reference to be efficient, we have to explicitly
@@ -2470,14 +2924,16 @@ As more checking is performed, this method performs worse than <cite>copyTo</cit
 <dl class="method">
 <dt id="mrv.maya.nt.storage.StorageBase.dataIDs">
 <tt class="descclassname">StorageBase.</tt><tt class="descname">dataIDs</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageBase.dataIDs" title="Permalink to this definition">¶</a></dt>
+<dd>see module level function with the same name</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.StorageBase.dataPrefix">
+<tt class="descclassname">StorageBase.</tt><tt class="descname">dataPrefix</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageBase.dataPrefix" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of all dataids available in the storage node</td>
-</tr>
-<tr class="field"><th class="field-name">Note:</th><td class="field-body">respects attribute prefix, and will only see ids with matching prefix.
-The prefix itself is transparent and will not bre returned</td>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">our data prefix</td>
 </tr>
 </tbody>
 </table>
@@ -2486,19 +2942,7 @@ The prefix itself is transparent and will not bre returned</td>
 <dl class="method">
 <dt id="mrv.maya.nt.storage.StorageBase.deleteObjectSet">
 <tt class="descclassname">StorageBase.</tt><tt class="descname">deleteObjectSet</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageBase.deleteObjectSet" title="Permalink to this definition">¶</a></dt>
-<dd><p>Delete the object set identified by setIndex</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Note:</th><td class="field-body">the method is implicitly undoable</td>
-</tr>
-<tr class="field"><th class="field-name">Note:</th><td class="field-body">use this method to delete your sets instead of manual deletion as it will automatically
-remove the managed partition in case the last set is being deleted</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
+<dd>See the module level method called <tt class="docutils literal"><span class="pre">deleteObjectSet</span></tt></dd></dl>
 
 <dl class="method">
 <dt id="mrv.maya.nt.storage.StorageBase.duplicate">
@@ -2586,7 +3030,7 @@ method. Thus we will call the method directly on the class</p>
 
 <dl class="method">
 <dt id="mrv.maya.nt.storage.StorageBase.iterParents">
-<tt class="descclassname">StorageBase.</tt><tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee2a8&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageBase.iterParents" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">StorageBase.</tt><tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c230&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageBase.iterParents" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2602,15 +3046,16 @@ method. Thus we will call the method directly on the class</p>
 <dl class="method">
 <dt id="mrv.maya.nt.storage.StorageBase.makePlug">
 <tt class="descclassname">StorageBase.</tt><tt class="descname">makePlug</tt><big>(</big><em>dataID</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageBase.makePlug" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a plug that can be retrieved using the given dataID</p>
-<table class="docutils field-list" frame="void" rules="none">
+<dd>see <tt class="docutils literal"><span class="pre">makePlug</span></tt> module level function</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.StorageBase.masterPlug">
+<tt class="descclassname">StorageBase.</tt><tt class="descname">masterPlug</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageBase.masterPlug" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>dataID</em> &#8211; string identifier</td>
-</tr>
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the created master plug, containing subplugs dval and dmsg
-for generic data and  message connections respectively</td>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">master plug according to our attributePrefix</td>
 </tr>
 </tbody>
 </table>
@@ -2618,37 +3063,8 @@ for generic data and  message connections respectively</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.storage.StorageBase.objectSet">
-<tt class="descclassname">StorageBase.</tt><tt class="descname">objectSet</tt><big>(</big><em>dataID</em>, <em>setIndex</em>, <em>autoCreate=True</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageBase.objectSet" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get an object set identified with setIndex at the given dataId</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><em>dataID</em> &#8211; id identifying the storage plug on this node</li>
-<li><em>setIndex</em> &#8211; logical index at which the set will be connected to our message plug array</li>
-<li><em>autoCreate</em> &#8211; if True, a set will be created if it does not yet exist</li>
-</ul>
-</td>
-</tr>
-<tr class="field"><th class="field-name" colspan="2">Raises ValueError:</th></tr>
-<tr><td>&nbsp;</td><td class="field-body"><p class="first">if a set does not exist at setIndex and autoCreate is False</p>
-</td>
-</tr>
-<tr class="field"><th class="field-name" colspan="2">Raises AttributeError:</th></tr>
-<tr><td>&nbsp;</td><td class="field-body"><p class="first">if the plug did not exist ( and autocreate is False )</p>
-</td>
-</tr>
-<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">method is implicitly undoable if autoCreate is True, this also means that you cannot
-explicitly undo this operation as you do not know if undo has been queued or not</p>
-</td>
-</tr>
-<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">newly created sets will automatically use partitions if one of the sets does</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
+<tt class="descclassname">StorageBase.</tt><tt class="descname">objectSet</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageBase.objectSet" title="Permalink to this definition">¶</a></dt>
+<dd>see module level <tt class="docutils literal"><span class="pre">objectSet</span></tt> function</dd></dl>
 
 <dl class="method">
 <dt id="mrv.maya.nt.storage.StorageBase.parent">
@@ -2684,8 +3100,7 @@ is the dag&#8217;s root</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body">partition Node attached to the sets at dataID or None if state
-is disabled</td>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">partition Node attached to the sets at dataID or None if state is disabled</td>
 </tr>
 </tbody>
 </table>
@@ -2698,7 +3113,7 @@ is disabled</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">PyPickleVal object at the given index ( it can be modified natively )</p>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">PyPickleVal object at the given index (it can be modified natively)</p>
 </td>
 </tr>
 <tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
@@ -2750,36 +3165,20 @@ Plugs will always be created, the given index specifies a logical plug index</dd
 </dd></dl>
 
 <dl class="method">
+<dt id="mrv.maya.nt.storage.StorageBase.setAttributePrefix">
+<tt class="descclassname">StorageBase.</tt><tt class="descname">setAttributePrefix</tt><big>(</big><em>prefix</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageBase.setAttributePrefix" title="Permalink to this definition">¶</a></dt>
+<dd>Change the prefix with which to access to the actual storage data attributes on our node
+to the given string</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.StorageBase.setDataPrefix">
+<tt class="descclassname">StorageBase.</tt><tt class="descname">setDataPrefix</tt><big>(</big><em>prefix</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageBase.setDataPrefix" title="Permalink to this definition">¶</a></dt>
+<dd>Change the data prefix to the given value string</dd></dl>
+
+<dl class="method">
 <dt id="mrv.maya.nt.storage.StorageBase.setPartition">
 <tt class="descclassname">StorageBase.</tt><tt class="descname">setPartition</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageBase.setPartition" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make all sets in dataID use a partition or not</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><em>dataID</em> &#8211; id identifying the storage plug</li>
-<li><em>state</em> &#8211; if True, a partition will be used, if False, it will be disabled</li>
-</ul>
-</td>
-</tr>
-<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">this method makes sure that all sets are hooked up to the partition</p>
-</td>
-</tr>
-<tr class="field"><th class="field-name" colspan="2">Raises ValueError:</th></tr>
-<tr><td>&nbsp;</td><td class="field-body"><p class="first">If we did not have a single set to which to add to the partition</p>
-</td>
-</tr>
-<tr class="field"><th class="field-name" colspan="2">Raises AttributeError:</th></tr>
-<tr><td>&nbsp;</td><td class="field-body"><p class="first">If the dataID has never had sets</p>
-</td>
-</tr>
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">if state is True, the name of the possibly created ( or existing ) partition</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
+<dd>see <tt class="docutils literal"><span class="pre">setPartition</span></tt> function on module level</dd></dl>
 
 <dl class="method">
 <dt id="mrv.maya.nt.storage.StorageBase.setStorageNode">
@@ -2825,36 +3224,7 @@ trying to access functions will fail as the path of our node might be invalid</t
 <dl class="method">
 <dt id="mrv.maya.nt.storage.StorageBase.storagePlug">
 <tt class="descclassname">StorageBase.</tt><tt class="descname">storagePlug</tt><big>(</big><em>dataID</em>, <em>plugType=None</em>, <em>autoCreate=False</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageBase.storagePlug" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">plug of the given type, either as tuple of two plugs or the plug
-specified by plugType</p>
-</td>
-</tr>
-<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><em>dataID</em> &#8211; the name of the plug to be returned</li>
-<li><em>plugType</em> &#8211; StorageBase.kMessage: return message array plug only
-StorageBase.kValue: return python pickle array plug only
-StorageBase.kStorage: return the storage plug itself containing message and the value plug
-None: return ( picklePlug , messagePlug )</li>
-<li><em>autoCreate</em> &#8211; if True, a plug with the given dataID will be created if it does not
-yet exist</li>
-</ul>
-</td>
-</tr>
-<tr class="field"><th class="field-name" colspan="2">Raises AttributeError:</th></tr>
-<tr><td>&nbsp;</td><td class="field-body"><p class="first">if a plug with dataID does not exist and default value is None</p>
-</td>
-</tr>
-<tr class="field"><th class="field-name" colspan="2">Raises TypeError:</th></tr>
-<tr><td>&nbsp;</td><td class="field-body"><p class="first last">if  plugtype unknown</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
+<dd>see <tt class="docutils literal"><span class="pre">storagePlug</span></tt> module level function</dd></dl>
 
 <dl class="method">
 <dt id="mrv.maya.nt.storage.StorageBase.supports">
@@ -2905,18 +3275,13 @@ generic attributes as it requires during plugin load</td>
 <p>Wrapper object prividing native access to the wrapped python pickle object
 and to the corresponding value plug, providing utlity methods for easier handling</p>
 <dl class="method">
-<dt id="mrv.maya.nt.storage.StorageNode.PyPickleValue.valueChanged">
-<tt class="descname">valueChanged</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageNode.PyPickleValue.valueChanged" title="Permalink to this definition">¶</a></dt>
-<dd><p>Will be called automatically if the underlying value changed if
-the node of the underlying plug is referenced</p>
-<table class="docutils field-list" frame="void" rules="none">
+<dt id="mrv.maya.nt.storage.StorageNode.PyPickleValue.isReferenced">
+<tt class="descname">isReferenced</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageNode.PyPickleValue.isReferenced" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Note:</th><td class="field-body">this method will only be called once during the lifetime of this object if it changes,
-as its enough to trigger reference to write the value if it changes once.
-Getting and setting data is expensive as there is a tracking dict in the background
-being spawned with internally created copies.</td>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if the data is from a referenced plug</td>
 </tr>
 </tbody>
 </table>
@@ -2970,7 +3335,7 @@ reside on the undo queue</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.storage.StorageNode.addTo">
-<tt class="descclassname">StorageNode.</tt><tt class="descname">addTo</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x53dd950&gt; &gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageNode.addTo" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">StorageNode.</tt><tt class="descname">addTo</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x44cffb0&gt; &gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageNode.addTo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add ourselves to the given set</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -3024,8 +3389,6 @@ reside on the undo queue</td>
 <tbody valign="top">
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body">our attribute prefix</td>
 </tr>
-<tr class="field"><th class="field-name">Note:</th><td class="field-body">it is read-only to assure we will never &#8216;forget&#8217; about our data</td>
-</tr>
 </tbody>
 </table>
 </dd></dl>
@@ -3048,7 +3411,7 @@ in order to return the name of their leaf node</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.storage.StorageNode.children">
-<tt class="descclassname">StorageNode.</tt><tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee848&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageNode.children" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">StorageNode.</tt><tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a39ed8&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageNode.children" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -3065,7 +3428,7 @@ in order to return the name of their leaf node</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.storage.StorageNode.childrenDeep">
-<tt class="descclassname">StorageNode.</tt><tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee668&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageNode.childrenDeep" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">StorageNode.</tt><tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c050&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageNode.childrenDeep" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -3087,6 +3450,11 @@ in order to return the name of their leaf node</td>
 </dd></dl>
 
 <dl class="method">
+<dt id="mrv.maya.nt.storage.StorageNode.className">
+<tt class="descclassname">StorageNode.</tt><tt class="descname">className</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageNode.className" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="mrv.maya.nt.storage.StorageNode.classification">
 <tt class="descclassname">StorageNode.</tt><tt class="descname">classification</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageNode.classification" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -3094,18 +3462,10 @@ in order to return the name of their leaf node</td>
 <dl class="method">
 <dt id="mrv.maya.nt.storage.StorageNode.clearAllData">
 <tt class="descclassname">StorageNode.</tt><tt class="descname">clearAllData</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageNode.clearAllData" title="Permalink to this definition">¶</a></dt>
-<dd><p>empty the whole storage, creating new python storage data to assure
-nothing is still referenced</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Note:</th><td class="field-body">use this method if you want to make sure your node
-is empty after it has been duplicated ( would usually be done in the
-postContructor</td>
-</tr>
-</tbody>
-</table>
+<dd><p>see <tt class="docutils literal"><span class="pre">clearAllData</span></tt> module level method
+:note: use this method if you want to make sure your node</p>
+<blockquote>
+is empty after it has been duplicated (would usually be done in the postContructor</blockquote>
 </dd></dl>
 
 <dl class="method">
@@ -3122,9 +3482,9 @@ postContructor</td>
 <tbody valign="top">
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of object set compatible Nodes having self as member</td>
 </tr>
-<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>setFilter</em> &#8211; tuple( apiType, use_exact_type ) - the combination of the
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>setFilter</em> &#8211; tuple(apiType, use_exact_type) - the combination of the
 desired api type and the exact type flag allow precise control whether you which
-to get only renderable shading engines, only objectfSets ( tuple[1] = True ),
+to get only renderable shading engines, only objectfSets (tuple[1] = True),
 or all objects supporting the given object type.
 Its preset to only return shading engines</td>
 </tr>
@@ -3168,7 +3528,7 @@ be made. If False, a deep copy will be made</dd>
 </ul>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Note:</th><td class="field-body">only does so if the attribute prefixes actually match ( which should be
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">only does so if the attribute and data prefixes actually match (which should be
 the case if we get here, checking for it anyway</td>
 </tr>
 <tr class="field"><th class="field-name">Note:</th><td class="field-body">as pickle data always copies by reference to be efficient, we have to explicitly
@@ -3214,14 +3574,16 @@ As more checking is performed, this method performs worse than <cite>copyTo</cit
 <dl class="method">
 <dt id="mrv.maya.nt.storage.StorageNode.dataIDs">
 <tt class="descclassname">StorageNode.</tt><tt class="descname">dataIDs</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageNode.dataIDs" title="Permalink to this definition">¶</a></dt>
+<dd>see module level function with the same name</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.StorageNode.dataPrefix">
+<tt class="descclassname">StorageNode.</tt><tt class="descname">dataPrefix</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageNode.dataPrefix" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of all dataids available in the storage node</td>
-</tr>
-<tr class="field"><th class="field-name">Note:</th><td class="field-body">respects attribute prefix, and will only see ids with matching prefix.
-The prefix itself is transparent and will not bre returned</td>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">our data prefix</td>
 </tr>
 </tbody>
 </table>
@@ -3258,19 +3620,7 @@ using the global <cite>delete</cite> method</td>
 <dl class="method">
 <dt id="mrv.maya.nt.storage.StorageNode.deleteObjectSet">
 <tt class="descclassname">StorageNode.</tt><tt class="descname">deleteObjectSet</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageNode.deleteObjectSet" title="Permalink to this definition">¶</a></dt>
-<dd><p>Delete the object set identified by setIndex</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Note:</th><td class="field-body">the method is implicitly undoable</td>
-</tr>
-<tr class="field"><th class="field-name">Note:</th><td class="field-body">use this method to delete your sets instead of manual deletion as it will automatically
-remove the managed partition in case the last set is being deleted</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
+<dd>See the module level method called <tt class="docutils literal"><span class="pre">deleteObjectSet</span></tt></dd></dl>
 
 <dl class="method">
 <dt id="mrv.maya.nt.storage.StorageNode.dependencyInfo">
@@ -3323,7 +3673,7 @@ implementation</p>
 </td>
 </tr>
 <tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">undo could be implemented for dg nodes - but for reasons of consistency, its disabled here -
-who knows how much it will crap out after a while as duplicate is not undoable ( mel command )  -
+who knows how much it will crap out after a while as duplicate is not undoable (mel command)  -
 it never really worked to undo a mel command from within python, executed using a dgmodifier - unfortunately
 it does not return any result making it hard to find the newly duplicated object !</p>
 </td>
@@ -3395,7 +3745,7 @@ function set comes first</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.storage.StorageNode.isMemberOf">
-<tt class="descclassname">StorageNode.</tt><tt class="descname">isMemberOf</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x5433ee0&gt; &gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageNode.isMemberOf" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">StorageNode.</tt><tt class="descname">isMemberOf</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x442aea0&gt; &gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageNode.isMemberOf" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -3472,7 +3822,7 @@ function set comes first</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.storage.StorageNode.iterParents">
-<tt class="descclassname">StorageNode.</tt><tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee2a8&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageNode.iterParents" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">StorageNode.</tt><tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c230&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageNode.iterParents" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -3488,15 +3838,16 @@ function set comes first</td>
 <dl class="method">
 <dt id="mrv.maya.nt.storage.StorageNode.makePlug">
 <tt class="descclassname">StorageNode.</tt><tt class="descname">makePlug</tt><big>(</big><em>dataID</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageNode.makePlug" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a plug that can be retrieved using the given dataID</p>
-<table class="docutils field-list" frame="void" rules="none">
+<dd>see <tt class="docutils literal"><span class="pre">makePlug</span></tt> module level function</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.StorageNode.masterPlug">
+<tt class="descclassname">StorageNode.</tt><tt class="descname">masterPlug</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageNode.masterPlug" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>dataID</em> &#8211; string identifier</td>
-</tr>
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the created master plug, containing subplugs dval and dmsg
-for generic data and  message connections respectively</td>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">master plug according to our attributePrefix</td>
 </tr>
 </tbody>
 </table>
@@ -3517,37 +3868,8 @@ for generic data and  message connections respectively</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.storage.StorageNode.objectSet">
-<tt class="descclassname">StorageNode.</tt><tt class="descname">objectSet</tt><big>(</big><em>dataID</em>, <em>setIndex</em>, <em>autoCreate=True</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageNode.objectSet" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get an object set identified with setIndex at the given dataId</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><em>dataID</em> &#8211; id identifying the storage plug on this node</li>
-<li><em>setIndex</em> &#8211; logical index at which the set will be connected to our message plug array</li>
-<li><em>autoCreate</em> &#8211; if True, a set will be created if it does not yet exist</li>
-</ul>
-</td>
-</tr>
-<tr class="field"><th class="field-name" colspan="2">Raises ValueError:</th></tr>
-<tr><td>&nbsp;</td><td class="field-body"><p class="first">if a set does not exist at setIndex and autoCreate is False</p>
-</td>
-</tr>
-<tr class="field"><th class="field-name" colspan="2">Raises AttributeError:</th></tr>
-<tr><td>&nbsp;</td><td class="field-body"><p class="first">if the plug did not exist ( and autocreate is False )</p>
-</td>
-</tr>
-<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">method is implicitly undoable if autoCreate is True, this also means that you cannot
-explicitly undo this operation as you do not know if undo has been queued or not</p>
-</td>
-</tr>
-<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">newly created sets will automatically use partitions if one of the sets does</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
+<tt class="descclassname">StorageNode.</tt><tt class="descname">objectSet</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageNode.objectSet" title="Permalink to this definition">¶</a></dt>
+<dd>see module level <tt class="docutils literal"><span class="pre">objectSet</span></tt> function</dd></dl>
 
 <dl class="method">
 <dt id="mrv.maya.nt.storage.StorageNode.parent">
@@ -3583,8 +3905,7 @@ is the dag&#8217;s root</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body">partition Node attached to the sets at dataID or None if state
-is disabled</td>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">partition Node attached to the sets at dataID or None if state is disabled</td>
 </tr>
 </tbody>
 </table>
@@ -3597,7 +3918,7 @@ is disabled</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">PyPickleVal object at the given index ( it can be modified natively )</p>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">PyPickleVal object at the given index (it can be modified natively)</p>
 </td>
 </tr>
 <tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
@@ -3642,7 +3963,7 @@ Plugs will always be created, the given index specifies a logical plug index</dd
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body">name ( str ) of file this node is coming from - it could contain
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">name (str) of file this node is coming from - it could contain
 a copy number as {x}</td>
 </tr>
 <tr class="field"><th class="field-name">Note:</th><td class="field-body">will raise if the node is not referenced, use isReferenced to figure
@@ -3668,7 +3989,7 @@ that out</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.storage.StorageNode.removeFrom">
-<tt class="descclassname">StorageNode.</tt><tt class="descname">removeFrom</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x5241670&gt; &gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageNode.removeFrom" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">StorageNode.</tt><tt class="descname">removeFrom</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x456f830&gt; &gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageNode.removeFrom" title="Permalink to this definition">¶</a></dt>
 <dd><p>remove ourselves to the given set</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -3722,6 +4043,17 @@ a RuntimeException will be thrown if a required namespace does not exist</li>
 </dd></dl>
 
 <dl class="method">
+<dt id="mrv.maya.nt.storage.StorageNode.setAttributePrefix">
+<tt class="descclassname">StorageNode.</tt><tt class="descname">setAttributePrefix</tt><big>(</big><em>prefix</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageNode.setAttributePrefix" title="Permalink to this definition">¶</a></dt>
+<dd>Change the prefix with which to access to the actual storage data attributes on our node
+to the given string</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.storage.StorageNode.setDataPrefix">
+<tt class="descclassname">StorageNode.</tt><tt class="descname">setDataPrefix</tt><big>(</big><em>prefix</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageNode.setDataPrefix" title="Permalink to this definition">¶</a></dt>
+<dd>Change the data prefix to the given value string</dd></dl>
+
+<dl class="method">
 <dt id="mrv.maya.nt.storage.StorageNode.setLocked">
 <tt class="descclassname">StorageNode.</tt><tt class="descname">setLocked</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageNode.setLocked" title="Permalink to this definition">¶</a></dt>
 <dd><p>Lock or unloack this node</p>
@@ -3762,34 +4094,7 @@ rename the object.</p>
 <dl class="method">
 <dt id="mrv.maya.nt.storage.StorageNode.setPartition">
 <tt class="descclassname">StorageNode.</tt><tt class="descname">setPartition</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageNode.setPartition" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make all sets in dataID use a partition or not</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><em>dataID</em> &#8211; id identifying the storage plug</li>
-<li><em>state</em> &#8211; if True, a partition will be used, if False, it will be disabled</li>
-</ul>
-</td>
-</tr>
-<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">this method makes sure that all sets are hooked up to the partition</p>
-</td>
-</tr>
-<tr class="field"><th class="field-name" colspan="2">Raises ValueError:</th></tr>
-<tr><td>&nbsp;</td><td class="field-body"><p class="first">If we did not have a single set to which to add to the partition</p>
-</td>
-</tr>
-<tr class="field"><th class="field-name" colspan="2">Raises AttributeError:</th></tr>
-<tr><td>&nbsp;</td><td class="field-body"><p class="first">If the dataID has never had sets</p>
-</td>
-</tr>
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">if state is True, the name of the possibly created ( or existing ) partition</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
+<dd>see <tt class="docutils literal"><span class="pre">setPartition</span></tt> function on module level</dd></dl>
 
 <dl class="method">
 <dt id="mrv.maya.nt.storage.StorageNode.setStorageNode">
@@ -3815,9 +4120,9 @@ trying to access functions will fail as the path of our node might be invalid</t
 <tbody valign="top">
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of object set compatible Nodes having self as member</td>
 </tr>
-<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>setFilter</em> &#8211; tuple( apiType, use_exact_type ) - the combination of the
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>setFilter</em> &#8211; tuple(apiType, use_exact_type) - the combination of the
 desired api type and the exact type flag allow precise control whether you which
-to get only renderable shading engines, only objectfSets ( tuple[1] = True ),
+to get only renderable shading engines, only objectfSets (tuple[1] = True),
 or all objects supporting the given object type.
 Its preset to only return shading engines</td>
 </tr>
@@ -3859,36 +4164,7 @@ see sets having component assignments like per-compoent shader assignments or de
 <dl class="method">
 <dt id="mrv.maya.nt.storage.StorageNode.storagePlug">
 <tt class="descclassname">StorageNode.</tt><tt class="descname">storagePlug</tt><big>(</big><em>dataID</em>, <em>plugType=None</em>, <em>autoCreate=False</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.StorageNode.storagePlug" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">plug of the given type, either as tuple of two plugs or the plug
-specified by plugType</p>
-</td>
-</tr>
-<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><em>dataID</em> &#8211; the name of the plug to be returned</li>
-<li><em>plugType</em> &#8211; StorageBase.kMessage: return message array plug only
-StorageBase.kValue: return python pickle array plug only
-StorageBase.kStorage: return the storage plug itself containing message and the value plug
-None: return ( picklePlug , messagePlug )</li>
-<li><em>autoCreate</em> &#8211; if True, a plug with the given dataID will be created if it does not
-yet exist</li>
-</ul>
-</td>
-</tr>
-<tr class="field"><th class="field-name" colspan="2">Raises AttributeError:</th></tr>
-<tr><td>&nbsp;</td><td class="field-body"><p class="first">if a plug with dataID does not exist and default value is None</p>
-</td>
-</tr>
-<tr class="field"><th class="field-name" colspan="2">Raises TypeError:</th></tr>
-<tr><td>&nbsp;</td><td class="field-body"><p class="first last">if  plugtype unknown</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
+<dd>see <tt class="docutils literal"><span class="pre">storagePlug</span></tt> module level function</dd></dl>
 
 <dl class="method">
 <dt id="mrv.maya.nt.storage.StorageNode.supports">
@@ -3965,7 +4241,7 @@ will not work</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.storage.iDuplicatable.children">
-<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee848&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.iDuplicatable.children" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a39ed8&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.iDuplicatable.children" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -3982,7 +4258,7 @@ will not work</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.storage.iDuplicatable.childrenDeep">
-<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee668&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.iDuplicatable.childrenDeep" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c050&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.iDuplicatable.childrenDeep" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -4137,7 +4413,7 @@ method. Thus we will call the method directly on the class</p>
 
 <dl class="method">
 <dt id="mrv.maya.nt.storage.iDuplicatable.iterParents">
-<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee2a8&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.iDuplicatable.iterParents" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c230&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.storage.iDuplicatable.iterParents" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -4273,12 +4549,12 @@ will not work</td>
         <li class="right" >
           <a href="mrv.maya.nt.util.html" title="mrv.maya.nt.util"
              >previous</a> |</li>
-        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li> 
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
       &copy; Copyright Sebastian Thiel.
-      Last updated on Nov 30, 2010.
+      Last updated on Apr 19, 2011.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
     </div>
   </body>

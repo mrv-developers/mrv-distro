@@ -5,13 +5,13 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>mrv.maya.nt.geometry &mdash; mrv v1.0.1-develop documentation</title>
+    <title>mrv.maya.nt.geometry &mdash; mrv v1.0.2-develop documentation</title>
     <link rel="stylesheet" href="../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.0.1-develop',
+        VERSION:     '1.0.2-develop',
         COLLAPSE_MODINDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -20,7 +20,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
-    <link rel="top" title="mrv v1.0.1-develop documentation" href="../index.html" />
+    <link rel="top" title="mrv v1.0.2-develop documentation" href="../index.html" />
     <link rel="next" title="mrv.automation.process" href="mrv.automation.process.html" />
     <link rel="prev" title="mrv.maya.nt.storage" href="mrv.maya.nt.storage.html" /> 
   </head>
@@ -40,7 +40,7 @@
         <li class="right" >
           <a href="mrv.maya.nt.storage.html" title="mrv.maya.nt.storage"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li> 
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -97,7 +97,7 @@ reside on the undo queue</td>
 <li><em>position</em> &#8211; the index to which to add the new child, kNextPos will add it as last child.
 It supports python style negative indices</li>
 <li><em>keepExistingParent</em> &#8211; if True, the childNode will be instanced as it will
-have its previous parent and this one, if False, the previous parent will be removed
+have its previous parent(s) and this one, if False, the previous parent will be removed
 from the child&#8217;s parent list</li>
 <li><em>renameOnClash</em> &#8211; resolve nameclashes by automatically renaming the node to make it unique</li>
 <li><em>keepWorldSpace</em> &#8211; see <cite>reparent</cite>, only effective if the node is not instanced</li>
@@ -109,11 +109,6 @@ from the child&#8217;s parent list</li>
 </tr>
 <tr class="field"><th class="field-name" colspan="2">Raises ValueError:</th></tr>
 <tr><td>&nbsp;</td><td class="field-body"><p class="first">if keepWorldSpace is requested with directly instanced nodes</p>
-</td>
-</tr>
-<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">the keepExistingParent flag is custom implemented as it would remove all existng parentS,
-not just the one of the path behind the object ( it does not use a path, so it must remove all existing
-parents unfortunatly ! )</p>
 </td>
 </tr>
 <tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">as maya internally handles add/remove child as instancing operation, even though
@@ -189,7 +184,7 @@ argument is being ignored</p>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.ControlPoint.addTo">
-<tt class="descname">addTo</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x53dd950&gt; &gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.ControlPoint.addTo" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">addTo</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x44cffb0&gt; &gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.ControlPoint.addTo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add ourselves to the given set</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -266,7 +261,7 @@ we use to aquire the object</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.ControlPoint.childTransforms">
-<tt class="descname">childTransforms</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x564b668&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.ControlPoint.childTransforms" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">childTransforms</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x479dde8&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.ControlPoint.childTransforms" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -279,7 +274,7 @@ we use to aquire the object</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.ControlPoint.children">
-<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x564b398&gt;</em>, <em>asNode=True</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.ControlPoint.children" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x479db18&gt;</em>, <em>asNode=True</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.ControlPoint.children" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -295,7 +290,7 @@ get MDagPaths</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.ControlPoint.childrenByType">
-<tt class="descname">childrenByType</tt><big>(</big><em>nodeType</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x564b488&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.ControlPoint.childrenByType" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">childrenByType</tt><big>(</big><em>nodeType</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x479dc08&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.ControlPoint.childrenByType" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -310,7 +305,7 @@ get MDagPaths</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.ControlPoint.childrenDeep">
-<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee668&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.ControlPoint.childrenDeep" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c050&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.ControlPoint.childrenDeep" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -332,6 +327,11 @@ get MDagPaths</td>
 </dd></dl>
 
 <dl class="method">
+<dt id="mrv.maya.nt.geometry.ControlPoint.className">
+<tt class="descname">className</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.ControlPoint.className" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="mrv.maya.nt.geometry.ControlPoint.classification">
 <tt class="descname">classification</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.ControlPoint.classification" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -343,7 +343,7 @@ get MDagPaths</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of tuples( ObjectSetNode, Component_or_MObject ) defininmg shader
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of tuples(ObjectSetNode, Component_or_MObject) defininmg shader
 assignments on per component basis.</p>
 <p>If a shader is assigned to the whole object, the component would be a null object, otherwise
 it is an instance of a wrapped IndexedComponent class</p>
@@ -394,9 +394,9 @@ output meshes though</p>
 <tbody valign="top">
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of object set compatible Nodes having self as member</td>
 </tr>
-<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>setFilter</em> &#8211; tuple( apiType, use_exact_type ) - the combination of the
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>setFilter</em> &#8211; tuple(apiType, use_exact_type) - the combination of the
 desired api type and the exact type flag allow precise control whether you which
-to get only renderable shading engines, only objectfSets ( tuple[1] = True ),
+to get only renderable shading engines, only objectfSets (tuple[1] = True),
 or all objects supporting the given object type.
 Its preset to only return shading engines</td>
 </tr>
@@ -518,6 +518,9 @@ classes that do not have anything to duplicate just to use your implementeation<
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body">the original DagPath attached to this Node - it&#8217;s not wrapped
 for performance</td>
 </tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">If you plan to alter it, make sure you copy it using the 
+MDagPath(node.dagPath()) construct !</td>
+</tr>
 </tbody>
 </table>
 </dd></dl>
@@ -586,7 +589,7 @@ if the attribute turns dirty.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body">the override display value actually identified by plugName affecting
-the given object ( that should be a leaf node for the result you see in the viewport.
+the given object (that should be a leaf node for the result you see in the viewport.
 The display type in effect is always the last one set in the hierarchy
 returns None display overrides are disabled</td>
 </tr>
@@ -642,7 +645,7 @@ really change the scene, but adds undo operations</p>
 </tr>
 <tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">If meshes have tweaks applied, the duplicate will not have these tweaks and the meshes will look
 mislocated.
-Using MEL works in that case ... ( they fixed it there obviously ) , but creates invalid objects</p>
+Using MEL works in that case ... (they fixed it there obviously) , but creates invalid objects</p>
 </td>
 </tr>
 <tr class="field"><th class="field-name">Todo:</th><td class="field-body"><p class="first">Undo implementation - every undoable operation must in fact be based on strings to really work, all
@@ -651,7 +654,7 @@ this is far too much - dagNode.duplicate must be undoable by itself</p>
 </tr>
 <tr class="field"><th class="field-name">Todo:</th><td class="field-body"><p class="first last">duplicate should be completely reimplemented to support all mel options and actually work with
 meshes and tweaks - the underlying api duplication would still be used of course, as well as
-connections ( to sets ) and so on ...</p>
+connections (to sets) and so on ...</p>
 </td>
 </tr>
 </tbody>
@@ -713,7 +716,7 @@ function set comes first</td>
 <tbody valign="top">
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body">Node to the instance identified by instanceNumber</td>
 </tr>
-<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>instanceNumber</em> &#8211; range( 0, self.instanceCount()-1 )</td>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>instanceNumber</em> &#8211; range(0, self.instanceCount()-1)</td>
 </tr>
 </tbody>
 </table>
@@ -751,7 +754,7 @@ function set comes first</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.ControlPoint.isMemberOf">
-<tt class="descname">isMemberOf</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x5433ee0&gt; &gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.ControlPoint.isMemberOf" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">isMemberOf</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x442aea0&gt; &gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.ControlPoint.isMemberOf" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -860,7 +863,7 @@ visible</td>
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.ControlPoint.iterInstances">
 <tt class="descname">iterInstances</tt><big>(</big><em>excludeSelf=False</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.ControlPoint.iterInstances" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get iterator over all ( direct and indirect )instances of this node</p>
+<dd><p>Get iterator over all (direct and indirect)instances of this node</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -879,7 +882,7 @@ the list of items</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.ControlPoint.iterParents">
-<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee2a8&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.ControlPoint.iterParents" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c230&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.ControlPoint.iterParents" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -899,7 +902,7 @@ the list of items</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body">fully qualified ( long ) name of this dag node</td>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">fully qualified (long) name of this dag node</td>
 </tr>
 </tbody>
 </table>
@@ -968,7 +971,7 @@ the list of items</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body">name ( str ) of file this node is coming from - it could contain
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">name (str) of file this node is coming from - it could contain
 a copy number as {x}</td>
 </tr>
 <tr class="field"><th class="field-name">Note:</th><td class="field-body">will raise if the node is not referenced, use isReferenced to figure
@@ -995,7 +998,7 @@ that out</td>
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.ControlPoint.removeChild">
 <tt class="descname">removeChild</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.ControlPoint.removeChild" title="Permalink to this definition">¶</a></dt>
-<dd><p>remove the given childNode ( being a child of this node ) from our child list, effectively
+<dd><p>remove the given childNode (being a child of this node) from our child list, effectively
 parenting it under world !</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1011,7 +1014,7 @@ dag paths leads to it. If False, transforms will just be reparented under the wo
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">copy of childnode pointing to the first valid dag path we find.</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">to prevent the child ( if transform ) to dangle in unknown space if the last instance
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">to prevent the child (if transform) to dangle in unknown space if the last instance
 is to be removed, it will instead be reparented to world.</p>
 </td>
 </tr>
@@ -1024,7 +1027,7 @@ is to be removed, it will instead be reparented to world.</p>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.ControlPoint.removeFrom">
-<tt class="descname">removeFrom</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x5241670&gt; &gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.ControlPoint.removeFrom" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">removeFrom</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x456f830&gt; &gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.ControlPoint.removeFrom" title="Permalink to this definition">¶</a></dt>
 <dd><p>remove ourselves to the given set</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1081,14 +1084,14 @@ a RuntimeException will be thrown if a required namespace does not exist</li>
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.ControlPoint.reparent">
 <tt class="descname">reparent</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.ControlPoint.reparent" title="Permalink to this definition">¶</a></dt>
-<dd><p>Change the parent of all nodes ( also instances ) to be located below parentnode</p>
+<dd><p>Change the parent of all nodes (also instances) to be located below parentnode</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><em>parentnode</em> &#8211; Node instance of transform under which this node should be parented to
-if None, node will be reparented under the root ( which only works for transforms )</li>
+if None, node will be reparented under the root (which only works for transforms)</li>
 <li><em>renameOnClash</em> &#8211; resolve nameclashes by automatically renaming the node to make it unique</li>
 <li><em>raiseOnInstance</em> &#8211; if True, this method will raise if you try to reparent an instanced object.
 If false, instanced objects will be merged into the newly created path under parentnode, effectively
@@ -1191,9 +1194,9 @@ rename the object.</p>
 <tbody valign="top">
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of object set compatible Nodes having self as member</td>
 </tr>
-<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>setFilter</em> &#8211; tuple( apiType, use_exact_type ) - the combination of the
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>setFilter</em> &#8211; tuple(apiType, use_exact_type) - the combination of the
 desired api type and the exact type flag allow precise control whether you which
-to get only renderable shading engines, only objectfSets ( tuple[1] = True ),
+to get only renderable shading engines, only objectfSets (tuple[1] = True),
 or all objects supporting the given object type.
 Its preset to only return shading engines</td>
 </tr>
@@ -1208,7 +1211,7 @@ see sets having component assignments like per-compoent shader assignments or de
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.ControlPoint.shapes">
-<tt class="descname">shapes</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x564b578&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.ControlPoint.shapes" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">shapes</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x479dcf8&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.ControlPoint.shapes" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1303,7 +1306,7 @@ reside on the undo queue</td>
 <li><em>position</em> &#8211; the index to which to add the new child, kNextPos will add it as last child.
 It supports python style negative indices</li>
 <li><em>keepExistingParent</em> &#8211; if True, the childNode will be instanced as it will
-have its previous parent and this one, if False, the previous parent will be removed
+have its previous parent(s) and this one, if False, the previous parent will be removed
 from the child&#8217;s parent list</li>
 <li><em>renameOnClash</em> &#8211; resolve nameclashes by automatically renaming the node to make it unique</li>
 <li><em>keepWorldSpace</em> &#8211; see <cite>reparent</cite>, only effective if the node is not instanced</li>
@@ -1315,11 +1318,6 @@ from the child&#8217;s parent list</li>
 </tr>
 <tr class="field"><th class="field-name" colspan="2">Raises ValueError:</th></tr>
 <tr><td>&nbsp;</td><td class="field-body"><p class="first">if keepWorldSpace is requested with directly instanced nodes</p>
-</td>
-</tr>
-<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">the keepExistingParent flag is custom implemented as it would remove all existng parentS,
-not just the one of the path behind the object ( it does not use a path, so it must remove all existing
-parents unfortunatly ! )</p>
 </td>
 </tr>
 <tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">as maya internally handles add/remove child as instancing operation, even though
@@ -1395,7 +1393,7 @@ argument is being ignored</p>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.DeformableShape.addTo">
-<tt class="descname">addTo</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x53dd950&gt; &gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.DeformableShape.addTo" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">addTo</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x44cffb0&gt; &gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.DeformableShape.addTo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add ourselves to the given set</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1472,7 +1470,7 @@ we use to aquire the object</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.DeformableShape.childTransforms">
-<tt class="descname">childTransforms</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x564b668&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.DeformableShape.childTransforms" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">childTransforms</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x479dde8&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.DeformableShape.childTransforms" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1485,7 +1483,7 @@ we use to aquire the object</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.DeformableShape.children">
-<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x564b398&gt;</em>, <em>asNode=True</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.DeformableShape.children" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x479db18&gt;</em>, <em>asNode=True</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.DeformableShape.children" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1501,7 +1499,7 @@ get MDagPaths</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.DeformableShape.childrenByType">
-<tt class="descname">childrenByType</tt><big>(</big><em>nodeType</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x564b488&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.DeformableShape.childrenByType" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">childrenByType</tt><big>(</big><em>nodeType</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x479dc08&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.DeformableShape.childrenByType" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1516,7 +1514,7 @@ get MDagPaths</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.DeformableShape.childrenDeep">
-<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee668&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.DeformableShape.childrenDeep" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c050&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.DeformableShape.childrenDeep" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1538,6 +1536,11 @@ get MDagPaths</td>
 </dd></dl>
 
 <dl class="method">
+<dt id="mrv.maya.nt.geometry.DeformableShape.className">
+<tt class="descname">className</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.DeformableShape.className" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="mrv.maya.nt.geometry.DeformableShape.classification">
 <tt class="descname">classification</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.DeformableShape.classification" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -1549,7 +1552,7 @@ get MDagPaths</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of tuples( ObjectSetNode, Component_or_MObject ) defininmg shader
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of tuples(ObjectSetNode, Component_or_MObject) defininmg shader
 assignments on per component basis.</p>
 <p>If a shader is assigned to the whole object, the component would be a null object, otherwise
 it is an instance of a wrapped IndexedComponent class</p>
@@ -1600,9 +1603,9 @@ output meshes though</p>
 <tbody valign="top">
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of object set compatible Nodes having self as member</td>
 </tr>
-<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>setFilter</em> &#8211; tuple( apiType, use_exact_type ) - the combination of the
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>setFilter</em> &#8211; tuple(apiType, use_exact_type) - the combination of the
 desired api type and the exact type flag allow precise control whether you which
-to get only renderable shading engines, only objectfSets ( tuple[1] = True ),
+to get only renderable shading engines, only objectfSets (tuple[1] = True),
 or all objects supporting the given object type.
 Its preset to only return shading engines</td>
 </tr>
@@ -1724,6 +1727,9 @@ classes that do not have anything to duplicate just to use your implementeation<
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body">the original DagPath attached to this Node - it&#8217;s not wrapped
 for performance</td>
 </tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">If you plan to alter it, make sure you copy it using the 
+MDagPath(node.dagPath()) construct !</td>
+</tr>
 </tbody>
 </table>
 </dd></dl>
@@ -1792,7 +1798,7 @@ if the attribute turns dirty.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body">the override display value actually identified by plugName affecting
-the given object ( that should be a leaf node for the result you see in the viewport.
+the given object (that should be a leaf node for the result you see in the viewport.
 The display type in effect is always the last one set in the hierarchy
 returns None display overrides are disabled</td>
 </tr>
@@ -1848,7 +1854,7 @@ really change the scene, but adds undo operations</p>
 </tr>
 <tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">If meshes have tweaks applied, the duplicate will not have these tweaks and the meshes will look
 mislocated.
-Using MEL works in that case ... ( they fixed it there obviously ) , but creates invalid objects</p>
+Using MEL works in that case ... (they fixed it there obviously) , but creates invalid objects</p>
 </td>
 </tr>
 <tr class="field"><th class="field-name">Todo:</th><td class="field-body"><p class="first">Undo implementation - every undoable operation must in fact be based on strings to really work, all
@@ -1857,7 +1863,7 @@ this is far too much - dagNode.duplicate must be undoable by itself</p>
 </tr>
 <tr class="field"><th class="field-name">Todo:</th><td class="field-body"><p class="first last">duplicate should be completely reimplemented to support all mel options and actually work with
 meshes and tweaks - the underlying api duplication would still be used of course, as well as
-connections ( to sets ) and so on ...</p>
+connections (to sets) and so on ...</p>
 </td>
 </tr>
 </tbody>
@@ -1919,7 +1925,7 @@ function set comes first</td>
 <tbody valign="top">
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body">Node to the instance identified by instanceNumber</td>
 </tr>
-<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>instanceNumber</em> &#8211; range( 0, self.instanceCount()-1 )</td>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>instanceNumber</em> &#8211; range(0, self.instanceCount()-1)</td>
 </tr>
 </tbody>
 </table>
@@ -1957,7 +1963,7 @@ function set comes first</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.DeformableShape.isMemberOf">
-<tt class="descname">isMemberOf</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x5433ee0&gt; &gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.DeformableShape.isMemberOf" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">isMemberOf</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x442aea0&gt; &gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.DeformableShape.isMemberOf" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2066,7 +2072,7 @@ visible</td>
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.DeformableShape.iterInstances">
 <tt class="descname">iterInstances</tt><big>(</big><em>excludeSelf=False</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.DeformableShape.iterInstances" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get iterator over all ( direct and indirect )instances of this node</p>
+<dd><p>Get iterator over all (direct and indirect)instances of this node</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2085,7 +2091,7 @@ the list of items</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.DeformableShape.iterParents">
-<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee2a8&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.DeformableShape.iterParents" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c230&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.DeformableShape.iterParents" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2105,7 +2111,7 @@ the list of items</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body">fully qualified ( long ) name of this dag node</td>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">fully qualified (long) name of this dag node</td>
 </tr>
 </tbody>
 </table>
@@ -2174,7 +2180,7 @@ the list of items</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body">name ( str ) of file this node is coming from - it could contain
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">name (str) of file this node is coming from - it could contain
 a copy number as {x}</td>
 </tr>
 <tr class="field"><th class="field-name">Note:</th><td class="field-body">will raise if the node is not referenced, use isReferenced to figure
@@ -2201,7 +2207,7 @@ that out</td>
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.DeformableShape.removeChild">
 <tt class="descname">removeChild</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.DeformableShape.removeChild" title="Permalink to this definition">¶</a></dt>
-<dd><p>remove the given childNode ( being a child of this node ) from our child list, effectively
+<dd><p>remove the given childNode (being a child of this node) from our child list, effectively
 parenting it under world !</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2217,7 +2223,7 @@ dag paths leads to it. If False, transforms will just be reparented under the wo
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">copy of childnode pointing to the first valid dag path we find.</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">to prevent the child ( if transform ) to dangle in unknown space if the last instance
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">to prevent the child (if transform) to dangle in unknown space if the last instance
 is to be removed, it will instead be reparented to world.</p>
 </td>
 </tr>
@@ -2230,7 +2236,7 @@ is to be removed, it will instead be reparented to world.</p>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.DeformableShape.removeFrom">
-<tt class="descname">removeFrom</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x5241670&gt; &gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.DeformableShape.removeFrom" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">removeFrom</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x456f830&gt; &gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.DeformableShape.removeFrom" title="Permalink to this definition">¶</a></dt>
 <dd><p>remove ourselves to the given set</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2287,14 +2293,14 @@ a RuntimeException will be thrown if a required namespace does not exist</li>
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.DeformableShape.reparent">
 <tt class="descname">reparent</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.DeformableShape.reparent" title="Permalink to this definition">¶</a></dt>
-<dd><p>Change the parent of all nodes ( also instances ) to be located below parentnode</p>
+<dd><p>Change the parent of all nodes (also instances) to be located below parentnode</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><em>parentnode</em> &#8211; Node instance of transform under which this node should be parented to
-if None, node will be reparented under the root ( which only works for transforms )</li>
+if None, node will be reparented under the root (which only works for transforms)</li>
 <li><em>renameOnClash</em> &#8211; resolve nameclashes by automatically renaming the node to make it unique</li>
 <li><em>raiseOnInstance</em> &#8211; if True, this method will raise if you try to reparent an instanced object.
 If false, instanced objects will be merged into the newly created path under parentnode, effectively
@@ -2397,9 +2403,9 @@ rename the object.</p>
 <tbody valign="top">
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of object set compatible Nodes having self as member</td>
 </tr>
-<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>setFilter</em> &#8211; tuple( apiType, use_exact_type ) - the combination of the
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>setFilter</em> &#8211; tuple(apiType, use_exact_type) - the combination of the
 desired api type and the exact type flag allow precise control whether you which
-to get only renderable shading engines, only objectfSets ( tuple[1] = True ),
+to get only renderable shading engines, only objectfSets (tuple[1] = True),
 or all objects supporting the given object type.
 Its preset to only return shading engines</td>
 </tr>
@@ -2414,7 +2420,7 @@ see sets having component assignments like per-compoent shader assignments or de
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.DeformableShape.shapes">
-<tt class="descname">shapes</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x564b578&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.DeformableShape.shapes" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">shapes</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x479dcf8&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.DeformableShape.shapes" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2510,7 +2516,7 @@ reside on the undo queue</td>
 <li><em>position</em> &#8211; the index to which to add the new child, kNextPos will add it as last child.
 It supports python style negative indices</li>
 <li><em>keepExistingParent</em> &#8211; if True, the childNode will be instanced as it will
-have its previous parent and this one, if False, the previous parent will be removed
+have its previous parent(s) and this one, if False, the previous parent will be removed
 from the child&#8217;s parent list</li>
 <li><em>renameOnClash</em> &#8211; resolve nameclashes by automatically renaming the node to make it unique</li>
 <li><em>keepWorldSpace</em> &#8211; see <cite>reparent</cite>, only effective if the node is not instanced</li>
@@ -2522,11 +2528,6 @@ from the child&#8217;s parent list</li>
 </tr>
 <tr class="field"><th class="field-name" colspan="2">Raises ValueError:</th></tr>
 <tr><td>&nbsp;</td><td class="field-body"><p class="first">if keepWorldSpace is requested with directly instanced nodes</p>
-</td>
-</tr>
-<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">the keepExistingParent flag is custom implemented as it would remove all existng parentS,
-not just the one of the path behind the object ( it does not use a path, so it must remove all existing
-parents unfortunatly ! )</p>
 </td>
 </tr>
 <tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">as maya internally handles add/remove child as instancing operation, even though
@@ -2602,7 +2603,7 @@ argument is being ignored</p>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.GeometryShape.addTo">
-<tt class="descname">addTo</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x53dd950&gt; &gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.GeometryShape.addTo" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">addTo</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x44cffb0&gt; &gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.GeometryShape.addTo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add ourselves to the given set</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2679,7 +2680,7 @@ we use to aquire the object</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.GeometryShape.childTransforms">
-<tt class="descname">childTransforms</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x564b668&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.GeometryShape.childTransforms" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">childTransforms</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x479dde8&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.GeometryShape.childTransforms" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2692,7 +2693,7 @@ we use to aquire the object</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.GeometryShape.children">
-<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x564b398&gt;</em>, <em>asNode=True</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.GeometryShape.children" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x479db18&gt;</em>, <em>asNode=True</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.GeometryShape.children" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2708,7 +2709,7 @@ get MDagPaths</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.GeometryShape.childrenByType">
-<tt class="descname">childrenByType</tt><big>(</big><em>nodeType</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x564b488&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.GeometryShape.childrenByType" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">childrenByType</tt><big>(</big><em>nodeType</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x479dc08&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.GeometryShape.childrenByType" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2723,7 +2724,7 @@ get MDagPaths</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.GeometryShape.childrenDeep">
-<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee668&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.GeometryShape.childrenDeep" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c050&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.GeometryShape.childrenDeep" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2745,6 +2746,11 @@ get MDagPaths</td>
 </dd></dl>
 
 <dl class="method">
+<dt id="mrv.maya.nt.geometry.GeometryShape.className">
+<tt class="descname">className</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.GeometryShape.className" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="mrv.maya.nt.geometry.GeometryShape.classification">
 <tt class="descname">classification</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.GeometryShape.classification" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -2756,7 +2762,7 @@ get MDagPaths</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of tuples( ObjectSetNode, Component_or_MObject ) defininmg shader
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of tuples(ObjectSetNode, Component_or_MObject) defininmg shader
 assignments on per component basis.</p>
 <p>If a shader is assigned to the whole object, the component would be a null object, otherwise
 it is an instance of a wrapped IndexedComponent class</p>
@@ -2807,9 +2813,9 @@ output meshes though</p>
 <tbody valign="top">
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of object set compatible Nodes having self as member</td>
 </tr>
-<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>setFilter</em> &#8211; tuple( apiType, use_exact_type ) - the combination of the
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>setFilter</em> &#8211; tuple(apiType, use_exact_type) - the combination of the
 desired api type and the exact type flag allow precise control whether you which
-to get only renderable shading engines, only objectfSets ( tuple[1] = True ),
+to get only renderable shading engines, only objectfSets (tuple[1] = True),
 or all objects supporting the given object type.
 Its preset to only return shading engines</td>
 </tr>
@@ -2931,6 +2937,9 @@ classes that do not have anything to duplicate just to use your implementeation<
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body">the original DagPath attached to this Node - it&#8217;s not wrapped
 for performance</td>
 </tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">If you plan to alter it, make sure you copy it using the 
+MDagPath(node.dagPath()) construct !</td>
+</tr>
 </tbody>
 </table>
 </dd></dl>
@@ -2999,7 +3008,7 @@ if the attribute turns dirty.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body">the override display value actually identified by plugName affecting
-the given object ( that should be a leaf node for the result you see in the viewport.
+the given object (that should be a leaf node for the result you see in the viewport.
 The display type in effect is always the last one set in the hierarchy
 returns None display overrides are disabled</td>
 </tr>
@@ -3055,7 +3064,7 @@ really change the scene, but adds undo operations</p>
 </tr>
 <tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">If meshes have tweaks applied, the duplicate will not have these tweaks and the meshes will look
 mislocated.
-Using MEL works in that case ... ( they fixed it there obviously ) , but creates invalid objects</p>
+Using MEL works in that case ... (they fixed it there obviously) , but creates invalid objects</p>
 </td>
 </tr>
 <tr class="field"><th class="field-name">Todo:</th><td class="field-body"><p class="first">Undo implementation - every undoable operation must in fact be based on strings to really work, all
@@ -3064,7 +3073,7 @@ this is far too much - dagNode.duplicate must be undoable by itself</p>
 </tr>
 <tr class="field"><th class="field-name">Todo:</th><td class="field-body"><p class="first last">duplicate should be completely reimplemented to support all mel options and actually work with
 meshes and tweaks - the underlying api duplication would still be used of course, as well as
-connections ( to sets ) and so on ...</p>
+connections (to sets) and so on ...</p>
 </td>
 </tr>
 </tbody>
@@ -3126,7 +3135,7 @@ function set comes first</td>
 <tbody valign="top">
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body">Node to the instance identified by instanceNumber</td>
 </tr>
-<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>instanceNumber</em> &#8211; range( 0, self.instanceCount()-1 )</td>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>instanceNumber</em> &#8211; range(0, self.instanceCount()-1)</td>
 </tr>
 </tbody>
 </table>
@@ -3164,7 +3173,7 @@ function set comes first</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.GeometryShape.isMemberOf">
-<tt class="descname">isMemberOf</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x5433ee0&gt; &gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.GeometryShape.isMemberOf" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">isMemberOf</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x442aea0&gt; &gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.GeometryShape.isMemberOf" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -3273,7 +3282,7 @@ visible</td>
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.GeometryShape.iterInstances">
 <tt class="descname">iterInstances</tt><big>(</big><em>excludeSelf=False</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.GeometryShape.iterInstances" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get iterator over all ( direct and indirect )instances of this node</p>
+<dd><p>Get iterator over all (direct and indirect)instances of this node</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -3292,7 +3301,7 @@ the list of items</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.GeometryShape.iterParents">
-<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee2a8&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.GeometryShape.iterParents" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c230&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.GeometryShape.iterParents" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -3312,7 +3321,7 @@ the list of items</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body">fully qualified ( long ) name of this dag node</td>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">fully qualified (long) name of this dag node</td>
 </tr>
 </tbody>
 </table>
@@ -3381,7 +3390,7 @@ the list of items</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body">name ( str ) of file this node is coming from - it could contain
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">name (str) of file this node is coming from - it could contain
 a copy number as {x}</td>
 </tr>
 <tr class="field"><th class="field-name">Note:</th><td class="field-body">will raise if the node is not referenced, use isReferenced to figure
@@ -3408,7 +3417,7 @@ that out</td>
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.GeometryShape.removeChild">
 <tt class="descname">removeChild</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.GeometryShape.removeChild" title="Permalink to this definition">¶</a></dt>
-<dd><p>remove the given childNode ( being a child of this node ) from our child list, effectively
+<dd><p>remove the given childNode (being a child of this node) from our child list, effectively
 parenting it under world !</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -3424,7 +3433,7 @@ dag paths leads to it. If False, transforms will just be reparented under the wo
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">copy of childnode pointing to the first valid dag path we find.</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">to prevent the child ( if transform ) to dangle in unknown space if the last instance
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">to prevent the child (if transform) to dangle in unknown space if the last instance
 is to be removed, it will instead be reparented to world.</p>
 </td>
 </tr>
@@ -3437,7 +3446,7 @@ is to be removed, it will instead be reparented to world.</p>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.GeometryShape.removeFrom">
-<tt class="descname">removeFrom</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x5241670&gt; &gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.GeometryShape.removeFrom" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">removeFrom</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x456f830&gt; &gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.GeometryShape.removeFrom" title="Permalink to this definition">¶</a></dt>
 <dd><p>remove ourselves to the given set</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -3494,14 +3503,14 @@ a RuntimeException will be thrown if a required namespace does not exist</li>
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.GeometryShape.reparent">
 <tt class="descname">reparent</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.GeometryShape.reparent" title="Permalink to this definition">¶</a></dt>
-<dd><p>Change the parent of all nodes ( also instances ) to be located below parentnode</p>
+<dd><p>Change the parent of all nodes (also instances) to be located below parentnode</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><em>parentnode</em> &#8211; Node instance of transform under which this node should be parented to
-if None, node will be reparented under the root ( which only works for transforms )</li>
+if None, node will be reparented under the root (which only works for transforms)</li>
 <li><em>renameOnClash</em> &#8211; resolve nameclashes by automatically renaming the node to make it unique</li>
 <li><em>raiseOnInstance</em> &#8211; if True, this method will raise if you try to reparent an instanced object.
 If false, instanced objects will be merged into the newly created path under parentnode, effectively
@@ -3604,9 +3613,9 @@ rename the object.</p>
 <tbody valign="top">
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of object set compatible Nodes having self as member</td>
 </tr>
-<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>setFilter</em> &#8211; tuple( apiType, use_exact_type ) - the combination of the
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>setFilter</em> &#8211; tuple(apiType, use_exact_type) - the combination of the
 desired api type and the exact type flag allow precise control whether you which
-to get only renderable shading engines, only objectfSets ( tuple[1] = True ),
+to get only renderable shading engines, only objectfSets (tuple[1] = True),
 or all objects supporting the given object type.
 Its preset to only return shading engines</td>
 </tr>
@@ -3621,7 +3630,7 @@ see sets having component assignments like per-compoent shader assignments or de
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.GeometryShape.shapes">
-<tt class="descname">shapes</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x564b578&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.GeometryShape.shapes" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">shapes</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x479dcf8&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.GeometryShape.shapes" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -3728,7 +3737,7 @@ reside on the undo queue</td>
 <li><em>position</em> &#8211; the index to which to add the new child, kNextPos will add it as last child.
 It supports python style negative indices</li>
 <li><em>keepExistingParent</em> &#8211; if True, the childNode will be instanced as it will
-have its previous parent and this one, if False, the previous parent will be removed
+have its previous parent(s) and this one, if False, the previous parent will be removed
 from the child&#8217;s parent list</li>
 <li><em>renameOnClash</em> &#8211; resolve nameclashes by automatically renaming the node to make it unique</li>
 <li><em>keepWorldSpace</em> &#8211; see <cite>reparent</cite>, only effective if the node is not instanced</li>
@@ -3740,11 +3749,6 @@ from the child&#8217;s parent list</li>
 </tr>
 <tr class="field"><th class="field-name" colspan="2">Raises ValueError:</th></tr>
 <tr><td>&nbsp;</td><td class="field-body"><p class="first">if keepWorldSpace is requested with directly instanced nodes</p>
-</td>
-</tr>
-<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">the keepExistingParent flag is custom implemented as it would remove all existng parentS,
-not just the one of the path behind the object ( it does not use a path, so it must remove all existing
-parents unfortunatly ! )</p>
 </td>
 </tr>
 <tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">as maya internally handles add/remove child as instancing operation, even though
@@ -3820,7 +3824,7 @@ argument is being ignored</p>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.Mesh.addTo">
-<tt class="descname">addTo</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x53dd950&gt; &gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.Mesh.addTo" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">addTo</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x44cffb0&gt; &gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.Mesh.addTo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add ourselves to the given set</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -3912,7 +3916,7 @@ we use to aquire the object</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.Mesh.childTransforms">
-<tt class="descname">childTransforms</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x564b668&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.Mesh.childTransforms" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">childTransforms</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x479dde8&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.Mesh.childTransforms" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -3925,7 +3929,7 @@ we use to aquire the object</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.Mesh.children">
-<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x564b398&gt;</em>, <em>asNode=True</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.Mesh.children" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x479db18&gt;</em>, <em>asNode=True</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.Mesh.children" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -3941,7 +3945,7 @@ get MDagPaths</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.Mesh.childrenByType">
-<tt class="descname">childrenByType</tt><big>(</big><em>nodeType</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x564b488&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.Mesh.childrenByType" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">childrenByType</tt><big>(</big><em>nodeType</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x479dc08&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.Mesh.childrenByType" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -3956,7 +3960,7 @@ get MDagPaths</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.Mesh.childrenDeep">
-<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee668&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.Mesh.childrenDeep" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c050&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.Mesh.childrenDeep" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -3976,6 +3980,11 @@ get MDagPaths</td>
 </tbody>
 </table>
 </dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.geometry.Mesh.className">
+<tt class="descname">className</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.Mesh.className" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.Mesh.classification">
@@ -4014,7 +4023,7 @@ get MDagPaths</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of tuples( ObjectSetNode, Component_or_MObject ) defininmg shader
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of tuples(ObjectSetNode, Component_or_MObject) defininmg shader
 assignments on per component basis.</p>
 <p>If a shader is assigned to the whole object, the component would be a null object, otherwise
 it is an instance of a wrapped IndexedComponent class</p>
@@ -4065,9 +4074,9 @@ output meshes though</p>
 <tbody valign="top">
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of object set compatible Nodes having self as member</td>
 </tr>
-<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>setFilter</em> &#8211; tuple( apiType, use_exact_type ) - the combination of the
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>setFilter</em> &#8211; tuple(apiType, use_exact_type) - the combination of the
 desired api type and the exact type flag allow precise control whether you which
-to get only renderable shading engines, only objectfSets ( tuple[1] = True ),
+to get only renderable shading engines, only objectfSets (tuple[1] = True),
 or all objects supporting the given object type.
 Its preset to only return shading engines</td>
 </tr>
@@ -4228,6 +4237,9 @@ classes that do not have anything to duplicate just to use your implementeation<
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body">the original DagPath attached to this Node - it&#8217;s not wrapped
 for performance</td>
 </tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">If you plan to alter it, make sure you copy it using the 
+MDagPath(node.dagPath()) construct !</td>
+</tr>
 </tbody>
 </table>
 </dd></dl>
@@ -4296,7 +4308,7 @@ if the attribute turns dirty.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body">the override display value actually identified by plugName affecting
-the given object ( that should be a leaf node for the result you see in the viewport.
+the given object (that should be a leaf node for the result you see in the viewport.
 The display type in effect is always the last one set in the hierarchy
 returns None display overrides are disabled</td>
 </tr>
@@ -4352,7 +4364,7 @@ really change the scene, but adds undo operations</p>
 </tr>
 <tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">If meshes have tweaks applied, the duplicate will not have these tweaks and the meshes will look
 mislocated.
-Using MEL works in that case ... ( they fixed it there obviously ) , but creates invalid objects</p>
+Using MEL works in that case ... (they fixed it there obviously) , but creates invalid objects</p>
 </td>
 </tr>
 <tr class="field"><th class="field-name">Todo:</th><td class="field-body"><p class="first">Undo implementation - every undoable operation must in fact be based on strings to really work, all
@@ -4361,7 +4373,7 @@ this is far too much - dagNode.duplicate must be undoable by itself</p>
 </tr>
 <tr class="field"><th class="field-name">Todo:</th><td class="field-body"><p class="first last">duplicate should be completely reimplemented to support all mel options and actually work with
 meshes and tweaks - the underlying api duplication would still be used of course, as well as
-connections ( to sets ) and so on ...</p>
+connections (to sets) and so on ...</p>
 </td>
 </tr>
 </tbody>
@@ -4438,7 +4450,7 @@ function set comes first</td>
 <tbody valign="top">
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body">Node to the instance identified by instanceNumber</td>
 </tr>
-<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>instanceNumber</em> &#8211; range( 0, self.instanceCount()-1 )</td>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>instanceNumber</em> &#8211; range(0, self.instanceCount()-1)</td>
 </tr>
 </tbody>
 </table>
@@ -4476,7 +4488,7 @@ function set comes first</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.Mesh.isMemberOf">
-<tt class="descname">isMemberOf</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x5433ee0&gt; &gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.Mesh.isMemberOf" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">isMemberOf</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x442aea0&gt; &gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.Mesh.isMemberOf" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -4598,7 +4610,7 @@ visible</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.Mesh.iterComponents">
-<tt class="descname">iterComponents</tt><big>(</big><em>component_type</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x523fdf0&gt; &gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.Mesh.iterComponents" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">iterComponents</tt><big>(</big><em>component_type</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x456cd20&gt; &gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.Mesh.iterComponents" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -4628,7 +4640,7 @@ a matching component type&#8217;s instance</li>
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.Mesh.iterInstances">
 <tt class="descname">iterInstances</tt><big>(</big><em>excludeSelf=False</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.Mesh.iterInstances" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get iterator over all ( direct and indirect )instances of this node</p>
+<dd><p>Get iterator over all (direct and indirect)instances of this node</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -4647,7 +4659,7 @@ the list of items</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.Mesh.iterParents">
-<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee2a8&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.Mesh.iterParents" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c230&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.Mesh.iterParents" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -4672,7 +4684,7 @@ the list of items</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body">fully qualified ( long ) name of this dag node</td>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">fully qualified (long) name of this dag node</td>
 </tr>
 </tbody>
 </table>
@@ -4741,7 +4753,7 @@ the list of items</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body">name ( str ) of file this node is coming from - it could contain
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">name (str) of file this node is coming from - it could contain
 a copy number as {x}</td>
 </tr>
 <tr class="field"><th class="field-name">Note:</th><td class="field-body">will raise if the node is not referenced, use isReferenced to figure
@@ -4768,7 +4780,7 @@ that out</td>
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.Mesh.removeChild">
 <tt class="descname">removeChild</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.Mesh.removeChild" title="Permalink to this definition">¶</a></dt>
-<dd><p>remove the given childNode ( being a child of this node ) from our child list, effectively
+<dd><p>remove the given childNode (being a child of this node) from our child list, effectively
 parenting it under world !</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -4784,7 +4796,7 @@ dag paths leads to it. If False, transforms will just be reparented under the wo
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">copy of childnode pointing to the first valid dag path we find.</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">to prevent the child ( if transform ) to dangle in unknown space if the last instance
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">to prevent the child (if transform) to dangle in unknown space if the last instance
 is to be removed, it will instead be reparented to world.</p>
 </td>
 </tr>
@@ -4797,7 +4809,7 @@ is to be removed, it will instead be reparented to world.</p>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.Mesh.removeFrom">
-<tt class="descname">removeFrom</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x5241670&gt; &gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.Mesh.removeFrom" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">removeFrom</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x456f830&gt; &gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.Mesh.removeFrom" title="Permalink to this definition">¶</a></dt>
 <dd><p>remove ourselves to the given set</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -4854,14 +4866,14 @@ a RuntimeException will be thrown if a required namespace does not exist</li>
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.Mesh.reparent">
 <tt class="descname">reparent</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.Mesh.reparent" title="Permalink to this definition">¶</a></dt>
-<dd><p>Change the parent of all nodes ( also instances ) to be located below parentnode</p>
+<dd><p>Change the parent of all nodes (also instances) to be located below parentnode</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><em>parentnode</em> &#8211; Node instance of transform under which this node should be parented to
-if None, node will be reparented under the root ( which only works for transforms )</li>
+if None, node will be reparented under the root (which only works for transforms)</li>
 <li><em>renameOnClash</em> &#8211; resolve nameclashes by automatically renaming the node to make it unique</li>
 <li><em>raiseOnInstance</em> &#8211; if True, this method will raise if you try to reparent an instanced object.
 If false, instanced objects will be merged into the newly created path under parentnode, effectively
@@ -5004,9 +5016,9 @@ rename the object.</p>
 <tbody valign="top">
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of object set compatible Nodes having self as member</td>
 </tr>
-<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>setFilter</em> &#8211; tuple( apiType, use_exact_type ) - the combination of the
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>setFilter</em> &#8211; tuple(apiType, use_exact_type) - the combination of the
 desired api type and the exact type flag allow precise control whether you which
-to get only renderable shading engines, only objectfSets ( tuple[1] = True ),
+to get only renderable shading engines, only objectfSets (tuple[1] = True),
 or all objects supporting the given object type.
 Its preset to only return shading engines</td>
 </tr>
@@ -5021,7 +5033,7 @@ see sets having component assignments like per-compoent shader assignments or de
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.Mesh.shapes">
-<tt class="descname">shapes</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x564b578&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.Mesh.shapes" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">shapes</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x479dcf8&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.Mesh.shapes" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -5126,7 +5138,7 @@ reside on the undo queue</td>
 <li><em>position</em> &#8211; the index to which to add the new child, kNextPos will add it as last child.
 It supports python style negative indices</li>
 <li><em>keepExistingParent</em> &#8211; if True, the childNode will be instanced as it will
-have its previous parent and this one, if False, the previous parent will be removed
+have its previous parent(s) and this one, if False, the previous parent will be removed
 from the child&#8217;s parent list</li>
 <li><em>renameOnClash</em> &#8211; resolve nameclashes by automatically renaming the node to make it unique</li>
 <li><em>keepWorldSpace</em> &#8211; see <cite>reparent</cite>, only effective if the node is not instanced</li>
@@ -5138,11 +5150,6 @@ from the child&#8217;s parent list</li>
 </tr>
 <tr class="field"><th class="field-name" colspan="2">Raises ValueError:</th></tr>
 <tr><td>&nbsp;</td><td class="field-body"><p class="first">if keepWorldSpace is requested with directly instanced nodes</p>
-</td>
-</tr>
-<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">the keepExistingParent flag is custom implemented as it would remove all existng parentS,
-not just the one of the path behind the object ( it does not use a path, so it must remove all existing
-parents unfortunatly ! )</p>
 </td>
 </tr>
 <tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">as maya internally handles add/remove child as instancing operation, even though
@@ -5218,7 +5225,7 @@ argument is being ignored</p>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.SurfaceShape.addTo">
-<tt class="descname">addTo</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x53dd950&gt; &gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.SurfaceShape.addTo" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">addTo</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x44cffb0&gt; &gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.SurfaceShape.addTo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add ourselves to the given set</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -5295,7 +5302,7 @@ we use to aquire the object</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.SurfaceShape.childTransforms">
-<tt class="descname">childTransforms</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x564b668&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.SurfaceShape.childTransforms" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">childTransforms</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x479dde8&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.SurfaceShape.childTransforms" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -5308,7 +5315,7 @@ we use to aquire the object</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.SurfaceShape.children">
-<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x564b398&gt;</em>, <em>asNode=True</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.SurfaceShape.children" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x479db18&gt;</em>, <em>asNode=True</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.SurfaceShape.children" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -5324,7 +5331,7 @@ get MDagPaths</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.SurfaceShape.childrenByType">
-<tt class="descname">childrenByType</tt><big>(</big><em>nodeType</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x564b488&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.SurfaceShape.childrenByType" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">childrenByType</tt><big>(</big><em>nodeType</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x479dc08&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.SurfaceShape.childrenByType" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -5339,7 +5346,7 @@ get MDagPaths</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.SurfaceShape.childrenDeep">
-<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee668&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.SurfaceShape.childrenDeep" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c050&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.SurfaceShape.childrenDeep" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -5361,6 +5368,11 @@ get MDagPaths</td>
 </dd></dl>
 
 <dl class="method">
+<dt id="mrv.maya.nt.geometry.SurfaceShape.className">
+<tt class="descname">className</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.SurfaceShape.className" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="mrv.maya.nt.geometry.SurfaceShape.classification">
 <tt class="descname">classification</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.SurfaceShape.classification" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -5372,7 +5384,7 @@ get MDagPaths</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of tuples( ObjectSetNode, Component_or_MObject ) defininmg shader
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of tuples(ObjectSetNode, Component_or_MObject) defininmg shader
 assignments on per component basis.</p>
 <p>If a shader is assigned to the whole object, the component would be a null object, otherwise
 it is an instance of a wrapped IndexedComponent class</p>
@@ -5423,9 +5435,9 @@ output meshes though</p>
 <tbody valign="top">
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of object set compatible Nodes having self as member</td>
 </tr>
-<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>setFilter</em> &#8211; tuple( apiType, use_exact_type ) - the combination of the
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>setFilter</em> &#8211; tuple(apiType, use_exact_type) - the combination of the
 desired api type and the exact type flag allow precise control whether you which
-to get only renderable shading engines, only objectfSets ( tuple[1] = True ),
+to get only renderable shading engines, only objectfSets (tuple[1] = True),
 or all objects supporting the given object type.
 Its preset to only return shading engines</td>
 </tr>
@@ -5547,6 +5559,9 @@ classes that do not have anything to duplicate just to use your implementeation<
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body">the original DagPath attached to this Node - it&#8217;s not wrapped
 for performance</td>
 </tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">If you plan to alter it, make sure you copy it using the 
+MDagPath(node.dagPath()) construct !</td>
+</tr>
 </tbody>
 </table>
 </dd></dl>
@@ -5615,7 +5630,7 @@ if the attribute turns dirty.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body">the override display value actually identified by plugName affecting
-the given object ( that should be a leaf node for the result you see in the viewport.
+the given object (that should be a leaf node for the result you see in the viewport.
 The display type in effect is always the last one set in the hierarchy
 returns None display overrides are disabled</td>
 </tr>
@@ -5671,7 +5686,7 @@ really change the scene, but adds undo operations</p>
 </tr>
 <tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">If meshes have tweaks applied, the duplicate will not have these tweaks and the meshes will look
 mislocated.
-Using MEL works in that case ... ( they fixed it there obviously ) , but creates invalid objects</p>
+Using MEL works in that case ... (they fixed it there obviously) , but creates invalid objects</p>
 </td>
 </tr>
 <tr class="field"><th class="field-name">Todo:</th><td class="field-body"><p class="first">Undo implementation - every undoable operation must in fact be based on strings to really work, all
@@ -5680,7 +5695,7 @@ this is far too much - dagNode.duplicate must be undoable by itself</p>
 </tr>
 <tr class="field"><th class="field-name">Todo:</th><td class="field-body"><p class="first last">duplicate should be completely reimplemented to support all mel options and actually work with
 meshes and tweaks - the underlying api duplication would still be used of course, as well as
-connections ( to sets ) and so on ...</p>
+connections (to sets) and so on ...</p>
 </td>
 </tr>
 </tbody>
@@ -5742,7 +5757,7 @@ function set comes first</td>
 <tbody valign="top">
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body">Node to the instance identified by instanceNumber</td>
 </tr>
-<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>instanceNumber</em> &#8211; range( 0, self.instanceCount()-1 )</td>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>instanceNumber</em> &#8211; range(0, self.instanceCount()-1)</td>
 </tr>
 </tbody>
 </table>
@@ -5780,7 +5795,7 @@ function set comes first</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.SurfaceShape.isMemberOf">
-<tt class="descname">isMemberOf</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x5433ee0&gt; &gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.SurfaceShape.isMemberOf" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">isMemberOf</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x442aea0&gt; &gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.SurfaceShape.isMemberOf" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -5889,7 +5904,7 @@ visible</td>
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.SurfaceShape.iterInstances">
 <tt class="descname">iterInstances</tt><big>(</big><em>excludeSelf=False</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.SurfaceShape.iterInstances" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get iterator over all ( direct and indirect )instances of this node</p>
+<dd><p>Get iterator over all (direct and indirect)instances of this node</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -5908,7 +5923,7 @@ the list of items</td>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.SurfaceShape.iterParents">
-<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee2a8&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.SurfaceShape.iterParents" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c230&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.SurfaceShape.iterParents" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -5928,7 +5943,7 @@ the list of items</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body">fully qualified ( long ) name of this dag node</td>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">fully qualified (long) name of this dag node</td>
 </tr>
 </tbody>
 </table>
@@ -5997,7 +6012,7 @@ the list of items</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body">name ( str ) of file this node is coming from - it could contain
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">name (str) of file this node is coming from - it could contain
 a copy number as {x}</td>
 </tr>
 <tr class="field"><th class="field-name">Note:</th><td class="field-body">will raise if the node is not referenced, use isReferenced to figure
@@ -6024,7 +6039,7 @@ that out</td>
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.SurfaceShape.removeChild">
 <tt class="descname">removeChild</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.SurfaceShape.removeChild" title="Permalink to this definition">¶</a></dt>
-<dd><p>remove the given childNode ( being a child of this node ) from our child list, effectively
+<dd><p>remove the given childNode (being a child of this node) from our child list, effectively
 parenting it under world !</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -6040,7 +6055,7 @@ dag paths leads to it. If False, transforms will just be reparented under the wo
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">copy of childnode pointing to the first valid dag path we find.</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">to prevent the child ( if transform ) to dangle in unknown space if the last instance
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">to prevent the child (if transform) to dangle in unknown space if the last instance
 is to be removed, it will instead be reparented to world.</p>
 </td>
 </tr>
@@ -6053,7 +6068,7 @@ is to be removed, it will instead be reparented to world.</p>
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.SurfaceShape.removeFrom">
-<tt class="descname">removeFrom</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x5241670&gt; &gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.SurfaceShape.removeFrom" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">removeFrom</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x456f830&gt; &gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.SurfaceShape.removeFrom" title="Permalink to this definition">¶</a></dt>
 <dd><p>remove ourselves to the given set</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -6110,14 +6125,14 @@ a RuntimeException will be thrown if a required namespace does not exist</li>
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.SurfaceShape.reparent">
 <tt class="descname">reparent</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.SurfaceShape.reparent" title="Permalink to this definition">¶</a></dt>
-<dd><p>Change the parent of all nodes ( also instances ) to be located below parentnode</p>
+<dd><p>Change the parent of all nodes (also instances) to be located below parentnode</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><em>parentnode</em> &#8211; Node instance of transform under which this node should be parented to
-if None, node will be reparented under the root ( which only works for transforms )</li>
+if None, node will be reparented under the root (which only works for transforms)</li>
 <li><em>renameOnClash</em> &#8211; resolve nameclashes by automatically renaming the node to make it unique</li>
 <li><em>raiseOnInstance</em> &#8211; if True, this method will raise if you try to reparent an instanced object.
 If false, instanced objects will be merged into the newly created path under parentnode, effectively
@@ -6220,9 +6235,9 @@ rename the object.</p>
 <tbody valign="top">
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of object set compatible Nodes having self as member</td>
 </tr>
-<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>setFilter</em> &#8211; tuple( apiType, use_exact_type ) - the combination of the
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>setFilter</em> &#8211; tuple(apiType, use_exact_type) - the combination of the
 desired api type and the exact type flag allow precise control whether you which
-to get only renderable shading engines, only objectfSets ( tuple[1] = True ),
+to get only renderable shading engines, only objectfSets (tuple[1] = True),
 or all objects supporting the given object type.
 Its preset to only return shading engines</td>
 </tr>
@@ -6237,7 +6252,7 @@ see sets having component assignments like per-compoent shader assignments or de
 
 <dl class="method">
 <dt id="mrv.maya.nt.geometry.SurfaceShape.shapes">
-<tt class="descname">shapes</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x564b578&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.SurfaceShape.shapes" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">shapes</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x479dcf8&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.geometry.SurfaceShape.shapes" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -6426,12 +6441,12 @@ quick constrained iterators using the slice and get-item notation</p>
         <li class="right" >
           <a href="mrv.maya.nt.storage.html" title="mrv.maya.nt.storage"
              >previous</a> |</li>
-        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li> 
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
       &copy; Copyright Sebastian Thiel.
-      Last updated on Nov 30, 2010.
+      Last updated on Apr 19, 2011.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
     </div>
   </body>

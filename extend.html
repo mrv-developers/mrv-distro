@@ -5,13 +5,13 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Extensions &mdash; mrv v1.0.1-develop documentation</title>
+    <title>Extensions &mdash; mrv v1.0.2-develop documentation</title>
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '#',
-        VERSION:     '1.0.1-develop',
+        VERSION:     '1.0.2-develop',
         COLLAPSE_MODINDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -20,7 +20,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="mrv v1.0.1-develop documentation" href="index.html" />
+    <link rel="top" title="mrv v1.0.2-develop documentation" href="index.html" />
     <link rel="next" title="Commandline Tools" href="tools.html" />
     <link rel="prev" title="The Template Project" href="develop/projects.html" /> 
   </head>
@@ -40,7 +40,7 @@
         <li class="right" >
           <a href="develop/projects.html" title="The Template Project"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">mrv v1.0.1-develop documentation</a> &raquo;</li> 
+        <li><a href="index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -119,7 +119,7 @@
 <dl class="docutils">
 <dt>The process of doing so is outlined here, for a fully working example, see <tt class="docutils literal"><span class="pre">mrv.test.maya.nt.test_general.StorageNetworkNode</span></tt> and <tt class="docutils literal"><span class="pre">mrv.test.maya.nt.test_general.test_virtual_subtype</span></tt>:</dt>
 <dd><ol class="first last arabic simple">
-<li>Derive your Virtual Subtype from an existing MRV node type, it is <em>not</em> required to be a leaf-leve type.</li>
+<li>Derive your Virtual Subtype from an existing MRV node type, it is <em>not</em> required to be a leaf-level type.</li>
 <li>Define the <tt class="docutils literal"><span class="pre">__mrv_virtual_subtype__</span></tt> class member and set it to a True value.</li>
 <li>Create a new instance of your Virtual Subtype by wrapping an existing node of the correct maya type - your constructor (<tt class="docutils literal"><span class="pre">__new__</span></tt>) by default supports everything that <tt class="docutils literal"><span class="pre">mrv.maya.nt.base.Node</span></tt> supports, i.e. <tt class="docutils literal"><span class="pre">MyVirtualType(node.object())</span></tt> is just fine.</li>
 </ol>
@@ -162,7 +162,7 @@ was not used as the default type added to the tree already identifies it ( assum
 </pre></div>
 </div>
 <p>If the type in question has not been implemented yet, it can be added to an existing or new module in the <tt class="docutils literal"><span class="pre">mrv.maya.nt</span></tt> package. As this package is only being accessed as a whole, its absolutely valid and common practice to reorganize the types within the modules as the modules grow.</p>
-<p>If you intend to adjust MRVs code base, please have a closer look at the <a class="reference external" href="develop/workflow.html#development-workflow-label"><em>Workflow</em></a> section. In short words, its important to use git during development as it keeps you connected to the mainline of the development, and once you have cloned the MRV repository hosted at <a class="reference external" href="https://github.com/Byron/mrv">https://github.com/Byron/mrv</a>, you are ready to go.</p>
+<p>If you intend to adjust MRVs code base, please have a closer look at the <a class="reference external" href="develop/workflow.html#development-workflow-label"><em>Workflow</em></a> section. In short words, its important to use git during development as it keeps you connected to the mainline of the development, and once you have cloned the MRV repository hosted at <a class="reference external" href="https://github.com/mrv-developers/mrv">https://github.com/mrv-developers/mrv</a>, you are ready to go.</p>
 <p>Even if you don&#8217;t want to ( or cannot ) contribute it is highly advised to work on a git clone of the MRV mainline as git will allow you to rebase your changes onto the latest version.</p>
 </div>
 </div>
@@ -248,13 +248,16 @@ MRV will only provide an alias if the new name is significantly more convenient 
 <p>Whenever a new major maya release hits the scene, it is required to update the database with the latest additions and more importantly, changes to the node hierarchy.</p>
 <p>To achieve this proceed as follows:</p>
 <blockquote>
+<ol class="arabic simple">
+<li>Create the new branch &#8216;release_upgrade&#8217; and check it out.</li>
+<li>In <tt class="docutils literal"><span class="pre">mrv/cmd/base.py</span></tt> add a new mayaversion|pyversion string matching your maya and python version. You cannot start bin/mrv &lt;mayaversion&gt; if this was not adjusted.</li>
+</ol>
+<blockquote>
+<ul class="simple">
+<li>e.g. 2012: 2.7</li>
+</ul>
+</blockquote>
 <ol class="arabic">
-<li><p class="first">Create the new branch &#8216;release_upgrade&#8217; and check it out.</p>
-</li>
-<li><p class="first">In <tt class="docutils literal"><span class="pre">mrv/bin/mrv</span></tt> add a new mayaversion|pyversion string matching your maya and python version. You cannot start bin/mrv &lt;mayaversion&gt; if this was not adjusted.</p>
-</li>
-<li><p class="first">In <tt class="docutils literal"><span class="pre">mrv/maya/__init__.py</span></tt> add the new maya version to the list of supported ones. Trying to import <tt class="docutils literal"><span class="pre">mrv.maya</span></tt> would fail otherwise.</p>
-</li>
 <li><p class="first">In <tt class="docutils literal"><span class="pre">mrv.test.maya.test_mdb</span></tt>, remove the <em>_DISABLED_</em> portion in front of the <tt class="docutils literal"><span class="pre">test_init_new_maya_release</span></tt></p>
 </li>
 <li><p class="first">Run the test using the new maya release, for example:</p>
@@ -342,12 +345,12 @@ test/bin/tmrv 2020 test/maya/test_mdb.py -s</pre>
         <li class="right" >
           <a href="develop/projects.html" title="The Template Project"
              >previous</a> |</li>
-        <li><a href="index.html">mrv v1.0.1-develop documentation</a> &raquo;</li> 
+        <li><a href="index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
       &copy; Copyright Sebastian Thiel.
-      Last updated on Nov 30, 2010.
+      Last updated on Apr 19, 2011.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
     </div>
   </body>

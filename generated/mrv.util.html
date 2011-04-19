@@ -5,13 +5,13 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>mrv.util &mdash; mrv v1.0.1-develop documentation</title>
+    <title>mrv.util &mdash; mrv v1.0.2-develop documentation</title>
     <link rel="stylesheet" href="../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.0.1-develop',
+        VERSION:     '1.0.2-develop',
         COLLAPSE_MODINDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -20,7 +20,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
-    <link rel="top" title="mrv v1.0.1-develop documentation" href="../index.html" />
+    <link rel="top" title="mrv v1.0.2-develop documentation" href="../index.html" />
     <link rel="next" title="mrv.mdepparse" href="mrv.mdepparse.html" />
     <link rel="prev" title="mrv.mdp" href="mrv.mdp.html" /> 
   </head>
@@ -40,7 +40,7 @@
         <li class="right" >
           <a href="mrv.mdp.html" title="mrv.mdp"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li> 
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -81,8 +81,8 @@ It will only copy mebers of this class, not its base classes</p>
 <li><em>sourcecls</em> &#8211; class whose members should be copied</li>
 <li><em>destcls</em> &#8211; class to receive members from sourcecls</li>
 <li><em>overwritePrefix</em> &#8211; if None, existing members on destcls will not be overwritten, if string,
-the original method will be stored in a name like prefix+originalname ( allowing you to access the
-original method lateron )</li>
+the original method will be stored in a name like prefix+originalname (allowing you to access the
+original method lateron)</li>
 <li><em>copyNamespaceGlobally</em> &#8211; if not None, the variable contains the name of the namespace as string 
 whose methods should also be copied into the global namespace, possibly overwriting existing ones.
 For instance, &#8216;nsmethod&#8217; will be available as obj.nsmethod and as obj.method if the namespace value was &#8216;ns.
@@ -134,7 +134,7 @@ the input argument is a list or tuple type</td>
 
 <dl class="function">
 <dt id="mrv.util.iterNetworkxGraph">
-<tt class="descclassname">mrv.util.</tt><tt class="descname">iterNetworkxGraph</tt><big>(</big><em>graph</em>, <em>startItem</em>, <em>direction=0</em>, <em>prune=&lt;function &lt;lambda&gt; at 0x326daa0&gt;</em>, <em>stop=&lt;function &lt;lambda&gt; at 0x326db18&gt;</em>, <em>depth=-1</em>, <em>branch_first=True</em>, <em>visit_once=True</em>, <em>ignore_startitem=1</em><big>)</big><a class="headerlink" href="#mrv.util.iterNetworkxGraph" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">mrv.util.</tt><tt class="descname">iterNetworkxGraph</tt><big>(</big><em>graph</em>, <em>startItem</em>, <em>direction=0</em>, <em>prune=&lt;function &lt;lambda&gt; at 0x1aeaaa0&gt;</em>, <em>stop=&lt;function &lt;lambda&gt; at 0x1aeab18&gt;</em>, <em>depth=-1</em>, <em>branch_first=True</em>, <em>visit_once=True</em>, <em>ignore_startitem=1</em><big>)</big><a class="headerlink" href="#mrv.util.iterNetworkxGraph" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -170,8 +170,54 @@ the result</li>
 </dd></dl>
 
 <dl class="function">
+<dt id="mrv.util.list_submodules">
+<tt class="descclassname">mrv.util.</tt><tt class="descname">list_submodules</tt><big>(</big><em>path</em><big>)</big><a class="headerlink" href="#mrv.util.list_submodules" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">set(submodule_name, ...) list of submodule names that could 
+be imported using __import__</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>path</em> &#8211; module path containing the submodules</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.util.list_subpackages">
+<tt class="descclassname">mrv.util.</tt><tt class="descname">list_subpackages</tt><big>(</big><em>path</em><big>)</big><a class="headerlink" href="#mrv.util.list_subpackages" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of sub-package names</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.util.make_path">
+<tt class="descclassname">mrv.util.</tt><tt class="descname">make_path</tt><big>(</big><em>path</em><big>)</big><a class="headerlink" href="#mrv.util.make_path" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">A path instance of the correct type</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">use this constructor if you use the Path.set_separator method at runtime
+to assure you will always create instances of the actual type, and not only
+of the type you imported last</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="mrv.util.packageClasses">
-<tt class="descclassname">mrv.util.</tt><tt class="descname">packageClasses</tt><big>(</big><em>importBase</em>, <em>packageFile</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x326d9b0&gt;</em><big>)</big><a class="headerlink" href="#mrv.util.packageClasses" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">mrv.util.</tt><tt class="descname">packageClasses</tt><big>(</big><em>importBase</em>, <em>packageFile</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x1aea9b0&gt;</em><big>)</big><a class="headerlink" href="#mrv.util.packageClasses" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -223,7 +269,7 @@ match given predicate</p>
 <em class="property">class </em><tt class="descclassname">mrv.util.</tt><tt class="descname">And</tt><big>(</big><em>*args</em><big>)</big><a class="headerlink" href="#mrv.util.And" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
 <p>For use with python&#8217;s filter method, simulates logical AND
-Usage: filter( And( f1,f2,fn ), sequence )</p>
+Usage: filter(And(f1,f2,fn), sequence)</p>
 <dl class="attribute">
 <dt id="mrv.util.And.functions">
 <tt class="descname">functions</tt><a class="headerlink" href="#mrv.util.And.functions" title="Permalink to this definition">¶</a></dt>
@@ -438,7 +484,7 @@ of this object looses focus</p>
 <tr class="field"><th class="field-name">Returns:</th><td class="field-body">the root node of this dag tree</td>
 </tr>
 <tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>startnode</em> &#8211; if None, the first node will be used to get the root from
-( good for single rooted dags ), otherwise this node will be used to get the root from
+(good for single rooted dags), otherwise this node will be used to get the root from
 - thus it must exist in the dag tree</td>
 </tr>
 </tbody>
@@ -736,9 +782,9 @@ to supply event information to clients.</p>
 <p><strong>Usage</strong>:
 Derive from this class and define your callbacks like:</p>
 <blockquote>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">event</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span> <span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">event</span> <span class="o">=</span> <span class="n">Event</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># Call it using</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">send</span><span class="p">(</span> <span class="p">[</span><span class="o">*</span><span class="n">args</span><span class="p">][,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">]]</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">send</span><span class="p">([</span><span class="o">*</span><span class="n">args</span><span class="p">][,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">]])</span>
 </pre></div>
 </div>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># Users register using</span>
@@ -746,7 +792,7 @@ Derive from this class and define your callbacks like:</p>
 </pre></div>
 </div>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># and deregister using</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">yourinstance</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span> <span class="nb">callable</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">yourinstance</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="nb">callable</span><span class="p">)</span>
 </pre></div>
 </div>
 </blockquote>
@@ -846,7 +892,7 @@ caller - you will not receive a call from it anymore</dd></dl>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field"><th class="field-name">Note:</th><td class="field-body">the return value of this method is undefined if called if the
-method has been called by someone not being an official caller ( like yourself )</td>
+method has been called by someone not being an official caller (like yourself)</td>
 </tr>
 </tbody>
 </table>
@@ -918,7 +964,7 @@ extra functions</dd></dl>
 
 <dl class="method">
 <dt id="mrv.util.InterfaceMaster.children">
-<tt class="descclassname">InterfaceMaster.</tt><tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee848&gt;</em><big>)</big><a class="headerlink" href="#mrv.util.InterfaceMaster.children" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">InterfaceMaster.</tt><tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a39ed8&gt;</em><big>)</big><a class="headerlink" href="#mrv.util.InterfaceMaster.children" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -935,7 +981,7 @@ extra functions</dd></dl>
 
 <dl class="method">
 <dt id="mrv.util.InterfaceMaster.childrenDeep">
-<tt class="descclassname">InterfaceMaster.</tt><tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee668&gt;</em><big>)</big><a class="headerlink" href="#mrv.util.InterfaceMaster.childrenDeep" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">InterfaceMaster.</tt><tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c050&gt;</em><big>)</big><a class="headerlink" href="#mrv.util.InterfaceMaster.childrenDeep" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1096,7 +1142,7 @@ method. Thus we will call the method directly on the class</p>
 
 <dl class="method">
 <dt id="mrv.util.InterfaceMaster.iterParents">
-<tt class="descclassname">InterfaceMaster.</tt><tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee2a8&gt;</em><big>)</big><a class="headerlink" href="#mrv.util.InterfaceMaster.iterParents" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">InterfaceMaster.</tt><tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c230&gt;</em><big>)</big><a class="headerlink" href="#mrv.util.InterfaceMaster.iterParents" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1234,7 +1280,7 @@ return a type&#8217;s method resolution order</dd></dl>
 <em class="property">class </em><tt class="descclassname">mrv.util.</tt><tt class="descname">Or</tt><big>(</big><em>*args</em><big>)</big><a class="headerlink" href="#mrv.util.Or" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
 <p>For use with python&#8217;s filter method, simulates logical OR
-Usage: filter( Or( f1,f2,fn ), sequence )</p>
+Usage: filter(Or(f1,f2,fn), sequence)</p>
 <dl class="attribute">
 <dt id="mrv.util.Or.functions">
 <tt class="descname">functions</tt><a class="headerlink" href="#mrv.util.Or.functions" title="Permalink to this definition">¶</a></dt>
@@ -1268,7 +1314,7 @@ val11 | val2 | valn
 <tbody valign="top">
 <tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>columnSizes</em> &#8211; list of ints defining the size in characters for each column you plan to feed</td>
 </tr>
-<tr class="field"><th class="field-name">Note:</th><td class="field-body">When done writing, you have to close the file object yourself ( there is no endWriting method here )</td>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">When done writing, you have to close the file object yourself (there is no endWriting method here)</td>
 </tr>
 </tbody>
 </table>
@@ -1316,7 +1362,7 @@ val11 | val2 | valn
 <em class="property">class </em><tt class="descclassname">mrv.util.</tt><tt class="descname">Singleton</tt><a class="headerlink" href="#mrv.util.Singleton" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
 <p>Singleton classes can be derived from this class,
-you can derive from other classes as long as Singleton comes first (and class doesn&#8217;t override __new__ )</p>
+you can derive from other classes as long as Singleton comes first (and class doesn&#8217;t override __new__)</p>
 </dd></dl>
 
 <p><a class="reference external" href="api/mrv.util.WeakInstFunction-class.html">Epydoc: mrv.util.WeakInstFunction</a></p>
@@ -1384,7 +1430,7 @@ will do nothing.</p>
 
 <dl class="method">
 <dt id="mrv.util.iDuplicatable.children">
-<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee848&gt;</em><big>)</big><a class="headerlink" href="#mrv.util.iDuplicatable.children" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a39ed8&gt;</em><big>)</big><a class="headerlink" href="#mrv.util.iDuplicatable.children" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1401,7 +1447,7 @@ will do nothing.</p>
 
 <dl class="method">
 <dt id="mrv.util.iDuplicatable.childrenDeep">
-<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee668&gt;</em><big>)</big><a class="headerlink" href="#mrv.util.iDuplicatable.childrenDeep" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c050&gt;</em><big>)</big><a class="headerlink" href="#mrv.util.iDuplicatable.childrenDeep" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1556,7 +1602,7 @@ method. Thus we will call the method directly on the class</p>
 
 <dl class="method">
 <dt id="mrv.util.iDuplicatable.iterParents">
-<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2b0dee7ee2a8&gt;</em><big>)</big><a class="headerlink" href="#mrv.util.iDuplicatable.iterParents" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c230&gt;</em><big>)</big><a class="headerlink" href="#mrv.util.iDuplicatable.iterParents" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1692,12 +1738,12 @@ will not work</td>
         <li class="right" >
           <a href="mrv.mdp.html" title="mrv.mdp"
              >previous</a> |</li>
-        <li><a href="../index.html">mrv v1.0.1-develop documentation</a> &raquo;</li> 
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
       &copy; Copyright Sebastian Thiel.
-      Last updated on Nov 30, 2010.
+      Last updated on Apr 19, 2011.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
     </div>
   </body>
