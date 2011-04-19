@@ -1,0 +1,89 @@
+<html>
+<head>
+<title>mrv.maya.ui.browse.util</title>
+</head>
+<body>
+mrv.maya.ui.browse.util
+<style>
+.coverage pre {float: left; margin: 0px 1em; border: none;
+               padding: 0px; }
+.num pre { margin: 0px }
+.nocov, .nocov pre {background-color: #faa}
+.cov, .cov pre {background-color: #cfc}
+div.coverage div { clear: both; height: 1.1em}
+</style>
+<div class="stats">
+Covered: 17 lines<br/>
+Missed: 32 lines<br/>
+Skipped 15 lines<br/>
+Percent: 34 %<br/>
+
+</div>
+<div class="coverage">
+<div class="skip"><span class="num"><pre> 1</pre></span><pre># -*- coding: utf-8 -*-</pre></div>
+<div class="cov"><span class="num"><pre> 2</pre></span><pre>&quot;&quot;&quot;Contains misc utiltiies&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 3</pre></span><pre>__docformat__ = &quot;restructuredtext&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 4</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 5</pre></span><pre>import mrv.maya</pre></div>
+<div class="cov"><span class="num"><pre> 6</pre></span><pre>import mrv.maya.ui as ui</pre></div>
+<div class="skip"><span class="num"><pre> 7</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 8</pre></span><pre>def concat_url(root, path):</pre></div>
+<div class="nocov"><span class="num"><pre> 9</pre></span><pre>	if not root.endswith(&quot;/&quot;):</pre></div>
+<div class="nocov"><span class="num"><pre>10</pre></span><pre>		root += &quot;/&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>11</pre></span><pre>	return root + path</pre></div>
+<div class="skip"><span class="num"><pre>12</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>13</pre></span><pre>def handleUnsavedModifications():</pre></div>
+<div class="cov"><span class="num"><pre>14</pre></span><pre>	&quot;&quot;&quot;Ask the user whether he wants to handle his unsaved modifications.</pre></div>
+<div class="cov"><span class="num"><pre>15</pre></span><pre>	This may cause the current file to be saved, or the modifications to be </pre></div>
+<div class="cov"><span class="num"><pre>16</pre></span><pre>	discarded.</pre></div>
+<div class="cov"><span class="num"><pre>17</pre></span><pre>	:return: True if the changes have been handled properly, or False if the </pre></div>
+<div class="cov"><span class="num"><pre>18</pre></span><pre>		caller should not proceed&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>19</pre></span><pre>	if not mrv.maya.Scene.isModified():</pre></div>
+<div class="nocov"><span class="num"><pre>20</pre></span><pre>		return True</pre></div>
+<div class="skip"><span class="num"><pre>21</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>22</pre></span><pre>	save = &quot;Save and Proceed&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>23</pre></span><pre>	abort = &quot;Cancel&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>24</pre></span><pre>	discard = &quot;Discard Modifications&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>25</pre></span><pre>	msg = &quot;The currently loaded scene contains unsaved modifications.\n&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>26</pre></span><pre>	msg += &quot;Would you like to discard them, or save the scene before proceeding ?&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>27</pre></span><pre>	answer = ui.ChoiceDialog(	t=&quot;Unsaved Modifications&quot;,</pre></div>
+<div class="nocov"><span class="num"><pre>28</pre></span><pre>								m=msg, </pre></div>
+<div class="nocov"><span class="num"><pre>29</pre></span><pre>								c=[save, discard, abort],</pre></div>
+<div class="nocov"><span class="num"><pre>30</pre></span><pre>								dc=save,</pre></div>
+<div class="nocov"><span class="num"><pre>31</pre></span><pre>								cc=abort).choice()</pre></div>
+<div class="skip"><span class="num"><pre>32</pre></span><pre>								</pre></div>
+<div class="nocov"><span class="num"><pre>33</pre></span><pre>	if answer == save:</pre></div>
+<div class="nocov"><span class="num"><pre>34</pre></span><pre>		if mrv.maya.Scene.name().endswith(&quot;untitled&quot;):</pre></div>
+<div class="nocov"><span class="num"><pre>35</pre></span><pre>			import layout</pre></div>
+<div class="nocov"><span class="num"><pre>36</pre></span><pre>			import maya.cmds</pre></div>
+<div class="nocov"><span class="num"><pre>37</pre></span><pre>			maya.cmds.layoutDialog(ui=lambda *args: layout.FileSaveFinder(defaultRoots=True))</pre></div>
+<div class="skip"><span class="num"><pre>38</pre></span><pre>			</pre></div>
+<div class="skip"><span class="num"><pre>39</pre></span><pre>			# still no valid name ?</pre></div>
+<div class="nocov"><span class="num"><pre>40</pre></span><pre>			if mrv.maya.Scene.name().endswith(&quot;untitled&quot;):</pre></div>
+<div class="nocov"><span class="num"><pre>41</pre></span><pre>				return False</pre></div>
+<div class="skip"><span class="num"><pre>42</pre></span><pre>		# END handle untitled file</pre></div>
+<div class="nocov"><span class="num"><pre>43</pre></span><pre>		mrv.maya.Scene.save()</pre></div>
+<div class="nocov"><span class="num"><pre>44</pre></span><pre>	elif answer == discard:</pre></div>
+<div class="nocov"><span class="num"><pre>45</pre></span><pre>		mrv.maya.Scene.new(force=True)</pre></div>
+<div class="nocov"><span class="num"><pre>46</pre></span><pre>	else:</pre></div>
+<div class="nocov"><span class="num"><pre>47</pre></span><pre>		return False</pre></div>
+<div class="skip"><span class="num"><pre>48</pre></span><pre>	# END handle answer </pre></div>
+<div class="skip"><span class="num"><pre>49</pre></span><pre>	</pre></div>
+<div class="nocov"><span class="num"><pre>50</pre></span><pre>	return True</pre></div>
+<div class="skip"><span class="num"><pre>51</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>52</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>53</pre></span><pre>class FrameDecorator(ui.FrameLayout):</pre></div>
+<div class="cov"><span class="num"><pre>54</pre></span><pre>	&quot;&quot;&quot;A simple helper to wrap a box around a layout or control.&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>55</pre></span><pre>	def __new__(cls, name, layoutCreator):</pre></div>
+<div class="cov"><span class="num"><pre>56</pre></span><pre>		&quot;&quot;&quot;Provide the name of the decorator, which will be wrapped around the layoutCreator, </pre></div>
+<div class="cov"><span class="num"><pre>57</pre></span><pre>		which will be called to create the layout. It will be kept and mayde availale </pre></div>
+<div class="cov"><span class="num"><pre>58</pre></span><pre>		through the 'layout' member, the currently available layout will not be changed.&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>59</pre></span><pre>		self = super(FrameDecorator, cls).__new__(cls, label=name, borderStyle=&quot;etchedOut&quot;)</pre></div>
+<div class="nocov"><span class="num"><pre>60</pre></span><pre>		self.layout = layoutCreator()</pre></div>
+<div class="nocov"><span class="num"><pre>61</pre></span><pre>		self.setParentActive();</pre></div>
+<div class="nocov"><span class="num"><pre>62</pre></span><pre>		return self</pre></div>
+<div class="skip"><span class="num"><pre>63</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>64</pre></span><pre></pre></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,2491 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>mrv.dge &mdash; mrv v1.0.2-develop documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.2-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="mrv v1.0.2-develop documentation" href="../index.html" />
+    <link rel="next" title="mrv.thread" href="mrv.thread.html" />
+    <link rel="prev" title="mrv.interface" href="mrv.interface.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.thread.html" title="mrv.thread"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mrv.interface.html" title="mrv.interface"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-mrv.dge">
+<h1><tt class="xref docutils literal"><span class="pre">mrv.dge</span></tt><a class="headerlink" href="#module-mrv.dge" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="api/mrv.dge-module.html">Epydoc: mrv.dge</a></p>
+<p>Contains a simple but yet powerful dependency graph engine allowing computations
+to be organized more efficiently.</p>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mrv.dge.iterShells">
+<tt class="descclassname">mrv.dge.</tt><tt class="descname">iterShells</tt><big>(</big><em>rootPlugShell</em>, <em>stopAt=&lt;function &lt;lambda&gt; at 0x1ae1c08&gt;</em>, <em>prune=&lt;function &lt;lambda&gt; at 0x1ae1de8&gt;</em>, <em>direction='up'</em>, <em>visit_once=False</em>, <em>branch_first=False</em><big>)</big><a class="headerlink" href="#mrv.dge.iterShells" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterator starting at rootPlugShell going &#8220;up&#8221;stream ( input ) or &#8220;down&#8221;stream ( output )
+breadth first over plugs, applying filter functions as defined.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>rootPlugShell</em> &#8211; shell at which to start the traversal. The root plug will be returned as well</li>
+<li><em>stopAt</em> &#8211; if function returns true for given PlugShell, iteration will not proceed
+at that point ( possibly continuing at other spots ). Function will always be called, even
+if the shell would be pruned as well. The shell serving as stop marker will not be returned</li>
+<li><em>prune</em> &#8211; if function returns true for given PlugShell, the shell will not be returned
+but iteration continues.</li>
+<li><em>direction</em> &#8211; traversal direction
+&#8220;up&#8221; upstream, in direction of inputs of plugs
+&#8220;down&#8221; downstream, in direction of outputs of plugs</li>
+<li><em>visit_once</em> &#8211; if True, plugs will only be returned once, even though they are</li>
+<li><em>branch_first</em> &#8211; if True, individual branches will be travelled first ( thuse the node will be left quickly following the datastream ).
+If False, the plugs on the ndoe will be returned first before proceeding to the next node
+encountered several times as several noodes are connected to them in some way.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="api/mrv.dge.Attribute-class.html">Epydoc: mrv.dge.Attribute</a></p>
+<dl class="class">
+<dt id="mrv.dge.Attribute">
+<em class="property">class </em><tt class="descclassname">mrv.dge.</tt><tt class="descname">Attribute</tt><big>(</big><em>typeClass</em>, <em>flags</em>, <em>default=None</em><big>)</big><a class="headerlink" href="#mrv.dge.Attribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>Simple class defining the type of a plug and several flags that
+affect it. Additionally it can determine how well suited another attribute is</p>
+<dl class="docutils">
+<dt><strong>Flags</strong>:</dt>
+<dd>exact_type: if True, derived classes of our typecls are not considered to be a valid type.
+i.e: basestring could be stored in a str attr if exact type is false - its less than we need, but
+still something.
+Putting a str into a basestring attribute will always work though, as it would be more than we need
+readonly: if True, the attribute&#8217;s plug cannot be written to. Read-only attributes can be used
+as storage that the user can read, but not write.
+You can write read-only plugs by directly setting its cache - this of course - is only
+for the node itself, but will never be done by the framework</dd>
+<dt><strong>computable</strong>:</dt>
+<dd><p class="first">Nodes are automatically computable if they are affected by another plug.
+If this is not the case, they are marked input only and are not computed.
+If this flag is true, even unaffeted plugs are computable.
+Plugs that affect something are automatically input plugs and will not be computed.
+If the plug does not affect anything and this flag is False, they are seen as input plugs
+anyway.</p>
+<p>The system does not allow plugs to be input and output plugs at the same time, thus your compute
+cannot be triggered by your own compute</p>
+<p class="last">cls: if True, the plug requires classes to be set ( instances of &#8216;type&#8217; ) , but no instances of these classes
+uncached: if False, computed values may be cached, otherwise they will always be recomputed.
+unconnectable: if True, the node cannot be the destination of a connection
+check_passing_values: check each value as it flows through a connection - usually compatability is only checked
+on connection and once values are set, but not if they flow through an existing connection</p>
+</dd>
+<dt><strong>Default Values</strong>:</dt>
+<dd>Although default values can be simple primitives are classes, a callable is specifically supported.
+It allows you to get a callback whenever a default value is required.
+The same result could be achieved by connected the plug in question, but dynamic defaults are a quick
+way to achive that.
+Your returned value will be type-checked against the required type if check_passing_values is set.</dd>
+</dl>
+<dl class="method">
+<dt id="mrv.dge.Attribute.affinity">
+<tt class="descname">affinity</tt><big>(</big><em>otherattr</em><big>)</big><a class="headerlink" href="#mrv.dge.Attribute.affinity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute affinity for otherattr.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">rating from 0 to 255 defining how good the attribtues match each
+other in general - how good can we store values of otherattr ? 
+Thus this comparison is directed.</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">for checking connections, use <cite>connectionAffinity</cite></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Attribute.compatabilityRate">
+<tt class="descname">compatabilityRate</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#mrv.dge.Attribute.compatabilityRate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute value&#8217;s compatability rate</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">value between 0 and 255, 0 means no compatability, 255 a perfect match. 
+if larger than 0, the plug can hold the value ( assumed the flags are set correctly ).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Attribute.connectionAffinity">
+<tt class="descname">connectionAffinity</tt><big>(</big><em>destinationattr</em><big>)</big><a class="headerlink" href="#mrv.dge.Attribute.connectionAffinity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute connection affinity for given destination attribute</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">rating from 0 to 255 defining the quality of the connection to
+otherplug. an affinity of 0 mean connection is not possible, 255 mean the connection
+is perfectly suited.
+The connection is a directed one from self -&gt; otherplug</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Attribute.default">
+<tt class="descname">default</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.Attribute.default" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">default value stored for this attribute, or raise</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">handles dynamic defaults, so you should not directly access the default member variable</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises <a title="mrv.dge.MissingDefaultValueError" class="reference internal" href="#mrv.dge.MissingDefaultValueError">MissingDefaultValueError</a>:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if attribute does not have a default value</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises TypeError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if value returned by dynamic attribute has incorrect type</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.dge.Graph-class.html">Epydoc: mrv.dge.Graph</a></p>
+<dl class="class">
+<dt id="mrv.dge.Graph">
+<em class="property">class </em><tt class="descclassname">mrv.dge.</tt><tt class="descname">Graph</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">networkx.classes.digraph.DiGraph</span></tt>, <a title="mrv.interface.iDuplicatable" class="reference external" href="mrv.interface.html#mrv.interface.iDuplicatable"><tt class="xref docutils literal"><span class="pre">mrv.interface.iDuplicatable</span></tt></a></p>
+<p>Holds the nodes and their connections</p>
+<p>Nodes are kept in a separate list whereas the plug connections are kept
+in the underlying DiGraph</p>
+<dl class="method">
+<dt id="mrv.dge.Graph.addNode">
+<tt class="descname">addNode</tt><big>(</big><em>node</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.addNode" title="Permalink to this definition">¶</a></dt>
+<dd>Add a new node instance to the graph
+:note: node membership is exclusive, thus node instances
+can only be in one graph at a time
+:return: self, for chained calls</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.dge.Graph.addSep">
+<em class="property">classmethod </em><tt class="descname">addSep</tt><big>(</big><em>item</em>, <em>sep</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.addSep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">item with separator added to it ( just once )</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">operates best on strings</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>item</em> &#8211; item to add separator to</li>
+<li><em>sep</em> &#8211; the separator</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.add_cycle">
+<tt class="descname">add_cycle</tt><big>(</big><em>nlist</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.add_cycle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.add_edge">
+<tt class="descname">add_edge</tt><big>(</big><em>u</em>, <em>v</em>, <em>attr_dict=None</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.add_edge" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.add_edges_from">
+<tt class="descname">add_edges_from</tt><big>(</big><em>ebunch</em>, <em>attr_dict=None</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.add_edges_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.add_node">
+<tt class="descname">add_node</tt><big>(</big><em>n</em>, <em>attr_dict=None</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.add_node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.add_nodes_from">
+<tt class="descname">add_nodes_from</tt><big>(</big><em>nodes</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.add_nodes_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.add_path">
+<tt class="descname">add_path</tt><big>(</big><em>nlist</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.add_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.add_star">
+<tt class="descname">add_star</tt><big>(</big><em>nlist</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.add_star" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.add_weighted_edges_from">
+<tt class="descname">add_weighted_edges_from</tt><big>(</big><em>ebunch</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.add_weighted_edges_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.adjacency_iter">
+<tt class="descname">adjacency_iter</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.Graph.adjacency_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.adjacency_list">
+<tt class="descname">adjacency_list</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.Graph.adjacency_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.basename">
+<tt class="descname">basename</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.Graph.basename" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">basename of this path, &#8216;/hello/world&#8217; -&gt; &#8216;world&#8217;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.children">
+<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a39ed8&gt;</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.children" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of intermediate children of path, [ child1 , child2 ]</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; return True to include x in result</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">the child objects returned are supposed to be valid paths, not just relative paths</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.childrenDeep">
+<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c050&gt;</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.childrenDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of all children of path, [ child1 , child2 ]</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>order</em> &#8211; order enumeration</li>
+<li><em>predicate</em> &#8211; returns true if x may be returned</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">the child objects returned are supposed to be valid paths, not just relative paths</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.clear">
+<tt class="descname">clear</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.Graph.clear" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.clearCache">
+<tt class="descname">clearCache</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.Graph.clearCache" title="Permalink to this definition">¶</a></dt>
+<dd>Clear the cache of all nodes in the graph - this forces the graph
+to reevaluate on the next request</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.connect">
+<tt class="descname">connect</tt><big>(</big><em>sourceshell</em>, <em>destinationshell</em>, <em>force=False</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect this plug to destinationshell such that destinationshell is an input plug for our output</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>sourceshell</em> &#8211; PlugShell being source of the connection</li>
+<li><em>destinationshell</em> &#8211; PlugShell being destination of the connection</li>
+<li><em>force</em> &#8211; if False, existing connections to destinationshell will not be broken, but an exception is raised
+if True, existing connection may be broken</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">self on success, allows chained connections</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises <a title="mrv.dge.PlugAlreadyConnected" class="reference internal" href="#mrv.dge.PlugAlreadyConnected">PlugAlreadyConnected</a>:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first">if destinationshell is connected and force is False</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises <a title="mrv.dge.PlugIncompatible" class="reference internal" href="#mrv.dge.PlugIncompatible">PlugIncompatible</a>:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">if destinationshell does not appear to be compatible to this one</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.copy">
+<tt class="descname">copy</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.Graph.copy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.copyFrom">
+<tt class="descname">copyFrom</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.copyFrom" title="Permalink to this definition">¶</a></dt>
+<dd>Duplicate all data from other graph into this one, create a duplicate
+of the nodes as well</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.copyTo">
+<tt class="descname">copyTo</tt><big>(</big><em>instance</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.copyTo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy the values of ourselves onto the given instance which must be an
+instance of our class to be compatible.
+Only the common classes will be copied to instance</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">altered instance</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">instance will be altered during the process</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.copyToOther">
+<tt class="descname">copyToOther</tt><big>(</big><em>instance</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.copyToOther" title="Permalink to this definition">¶</a></dt>
+<dd>As <cite>copyTo</cite>, but does only require the objects to have a common base.
+It will match the actually compatible base classes and call <cite>copyFrom</cite>
+if possible.
+As more checking is performed, this method performs worse than <cite>copyTo</cite></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.createInstance">
+<tt class="descname">createInstance</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.Graph.createInstance" title="Permalink to this definition">¶</a></dt>
+<dd>Create a copy of self and return it</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.degree">
+<tt class="descname">degree</tt><big>(</big><em>nbunch=None</em>, <em>with_labels=False</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.degree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.degree_iter">
+<tt class="descname">degree_iter</tt><big>(</big><em>nbunch=None</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.degree_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.disconnect">
+<tt class="descname">disconnect</tt><big>(</big><em>sourceshell</em>, <em>destinationshell</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.disconnect" title="Permalink to this definition">¶</a></dt>
+<dd>Remove the connection between sourceshell to destinationshell if they are connected
+:note: does not raise if no connection is present</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.duplicate">
+<tt class="descname">duplicate</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.duplicate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements a c-style copy constructor by creating a new instance of self
+and applying the <cite>copyFrom</cite> methods from base to all classes implementing the copyfrom
+method. Thus we will call the method directly on the class</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>args</em> &#8211; passed to <cite>copyFrom</cite> and <cite>createInstance</cite> method to give additional directions</li>
+<li><em>kwargs</em> &#8211; see param args</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.edges">
+<tt class="descname">edges</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.edges_iter">
+<tt class="descname">edges_iter</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.edges_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.fullChildName">
+<tt class="descname">fullChildName</tt><big>(</big><em>childname</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.fullChildName" title="Permalink to this definition">¶</a></dt>
+<dd>Add the given name to the string version of our instance
+:return: string with childname added like name _sep childname</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.get_edge_data">
+<tt class="descname">get_edge_data</tt><big>(</big><em>u</em>, <em>v</em>, <em>default=None</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.get_edge_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.hasNode">
+<tt class="descname">hasNode</tt><big>(</big><em>node</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.hasNode" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if the node is in this graph, false otherwise</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.has_edge">
+<tt class="descname">has_edge</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.has_edge" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.has_node">
+<tt class="descname">has_node</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.has_node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.has_predecessor">
+<tt class="descname">has_predecessor</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.has_predecessor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.has_successor">
+<tt class="descname">has_successor</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.has_successor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.in_degree">
+<tt class="descname">in_degree</tt><big>(</big><em>nbunch=None</em>, <em>with_labels=False</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.in_degree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.in_degree_iter">
+<tt class="descname">in_degree_iter</tt><big>(</big><em>nbunch=None</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.in_degree_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.in_edges">
+<tt class="descname">in_edges</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.in_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.in_edges_iter">
+<tt class="descname">in_edges_iter</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.in_edges_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.input">
+<tt class="descname">input</tt><big>(</big><em>plugshell</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.input" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the connected input plug of plugshell or None if there is no such connection</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">input plugs have on plug at most, output plugs can have more than one connected plug</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.isPartOf">
+<tt class="descname">isPartOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.isPartOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if self is a part of other, and thus can be found in other</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings only</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.isRoot">
+<tt class="descname">isRoot</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.Graph.isRoot" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this path is the root of the DAG</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.isRootOf">
+<tt class="descname">isRootOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.isRootOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True other starts with self</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">we assume other has the same type as self, thus the same separator</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.is_directed">
+<tt class="descname">is_directed</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.Graph.is_directed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.is_multigraph">
+<tt class="descname">is_multigraph</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.Graph.is_multigraph" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.iterConnectedNodes">
+<tt class="descname">iterConnectedNodes</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x1d28d70&gt;</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.iterConnectedNodes" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">generator returning all nodes that are connected in this graph,
+in no particular order.
+For an ordered itereration, use <cite>iterShells</cite>.</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; if True for node, it will be returned</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.iterNodes">
+<tt class="descname">iterNodes</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x1d28c80&gt;</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.iterNodes" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">generator returning all nodes in this graph</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; if True for node, it will be returned</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">there is no particular order</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.iterParents">
+<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c230&gt;</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.iterParents" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">generator retrieving all parents up to the root</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; returns True for all x that you want to be returned</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.nbunch_iter">
+<tt class="descname">nbunch_iter</tt><big>(</big><em>nbunch=None</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.nbunch_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.neighbors">
+<tt class="descname">neighbors</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.neighbors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.neighbors_iter">
+<tt class="descname">neighbors_iter</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.neighbors_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.nodeByID">
+<tt class="descname">nodeByID</tt><big>(</big><em>nodeID</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.nodeByID" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">instance of a node according to the given node id</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises NameError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if no such node exists in graph</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.nodes">
+<tt class="descname">nodes</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.Graph.nodes" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">immutable copy of the nodes used in the graph</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.nodes_iter">
+<tt class="descname">nodes_iter</tt><big>(</big><em>data=False</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.nodes_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.nodes_with_selfloops">
+<tt class="descname">nodes_with_selfloops</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.Graph.nodes_with_selfloops" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.numNodes">
+<tt class="descname">numNodes</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.Graph.numNodes" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">number of nodes in the graph</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.number_of_edges">
+<tt class="descname">number_of_edges</tt><big>(</big><em>u=None</em>, <em>v=None</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.number_of_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.number_of_nodes">
+<tt class="descname">number_of_nodes</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.Graph.number_of_nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.number_of_selfloops">
+<tt class="descname">number_of_selfloops</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.Graph.number_of_selfloops" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.order">
+<tt class="descname">order</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.Graph.order" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.out_degree">
+<tt class="descname">out_degree</tt><big>(</big><em>nbunch=None</em>, <em>with_labels=False</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.out_degree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.out_degree_iter">
+<tt class="descname">out_degree_iter</tt><big>(</big><em>nbunch=None</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.out_degree_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.out_edges">
+<tt class="descname">out_edges</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.out_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.out_edges_iter">
+<tt class="descname">out_edges_iter</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.out_edges_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.outputs">
+<tt class="descname">outputs</tt><big>(</big><em>plugshell</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x1d291b8&gt;</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.outputs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">a list of plugs being the destination of the connection to plugshell</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; plug will only be returned if predicate is true for it - shells will be passed in</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.parent">
+<tt class="descname">parent</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.Graph.parent" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">parent of this path, &#8216;/hello/world&#8217; -&gt; &#8216;/hello&#8217; or None if this path
+is the dag&#8217;s root</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.parentDeep">
+<tt class="descname">parentDeep</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.Graph.parentDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">all parents of this path, &#8216;/hello/my/world&#8217; -&gt; [ &#8216;/hello/my&#8217;,&#8217;/hello&#8217; ]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.predecessors">
+<tt class="descname">predecessors</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.predecessors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.predecessors_iter">
+<tt class="descname">predecessors_iter</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.predecessors_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.removeNode">
+<tt class="descname">removeNode</tt><big>(</big><em>node</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.removeNode" title="Permalink to this definition">¶</a></dt>
+<dd>Remove the given node from the graph ( if it exists in it )</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.remove_edge">
+<tt class="descname">remove_edge</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.remove_edge" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.remove_edges_from">
+<tt class="descname">remove_edges_from</tt><big>(</big><em>ebunch</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.remove_edges_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.remove_node">
+<tt class="descname">remove_node</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.remove_node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.remove_nodes_from">
+<tt class="descname">remove_nodes_from</tt><big>(</big><em>nbunch</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.remove_nodes_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.reverse">
+<tt class="descname">reverse</tt><big>(</big><em>copy=True</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.reverse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.root">
+<tt class="descname">root</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.Graph.root" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the root of the DAG - it has no further parents</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.selfloop_edges">
+<tt class="descname">selfloop_edges</tt><big>(</big><em>data=False</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.selfloop_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.size">
+<tt class="descname">size</tt><big>(</big><em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.subgraph">
+<tt class="descname">subgraph</tt><big>(</big><em>nbunch</em>, <em>copy=True</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.subgraph" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.successors">
+<tt class="descname">successors</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.successors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.successors_iter">
+<tt class="descname">successors_iter</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.successors_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.supports">
+<tt class="descname">supports</tt><big>(</big><em>interface_type</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.supports" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this instance supports the interface of the given type</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>interface_type</em> &#8211; Type of the interface you require this instance 
+to support</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Must be used in case you only have a weak reference of your interface
+instance or proxy which is a case where the ordinary isinstance( obj, iInterface )
+will not work</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.to_directed">
+<tt class="descname">to_directed</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.Graph.to_directed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.to_undirected">
+<tt class="descname">to_undirected</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.Graph.to_undirected" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.Graph.writeDot">
+<tt class="descname">writeDot</tt><big>(</big><em>fileOrPath</em><big>)</big><a class="headerlink" href="#mrv.dge.Graph.writeDot" title="Permalink to this definition">¶</a></dt>
+<dd>Write the connections in self to the given file object or path
+:todo: remove if no longer needed</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.dge.NodeBase-class.html">Epydoc: mrv.dge.NodeBase</a></p>
+<dl class="class">
+<dt id="mrv.dge.NodeBase">
+<em class="property">class </em><tt class="descclassname">mrv.dge.</tt><tt class="descname">NodeBase</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dge.NodeBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.interface.iDuplicatable" class="reference external" href="mrv.interface.html#mrv.interface.iDuplicatable"><tt class="xref docutils literal"><span class="pre">mrv.interface.iDuplicatable</span></tt></a></p>
+<p>Base class that provides support for plugs to the superclass.
+It will create some simple tracking attriubtes required for the plug system
+to work</p>
+<p>Nodes can compute values of their plugs if these do not have a cache.</p>
+<p>Nodes are identified by an ID - the default graph implementation though will
+be okay with just having instances.
+It is also being used for string representations of this node</p>
+<dl class="classmethod">
+<dt id="mrv.dge.NodeBase.addSep">
+<em class="property">classmethod </em><tt class="descname">addSep</tt><big>(</big><em>item</em>, <em>sep</em><big>)</big><a class="headerlink" href="#mrv.dge.NodeBase.addSep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">item with separator added to it ( just once )</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">operates best on strings</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>item</em> &#8211; item to add separator to</li>
+<li><em>sep</em> &#8211; the separator</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.NodeBase.basename">
+<tt class="descname">basename</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.NodeBase.basename" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">basename of this path, &#8216;/hello/world&#8217; -&gt; &#8216;world&#8217;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.NodeBase.children">
+<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a39ed8&gt;</em><big>)</big><a class="headerlink" href="#mrv.dge.NodeBase.children" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of intermediate children of path, [ child1 , child2 ]</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; return True to include x in result</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">the child objects returned are supposed to be valid paths, not just relative paths</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.NodeBase.childrenDeep">
+<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c050&gt;</em><big>)</big><a class="headerlink" href="#mrv.dge.NodeBase.childrenDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of all children of path, [ child1 , child2 ]</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>order</em> &#8211; order enumeration</li>
+<li><em>predicate</em> &#8211; returns true if x may be returned</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">the child objects returned are supposed to be valid paths, not just relative paths</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.NodeBase.clearCache">
+<tt class="descname">clearCache</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.NodeBase.clearCache" title="Permalink to this definition">¶</a></dt>
+<dd>Clear the cache of all plugs on this node - this basically forces it
+to recompute the next time an output plug is being queried</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.NodeBase.compute">
+<tt class="descname">compute</tt><big>(</big><em>plug</em>, <em>mode</em><big>)</big><a class="headerlink" href="#mrv.dge.NodeBase.compute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called whenever a plug needs computation as the value its value is not
+cached or marked dirty ( as one of the inputs changed )</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>plug</em> &#8211; the static plug instance that requested which requested the computation.
+It is the instance you defined on the class</li>
+<li><em>mode</em> &#8211; the mode of operation. Its completely up to the superclasses how that
+attribute is going to be used</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">to be implemented by superclass</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.NodeBase.connections">
+<tt class="descname">connections</tt><big>(</big><em>inpt</em>, <em>output</em><big>)</big><a class="headerlink" href="#mrv.dge.NodeBase.connections" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Tuples of input shells defining a connection of the given type from
+tuple( InputNodeOuptutShell, OurNodeInputShell ) for input connections and
+tuple( OurNodeOuptutShell, OutputNodeInputShell )</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>inpt</em> &#8211; include input connections to this node</li>
+<li><em>output</em> &#8211; include output connections ( from this node to others )</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.NodeBase.copyFrom">
+<tt class="descname">copyFrom</tt><big>(</big><em>other</em>, <em>add_to_graph=True</em><big>)</big><a class="headerlink" href="#mrv.dge.NodeBase.copyFrom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Just take the graph from other, but do not ( never ) duplicate it</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>add_to_graph</em> &#8211; if true, the new node instance will be added to the graph of</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">default implementation does not copy plug caches ( which are stored in
+the node dict - this is because a reevaluate is usually required on the
+duplicated node</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.NodeBase.copyTo">
+<tt class="descname">copyTo</tt><big>(</big><em>instance</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dge.NodeBase.copyTo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy the values of ourselves onto the given instance which must be an
+instance of our class to be compatible.
+Only the common classes will be copied to instance</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">altered instance</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">instance will be altered during the process</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.NodeBase.copyToOther">
+<tt class="descname">copyToOther</tt><big>(</big><em>instance</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dge.NodeBase.copyToOther" title="Permalink to this definition">¶</a></dt>
+<dd>As <cite>copyTo</cite>, but does only require the objects to have a common base.
+It will match the actually compatible base classes and call <cite>copyFrom</cite>
+if possible.
+As more checking is performed, this method performs worse than <cite>copyTo</cite></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.NodeBase.createInstance">
+<tt class="descname">createInstance</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dge.NodeBase.createInstance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a copy of self and return it</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">override by subclass  - the __init__ methods shuld do the rest</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.NodeBase.duplicate">
+<tt class="descname">duplicate</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dge.NodeBase.duplicate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements a c-style copy constructor by creating a new instance of self
+and applying the <cite>copyFrom</cite> methods from base to all classes implementing the copyfrom
+method. Thus we will call the method directly on the class</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>args</em> &#8211; passed to <cite>copyFrom</cite> and <cite>createInstance</cite> method to give additional directions</li>
+<li><em>kwargs</em> &#8211; see param args</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.dge.NodeBase.filterCompatiblePlugs">
+<em class="property">classmethod </em><tt class="descname">filterCompatiblePlugs</tt><big>(</big><em>plugs</em>, <em>attrOrValue</em>, <em>raise_on_ambiguity=False</em>, <em>attr_affinity=False</em>, <em>attr_as_source=True</em><big>)</big><a class="headerlink" href="#mrv.dge.NodeBase.filterCompatiblePlugs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">sorted list of (rate,plug) tuples suitable to deal with the given attribute.
+Thus they could connect to it as well as get their value set.
+Most suitable plug comes first.
+Incompatible plugs will be pruned.</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>attrOrValue</em> &#8211; either an attribute or the value you would like to set to the
+attr at the plug in question.</li>
+<li><em>raise_on_ambiguity</em> &#8211; if True, the method raises if a plug has the same
+rating as another plug already on the output list, thus it&#8217;s not clear anymore
+which plug should handle a request</li>
+<li><em>attr_affinity</em> &#8211; if True, it will not check connection affinity, but attribute
+affinity only. It checks how compatible the attributes of the plugs are, disregarding
+whether they can be connected or not
+Only valid if attrOrValue is an attribute</li>
+<li><em>attr_as_source</em> &#8211; if True, attrOrValue will be treated as the source of a connection or
+each plug would need to take its values.
+if False, attrOrValue is the destination of a connection and it needs to take values of the given plugs
+or they would connect to it. Only used if attrOrValue is an attribute.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises TypeError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">if ambiguous input was found</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.NodeBase.fullChildName">
+<tt class="descname">fullChildName</tt><big>(</big><em>childname</em><big>)</big><a class="headerlink" href="#mrv.dge.NodeBase.fullChildName" title="Permalink to this definition">¶</a></dt>
+<dd>Add the given name to the string version of our instance
+:return: string with childname added like name _sep childname</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.NodeBase.id">
+<tt class="descname">id</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.NodeBase.id" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">ID of this instance</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.NodeBase.inputPlugs">
+<tt class="descname">inputPlugs</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dge.NodeBase.inputPlugs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of plugs suitable as input</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">convenience method</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.dge.NodeBase.inputPlugsStatic">
+<em class="property">classmethod </em><tt class="descname">inputPlugsStatic</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dge.NodeBase.inputPlugsStatic" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of static plugs suitable as input</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">convenience method</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.NodeBase.isPartOf">
+<tt class="descname">isPartOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.dge.NodeBase.isPartOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if self is a part of other, and thus can be found in other</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings only</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.NodeBase.isRoot">
+<tt class="descname">isRoot</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.NodeBase.isRoot" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this path is the root of the DAG</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.NodeBase.isRootOf">
+<tt class="descname">isRootOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.dge.NodeBase.isRootOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True other starts with self</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">we assume other has the same type as self, thus the same separator</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.NodeBase.iterParents">
+<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c230&gt;</em><big>)</big><a class="headerlink" href="#mrv.dge.NodeBase.iterParents" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">generator retrieving all parents up to the root</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; returns True for all x that you want to be returned</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.NodeBase.outputPlugs">
+<tt class="descname">outputPlugs</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dge.NodeBase.outputPlugs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of plugs suitable to deliver output</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">convenience method</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.dge.NodeBase.outputPlugsStatic">
+<em class="property">classmethod </em><tt class="descname">outputPlugsStatic</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dge.NodeBase.outputPlugsStatic" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of static plugs suitable to deliver output</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">convenience method</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.NodeBase.parent">
+<tt class="descname">parent</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.NodeBase.parent" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">parent of this path, &#8216;/hello/world&#8217; -&gt; &#8216;/hello&#8217; or None if this path
+is the dag&#8217;s root</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.NodeBase.parentDeep">
+<tt class="descname">parentDeep</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.NodeBase.parentDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">all parents of this path, &#8216;/hello/my/world&#8217; -&gt; [ &#8216;/hello/my&#8217;,&#8217;/hello&#8217; ]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.NodeBase.plugs">
+<tt class="descname">plugs</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x1d29938&gt;</em><big>)</big><a class="headerlink" href="#mrv.dge.NodeBase.plugs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of dynamic plugs as defined on this node - they are usually retrieved
+on class level, but may be overridden on instance level</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; return static plug only if predicate is true</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.dge.NodeBase.plugsStatic">
+<em class="property">classmethod </em><tt class="descname">plugsStatic</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x1d29848&gt;</em><big>)</big><a class="headerlink" href="#mrv.dge.NodeBase.plugsStatic" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of static plugs as defined on this node - they are class members</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; return static plug only if predicate is true</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Use this method only if you do not have an instance - there are nodes
+that actually have no static plug information, but will dynamically generate them.
+For this to work, they need an instance - thus the plugs method is an instance
+method and is meant to be the most commonly used one.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.NodeBase.root">
+<tt class="descname">root</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.NodeBase.root" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the root of the DAG - it has no further parents</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.NodeBase.setID">
+<tt class="descname">setID</tt><big>(</big><em>newID</em><big>)</big><a class="headerlink" href="#mrv.dge.NodeBase.setID" title="Permalink to this definition">¶</a></dt>
+<dd>Set id of this node to newiD
+:return: previously assigned id</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dge.NodeBase.shellcls">
+<tt class="descname">shellcls</tt><a class="headerlink" href="#mrv.dge.NodeBase.shellcls" title="Permalink to this definition">¶</a></dt>
+<dd>alias of <a title="mrv.dge._PlugShell" class="reference internal" href="#mrv.dge._PlugShell"><tt class="xref docutils literal"><span class="pre">_PlugShell</span></tt></a></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.NodeBase.supports">
+<tt class="descname">supports</tt><big>(</big><em>interface_type</em><big>)</big><a class="headerlink" href="#mrv.dge.NodeBase.supports" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this instance supports the interface of the given type</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>interface_type</em> &#8211; Type of the interface you require this instance 
+to support</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Must be used in case you only have a weak reference of your interface
+instance or proxy which is a case where the ordinary isinstance( obj, iInterface )
+will not work</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.NodeBase.toShell">
+<tt class="descname">toShell</tt><big>(</big><em>plug</em><big>)</big><a class="headerlink" href="#mrv.dge.NodeBase.toShell" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">a plugshell as suitable to for this class</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.NodeBase.toShells">
+<tt class="descname">toShells</tt><big>(</big><em>plugs</em><big>)</big><a class="headerlink" href="#mrv.dge.NodeBase.toShells" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of shells made from plugs and our node</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.dge._NodeBaseCheckMeta-class.html">Epydoc: mrv.dge._NodeBaseCheckMeta</a></p>
+<dl class="class">
+<dt id="mrv.dge._NodeBaseCheckMeta">
+<em class="property">class </em><tt class="descclassname">mrv.dge.</tt><tt class="descname">_NodeBaseCheckMeta</tt><a class="headerlink" href="#mrv.dge._NodeBaseCheckMeta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">type</span></tt></p>
+<p>Class checking the consistency of the nodebase class before it is being created</p>
+<dl class="attribute">
+<dt id="mrv.dge._NodeBaseCheckMeta.mro">
+<tt class="descname">mro</tt><a class="headerlink" href="#mrv.dge._NodeBaseCheckMeta.mro" title="Permalink to this definition">¶</a></dt>
+<dd>mro() -&gt; list
+return a type&#8217;s method resolution order</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.dge._PlugShell-class.html">Epydoc: mrv.dge._PlugShell</a></p>
+<dl class="class">
+<dt id="mrv.dge._PlugShell">
+<em class="property">class </em><tt class="descclassname">mrv.dge.</tt><tt class="descname">_PlugShell</tt><a class="headerlink" href="#mrv.dge._PlugShell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">tuple</span></tt></p>
+<p>Handles per-node-instance plug connection setup and storage. As plugs are
+descriptors and thus an instance of the class, per-node-instance information needs
+special treatment.
+This class is being returned whenever the descriptors get and set methods are called,
+it contains information about the node and the plug being involved, allowing to track
+connection info directly using the node dict</p>
+<p>This allows plugs to be connected, and information to flow through the dependency graph.
+Plugs never act alone since they always belong to a parent node that will be asked for
+value computations if the value is not yet cached.
+:note: Do not instantiate this class youself, it must be created by the node as different
+node types can use different versions of this shell</p>
+<dl class="method">
+<dt id="mrv.dge._PlugShell.cache">
+<tt class="descname">cache</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge._PlugShell.cache" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the cached value or raise</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises ValueError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge._PlugShell.clearCache">
+<tt class="descname">clearCache</tt><big>(</big><em>clear_affected=False</em>, <em>cleared_shells_set=None</em><big>)</big><a class="headerlink" href="#mrv.dge._PlugShell.clearCache" title="Permalink to this definition">¶</a></dt>
+<dd>Empty the cache of our plug
+:param clear_affected: if True, the caches of our affected plugs ( connections
+or affects relations ) will also be cleared
+This operation is recursive, and needs to be as different shells on different nodes
+might do things differently.
+:param cleared_shells_set: if set, it can be used to track which plugs have already been dirtied to
+prevent recursive loops
+Propagation will happen even if we do not have a cache to clear ourselves</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge._PlugShell.compatabilityRate">
+<tt class="descname">compatabilityRate</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#mrv.dge._PlugShell.compatabilityRate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute compatability rate for teh given value</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">value between 0 and 255, 0 means no compatability, 255 a perfect match
+if larger than 0, the plug can hold the value ( assumed the flags are set correctly )</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge._PlugShell.connect">
+<tt class="descname">connect</tt><big>(</big><em>otherplugshell</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dge._PlugShell.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect this plug to otherplugshell such that otherplugshell is an input plug for our output</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>kwargs</em> &#8211; everything supported by <cite>Graph.connect</cite></td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">self on success, allows chained connections</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises <a title="mrv.dge.PlugAlreadyConnected" class="reference internal" href="#mrv.dge.PlugAlreadyConnected">PlugAlreadyConnected</a>:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if otherplugshell is connected and force is False</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises <a title="mrv.dge.PlugIncompatible" class="reference internal" href="#mrv.dge.PlugIncompatible">PlugIncompatible</a>:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if otherplugshell does not appear to be compatible to this one</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge._PlugShell.connections">
+<tt class="descname">connections</tt><big>(</big><em>inpt</em>, <em>output</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x1d28320&gt;</em><big>)</big><a class="headerlink" href="#mrv.dge._PlugShell.connections" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">get all input and or output connections from this shell
+or to this shell as edges ( sourceshell, destinationshell )</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; return true for each destination shell that you can except in the
+returned edge or the sourceshell where your shell is the destination.</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Use this method to get edges read for connection/disconnection</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dge._PlugShell.count">
+<tt class="descname">count</tt><a class="headerlink" href="#mrv.dge._PlugShell.count" title="Permalink to this definition">¶</a></dt>
+<dd>T.count(value) -&gt; integer &#8211; return number of occurrences of value</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge._PlugShell.disconnect">
+<tt class="descname">disconnect</tt><big>(</big><em>otherplugshell</em><big>)</big><a class="headerlink" href="#mrv.dge._PlugShell.disconnect" title="Permalink to this definition">¶</a></dt>
+<dd>Remove the connection to otherplugshell if we are connected to it.
+:note: does not raise if no connection is present</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge._PlugShell.get">
+<tt class="descname">get</tt><big>(</big><em>mode=None</em><big>)</big><a class="headerlink" href="#mrv.dge._PlugShell.get" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">value of the plug</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>mode</em> &#8211; optional arbitary value specifying the mode of the get attempt</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge._PlugShell.hasCache">
+<tt class="descname">hasCache</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge._PlugShell.hasCache" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if currently store a cached value</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dge._PlugShell.index">
+<tt class="descname">index</tt><a class="headerlink" href="#mrv.dge._PlugShell.index" title="Permalink to this definition">¶</a></dt>
+<dd>T.index(value, [start, [stop]]) -&gt; integer &#8211; return first index of value.
+Raises ValueError if the value is not present.</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge._PlugShell.input">
+<tt class="descname">input</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x1d28140&gt;</em><big>)</big><a class="headerlink" href="#mrv.dge._PlugShell.input" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the connected input plug or None if there is no such connection</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; plug will only be returned if predicate is true for it</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">input plugs have on plug at most, output plugs can have more than one
+connected plug</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge._PlugShell.isConnected">
+<tt class="descname">isConnected</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge._PlugShell.isConnected" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True, if the shell is connected as source or as destination of a connection</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge._PlugShell.iterShells">
+<tt class="descname">iterShells</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dge._PlugShell.iterShells" title="Permalink to this definition">¶</a></dt>
+<dd>Iterate plugs and their connections starting at this plug
+:return: generator for plug shells
+:note: supports all options of <cite>iterShells</cite>, this method allows syntax like:
+node.outAttribute.iterShells( )</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge._PlugShell.outputs">
+<tt class="descname">outputs</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x1d28230&gt;</em><big>)</big><a class="headerlink" href="#mrv.dge._PlugShell.outputs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">a list of plugs being the destination of the connection</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; plug will only be returned if predicate is true for it - shells will be passed in</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge._PlugShell.set">
+<tt class="descname">set</tt><big>(</big><em>value</em>, <em>ignore_connection=False</em><big>)</big><a class="headerlink" href="#mrv.dge._PlugShell.set" title="Permalink to this definition">¶</a></dt>
+<dd>Set the given value to be used in our plug
+:param ignore_connection: if True, the plug can be destination of a connection and
+will still get its value set - usually it would be overwritten by the value form the
+connection. The set value will be cleared if something upstream in it&#8217;s connection chain
+changes.
+:raise AssertionError: the respective attribute must be cached, otherwise
+the value will be lost</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge._PlugShell.setCache">
+<tt class="descname">setCache</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#mrv.dge._PlugShell.setCache" title="Permalink to this definition">¶</a></dt>
+<dd>Set the given value to be stored in our cache
+:raise: TypeError if the value is not compatible to our defined type</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.dge-module.html#deque">Epydoc: mrv.dge</a></p>
+<dl class="class">
+<dt id="mrv.dge.deque">
+<em class="property">class </em><tt class="descclassname">mrv.dge.</tt><tt class="descname">deque</tt><a class="headerlink" href="#mrv.dge.deque" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>deque(iterable[, maxlen]) &#8211;&gt; deque object</p>
+<p>Build an ordered collection accessible from endpoints only.</p>
+<dl class="attribute">
+<dt id="mrv.dge.deque.append">
+<tt class="descname">append</tt><a class="headerlink" href="#mrv.dge.deque.append" title="Permalink to this definition">¶</a></dt>
+<dd>Add an element to the right side of the deque.</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dge.deque.appendleft">
+<tt class="descname">appendleft</tt><a class="headerlink" href="#mrv.dge.deque.appendleft" title="Permalink to this definition">¶</a></dt>
+<dd>Add an element to the left side of the deque.</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dge.deque.clear">
+<tt class="descname">clear</tt><a class="headerlink" href="#mrv.dge.deque.clear" title="Permalink to this definition">¶</a></dt>
+<dd>Remove all elements from the deque.</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dge.deque.extend">
+<tt class="descname">extend</tt><a class="headerlink" href="#mrv.dge.deque.extend" title="Permalink to this definition">¶</a></dt>
+<dd>Extend the right side of the deque with elements from the iterable</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dge.deque.extendleft">
+<tt class="descname">extendleft</tt><a class="headerlink" href="#mrv.dge.deque.extendleft" title="Permalink to this definition">¶</a></dt>
+<dd>Extend the left side of the deque with elements from the iterable</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dge.deque.pop">
+<tt class="descname">pop</tt><a class="headerlink" href="#mrv.dge.deque.pop" title="Permalink to this definition">¶</a></dt>
+<dd>Remove and return the rightmost element.</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dge.deque.popleft">
+<tt class="descname">popleft</tt><a class="headerlink" href="#mrv.dge.deque.popleft" title="Permalink to this definition">¶</a></dt>
+<dd>Remove and return the leftmost element.</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dge.deque.remove">
+<tt class="descname">remove</tt><a class="headerlink" href="#mrv.dge.deque.remove" title="Permalink to this definition">¶</a></dt>
+<dd>D.remove(value) &#8211; remove first occurrence of value.</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dge.deque.rotate">
+<tt class="descname">rotate</tt><a class="headerlink" href="#mrv.dge.deque.rotate" title="Permalink to this definition">¶</a></dt>
+<dd>Rotate the deque n steps to the right (default n=1).  If n is negative, rotates left.</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.dge-module.html#iDuplicatable">Epydoc: mrv.dge</a></p>
+<dl class="class">
+<dt id="mrv.dge.iDuplicatable">
+<em class="property">class </em><tt class="descclassname">mrv.dge.</tt><tt class="descname">iDuplicatable</tt><a class="headerlink" href="#mrv.dge.iDuplicatable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.interface.Interface" class="reference external" href="mrv.interface.html#mrv.interface.Interface"><tt class="xref docutils literal"><span class="pre">mrv.interface.Interface</span></tt></a></p>
+<p>Simple interface allowing any class to be properly duplicated</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">to implement this interface, implement <cite>createInstance</cite> and
+<cite>copyFrom</cite> in your class</td>
+</tr>
+</tbody>
+</table>
+<dl class="classmethod">
+<dt id="mrv.dge.iDuplicatable.addSep">
+<em class="property">classmethod </em><tt class="descname">addSep</tt><big>(</big><em>item</em>, <em>sep</em><big>)</big><a class="headerlink" href="#mrv.dge.iDuplicatable.addSep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">item with separator added to it ( just once )</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">operates best on strings</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>item</em> &#8211; item to add separator to</li>
+<li><em>sep</em> &#8211; the separator</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.iDuplicatable.basename">
+<tt class="descname">basename</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.iDuplicatable.basename" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">basename of this path, &#8216;/hello/world&#8217; -&gt; &#8216;world&#8217;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.iDuplicatable.children">
+<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a39ed8&gt;</em><big>)</big><a class="headerlink" href="#mrv.dge.iDuplicatable.children" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of intermediate children of path, [ child1 , child2 ]</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; return True to include x in result</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">the child objects returned are supposed to be valid paths, not just relative paths</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.iDuplicatable.childrenDeep">
+<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c050&gt;</em><big>)</big><a class="headerlink" href="#mrv.dge.iDuplicatable.childrenDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of all children of path, [ child1 , child2 ]</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>order</em> &#8211; order enumeration</li>
+<li><em>predicate</em> &#8211; returns true if x may be returned</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">the child objects returned are supposed to be valid paths, not just relative paths</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.iDuplicatable.copyFrom">
+<tt class="descname">copyFrom</tt><big>(</big><em>other</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dge.iDuplicatable.copyFrom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy the data from other into self as good as possible
+Only copy the data that is unique to your specific class - the data of other
+classes will be taken care of by them !</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">you must support <tt class="docutils literal"><span class="pre">args</span></tt> and <tt class="docutils literal"><span class="pre">kwargs</span></tt> if one of your iDuplicate bases does</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.iDuplicatable.copyTo">
+<tt class="descname">copyTo</tt><big>(</big><em>instance</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dge.iDuplicatable.copyTo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy the values of ourselves onto the given instance which must be an
+instance of our class to be compatible.
+Only the common classes will be copied to instance</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">altered instance</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">instance will be altered during the process</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.iDuplicatable.copyToOther">
+<tt class="descname">copyToOther</tt><big>(</big><em>instance</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dge.iDuplicatable.copyToOther" title="Permalink to this definition">¶</a></dt>
+<dd>As <cite>copyTo</cite>, but does only require the objects to have a common base.
+It will match the actually compatible base classes and call <cite>copyFrom</cite>
+if possible.
+As more checking is performed, this method performs worse than <cite>copyTo</cite></dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.iDuplicatable.createInstance">
+<tt class="descname">createInstance</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dge.iDuplicatable.createInstance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create and Initialize an instance of self.__class__( ... ) based on your own data</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">new instance of self</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">using self.__class__ instead of an explicit class allows derived
+classes that do not have anything to duplicate just to use your implementeation</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">you must support <tt class="docutils literal"><span class="pre">args</span></tt> and <tt class="docutils literal"><span class="pre">kwargs</span></tt> if one of your iDuplicate bases does</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.iDuplicatable.duplicate">
+<tt class="descname">duplicate</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.dge.iDuplicatable.duplicate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements a c-style copy constructor by creating a new instance of self
+and applying the <cite>copyFrom</cite> methods from base to all classes implementing the copyfrom
+method. Thus we will call the method directly on the class</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>args</em> &#8211; passed to <cite>copyFrom</cite> and <cite>createInstance</cite> method to give additional directions</li>
+<li><em>kwargs</em> &#8211; see param args</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.iDuplicatable.fullChildName">
+<tt class="descname">fullChildName</tt><big>(</big><em>childname</em><big>)</big><a class="headerlink" href="#mrv.dge.iDuplicatable.fullChildName" title="Permalink to this definition">¶</a></dt>
+<dd>Add the given name to the string version of our instance
+:return: string with childname added like name _sep childname</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.iDuplicatable.isPartOf">
+<tt class="descname">isPartOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.dge.iDuplicatable.isPartOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if self is a part of other, and thus can be found in other</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings only</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.iDuplicatable.isRoot">
+<tt class="descname">isRoot</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.iDuplicatable.isRoot" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this path is the root of the DAG</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.iDuplicatable.isRootOf">
+<tt class="descname">isRootOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.dge.iDuplicatable.isRootOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True other starts with self</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">we assume other has the same type as self, thus the same separator</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.iDuplicatable.iterParents">
+<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c230&gt;</em><big>)</big><a class="headerlink" href="#mrv.dge.iDuplicatable.iterParents" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">generator retrieving all parents up to the root</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; returns True for all x that you want to be returned</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.iDuplicatable.parent">
+<tt class="descname">parent</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.iDuplicatable.parent" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">parent of this path, &#8216;/hello/world&#8217; -&gt; &#8216;/hello&#8217; or None if this path
+is the dag&#8217;s root</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.iDuplicatable.parentDeep">
+<tt class="descname">parentDeep</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.iDuplicatable.parentDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">all parents of this path, &#8216;/hello/my/world&#8217; -&gt; [ &#8216;/hello/my&#8217;,&#8217;/hello&#8217; ]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.iDuplicatable.root">
+<tt class="descname">root</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.iDuplicatable.root" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the root of the DAG - it has no further parents</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.iDuplicatable.supports">
+<tt class="descname">supports</tt><big>(</big><em>interface_type</em><big>)</big><a class="headerlink" href="#mrv.dge.iDuplicatable.supports" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this instance supports the interface of the given type</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>interface_type</em> &#8211; Type of the interface you require this instance 
+to support</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Must be used in case you only have a weak reference of your interface
+instance or proxy which is a case where the ordinary isinstance( obj, iInterface )
+will not work</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.dge.iPlug-class.html">Epydoc: mrv.dge.iPlug</a></p>
+<dl class="class">
+<dt id="mrv.dge.iPlug">
+<em class="property">class </em><tt class="descclassname">mrv.dge.</tt><tt class="descname">iPlug</tt><a class="headerlink" href="#mrv.dge.iPlug" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>Defines an interface allowing to compare compatabilies according to types.</p>
+<p>Plugs can either be input plugs or output plugs - output plugs affect no other
+plug on a node, but are affected by 0 or more plugs .</p>
+<p>By convention, a plug has a name - that name must also be the name of the
+member attribute that stores the plag. Plugs, possibly different instances of it,
+need to be re-retrieved on freshly duplicated nodes to allow graph duplication to
+be done properly</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">if your plug class supports the <tt class="docutils literal"><span class="pre">setName</span></tt> method, a metaclass will
+adjust the name of your plug to match the name it has in the parent class</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mrv.dge.iPlug.affected">
+<tt class="descname">affected</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.iPlug.affected" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">tuple containing affected plugs ( plugs that are affected by our value )</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.iPlug.affectedBy">
+<tt class="descname">affectedBy</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.iPlug.affectedBy" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">tuple containing plugs that affect us ( plugs affecting our value )</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.iPlug.affects">
+<tt class="descname">affects</tt><big>(</big><em>otherplug</em><big>)</big><a class="headerlink" href="#mrv.dge.iPlug.affects" title="Permalink to this definition">¶</a></dt>
+<dd>Set an affects relation ship between this plug and otherplug, saying
+that this plug affects otherplug.</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.iPlug.name">
+<tt class="descname">name</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.iPlug.name" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">name of the plug ( the name that identifies it on the node</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.iPlug.providesInput">
+<tt class="descname">providesInput</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.iPlug.providesInput" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this is an input plug that will never cause computations</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.iPlug.providesOutput">
+<tt class="descname">providesOutput</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.iPlug.providesOutput" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this is an output plug that can trigger computations</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.dge.plug-class.html">Epydoc: mrv.dge.plug</a></p>
+<dl class="class">
+<dt id="mrv.dge.plug">
+<em class="property">class </em><tt class="descclassname">mrv.dge.</tt><tt class="descname">plug</tt><big>(</big><em>attribute</em><big>)</big><a class="headerlink" href="#mrv.dge.plug" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.dge.iPlug" class="reference internal" href="#mrv.dge.iPlug"><tt class="xref docutils literal"><span class="pre">mrv.dge.iPlug</span></tt></a></p>
+<p>Defines an interface allowing to compare compatabilies according to types.</p>
+<p>Plugs are implemented as descriptors, thus they will be defined on node class
+level, and all static information will remain static</p>
+<p>As descriptors, they are defined statically on the class, and some additional information
+such as connectivity, is stored on the respective class instance. These special methods
+are handled using <cite>NodeBase</cite> class</p>
+<p>Plugs are implemented as descriptors as all type information can be kept per class,
+whereas only connection information changes per node instance.</p>
+<p>Plugs can either be input plugs or output plugs - output plugs affect no other
+plug on a node, but are affected by 0 or more plugs</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">class is lowercase as it is used as descriptor ( acting more like a function )</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mrv.dge.plug.affected">
+<tt class="descname">affected</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.plug.affected" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">tuple containing affected plugs ( plugs that are affected by our value )</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.plug.affectedBy">
+<tt class="descname">affectedBy</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.plug.affectedBy" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">tuple containing plugs that affect us ( plugs affecting our value )</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.plug.affects">
+<tt class="descname">affects</tt><big>(</big><em>otherplug</em><big>)</big><a class="headerlink" href="#mrv.dge.plug.affects" title="Permalink to this definition">¶</a></dt>
+<dd>Set an affects relation ship between this plug and otherplug, saying
+that this plug affects otherplug.</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.plug.name">
+<tt class="descname">name</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.plug.name" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">name of plug</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.plug.providesInput">
+<tt class="descname">providesInput</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.plug.providesInput" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this is an input plug that will never cause computations</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.plug.providesOutput">
+<tt class="descname">providesOutput</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.dge.plug.providesOutput" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this is an output plug that can trigger computations</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.dge.plug.setName">
+<tt class="descname">setName</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#mrv.dge.plug.setName" title="Permalink to this definition">¶</a></dt>
+<dd>Set the name of this plug - can be set only once</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="exceptions">
+<h2>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="api/mrv.dge.AccessError-class.html">Epydoc: mrv.dge.AccessError</a></p>
+<dl class="class">
+<dt id="mrv.dge.AccessError">
+<em class="property">class </em><tt class="descclassname">mrv.dge.</tt><tt class="descname">AccessError</tt><a class="headerlink" href="#mrv.dge.AccessError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+<p>Base class for all errors indicating invalid access</p>
+<dl class="attribute">
+<dt id="mrv.dge.AccessError.args">
+<tt class="descname">args</tt><a class="headerlink" href="#mrv.dge.AccessError.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dge.AccessError.message">
+<tt class="descname">message</tt><a class="headerlink" href="#mrv.dge.AccessError.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.dge.ComputeError-class.html">Epydoc: mrv.dge.ComputeError</a></p>
+<dl class="class">
+<dt id="mrv.dge.ComputeError">
+<em class="property">class </em><tt class="descclassname">mrv.dge.</tt><tt class="descname">ComputeError</tt><a class="headerlink" href="#mrv.dge.ComputeError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+<p>Thrown if the computation done by a plug failed by an unknown exception
+It will be passed on in the exception</p>
+<dl class="attribute">
+<dt id="mrv.dge.ComputeError.args">
+<tt class="descname">args</tt><a class="headerlink" href="#mrv.dge.ComputeError.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dge.ComputeError.message">
+<tt class="descname">message</tt><a class="headerlink" href="#mrv.dge.ComputeError.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.dge.ComputeFailed-class.html">Epydoc: mrv.dge.ComputeFailed</a></p>
+<dl class="class">
+<dt id="mrv.dge.ComputeFailed">
+<em class="property">class </em><tt class="descclassname">mrv.dge.</tt><tt class="descname">ComputeFailed</tt><a class="headerlink" href="#mrv.dge.ComputeFailed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.dge.ComputeError" class="reference internal" href="#mrv.dge.ComputeError"><tt class="xref docutils literal"><span class="pre">mrv.dge.ComputeError</span></tt></a></p>
+<p>Raised by the derived class computing a value if the computational goal
+cannot be achieved ( anymore )</p>
+<dl class="attribute">
+<dt id="mrv.dge.ComputeFailed.args">
+<tt class="descname">args</tt><a class="headerlink" href="#mrv.dge.ComputeFailed.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dge.ComputeFailed.message">
+<tt class="descname">message</tt><a class="headerlink" href="#mrv.dge.ComputeFailed.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.dge.ConnectionError-class.html">Epydoc: mrv.dge.ConnectionError</a></p>
+<dl class="class">
+<dt id="mrv.dge.ConnectionError">
+<em class="property">class </em><tt class="descclassname">mrv.dge.</tt><tt class="descname">ConnectionError</tt><a class="headerlink" href="#mrv.dge.ConnectionError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+<p>Exception base for all plug related errors</p>
+<dl class="attribute">
+<dt id="mrv.dge.ConnectionError.args">
+<tt class="descname">args</tt><a class="headerlink" href="#mrv.dge.ConnectionError.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dge.ConnectionError.message">
+<tt class="descname">message</tt><a class="headerlink" href="#mrv.dge.ConnectionError.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.dge.MissingDefaultValueError-class.html">Epydoc: mrv.dge.MissingDefaultValueError</a></p>
+<dl class="class">
+<dt id="mrv.dge.MissingDefaultValueError">
+<em class="property">class </em><tt class="descclassname">mrv.dge.</tt><tt class="descname">MissingDefaultValueError</tt><a class="headerlink" href="#mrv.dge.MissingDefaultValueError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.dge.AccessError" class="reference internal" href="#mrv.dge.AccessError"><tt class="xref docutils literal"><span class="pre">mrv.dge.AccessError</span></tt></a></p>
+<p>Thrown if a default value is missing for input attributes that are not connected</p>
+<dl class="attribute">
+<dt id="mrv.dge.MissingDefaultValueError.args">
+<tt class="descname">args</tt><a class="headerlink" href="#mrv.dge.MissingDefaultValueError.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dge.MissingDefaultValueError.message">
+<tt class="descname">message</tt><a class="headerlink" href="#mrv.dge.MissingDefaultValueError.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.dge.NotReadableError-class.html">Epydoc: mrv.dge.NotReadableError</a></p>
+<dl class="class">
+<dt id="mrv.dge.NotReadableError">
+<em class="property">class </em><tt class="descclassname">mrv.dge.</tt><tt class="descname">NotReadableError</tt><a class="headerlink" href="#mrv.dge.NotReadableError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.dge.AccessError" class="reference internal" href="#mrv.dge.AccessError"><tt class="xref docutils literal"><span class="pre">mrv.dge.AccessError</span></tt></a></p>
+<p>Thrown if a non-readable attribute is being read</p>
+<dl class="attribute">
+<dt id="mrv.dge.NotReadableError.args">
+<tt class="descname">args</tt><a class="headerlink" href="#mrv.dge.NotReadableError.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dge.NotReadableError.message">
+<tt class="descname">message</tt><a class="headerlink" href="#mrv.dge.NotReadableError.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.dge.NotWritableError-class.html">Epydoc: mrv.dge.NotWritableError</a></p>
+<dl class="class">
+<dt id="mrv.dge.NotWritableError">
+<em class="property">class </em><tt class="descclassname">mrv.dge.</tt><tt class="descname">NotWritableError</tt><a class="headerlink" href="#mrv.dge.NotWritableError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.dge.AccessError" class="reference internal" href="#mrv.dge.AccessError"><tt class="xref docutils literal"><span class="pre">mrv.dge.AccessError</span></tt></a></p>
+<p>Thrown if a non-writable plug is being written to</p>
+<dl class="attribute">
+<dt id="mrv.dge.NotWritableError.args">
+<tt class="descname">args</tt><a class="headerlink" href="#mrv.dge.NotWritableError.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dge.NotWritableError.message">
+<tt class="descname">message</tt><a class="headerlink" href="#mrv.dge.NotWritableError.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.dge.PlugAlreadyConnected-class.html">Epydoc: mrv.dge.PlugAlreadyConnected</a></p>
+<dl class="class">
+<dt id="mrv.dge.PlugAlreadyConnected">
+<em class="property">class </em><tt class="descclassname">mrv.dge.</tt><tt class="descname">PlugAlreadyConnected</tt><a class="headerlink" href="#mrv.dge.PlugAlreadyConnected" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.dge.ConnectionError" class="reference internal" href="#mrv.dge.ConnectionError"><tt class="xref docutils literal"><span class="pre">mrv.dge.ConnectionError</span></tt></a></p>
+<p>Thrown if one tries to connect a plug to otherplug when otherplug is already connected</p>
+<dl class="attribute">
+<dt id="mrv.dge.PlugAlreadyConnected.args">
+<tt class="descname">args</tt><a class="headerlink" href="#mrv.dge.PlugAlreadyConnected.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dge.PlugAlreadyConnected.message">
+<tt class="descname">message</tt><a class="headerlink" href="#mrv.dge.PlugAlreadyConnected.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.dge.PlugIncompatible-class.html">Epydoc: mrv.dge.PlugIncompatible</a></p>
+<dl class="class">
+<dt id="mrv.dge.PlugIncompatible">
+<em class="property">class </em><tt class="descclassname">mrv.dge.</tt><tt class="descname">PlugIncompatible</tt><a class="headerlink" href="#mrv.dge.PlugIncompatible" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.dge.ConnectionError" class="reference internal" href="#mrv.dge.ConnectionError"><tt class="xref docutils literal"><span class="pre">mrv.dge.ConnectionError</span></tt></a>, <tt class="xref docutils literal"><span class="pre">exceptions.TypeError</span></tt></p>
+<p>Thrown whenever plugs are not compatible with each other during connection</p>
+<dl class="attribute">
+<dt id="mrv.dge.PlugIncompatible.args">
+<tt class="descname">args</tt><a class="headerlink" href="#mrv.dge.PlugIncompatible.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dge.PlugIncompatible.message">
+<tt class="descname">message</tt><a class="headerlink" href="#mrv.dge.PlugIncompatible.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.dge.PlugUnhandled-class.html">Epydoc: mrv.dge.PlugUnhandled</a></p>
+<dl class="class">
+<dt id="mrv.dge.PlugUnhandled">
+<em class="property">class </em><tt class="descclassname">mrv.dge.</tt><tt class="descname">PlugUnhandled</tt><a class="headerlink" href="#mrv.dge.PlugUnhandled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.dge.ComputeError" class="reference internal" href="#mrv.dge.ComputeError"><tt class="xref docutils literal"><span class="pre">mrv.dge.ComputeError</span></tt></a></p>
+<p>Raised if a plug was not handled by the node&#8217;s compute method</p>
+<dl class="attribute">
+<dt id="mrv.dge.PlugUnhandled.args">
+<tt class="descname">args</tt><a class="headerlink" href="#mrv.dge.PlugUnhandled.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.dge.PlugUnhandled.message">
+<tt class="descname">message</tt><a class="headerlink" href="#mrv.dge.PlugUnhandled.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="../index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#"><tt class="docutils literal"><span class="pre">mrv.dge</span></tt></a><ul>
+<li><a class="reference external" href="#functions">Functions</a></li>
+<li><a class="reference external" href="#classes">Classes</a></li>
+<li><a class="reference external" href="#exceptions">Exceptions</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="mrv.interface.html"
+                                  title="previous chapter"><tt class="docutils literal"><span class="pre">mrv.interface</span></tt></a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="mrv.thread.html"
+                                  title="next chapter"><tt class="docutils literal"><span class="pre">mrv.thread</span></tt></a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/generated/mrv.dge.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.thread.html" title="mrv.thread"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mrv.interface.html" title="mrv.interface"
+             >previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Apr 19, 2011.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

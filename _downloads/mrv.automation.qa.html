@@ -1,0 +1,319 @@
+<html>
+<head>
+<title>mrv.automation.qa</title>
+</head>
+<body>
+mrv.automation.qa
+<style>
+.coverage pre {float: left; margin: 0px 1em; border: none;
+               padding: 0px; }
+.num pre { margin: 0px }
+.nocov, .nocov pre {background-color: #faa}
+.cov, .cov pre {background-color: #cfc}
+div.coverage div { clear: both; height: 1.1em}
+</style>
+<div class="stats">
+Covered: 169 lines<br/>
+Missed: 17 lines<br/>
+Skipped 108 lines<br/>
+Percent: 90 %<br/>
+
+</div>
+<div class="coverage">
+<div class="skip"><span class="num"><pre>  1</pre></span><pre># -*- coding: utf-8 -*-</pre></div>
+<div class="cov"><span class="num"><pre>  2</pre></span><pre>&quot;&quot;&quot;Specialization of workflow to provide quality assurance capabilities.</pre></div>
+<div class="skip"><span class="num"><pre>  3</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  4</pre></span><pre>General Idiom of a quality assurance facility is to provide read-only checks for</pre></div>
+<div class="cov"><span class="num"><pre>  5</pre></span><pre>possibly quaility issues and possibly a fix for them.</pre></div>
+<div class="skip"><span class="num"><pre>  6</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  7</pre></span><pre>The interface is determined by plugs that define the capabilities of the node implementing</pre></div>
+<div class="cov"><span class="num"><pre>  8</pre></span><pre>the checks.</pre></div>
+<div class="skip"><span class="num"><pre>  9</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 10</pre></span><pre>The quality assurance framework is defined by:</pre></div>
+<div class="cov"><span class="num"><pre> 11</pre></span><pre>	 * `QAWorkflow`</pre></div>
+<div class="cov"><span class="num"><pre> 12</pre></span><pre>	 * `QAProcessBase`</pre></div>
+<div class="cov"><span class="num"><pre> 13</pre></span><pre>	 * `QACheckResult`</pre></div>
+<div class="cov"><span class="num"><pre> 14</pre></span><pre>	 * `QACheckAttribute`</pre></div>
+<div class="skip"><span class="num"><pre> 15</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 16</pre></span><pre>They specialize the respective parts of the workflow&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 17</pre></span><pre>__docformat__ = &quot;restructuredtext&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 18</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 19</pre></span><pre>from workflow import Workflow</pre></div>
+<div class="cov"><span class="num"><pre> 20</pre></span><pre>from process import ProcessBase</pre></div>
+<div class="cov"><span class="num"><pre> 21</pre></span><pre>from mrv.util import EventSender, Event</pre></div>
+<div class="cov"><span class="num"><pre> 22</pre></span><pre>from mrv.dge import Attribute, plug, ComputeFailed</pre></div>
+<div class="cov"><span class="num"><pre> 23</pre></span><pre>from mrv.enum import create as enum</pre></div>
+<div class="cov"><span class="num"><pre> 24</pre></span><pre>import sys</pre></div>
+<div class="skip"><span class="num"><pre> 25</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 26</pre></span><pre>import logging</pre></div>
+<div class="cov"><span class="num"><pre> 27</pre></span><pre>log = logging.getLogger(&quot;mrv.automation.qa&quot;)</pre></div>
+<div class="skip"><span class="num"><pre> 28</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 29</pre></span><pre>#{ Exceptions</pre></div>
+<div class="cov"><span class="num"><pre> 30</pre></span><pre>class CheckIncompatibleError( ComputeFailed ):</pre></div>
+<div class="cov"><span class="num"><pre> 31</pre></span><pre>	&quot;&quot;&quot;Raised if a check cannot accomdate the requested mode and thus cannot run&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 32</pre></span><pre>	pass</pre></div>
+<div class="skip"><span class="num"><pre> 33</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 34</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 35</pre></span><pre>#} END exceptions</pre></div>
+<div class="skip"><span class="num"><pre> 36</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 37</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 38</pre></span><pre>class QAProcessBase( ProcessBase ):</pre></div>
+<div class="cov"><span class="num"><pre> 39</pre></span><pre>	&quot;&quot;&quot;Quality Assurance Process including a specialized QA interface&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 40</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 41</pre></span><pre>	# query: find issues and report them using `QACheckResult`, but do not attempt to fix</pre></div>
+<div class="skip"><span class="num"><pre> 42</pre></span><pre>	# fix: find issues and fix them, report fixed ( and possibly failed ) items by</pre></div>
+<div class="cov"><span class="num"><pre> 43</pre></span><pre>	eMode = enum( &quot;query&quot;, &quot;fix&quot; )	# computation mode for QAProcessBasees</pre></div>
+<div class="skip"><span class="num"><pre> 44</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 45</pre></span><pre>	#( Configuration</pre></div>
+<div class="skip"><span class="num"><pre> 46</pre></span><pre>	# QA Processes do not require this feature due to their quite simplistic call structure</pre></div>
+<div class="skip"><span class="num"><pre> 47</pre></span><pre>	# If required, subclasses can override this though</pre></div>
+<div class="cov"><span class="num"><pre> 48</pre></span><pre>	track_compute_calls = False</pre></div>
+<div class="skip"><span class="num"><pre> 49</pre></span><pre>	#) END configuration</pre></div>
+<div class="skip"><span class="num"><pre> 50</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 51</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 52</pre></span><pre>	#{ Interface</pre></div>
+<div class="cov"><span class="num"><pre> 53</pre></span><pre>	def assureQuality( self, check, mode, *args, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre> 54</pre></span><pre>		&quot;&quot;&quot;Called when the test identified by plug should be handled</pre></div>
+<div class="skip"><span class="num"><pre> 55</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 56</pre></span><pre>		:param check: QACheck to be checked for issues</pre></div>
+<div class="cov"><span class="num"><pre> 57</pre></span><pre>		:param mode: mode of the computation, see `QAProcessBase.eMode`</pre></div>
+<div class="cov"><span class="num"><pre> 58</pre></span><pre>		:return: QACheckResult instance keeping information about the outcome of the test&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 59</pre></span><pre>		raise NotImplementedError( &quot;To be implemented by subclass&quot; )</pre></div>
+<div class="skip"><span class="num"><pre> 60</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 61</pre></span><pre>	def listChecks( self, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre> 62</pre></span><pre>		&quot;&quot;&quot;:return: list( QACheck, ... ) list of our checks</pre></div>
+<div class="cov"><span class="num"><pre> 63</pre></span><pre>		:param kwargs: see `QAWorkflow.filterChecks`&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 64</pre></span><pre>		return self.workflow().filterChecks( [ self ], **kwargs )</pre></div>
+<div class="skip"><span class="num"><pre> 65</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 66</pre></span><pre>	#} END interface</pre></div>
+<div class="skip"><span class="num"><pre> 67</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 68</pre></span><pre>	def evaluateState( self, plug, mode, *args, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre> 69</pre></span><pre>		&quot;&quot;&quot;Prepares the call to the actual quality check implemenetation and assuring</pre></div>
+<div class="cov"><span class="num"><pre> 70</pre></span><pre>		test identified by plug can actually be run in the given mode&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 71</pre></span><pre>		if mode is self.eMode.fix and not plug.attr.implements_fix:</pre></div>
+<div class="nocov"><span class="num"><pre> 72</pre></span><pre>			raise CheckIncompatibleError( &quot;Plug %s does not implement issue fixing&quot; % plug )</pre></div>
+<div class="skip"><span class="num"><pre> 73</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 74</pre></span><pre>		return self.assureQuality( plug, mode, *args, **kwargs )</pre></div>
+<div class="skip"><span class="num"><pre> 75</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 76</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 77</pre></span><pre>class QACheckAttribute( Attribute ):</pre></div>
+<div class="cov"><span class="num"><pre> 78</pre></span><pre>	&quot;&quot;&quot;The Test Attribute represents an interface to a specific test as implemented</pre></div>
+<div class="cov"><span class="num"><pre> 79</pre></span><pre>	by the parent `QAProcessBase`.</pre></div>
+<div class="cov"><span class="num"><pre> 80</pre></span><pre>	The QA Attribute returns specialized quality assurance results and provides</pre></div>
+<div class="cov"><span class="num"><pre> 81</pre></span><pre>	additional information about the respective test</pre></div>
+<div class="skip"><span class="num"><pre> 82</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 83</pre></span><pre>	:note: as this class holds meta information about the respective test ( see `QACheck` )</pre></div>
+<div class="cov"><span class="num"><pre> 84</pre></span><pre>		user interfaces may use it to adjust it's display</pre></div>
+<div class="cov"><span class="num"><pre> 85</pre></span><pre>	:note: this class depends on unknown mel implementations - on error we abort</pre></div>
+<div class="cov"><span class="num"><pre> 86</pre></span><pre>		but do not throw as this would cause class creation to fail and leave the whole</pre></div>
+<div class="cov"><span class="num"><pre> 87</pre></span><pre>		qa system unusable&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 88</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 89</pre></span><pre>	def __init__( 	self, annotation, has_fix = False,</pre></div>
+<div class="cov"><span class="num"><pre> 90</pre></span><pre>				 	flags = Attribute.computable ):</pre></div>
+<div class="cov"><span class="num"><pre> 91</pre></span><pre>		&quot;&quot;&quot;Initialize attribute with meta information</pre></div>
+<div class="skip"><span class="num"><pre> 92</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 93</pre></span><pre>		:param annotation: information string describing the purpose of the test</pre></div>
+<div class="cov"><span class="num"><pre> 94</pre></span><pre>		:param has_fix: if True, the check must implement a fix for the issues it checks for,</pre></div>
+<div class="cov"><span class="num"><pre> 95</pre></span><pre>			if False, it can only report issues</pre></div>
+<div class="cov"><span class="num"><pre> 96</pre></span><pre>		:param flags: configuration flags for the plug - default to trigger computation even without</pre></div>
+<div class="cov"><span class="num"><pre> 97</pre></span><pre>			input&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 98</pre></span><pre>		super( QACheckAttribute, self ).__init__( QACheckResult, flags )</pre></div>
+<div class="cov"><span class="num"><pre> 99</pre></span><pre>		self.annotation = annotation</pre></div>
+<div class="cov"><span class="num"><pre>100</pre></span><pre>		self.implements_fix = has_fix</pre></div>
+<div class="skip"><span class="num"><pre>101</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>102</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>103</pre></span><pre>class QACheck( plug ):</pre></div>
+<div class="cov"><span class="num"><pre>104</pre></span><pre>	&quot;&quot;&quot;Defines a test suitable to be run and computed by a `QAProcessBase`</pre></div>
+<div class="cov"><span class="num"><pre>105</pre></span><pre>	It's nothing more than a convenience class as the actual information is held by the</pre></div>
+<div class="cov"><span class="num"><pre>106</pre></span><pre>	respective `QACheckAttribute`.</pre></div>
+<div class="cov"><span class="num"><pre>107</pre></span><pre>	All non-plug calls are passed on to the underlying attribute, allowing it to</pre></div>
+<div class="cov"><span class="num"><pre>108</pre></span><pre>	be treated like one&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>109</pre></span><pre>	#{ Configuration</pre></div>
+<div class="skip"><span class="num"><pre>110</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>111</pre></span><pre>	# class of the check attribute to use when instanciating this check</pre></div>
+<div class="cov"><span class="num"><pre>112</pre></span><pre>	check_attribute_cls = QACheckAttribute</pre></div>
+<div class="skip"><span class="num"><pre>113</pre></span><pre>	#} END configuration</pre></div>
+<div class="skip"><span class="num"><pre>114</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>115</pre></span><pre>	def __init__( self, *args, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>116</pre></span><pre>		super( QACheck, self ).__init__( self.check_attribute_cls( *args, **kwargs ) )</pre></div>
+<div class="skip"><span class="num"><pre>117</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>118</pre></span><pre>	def __getattr__( self, attrname ):</pre></div>
+<div class="cov"><span class="num"><pre>119</pre></span><pre>		return getattr( self.attr, attrname )</pre></div>
+<div class="skip"><span class="num"><pre>120</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>121</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>122</pre></span><pre>class QAWorkflow( Workflow, EventSender ):</pre></div>
+<div class="cov"><span class="num"><pre>123</pre></span><pre>	&quot;&quot;&quot;Represents a workflow of QAProcessBase instances and allows to query them more</pre></div>
+<div class="cov"><span class="num"><pre>124</pre></span><pre>	conveniently&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>125</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>126</pre></span><pre>	#( Configuration</pre></div>
+<div class="cov"><span class="num"><pre>127</pre></span><pre>	sender_as_argument = False</pre></div>
+<div class="skip"><span class="num"><pre>128</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>129</pre></span><pre>	# if True, we will abort once the first error has been raised during check execution</pre></div>
+<div class="skip"><span class="num"><pre>130</pre></span><pre>	# It is also held as instance variable so it can be set on per instance basis, allowing</pre></div>
+<div class="skip"><span class="num"><pre>131</pre></span><pre>	# error check callbacks to adjust the error handling behaviour and abort the operation</pre></div>
+<div class="cov"><span class="num"><pre>132</pre></span><pre>	abort_on_error = False</pre></div>
+<div class="skip"><span class="num"><pre>133</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>134</pre></span><pre>	# as checks can take some time, it might be useful to have realtime results</pre></div>
+<div class="skip"><span class="num"><pre>135</pre></span><pre>	# to std out in UI mode at least. It accompanies the feedback the workflow</pre></div>
+<div class="skip"><span class="num"><pre>136</pre></span><pre>	# gives and keeps the default unittest style</pre></div>
+<div class="cov"><span class="num"><pre>137</pre></span><pre>	info_to_stdout = True</pre></div>
+<div class="skip"><span class="num"><pre>138</pre></span><pre>	#) END configuration</pre></div>
+<div class="skip"><span class="num"><pre>139</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>140</pre></span><pre>	#( Filters</pre></div>
+<div class="cov"><span class="num"><pre>141</pre></span><pre>	fIsQAProcessBase = staticmethod( lambda n: isinstance( n, QAProcessBase ) )</pre></div>
+<div class="cov"><span class="num"><pre>142</pre></span><pre>	fIsQAPlug = staticmethod( lambda p: isinstance( p, QACheck ) )</pre></div>
+<div class="skip"><span class="num"><pre>143</pre></span><pre>	#) END filters</pre></div>
+<div class="skip"><span class="num"><pre>144</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>145</pre></span><pre>	#{ Events</pre></div>
+<div class="skip"><span class="num"><pre>146</pre></span><pre>	# called before a check is run as func: func( event, check )</pre></div>
+<div class="cov"><span class="num"><pre>147</pre></span><pre>	e_preCheck = Event()</pre></div>
+<div class="skip"><span class="num"><pre>148</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>149</pre></span><pre>	# called if a check fails with an error: func( event, check, exception, workflow )</pre></div>
+<div class="cov"><span class="num"><pre>150</pre></span><pre>	e_checkError = Event()</pre></div>
+<div class="skip"><span class="num"><pre>151</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>152</pre></span><pre>	# called after a check has been run: func( event, check, result )</pre></div>
+<div class="cov"><span class="num"><pre>153</pre></span><pre>	e_postCheck = Event()</pre></div>
+<div class="skip"><span class="num"><pre>154</pre></span><pre>	#}</pre></div>
+<div class="skip"><span class="num"><pre>155</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>156</pre></span><pre>	def __init__( self, *args, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>157</pre></span><pre>		&quot;&quot;&quot;Initialize our instance&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>158</pre></span><pre>		super( QAWorkflow, self ).__init__( *args, **kwargs )</pre></div>
+<div class="skip"><span class="num"><pre>159</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>160</pre></span><pre>		# store abort on error as instance variable so that it can easily be overwritten</pre></div>
+<div class="cov"><span class="num"><pre>161</pre></span><pre>		self.abort_on_error = QAWorkflow.abort_on_error</pre></div>
+<div class="skip"><span class="num"><pre>162</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>163</pre></span><pre>	def listQAProcessBasees( self, predicate = lambda p: True ):</pre></div>
+<div class="cov"><span class="num"><pre>164</pre></span><pre>		&quot;&quot;&quot;:return: list( Process, ... ) list of QA Processes known to this QA Workflow</pre></div>
+<div class="cov"><span class="num"><pre>165</pre></span><pre>		:param predicate: include process p in result if func( p ) returns True&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>166</pre></span><pre>		return self.iterNodes( predicate = lambda n: self.fIsQAProcessBase( n ) and predicate( n ) )</pre></div>
+<div class="skip"><span class="num"><pre>167</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>168</pre></span><pre>	def filterChecks( self, processes, predicate = lambda c: True ):</pre></div>
+<div class="cov"><span class="num"><pre>169</pre></span><pre>		&quot;&quot;&quot;As `listChecks`, but allows you do define the processes to use</pre></div>
+<div class="skip"><span class="num"><pre>170</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>171</pre></span><pre>		:param predicate: func( p ) for plug p returns True for it to be included in the result&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>172</pre></span><pre>		outchecks = list()</pre></div>
+<div class="cov"><span class="num"><pre>173</pre></span><pre>		for node in processes:</pre></div>
+<div class="cov"><span class="num"><pre>174</pre></span><pre>			outchecks.extend( node.toShells( node.plugs( lambda c: self.fIsQAPlug( c ) and predicate( c ) ) ) )</pre></div>
+<div class="cov"><span class="num"><pre>175</pre></span><pre>		return outchecks</pre></div>
+<div class="skip"><span class="num"><pre>176</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>177</pre></span><pre>	def listChecks( self, predicate = lambda c: True  ):</pre></div>
+<div class="cov"><span class="num"><pre>178</pre></span><pre>		&quot;&quot;&quot;List all checks as supported by `QAProcessBase` es in this QA Workflow</pre></div>
+<div class="skip"><span class="num"><pre>179</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>180</pre></span><pre>		:param predicate: include check c in result if func( c ) returns True&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>181</pre></span><pre>		return self.filterChecks( self.listQAProcessBasees( ), predicate = predicate )</pre></div>
+<div class="skip"><span class="num"><pre>182</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>183</pre></span><pre>	def runChecks( self, checks, mode = QAProcessBase.eMode.query, clear_result = True ):</pre></div>
+<div class="cov"><span class="num"><pre>184</pre></span><pre>		&quot;&quot;&quot;Run the given checks in the given mode and return their results</pre></div>
+<div class="skip"><span class="num"><pre>185</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>186</pre></span><pre>		:param checks: list( QACheckShell, ... ) as retrieved by `listChecks`</pre></div>
+<div class="cov"><span class="num"><pre>187</pre></span><pre>		:param mode: `QAProcessBase.eMode`</pre></div>
+<div class="cov"><span class="num"><pre>188</pre></span><pre>		:param clear_result: if True, the plug's cache will be removed forcing a computation</pre></div>
+<div class="cov"><span class="num"><pre>189</pre></span><pre>			if False, you might get a cached value depending on the plug's setup</pre></div>
+<div class="cov"><span class="num"><pre>190</pre></span><pre>		:return: list( tuple( QACheckShell, QACheckResult ), ... ) list of pairs of</pre></div>
+<div class="cov"><span class="num"><pre>191</pre></span><pre>			QACheckShells and the check's result. The test result will be empty if the test</pre></div>
+<div class="cov"><span class="num"><pre>192</pre></span><pre>			did not run or failed with an exception</pre></div>
+<div class="cov"><span class="num"><pre>193</pre></span><pre>		:note: Sends the following events: ``e_preCheck`` , ``e_postCheck``, ``e_checkError``</pre></div>
+<div class="cov"><span class="num"><pre>194</pre></span><pre>			e_checkError may set the abort_on_error variable to True to cause the operation</pre></div>
+<div class="cov"><span class="num"><pre>195</pre></span><pre>			not to proceed with other checks&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>196</pre></span><pre>		# reset abort on error to class default</pre></div>
+<div class="cov"><span class="num"><pre>197</pre></span><pre>		self.abort_on_error = self.__class__.abort_on_error</pre></div>
+<div class="cov"><span class="num"><pre>198</pre></span><pre>		self._clearState( mode )	# assure we get a new callgraph</pre></div>
+<div class="skip"><span class="num"><pre>199</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>200</pre></span><pre>		outresult = list()</pre></div>
+<div class="cov"><span class="num"><pre>201</pre></span><pre>		for checkshell in checks:</pre></div>
+<div class="cov"><span class="num"><pre>202</pre></span><pre>			if self.info_to_stdout:</pre></div>
+<div class="cov"><span class="num"><pre>203</pre></span><pre>				checkplug = checkshell.plug</pre></div>
+<div class="cov"><span class="num"><pre>204</pre></span><pre>				log.info( &quot;Running %s: %s ... &quot; % ( checkplug.name(), checkplug.annotation ) )</pre></div>
+<div class="skip"><span class="num"><pre>205</pre></span><pre>			# END extra info</pre></div>
+<div class="skip"><span class="num"><pre>206</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>207</pre></span><pre>			self.e_preCheck.send( self.e_preCheck, checkshell )</pre></div>
+<div class="skip"><span class="num"><pre>208</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>209</pre></span><pre>			result = QACheckResult()	 	# null value</pre></div>
+<div class="cov"><span class="num"><pre>210</pre></span><pre>			if clear_result:</pre></div>
+<div class="cov"><span class="num"><pre>211</pre></span><pre>				checkshell.clearCache( clear_affected = False )</pre></div>
+<div class="skip"><span class="num"><pre>212</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>213</pre></span><pre>			shellmode = mode</pre></div>
+<div class="skip"><span class="num"><pre>214</pre></span><pre>			# some only can do check mode</pre></div>
+<div class="cov"><span class="num"><pre>215</pre></span><pre>			if not checkshell.plug.implements_fix:</pre></div>
+<div class="nocov"><span class="num"><pre>216</pre></span><pre>				shellmode = checkshell.node.eMode.query</pre></div>
+<div class="skip"><span class="num"><pre>217</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>218</pre></span><pre>			try:</pre></div>
+<div class="cov"><span class="num"><pre>219</pre></span><pre>				result = checkshell.get( shellmode )</pre></div>
+<div class="nocov"><span class="num"><pre>220</pre></span><pre>			except Exception, e:</pre></div>
+<div class="nocov"><span class="num"><pre>221</pre></span><pre>				self.e_checkError.send( self.e_checkError, checkshell, e, self )</pre></div>
+<div class="skip"><span class="num"><pre>222</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>223</pre></span><pre>				if self.abort_on_error:</pre></div>
+<div class="nocov"><span class="num"><pre>224</pre></span><pre>					raise</pre></div>
+<div class="skip"><span class="num"><pre>225</pre></span><pre>			# END error handling</pre></div>
+<div class="skip"><span class="num"><pre>226</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>227</pre></span><pre>			if self.info_to_stdout:</pre></div>
+<div class="cov"><span class="num"><pre>228</pre></span><pre>				msg = &quot;FAILED&quot;</pre></div>
+<div class="cov"><span class="num"><pre>229</pre></span><pre>				if result.isSuccessful():</pre></div>
+<div class="cov"><span class="num"><pre>230</pre></span><pre>					msg = &quot;OK&quot;</pre></div>
+<div class="cov"><span class="num"><pre>231</pre></span><pre>				log.info(msg)</pre></div>
+<div class="skip"><span class="num"><pre>232</pre></span><pre>			# END extra info</pre></div>
+<div class="skip"><span class="num"><pre>233</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>234</pre></span><pre>			# record result</pre></div>
+<div class="cov"><span class="num"><pre>235</pre></span><pre>			outresult.append( ( checkshell, result ) )</pre></div>
+<div class="cov"><span class="num"><pre>236</pre></span><pre>			self.e_postCheck.send( self.e_postCheck, checkshell, result )</pre></div>
+<div class="skip"><span class="num"><pre>237</pre></span><pre>		# END for each check to run</pre></div>
+<div class="skip"><span class="num"><pre>238</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>239</pre></span><pre>		return outresult</pre></div>
+<div class="skip"><span class="num"><pre>240</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>241</pre></span><pre>class QACheckResult( object ):</pre></div>
+<div class="cov"><span class="num"><pre>242</pre></span><pre>	&quot;&quot;&quot;Wrapper class declaring test results as a type that provides a simple interface</pre></div>
+<div class="cov"><span class="num"><pre>243</pre></span><pre>	to retrieve the test results</pre></div>
+<div class="skip"><span class="num"><pre>244</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>245</pre></span><pre>	:note: test results are only reqtrieved by QACheckAttribute plugs&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>246</pre></span><pre>	def __init__( self , fixed_items = None , failed_items = None, header = &quot;&quot; ):</pre></div>
+<div class="cov"><span class="num"><pre>247</pre></span><pre>		&quot;&quot;&quot;Initialize ourselves with default values</pre></div>
+<div class="skip"><span class="num"><pre>248</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>249</pre></span><pre>		:param fixed_items: if list of items, the instance is initialized with it</pre></div>
+<div class="cov"><span class="num"><pre>250</pre></span><pre>		:param failed_items: list of items that could not be fixed</pre></div>
+<div class="cov"><span class="num"><pre>251</pre></span><pre>		:param header: optional string giving additional specialized information on the</pre></div>
+<div class="cov"><span class="num"><pre>252</pre></span><pre>			outcome of the test. Tests must supply a header - otherwise the result will be treated</pre></div>
+<div class="cov"><span class="num"><pre>253</pre></span><pre>			as failed check&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>254</pre></span><pre>		self.header = header</pre></div>
+<div class="cov"><span class="num"><pre>255</pre></span><pre>		self.fixed_items = ( isinstance( fixed_items, list ) and fixed_items ) or list()</pre></div>
+<div class="cov"><span class="num"><pre>256</pre></span><pre>		self.failed_items = ( isinstance( failed_items, list ) and failed_items ) or list()</pre></div>
+<div class="skip"><span class="num"><pre>257</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>258</pre></span><pre>	def fixedItems( self ):</pre></div>
+<div class="cov"><span class="num"><pre>259</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>260</pre></span><pre>		:return: list( Item , ... ) list of items ( the exact type may differ</pre></div>
+<div class="cov"><span class="num"><pre>261</pre></span><pre>			depending on the actual test ) which have been fixed so they represent the</pre></div>
+<div class="cov"><span class="num"><pre>262</pre></span><pre>			desired state&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>263</pre></span><pre>		return self.fixed_items</pre></div>
+<div class="skip"><span class="num"><pre>264</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>265</pre></span><pre>	def failedItems( self ):</pre></div>
+<div class="cov"><span class="num"><pre>266</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>267</pre></span><pre>		:return: ( list( Item, ... ) list of failed items being items that could not be</pre></div>
+<div class="cov"><span class="num"><pre>268</pre></span><pre>			fixed and are not yet in the desired state&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>269</pre></span><pre>		return self.failed_items</pre></div>
+<div class="skip"><span class="num"><pre>270</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>271</pre></span><pre>	def isNull( self ):</pre></div>
+<div class="cov"><span class="num"><pre>272</pre></span><pre>		&quot;&quot;&quot;:return: True if the test result is empty, and thus resembles a null value&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>273</pre></span><pre>		return not self.header or ( not self.failed_items and not self.fixed_items )</pre></div>
+<div class="skip"><span class="num"><pre>274</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>275</pre></span><pre>	def isSuccessful( self ):</pre></div>
+<div class="cov"><span class="num"><pre>276</pre></span><pre>		&quot;&quot;&quot;:return: True if the check is successful, and False if there are at least some failed objects&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>277</pre></span><pre>		if not self.header:</pre></div>
+<div class="nocov"><span class="num"><pre>278</pre></span><pre>			return False</pre></div>
+<div class="skip"><span class="num"><pre>279</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>280</pre></span><pre>		# we are successful if there are no failed items left</pre></div>
+<div class="cov"><span class="num"><pre>281</pre></span><pre>		return not self.failed_items</pre></div>
+<div class="skip"><span class="num"><pre>282</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>283</pre></span><pre>	def __str__( self ):</pre></div>
+<div class="nocov"><span class="num"><pre>284</pre></span><pre>		if not self.header:</pre></div>
+<div class="nocov"><span class="num"><pre>285</pre></span><pre>			return &quot;No check-result available&quot;</pre></div>
+<div class="skip"><span class="num"><pre>286</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>287</pre></span><pre>		msg = self.header + &quot;\n&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>288</pre></span><pre>		if self.fixed_items:</pre></div>
+<div class="nocov"><span class="num"><pre>289</pre></span><pre>			msg += &quot;, &quot;.join( str( i ) for i in self.fixed_items ) + &quot;\n&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>290</pre></span><pre>		msg += &quot;, &quot;.join( str( i ) for i in self.failed_items )</pre></div>
+<div class="nocov"><span class="num"><pre>291</pre></span><pre>		return msg</pre></div>
+<div class="skip"><span class="num"><pre>292</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>293</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>294</pre></span><pre></pre></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>unittest</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        Module&nbsp;unittest
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="unittest-module.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== MODULE DESCRIPTION ==================== -->
+<h1 class="epydoc">Module unittest</h1><p class="nomargin-top"><span class="codelink"><a href="unittest-pysrc.html">source&nbsp;code</a></span></p>
+<pre class="literalblock">
+
+Python unit testing framework, based on Erich Gamma's JUnit and Kent Beck's
+Smalltalk testing framework.
+
+This module contains the core framework classes that form the basis of
+specific test cases and suites (TestCase, TestSuite etc.), and also a
+text-based utility class for running the tests and reporting the results
+ (TextTestRunner).
+
+Simple usage:
+
+    import unittest
+
+    class IntegerArithmenticTestCase(unittest.TestCase):
+        def testAdd(self):  ## test method names begin 'test*'
+            self.assertEquals((1 + 2), 3)
+            self.assertEquals(0 + 1, 1)
+        def testMultiply(self):
+            self.assertEquals((0 * 10), 0)
+            self.assertEquals((5 * 8), 40)
+
+    if __name__ == '__main__':
+        unittest.main()
+
+Further information is available in the bundled documentation, and from
+
+  http://docs.python.org/lib/module-unittest.html
+
+Copyright (c) 1999-2003 Steve Purcell
+This module is free software, and you may redistribute it and/or modify
+it under the same terms as Python itself, so long as this copyright message
+and disclaimer are retained in their original form.
+
+IN NO EVENT SHALL THE AUTHOR BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF
+THIS CODE, EVEN IF THE AUTHOR HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH
+DAMAGE.
+
+THE AUTHOR SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+PARTICULAR PURPOSE.  THE CODE PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS,
+AND THERE IS NO OBLIGATION WHATSOEVER TO PROVIDE MAINTENANCE,
+SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+</pre>
+
+<hr />
+<div class="fields">      <p><strong>Version:</strong>
+        1.63
+      </p>
+      <p><strong>Author:</strong>
+        Steve Purcell
+      </p>
+</div><!-- ==================== CLASSES ==================== -->
+<a name="section-Classes"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Classes</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Classes"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="unittest.TestResult-class.html" class="summary-name">TestResult</a><br />
+      Holder for test result information.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="unittest.TestCase-class.html" class="summary-name">TestCase</a><br />
+      A class whose instances are single test cases.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="unittest.TestSuite-class.html" class="summary-name">TestSuite</a><br />
+      A test suite is a composite test consisting of a number of 
+        TestCases.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="unittest.FunctionTestCase-class.html" class="summary-name">FunctionTestCase</a><br />
+      A test case that wraps a test function.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="unittest.TestLoader-class.html" class="summary-name">TestLoader</a><br />
+      This class is responsible for loading tests according to various 
+        criteria and returning them wrapped in a TestSuite
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="unittest._WritelnDecorator-class.html" class="summary-name" onclick="show_private();">_WritelnDecorator</a><br />
+      Used to decorate file-like objects with a handy 'writeln' method
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="unittest._TextTestResult-class.html" class="summary-name" onclick="show_private();">_TextTestResult</a><br />
+      A test result class that can print formatted text results to a 
+        stream.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="unittest.TextTestRunner-class.html" class="summary-name">TextTestRunner</a><br />
+      A test runner class that displays results in textual form.
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="unittest.TestProgram-class.html" class="summary-name" onclick="show_private();">TestProgram</a><br />
+      A command-line program that runs a set of tests; this is primarily 
+        for making test modules conveniently executable.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="unittest.TestProgram-class.html" class="summary-name">main</a><br />
+      A command-line program that runs a set of tests; this is primarily 
+        for making test modules conveniently executable.
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTIONS ==================== -->
+<a name="section-Functions"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Functions</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Functions"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="isinstance"></a><span class="summary-sig-name">isinstance</span>(<span class="summary-sig-arg">obj</span>,
+        <span class="summary-sig-arg">clsinfo</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#isinstance">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_CmpToKey"></a><span class="summary-sig-name">_CmpToKey</span>(<span class="summary-sig-arg">mycmp</span>)</span><br />
+      Convert a cmp= function into a key= function</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#_CmpToKey">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_strclass"></a><span class="summary-sig-name">_strclass</span>(<span class="summary-sig-arg">cls</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#_strclass">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_makeLoader"></a><span class="summary-sig-name">_makeLoader</span>(<span class="summary-sig-arg">prefix</span>,
+        <span class="summary-sig-arg">sortUsing</span>,
+        <span class="summary-sig-arg">suiteClass</span>=<span class="summary-sig-default">None</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#_makeLoader">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getTestCaseNames"></a><span class="summary-sig-name">getTestCaseNames</span>(<span class="summary-sig-arg">testCaseClass</span>,
+        <span class="summary-sig-arg">prefix</span>,
+        <span class="summary-sig-arg">sortUsing</span>=<span class="summary-sig-default">&lt;built-in function cmp&gt;</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#getTestCaseNames">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="makeSuite"></a><span class="summary-sig-name">makeSuite</span>(<span class="summary-sig-arg">testCaseClass</span>,
+        <span class="summary-sig-arg">prefix</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">test</code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">sortUsing</span>=<span class="summary-sig-default">&lt;built-in function cmp&gt;</span>,
+        <span class="summary-sig-arg">suiteClass</span>=<span class="summary-sig-default">&lt;class 'unittest.TestSuite'&gt;</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#makeSuite">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="findTestCases"></a><span class="summary-sig-name">findTestCases</span>(<span class="summary-sig-arg">module</span>,
+        <span class="summary-sig-arg">prefix</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">test</code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">sortUsing</span>=<span class="summary-sig-default">&lt;built-in function cmp&gt;</span>,
+        <span class="summary-sig-arg">suiteClass</span>=<span class="summary-sig-default">&lt;class 'unittest.TestSuite'&gt;</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#findTestCases">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== VARIABLES ==================== -->
+<a name="section-Variables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Variables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="__email__"></a><span class="summary-name">__email__</span> = <code title="'stephen_purcell at yahoo dot com'"><code class="variable-quote">'</code><code class="variable-string">stephen_purcell at yahoo dot com</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="__unittest"></a><span class="summary-name">__unittest</span> = <code title="1">1</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="defaultTestLoader"></a><span class="summary-name">defaultTestLoader</span> = <code title="TestLoader()">TestLoader()</code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="__package__"></a><span class="summary-name">__package__</span> = <code title="None">None</code><br />
+      hash(x)
+    </td>
+  </tr>
+</table>
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Apr 19 15:39:11 2011
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

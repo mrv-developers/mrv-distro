@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>mrv.maya.ui.dialog</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="mrv-module.html">Package&nbsp;mrv</a> ::
+        <a href="mrv.maya-module.html">Package&nbsp;maya</a> ::
+        <a href="mrv.maya.ui-module.html">Package&nbsp;ui</a> ::
+        Module&nbsp;dialog
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="mrv.maya.ui.dialog-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="mrv.maya.ui.dialog-module.html">Module mrv.maya.ui.dialog</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment"># -*- coding: utf-8 -*-</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-docstring">Contains some default dialogs as well as layouts suitable for layout dialogs</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-name">__docformat__</tt> <tt class="py-op">=</tt> <tt class="py-string">"restructuredtext"</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-0" class="py-name" targets="Module mrv.automation.base=mrv.automation.base-module.html,Module mrv.cmd.base=mrv.cmd.base-module.html,Module mrv.doc.base=mrv.doc.base-module.html,Module mrv.maya.nt.base=mrv.maya.nt.base-module.html,Module mrv.maya.ui.base=mrv.maya.ui.base-module.html"><a title="mrv.automation.base
+mrv.cmd.base
+mrv.doc.base
+mrv.maya.nt.base
+mrv.maya.ui.base" class="py-name" href="#" onclick="return doclink('link-0', 'base', 'link-0');">base</a></tt> <tt class="py-keyword">as</tt> <tt class="py-name">uibase</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-1" class="py-name" targets="Package mrv.maya=mrv.maya-module.html"><a title="mrv.maya" class="py-name" href="#" onclick="return doclink('link-1', 'maya', 'link-1');">maya</a></tt><tt class="py-op">.</tt><tt class="py-name">cmds</tt> <tt class="py-keyword">as</tt> <tt class="py-name">cmds</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-2" class="py-name"><a title="mrv.maya" class="py-name" href="#" onclick="return doclink('link-2', 'maya', 'link-1');">maya</a></tt><tt class="py-op">.</tt><tt class="py-name">utils</tt> <tt class="py-keyword">as</tt> <tt class="py-name">mutils</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-3" class="py-name" targets="Package mrv=mrv-module.html,Function mrv.cmd.startup.mrv()=mrv.cmd.startup-module.html#mrv"><a title="mrv
+mrv.cmd.startup.mrv" class="py-name" href="#" onclick="return doclink('link-3', 'mrv', 'link-3');">mrv</a></tt><tt class="py-op">.</tt><tt id="link-4" class="py-name" targets="Module mrv.maya.nt.util=mrv.maya.nt.util-module.html,Module mrv.maya.ui.browse.util=mrv.maya.ui.browse.util-module.html,Module mrv.maya.ui.util=mrv.maya.ui.util-module.html,Module mrv.maya.util=mrv.maya.util-module.html,Module mrv.util=mrv.util-module.html"><a title="mrv.maya.nt.util
+mrv.maya.ui.browse.util
+mrv.maya.ui.util
+mrv.maya.util
+mrv.util" class="py-name" href="#" onclick="return doclink('link-4', 'util', 'link-4');">util</a></tt> <tt class="py-keyword">as</tt> <tt id="link-5" class="py-name"><a title="mrv.maya.nt.util
+mrv.maya.ui.browse.util
+mrv.maya.ui.util
+mrv.maya.util
+mrv.util" class="py-name" href="#" onclick="return doclink('link-5', 'util', 'link-4');">util</a></tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-6" class="py-name"><a title="mrv
+mrv.cmd.startup.mrv" class="py-name" href="#" onclick="return doclink('link-6', 'mrv', 'link-3');">mrv</a></tt><tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Module mrv.interface=mrv.interface-module.html,Module mrv.maya.ui.browse.interface=mrv.maya.ui.browse.interface-module.html,Method mrv.util.InterfaceMaster.interface()=mrv.util.InterfaceMaster-class.html#interface"><a title="mrv.interface
+mrv.maya.ui.browse.interface
+mrv.util.InterfaceMaster.interface" class="py-name" href="#" onclick="return doclink('link-7', 'interface', 'link-7');">interface</a></tt> <tt class="py-keyword">import</tt> <tt id="link-8" class="py-name" targets="Class mrv.interface.iPrompt=mrv.interface.iPrompt-class.html"><a title="mrv.interface.iPrompt" class="py-name" href="#" onclick="return doclink('link-8', 'iPrompt', 'link-8');">iPrompt</a></tt><tt class="py-op">,</tt> <tt id="link-9" class="py-name" targets="Class mrv.interface.iChoiceDialog=mrv.interface.iChoiceDialog-class.html"><a title="mrv.interface.iChoiceDialog" class="py-name" href="#" onclick="return doclink('link-9', 'iChoiceDialog', 'link-9');">iChoiceDialog</a></tt><tt class="py-op">,</tt> <tt id="link-10" class="py-name" targets="Class mrv.interface.iProgressIndicator=mrv.interface.iProgressIndicator-class.html"><a title="mrv.interface.iProgressIndicator" class="py-name" href="#" onclick="return doclink('link-10', 'iProgressIndicator', 'link-10');">iProgressIndicator</a></tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">logging</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt id="link-11" class="py-name" targets="Variable mrv.automation.base.log=mrv.automation.base-module.html#log,Variable mrv.automation.qa.log=mrv.automation.qa-module.html#log,Variable mrv.automation.workflow.log=mrv.automation.workflow-module.html#log,Variable mrv.cmd.base.SpawnedCommand.log=mrv.cmd.base.SpawnedCommand-class.html#log,Variable mrv.cmd.base.log=mrv.cmd.base-module.html#log,Variable mrv.conf.log=mrv.conf-module.html#log,Variable mrv.interface.log=mrv.interface-module.html#log,Variable mrv.log=mrv-module.html#log,Variable mrv.maya.automation.qa.log=mrv.maya.automation.qa-module.html#log,Variable mrv.maya.log=mrv.maya-module.html#log,Variable mrv.maya.mdb.log=mrv.maya.mdb-module.html#log,Variable mrv.maya.nt.base.log=mrv.maya.nt.base-module.html#log,Variable mrv.maya.nt.geometry.log=mrv.maya.nt.geometry-module.html#log,Variable mrv.maya.nt.persistence.log=mrv.maya.nt.persistence-module.html#log,Variable mrv.maya.nt.typ.log=mrv.maya.nt.typ-module.html#log,Variable mrv.maya.ui.control.log=mrv.maya.ui.control-module.html#log,Variable mrv.maya.ui.dialog.log=mrv.maya.ui.dialog-module.html#log,Variable mrv.maya.ui.qa.log=mrv.maya.ui.qa-module.html#log,Variable mrv.mdepparse.log=mrv.mdepparse-module.html#log,Variable mrv.path.log=mrv.path-module.html#log,Variable mrv.util.log=mrv.util-module.html#log"><a title="mrv.automation.base.log
+mrv.automation.qa.log
+mrv.automation.workflow.log
+mrv.cmd.base.SpawnedCommand.log
+mrv.cmd.base.log
+mrv.conf.log
+mrv.interface.log
+mrv.log
+mrv.maya.automation.qa.log
+mrv.maya.log
+mrv.maya.mdb.log
+mrv.maya.nt.base.log
+mrv.maya.nt.geometry.log
+mrv.maya.nt.persistence.log
+mrv.maya.nt.typ.log
+mrv.maya.ui.control.log
+mrv.maya.ui.dialog.log
+mrv.maya.ui.qa.log
+mrv.mdepparse.log
+mrv.path.log
+mrv.util.log" class="py-name" href="#" onclick="return doclink('link-11', 'log', 'link-11');">log</a></tt> <tt class="py-op">=</tt> <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">getLogger</tt><tt class="py-op">(</tt><tt class="py-string">"mrv.maya.ui.dialog"</tt><tt class="py-op">)</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"> </tt>
+<a name="Dialog"></a><div id="Dialog-def"><a name="L17"></a><tt class="py-lineno"> 17</tt> <a class="py-toggle" href="#" id="Dialog-toggle" onclick="return toggle('Dialog');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.dialog.Dialog-class.html">Dialog</a><tt class="py-op">(</tt> <tt class="py-base-class">uibase</tt><tt class="py-op">.</tt><tt class="py-base-class">BaseUI</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Dialog-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Dialog-expanded"><a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line">        <tt class="py-docstring">""" Base for all dialog classes """</tt> </tt>
+</div><a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"> </tt>
+<a name="PromptDialog"></a><div id="PromptDialog-def"><a name="L21"></a><tt class="py-lineno"> 21</tt> <a class="py-toggle" href="#" id="PromptDialog-toggle" onclick="return toggle('PromptDialog');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.dialog.PromptDialog-class.html">PromptDialog</a><tt class="py-op">(</tt> <tt class="py-base-class">Dialog</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="PromptDialog-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="PromptDialog-expanded"><a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line">        <tt class="py-docstring">""" Wrapper class for maya prompt dialog"""</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"> </tt>
+<a name="PromptDialog.__init__"></a><div id="PromptDialog.__init__-def"><a name="L24"></a><tt class="py-lineno"> 24</tt> <a class="py-toggle" href="#" id="PromptDialog.__init__-toggle" onclick="return toggle('PromptDialog.__init__');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.dialog.PromptDialog-class.html#__init__">__init__</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">title</tt><tt class="py-op">,</tt> <tt class="py-param">message</tt><tt class="py-op">,</tt> <tt class="py-param">okText</tt><tt class="py-op">,</tt> <tt class="py-param">cancelText</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="PromptDialog.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="PromptDialog.__init__-expanded"><a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line">                <tt class="py-docstring">""" Create a prompt dialog and allow to query the result</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt class="py-docstring">                :note: return default text in batch mode, given with 'text' key"""</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">cmds</tt><tt class="py-op">.</tt><tt class="py-name">about</tt><tt class="py-op">(</tt> <tt id="link-12" class="py-name" targets="Module mrv.batch=mrv.batch-module.html"><a title="mrv.batch" class="py-name" href="#" onclick="return doclink('link-12', 'batch', 'link-12');">batch</a></tt><tt class="py-op">=</tt><tt class="py-number">1</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line">                        <tt class="py-keyword">return</tt> <tt id="link-13" class="py-name" targets="Variable mrv.util.Call.kwargs=mrv.util.Call-class.html#kwargs"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-13', 'kwargs', 'link-13');">kwargs</a></tt><tt class="py-op">.</tt><tt id="link-14" class="py-name" targets="Method mrv.conf.ConfigAccessor.get()=mrv.conf.ConfigAccessor-class.html#get,Method mrv.dge._PlugShell.get()=mrv.dge._PlugShell-class.html#get,Method mrv.dgfe._IOShell.get()=mrv.dgfe._IOShell-class.html#get,Method mrv.dgfe._OIShell.get()=mrv.dgfe._OIShell-class.html#get,Method mrv.interface.iProgressIndicator.get()=mrv.interface.iProgressIndicator-class.html#get,Method mrv.maya.util.OptionVarDict.get()=mrv.maya.util.OptionVarDict-class.html#get"><a title="mrv.conf.ConfigAccessor.get
+mrv.dge._PlugShell.get
+mrv.dgfe._IOShell.get
+mrv.dgfe._OIShell.get
+mrv.interface.iProgressIndicator.get
+mrv.maya.util.OptionVarDict.get" class="py-name" href="#" onclick="return doclink('link-14', 'get', 'link-14');">get</a></tt><tt class="py-op">(</tt> <tt class="py-string">'text'</tt><tt class="py-op">,</tt> <tt id="link-15" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-15', 'kwargs', 'link-13');">kwargs</a></tt><tt class="py-op">.</tt><tt id="link-16" class="py-name"><a title="mrv.conf.ConfigAccessor.get
+mrv.dge._PlugShell.get
+mrv.dgfe._IOShell.get
+mrv.dgfe._OIShell.get
+mrv.interface.iProgressIndicator.get
+mrv.maya.util.OptionVarDict.get" class="py-name" href="#" onclick="return doclink('link-16', 'get', 'link-14');">get</a></tt><tt class="py-op">(</tt> <tt class="py-string">'t'</tt><tt class="py-op">,</tt> <tt class="py-string">''</tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line">                <tt class="py-name">ret</tt> <tt class="py-op">=</tt> <tt class="py-name">cmds</tt><tt class="py-op">.</tt><tt class="py-name">promptDialog</tt><tt class="py-op">(</tt> <tt class="py-name">t</tt> <tt class="py-op">=</tt> <tt class="py-name">title</tt><tt class="py-op">,</tt> <tt class="py-name">m</tt> <tt class="py-op">=</tt> <tt id="link-17" class="py-name" targets="Variable mrv.exc.MRVError.message=mrv.exc.MRVError-class.html#message"><a title="mrv.exc.MRVError.message" class="py-name" href="#" onclick="return doclink('link-17', 'message', 'link-17');">message</a></tt><tt class="py-op">,</tt> <tt class="py-name">b</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-name">okText</tt><tt class="py-op">,</tt><tt class="py-name">cancelText</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">                                                                        <tt class="py-name">db</tt> <tt class="py-op">=</tt> <tt class="py-name">okText</tt><tt class="py-op">,</tt> <tt class="py-name">cb</tt> <tt class="py-op">=</tt> <tt class="py-name">cancelText</tt><tt class="py-op">,</tt><tt class="py-op">**</tt><tt id="link-18" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-18', 'kwargs', 'link-13');">kwargs</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_text</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">ret</tt> <tt class="py-op">==</tt> <tt class="py-name">okText</tt><tt class="py-op">:</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line">                        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_text</tt> <tt class="py-op">=</tt> <tt class="py-name">cmds</tt><tt class="py-op">.</tt><tt class="py-name">promptDialog</tt><tt class="py-op">(</tt> <tt class="py-name">q</tt><tt class="py-op">=</tt><tt class="py-number">1</tt><tt class="py-op">,</tt> <tt id="link-19" class="py-name" targets="Method mrv.maya.ui.dialog.PromptDialog.text()=mrv.maya.ui.dialog.PromptDialog-class.html#text,Method mrv.path.Path.text()=mrv.path.Path-class.html#text"><a title="mrv.maya.ui.dialog.PromptDialog.text
+mrv.path.Path.text" class="py-name" href="#" onclick="return doclink('link-19', 'text', 'link-19');">text</a></tt> <tt class="py-op">=</tt> <tt class="py-number">1</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"> </tt>
+<a name="PromptDialog.text"></a><div id="PromptDialog.text-def"><a name="L36"></a><tt class="py-lineno"> 36</tt> <a class="py-toggle" href="#" id="PromptDialog.text-toggle" onclick="return toggle('PromptDialog.text');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.dialog.PromptDialog-class.html#text">text</a><tt class="py-op">(</tt> <tt class="py-param">self</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="PromptDialog.text-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="PromptDialog.text-expanded"><a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line">                <tt class="py-docstring">""":return: the entered text or None if the box has been aborted"""</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_text</tt> </tt>
+</div></div><a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line"> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"> </tt>
+<a name="Prompt"></a><div id="Prompt-def"><a name="L41"></a><tt class="py-lineno"> 41</tt> <a class="py-toggle" href="#" id="Prompt-toggle" onclick="return toggle('Prompt');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.dialog.Prompt-class.html">Prompt</a><tt class="py-op">(</tt> <tt class="py-base-class">iPrompt</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Prompt-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Prompt-expanded"><a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line">        <tt class="py-docstring">"""Implements the prompt interface using a prompt dialog"""</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line"> </tt>
+<a name="Prompt.prompt"></a><div id="Prompt.prompt-def"><a name="L44"></a><tt class="py-lineno"> 44</tt> <a class="py-toggle" href="#" id="Prompt.prompt-toggle" onclick="return toggle('Prompt.prompt');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.dialog.Prompt-class.html#prompt">prompt</a><tt class="py-op">(</tt> <tt class="py-param">self</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Prompt.prompt-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="Prompt.prompt-expanded"><a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line">                <tt class="py-docstring">"""Aquire the information using a prompt dialog</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line"><tt class="py-docstring">                </tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line"><tt class="py-docstring">                :return: prompted value if input was confirmed using confirmToken, or the cancelValue</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line"><tt class="py-docstring">                        if cancelToken was pressed</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line"><tt class="py-docstring">                :note: tokens correspond to buttons</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line"><tt class="py-docstring">                :note: handles batch mode correctly"""</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">cmds</tt><tt class="py-op">.</tt><tt class="py-name">about</tt><tt class="py-op">(</tt> <tt id="link-20" class="py-name"><a title="mrv.batch" class="py-name" href="#" onclick="return doclink('link-20', 'batch', 'link-12');">batch</a></tt> <tt class="py-op">=</tt> <tt class="py-number">1</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line">                        <tt class="py-keyword">return</tt> <tt class="py-name">super</tt><tt class="py-op">(</tt> <tt id="link-21" class="py-name" targets="Class mrv.maya.ui.dialog.Prompt=mrv.maya.ui.dialog.Prompt-class.html"><a title="mrv.maya.ui.dialog.Prompt" class="py-name" href="#" onclick="return doclink('link-21', 'Prompt', 'link-21');">Prompt</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt> <tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-22" class="py-name" targets="Method mrv.interface.iPrompt.prompt()=mrv.interface.iPrompt-class.html#prompt,Method mrv.maya.ui.dialog.Prompt.prompt()=mrv.maya.ui.dialog.Prompt-class.html#prompt"><a title="mrv.interface.iPrompt.prompt
+mrv.maya.ui.dialog.Prompt.prompt" class="py-name" href="#" onclick="return doclink('link-22', 'prompt', 'link-22');">prompt</a></tt><tt class="py-op">(</tt> <tt class="py-op">)</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line"> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">                <tt class="py-name">default_text</tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">confirmDefault</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt> <tt class="py-keyword">and</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">confirmDefault</tt> <tt class="py-op">)</tt> <tt class="py-keyword">or</tt> <tt class="py-string">""</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line"> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">                <tt class="py-name">tokens</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">confirmToken</tt> <tt class="py-op">]</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line">                <tt class="py-name">token_kwargs</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt> <tt class="py-string">"db"</tt> <tt class="py-op">:</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">confirmToken</tt> <tt class="py-op">}</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">cancelToken</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">                        <tt class="py-name">tokens</tt><tt class="py-op">.</tt><tt id="link-23" class="py-name" targets="Method mrv.conf.ConfigChain.append()=mrv.conf.ConfigChain-class.html#append"><a title="mrv.conf.ConfigChain.append" class="py-name" href="#" onclick="return doclink('link-23', 'append', 'link-23');">append</a></tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">cancelToken</tt> <tt class="py-op">)</tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">                        <tt class="py-name">token_kwargs</tt><tt class="py-op">[</tt> <tt class="py-string">"cb"</tt> <tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">cancelToken</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line">                <tt class="py-comment"># END token preparation</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">                <tt class="py-name">token_kwargs</tt><tt class="py-op">.</tt><tt id="link-24" class="py-name" targets="Method mrv.maya.ui.qa.QACheckLayout.update()=mrv.maya.ui.qa.QACheckLayout-class.html#update"><a title="mrv.maya.ui.qa.QACheckLayout.update" class="py-name" href="#" onclick="return doclink('link-24', 'update', 'link-24');">update</a></tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_kwargs</tt> <tt class="py-op">)</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line"> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">                <tt class="py-name">ret</tt> <tt class="py-op">=</tt> <tt class="py-name">cmds</tt><tt class="py-op">.</tt><tt class="py-name">promptDialog</tt><tt class="py-op">(</tt> <tt class="py-name">t</tt><tt class="py-op">=</tt><tt class="py-string">"Prompt"</tt><tt class="py-op">,</tt> <tt class="py-name">m</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">msg</tt><tt class="py-op">,</tt> <tt class="py-name">b</tt> <tt class="py-op">=</tt> <tt class="py-name">tokens</tt><tt class="py-op">,</tt> <tt id="link-25" class="py-name"><a title="mrv.maya.ui.dialog.PromptDialog.text
+mrv.path.Path.text" class="py-name" href="#" onclick="return doclink('link-25', 'text', 'link-19');">text</a></tt> <tt class="py-op">=</tt> <tt class="py-name">default_text</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">token_kwargs</tt> <tt class="py-op">)</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line"> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">ret</tt> <tt class="py-op">==</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">cancelToken</tt><tt class="py-op">:</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">                        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">cancelDefault</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line"> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">ret</tt> <tt class="py-op">==</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">confirmToken</tt><tt class="py-op">:</tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">                        <tt class="py-keyword">return</tt> <tt class="py-name">cmds</tt><tt class="py-op">.</tt><tt class="py-name">promptDialog</tt><tt class="py-op">(</tt> <tt class="py-name">q</tt><tt class="py-op">=</tt><tt class="py-number">1</tt><tt class="py-op">,</tt> <tt id="link-26" class="py-name"><a title="mrv.maya.ui.dialog.PromptDialog.text
+mrv.path.Path.text" class="py-name" href="#" onclick="return doclink('link-26', 'text', 'link-19');">text</a></tt> <tt class="py-op">=</tt> <tt class="py-number">1</tt> <tt class="py-op">)</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line"> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">confirmDefault</tt> </tt>
+</div></div><a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line"> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line"> </tt>
+<a name="ChoiceDialog"></a><div id="ChoiceDialog-def"><a name="L75"></a><tt class="py-lineno"> 75</tt> <a class="py-toggle" href="#" id="ChoiceDialog-toggle" onclick="return toggle('ChoiceDialog');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.dialog.ChoiceDialog-class.html">ChoiceDialog</a><tt class="py-op">(</tt> <tt class="py-base-class">iChoiceDialog</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ChoiceDialog-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="ChoiceDialog-expanded"><a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">        <tt class="py-docstring">"""Maya implementation of the generic choice dialog interface"""</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line"> </tt>
+<a name="ChoiceDialog.choice"></a><div id="ChoiceDialog.choice-def"><a name="L78"></a><tt class="py-lineno"> 78</tt> <a class="py-toggle" href="#" id="ChoiceDialog.choice-toggle" onclick="return toggle('ChoiceDialog.choice');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.dialog.ChoiceDialog-class.html#choice">choice</a><tt class="py-op">(</tt> <tt class="py-param">self</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ChoiceDialog.choice-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="ChoiceDialog.choice-expanded"><a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">                <tt class="py-docstring">"""Return the choice made by the user"""</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">                <tt class="py-comment"># don't do anything inbatch mode</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">cmds</tt><tt class="py-op">.</tt><tt class="py-name">about</tt><tt class="py-op">(</tt> <tt class="py-name">b</tt><tt class="py-op">=</tt><tt class="py-number">1</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">                        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">default_choice</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line"> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">cmds</tt><tt class="py-op">.</tt><tt class="py-name">confirmDialog</tt><tt class="py-op">(</tt>      <tt class="py-name">t</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">title</tt><tt class="py-op">,</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">                                                                        <tt class="py-name">m</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-27" class="py-name"><a title="mrv.exc.MRVError.message" class="py-name" href="#" onclick="return doclink('link-27', 'message', 'link-17');">message</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">                                                                        <tt class="py-name">b</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt> <tt class="py-name">c</tt> <tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">c</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">choices</tt> <tt class="py-op">]</tt><tt class="py-op">,</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">                                                                        <tt class="py-name">db</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">default_choice</tt><tt class="py-op">,</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">                                                                        <tt class="py-name">cb</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">cancel_choice</tt><tt class="py-op">,</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">                                                                        <tt class="py-name">ds</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">cancel_choice</tt> <tt class="py-op">)</tt> </tt>
+</div></div><a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line"> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line"> </tt>
+<a name="ProgressWindow"></a><div id="ProgressWindow-def"><a name="L92"></a><tt class="py-lineno"> 92</tt> <a class="py-toggle" href="#" id="ProgressWindow-toggle" onclick="return toggle('ProgressWindow');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.dialog.ProgressWindow-class.html">ProgressWindow</a><tt class="py-op">(</tt> <tt class="py-base-class">iProgressIndicator</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ProgressWindow-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="ProgressWindow-expanded"><a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">        <tt class="py-docstring">"""Simple progress window wrapping the default maya progress window"""</tt> </tt>
+<a name="ProgressWindow.__init__"></a><div id="ProgressWindow.__init__-def"><a name="L94"></a><tt class="py-lineno"> 94</tt> <a class="py-toggle" href="#" id="ProgressWindow.__init__-toggle" onclick="return toggle('ProgressWindow.__init__');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.dialog.ProgressWindow-class.html#__init__">__init__</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ProgressWindow.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="ProgressWindow.__init__-expanded"><a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">                <tt class="py-docstring">"""Everything that iProgress indicator and Maya Progress Window support"""</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">                <tt class="py-name">min</tt> <tt class="py-op">=</tt> <tt id="link-28" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-28', 'kwargs', 'link-13');">kwargs</a></tt><tt class="py-op">.</tt><tt id="link-29" class="py-name" targets="Class Method mrv.maya.nt.base.MDagPathUtil.pop()=mrv.maya.nt.base.MDagPathUtil-class.html#pop,Method mrv.maya.util.OptionVarDict.pop()=mrv.maya.util.OptionVarDict-class.html#pop"><a title="mrv.maya.nt.base.MDagPathUtil.pop
+mrv.maya.util.OptionVarDict.pop" class="py-name" href="#" onclick="return doclink('link-29', 'pop', 'link-29');">pop</a></tt><tt class="py-op">(</tt> <tt class="py-string">"min"</tt><tt class="py-op">,</tt> <tt id="link-30" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-30', 'kwargs', 'link-13');">kwargs</a></tt><tt class="py-op">.</tt><tt id="link-31" class="py-name"><a title="mrv.maya.nt.base.MDagPathUtil.pop
+mrv.maya.util.OptionVarDict.pop" class="py-name" href="#" onclick="return doclink('link-31', 'pop', 'link-29');">pop</a></tt><tt class="py-op">(</tt> <tt class="py-string">"minValue"</tt> <tt class="py-op">,</tt> <tt class="py-number">0</tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">                <tt class="py-name">max</tt> <tt class="py-op">=</tt> <tt id="link-32" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-32', 'kwargs', 'link-13');">kwargs</a></tt><tt class="py-op">.</tt><tt id="link-33" class="py-name"><a title="mrv.maya.nt.base.MDagPathUtil.pop
+mrv.maya.util.OptionVarDict.pop" class="py-name" href="#" onclick="return doclink('link-33', 'pop', 'link-29');">pop</a></tt><tt class="py-op">(</tt> <tt class="py-string">"max"</tt><tt class="py-op">,</tt> <tt id="link-34" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-34', 'kwargs', 'link-13');">kwargs</a></tt><tt class="py-op">.</tt><tt id="link-35" class="py-name"><a title="mrv.maya.nt.base.MDagPathUtil.pop
+mrv.maya.util.OptionVarDict.pop" class="py-name" href="#" onclick="return doclink('link-35', 'pop', 'link-29');">pop</a></tt><tt class="py-op">(</tt> <tt class="py-string">"maxValue"</tt><tt class="py-op">,</tt> <tt class="py-number">100</tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line"> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">                <tt class="py-name">relative</tt> <tt class="py-op">=</tt> <tt id="link-36" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-36', 'kwargs', 'link-13');">kwargs</a></tt><tt class="py-op">.</tt><tt id="link-37" class="py-name"><a title="mrv.maya.nt.base.MDagPathUtil.pop
+mrv.maya.util.OptionVarDict.pop" class="py-name" href="#" onclick="return doclink('link-37', 'pop', 'link-29');">pop</a></tt><tt class="py-op">(</tt> <tt class="py-string">"is_relative"</tt><tt class="py-op">,</tt> <tt class="py-number">1</tt> <tt class="py-op">)</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">                <tt class="py-name">super</tt><tt class="py-op">(</tt> <tt id="link-38" class="py-name" targets="Class mrv.maya.ui.dialog.ProgressWindow=mrv.maya.ui.dialog.ProgressWindow-class.html"><a title="mrv.maya.ui.dialog.ProgressWindow" class="py-name" href="#" onclick="return doclink('link-38', 'ProgressWindow', 'link-38');">ProgressWindow</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt> <tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-39" class="py-name" targets="Method mrv.automation.attributes.RegexStringAttr.__init__()=mrv.automation.attributes.RegexStringAttr-class.html#__init__,Method mrv.automation.process.ProcessBase.__init__()=mrv.automation.process.ProcessBase-class.html#__init__,Method mrv.automation.process.WorkflowProcessBase.__init__()=mrv.automation.process.WorkflowProcessBase-class.html#__init__,Method mrv.automation.qa.QACheck.__init__()=mrv.automation.qa.QACheck-class.html#__init__,Method mrv.automation.qa.QACheckAttribute.__init__()=mrv.automation.qa.QACheckAttribute-class.html#__init__,Method mrv.automation.qa.QACheckResult.__init__()=mrv.automation.qa.QACheckResult-class.html#__init__,Method mrv.automation.qa.QAWorkflow.__init__()=mrv.automation.qa.QAWorkflow-class.html#__init__,Method mrv.automation.report.ReportBase.__init__()=mrv.automation.report.ReportBase-class.html#__init__,Method mrv.automation.workflow.DirtyException.__init__()=mrv.automation.workflow.DirtyException-class.html#__init__,Method mrv.automation.workflow.Workflow.CallGraph.__init__()=mrv.automation.workflow.Workflow.CallGraph-class.html#__init__,Method mrv.automation.workflow.Workflow.ProcessData.__init__()=mrv.automation.workflow.Workflow.ProcessData-class.html#__init__,Method mrv.automation.workflow.Workflow.__init__()=mrv.automation.workflow.Workflow-class.html#__init__,Method mrv.cmd.base.SpawnedCommand.__init__()=mrv.cmd.base.SpawnedCommand-class.html#__init__,Method mrv.cmd.base.SpawnedOptionParser.__init__()=mrv.cmd.base.SpawnedOptionParser-class.html#__init__,Method mrv.conf.ConfigAccessor.__init__()=mrv.conf.ConfigAccessor-class.html#__init__,Method mrv.conf.ConfigChain.__init__()=mrv.conf.ConfigChain-class.html#__init__,Method mrv.conf.ConfigFile.__init__()=mrv.conf.ConfigFile-class.html#__init__,Method mrv.conf.ConfigManager.__init__()=mrv.conf.ConfigManager-class.html#__init__,Method mrv.conf.ConfigNode.__init__()=mrv.conf.ConfigNode-class.html#__init__,Method mrv.conf.DictToINIFile.__init__()=mrv.conf.DictToINIFile-class.html#__init__,Method mrv.conf.DiffData.__init__()=mrv.conf.DiffData-class.html#__init__,Method mrv.conf.Key.__init__()=mrv.conf.Key-class.html#__init__,Method mrv.conf.Section.__init__()=mrv.conf.Section-class.html#__init__,Method mrv.conf._PropertyHolderBase.__init__()=mrv.conf._PropertyHolderBase-class.html#__init__,Method mrv.dge.Attribute.__init__()=mrv.dge.Attribute-class.html#__init__,Method mrv.dge.Graph.__init__()=mrv.dge.Graph-class.html#__init__,Method mrv.dge.NodeBase.__init__()=mrv.dge.NodeBase-class.html#__init__,Method mrv.dge.plug.__init__()=mrv.dge.plug-class.html#__init__,Method mrv.dgfe.FacadeNodeBase.__init__()=mrv.dgfe.FacadeNodeBase-class.html#__init__,Method mrv.dgfe.GraphNodeBase.__init__()=mrv.dgfe.GraphNodeBase-class.html#__init__,Method mrv.dgfe._IOShell.__init__()=mrv.dgfe._IOShell-class.html#__init__,Method mrv.dgfe._OIShell.__init__()=mrv.dgfe._OIShell-class.html#__init__,Method mrv.doc.base.DocGenerator.__init__()=mrv.doc.base.DocGenerator-class.html#__init__,Method mrv.enum.Element.__init__()=mrv.enum.Element-class.html#__init__,Method mrv.enum.Enumeration.__init__()=mrv.enum.Enumeration-class.html#__init__,Method mrv.exc.MRVError.__init__()=mrv.exc.MRVError-class.html#__init__,Method mrv.interface.iChoiceDialog.__init__()=mrv.interface.iChoiceDialog-class.html#__init__,Method mrv.interface.iProgressIndicator.__init__()=mrv.interface.iProgressIndicator-class.html#__init__,Method mrv.interface.iPrompt.__init__()=mrv.interface.iPrompt-class.html#__init__,Method mrv.maya.mdb.MEnumDescriptor.__init__()=mrv.maya.mdb.MEnumDescriptor-class.html#__init__,Method mrv.maya.mdb.MFnCodeGeneratorBase.__init__()=mrv.maya.mdb.MFnCodeGeneratorBase-class.html#__init__,Method mrv.maya.mdb.MMemberMap.__init__()=mrv.maya.mdb.MMemberMap-class.html#__init__,Method mrv.maya.mdb.MMethodDescriptor.__init__()=mrv.maya.mdb.MMethodDescriptor-class.html#__init__,Method mrv.maya.nt.PluginDB.__init__()=mrv.maya.nt.PluginDB-class.html#__init__,Method mrv.maya.nt.geometry._SingleIndexedComponentGenerator.__init__()=mrv.maya.nt.geometry._SingleIndexedComponentGenerator-class.html#__init__,Method mrv.maya.nt.persistence.PyPickleData.__init__()=mrv.maya.nt.persistence.PyPickleData-class.html#__init__,Method mrv.maya.nt.persistence.StoragePluginNode.__init__()=mrv.maya.nt.persistence.StoragePluginNode-class.html#__init__,Method mrv.maya.nt.set.ObjectSet._TmpSet.__init__()=mrv.maya.nt.set.ObjectSet._TmpSet-class.html#__init__,Method mrv.maya.nt.storage.StorageBase.PyPickleValue.__init__()=mrv.maya.nt.storage.StorageBase.PyPickleValue-class.html#__init__,Method mrv.maya.nt.storage.StorageBase.__init__()=mrv.maya.nt.storage.StorageBase-class.html#__init__,Method mrv.maya.nt.storage.StorageNode.__init__()=mrv.maya.nt.storage.StorageNode-class.html#__init__,Method mrv.maya.ref.FileReference.__init__()=mrv.maya.ref.FileReference-class.html#__init__,Method mrv.maya.ui.base.BaseUI.__init__()=mrv.maya.ui.base.BaseUI-class.html#__init__,Method mrv.maya.ui.base.NamedUI.__init__()=mrv.maya.ui.base.NamedUI-class.html#__init__,Method mrv.maya.ui.browse.control.BookmarkControl.__init__()=mrv.maya.ui.browse.control.BookmarkControl-class.html#__init__,Method mrv.maya.ui.browse.control.FilePathControlEditable.__init__()=mrv.maya.ui.browse.control.FilePathControlEditable-class.html#__init__,Method mrv.maya.ui.browse.control.FileProvider.__init__()=mrv.maya.ui.browse.control.FileProvider-class.html#__init__,Method mrv.maya.ui.browse.control.FileRootSelectorControl.__init__()=mrv.maya.ui.browse.control.FileRootSelectorControl-class.html#__init__,Method mrv.maya.ui.browse.control.StackControlBase.__init__()=mrv.maya.ui.browse.control.StackControlBase-class.html#__init__,Method mrv.maya.ui.browse.finder.Finder.__init__()=mrv.maya.ui.browse.finder.Finder-class.html#__init__,Method mrv.maya.ui.browse.interface.iFinderProvider.__init__()=mrv.maya.ui.browse.interface.iFinderProvider-class.html#__init__,Method mrv.maya.ui.browse.layout.FileOpenFinder.__init__()=mrv.maya.ui.browse.layout.FileOpenFinder-class.html#__init__,Method mrv.maya.ui.browse.layout.FileReferenceFinder.__init__()=mrv.maya.ui.browse.layout.FileReferenceFinder-class.html#__init__,Method mrv.maya.ui.browse.layout.FileSaveFinder.__init__()=mrv.maya.ui.browse.layout.FileSaveFinder-class.html#__init__,Method mrv.maya.ui.browse.layout.FinderLayout.__init__()=mrv.maya.ui.browse.layout.FinderLayout-class.html#__init__,Method mrv.maya.ui.browse.option.FileOpenOptions.__init__()=mrv.maya.ui.browse.option.FileOpenOptions-class.html#__init__,Method mrv.maya.ui.dialog.ProgressWindow.__init__()=mrv.maya.ui.dialog.ProgressWindow-class.html#__init__,Method mrv.maya.ui.dialog.PromptDialog.__init__()=mrv.maya.ui.dialog.PromptDialog-class.html#__init__,Method mrv.maya.ui.layout.Layout.__init__()=mrv.maya.ui.layout.Layout-class.html#__init__,Method mrv.maya.ui.qa.QACheckLayout.__init__()=mrv.maya.ui.qa.QACheckLayout-class.html#__init__,Method mrv.maya.ui.qa.QALayout.__init__()=mrv.maya.ui.qa.QALayout-class.html#__init__,Method mrv.maya.ui.util.EventSenderUI._UIEvent.__init__()=mrv.maya.ui.util.EventSenderUI._UIEvent-class.html#__init__,Method mrv.maya.ui.util.UIContainerBase.__init__()=mrv.maya.ui.util.UIContainerBase-class.html#__init__,Method mrv.maya.undo.DGModifier.__init__()=mrv.maya.undo.DGModifier-class.html#__init__,Method mrv.maya.undo.GenericOperation.__init__()=mrv.maya.undo.GenericOperation-class.html#__init__,Method mrv.maya.undo.GenericOperationStack.__init__()=mrv.maya.undo.GenericOperationStack-class.html#__init__,Method mrv.maya.undo.MuteUndo.__init__()=mrv.maya.undo.MuteUndo-class.html#__init__,Method mrv.maya.undo.Operation.__init__()=mrv.maya.undo.Operation-class.html#__init__,Method mrv.maya.undo.StartUndo.__init__()=mrv.maya.undo.StartUndo-class.html#__init__,Method mrv.maya.undo.UndoCmd.__init__()=mrv.maya.undo.UndoCmd-class.html#__init__,Method mrv.maya.undo.UndoRecorder.__init__()=mrv.maya.undo.UndoRecorder-class.html#__init__,Method mrv.maya.util.CallbackEventBase.CBStorageFunction.__init__()=mrv.maya.util.CallbackEventBase.CBStorageFunction-class.html#__init__,Method mrv.maya.util.CallbackEventBase.__init__()=mrv.maya.util.CallbackEventBase-class.html#__init__,Method mrv.maya.util.StandinClass.__init__()=mrv.maya.util.StandinClass-class.html#__init__,Method mrv.thread.TerminatableThread.__init__()=mrv.thread.TerminatableThread-class.html#__init__,Method mrv.thread.WorkerThread.__init__()=mrv.thread.WorkerThread-class.html#__init__,Method mrv.util.And.__init__()=mrv.util.And-class.html#__init__,Method mrv.util.Call.__init__()=mrv.util.Call-class.html#__init__,Method mrv.util.CallAdv.__init__()=mrv.util.CallAdv-class.html#__init__,Method mrv.util.CallOnDeletion.__init__()=mrv.util.CallOnDeletion-class.html#__init__,Method mrv.util.Event.__init__()=mrv.util.Event-class.html#__init__,Method mrv.util.InterfaceMaster.InterfaceBase.__init__()=mrv.util.InterfaceMaster.InterfaceBase-class.html#__init__,Method mrv.util.InterfaceMaster.InterfaceDescriptor.__init__()=mrv.util.InterfaceMaster.InterfaceDescriptor-class.html#__init__,Method mrv.util.InterfaceMaster._InterfaceHandler.__init__()=mrv.util.InterfaceMaster._InterfaceHandler-class.html#__init__,Method mrv.util.InterfaceMaster.__init__()=mrv.util.InterfaceMaster-class.html#__init__,Method mrv.util.Or.__init__()=mrv.util.Or-class.html#__init__,Method mrv.util.PipeSeparatedFile.__init__()=mrv.util.PipeSeparatedFile-class.html#__init__,Method mrv.util.WeakInstFunction.__init__()=mrv.util.WeakInstFunction-class.html#__init__,Method unittest.FunctionTestCase.__init__()=unittest.FunctionTestCase-class.html#__init__,Method unittest.TestCase.__init__()=unittest.TestCase-class.html#__init__,Method unittest.TestProgram.__init__()=unittest.TestProgram-class.html#__init__,Method unittest.TestResult.__init__()=unittest.TestResult-class.html#__init__,Method unittest.TestSuite.__init__()=unittest.TestSuite-class.html#__init__,Method unittest.TextTestRunner.__init__()=unittest.TextTestRunner-class.html#__init__,Method unittest._TextTestResult.__init__()=unittest._TextTestResult-class.html#__init__,Method unittest._WritelnDecorator.__init__()=unittest._WritelnDecorator-class.html#__init__"><a title="mrv.automation.attributes.RegexStringAttr.__init__
+mrv.automation.process.ProcessBase.__init__
+mrv.automation.process.WorkflowProcessBase.__init__
+mrv.automation.qa.QACheck.__init__
+mrv.automation.qa.QACheckAttribute.__init__
+mrv.automation.qa.QACheckResult.__init__
+mrv.automation.qa.QAWorkflow.__init__
+mrv.automation.report.ReportBase.__init__
+mrv.automation.workflow.DirtyException.__init__
+mrv.automation.workflow.Workflow.CallGraph.__init__
+mrv.automation.workflow.Workflow.ProcessData.__init__
+mrv.automation.workflow.Workflow.__init__
+mrv.cmd.base.SpawnedCommand.__init__
+mrv.cmd.base.SpawnedOptionParser.__init__
+mrv.conf.ConfigAccessor.__init__
+mrv.conf.ConfigChain.__init__
+mrv.conf.ConfigFile.__init__
+mrv.conf.ConfigManager.__init__
+mrv.conf.ConfigNode.__init__
+mrv.conf.DictToINIFile.__init__
+mrv.conf.DiffData.__init__
+mrv.conf.Key.__init__
+mrv.conf.Section.__init__
+mrv.conf._PropertyHolderBase.__init__
+mrv.dge.Attribute.__init__
+mrv.dge.Graph.__init__
+mrv.dge.NodeBase.__init__
+mrv.dge.plug.__init__
+mrv.dgfe.FacadeNodeBase.__init__
+mrv.dgfe.GraphNodeBase.__init__
+mrv.dgfe._IOShell.__init__
+mrv.dgfe._OIShell.__init__
+mrv.doc.base.DocGenerator.__init__
+mrv.enum.Element.__init__
+mrv.enum.Enumeration.__init__
+mrv.exc.MRVError.__init__
+mrv.interface.iChoiceDialog.__init__
+mrv.interface.iProgressIndicator.__init__
+mrv.interface.iPrompt.__init__
+mrv.maya.mdb.MEnumDescriptor.__init__
+mrv.maya.mdb.MFnCodeGeneratorBase.__init__
+mrv.maya.mdb.MMemberMap.__init__
+mrv.maya.mdb.MMethodDescriptor.__init__
+mrv.maya.nt.PluginDB.__init__
+mrv.maya.nt.geometry._SingleIndexedComponentGenerator.__init__
+mrv.maya.nt.persistence.PyPickleData.__init__
+mrv.maya.nt.persistence.StoragePluginNode.__init__
+mrv.maya.nt.set.ObjectSet._TmpSet.__init__
+mrv.maya.nt.storage.StorageBase.PyPickleValue.__init__
+mrv.maya.nt.storage.StorageBase.__init__
+mrv.maya.nt.storage.StorageNode.__init__
+mrv.maya.ref.FileReference.__init__
+mrv.maya.ui.base.BaseUI.__init__
+mrv.maya.ui.base.NamedUI.__init__
+mrv.maya.ui.browse.control.BookmarkControl.__init__
+mrv.maya.ui.browse.control.FilePathControlEditable.__init__
+mrv.maya.ui.browse.control.FileProvider.__init__
+mrv.maya.ui.browse.control.FileRootSelectorControl.__init__
+mrv.maya.ui.browse.control.StackControlBase.__init__
+mrv.maya.ui.browse.finder.Finder.__init__
+mrv.maya.ui.browse.interface.iFinderProvider.__init__
+mrv.maya.ui.browse.layout.FileOpenFinder.__init__
+mrv.maya.ui.browse.layout.FileReferenceFinder.__init__
+mrv.maya.ui.browse.layout.FileSaveFinder.__init__
+mrv.maya.ui.browse.layout.FinderLayout.__init__
+mrv.maya.ui.browse.option.FileOpenOptions.__init__
+mrv.maya.ui.dialog.ProgressWindow.__init__
+mrv.maya.ui.dialog.PromptDialog.__init__
+mrv.maya.ui.layout.Layout.__init__
+mrv.maya.ui.qa.QACheckLayout.__init__
+mrv.maya.ui.qa.QALayout.__init__
+mrv.maya.ui.util.EventSenderUI._UIEvent.__init__
+mrv.maya.ui.util.UIContainerBase.__init__
+mrv.maya.undo.DGModifier.__init__
+mrv.maya.undo.GenericOperation.__init__
+mrv.maya.undo.GenericOperationStack.__init__
+mrv.maya.undo.MuteUndo.__init__
+mrv.maya.undo.Operation.__init__
+mrv.maya.undo.StartUndo.__init__
+mrv.maya.undo.UndoCmd.__init__
+mrv.maya.undo.UndoRecorder.__init__
+mrv.maya.util.CallbackEventBase.CBStorageFunction.__init__
+mrv.maya.util.CallbackEventBase.__init__
+mrv.maya.util.StandinClass.__init__
+mrv.thread.TerminatableThread.__init__
+mrv.thread.WorkerThread.__init__
+mrv.util.And.__init__
+mrv.util.Call.__init__
+mrv.util.CallAdv.__init__
+mrv.util.CallOnDeletion.__init__
+mrv.util.Event.__init__
+mrv.util.InterfaceMaster.InterfaceBase.__init__
+mrv.util.InterfaceMaster.InterfaceDescriptor.__init__
+mrv.util.InterfaceMaster._InterfaceHandler.__init__
+mrv.util.InterfaceMaster.__init__
+mrv.util.Or.__init__
+mrv.util.PipeSeparatedFile.__init__
+mrv.util.WeakInstFunction.__init__
+unittest.FunctionTestCase.__init__
+unittest.TestCase.__init__
+unittest.TestProgram.__init__
+unittest.TestResult.__init__
+unittest.TestSuite.__init__
+unittest.TextTestRunner.__init__
+unittest._TextTestResult.__init__
+unittest._WritelnDecorator.__init__" class="py-name" href="#" onclick="return doclink('link-39', '__init__', 'link-39');">__init__</a></tt><tt class="py-op">(</tt> <tt class="py-name">min</tt> <tt class="py-op">=</tt> <tt class="py-name">min</tt><tt class="py-op">,</tt> <tt class="py-name">max</tt> <tt class="py-op">=</tt> <tt class="py-name">max</tt><tt class="py-op">,</tt> <tt class="py-name">is_relative</tt> <tt class="py-op">=</tt> <tt class="py-name">relative</tt> <tt class="py-op">)</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line"> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">                <tt class="py-comment"># remove invalid args</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">                <tt id="link-40" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-40', 'kwargs', 'link-13');">kwargs</a></tt><tt class="py-op">.</tt><tt id="link-41" class="py-name"><a title="mrv.maya.nt.base.MDagPathUtil.pop
+mrv.maya.util.OptionVarDict.pop" class="py-name" href="#" onclick="return doclink('link-41', 'pop', 'link-29');">pop</a></tt><tt class="py-op">(</tt> <tt class="py-string">"s"</tt><tt class="py-op">,</tt> <tt id="link-42" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-42', 'kwargs', 'link-13');">kwargs</a></tt><tt class="py-op">.</tt><tt id="link-43" class="py-name"><a title="mrv.maya.nt.base.MDagPathUtil.pop
+mrv.maya.util.OptionVarDict.pop" class="py-name" href="#" onclick="return doclink('link-43', 'pop', 'link-29');">pop</a></tt><tt class="py-op">(</tt> <tt class="py-string">"step"</tt><tt class="py-op">,</tt> <tt class="py-number">0</tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">                <tt id="link-44" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-44', 'kwargs', 'link-13');">kwargs</a></tt><tt class="py-op">.</tt><tt id="link-45" class="py-name"><a title="mrv.maya.nt.base.MDagPathUtil.pop
+mrv.maya.util.OptionVarDict.pop" class="py-name" href="#" onclick="return doclink('link-45', 'pop', 'link-29');">pop</a></tt><tt class="py-op">(</tt> <tt class="py-string">"pr"</tt><tt class="py-op">,</tt> <tt id="link-46" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-46', 'kwargs', 'link-13');">kwargs</a></tt><tt class="py-op">.</tt><tt id="link-47" class="py-name"><a title="mrv.maya.nt.base.MDagPathUtil.pop
+mrv.maya.util.OptionVarDict.pop" class="py-name" href="#" onclick="return doclink('link-47', 'pop', 'link-29');">pop</a></tt><tt class="py-op">(</tt> <tt class="py-string">"progress"</tt><tt class="py-op">,</tt> <tt class="py-number">0</tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">                <tt id="link-48" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-48', 'kwargs', 'link-13');">kwargs</a></tt><tt class="py-op">.</tt><tt id="link-49" class="py-name"><a title="mrv.maya.nt.base.MDagPathUtil.pop
+mrv.maya.util.OptionVarDict.pop" class="py-name" href="#" onclick="return doclink('link-49', 'pop', 'link-29');">pop</a></tt><tt class="py-op">(</tt> <tt class="py-string">"ep"</tt><tt class="py-op">,</tt> <tt id="link-50" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-50', 'kwargs', 'link-13');">kwargs</a></tt><tt class="py-op">.</tt><tt id="link-51" class="py-name"><a title="mrv.maya.nt.base.MDagPathUtil.pop
+mrv.maya.util.OptionVarDict.pop" class="py-name" href="#" onclick="return doclink('link-51', 'pop', 'link-29');">pop</a></tt><tt class="py-op">(</tt> <tt class="py-string">"endProgress"</tt><tt class="py-op">,</tt> <tt class="py-number">0</tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">                <tt id="link-52" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-52', 'kwargs', 'link-13');">kwargs</a></tt><tt class="py-op">.</tt><tt id="link-53" class="py-name"><a title="mrv.maya.nt.base.MDagPathUtil.pop
+mrv.maya.util.OptionVarDict.pop" class="py-name" href="#" onclick="return doclink('link-53', 'pop', 'link-29');">pop</a></tt><tt class="py-op">(</tt> <tt class="py-string">"ic"</tt><tt class="py-op">,</tt> <tt id="link-54" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-54', 'kwargs', 'link-13');">kwargs</a></tt><tt class="py-op">.</tt><tt id="link-55" class="py-name"><a title="mrv.maya.nt.base.MDagPathUtil.pop
+mrv.maya.util.OptionVarDict.pop" class="py-name" href="#" onclick="return doclink('link-55', 'pop', 'link-29');">pop</a></tt><tt class="py-op">(</tt> <tt class="py-string">"isCancelled"</tt><tt class="py-op">,</tt> <tt class="py-number">0</tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">                <tt id="link-56" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-56', 'kwargs', 'link-13');">kwargs</a></tt><tt class="py-op">.</tt><tt id="link-57" class="py-name"><a title="mrv.maya.nt.base.MDagPathUtil.pop
+mrv.maya.util.OptionVarDict.pop" class="py-name" href="#" onclick="return doclink('link-57', 'pop', 'link-29');">pop</a></tt><tt class="py-op">(</tt> <tt class="py-string">"e"</tt><tt class="py-op">,</tt> <tt id="link-58" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-58', 'kwargs', 'link-13');">kwargs</a></tt><tt class="py-op">.</tt><tt id="link-59" class="py-name"><a title="mrv.maya.nt.base.MDagPathUtil.pop
+mrv.maya.util.OptionVarDict.pop" class="py-name" href="#" onclick="return doclink('link-59', 'pop', 'link-29');">pop</a></tt><tt class="py-op">(</tt> <tt class="py-string">"edit"</tt><tt class="py-op">,</tt> <tt class="py-number">0</tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line"> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-60" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-60', 'kwargs', 'link-13');">kwargs</a></tt> <tt class="py-op">=</tt> <tt id="link-61" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-61', 'kwargs', 'link-13');">kwargs</a></tt>                    <tt class="py-comment"># store for begin</tt> </tt>
+</div><a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line"> </tt>
+<a name="ProgressWindow.refresh"></a><div id="ProgressWindow.refresh-def"><a name="L111"></a><tt class="py-lineno">111</tt> <a class="py-toggle" href="#" id="ProgressWindow.refresh-toggle" onclick="return toggle('ProgressWindow.refresh');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.dialog.ProgressWindow-class.html#refresh">refresh</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">message</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ProgressWindow.refresh-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="ProgressWindow.refresh-expanded"><a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">                <tt class="py-docstring">"""Finally show the progress window"""</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">                <tt class="py-name">mn</tt><tt class="py-op">,</tt><tt class="py-name">mx</tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-62" class="py-name" targets="Method mrv.interface.iProgressIndicator.isRelative()=mrv.interface.iProgressIndicator-class.html#isRelative"><a title="mrv.interface.iProgressIndicator.isRelative" class="py-name" href="#" onclick="return doclink('link-62', 'isRelative', 'link-62');">isRelative</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-keyword">and</tt> <tt class="py-op">(</tt> <tt class="py-number">0</tt><tt class="py-op">,</tt><tt class="py-number">100</tt><tt class="py-op">)</tt> <tt class="py-op">)</tt> <tt class="py-keyword">or</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-63" class="py-name" targets="Method mrv.interface.iProgressIndicator.range()=mrv.interface.iProgressIndicator-class.html#range"><a title="mrv.interface.iProgressIndicator.range" class="py-name" href="#" onclick="return doclink('link-63', 'range', 'link-63');">range</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">                <tt id="link-64" class="py-name" targets="Variable mrv.info.p=mrv.info-module.html#p"><a title="mrv.info.p" class="py-name" href="#" onclick="return doclink('link-64', 'p', 'link-64');">p</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-65" class="py-name"><a title="mrv.conf.ConfigAccessor.get
+mrv.dge._PlugShell.get
+mrv.dgfe._IOShell.get
+mrv.dgfe._OIShell.get
+mrv.interface.iProgressIndicator.get
+mrv.maya.util.OptionVarDict.get" class="py-name" href="#" onclick="return doclink('link-65', 'get', 'link-14');">get</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line"> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">                <tt class="py-name">myargs</tt> <tt class="py-op">=</tt> <tt class="py-name">dict</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">                <tt class="py-name">myargs</tt><tt class="py-op">[</tt> <tt class="py-string">"e"</tt> <tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-number">1</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line">                <tt class="py-name">myargs</tt><tt class="py-op">[</tt> <tt class="py-string">"min"</tt> <tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">mn</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line">                <tt class="py-name">myargs</tt><tt class="py-op">[</tt> <tt class="py-string">"max"</tt> <tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">mx</tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line">                <tt class="py-name">myargs</tt><tt class="py-op">[</tt> <tt class="py-string">"pr"</tt> <tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt id="link-66" class="py-name"><a title="mrv.info.p" class="py-name" href="#" onclick="return doclink('link-66', 'p', 'link-64');">p</a></tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line">                <tt class="py-name">myargs</tt><tt class="py-op">[</tt> <tt class="py-string">"status"</tt> <tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt id="link-67" class="py-name"><a title="mrv.exc.MRVError.message" class="py-name" href="#" onclick="return doclink('link-67', 'message', 'link-17');">message</a></tt> <tt class="py-keyword">or</tt> <tt class="py-op">(</tt> <tt class="py-string">"Progress %s"</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt> <tt class="py-string">"."</tt> <tt class="py-op">*</tt> <tt class="py-op">(</tt> <tt class="py-name">int</tt><tt class="py-op">(</tt><tt id="link-68" class="py-name"><a title="mrv.info.p" class="py-name" href="#" onclick="return doclink('link-68', 'p', 'link-64');">p</a></tt><tt class="py-op">)</tt> <tt class="py-op">%</tt> <tt class="py-number">4</tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line"> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line">                <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line">                        <tt class="py-name">cmds</tt><tt class="py-op">.</tt><tt class="py-name">progressWindow</tt><tt class="py-op">(</tt> <tt class="py-op">**</tt><tt class="py-name">myargs</tt> <tt class="py-op">)</tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">                <tt class="py-keyword">except</tt> <tt class="py-name">RuntimeError</tt><tt class="py-op">,</tt><tt class="py-name">e</tt><tt class="py-op">:</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line">                        <tt id="link-69" class="py-name"><a title="mrv.automation.base.log
+mrv.automation.qa.log
+mrv.automation.workflow.log
+mrv.cmd.base.SpawnedCommand.log
+mrv.cmd.base.log
+mrv.conf.log
+mrv.interface.log
+mrv.log
+mrv.maya.automation.qa.log
+mrv.maya.log
+mrv.maya.mdb.log
+mrv.maya.nt.base.log
+mrv.maya.nt.geometry.log
+mrv.maya.nt.persistence.log
+mrv.maya.nt.typ.log
+mrv.maya.ui.control.log
+mrv.maya.ui.dialog.log
+mrv.maya.ui.qa.log
+mrv.mdepparse.log
+mrv.path.log
+mrv.util.log" class="py-name" href="#" onclick="return doclink('link-69', 'log', 'link-11');">log</a></tt><tt class="py-op">.</tt><tt class="py-name">warn</tt><tt class="py-op">(</tt><tt class="py-name">str</tt><tt class="py-op">(</tt> <tt class="py-name">e</tt> <tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line">                        <tt class="py-keyword">pass</tt>            <tt class="py-comment"># don't know yet why that happens</tt> </tt>
+</div><a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line">                <tt class="py-comment"># END handle progress window errors</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line"> </tt>
+<a name="ProgressWindow.begin"></a><div id="ProgressWindow.begin-def"><a name="L130"></a><tt class="py-lineno">130</tt> <a class="py-toggle" href="#" id="ProgressWindow.begin-toggle" onclick="return toggle('ProgressWindow.begin');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.dialog.ProgressWindow-class.html#begin">begin</a><tt class="py-op">(</tt> <tt class="py-param">self</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ProgressWindow.begin-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="ProgressWindow.begin-expanded"><a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line">                <tt class="py-docstring">"""Show our window"""</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line">                <tt class="py-name">super</tt><tt class="py-op">(</tt> <tt id="link-70" class="py-name"><a title="mrv.maya.ui.dialog.ProgressWindow" class="py-name" href="#" onclick="return doclink('link-70', 'ProgressWindow', 'link-38');">ProgressWindow</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt> <tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-71" class="py-name" targets="Method mrv.interface.iProgressIndicator.begin()=mrv.interface.iProgressIndicator-class.html#begin,Method mrv.maya.ui.dialog.ProgressWindow.begin()=mrv.maya.ui.dialog.ProgressWindow-class.html#begin"><a title="mrv.interface.iProgressIndicator.begin
+mrv.maya.ui.dialog.ProgressWindow.begin" class="py-name" href="#" onclick="return doclink('link-71', 'begin', 'link-71');">begin</a></tt><tt class="py-op">(</tt> <tt class="py-op">)</tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line">                <tt class="py-name">cmds</tt><tt class="py-op">.</tt><tt class="py-name">progressWindow</tt><tt class="py-op">(</tt> <tt class="py-op">**</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-72" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-72', 'kwargs', 'link-13');">kwargs</a></tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line"> </tt>
+<a name="ProgressWindow.end"></a><div id="ProgressWindow.end-def"><a name="L135"></a><tt class="py-lineno">135</tt> <a class="py-toggle" href="#" id="ProgressWindow.end-toggle" onclick="return toggle('ProgressWindow.end');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.dialog.ProgressWindow-class.html#end">end</a><tt class="py-op">(</tt> <tt class="py-param">self</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ProgressWindow.end-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="ProgressWindow.end-expanded"><a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line">                <tt class="py-docstring">"""Close the progress window"""</tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">                <tt class="py-comment"># damn, has to be deferred to actually work</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line">                <tt class="py-name">super</tt><tt class="py-op">(</tt> <tt id="link-73" class="py-name"><a title="mrv.maya.ui.dialog.ProgressWindow" class="py-name" href="#" onclick="return doclink('link-73', 'ProgressWindow', 'link-38');">ProgressWindow</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt> <tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-74" class="py-name" targets="Method mrv.interface.iProgressIndicator.end()=mrv.interface.iProgressIndicator-class.html#end,Method mrv.maya.ui.dialog.ProgressWindow.end()=mrv.maya.ui.dialog.ProgressWindow-class.html#end"><a title="mrv.interface.iProgressIndicator.end
+mrv.maya.ui.dialog.ProgressWindow.end" class="py-name" href="#" onclick="return doclink('link-74', 'end', 'link-74');">end</a></tt><tt class="py-op">(</tt> <tt class="py-op">)</tt> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line">                <tt class="py-name">mutils</tt><tt class="py-op">.</tt><tt class="py-name">executeDeferred</tt><tt class="py-op">(</tt> <tt class="py-name">cmds</tt><tt class="py-op">.</tt><tt class="py-name">progressWindow</tt><tt class="py-op">,</tt> <tt class="py-name">ep</tt><tt class="py-op">=</tt><tt class="py-number">1</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line"> </tt>
+<a name="ProgressWindow.isCancelRequested"></a><div id="ProgressWindow.isCancelRequested-def"><a name="L141"></a><tt class="py-lineno">141</tt> <a class="py-toggle" href="#" id="ProgressWindow.isCancelRequested-toggle" onclick="return toggle('ProgressWindow.isCancelRequested');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.dialog.ProgressWindow-class.html#isCancelRequested">isCancelRequested</a><tt class="py-op">(</tt> <tt class="py-param">self</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ProgressWindow.isCancelRequested-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="ProgressWindow.isCancelRequested-expanded"><a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line">                <tt class="py-docstring">""":return: True if the action should be cancelled, False otherwise"""</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">cmds</tt><tt class="py-op">.</tt><tt class="py-name">progressWindow</tt><tt class="py-op">(</tt> <tt class="py-name">q</tt><tt class="py-op">=</tt><tt class="py-number">1</tt><tt class="py-op">,</tt> <tt class="py-name">ic</tt><tt class="py-op">=</tt><tt class="py-number">1</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line"> </tt>
+<a name="ProgressWindow.isAbortable"></a><div id="ProgressWindow.isAbortable-def"><a name="L145"></a><tt class="py-lineno">145</tt> <a class="py-toggle" href="#" id="ProgressWindow.isAbortable-toggle" onclick="return toggle('ProgressWindow.isAbortable');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.dialog.ProgressWindow-class.html#isAbortable">isAbortable</a><tt class="py-op">(</tt> <tt class="py-param">self</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ProgressWindow.isAbortable-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="ProgressWindow.isAbortable-expanded"><a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line">                <tt class="py-docstring">""":return : true if the process can be aborted"""</tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">cmds</tt><tt class="py-op">.</tt><tt class="py-name">progressWindow</tt><tt class="py-op">(</tt> <tt class="py-name">q</tt><tt class="py-op">=</tt><tt class="py-number">1</tt><tt class="py-op">,</tt> <tt class="py-name">ii</tt><tt class="py-op">=</tt><tt class="py-number">1</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line"> </tt>
+<a name="ProgressWindow.setAbortable"></a><div id="ProgressWindow.setAbortable-def"><a name="L149"></a><tt class="py-lineno">149</tt> <a class="py-toggle" href="#" id="ProgressWindow.setAbortable-toggle" onclick="return toggle('ProgressWindow.setAbortable');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.dialog.ProgressWindow-class.html#setAbortable">setAbortable</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">state</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ProgressWindow.setAbortable-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="ProgressWindow.setAbortable-expanded"><a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line">                <tt class="py-name">cmds</tt><tt class="py-op">.</tt><tt class="py-name">progressWindow</tt><tt class="py-op">(</tt> <tt class="py-name">e</tt><tt class="py-op">=</tt><tt class="py-number">1</tt><tt class="py-op">,</tt> <tt class="py-name">ii</tt><tt class="py-op">=</tt><tt class="py-name">state</tt> <tt class="py-op">)</tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">super</tt><tt class="py-op">(</tt> <tt id="link-75" class="py-name"><a title="mrv.maya.ui.dialog.ProgressWindow" class="py-name" href="#" onclick="return doclink('link-75', 'ProgressWindow', 'link-38');">ProgressWindow</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt> <tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-76" class="py-name" targets="Method mrv.interface.iProgressIndicator.setAbortable()=mrv.interface.iProgressIndicator-class.html#setAbortable,Method mrv.maya.ui.dialog.ProgressWindow.setAbortable()=mrv.maya.ui.dialog.ProgressWindow-class.html#setAbortable"><a title="mrv.interface.iProgressIndicator.setAbortable
+mrv.maya.ui.dialog.ProgressWindow.setAbortable" class="py-name" href="#" onclick="return doclink('link-76', 'setAbortable', 'link-76');">setAbortable</a></tt><tt class="py-op">(</tt> <tt class="py-name">state</tt> <tt class="py-op">)</tt> </tt>
+</div></div><a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Apr 19 15:39:23 2011
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

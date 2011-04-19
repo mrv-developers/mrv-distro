@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>mrv.mdepparse</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="mrv-module.html">Package&nbsp;mrv</a> ::
+        Module&nbsp;mdepparse
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="mrv.mdepparse-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="mrv.mdepparse-module.html">Module mrv.mdepparse</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment"># -*- coding: utf-8 -*-</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-docstring">"""Contains parser allowing to retrieve dependency information from maya ascii files</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-docstring">and convert it into an easy-to-use networkx graph with convenience methods.</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-name">__docformat__</tt> <tt class="py-op">=</tt> <tt class="py-string">"restructuredtext"</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">networkx</tt> <tt class="py-keyword">import</tt> <tt class="py-name">DiGraph</tt><tt class="py-op">,</tt> <tt class="py-name">NetworkXError</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Module mrv.maya.nt.util=mrv.maya.nt.util-module.html,Module mrv.maya.ui.browse.util=mrv.maya.ui.browse.util-module.html,Module mrv.maya.ui.util=mrv.maya.ui.util-module.html,Module mrv.maya.util=mrv.maya.util-module.html,Module mrv.util=mrv.util-module.html"><a title="mrv.maya.nt.util
+mrv.maya.ui.browse.util
+mrv.maya.ui.util
+mrv.maya.util
+mrv.util" class="py-name" href="#" onclick="return doclink('link-0', 'util', 'link-0');">util</a></tt> <tt class="py-keyword">import</tt> <tt id="link-1" class="py-name" targets="Function mrv.util.iterNetworkxGraph()=mrv.util-module.html#iterNetworkxGraph"><a title="mrv.util.iterNetworkxGraph" class="py-name" href="#" onclick="return doclink('link-1', 'iterNetworkxGraph', 'link-1');">iterNetworkxGraph</a></tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-2" class="py-name" targets="Method mrv.maya.ref.FileReference.path()=mrv.maya.ref.FileReference-class.html#path,Method mrv.maya.ui.browse.control.FilePathControl.path()=mrv.maya.ui.browse.control.FilePathControl-class.html#path,Module mrv.path=mrv.path-module.html"><a title="mrv.maya.ref.FileReference.path
+mrv.maya.ui.browse.control.FilePathControl.path
+mrv.path" class="py-name" href="#" onclick="return doclink('link-2', 'path', 'link-2');">path</a></tt> <tt class="py-keyword">import</tt> <tt id="link-3" class="py-name" targets="Function mrv.path.make_path()=mrv.path-module.html#make_path"><a title="mrv.path.make_path" class="py-name" href="#" onclick="return doclink('link-3', 'make_path', 'link-3');">make_path</a></tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">sys</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">os</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">re</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">logging</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt id="link-4" class="py-name" targets="Variable mrv.automation.base.log=mrv.automation.base-module.html#log,Variable mrv.automation.qa.log=mrv.automation.qa-module.html#log,Variable mrv.automation.workflow.log=mrv.automation.workflow-module.html#log,Variable mrv.cmd.base.SpawnedCommand.log=mrv.cmd.base.SpawnedCommand-class.html#log,Variable mrv.cmd.base.log=mrv.cmd.base-module.html#log,Variable mrv.conf.log=mrv.conf-module.html#log,Variable mrv.interface.log=mrv.interface-module.html#log,Variable mrv.log=mrv-module.html#log,Variable mrv.maya.automation.qa.log=mrv.maya.automation.qa-module.html#log,Variable mrv.maya.log=mrv.maya-module.html#log,Variable mrv.maya.mdb.log=mrv.maya.mdb-module.html#log,Variable mrv.maya.nt.base.log=mrv.maya.nt.base-module.html#log,Variable mrv.maya.nt.geometry.log=mrv.maya.nt.geometry-module.html#log,Variable mrv.maya.nt.persistence.log=mrv.maya.nt.persistence-module.html#log,Variable mrv.maya.nt.typ.log=mrv.maya.nt.typ-module.html#log,Variable mrv.maya.ui.control.log=mrv.maya.ui.control-module.html#log,Variable mrv.maya.ui.dialog.log=mrv.maya.ui.dialog-module.html#log,Variable mrv.maya.ui.qa.log=mrv.maya.ui.qa-module.html#log,Variable mrv.mdepparse.log=mrv.mdepparse-module.html#log,Variable mrv.path.log=mrv.path-module.html#log,Variable mrv.util.log=mrv.util-module.html#log"><a title="mrv.automation.base.log
+mrv.automation.qa.log
+mrv.automation.workflow.log
+mrv.cmd.base.SpawnedCommand.log
+mrv.cmd.base.log
+mrv.conf.log
+mrv.interface.log
+mrv.log
+mrv.maya.automation.qa.log
+mrv.maya.log
+mrv.maya.mdb.log
+mrv.maya.nt.base.log
+mrv.maya.nt.geometry.log
+mrv.maya.nt.persistence.log
+mrv.maya.nt.typ.log
+mrv.maya.ui.control.log
+mrv.maya.ui.dialog.log
+mrv.maya.ui.qa.log
+mrv.mdepparse.log
+mrv.path.log
+mrv.util.log" class="py-name" href="#" onclick="return doclink('link-4', 'log', 'link-4');">log</a></tt> <tt class="py-op">=</tt> <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">getLogger</tt><tt class="py-op">(</tt><tt class="py-string">"mrv.mdepparse"</tt><tt class="py-op">)</tt> </tt>
+<a name="MayaFileGraph"></a><div id="MayaFileGraph-def"><a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt> <a class="py-toggle" href="#" id="MayaFileGraph-toggle" onclick="return toggle('MayaFileGraph');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.mdepparse.MayaFileGraph-class.html">MayaFileGraph</a><tt class="py-op">(</tt> <tt class="py-base-class">DiGraph</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="MayaFileGraph-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="MayaFileGraph-expanded"><a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line">        <tt class="py-docstring">"""Contains dependnecies between maya files including utility functions</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-docstring">        allowing to more easily find what you are looking for"""</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line">        <tt id="link-5" class="py-name" targets="Variable mrv.mdepparse.MayaFileGraph.kAffects=mrv.mdepparse.MayaFileGraph-class.html#kAffects"><a title="mrv.mdepparse.MayaFileGraph.kAffects" class="py-name" href="#" onclick="return doclink('link-5', 'kAffects', 'link-5');">kAffects</a></tt><tt class="py-op">,</tt><tt id="link-6" class="py-name" targets="Variable mrv.mdepparse.MayaFileGraph.kAffectedBy=mrv.mdepparse.MayaFileGraph-class.html#kAffectedBy"><a title="mrv.mdepparse.MayaFileGraph.kAffectedBy" class="py-name" href="#" onclick="return doclink('link-6', 'kAffectedBy', 'link-6');">kAffectedBy</a></tt> <tt class="py-op">=</tt> <tt id="link-7" class="py-name" targets="Method mrv.interface.iProgressIndicator.range()=mrv.interface.iProgressIndicator-class.html#range"><a title="mrv.interface.iProgressIndicator.range" class="py-name" href="#" onclick="return doclink('link-7', 'range', 'link-7');">range</a></tt><tt class="py-op">(</tt> <tt class="py-number">2</tt> <tt class="py-op">)</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line">        <tt id="link-8" class="py-name" targets="Variable mrv.mdepparse.MayaFileGraph.refpathregex=mrv.mdepparse.MayaFileGraph-class.html#refpathregex"><a title="mrv.mdepparse.MayaFileGraph.refpathregex" class="py-name" href="#" onclick="return doclink('link-8', 'refpathregex', 'link-8');">refpathregex</a></tt> <tt class="py-op">=</tt> <tt class="py-name">re</tt><tt class="py-op">.</tt><tt class="py-name">compile</tt><tt class="py-op">(</tt> <tt class="py-string">'.*-r .*"(.*)";'</tt> <tt class="py-op">)</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line">        <tt id="link-9" class="py-name" targets="Variable mrv.mdepparse.MayaFileGraph.invalidNodeID=mrv.mdepparse.MayaFileGraph-class.html#invalidNodeID"><a title="mrv.mdepparse.MayaFileGraph.invalidNodeID" class="py-name" href="#" onclick="return doclink('link-9', 'invalidNodeID', 'link-9');">invalidNodeID</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"__invalid__"</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line">        <tt id="link-10" class="py-name" targets="Variable mrv.mdepparse.MayaFileGraph.invalidPrefix=mrv.mdepparse.MayaFileGraph-class.html#invalidPrefix"><a title="mrv.mdepparse.MayaFileGraph.invalidPrefix" class="py-name" href="#" onclick="return doclink('link-10', 'invalidPrefix', 'link-10');">invalidPrefix</a></tt> <tt class="py-op">=</tt> <tt class="py-string">":_iv_:"</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line">        <tt class="py-comment">#{ Edit</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line">        <tt class="py-decorator">@</tt><tt class="py-decorator">classmethod</tt> </tt>
+<a name="MayaFileGraph.createFromFiles"></a><div id="MayaFileGraph.createFromFiles-def"><a name="L30"></a><tt class="py-lineno"> 30</tt> <a class="py-toggle" href="#" id="MayaFileGraph.createFromFiles-toggle" onclick="return toggle('MayaFileGraph.createFromFiles');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.mdepparse.MayaFileGraph-class.html#createFromFiles">createFromFiles</a><tt class="py-op">(</tt> <tt class="py-param">cls</tt><tt class="py-op">,</tt> <tt class="py-param">fileList</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="MayaFileGraph.createFromFiles-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="MayaFileGraph.createFromFiles-expanded"><a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">                <tt class="py-docstring">""":return: MayaFileGraph providing dependency information about the files</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"><tt class="py-docstring">                        in fileList and their subReference.</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"><tt class="py-docstring">                :param fileList: iterable providing the filepaths to be parsed and added</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"><tt class="py-docstring">                        to this graph</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"><tt class="py-docstring">                :param kwargs: alll arguemnts of `addFromFiles` are supported """</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line">                <tt class="py-name">graph</tt> <tt class="py-op">=</tt> <tt id="link-11" class="py-name" targets="Variable mrv.dge.Attribute.cls=mrv.dge.Attribute-class.html#cls"><a title="mrv.dge.Attribute.cls" class="py-name" href="#" onclick="return doclink('link-11', 'cls', 'link-11');">cls</a></tt><tt class="py-op">(</tt> <tt class="py-op">)</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line">                <tt class="py-name">graph</tt><tt class="py-op">.</tt><tt id="link-12" class="py-name" targets="Method mrv.mdepparse.MayaFileGraph.addFromFiles()=mrv.mdepparse.MayaFileGraph-class.html#addFromFiles"><a title="mrv.mdepparse.MayaFileGraph.addFromFiles" class="py-name" href="#" onclick="return doclink('link-12', 'addFromFiles', 'link-12');">addFromFiles</a></tt><tt class="py-op">(</tt> <tt class="py-name">fileList</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt id="link-13" class="py-name" targets="Variable mrv.util.Call.kwargs=mrv.util.Call-class.html#kwargs"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-13', 'kwargs', 'link-13');">kwargs</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">graph</tt> </tt>
+</div><a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line"> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"> </tt>
+<a name="MayaFileGraph._addInvalid"></a><div id="MayaFileGraph._addInvalid-def"><a name="L41"></a><tt class="py-lineno"> 41</tt> <a class="py-toggle" href="#" id="MayaFileGraph._addInvalid-toggle" onclick="return toggle('MayaFileGraph._addInvalid');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.mdepparse.MayaFileGraph-class.html#_addInvalid">_addInvalid</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">invalidfile</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="MayaFileGraph._addInvalid-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="MayaFileGraph._addInvalid-expanded"><a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line">                <tt class="py-docstring">"""Add an invalid file to our special location</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line"><tt class="py-docstring">                :note: we prefix it to assure it does not popup in our results"""</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">add_edge</tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-14" class="py-name"><a title="mrv.mdepparse.MayaFileGraph.invalidNodeID" class="py-name" href="#" onclick="return doclink('link-14', 'invalidNodeID', 'link-9');">invalidNodeID</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-15" class="py-name"><a title="mrv.mdepparse.MayaFileGraph.invalidPrefix" class="py-name" href="#" onclick="return doclink('link-15', 'invalidPrefix', 'link-10');">invalidPrefix</a></tt> <tt class="py-op">+</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt> <tt class="py-name">invalidfile</tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line">        <tt class="py-decorator">@</tt><tt class="py-decorator">classmethod</tt> </tt>
+<a name="MayaFileGraph._parseReferences"></a><div id="MayaFileGraph._parseReferences-def"><a name="L47"></a><tt class="py-lineno"> 47</tt> <a class="py-toggle" href="#" id="MayaFileGraph._parseReferences-toggle" onclick="return toggle('MayaFileGraph._parseReferences');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.mdepparse.MayaFileGraph-class.html#_parseReferences">_parseReferences</a><tt class="py-op">(</tt> <tt class="py-param">cls</tt><tt class="py-op">,</tt> <tt class="py-param">mafile</tt><tt class="py-op">,</tt> <tt class="py-param">allPaths</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="MayaFileGraph._parseReferences-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="MayaFileGraph._parseReferences-expanded"><a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line">                <tt class="py-docstring">""":return: list of reference strings parsed from the given maya ascii file</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line"><tt class="py-docstring">                :raise IOError: if the file could not be read"""</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">                <tt class="py-name">outrefs</tt> <tt class="py-op">=</tt> <tt class="py-name">list</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">                <tt class="py-name">filehandle</tt> <tt class="py-op">=</tt> <tt id="link-16" class="py-name" targets="Class Method mrv.maya.scene.Scene.open()=mrv.maya.scene.Scene-class.html#open,Method mrv.path.Path.open()=mrv.path.Path-class.html#open"><a title="mrv.maya.scene.Scene.open
+mrv.path.Path.open" class="py-name" href="#" onclick="return doclink('link-16', 'open', 'link-16');">open</a></tt><tt class="py-op">(</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-17" class="py-name"><a title="mrv.maya.ref.FileReference.path
+mrv.maya.ui.browse.control.FilePathControl.path
+mrv.path" class="py-name" href="#" onclick="return doclink('link-17', 'path', 'link-2');">path</a></tt><tt class="py-op">.</tt><tt id="link-18" class="py-name" targets="Method mrv.path.Path.expandvars()=mrv.path.Path-class.html#expandvars"><a title="mrv.path.Path.expandvars" class="py-name" href="#" onclick="return doclink('link-18', 'expandvars', 'link-18');">expandvars</a></tt><tt class="py-op">(</tt> <tt class="py-name">mafile</tt> <tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-string">"r"</tt> <tt class="py-op">)</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line"> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">                <tt class="py-name">num_rdi_paths</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt>               <tt class="py-comment"># amount of -rdi paths we found - lateron we have to remove the items</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">                                                                <tt class="py-comment"># at the respective position as both lists match</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line"> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">                <tt class="py-comment"># parse depends</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line">                <tt class="py-keyword">for</tt> <tt class="py-name">line</tt> <tt class="py-keyword">in</tt> <tt class="py-name">filehandle</tt><tt class="py-op">:</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line"> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">                        <tt class="py-comment"># take the stupid newlines into account !</tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">                        <tt class="py-name">line</tt> <tt class="py-op">=</tt> <tt class="py-name">line</tt><tt class="py-op">.</tt><tt class="py-name">strip</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line">                        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">line</tt><tt class="py-op">.</tt><tt class="py-name">endswith</tt><tt class="py-op">(</tt> <tt class="py-string">";"</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">                                <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">                                        <tt class="py-name">line</tt> <tt class="py-op">=</tt> <tt class="py-name">line</tt> <tt class="py-op">+</tt> <tt class="py-name">filehandle</tt><tt class="py-op">.</tt><tt id="link-19" class="py-name" targets="Method mrv.enum.Enumeration.next()=mrv.enum.Enumeration-class.html#next"><a title="mrv.enum.Enumeration.next" class="py-name" href="#" onclick="return doclink('link-19', 'next', 'link-19');">next</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">                                <tt class="py-keyword">except</tt> <tt class="py-name">StopIteration</tt><tt class="py-op">:</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">                                        <tt class="py-keyword">break</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">                        <tt class="py-comment"># END newline special handling</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line"> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">                        <tt class="py-name">match</tt> <tt class="py-op">=</tt> <tt id="link-20" class="py-name"><a title="mrv.dge.Attribute.cls" class="py-name" href="#" onclick="return doclink('link-20', 'cls', 'link-11');">cls</a></tt><tt class="py-op">.</tt><tt id="link-21" class="py-name"><a title="mrv.mdepparse.MayaFileGraph.refpathregex" class="py-name" href="#" onclick="return doclink('link-21', 'refpathregex', 'link-8');">refpathregex</a></tt><tt class="py-op">.</tt><tt class="py-name">match</tt><tt class="py-op">(</tt> <tt class="py-name">line</tt> <tt class="py-op">)</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line"> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">                        <tt class="py-keyword">if</tt> <tt class="py-name">match</tt><tt class="py-op">:</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">                                <tt class="py-name">outrefs</tt><tt class="py-op">.</tt><tt id="link-22" class="py-name" targets="Method mrv.conf.ConfigChain.append()=mrv.conf.ConfigChain-class.html#append"><a title="mrv.conf.ConfigChain.append" class="py-name" href="#" onclick="return doclink('link-22', 'append', 'link-22');">append</a></tt><tt class="py-op">(</tt> <tt class="py-name">match</tt><tt class="py-op">.</tt><tt class="py-name">group</tt><tt class="py-op">(</tt><tt class="py-number">1</tt><tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">                        <tt class="py-comment"># END -r path match</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line"> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">                        <tt class="py-comment"># see whether we can abort early</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">                        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">allPaths</tt> <tt class="py-keyword">and</tt> <tt class="py-name">line</tt><tt class="py-op">.</tt><tt class="py-name">startswith</tt><tt class="py-op">(</tt> <tt class="py-string">"requires"</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">                                <tt class="py-keyword">break</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">                <tt class="py-comment"># END for each line</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line"> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">                <tt class="py-name">filehandle</tt><tt class="py-op">.</tt><tt class="py-name">close</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line"> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">outrefs</tt> </tt>
+</div><a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line"> </tt>
+<a name="MayaFileGraph._parseDepends"></a><div id="MayaFileGraph._parseDepends-def"><a name="L83"></a><tt class="py-lineno"> 83</tt> <a class="py-toggle" href="#" id="MayaFileGraph._parseDepends-toggle" onclick="return toggle('MayaFileGraph._parseDepends');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.mdepparse.MayaFileGraph-class.html#_parseDepends">_parseDepends</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">mafile</tt><tt class="py-op">,</tt> <tt class="py-param">allPaths</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="MayaFileGraph._parseDepends-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="MayaFileGraph._parseDepends-expanded"><a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">                <tt class="py-docstring">""":return: list of filepath as parsed from the given mafile.</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line"><tt class="py-docstring">                :param allPaths: if True, the whole file will be parsed, if False, only</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line"><tt class="py-docstring">                        the reference section will be parsed"""</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">                <tt class="py-name">outdepends</tt> <tt class="py-op">=</tt> <tt class="py-name">list</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">                <tt id="link-23" class="py-name"><a title="mrv.automation.base.log
+mrv.automation.qa.log
+mrv.automation.workflow.log
+mrv.cmd.base.SpawnedCommand.log
+mrv.cmd.base.log
+mrv.conf.log
+mrv.interface.log
+mrv.log
+mrv.maya.automation.qa.log
+mrv.maya.log
+mrv.maya.mdb.log
+mrv.maya.nt.base.log
+mrv.maya.nt.geometry.log
+mrv.maya.nt.persistence.log
+mrv.maya.nt.typ.log
+mrv.maya.ui.control.log
+mrv.maya.ui.dialog.log
+mrv.maya.ui.qa.log
+mrv.mdepparse.log
+mrv.path.log
+mrv.util.log" class="py-name" href="#" onclick="return doclink('link-23', 'log', 'link-4');">log</a></tt><tt class="py-op">.</tt><tt id="link-24" class="py-name" targets="Module mrv.info=mrv.info-module.html,Variable mrv.maya.util.Mel.info=mrv.maya.util.Mel-class.html#info"><a title="mrv.info
+mrv.maya.util.Mel.info" class="py-name" href="#" onclick="return doclink('link-24', 'info', 'link-24');">info</a></tt><tt class="py-op">(</tt><tt class="py-string">"Parsing %s"</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt> <tt class="py-name">mafile</tt> <tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line"> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">                <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">                        <tt class="py-name">outdepends</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-25" class="py-name" targets="Class Method mrv.mdepparse.MayaFileGraph._parseReferences()=mrv.mdepparse.MayaFileGraph-class.html#_parseReferences"><a title="mrv.mdepparse.MayaFileGraph._parseReferences" class="py-name" href="#" onclick="return doclink('link-25', '_parseReferences', 'link-25');">_parseReferences</a></tt><tt class="py-op">(</tt> <tt class="py-name">mafile</tt><tt class="py-op">,</tt> <tt class="py-name">allPaths</tt> <tt class="py-op">)</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">                <tt class="py-keyword">except</tt> <tt class="py-name">IOError</tt><tt class="py-op">,</tt><tt class="py-name">e</tt><tt class="py-op">:</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">                        <tt class="py-comment"># store as invalid</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">                        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-26" class="py-name" targets="Method mrv.mdepparse.MayaFileGraph._addInvalid()=mrv.mdepparse.MayaFileGraph-class.html#_addInvalid"><a title="mrv.mdepparse.MayaFileGraph._addInvalid" class="py-name" href="#" onclick="return doclink('link-26', '_addInvalid', 'link-26');">_addInvalid</a></tt><tt class="py-op">(</tt> <tt class="py-name">mafile</tt> <tt class="py-op">)</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">                        <tt id="link-27" class="py-name"><a title="mrv.automation.base.log
+mrv.automation.qa.log
+mrv.automation.workflow.log
+mrv.cmd.base.SpawnedCommand.log
+mrv.cmd.base.log
+mrv.conf.log
+mrv.interface.log
+mrv.log
+mrv.maya.automation.qa.log
+mrv.maya.log
+mrv.maya.mdb.log
+mrv.maya.nt.base.log
+mrv.maya.nt.geometry.log
+mrv.maya.nt.persistence.log
+mrv.maya.nt.typ.log
+mrv.maya.ui.control.log
+mrv.maya.ui.dialog.log
+mrv.maya.ui.qa.log
+mrv.mdepparse.log
+mrv.path.log
+mrv.util.log" class="py-name" href="#" onclick="return doclink('link-27', 'log', 'link-4');">log</a></tt><tt class="py-op">.</tt><tt class="py-name">warn</tt><tt class="py-op">(</tt><tt class="py-string">"Parsing Failed: %s"</tt> <tt class="py-op">%</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt> <tt class="py-name">e</tt> <tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">                <tt class="py-comment"># END exception handlign</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">outdepends</tt> </tt>
+</div><a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line"> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line"> </tt>
+<a name="MayaFileGraph.addFromFiles"></a><div id="MayaFileGraph.addFromFiles-def"><a name="L100"></a><tt class="py-lineno">100</tt> <a class="py-toggle" href="#" id="MayaFileGraph.addFromFiles-toggle" onclick="return toggle('MayaFileGraph.addFromFiles');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.mdepparse.MayaFileGraph-class.html#addFromFiles">addFromFiles</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">mafiles</tt><tt class="py-op">,</tt> <tt class="py-param">parse_all_paths</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt><tt class="py-op">,</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line">                                        <tt class="py-param">to_os_path</tt> <tt class="py-op">=</tt> <tt class="py-keyword">lambda</tt> <tt class="py-name">f</tt><tt class="py-op">:</tt> <tt id="link-28" class="py-name"><a title="mrv.path.make_path" class="py-name" href="#" onclick="return doclink('link-28', 'make_path', 'link-3');">make_path</a></tt><tt class="py-op">(</tt><tt class="py-name">f</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-29" class="py-name"><a title="mrv.path.Path.expandvars" class="py-name" href="#" onclick="return doclink('link-29', 'expandvars', 'link-18');">expandvars</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">                                        <tt class="py-name">os_path_to_db_key</tt> <tt class="py-op">=</tt> <tt class="py-keyword">lambda</tt> <tt class="py-name">f</tt><tt class="py-op">:</tt> <tt class="py-name">f</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="MayaFileGraph.addFromFiles-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="MayaFileGraph.addFromFiles-expanded"><a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">                <tt class="py-docstring">"""Parse the dependencies from the given maya ascii files and add them to</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line"><tt class="py-docstring">                this graph</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line"><tt class="py-docstring">                </tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line"><tt class="py-docstring">                :note: the more files are given, the more efficient the method can be</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line"><tt class="py-docstring">                :param parse_all_paths: if True, default False, all paths found in the file will be used.</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line"><tt class="py-docstring">                        This will slow down the parsing as the whole file will be searched for references</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line"><tt class="py-docstring">                        instead of just the header of the file</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line"><tt class="py-docstring">                :param to_os_path: functor returning an MA file from given posssibly parsed file</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line"><tt class="py-docstring">                        that should be existing on the system parsing the files.</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line"><tt class="py-docstring">                        The passed in file could also be an mb file ( which cannot be parsed ), thus it</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line"><tt class="py-docstring">                        would be advantageous to return a corresponding ma file</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line"><tt class="py-docstring">                        This is required as references can have environment variables inside of them</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line"><tt class="py-docstring">                :param os_path_to_db_key: converts the given path as used in the filesystem into</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line"><tt class="py-docstring">                        a path to be used as key in the database. It should be general.</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line"><tt class="py-docstring">                        Ideally, os_path_to_db_key is the inverse as to_os_path.</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line"><tt class="py-docstring">                :note: if the parsed path contain environment variables you must start the</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line"><tt class="py-docstring">                        tool such that these can be resolved by the system. Otherwise files might</tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line"><tt class="py-docstring">                        not be found</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line"><tt class="py-docstring">                :todo: parse_all_paths still to be implemented"""</tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">                <tt class="py-name">files_parsed</tt> <tt class="py-op">=</tt> <tt id="link-30" class="py-name" targets="Method mrv.dge._PlugShell.set()=mrv.dge._PlugShell-class.html#set,Method mrv.dgfe._IOShell.set()=mrv.dgfe._IOShell-class.html#set,Method mrv.dgfe._OIShell.set()=mrv.dgfe._OIShell-class.html#set,Method mrv.interface.iProgressIndicator.set()=mrv.interface.iProgressIndicator-class.html#set,Method mrv.maya.nt.base.Transform.set()=mrv.maya.nt.base.Transform-class.html#set,Module mrv.maya.nt.set=mrv.maya.nt.set-module.html,Variable mrv.maya.nt.set=mrv.maya.nt-module.html#set,Module mrv.maya.ui.set=mrv.maya.ui.set-module.html"><a title="mrv.dge._PlugShell.set
+mrv.dgfe._IOShell.set
+mrv.dgfe._OIShell.set
+mrv.interface.iProgressIndicator.set
+mrv.maya.nt.base.Transform.set
+mrv.maya.nt.set
+mrv.maya.nt.set
+mrv.maya.ui.set" class="py-name" href="#" onclick="return doclink('link-30', 'set', 'link-30');">set</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt>                                     <tt class="py-comment"># assure we do not duplicate work</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line">                <tt class="py-keyword">for</tt> <tt class="py-name">mafile</tt> <tt class="py-keyword">in</tt> <tt class="py-name">mafiles</tt><tt class="py-op">:</tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line">                        <tt class="py-name">depfiles</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt> <tt class="py-name">mafile</tt><tt class="py-op">.</tt><tt class="py-name">strip</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-op">]</tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">                        <tt class="py-keyword">while</tt> <tt class="py-name">depfiles</tt><tt class="py-op">:</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line">                                <tt class="py-name">curfile</tt> <tt class="py-op">=</tt> <tt class="py-name">to_os_path</tt><tt class="py-op">(</tt> <tt class="py-name">depfiles</tt><tt class="py-op">.</tt><tt id="link-31" class="py-name" targets="Class Method mrv.maya.nt.base.MDagPathUtil.pop()=mrv.maya.nt.base.MDagPathUtil-class.html#pop,Method mrv.maya.util.OptionVarDict.pop()=mrv.maya.util.OptionVarDict-class.html#pop"><a title="mrv.maya.nt.base.MDagPathUtil.pop
+mrv.maya.util.OptionVarDict.pop" class="py-name" href="#" onclick="return doclink('link-31', 'pop', 'link-31');">pop</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line"> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line">                                <tt class="py-comment"># ASSURE MA FILE</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line">                                <tt class="py-keyword">if</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-32" class="py-name"><a title="mrv.maya.ref.FileReference.path
+mrv.maya.ui.browse.control.FilePathControl.path
+mrv.path" class="py-name" href="#" onclick="return doclink('link-32', 'path', 'link-2');">path</a></tt><tt class="py-op">.</tt><tt id="link-33" class="py-name" targets="Method mrv.path.Path.splitext()=mrv.path.Path-class.html#splitext"><a title="mrv.path.Path.splitext" class="py-name" href="#" onclick="return doclink('link-33', 'splitext', 'link-33');">splitext</a></tt><tt class="py-op">(</tt> <tt class="py-name">curfile</tt> <tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt> <tt class="py-op">!=</tt> <tt class="py-string">".ma"</tt><tt class="py-op">:</tt> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line">                                        <tt id="link-34" class="py-name"><a title="mrv.automation.base.log
+mrv.automation.qa.log
+mrv.automation.workflow.log
+mrv.cmd.base.SpawnedCommand.log
+mrv.cmd.base.log
+mrv.conf.log
+mrv.interface.log
+mrv.log
+mrv.maya.automation.qa.log
+mrv.maya.log
+mrv.maya.mdb.log
+mrv.maya.nt.base.log
+mrv.maya.nt.geometry.log
+mrv.maya.nt.persistence.log
+mrv.maya.nt.typ.log
+mrv.maya.ui.control.log
+mrv.maya.ui.dialog.log
+mrv.maya.ui.qa.log
+mrv.mdepparse.log
+mrv.path.log
+mrv.util.log" class="py-name" href="#" onclick="return doclink('link-34', 'log', 'link-4');">log</a></tt><tt class="py-op">.</tt><tt id="link-35" class="py-name"><a title="mrv.info
+mrv.maya.util.Mel.info" class="py-name" href="#" onclick="return doclink('link-35', 'info', 'link-24');">info</a></tt><tt class="py-op">(</tt> <tt class="py-string">"Skipped non-ma file: %s"</tt> <tt class="py-op">%</tt> <tt class="py-name">curfile</tt> <tt class="py-op">)</tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line">                                        <tt class="py-keyword">continue</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line">                                <tt class="py-comment"># END assure ma file</tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line"> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line">                                <tt class="py-keyword">if</tt> <tt class="py-name">curfile</tt> <tt class="py-keyword">in</tt> <tt class="py-name">files_parsed</tt><tt class="py-op">:</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line">                                        <tt class="py-keyword">continue</tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line"> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">                                <tt class="py-name">curfiledepends</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-36" class="py-name" targets="Method mrv.mdepparse.MayaFileGraph._parseDepends()=mrv.mdepparse.MayaFileGraph-class.html#_parseDepends"><a title="mrv.mdepparse.MayaFileGraph._parseDepends" class="py-name" href="#" onclick="return doclink('link-36', '_parseDepends', 'link-36');">_parseDepends</a></tt><tt class="py-op">(</tt> <tt class="py-name">curfile</tt><tt class="py-op">,</tt> <tt class="py-name">parse_all_paths</tt> <tt class="py-op">)</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line">                                <tt class="py-name">files_parsed</tt><tt class="py-op">.</tt><tt id="link-37" class="py-name" targets="Method mrv.maya.nt.set.ObjectSet.add()=mrv.maya.nt.set.ObjectSet-class.html#add,Method mrv.maya.ui.util.UIContainerBase.add()=mrv.maya.ui.util.UIContainerBase-class.html#add"><a title="mrv.maya.nt.set.ObjectSet.add
+mrv.maya.ui.util.UIContainerBase.add" class="py-name" href="#" onclick="return doclink('link-37', 'add', 'link-37');">add</a></tt><tt class="py-op">(</tt> <tt class="py-name">curfile</tt> <tt class="py-op">)</tt> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line"> </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line">                                <tt class="py-comment"># create edges</tt> </tt>
+<a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line">                                <tt class="py-name">curfilestr</tt> <tt class="py-op">=</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt> <tt class="py-name">curfile</tt> <tt class="py-op">)</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line">                                <tt class="py-name">valid_depends</tt> <tt class="py-op">=</tt> <tt class="py-name">list</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line">                                <tt class="py-keyword">for</tt> <tt class="py-name">depfile</tt> <tt class="py-keyword">in</tt> <tt class="py-name">curfiledepends</tt><tt class="py-op">:</tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line">                                        <tt class="py-keyword">print</tt> <tt class="py-name">depfile</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line">                                        <tt class="py-comment"># only valid files may be adjusted - we keep them as is otherwise</tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line">                                        <tt class="py-name">dbdepfile</tt> <tt class="py-op">=</tt> <tt class="py-name">to_os_path</tt><tt class="py-op">(</tt> <tt class="py-name">depfile</tt> <tt class="py-op">)</tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line">                                        <tt class="py-keyword">print</tt> <tt class="py-name">dbdepfile</tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line">                                        <tt class="py-keyword">if</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-38" class="py-name"><a title="mrv.maya.ref.FileReference.path
+mrv.maya.ui.browse.control.FilePathControl.path
+mrv.path" class="py-name" href="#" onclick="return doclink('link-38', 'path', 'link-2');">path</a></tt><tt class="py-op">.</tt><tt id="link-39" class="py-name" targets="Method mrv.maya.ns.Namespace.exists()=mrv.maya.ns.Namespace-class.html#exists,Method mrv.maya.ref.FileReference.exists()=mrv.maya.ref.FileReference-class.html#exists,Method mrv.maya.ui.base.NamedUI.exists()=mrv.maya.ui.base.NamedUI-class.html#exists,Method mrv.path.Path.exists()=mrv.path.Path-class.html#exists"><a title="mrv.maya.ns.Namespace.exists
+mrv.maya.ref.FileReference.exists
+mrv.maya.ui.base.NamedUI.exists
+mrv.path.Path.exists" class="py-name" href="#" onclick="return doclink('link-39', 'exists', 'link-39');">exists</a></tt><tt class="py-op">(</tt> <tt class="py-name">dbdepfile</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line">                                                <tt class="py-name">valid_depends</tt><tt class="py-op">.</tt><tt id="link-40" class="py-name"><a title="mrv.conf.ConfigChain.append" class="py-name" href="#" onclick="return doclink('link-40', 'append', 'link-22');">append</a></tt><tt class="py-op">(</tt> <tt class="py-name">depfile</tt> <tt class="py-op">)</tt>                         <tt class="py-comment"># store the orig path - it will be converted later</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line">                                                <tt class="py-name">dbdepfile</tt> <tt class="py-op">=</tt> <tt class="py-name">os_path_to_db_key</tt><tt class="py-op">(</tt> <tt class="py-name">dbdepfile</tt> <tt class="py-op">)</tt>              <tt class="py-comment"># make it db key path</tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line">                                        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line">                                                <tt class="py-name">dbdepfile</tt> <tt class="py-op">=</tt> <tt class="py-name">depfile</tt>                                                             <tt class="py-comment"># invalid - revert it</tt> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line">                                                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-41" class="py-name"><a title="mrv.mdepparse.MayaFileGraph._addInvalid" class="py-name" href="#" onclick="return doclink('link-41', '_addInvalid', 'link-26');">_addInvalid</a></tt><tt class="py-op">(</tt> <tt class="py-name">depfile</tt> <tt class="py-op">)</tt>                                             <tt class="py-comment"># store it as invalid, no further processing</tt> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line"> </tt>
+<a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line">                                        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">add_edge</tt><tt class="py-op">(</tt> <tt class="py-name">dbdepfile</tt><tt class="py-op">,</tt> <tt class="py-name">os_path_to_db_key</tt><tt class="py-op">(</tt> <tt class="py-name">curfilestr</tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+<a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line"> </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line">                                <tt class="py-comment"># add to stack and go on</tt> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line">                                <tt class="py-name">depfiles</tt><tt class="py-op">.</tt><tt id="link-42" class="py-name" targets="Method mrv.conf.ConfigChain.extend()=mrv.conf.ConfigChain-class.html#extend"><a title="mrv.conf.ConfigChain.extend" class="py-name" href="#" onclick="return doclink('link-42', 'extend', 'link-42');">extend</a></tt><tt class="py-op">(</tt> <tt class="py-name">valid_depends</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line">                        <tt class="py-comment"># END dependency loop</tt> </tt>
+<a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line">                <tt class="py-comment"># END for each file to parse</tt> </tt>
+<a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line"> </tt>
+<a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line">                <tt class="py-comment">#} END edit</tt> </tt>
+<a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line"> </tt>
+<a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line">        <tt class="py-comment">#{ Query</tt> </tt>
+<a name="MayaFileGraph.depends"></a><div id="MayaFileGraph.depends-def"><a name="L165"></a><tt class="py-lineno">165</tt> <a class="py-toggle" href="#" id="MayaFileGraph.depends-toggle" onclick="return toggle('MayaFileGraph.depends');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.mdepparse.MayaFileGraph-class.html#depends">depends</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">filePath</tt><tt class="py-op">,</tt> <tt class="py-param">direction</tt> <tt class="py-op">=</tt> <tt id="link-43" class="py-name"><a title="mrv.mdepparse.MayaFileGraph.kAffects" class="py-name" href="#" onclick="return doclink('link-43', 'kAffects', 'link-5');">kAffects</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L166"></a><tt class="py-lineno">166</tt>  <tt class="py-line">                                   <tt class="py-param">to_os_path</tt> <tt class="py-op">=</tt> <tt class="py-keyword">lambda</tt> <tt class="py-name">f</tt><tt class="py-op">:</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-44" class="py-name"><a title="mrv.maya.ref.FileReference.path
+mrv.maya.ui.browse.control.FilePathControl.path
+mrv.path" class="py-name" href="#" onclick="return doclink('link-44', 'path', 'link-2');">path</a></tt><tt class="py-op">.</tt><tt id="link-45" class="py-name"><a title="mrv.path.Path.expandvars" class="py-name" href="#" onclick="return doclink('link-45', 'expandvars', 'link-18');">expandvars</a></tt><tt class="py-op">(</tt> <tt class="py-name">f</tt> <tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line">                                        <tt class="py-name">os_path_to_db_key</tt> <tt class="py-op">=</tt> <tt class="py-keyword">lambda</tt> <tt class="py-name">f</tt><tt class="py-op">:</tt> <tt class="py-name">f</tt><tt class="py-op">,</tt> <tt class="py-name">return_unresolved</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt><tt class="py-op">,</tt> </tt>
+<a name="L168"></a><tt class="py-lineno">168</tt>  <tt class="py-line">                                   <tt class="py-name">invalid_only</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt id="link-46" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-46', 'kwargs', 'link-13');">kwargs</a></tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="MayaFileGraph.depends-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="MayaFileGraph.depends-expanded"><a name="L169"></a><tt class="py-lineno">169</tt>  <tt class="py-line">                <tt class="py-docstring">""":return: list of paths ( converted to os paths ) that are related to</tt> </tt>
+<a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line"><tt class="py-docstring">                        the given filePath</tt> </tt>
+<a name="L171"></a><tt class="py-lineno">171</tt>  <tt class="py-line"><tt class="py-docstring">                :param direction: specifies search direction, either :</tt> </tt>
+<a name="L172"></a><tt class="py-lineno">172</tt>  <tt class="py-line"><tt class="py-docstring">                        kAffects = Files that filePath affects</tt> </tt>
+<a name="L173"></a><tt class="py-lineno">173</tt>  <tt class="py-line"><tt class="py-docstring">                        kAffectedBy = Files that affect filePath</tt> </tt>
+<a name="L174"></a><tt class="py-lineno">174</tt>  <tt class="py-line"><tt class="py-docstring">                :param return_unresolved: if True, the output paths will not be translated to</tt> </tt>
+<a name="L175"></a><tt class="py-lineno">175</tt>  <tt class="py-line"><tt class="py-docstring">                        an os paths and you get the paths as stored in the graph.</tt> </tt>
+<a name="L176"></a><tt class="py-lineno">176</tt>  <tt class="py-line"><tt class="py-docstring">                        Please not that the to_os_path function is still needed to generate</tt> </tt>
+<a name="L177"></a><tt class="py-lineno">177</tt>  <tt class="py-line"><tt class="py-docstring">                        a valid key, depending on the format of filepaths stored in this graph</tt> </tt>
+<a name="L178"></a><tt class="py-lineno">178</tt>  <tt class="py-line"><tt class="py-docstring">                :param invalid_only: if True, only invalid dependencies will be returned, all</tt> </tt>
+<a name="L179"></a><tt class="py-lineno">179</tt>  <tt class="py-line"><tt class="py-docstring">                        including the invalid ones otherwise</tt> </tt>
+<a name="L180"></a><tt class="py-lineno">180</tt>  <tt class="py-line"><tt class="py-docstring">                :param to_os_path: see `addFromFiles`</tt> </tt>
+<a name="L181"></a><tt class="py-lineno">181</tt>  <tt class="py-line"><tt class="py-docstring">                :param os_path_to_db_key: see `addFromFiles`</tt> </tt>
+<a name="L182"></a><tt class="py-lineno">182</tt>  <tt class="py-line"><tt class="py-docstring">                :param kwargs: passed to `iterNetworkxGraph`"""</tt> </tt>
+<a name="L183"></a><tt class="py-lineno">183</tt>  <tt class="py-line">                <tt id="link-47" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-47', 'kwargs', 'link-13');">kwargs</a></tt><tt class="py-op">[</tt> <tt class="py-string">'direction'</tt> <tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">direction</tt> </tt>
+<a name="L184"></a><tt class="py-lineno">184</tt>  <tt class="py-line">                <tt id="link-48" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-48', 'kwargs', 'link-13');">kwargs</a></tt><tt class="py-op">[</tt> <tt class="py-string">'ignore_startitem'</tt> <tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-number">1</tt>                        <tt class="py-comment"># default</tt> </tt>
+<a name="L185"></a><tt class="py-lineno">185</tt>  <tt class="py-line">                <tt id="link-49" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-49', 'kwargs', 'link-13');">kwargs</a></tt><tt class="py-op">[</tt> <tt class="py-string">'branch_first'</tt> <tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-number">1</tt>            <tt class="py-comment"># default</tt> </tt>
+<a name="L186"></a><tt class="py-lineno">186</tt>  <tt class="py-line"> </tt>
+<a name="L187"></a><tt class="py-lineno">187</tt>  <tt class="py-line">                <tt class="py-name">keypath</tt> <tt class="py-op">=</tt> <tt class="py-name">os_path_to_db_key</tt><tt class="py-op">(</tt> <tt class="py-name">to_os_path</tt><tt class="py-op">(</tt> <tt class="py-name">filePath</tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt>   <tt class="py-comment"># convert key</tt> </tt>
+<a name="L188"></a><tt class="py-lineno">188</tt>  <tt class="py-line">                <tt class="py-name">invalid</tt> <tt class="py-op">=</tt> <tt id="link-50" class="py-name"><a title="mrv.dge._PlugShell.set
+mrv.dgfe._IOShell.set
+mrv.dgfe._OIShell.set
+mrv.interface.iProgressIndicator.set
+mrv.maya.nt.base.Transform.set
+mrv.maya.nt.set
+mrv.maya.nt.set
+mrv.maya.ui.set" class="py-name" href="#" onclick="return doclink('link-50', 'set', 'link-30');">set</a></tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-51" class="py-name" targets="Method mrv.mdepparse.MayaFileGraph.invalidFiles()=mrv.mdepparse.MayaFileGraph-class.html#invalidFiles"><a title="mrv.mdepparse.MayaFileGraph.invalidFiles" class="py-name" href="#" onclick="return doclink('link-51', 'invalidFiles', 'link-51');">invalidFiles</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+<a name="L189"></a><tt class="py-lineno">189</tt>  <tt class="py-line"> </tt>
+<a name="L190"></a><tt class="py-lineno">190</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">return_unresolved</tt><tt class="py-op">:</tt> </tt>
+<a name="L191"></a><tt class="py-lineno">191</tt>  <tt class="py-line">                        <tt class="py-name">to_os_path</tt> <tt class="py-op">=</tt> <tt class="py-keyword">lambda</tt> <tt class="py-name">f</tt><tt class="py-op">:</tt> <tt class="py-name">f</tt> </tt>
+<a name="L192"></a><tt class="py-lineno">192</tt>  <tt class="py-line"> </tt>
+<a name="L193"></a><tt class="py-lineno">193</tt>  <tt class="py-line">                <tt class="py-name">outlist</tt> <tt class="py-op">=</tt> <tt class="py-name">list</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L194"></a><tt class="py-lineno">194</tt>  <tt class="py-line"> </tt>
+<a name="L195"></a><tt class="py-lineno">195</tt>  <tt class="py-line">                <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L196"></a><tt class="py-lineno">196</tt>  <tt class="py-line">                        <tt class="py-keyword">for</tt> <tt class="py-name">d</tt><tt class="py-op">,</tt> <tt class="py-name">f</tt> <tt class="py-keyword">in</tt> <tt id="link-52" class="py-name"><a title="mrv.util.iterNetworkxGraph" class="py-name" href="#" onclick="return doclink('link-52', 'iterNetworkxGraph', 'link-1');">iterNetworkxGraph</a></tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">keypath</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt id="link-53" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-53', 'kwargs', 'link-13');">kwargs</a></tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L197"></a><tt class="py-lineno">197</tt>  <tt class="py-line">                                <tt class="py-name">is_valid</tt> <tt class="py-op">=</tt> <tt class="py-name">f</tt> <tt class="py-keyword">not</tt> <tt class="py-keyword">in</tt> <tt class="py-name">invalid</tt> </tt>
+<a name="L198"></a><tt class="py-lineno">198</tt>  <tt class="py-line">                                <tt class="py-name">f</tt> <tt class="py-op">=</tt> <tt class="py-name">to_os_path</tt><tt class="py-op">(</tt> <tt class="py-name">f</tt> <tt class="py-op">)</tt>             <tt class="py-comment"># remap only valid paths</tt> </tt>
+<a name="L199"></a><tt class="py-lineno">199</tt>  <tt class="py-line"> </tt>
+<a name="L200"></a><tt class="py-lineno">200</tt>  <tt class="py-line">                                <tt class="py-keyword">if</tt> <tt class="py-name">is_valid</tt> <tt class="py-keyword">and</tt> <tt class="py-name">invalid_only</tt><tt class="py-op">:</tt>   <tt class="py-comment"># skip valid ones ?</tt> </tt>
+<a name="L201"></a><tt class="py-lineno">201</tt>  <tt class="py-line">                                        <tt class="py-keyword">continue</tt> </tt>
+<a name="L202"></a><tt class="py-lineno">202</tt>  <tt class="py-line"> </tt>
+<a name="L203"></a><tt class="py-lineno">203</tt>  <tt class="py-line">                                <tt class="py-name">outlist</tt><tt class="py-op">.</tt><tt id="link-54" class="py-name"><a title="mrv.conf.ConfigChain.append" class="py-name" href="#" onclick="return doclink('link-54', 'append', 'link-22');">append</a></tt><tt class="py-op">(</tt> <tt class="py-name">f</tt> <tt class="py-op">)</tt> </tt>
+<a name="L204"></a><tt class="py-lineno">204</tt>  <tt class="py-line">                        <tt class="py-comment"># END for each file in dependencies</tt> </tt>
+<a name="L205"></a><tt class="py-lineno">205</tt>  <tt class="py-line">                <tt class="py-keyword">except</tt> <tt class="py-name">NetworkXError</tt><tt class="py-op">:</tt> </tt>
+<a name="L206"></a><tt class="py-lineno">206</tt>  <tt class="py-line">                        <tt id="link-55" class="py-name"><a title="mrv.automation.base.log
+mrv.automation.qa.log
+mrv.automation.workflow.log
+mrv.cmd.base.SpawnedCommand.log
+mrv.cmd.base.log
+mrv.conf.log
+mrv.interface.log
+mrv.log
+mrv.maya.automation.qa.log
+mrv.maya.log
+mrv.maya.mdb.log
+mrv.maya.nt.base.log
+mrv.maya.nt.geometry.log
+mrv.maya.nt.persistence.log
+mrv.maya.nt.typ.log
+mrv.maya.ui.control.log
+mrv.maya.ui.dialog.log
+mrv.maya.ui.qa.log
+mrv.mdepparse.log
+mrv.path.log
+mrv.util.log" class="py-name" href="#" onclick="return doclink('link-55', 'log', 'link-4');">log</a></tt><tt class="py-op">.</tt><tt id="link-56" class="py-name" targets="Method unittest.TestCase.debug()=unittest.TestCase-class.html#debug,Method unittest.TestSuite.debug()=unittest.TestSuite-class.html#debug"><a title="unittest.TestCase.debug
+unittest.TestSuite.debug" class="py-name" href="#" onclick="return doclink('link-56', 'debug', 'link-56');">debug</a></tt><tt class="py-op">(</tt> <tt class="py-string">"Skipped Path %s ( %s ): unknown to dependency graph"</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt> <tt class="py-name">filePath</tt><tt class="py-op">,</tt> <tt class="py-name">keypath</tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+<a name="L207"></a><tt class="py-lineno">207</tt>  <tt class="py-line"> </tt>
+<a name="L208"></a><tt class="py-lineno">208</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">outlist</tt> </tt>
+</div><a name="L209"></a><tt class="py-lineno">209</tt>  <tt class="py-line"> </tt>
+<a name="MayaFileGraph.invalidFiles"></a><div id="MayaFileGraph.invalidFiles-def"><a name="L210"></a><tt class="py-lineno">210</tt> <a class="py-toggle" href="#" id="MayaFileGraph.invalidFiles-toggle" onclick="return toggle('MayaFileGraph.invalidFiles');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.mdepparse.MayaFileGraph-class.html#invalidFiles">invalidFiles</a><tt class="py-op">(</tt> <tt class="py-param">self</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="MayaFileGraph.invalidFiles-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="MayaFileGraph.invalidFiles-expanded"><a name="L211"></a><tt class="py-lineno">211</tt>  <tt class="py-line">                <tt class="py-docstring">"""</tt> </tt>
+<a name="L212"></a><tt class="py-lineno">212</tt>  <tt class="py-line"><tt class="py-docstring">                :return: list of filePaths that could not be parsed, most probably</tt> </tt>
+<a name="L213"></a><tt class="py-lineno">213</tt>  <tt class="py-line"><tt class="py-docstring">                        because they could not be found by the system"""</tt> </tt>
+<a name="L214"></a><tt class="py-lineno">214</tt>  <tt class="py-line">                <tt class="py-name">lenp</tt> <tt class="py-op">=</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-57" class="py-name"><a title="mrv.mdepparse.MayaFileGraph.invalidPrefix" class="py-name" href="#" onclick="return doclink('link-57', 'invalidPrefix', 'link-10');">invalidPrefix</a></tt>  <tt class="py-op">)</tt> </tt>
+<a name="L215"></a><tt class="py-lineno">215</tt>  <tt class="py-line"> </tt>
+<a name="L216"></a><tt class="py-lineno">216</tt>  <tt class="py-line">                <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L217"></a><tt class="py-lineno">217</tt>  <tt class="py-line">                        <tt class="py-keyword">return</tt> <tt class="py-op">[</tt> <tt class="py-name">iv</tt><tt class="py-op">[</tt> <tt class="py-name">lenp</tt> <tt class="py-op">:</tt> <tt class="py-op">]</tt> <tt class="py-keyword">for</tt> <tt class="py-name">iv</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">successors</tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-58" class="py-name"><a title="mrv.mdepparse.MayaFileGraph.invalidNodeID" class="py-name" href="#" onclick="return doclink('link-58', 'invalidNodeID', 'link-9');">invalidNodeID</a></tt> <tt class="py-op">)</tt> <tt class="py-op">]</tt> </tt>
+<a name="L218"></a><tt class="py-lineno">218</tt>  <tt class="py-line">                <tt class="py-keyword">except</tt> <tt class="py-name">NetworkXError</tt><tt class="py-op">:</tt> </tt>
+<a name="L219"></a><tt class="py-lineno">219</tt>  <tt class="py-line">                        <tt class="py-keyword">return</tt> <tt class="py-name">list</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L220"></a><tt class="py-lineno">220</tt>  <tt class="py-line">                <tt class="py-comment"># END no invalid found exception handling</tt> </tt>
+<a name="L221"></a><tt class="py-lineno">221</tt>  <tt class="py-line">        <tt class="py-comment">#} END query</tt> </tt>
+<a name="L222"></a><tt class="py-lineno">222</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Apr 19 15:39:19 2011
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

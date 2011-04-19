@@ -1,0 +1,1750 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>mrv.util &mdash; mrv v1.0.2-develop documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.2-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="mrv v1.0.2-develop documentation" href="../index.html" />
+    <link rel="next" title="mrv.mdepparse" href="mrv.mdepparse.html" />
+    <link rel="prev" title="mrv.mdp" href="mrv.mdp.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.mdepparse.html" title="mrv.mdepparse"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mrv.mdp.html" title="mrv.mdp"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-mrv.util">
+<h1><tt class="xref docutils literal"><span class="pre">mrv.util</span></tt><a class="headerlink" href="#module-mrv.util" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="api/mrv.util-module.html">Epydoc: mrv.util</a></p>
+<p>All kinds of utility methods and classes that are used in more than one modules</p>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mrv.util.capitalize">
+<tt class="descclassname">mrv.util.</tt><tt class="descname">capitalize</tt><big>(</big><em>s</em><big>)</big><a class="headerlink" href="#mrv.util.capitalize" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">s with first letter capitalized</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.util.copyClsMembers">
+<tt class="descclassname">mrv.util.</tt><tt class="descname">copyClsMembers</tt><big>(</big><em>sourcecls</em>, <em>destcls</em>, <em>overwritePrefix=None</em>, <em>forbiddenMembers=</em><span class="optional">[</span><span class="optional">]</span>, <em>copyNamespaceGlobally=None</em><big>)</big><a class="headerlink" href="#mrv.util.copyClsMembers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy the members or sourcecls to destcls while ignoring member names in forbiddenMembers
+It will only copy mebers of this class, not its base classes</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>sourcecls</em> &#8211; class whose members should be copied</li>
+<li><em>destcls</em> &#8211; class to receive members from sourcecls</li>
+<li><em>overwritePrefix</em> &#8211; if None, existing members on destcls will not be overwritten, if string,
+the original method will be stored in a name like prefix+originalname (allowing you to access the
+original method lateron)</li>
+<li><em>copyNamespaceGlobally</em> &#8211; if not None, the variable contains the name of the namespace as string 
+whose methods should also be copied into the global namespace, possibly overwriting existing ones.
+For instance, &#8216;nsmethod&#8217; will be available as obj.nsmethod and as obj.method if the namespace value was &#8216;ns.
+The forbiddenMembers list is applied to the original as well as the global name</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">this can be useful if you cannot inherit from a class directly because you would get
+method resolution order problems</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">see also the <cite>MetaCopyClsMembers</cite> meta class</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.util.decodeString">
+<tt class="descclassname">mrv.util.</tt><tt class="descname">decodeString</tt><big>(</big><em>valuestr</em><big>)</big><a class="headerlink" href="#mrv.util.decodeString" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">int,float or str from string valuestr - a string that encodes a
+numeric value or a string</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises TypeError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if the type could not be determined</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.util.decodeStringOrList">
+<tt class="descclassname">mrv.util.</tt><tt class="descname">decodeStringOrList</tt><big>(</big><em>valuestrOrList</em><big>)</big><a class="headerlink" href="#mrv.util.decodeStringOrList" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">as <cite>decodeString</cite>, but returns a list of appropriate values if
+the input argument is a list or tuple type</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.util.iterNetworkxGraph">
+<tt class="descclassname">mrv.util.</tt><tt class="descname">iterNetworkxGraph</tt><big>(</big><em>graph</em>, <em>startItem</em>, <em>direction=0</em>, <em>prune=&lt;function &lt;lambda&gt; at 0x1aeaaa0&gt;</em>, <em>stop=&lt;function &lt;lambda&gt; at 0x1aeab18&gt;</em>, <em>depth=-1</em>, <em>branch_first=True</em>, <em>visit_once=True</em>, <em>ignore_startitem=1</em><big>)</big><a class="headerlink" href="#mrv.util.iterNetworkxGraph" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">iterator yielding pairs of depth, item</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>direction</em> &#8211; specifies search direction, either :
+0 = items being successors of startItem
+1 = items being predecessors of startItem</li>
+<li><em>prune</em> &#8211; return True if item d,i in graph g should be pruned from result.
+d is the depth of item i</li>
+<li><em>stop</em> &#8211; return True if item d,i in graph g, d is the depth of item i
+stop the search in that direction. It will not be returned.</li>
+<li><em>depth</em> &#8211; define at which level the iteration should not go deeper
+if -1, there is no limit
+if 0, you would only get startitem.
+i.e. if 1, you would only get the startitem and the first level of predessessors/successors</li>
+<li><em>branch_first</em> &#8211; if True, items will be returned branch first, otherwise depth first</li>
+<li><em>visit_once</em> &#8211; if True, items will only be returned once, although they might be encountered
+several times</li>
+<li><em>ignore_startitem</em> &#8211; if True, the startItem will be ignored and automatically pruned from
+the result</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">this is an adjusted version of <cite>dge.iterShells</cite></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.util.list_submodules">
+<tt class="descclassname">mrv.util.</tt><tt class="descname">list_submodules</tt><big>(</big><em>path</em><big>)</big><a class="headerlink" href="#mrv.util.list_submodules" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">set(submodule_name, ...) list of submodule names that could 
+be imported using __import__</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>path</em> &#8211; module path containing the submodules</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.util.list_subpackages">
+<tt class="descclassname">mrv.util.</tt><tt class="descname">list_subpackages</tt><big>(</big><em>path</em><big>)</big><a class="headerlink" href="#mrv.util.list_subpackages" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of sub-package names</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.util.make_path">
+<tt class="descclassname">mrv.util.</tt><tt class="descname">make_path</tt><big>(</big><em>path</em><big>)</big><a class="headerlink" href="#mrv.util.make_path" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">A path instance of the correct type</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">use this constructor if you use the Path.set_separator method at runtime
+to assure you will always create instances of the actual type, and not only
+of the type you imported last</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.util.packageClasses">
+<tt class="descclassname">mrv.util.</tt><tt class="descname">packageClasses</tt><big>(</big><em>importBase</em>, <em>packageFile</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x1aea9b0&gt;</em><big>)</big><a class="headerlink" href="#mrv.util.packageClasses" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">all classes of modules of the given package file that additionally
+match given predicate</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>importBase</em> &#8211; longest import base path whose submodules contain the classes to import</li>
+<li><em>packageFile</em> &#8211; the filepath to the package, as given in your __file__ variables</li>
+<li><em>predicate</em> &#8211; receives the class and returns True if it is a class you are looking for</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.util.pythonIndex">
+<tt class="descclassname">mrv.util.</tt><tt class="descname">pythonIndex</tt><big>(</big><em>index</em>, <em>length</em><big>)</big><a class="headerlink" href="#mrv.util.pythonIndex" title="Permalink to this definition">¶</a></dt>
+<dd>Compute the actual index based on the given index and array length, thus
+-1 will result in the last array element&#8217;s index</dd></dl>
+
+<dl class="function">
+<dt id="mrv.util.uncapitalize">
+<tt class="descclassname">mrv.util.</tt><tt class="descname">uncapitalize</tt><big>(</big><em>s</em>, <em>preserveAcronymns=False</em><big>)</big><a class="headerlink" href="#mrv.util.uncapitalize" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal"><span class="pre">s</span></tt> with first letter lower case</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>preserveAcronymns</em> &#8211; enabled ensures that &#8216;NTSC&#8217; does not become &#8216;nTSC&#8217;</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">from pymel</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="api/mrv.util.And-class.html">Epydoc: mrv.util.And</a></p>
+<dl class="class">
+<dt id="mrv.util.And">
+<em class="property">class </em><tt class="descclassname">mrv.util.</tt><tt class="descname">And</tt><big>(</big><em>*args</em><big>)</big><a class="headerlink" href="#mrv.util.And" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>For use with python&#8217;s filter method, simulates logical AND
+Usage: filter(And(f1,f2,fn), sequence)</p>
+<dl class="attribute">
+<dt id="mrv.util.And.functions">
+<tt class="descname">functions</tt><a class="headerlink" href="#mrv.util.And.functions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.util.Call-class.html">Epydoc: mrv.util.Call</a></p>
+<dl class="class">
+<dt id="mrv.util.Call">
+<em class="property">class </em><tt class="descclassname">mrv.util.</tt><tt class="descname">Call</tt><big>(</big><em>func</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.util.Call" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>Call object encapsulating any code, thus providing a simple facade for it
+:note: derive from it if a more complex call is required</p>
+<dl class="attribute">
+<dt id="mrv.util.Call.args">
+<tt class="descname">args</tt><a class="headerlink" href="#mrv.util.Call.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.util.Call.func">
+<tt class="descname">func</tt><a class="headerlink" href="#mrv.util.Call.func" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.util.Call.kwargs">
+<tt class="descname">kwargs</tt><a class="headerlink" href="#mrv.util.Call.kwargs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.util.CallAdv-class.html">Epydoc: mrv.util.CallAdv</a></p>
+<dl class="class">
+<dt id="mrv.util.CallAdv">
+<em class="property">class </em><tt class="descclassname">mrv.util.</tt><tt class="descname">CallAdv</tt><big>(</big><em>func</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.util.CallAdv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.util.Call" class="reference internal" href="#mrv.util.Call"><tt class="xref docutils literal"><span class="pre">mrv.util.Call</span></tt></a></p>
+<p>Advanced call class providing additional options:</p>
+<dl class="docutils">
+<dt>merge_args: </dt>
+<dd>if True, default True, incoming arguments will be prepended before the static ones</dd>
+<dt>merge_kwargs: </dt>
+<dd>if True, default True, incoming kwargs will be merged into the static ones</dd>
+</dl>
+<dl class="attribute">
+<dt id="mrv.util.CallAdv.args">
+<tt class="descname">args</tt><a class="headerlink" href="#mrv.util.CallAdv.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.util.CallAdv.func">
+<tt class="descname">func</tt><a class="headerlink" href="#mrv.util.CallAdv.func" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.util.CallAdv.kwargs">
+<tt class="descname">kwargs</tt><a class="headerlink" href="#mrv.util.CallAdv.kwargs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.util.CallAdv.merge_args">
+<tt class="descname">merge_args</tt><a class="headerlink" href="#mrv.util.CallAdv.merge_args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.util.CallAdv.merge_kwargs">
+<tt class="descname">merge_kwargs</tt><a class="headerlink" href="#mrv.util.CallAdv.merge_kwargs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.util.CallOnDeletion-class.html">Epydoc: mrv.util.CallOnDeletion</a></p>
+<dl class="class">
+<dt id="mrv.util.CallOnDeletion">
+<em class="property">class </em><tt class="descclassname">mrv.util.</tt><tt class="descname">CallOnDeletion</tt><big>(</big><em>callableobj</em><big>)</big><a class="headerlink" href="#mrv.util.CallOnDeletion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>Call the given callable object once this object is being deleted
+Its usefull if you want to assure certain code to run once the parent scope
+of this object looses focus</p>
+<dl class="attribute">
+<dt id="mrv.util.CallOnDeletion.callableobj">
+<tt class="descname">callableobj</tt><a class="headerlink" href="#mrv.util.CallOnDeletion.callableobj" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.util.DAGTree-class.html">Epydoc: mrv.util.DAGTree</a></p>
+<dl class="class">
+<dt id="mrv.util.DAGTree">
+<em class="property">class </em><tt class="descclassname">mrv.util.</tt><tt class="descname">DAGTree</tt><big>(</big><em>data=None</em>, <em>name=''</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">networkx.classes.digraph.DiGraph</span></tt></p>
+<p>Adds utility functions to DirectedTree allowing to handle a directed tree like a dag
+:note: currently this tree does not support instancing
+:todo: add instancing support</p>
+<dl class="method">
+<dt id="mrv.util.DAGTree.add_cycle">
+<tt class="descname">add_cycle</tt><big>(</big><em>nlist</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.add_cycle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.add_edge">
+<tt class="descname">add_edge</tt><big>(</big><em>u</em>, <em>v</em>, <em>attr_dict=None</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.add_edge" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.add_edges_from">
+<tt class="descname">add_edges_from</tt><big>(</big><em>ebunch</em>, <em>attr_dict=None</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.add_edges_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.add_node">
+<tt class="descname">add_node</tt><big>(</big><em>n</em>, <em>attr_dict=None</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.add_node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.add_nodes_from">
+<tt class="descname">add_nodes_from</tt><big>(</big><em>nodes</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.add_nodes_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.add_path">
+<tt class="descname">add_path</tt><big>(</big><em>nlist</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.add_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.add_star">
+<tt class="descname">add_star</tt><big>(</big><em>nlist</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.add_star" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.add_weighted_edges_from">
+<tt class="descname">add_weighted_edges_from</tt><big>(</big><em>ebunch</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.add_weighted_edges_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.adjacency_iter">
+<tt class="descname">adjacency_iter</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.adjacency_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.adjacency_list">
+<tt class="descname">adjacency_list</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.adjacency_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.children">
+<tt class="descname">children</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.children" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of children of given node n</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.children_iter">
+<tt class="descname">children_iter</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.children_iter" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">iterator with children of given node n</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.clear">
+<tt class="descname">clear</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.clear" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.copy">
+<tt class="descname">copy</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.copy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.degree">
+<tt class="descname">degree</tt><big>(</big><em>nbunch=None</em>, <em>with_labels=False</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.degree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.degree_iter">
+<tt class="descname">degree_iter</tt><big>(</big><em>nbunch=None</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.degree_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.edges">
+<tt class="descname">edges</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.edges_iter">
+<tt class="descname">edges_iter</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.edges_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.get_edge_data">
+<tt class="descname">get_edge_data</tt><big>(</big><em>u</em>, <em>v</em>, <em>default=None</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.get_edge_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.get_root">
+<tt class="descname">get_root</tt><big>(</big><em>startnode=None</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.get_root" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the root node of this dag tree</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>startnode</em> &#8211; if None, the first node will be used to get the root from
+(good for single rooted dags), otherwise this node will be used to get the root from
+- thus it must exist in the dag tree</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.has_edge">
+<tt class="descname">has_edge</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.has_edge" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.has_node">
+<tt class="descname">has_node</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.has_node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.has_predecessor">
+<tt class="descname">has_predecessor</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.has_predecessor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.has_successor">
+<tt class="descname">has_successor</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.has_successor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.in_degree">
+<tt class="descname">in_degree</tt><big>(</big><em>nbunch=None</em>, <em>with_labels=False</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.in_degree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.in_degree_iter">
+<tt class="descname">in_degree_iter</tt><big>(</big><em>nbunch=None</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.in_degree_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.in_edges">
+<tt class="descname">in_edges</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.in_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.in_edges_iter">
+<tt class="descname">in_edges_iter</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.in_edges_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.is_directed">
+<tt class="descname">is_directed</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.is_directed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.is_multigraph">
+<tt class="descname">is_multigraph</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.is_multigraph" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.nbunch_iter">
+<tt class="descname">nbunch_iter</tt><big>(</big><em>nbunch=None</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.nbunch_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.neighbors">
+<tt class="descname">neighbors</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.neighbors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.neighbors_iter">
+<tt class="descname">neighbors_iter</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.neighbors_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.nodes">
+<tt class="descname">nodes</tt><big>(</big><em>data=False</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.nodes_iter">
+<tt class="descname">nodes_iter</tt><big>(</big><em>data=False</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.nodes_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.nodes_with_selfloops">
+<tt class="descname">nodes_with_selfloops</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.nodes_with_selfloops" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.number_of_edges">
+<tt class="descname">number_of_edges</tt><big>(</big><em>u=None</em>, <em>v=None</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.number_of_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.number_of_nodes">
+<tt class="descname">number_of_nodes</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.number_of_nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.number_of_selfloops">
+<tt class="descname">number_of_selfloops</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.number_of_selfloops" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.order">
+<tt class="descname">order</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.order" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.out_degree">
+<tt class="descname">out_degree</tt><big>(</big><em>nbunch=None</em>, <em>with_labels=False</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.out_degree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.out_degree_iter">
+<tt class="descname">out_degree_iter</tt><big>(</big><em>nbunch=None</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.out_degree_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.out_edges">
+<tt class="descname">out_edges</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.out_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.out_edges_iter">
+<tt class="descname">out_edges_iter</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.out_edges_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.parent">
+<tt class="descname">parent</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.parent" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">parent of node n</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">currently there is only one parent, as instancing is not supported yet</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.parent_iter">
+<tt class="descname">parent_iter</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.parent_iter" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">iterator returning all parents of node n</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.predecessors">
+<tt class="descname">predecessors</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.predecessors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.predecessors_iter">
+<tt class="descname">predecessors_iter</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.predecessors_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.remove_edge">
+<tt class="descname">remove_edge</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.remove_edge" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.remove_edges_from">
+<tt class="descname">remove_edges_from</tt><big>(</big><em>ebunch</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.remove_edges_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.remove_node">
+<tt class="descname">remove_node</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.remove_node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.remove_nodes_from">
+<tt class="descname">remove_nodes_from</tt><big>(</big><em>nbunch</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.remove_nodes_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.reverse">
+<tt class="descname">reverse</tt><big>(</big><em>copy=True</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.reverse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.selfloop_edges">
+<tt class="descname">selfloop_edges</tt><big>(</big><em>data=False</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.selfloop_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.size">
+<tt class="descname">size</tt><big>(</big><em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.subgraph">
+<tt class="descname">subgraph</tt><big>(</big><em>nbunch</em>, <em>copy=True</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.subgraph" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.successors">
+<tt class="descname">successors</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.successors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.successors_iter">
+<tt class="descname">successors_iter</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.successors_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.to_directed">
+<tt class="descname">to_directed</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.to_directed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.to_hierarchy_file">
+<tt class="descname">to_hierarchy_file</tt><big>(</big><em>root</em>, <em>output_path</em><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.to_hierarchy_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write ourselves in hierarchy file format to the given output_path.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>root</em> &#8211; The root of the written file, nodes above it will not be serialized.</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Directories are expected to exist</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises ValueError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">If an node&#8217;s string representation contains a newline or 
+starts with a tab</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">works best with strings as nodes, which may not contain newlines</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.DAGTree.to_undirected">
+<tt class="descname">to_undirected</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.util.DAGTree.to_undirected" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.util-module.html#deque">Epydoc: mrv.util</a></p>
+<p><a class="reference external" href="api/mrv.util.Event-class.html">Epydoc: mrv.util.Event</a></p>
+<dl class="class">
+<dt id="mrv.util.Event">
+<em class="property">class </em><tt class="descclassname">mrv.util.</tt><tt class="descname">Event</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.util.Event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>Descriptor allowing to easily setup callbacks for classes derived from
+EventSender</p>
+<dl class="method">
+<dt id="mrv.util.Event.duplicate">
+<tt class="descname">duplicate</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.util.Event.duplicate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.Event.remove">
+<tt class="descname">remove</tt><big>(</big><em>eventfunc</em><big>)</big><a class="headerlink" href="#mrv.util.Event.remove" title="Permalink to this definition">¶</a></dt>
+<dd>remove the given function from this event
+:note: will not raise if eventfunc does not exist</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.Event.send">
+<tt class="descname">send</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.util.Event.send" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send our event using the given args</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">if an event listener is weak referenced and goes out of scope</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">will catch all event exceptions trown by the methods called</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">False if at least one event call threw an exception, true otherwise</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.util.EventSender-class.html">Epydoc: mrv.util.EventSender</a></p>
+<dl class="class">
+<dt id="mrv.util.EventSender">
+<em class="property">class </em><tt class="descclassname">mrv.util.</tt><tt class="descname">EventSender</tt><a class="headerlink" href="#mrv.util.EventSender" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>Base class for all classes that want to provide a common callback interface
+to supply event information to clients.</p>
+<p><strong>Usage</strong>:
+Derive from this class and define your callbacks like:</p>
+<blockquote>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">event</span> <span class="o">=</span> <span class="n">Event</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Call it using</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">send</span><span class="p">([</span><span class="o">*</span><span class="n">args</span><span class="p">][,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">]])</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># Users register using</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">yourinstance</span><span class="o">.</span><span class="n">event</span> <span class="o">=</span> <span class="nb">callable</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># and deregister using</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">yourinstance</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="nb">callable</span><span class="p">)</span>
+</pre></div>
+</div>
+</blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">if use_weakref is True, we will weakref the eventfunction, and deal
+properly with instance methods which would go out of scope immediatly otherwise</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">using weak-references to ensure one does not keep objects alive,
+see <cite>Event.use_weakref</cite></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mrv.util.EventSender.clearAllEvents">
+<tt class="descname">clearAllEvents</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.util.EventSender.clearAllEvents" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all event receivers for all events registered in this instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">This usually doesn&#8217;t need to be called directly, but might be useful 
+in conjunction with other system that do not release your strongly bound 
+instance</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.util.EventSender.listEventNames">
+<em class="property">classmethod </em><tt class="descname">listEventNames</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.util.EventSender.listEventNames" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of event ids that exist on our class</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.EventSender.sender">
+<tt class="descname">sender</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.util.EventSender.sender" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">instance which sent the event you are currently processing</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises ValueError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if no event is currently in progress</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.util.InterfaceMaster-class.html">Epydoc: mrv.util.InterfaceMaster</a></p>
+<dl class="class">
+<dt id="mrv.util.InterfaceMaster">
+<em class="property">class </em><tt class="descclassname">mrv.util.</tt><tt class="descname">InterfaceMaster</tt><a class="headerlink" href="#mrv.util.InterfaceMaster" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.interface.iDuplicatable" class="reference external" href="mrv.interface.html#mrv.interface.iDuplicatable"><tt class="xref docutils literal"><span class="pre">mrv.interface.iDuplicatable</span></tt></a></p>
+<p>Base class making the derived class an interface provider, allowing interfaces
+to be set, queried and used including build-in use</p>
+<dl class="class">
+<dt id="mrv.util.InterfaceMaster.InterfaceBase">
+<em class="property">class </em><tt class="descname">InterfaceBase</tt><a class="headerlink" href="#mrv.util.InterfaceMaster.InterfaceBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>If your interface class is derived from this base, you get access to
+access to call to the number of your current caller.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">You can register an InterfaceBase with several InterfaceMasters and
+share the caller count respectively</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mrv.util.InterfaceMaster.InterfaceBase.aboutToRemoveFromCaller">
+<tt class="descname">aboutToRemoveFromCaller</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.util.InterfaceMaster.InterfaceBase.aboutToRemoveFromCaller" title="Permalink to this definition">¶</a></dt>
+<dd>Called once our interface is about to be removed from the current
+caller - you will not receive a call from it anymore</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.InterfaceMaster.InterfaceBase.callerId">
+<tt class="descname">callerId</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.util.InterfaceMaster.InterfaceBase.callerId" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of the caller that called your interface method</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">the return value of this method is undefined if called if the
+method has been called by someone not being an official caller (like yourself)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.InterfaceMaster.InterfaceBase.givenToCaller">
+<tt class="descname">givenToCaller</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.util.InterfaceMaster.InterfaceBase.givenToCaller" title="Permalink to this definition">¶</a></dt>
+<dd>Called once our interface has been given to a new caller.
+The caller has not made a call yet, but its id can be queried</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.InterfaceMaster.InterfaceBase.numCallers">
+<tt class="descname">numCallers</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.util.InterfaceMaster.InterfaceBase.numCallers" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">number possible callers</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.util.InterfaceMaster.InterfaceDescriptor">
+<tt class="descclassname">InterfaceMaster.</tt><tt class="descname">InterfaceDescriptor</tt><a class="headerlink" href="#mrv.util.InterfaceMaster.InterfaceDescriptor" title="Permalink to this definition">¶</a></dt>
+<dd>Descriptor handing out interfaces from our interface dict
+They allow access to interfaces directly through the InterfaceMaster without calling
+extra functions</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.util.InterfaceMaster.addSep">
+<em class="property">classmethod </em><tt class="descclassname">InterfaceMaster.</tt><tt class="descname">addSep</tt><big>(</big><em>item</em>, <em>sep</em><big>)</big><a class="headerlink" href="#mrv.util.InterfaceMaster.addSep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">item with separator added to it ( just once )</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">operates best on strings</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>item</em> &#8211; item to add separator to</li>
+<li><em>sep</em> &#8211; the separator</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.InterfaceMaster.basename">
+<tt class="descclassname">InterfaceMaster.</tt><tt class="descname">basename</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.util.InterfaceMaster.basename" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">basename of this path, &#8216;/hello/world&#8217; -&gt; &#8216;world&#8217;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.InterfaceMaster.children">
+<tt class="descclassname">InterfaceMaster.</tt><tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a39ed8&gt;</em><big>)</big><a class="headerlink" href="#mrv.util.InterfaceMaster.children" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of intermediate children of path, [ child1 , child2 ]</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; return True to include x in result</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">the child objects returned are supposed to be valid paths, not just relative paths</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.InterfaceMaster.childrenDeep">
+<tt class="descclassname">InterfaceMaster.</tt><tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c050&gt;</em><big>)</big><a class="headerlink" href="#mrv.util.InterfaceMaster.childrenDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of all children of path, [ child1 , child2 ]</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>order</em> &#8211; order enumeration</li>
+<li><em>predicate</em> &#8211; returns true if x may be returned</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">the child objects returned are supposed to be valid paths, not just relative paths</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.InterfaceMaster.copyFrom">
+<tt class="descclassname">InterfaceMaster.</tt><tt class="descname">copyFrom</tt><big>(</big><em>other</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.util.InterfaceMaster.copyFrom" title="Permalink to this definition">¶</a></dt>
+<dd>Copy all interface from other to self, use they duplciate method if
+possibly</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.InterfaceMaster.copyTo">
+<tt class="descclassname">InterfaceMaster.</tt><tt class="descname">copyTo</tt><big>(</big><em>instance</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.util.InterfaceMaster.copyTo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy the values of ourselves onto the given instance which must be an
+instance of our class to be compatible.
+Only the common classes will be copied to instance</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">altered instance</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">instance will be altered during the process</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.InterfaceMaster.copyToOther">
+<tt class="descclassname">InterfaceMaster.</tt><tt class="descname">copyToOther</tt><big>(</big><em>instance</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.util.InterfaceMaster.copyToOther" title="Permalink to this definition">¶</a></dt>
+<dd>As <cite>copyTo</cite>, but does only require the objects to have a common base.
+It will match the actually compatible base classes and call <cite>copyFrom</cite>
+if possible.
+As more checking is performed, this method performs worse than <cite>copyTo</cite></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.InterfaceMaster.createInstance">
+<tt class="descclassname">InterfaceMaster.</tt><tt class="descname">createInstance</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.util.InterfaceMaster.createInstance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create and Initialize an instance of self.__class__( ... ) based on your own data</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">new instance of self</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">using self.__class__ instead of an explicit class allows derived
+classes that do not have anything to duplicate just to use your implementeation</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">you must support <tt class="docutils literal"><span class="pre">args</span></tt> and <tt class="docutils literal"><span class="pre">kwargs</span></tt> if one of your iDuplicate bases does</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.InterfaceMaster.duplicate">
+<tt class="descclassname">InterfaceMaster.</tt><tt class="descname">duplicate</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.util.InterfaceMaster.duplicate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements a c-style copy constructor by creating a new instance of self
+and applying the <cite>copyFrom</cite> methods from base to all classes implementing the copyfrom
+method. Thus we will call the method directly on the class</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>args</em> &#8211; passed to <cite>copyFrom</cite> and <cite>createInstance</cite> method to give additional directions</li>
+<li><em>kwargs</em> &#8211; see param args</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.InterfaceMaster.fullChildName">
+<tt class="descclassname">InterfaceMaster.</tt><tt class="descname">fullChildName</tt><big>(</big><em>childname</em><big>)</big><a class="headerlink" href="#mrv.util.InterfaceMaster.fullChildName" title="Permalink to this definition">¶</a></dt>
+<dd>Add the given name to the string version of our instance
+:return: string with childname added like name _sep childname</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.InterfaceMaster.interface">
+<tt class="descclassname">InterfaceMaster.</tt><tt class="descname">interface</tt><big>(</big><em>interfaceName</em><big>)</big><a class="headerlink" href="#mrv.util.InterfaceMaster.interface" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">an interface registered with interfaceName</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises ValueError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if no such interface exists</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.InterfaceMaster.isPartOf">
+<tt class="descclassname">InterfaceMaster.</tt><tt class="descname">isPartOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.util.InterfaceMaster.isPartOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if self is a part of other, and thus can be found in other</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings only</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.InterfaceMaster.isRoot">
+<tt class="descclassname">InterfaceMaster.</tt><tt class="descname">isRoot</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.util.InterfaceMaster.isRoot" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this path is the root of the DAG</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.InterfaceMaster.isRootOf">
+<tt class="descclassname">InterfaceMaster.</tt><tt class="descname">isRootOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.util.InterfaceMaster.isRootOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True other starts with self</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">we assume other has the same type as self, thus the same separator</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.InterfaceMaster.iterParents">
+<tt class="descclassname">InterfaceMaster.</tt><tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c230&gt;</em><big>)</big><a class="headerlink" href="#mrv.util.InterfaceMaster.iterParents" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">generator retrieving all parents up to the root</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; returns True for all x that you want to be returned</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.InterfaceMaster.listInterfaces">
+<tt class="descclassname">InterfaceMaster.</tt><tt class="descname">listInterfaces</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.util.InterfaceMaster.listInterfaces" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of names indicating interfaces available at our InterfaceMaster</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.InterfaceMaster.parent">
+<tt class="descclassname">InterfaceMaster.</tt><tt class="descname">parent</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.util.InterfaceMaster.parent" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">parent of this path, &#8216;/hello/world&#8217; -&gt; &#8216;/hello&#8217; or None if this path
+is the dag&#8217;s root</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.InterfaceMaster.parentDeep">
+<tt class="descclassname">InterfaceMaster.</tt><tt class="descname">parentDeep</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.util.InterfaceMaster.parentDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">all parents of this path, &#8216;/hello/my/world&#8217; -&gt; [ &#8216;/hello/my&#8217;,&#8217;/hello&#8217; ]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.InterfaceMaster.root">
+<tt class="descclassname">InterfaceMaster.</tt><tt class="descname">root</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.util.InterfaceMaster.root" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the root of the DAG - it has no further parents</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.InterfaceMaster.setInterface">
+<tt class="descclassname">InterfaceMaster.</tt><tt class="descname">setInterface</tt><big>(</big><em>interfaceName</em>, <em>interfaceInstance</em><big>)</big><a class="headerlink" href="#mrv.util.InterfaceMaster.setInterface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the given interfaceInstance to be handed out once an interface
+with interfaceName is requested from the provider base</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>interfaceName</em> &#8211; should start with i..., i.e. names would be iInterface
+The name can be used to refer to the interface later on</li>
+<li><em>interfaceInstance</em> &#8211; instance to be handed out once an interface with the
+given name is requested by the InterfaceMaster or None
+if None, the interface will effectively be deleted</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises ValueError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">if given InterfaceBase has a master already</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.InterfaceMaster.supports">
+<tt class="descclassname">InterfaceMaster.</tt><tt class="descname">supports</tt><big>(</big><em>interface_type</em><big>)</big><a class="headerlink" href="#mrv.util.InterfaceMaster.supports" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this instance supports the interface of the given type</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>interface_type</em> &#8211; Type of the interface you require this instance 
+to support</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Must be used in case you only have a weak reference of your interface
+instance or proxy which is a case where the ordinary isinstance( obj, iInterface )
+will not work</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.util.MetaCopyClsMembers-class.html">Epydoc: mrv.util.MetaCopyClsMembers</a></p>
+<dl class="class">
+<dt id="mrv.util.MetaCopyClsMembers">
+<em class="property">class </em><tt class="descclassname">mrv.util.</tt><tt class="descname">MetaCopyClsMembers</tt><a class="headerlink" href="#mrv.util.MetaCopyClsMembers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">type</span></tt></p>
+<p>Meta class copying members from given classes onto the type to be created
+it will read the following attributes from the class dict:
+<tt class="docutils literal"><span class="pre">forbiddenMembers</span></tt>, <tt class="docutils literal"><span class="pre">overwritePrefix</span></tt>, <tt class="docutils literal"><span class="pre">__virtual_bases__</span></tt></p>
+<p>The virtual bases are a tuple of base classes whose members you whish to receive
+For information on these members, check the docs of <cite>copyClsMembers</cite></p>
+<dl class="attribute">
+<dt id="mrv.util.MetaCopyClsMembers.mro">
+<tt class="descname">mro</tt><a class="headerlink" href="#mrv.util.MetaCopyClsMembers.mro" title="Permalink to this definition">¶</a></dt>
+<dd>mro() -&gt; list
+return a type&#8217;s method resolution order</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.util.Or-class.html">Epydoc: mrv.util.Or</a></p>
+<dl class="class">
+<dt id="mrv.util.Or">
+<em class="property">class </em><tt class="descclassname">mrv.util.</tt><tt class="descname">Or</tt><big>(</big><em>*args</em><big>)</big><a class="headerlink" href="#mrv.util.Or" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>For use with python&#8217;s filter method, simulates logical OR
+Usage: filter(Or(f1,f2,fn), sequence)</p>
+<dl class="attribute">
+<dt id="mrv.util.Or.functions">
+<tt class="descname">functions</tt><a class="headerlink" href="#mrv.util.Or.functions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.util.PipeSeparatedFile-class.html">Epydoc: mrv.util.PipeSeparatedFile</a></p>
+<dl class="class">
+<dt id="mrv.util.PipeSeparatedFile">
+<em class="property">class </em><tt class="descclassname">mrv.util.</tt><tt class="descname">PipeSeparatedFile</tt><big>(</big><em>fileobj</em><big>)</big><a class="headerlink" href="#mrv.util.PipeSeparatedFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>Read and write simple pipe separated files.</p>
+<p>The number of column must remain the same per line
+<strong>Format</strong>:</p>
+<blockquote>
+val11 | val2 | valn
+...</blockquote>
+<dl class="method">
+<dt id="mrv.util.PipeSeparatedFile.beginReading">
+<tt class="descname">beginReading</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.util.PipeSeparatedFile.beginReading" title="Permalink to this definition">¶</a></dt>
+<dd>Start reading the file</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.PipeSeparatedFile.beginWriting">
+<tt class="descname">beginWriting</tt><big>(</big><em>columnSizes</em><big>)</big><a class="headerlink" href="#mrv.util.PipeSeparatedFile.beginWriting" title="Permalink to this definition">¶</a></dt>
+<dd><p>intiialize the writing process</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>columnSizes</em> &#8211; list of ints defining the size in characters for each column you plan to feed</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">When done writing, you have to close the file object yourself (there is no endWriting method here)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.PipeSeparatedFile.readColumnLine">
+<tt class="descname">readColumnLine</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.util.PipeSeparatedFile.readColumnLine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generator reading one line after another, returning the stripped columns</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">tuple of stripped column strings</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises ValueError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if the column count changes between the lines</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.PipeSeparatedFile.writeTokens">
+<tt class="descname">writeTokens</tt><big>(</big><em>tokens</em><big>)</big><a class="headerlink" href="#mrv.util.PipeSeparatedFile.writeTokens" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write the list of tokens to the file accordingly</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>tokens</em> &#8211; one token per column that you want to write</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises TypeError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">If column count changed between successive calls</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.util.Singleton-class.html">Epydoc: mrv.util.Singleton</a></p>
+<dl class="class">
+<dt id="mrv.util.Singleton">
+<em class="property">class </em><tt class="descclassname">mrv.util.</tt><tt class="descname">Singleton</tt><a class="headerlink" href="#mrv.util.Singleton" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>Singleton classes can be derived from this class,
+you can derive from other classes as long as Singleton comes first (and class doesn&#8217;t override __new__)</p>
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.util.WeakInstFunction-class.html">Epydoc: mrv.util.WeakInstFunction</a></p>
+<dl class="class">
+<dt id="mrv.util.WeakInstFunction">
+<em class="property">class </em><tt class="descclassname">mrv.util.</tt><tt class="descname">WeakInstFunction</tt><big>(</big><em>instancefunction</em><big>)</big><a class="headerlink" href="#mrv.util.WeakInstFunction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>Create a proper weak instance to an instance function by weakly binding
+the instance, not the bound function object.
+When called, the weakreferenced instance pointer will be retrieved, if possible,
+to finally make the call. If it could not be retrieved, the call
+will do nothing.</p>
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.util-module.html#iDuplicatable">Epydoc: mrv.util</a></p>
+<dl class="class">
+<dt id="mrv.util.iDuplicatable">
+<em class="property">class </em><tt class="descclassname">mrv.util.</tt><tt class="descname">iDuplicatable</tt><a class="headerlink" href="#mrv.util.iDuplicatable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.interface.Interface" class="reference external" href="mrv.interface.html#mrv.interface.Interface"><tt class="xref docutils literal"><span class="pre">mrv.interface.Interface</span></tt></a></p>
+<p>Simple interface allowing any class to be properly duplicated</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">to implement this interface, implement <cite>createInstance</cite> and
+<cite>copyFrom</cite> in your class</td>
+</tr>
+</tbody>
+</table>
+<dl class="classmethod">
+<dt id="mrv.util.iDuplicatable.addSep">
+<em class="property">classmethod </em><tt class="descname">addSep</tt><big>(</big><em>item</em>, <em>sep</em><big>)</big><a class="headerlink" href="#mrv.util.iDuplicatable.addSep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">item with separator added to it ( just once )</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">operates best on strings</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>item</em> &#8211; item to add separator to</li>
+<li><em>sep</em> &#8211; the separator</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.iDuplicatable.basename">
+<tt class="descname">basename</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.util.iDuplicatable.basename" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">basename of this path, &#8216;/hello/world&#8217; -&gt; &#8216;world&#8217;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.iDuplicatable.children">
+<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a39ed8&gt;</em><big>)</big><a class="headerlink" href="#mrv.util.iDuplicatable.children" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of intermediate children of path, [ child1 , child2 ]</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; return True to include x in result</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">the child objects returned are supposed to be valid paths, not just relative paths</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.iDuplicatable.childrenDeep">
+<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c050&gt;</em><big>)</big><a class="headerlink" href="#mrv.util.iDuplicatable.childrenDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of all children of path, [ child1 , child2 ]</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>order</em> &#8211; order enumeration</li>
+<li><em>predicate</em> &#8211; returns true if x may be returned</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">the child objects returned are supposed to be valid paths, not just relative paths</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.iDuplicatable.copyFrom">
+<tt class="descname">copyFrom</tt><big>(</big><em>other</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.util.iDuplicatable.copyFrom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy the data from other into self as good as possible
+Only copy the data that is unique to your specific class - the data of other
+classes will be taken care of by them !</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">you must support <tt class="docutils literal"><span class="pre">args</span></tt> and <tt class="docutils literal"><span class="pre">kwargs</span></tt> if one of your iDuplicate bases does</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.iDuplicatable.copyTo">
+<tt class="descname">copyTo</tt><big>(</big><em>instance</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.util.iDuplicatable.copyTo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy the values of ourselves onto the given instance which must be an
+instance of our class to be compatible.
+Only the common classes will be copied to instance</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">altered instance</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">instance will be altered during the process</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.iDuplicatable.copyToOther">
+<tt class="descname">copyToOther</tt><big>(</big><em>instance</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.util.iDuplicatable.copyToOther" title="Permalink to this definition">¶</a></dt>
+<dd>As <cite>copyTo</cite>, but does only require the objects to have a common base.
+It will match the actually compatible base classes and call <cite>copyFrom</cite>
+if possible.
+As more checking is performed, this method performs worse than <cite>copyTo</cite></dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.iDuplicatable.createInstance">
+<tt class="descname">createInstance</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.util.iDuplicatable.createInstance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create and Initialize an instance of self.__class__( ... ) based on your own data</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">new instance of self</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">using self.__class__ instead of an explicit class allows derived
+classes that do not have anything to duplicate just to use your implementeation</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">you must support <tt class="docutils literal"><span class="pre">args</span></tt> and <tt class="docutils literal"><span class="pre">kwargs</span></tt> if one of your iDuplicate bases does</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.iDuplicatable.duplicate">
+<tt class="descname">duplicate</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.util.iDuplicatable.duplicate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements a c-style copy constructor by creating a new instance of self
+and applying the <cite>copyFrom</cite> methods from base to all classes implementing the copyfrom
+method. Thus we will call the method directly on the class</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>args</em> &#8211; passed to <cite>copyFrom</cite> and <cite>createInstance</cite> method to give additional directions</li>
+<li><em>kwargs</em> &#8211; see param args</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.iDuplicatable.fullChildName">
+<tt class="descname">fullChildName</tt><big>(</big><em>childname</em><big>)</big><a class="headerlink" href="#mrv.util.iDuplicatable.fullChildName" title="Permalink to this definition">¶</a></dt>
+<dd>Add the given name to the string version of our instance
+:return: string with childname added like name _sep childname</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.iDuplicatable.isPartOf">
+<tt class="descname">isPartOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.util.iDuplicatable.isPartOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if self is a part of other, and thus can be found in other</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings only</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.iDuplicatable.isRoot">
+<tt class="descname">isRoot</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.util.iDuplicatable.isRoot" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this path is the root of the DAG</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.iDuplicatable.isRootOf">
+<tt class="descname">isRootOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.util.iDuplicatable.isRootOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True other starts with self</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">we assume other has the same type as self, thus the same separator</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.iDuplicatable.iterParents">
+<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c230&gt;</em><big>)</big><a class="headerlink" href="#mrv.util.iDuplicatable.iterParents" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">generator retrieving all parents up to the root</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; returns True for all x that you want to be returned</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.iDuplicatable.parent">
+<tt class="descname">parent</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.util.iDuplicatable.parent" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">parent of this path, &#8216;/hello/world&#8217; -&gt; &#8216;/hello&#8217; or None if this path
+is the dag&#8217;s root</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.iDuplicatable.parentDeep">
+<tt class="descname">parentDeep</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.util.iDuplicatable.parentDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">all parents of this path, &#8216;/hello/my/world&#8217; -&gt; [ &#8216;/hello/my&#8217;,&#8217;/hello&#8217; ]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.iDuplicatable.root">
+<tt class="descname">root</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.util.iDuplicatable.root" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the root of the DAG - it has no further parents</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.util.iDuplicatable.supports">
+<tt class="descname">supports</tt><big>(</big><em>interface_type</em><big>)</big><a class="headerlink" href="#mrv.util.iDuplicatable.supports" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this instance supports the interface of the given type</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>interface_type</em> &#8211; Type of the interface you require this instance 
+to support</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Must be used in case you only have a weak reference of your interface
+instance or proxy which is a case where the ordinary isinstance( obj, iInterface )
+will not work</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="../index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#"><tt class="docutils literal"><span class="pre">mrv.util</span></tt></a><ul>
+<li><a class="reference external" href="#functions">Functions</a></li>
+<li><a class="reference external" href="#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="mrv.mdp.html"
+                                  title="previous chapter"><tt class="docutils literal docutils literal docutils literal"><span class="pre">mrv.mdp</span></tt></a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="mrv.mdepparse.html"
+                                  title="next chapter"><tt class="docutils literal docutils literal docutils literal"><span class="pre">mrv.mdepparse</span></tt></a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/generated/mrv.util.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.mdepparse.html" title="mrv.mdepparse"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mrv.mdp.html" title="mrv.mdp"
+             >previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Apr 19, 2011.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

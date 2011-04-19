@@ -1,0 +1,127 @@
+<html>
+<head>
+<title>mrv.maya.ui.browse.interface</title>
+</head>
+<body>
+mrv.maya.ui.browse.interface
+<style>
+.coverage pre {float: left; margin: 0px 1em; border: none;
+               padding: 0px; }
+.num pre { margin: 0px }
+.nocov, .nocov pre {background-color: #faa}
+.cov, .cov pre {background-color: #cfc}
+div.coverage div { clear: both; height: 1.1em}
+</style>
+<div class="stats">
+Covered: 56 lines<br/>
+Missed: 10 lines<br/>
+Skipped 36 lines<br/>
+Percent: 84 %<br/>
+
+</div>
+<div class="coverage">
+<div class="skip"><span class="num"><pre>  1</pre></span><pre># -*- coding: utf-8 -*-</pre></div>
+<div class="cov"><span class="num"><pre>  2</pre></span><pre>&quot;&quot;&quot;module with interfaces to define contracts&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  3</pre></span><pre>__docformat__ = &quot;restructuredtext&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  4</pre></span><pre>from mrv.interface import Interface</pre></div>
+<div class="skip"><span class="num"><pre>  5</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  6</pre></span><pre>__all__ = ('iFinderProvider', 'iOptions', 'iFinderFilter')</pre></div>
+<div class="skip"><span class="num"><pre>  7</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  8</pre></span><pre>class iFinderProvider(Interface):</pre></div>
+<div class="cov"><span class="num"><pre>  9</pre></span><pre>	&quot;&quot;&quot;Interface defining the capabilities of a provider to be usable by a Finder</pre></div>
+<div class="cov"><span class="num"><pre> 10</pre></span><pre>	control. Every finder as a root, which is used as basis for listing urls.</pre></div>
+<div class="skip"><span class="num"><pre> 11</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 12</pre></span><pre>	Besides its function to provide sub-items for given urls, it is also used </pre></div>
+<div class="cov"><span class="num"><pre> 13</pre></span><pre>	to store recently selected items on a given level of a url. This memory</pre></div>
+<div class="cov"><span class="num"><pre> 14</pre></span><pre>	allows the finder to restore common portions of URLs accordingly.</pre></div>
+<div class="skip"><span class="num"><pre> 15</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 16</pre></span><pre>	The base implementation of the memorization feature already. &quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 17</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 18</pre></span><pre>	__slots__ = '_mem_items'</pre></div>
+<div class="skip"><span class="num"><pre> 19</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre> 20</pre></span><pre>	#{ Configuration</pre></div>
+<div class="skip"><span class="num"><pre> 21</pre></span><pre>	# if True, items of urls will be memorized, if False, this information</pre></div>
+<div class="skip"><span class="num"><pre> 22</pre></span><pre>	# will be discarded</pre></div>
+<div class="cov"><span class="num"><pre> 23</pre></span><pre>	memorize_urlItems = True</pre></div>
+<div class="skip"><span class="num"><pre> 24</pre></span><pre>	#} END configuration</pre></div>
+<div class="skip"><span class="num"><pre> 25</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 26</pre></span><pre>	def __init__(self, root):</pre></div>
+<div class="nocov"><span class="num"><pre> 27</pre></span><pre>		self._root = root</pre></div>
+<div class="nocov"><span class="num"><pre> 28</pre></span><pre>		self._mem_items = dict()</pre></div>
+<div class="skip"><span class="num"><pre> 29</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre> 30</pre></span><pre>	#{ Interface </pre></div>
+<div class="skip"><span class="num"><pre> 31</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 32</pre></span><pre>	def urlItems(self, url):</pre></div>
+<div class="cov"><span class="num"><pre> 33</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 34</pre></span><pre>		:return: list of string-like items which can be found at the given url.</pre></div>
+<div class="cov"><span class="num"><pre> 35</pre></span><pre>		If this url is combined with one of the returned items separated by a slash, </pre></div>
+<div class="cov"><span class="num"><pre> 36</pre></span><pre>		a valid url is formed, i.e. url/item</pre></div>
+<div class="cov"><span class="num"><pre> 37</pre></span><pre>		:param url: A given slash-separated url like base/subitem or '', which </pre></div>
+<div class="cov"><span class="num"><pre> 38</pre></span><pre>			requests items at the root of all urls&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 39</pre></span><pre>		raise NotImplementedError(&quot;To be implemented by subclass&quot;)</pre></div>
+<div class="skip"><span class="num"><pre> 40</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 41</pre></span><pre>	def formatItem(self, url_base, url_index, url_item):</pre></div>
+<div class="cov"><span class="num"><pre> 42</pre></span><pre>		&quot;&quot;&quot;Given the url_item, as well as additional information such as its base</pre></div>
+<div class="cov"><span class="num"><pre> 43</pre></span><pre>		and its index inside of the url, this method encodes the item for presentation</pre></div>
+<div class="cov"><span class="num"><pre> 44</pre></span><pre>		in the user interface.</pre></div>
+<div class="cov"><span class="num"><pre> 45</pre></span><pre>		:param url_base: relative url at which the url_item resides. Is &quot;&quot; if url_index </pre></div>
+<div class="cov"><span class="num"><pre> 46</pre></span><pre>			is 0</pre></div>
+<div class="cov"><span class="num"><pre> 47</pre></span><pre>		:param url_index: index representing the position of the url_item within the</pre></div>
+<div class="cov"><span class="num"><pre> 48</pre></span><pre>			url</pre></div>
+<div class="cov"><span class="num"><pre> 49</pre></span><pre>		:param url_item: item which is to be formatted.</pre></div>
+<div class="cov"><span class="num"><pre> 50</pre></span><pre>		:return: string representing the formatted url.&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 51</pre></span><pre>		return url_item</pre></div>
+<div class="skip"><span class="num"><pre> 52</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre> 53</pre></span><pre>	def storeUrlItem(self, url_index, url_item):</pre></div>
+<div class="cov"><span class="num"><pre> 54</pre></span><pre>		&quot;&quot;&quot;Stores and associates a given url_index with a url_item. Makes the stored</pre></div>
+<div class="cov"><span class="num"><pre> 55</pre></span><pre>		item queryable by the ``storedUrlItemByIndex`` method</pre></div>
+<div class="cov"><span class="num"><pre> 56</pre></span><pre>		:param url_index: index from 0 to n, where 0 corresponds to the first item</pre></div>
+<div class="cov"><span class="num"><pre> 57</pre></span><pre>			in the url</pre></div>
+<div class="cov"><span class="num"><pre> 58</pre></span><pre>		:param url_item: the string item to store at the given index&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 59</pre></span><pre>		if not self.memorize_urlItems:</pre></div>
+<div class="nocov"><span class="num"><pre> 60</pre></span><pre>			return</pre></div>
+<div class="skip"><span class="num"><pre> 61</pre></span><pre>		# END ignore store call</pre></div>
+<div class="nocov"><span class="num"><pre> 62</pre></span><pre>		self._mem_items[url_index] = url_item</pre></div>
+<div class="skip"><span class="num"><pre> 63</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 64</pre></span><pre>	def storedUrlItemByIndex(self, url_index):</pre></div>
+<div class="cov"><span class="num"><pre> 65</pre></span><pre>		&quot;&quot;&quot;:return: string item previously stored at the given index, or None </pre></div>
+<div class="cov"><span class="num"><pre> 66</pre></span><pre>		if there is no information available&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 67</pre></span><pre>		return self._mem_items.get(url_index, None)</pre></div>
+<div class="skip"><span class="num"><pre> 68</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 69</pre></span><pre>	def root(self):</pre></div>
+<div class="cov"><span class="num"><pre> 70</pre></span><pre>		&quot;&quot;&quot;:return: string representing the file root&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 71</pre></span><pre>		return self._root</pre></div>
+<div class="skip"><span class="num"><pre> 72</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre> 73</pre></span><pre>	#} END interface</pre></div>
+<div class="skip"><span class="num"><pre> 74</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 75</pre></span><pre>class iFinderFilter(Interface):</pre></div>
+<div class="cov"><span class="num"><pre> 76</pre></span><pre>	&quot;&quot;&quot;Filter interface suitable to perform item filter operations for Finder controls&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 77</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre> 78</pre></span><pre>	#{ Interface</pre></div>
+<div class="skip"><span class="num"><pre> 79</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 80</pre></span><pre>	def filtered(self, finder, element_index, base_url, items):</pre></div>
+<div class="cov"><span class="num"><pre> 81</pre></span><pre>		&quot;&quot;&quot;:return: list of items which may be shown in the element at element_index</pre></div>
+<div class="cov"><span class="num"><pre> 82</pre></span><pre>		:param finder: finder instance issueing the call</pre></div>
+<div class="cov"><span class="num"><pre> 83</pre></span><pre>		:param element_index: index of the element which is to be filled with items</pre></div>
+<div class="cov"><span class="num"><pre> 84</pre></span><pre>		:param base_url: url at which the given items exist</pre></div>
+<div class="cov"><span class="num"><pre> 85</pre></span><pre>		:param items: list of relative item ids which are to be shown in the finder element&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 86</pre></span><pre>		return items</pre></div>
+<div class="skip"><span class="num"><pre> 87</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre> 88</pre></span><pre>	#} END interface</pre></div>
+<div class="skip"><span class="num"><pre> 89</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 90</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 91</pre></span><pre>class iOptions(Interface):</pre></div>
+<div class="cov"><span class="num"><pre> 92</pre></span><pre>	&quot;&quot;&quot;Interface for all custom options layouts to be used with the FinderLayout. </pre></div>
+<div class="cov"><span class="num"><pre> 93</pre></span><pre>	They take a weak-reference to their parent FinderLayout allowing them to </pre></div>
+<div class="cov"><span class="num"><pre> 94</pre></span><pre>	set themselves up if necessary.</pre></div>
+<div class="cov"><span class="num"><pre> 95</pre></span><pre>	The options they represent must be read by a custom implementation of the</pre></div>
+<div class="cov"><span class="num"><pre> 96</pre></span><pre>	FinderLayout&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 97</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre> 98</pre></span><pre>	#{ Interface</pre></div>
+<div class="skip"><span class="num"><pre> 99</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>100</pre></span><pre>	#} END interface</pre></div>
+<div class="skip"><span class="num"><pre>101</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>102</pre></span><pre></pre></div>
+</div>
+</body>
+</html>

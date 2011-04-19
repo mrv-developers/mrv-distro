@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Persistence &mdash; mrv v1.0.2-develop documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.2-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="mrv v1.0.2-develop documentation" href="../index.html" />
+    <link rel="up" title="Usage" href="index.html" />
+    <link rel="next" title="About Methods and Types" href="types.html" />
+    <link rel="prev" title="Undo" href="undo.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="types.html" title="About Methods and Types"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="undo.html" title="Undo"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Usage</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="persistence">
+<h1>Persistence<a class="headerlink" href="#persistence" title="Permalink to this headline">¶</a></h1>
+<p>Being able to use python data natively within your program is a great plus - unfortunately there is no default way to store that data in a native format within the maya scene. Everyone who desires to store python data would need to implement marshaling functions to convert python data to maya compatible data to be stored in nodes, and vice versa, which is time consuming and a possible source of bugs.</p>
+<p>MRV tackles the problem by providing a generic storage node which comes as part of the <tt class="docutils literal"><span class="pre">nt</span></tt> package. It is implemented as a plugin node which allows to store data and connections:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">did</span> <span class="o">=</span> <span class="s">&#39;dataid&#39;</span>
+<span class="n">sn</span> <span class="o">=</span> <span class="n">StorageNode</span><span class="p">()</span>
+<span class="n">snn</span> <span class="o">=</span> <span class="n">sn</span><span class="o">.</span><span class="n">name</span><span class="p">()</span>
+<span class="n">pd</span> <span class="o">=</span> <span class="n">sn</span><span class="o">.</span><span class="n">pythonData</span><span class="p">(</span> <span class="n">did</span><span class="p">,</span> <span class="n">autoCreate</span> <span class="o">=</span> <span class="bp">True</span> <span class="p">)</span>
+
+<span class="n">pd</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;hello&quot;</span>
+<span class="n">pd</span><span class="p">[</span><span class="s">&#39;l&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+
+<span class="n">tmpscene</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">gettempdir</span><span class="p">()</span> <span class="o">+</span> <span class="s">&quot;/persistence.mb&quot;</span>
+<span class="n">mrv</span><span class="o">.</span><span class="n">Scene</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">tmpscene</span><span class="p">)</span>
+<span class="n">mrv</span><span class="o">.</span><span class="n">Scene</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">tmpscene</span><span class="p">)</span>
+
+<span class="n">sn</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="n">snn</span><span class="p">)</span>
+<span class="n">pd</span> <span class="o">=</span> <span class="n">sn</span><span class="o">.</span><span class="n">pythonData</span><span class="p">(</span> <span class="n">did</span> <span class="p">)</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">pd</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+<span class="k">assert</span> <span class="n">pd</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="o">==</span> <span class="s">&quot;hello&quot;</span>
+<span class="k">assert</span> <span class="n">pd</span><span class="p">[</span><span class="s">&#39;l&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Additionally you may organize objects in sets, and these sets in partitions:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">objset</span> <span class="o">=</span> <span class="n">sn</span><span class="o">.</span><span class="n">objectSet</span><span class="p">(</span><span class="n">did</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">autoCreate</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">objset</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Transform</span><span class="p">())</span>
+
+<span class="n">mrv</span><span class="o">.</span><span class="n">Scene</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">tmpscene</span><span class="p">)</span>
+<span class="n">mrv</span><span class="o">.</span><span class="n">Scene</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">tmpscene</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">Node</span><span class="p">(</span><span class="n">snn</span><span class="p">)</span><span class="o">.</span><span class="n">objectSet</span><span class="p">(</span><span class="n">did</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="o">==</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">mrv.maya.nt.storage</span></tt> module is built to make it easy to create own node types that are compatible to the storage interface, which also enables you to write your own and more convenient interface to access data.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="undo.html"
+                                  title="previous chapter">Undo</a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="types.html"
+                                  title="next chapter">About Methods and Types</a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/usage/persistence.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="types.html" title="About Methods and Types"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="undo.html" title="Undo"
+             >previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li>
+          <li><a href="index.html" >Usage</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Apr 19, 2011.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>mrv.batch &mdash; mrv v1.0.2-develop documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.2-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="mrv v1.0.2-develop documentation" href="../index.html" />
+    <link rel="next" title="mrv.path" href="mrv.path.html" />
+    <link rel="prev" title="mrv.dgfe" href="mrv.dgfe.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.path.html" title="mrv.path"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mrv.dgfe.html" title="mrv.dgfe"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-mrv.batch">
+<h1><tt class="xref docutils literal"><span class="pre">mrv.batch</span></tt><a class="headerlink" href="#module-mrv.batch" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="api/mrv.batch-module.html">Epydoc: mrv.batch</a></p>
+<p>This modules contains utilities to do opeations in batch mode.
+The module can be used from within python if required, but is more commonly used
+from the commandline, possibly wrapped by a shell script to specialize its usae</p>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mrv.batch._popleftchecked">
+<tt class="descclassname">mrv.batch.</tt><tt class="descname">_popleftchecked</tt><big>(</big><em>argv</em>, <em>errmsg</em><big>)</big><a class="headerlink" href="#mrv.batch._popleftchecked" title="Permalink to this definition">¶</a></dt>
+<dd>pop an arg from argv and return with an error message on error</dd></dl>
+
+<dl class="function">
+<dt id="mrv.batch._toStream">
+<tt class="descclassname">mrv.batch.</tt><tt class="descname">_toStream</tt><big>(</big><em>arg</em>, <em>stream</em><big>)</big><a class="headerlink" href="#mrv.batch._toStream" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">stream according to arg</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>stream</em> &#8211; stream to return if arg sais so</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.batch._usageAndExit">
+<tt class="descclassname">mrv.batch.</tt><tt class="descname">_usageAndExit</tt><big>(</big><em>msg=None</em><big>)</big><a class="headerlink" href="#mrv.batch._usageAndExit" title="Permalink to this definition">¶</a></dt>
+<dd>Print usage</dd></dl>
+
+<dl class="function">
+<dt id="mrv.batch.killProcess">
+<tt class="descclassname">mrv.batch.</tt><tt class="descname">killProcess</tt><big>(</big><em>process</em><big>)</big><a class="headerlink" href="#mrv.batch.killProcess" title="Permalink to this definition">¶</a></dt>
+<dd>Kill the given process
+:note: raises if kill is not supported by the os module</dd></dl>
+
+<dl class="function">
+<dt id="mrv.batch.main">
+<tt class="descclassname">mrv.batch.</tt><tt class="descname">main</tt><big>(</big><em>*args</em><big>)</big><a class="headerlink" href="#mrv.batch.main" title="Permalink to this definition">¶</a></dt>
+<dd>Processes the arguments</dd></dl>
+
+<dl class="function">
+<dt id="mrv.batch.process">
+<tt class="descclassname">mrv.batch.</tt><tt class="descname">process</tt><big>(</big><em>cmd</em>, <em>args</em>, <em>inputList</em>, <em>errorstream=None</em>, <em>donestream=None</em>, <em>inputsPerProcess=1</em>, <em>numJobs=1</em><big>)</big><a class="headerlink" href="#mrv.batch.process" title="Permalink to this definition">¶</a></dt>
+<dd>Launch process at cmd with args and a list of input objects from inputList appended to args
+:param cmd: full path to tool you wish to start, like /bin/bash
+:param args: List of all argument strings to be passed to cmd
+:param inputList: list of input files to be passed as input to cmd
+:param errorstream: stream to which errors will be written to as they occour if not None
+:param donestream: stream to which items from input list will be passed once they
+have been processed if not None. Items are newline terminated
+:param inputsPerProcess: pass the given number of inputs to the cmd, or less if there
+are not enough items on the input list
+:param numJobs: number of processes we may run in parallel</dd></dl>
+
+<dl class="function">
+<dt id="mrv.batch.superviseJobs">
+<tt class="descclassname">mrv.batch.</tt><tt class="descname">superviseJobs</tt><big>(</big><em>jobs</em>, <em>returnIfLessThan</em>, <em>cmdinput</em>, <em>errorstream</em>, <em>donestream</em><big>)</big><a class="headerlink" href="#mrv.batch.superviseJobs" title="Permalink to this definition">¶</a></dt>
+<dd>Check on the jobs we have and wait for finished ones. Write information
+about them into the respective streams
+:param returnIfLessThan: return once we have less than the given amount of running jobs</dd></dl>
+
+</div>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="api/mrv.batch-module.html#deque">Epydoc: mrv.batch</a></p>
+<dl class="class">
+<dt id="mrv.batch.deque">
+<em class="property">class </em><tt class="descclassname">mrv.batch.</tt><tt class="descname">deque</tt><a class="headerlink" href="#mrv.batch.deque" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>deque(iterable[, maxlen]) &#8211;&gt; deque object</p>
+<p>Build an ordered collection accessible from endpoints only.</p>
+<dl class="attribute">
+<dt id="mrv.batch.deque.append">
+<tt class="descname">append</tt><a class="headerlink" href="#mrv.batch.deque.append" title="Permalink to this definition">¶</a></dt>
+<dd>Add an element to the right side of the deque.</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.batch.deque.appendleft">
+<tt class="descname">appendleft</tt><a class="headerlink" href="#mrv.batch.deque.appendleft" title="Permalink to this definition">¶</a></dt>
+<dd>Add an element to the left side of the deque.</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.batch.deque.clear">
+<tt class="descname">clear</tt><a class="headerlink" href="#mrv.batch.deque.clear" title="Permalink to this definition">¶</a></dt>
+<dd>Remove all elements from the deque.</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.batch.deque.extend">
+<tt class="descname">extend</tt><a class="headerlink" href="#mrv.batch.deque.extend" title="Permalink to this definition">¶</a></dt>
+<dd>Extend the right side of the deque with elements from the iterable</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.batch.deque.extendleft">
+<tt class="descname">extendleft</tt><a class="headerlink" href="#mrv.batch.deque.extendleft" title="Permalink to this definition">¶</a></dt>
+<dd>Extend the left side of the deque with elements from the iterable</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.batch.deque.pop">
+<tt class="descname">pop</tt><a class="headerlink" href="#mrv.batch.deque.pop" title="Permalink to this definition">¶</a></dt>
+<dd>Remove and return the rightmost element.</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.batch.deque.popleft">
+<tt class="descname">popleft</tt><a class="headerlink" href="#mrv.batch.deque.popleft" title="Permalink to this definition">¶</a></dt>
+<dd>Remove and return the leftmost element.</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.batch.deque.remove">
+<tt class="descname">remove</tt><a class="headerlink" href="#mrv.batch.deque.remove" title="Permalink to this definition">¶</a></dt>
+<dd>D.remove(value) &#8211; remove first occurrence of value.</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.batch.deque.rotate">
+<tt class="descname">rotate</tt><a class="headerlink" href="#mrv.batch.deque.rotate" title="Permalink to this definition">¶</a></dt>
+<dd>Rotate the deque n steps to the right (default n=1).  If n is negative, rotates left.</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="../index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#"><tt class="docutils literal"><span class="pre">mrv.batch</span></tt></a><ul>
+<li><a class="reference external" href="#functions">Functions</a></li>
+<li><a class="reference external" href="#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="mrv.dgfe.html"
+                                  title="previous chapter"><tt class="docutils literal"><span class="pre">mrv.dgfe</span></tt></a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="mrv.path.html"
+                                  title="next chapter"><tt class="docutils literal"><span class="pre">mrv.path</span></tt></a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/generated/mrv.batch.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.path.html" title="mrv.path"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mrv.dgfe.html" title="mrv.dgfe"
+             >previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Apr 19, 2011.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

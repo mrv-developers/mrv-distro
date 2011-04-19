@@ -1,0 +1,2587 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>mrv.automation.process &mdash; mrv v1.0.2-develop documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.2-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="mrv v1.0.2-develop documentation" href="../index.html" />
+    <link rel="next" title="mrv.automation.base" href="mrv.automation.base.html" />
+    <link rel="prev" title="mrv.maya.nt.geometry" href="mrv.maya.nt.geometry.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.automation.base.html" title="mrv.automation.base"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.nt.geometry.html" title="mrv.maya.nt.geometry"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-mrv.automation.process">
+<h1><tt class="xref docutils literal"><span class="pre">mrv.automation.process</span></tt><a class="headerlink" href="#module-mrv.automation.process" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="api/mrv.automation.process-module.html">Epydoc: mrv.automation.process</a></p>
+<p>Contains base class and common methods for all processes</p>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mrv.automation.process.make_path">
+<tt class="descclassname">mrv.automation.process.</tt><tt class="descname">make_path</tt><big>(</big><em>path</em><big>)</big><a class="headerlink" href="#mrv.automation.process.make_path" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">A path instance of the correct type</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">use this constructor if you use the Path.set_separator method at runtime
+to assure you will always create instances of the actual type, and not only
+of the type you imported last</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.automation.process.track_output_call">
+<tt class="descclassname">mrv.automation.process.</tt><tt class="descname">track_output_call</tt><big>(</big><em>func</em><big>)</big><a class="headerlink" href="#mrv.automation.process.track_output_call" title="Permalink to this definition">¶</a></dt>
+<dd>Wraps the proecss.evaluateStateBase function allowing to gather plenty of information
+about the call, as well as error statistics</dd></dl>
+
+</div>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="api/mrv.automation.process-module.html#Attribute">Epydoc: mrv.automation.process</a></p>
+<dl class="class">
+<dt id="mrv.automation.process.Attribute">
+<em class="property">class </em><tt class="descclassname">mrv.automation.process.</tt><tt class="descname">Attribute</tt><big>(</big><em>typeClass</em>, <em>flags</em>, <em>default=None</em><big>)</big><a class="headerlink" href="#mrv.automation.process.Attribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>Simple class defining the type of a plug and several flags that
+affect it. Additionally it can determine how well suited another attribute is</p>
+<dl class="docutils">
+<dt><strong>Flags</strong>:</dt>
+<dd>exact_type: if True, derived classes of our typecls are not considered to be a valid type.
+i.e: basestring could be stored in a str attr if exact type is false - its less than we need, but
+still something.
+Putting a str into a basestring attribute will always work though, as it would be more than we need
+readonly: if True, the attribute&#8217;s plug cannot be written to. Read-only attributes can be used
+as storage that the user can read, but not write.
+You can write read-only plugs by directly setting its cache - this of course - is only
+for the node itself, but will never be done by the framework</dd>
+<dt><strong>computable</strong>:</dt>
+<dd><p class="first">Nodes are automatically computable if they are affected by another plug.
+If this is not the case, they are marked input only and are not computed.
+If this flag is true, even unaffeted plugs are computable.
+Plugs that affect something are automatically input plugs and will not be computed.
+If the plug does not affect anything and this flag is False, they are seen as input plugs
+anyway.</p>
+<p>The system does not allow plugs to be input and output plugs at the same time, thus your compute
+cannot be triggered by your own compute</p>
+<p class="last">cls: if True, the plug requires classes to be set ( instances of &#8216;type&#8217; ) , but no instances of these classes
+uncached: if False, computed values may be cached, otherwise they will always be recomputed.
+unconnectable: if True, the node cannot be the destination of a connection
+check_passing_values: check each value as it flows through a connection - usually compatability is only checked
+on connection and once values are set, but not if they flow through an existing connection</p>
+</dd>
+<dt><strong>Default Values</strong>:</dt>
+<dd>Although default values can be simple primitives are classes, a callable is specifically supported.
+It allows you to get a callback whenever a default value is required.
+The same result could be achieved by connected the plug in question, but dynamic defaults are a quick
+way to achive that.
+Your returned value will be type-checked against the required type if check_passing_values is set.</dd>
+</dl>
+<dl class="method">
+<dt id="mrv.automation.process.Attribute.affinity">
+<tt class="descname">affinity</tt><big>(</big><em>otherattr</em><big>)</big><a class="headerlink" href="#mrv.automation.process.Attribute.affinity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute affinity for otherattr.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">rating from 0 to 255 defining how good the attribtues match each
+other in general - how good can we store values of otherattr ? 
+Thus this comparison is directed.</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">for checking connections, use <cite>connectionAffinity</cite></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.Attribute.compatabilityRate">
+<tt class="descname">compatabilityRate</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#mrv.automation.process.Attribute.compatabilityRate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute value&#8217;s compatability rate</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">value between 0 and 255, 0 means no compatability, 255 a perfect match. 
+if larger than 0, the plug can hold the value ( assumed the flags are set correctly ).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.Attribute.connectionAffinity">
+<tt class="descname">connectionAffinity</tt><big>(</big><em>destinationattr</em><big>)</big><a class="headerlink" href="#mrv.automation.process.Attribute.connectionAffinity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute connection affinity for given destination attribute</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">rating from 0 to 255 defining the quality of the connection to
+otherplug. an affinity of 0 mean connection is not possible, 255 mean the connection
+is perfectly suited.
+The connection is a directed one from self -&gt; otherplug</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.Attribute.default">
+<tt class="descname">default</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.process.Attribute.default" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">default value stored for this attribute, or raise</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">handles dynamic defaults, so you should not directly access the default member variable</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises MissingDefaultValueError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if attribute does not have a default value</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises TypeError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if value returned by dynamic attribute has incorrect type</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.automation.process-module.html#GraphNodeBase">Epydoc: mrv.automation.process</a></p>
+<dl class="class">
+<dt id="mrv.automation.process.GraphNodeBase">
+<em class="property">class </em><tt class="descclassname">mrv.automation.process.</tt><tt class="descname">GraphNodeBase</tt><big>(</big><em>wrappedGraph</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.GraphNodeBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.dgfe.FacadeNodeBase" class="reference external" href="mrv.dgfe.html#mrv.dgfe.FacadeNodeBase"><tt class="xref docutils literal"><span class="pre">mrv.dgfe.FacadeNodeBase</span></tt></a></p>
+<p>A node wrapping a graph, allowing it to be nested within the node
+All inputs and outputs on this node are purely virtual, thus they internally connect
+to the wrapped graph.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Todo:</th><td class="field-body">tests deletion of graphnodes and see whether they are being garbage collected.
+It should work with the new collector as it can handle cyclic references - these
+strong cycles we have a lot in this structure. Weakrefs will not work for nested
+facade nodes as they are tuples not allowing weak refs.</td>
+</tr>
+</tbody>
+</table>
+<dl class="classmethod">
+<dt id="mrv.automation.process.GraphNodeBase.addSep">
+<em class="property">classmethod </em><tt class="descname">addSep</tt><big>(</big><em>item</em>, <em>sep</em><big>)</big><a class="headerlink" href="#mrv.automation.process.GraphNodeBase.addSep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">item with separator added to it ( just once )</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">operates best on strings</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>item</em> &#8211; item to add separator to</li>
+<li><em>sep</em> &#8211; the separator</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.GraphNodeBase.basename">
+<tt class="descname">basename</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.process.GraphNodeBase.basename" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">basename of this path, &#8216;/hello/world&#8217; -&gt; &#8216;world&#8217;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.GraphNodeBase.children">
+<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a39ed8&gt;</em><big>)</big><a class="headerlink" href="#mrv.automation.process.GraphNodeBase.children" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of intermediate children of path, [ child1 , child2 ]</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; return True to include x in result</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">the child objects returned are supposed to be valid paths, not just relative paths</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.GraphNodeBase.childrenDeep">
+<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c050&gt;</em><big>)</big><a class="headerlink" href="#mrv.automation.process.GraphNodeBase.childrenDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of all children of path, [ child1 , child2 ]</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>order</em> &#8211; order enumeration</li>
+<li><em>predicate</em> &#8211; returns true if x may be returned</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">the child objects returned are supposed to be valid paths, not just relative paths</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.GraphNodeBase.clearCache">
+<tt class="descname">clearCache</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.process.GraphNodeBase.clearCache" title="Permalink to this definition">¶</a></dt>
+<dd>Clear the cache of all plugs on this node - this basically forces it
+to recompute the next time an output plug is being queried</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.GraphNodeBase.clearPlugCache">
+<tt class="descname">clearPlugCache</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.process.GraphNodeBase.clearPlugCache" title="Permalink to this definition">¶</a></dt>
+<dd><p>if a cache has been build as caching is enabled, this method clears
+the cache forcing it to be updated on the next demand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">this could be more efficient by just deleting plugs that are
+not required anymore, but probably this method can expect the whole
+cache to be deleted right away ... so its fine</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.GraphNodeBase.compute">
+<tt class="descname">compute</tt><big>(</big><em>plug</em>, <em>mode</em><big>)</big><a class="headerlink" href="#mrv.automation.process.GraphNodeBase.compute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called whenever a plug needs computation as the value its value is not
+cached or marked dirty ( as one of the inputs changed )</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>plug</em> &#8211; the static plug instance that requested which requested the computation.
+It is the instance you defined on the class</li>
+<li><em>mode</em> &#8211; the mode of operation. Its completely up to the superclasses how that
+attribute is going to be used</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">to be implemented by superclass</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.GraphNodeBase.connections">
+<tt class="descname">connections</tt><big>(</big><em>inpt</em>, <em>output</em><big>)</big><a class="headerlink" href="#mrv.automation.process.GraphNodeBase.connections" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Tuples of input shells defining a connection of the given type from
+tuple( InputNodeOuptutShell, OurNodeInputShell ) for input connections and
+tuple( OurNodeOuptutShell, OutputNodeInputShell )</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>inpt</em> &#8211; include input connections to this node</li>
+<li><em>output</em> &#8211; include output connections ( from this node to others )</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.GraphNodeBase.copyFrom">
+<tt class="descname">copyFrom</tt><big>(</big><em>other</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.GraphNodeBase.copyFrom" title="Permalink to this definition">¶</a></dt>
+<dd>Actually, it does nothing because our plugs are linked to the internal
+nodes in a quite complex way. The good thing is that this is just a cache that
+will be updated once someone queries connections again.
+Basically it comes down to the graph duplicating itself using node and plug
+methods instead of just doing his &#8216;internal&#8217; magic</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.GraphNodeBase.copyTo">
+<tt class="descname">copyTo</tt><big>(</big><em>instance</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.GraphNodeBase.copyTo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy the values of ourselves onto the given instance which must be an
+instance of our class to be compatible.
+Only the common classes will be copied to instance</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">altered instance</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">instance will be altered during the process</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.GraphNodeBase.copyToOther">
+<tt class="descname">copyToOther</tt><big>(</big><em>instance</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.GraphNodeBase.copyToOther" title="Permalink to this definition">¶</a></dt>
+<dd>As <cite>copyTo</cite>, but does only require the objects to have a common base.
+It will match the actually compatible base classes and call <cite>copyFrom</cite>
+if possible.
+As more checking is performed, this method performs worse than <cite>copyTo</cite></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.GraphNodeBase.createInstance">
+<tt class="descname">createInstance</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.GraphNodeBase.createInstance" title="Permalink to this definition">¶</a></dt>
+<dd>Create a copy of self and return it</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.GraphNodeBase.duplicate">
+<tt class="descname">duplicate</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.GraphNodeBase.duplicate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements a c-style copy constructor by creating a new instance of self
+and applying the <cite>copyFrom</cite> methods from base to all classes implementing the copyfrom
+method. Thus we will call the method directly on the class</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>args</em> &#8211; passed to <cite>copyFrom</cite> and <cite>createInstance</cite> method to give additional directions</li>
+<li><em>kwargs</em> &#8211; see param args</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.automation.process.GraphNodeBase.filterCompatiblePlugs">
+<em class="property">classmethod </em><tt class="descname">filterCompatiblePlugs</tt><big>(</big><em>plugs</em>, <em>attrOrValue</em>, <em>raise_on_ambiguity=False</em>, <em>attr_affinity=False</em>, <em>attr_as_source=True</em><big>)</big><a class="headerlink" href="#mrv.automation.process.GraphNodeBase.filterCompatiblePlugs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">sorted list of (rate,plug) tuples suitable to deal with the given attribute.
+Thus they could connect to it as well as get their value set.
+Most suitable plug comes first.
+Incompatible plugs will be pruned.</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>attrOrValue</em> &#8211; either an attribute or the value you would like to set to the
+attr at the plug in question.</li>
+<li><em>raise_on_ambiguity</em> &#8211; if True, the method raises if a plug has the same
+rating as another plug already on the output list, thus it&#8217;s not clear anymore
+which plug should handle a request</li>
+<li><em>attr_affinity</em> &#8211; if True, it will not check connection affinity, but attribute
+affinity only. It checks how compatible the attributes of the plugs are, disregarding
+whether they can be connected or not
+Only valid if attrOrValue is an attribute</li>
+<li><em>attr_as_source</em> &#8211; if True, attrOrValue will be treated as the source of a connection or
+each plug would need to take its values.
+if False, attrOrValue is the destination of a connection and it needs to take values of the given plugs
+or they would connect to it. Only used if attrOrValue is an attribute.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises TypeError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">if ambiguous input was found</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.GraphNodeBase.fullChildName">
+<tt class="descname">fullChildName</tt><big>(</big><em>childname</em><big>)</big><a class="headerlink" href="#mrv.automation.process.GraphNodeBase.fullChildName" title="Permalink to this definition">¶</a></dt>
+<dd>Add the given name to the string version of our instance
+:return: string with childname added like name _sep childname</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.GraphNodeBase.id">
+<tt class="descname">id</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.process.GraphNodeBase.id" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">ID of this instance</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.GraphNodeBase.inputPlugs">
+<tt class="descname">inputPlugs</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.GraphNodeBase.inputPlugs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of plugs suitable as input</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">convenience method</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.automation.process.GraphNodeBase.inputPlugsStatic">
+<em class="property">classmethod </em><tt class="descname">inputPlugsStatic</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.GraphNodeBase.inputPlugsStatic" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of static plugs suitable as input</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">convenience method</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.GraphNodeBase.isPartOf">
+<tt class="descname">isPartOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.automation.process.GraphNodeBase.isPartOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if self is a part of other, and thus can be found in other</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings only</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.GraphNodeBase.isRoot">
+<tt class="descname">isRoot</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.process.GraphNodeBase.isRoot" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this path is the root of the DAG</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.GraphNodeBase.isRootOf">
+<tt class="descname">isRootOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.automation.process.GraphNodeBase.isRootOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True other starts with self</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">we assume other has the same type as self, thus the same separator</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.GraphNodeBase.iterParents">
+<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c230&gt;</em><big>)</big><a class="headerlink" href="#mrv.automation.process.GraphNodeBase.iterParents" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">generator retrieving all parents up to the root</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; returns True for all x that you want to be returned</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.GraphNodeBase.outputPlugs">
+<tt class="descname">outputPlugs</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.GraphNodeBase.outputPlugs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of plugs suitable to deliver output</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">convenience method</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.automation.process.GraphNodeBase.outputPlugsStatic">
+<em class="property">classmethod </em><tt class="descname">outputPlugsStatic</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.GraphNodeBase.outputPlugsStatic" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of static plugs suitable to deliver output</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">convenience method</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.GraphNodeBase.parent">
+<tt class="descname">parent</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.process.GraphNodeBase.parent" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">parent of this path, &#8216;/hello/world&#8217; -&gt; &#8216;/hello&#8217; or None if this path
+is the dag&#8217;s root</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.GraphNodeBase.parentDeep">
+<tt class="descname">parentDeep</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.process.GraphNodeBase.parentDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">all parents of this path, &#8216;/hello/my/world&#8217; -&gt; [ &#8216;/hello/my&#8217;,&#8217;/hello&#8217; ]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.GraphNodeBase.plugs">
+<tt class="descname">plugs</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.GraphNodeBase.plugs" title="Permalink to this definition">¶</a></dt>
+<dd>Calls <cite>_getNodePlugs</cite> method to ask you to actuallly return your
+actual nodes and plugs or shells.
+We prepare the returned value to assure we are being called in certain occasion,
+which actually glues outside and inside worlds together</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.automation.process.GraphNodeBase.plugsStatic">
+<em class="property">classmethod </em><tt class="descname">plugsStatic</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x1d29848&gt;</em><big>)</big><a class="headerlink" href="#mrv.automation.process.GraphNodeBase.plugsStatic" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of static plugs as defined on this node - they are class members</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; return static plug only if predicate is true</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Use this method only if you do not have an instance - there are nodes
+that actually have no static plug information, but will dynamically generate them.
+For this to work, they need an instance - thus the plugs method is an instance
+method and is meant to be the most commonly used one.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.GraphNodeBase.root">
+<tt class="descname">root</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.process.GraphNodeBase.root" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the root of the DAG - it has no further parents</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.GraphNodeBase.setID">
+<tt class="descname">setID</tt><big>(</big><em>newID</em><big>)</big><a class="headerlink" href="#mrv.automation.process.GraphNodeBase.setID" title="Permalink to this definition">¶</a></dt>
+<dd>Set id of this node to newiD
+:return: previously assigned id</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.automation.process.GraphNodeBase.shellcls">
+<tt class="descname">shellcls</tt><a class="headerlink" href="#mrv.automation.process.GraphNodeBase.shellcls" title="Permalink to this definition">¶</a></dt>
+<dd>alias of <tt class="xref docutils literal"><span class="pre">_OIShell</span></tt></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.GraphNodeBase.supports">
+<tt class="descname">supports</tt><big>(</big><em>interface_type</em><big>)</big><a class="headerlink" href="#mrv.automation.process.GraphNodeBase.supports" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this instance supports the interface of the given type</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>interface_type</em> &#8211; Type of the interface you require this instance 
+to support</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Must be used in case you only have a weak reference of your interface
+instance or proxy which is a case where the ordinary isinstance( obj, iInterface )
+will not work</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.GraphNodeBase.toShell">
+<tt class="descname">toShell</tt><big>(</big><em>plug</em><big>)</big><a class="headerlink" href="#mrv.automation.process.GraphNodeBase.toShell" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">a plugshell as suitable to for this class</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.GraphNodeBase.toShells">
+<tt class="descname">toShells</tt><big>(</big><em>plugs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.GraphNodeBase.toShells" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of shells made from plugs and our node</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.automation.process-module.html#NodeBase">Epydoc: mrv.automation.process</a></p>
+<dl class="class">
+<dt id="mrv.automation.process.NodeBase">
+<em class="property">class </em><tt class="descclassname">mrv.automation.process.</tt><tt class="descname">NodeBase</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.NodeBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.interface.iDuplicatable" class="reference external" href="mrv.interface.html#mrv.interface.iDuplicatable"><tt class="xref docutils literal"><span class="pre">mrv.interface.iDuplicatable</span></tt></a></p>
+<p>Base class that provides support for plugs to the superclass.
+It will create some simple tracking attriubtes required for the plug system
+to work</p>
+<p>Nodes can compute values of their plugs if these do not have a cache.</p>
+<p>Nodes are identified by an ID - the default graph implementation though will
+be okay with just having instances.
+It is also being used for string representations of this node</p>
+<dl class="classmethod">
+<dt id="mrv.automation.process.NodeBase.addSep">
+<em class="property">classmethod </em><tt class="descname">addSep</tt><big>(</big><em>item</em>, <em>sep</em><big>)</big><a class="headerlink" href="#mrv.automation.process.NodeBase.addSep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">item with separator added to it ( just once )</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">operates best on strings</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>item</em> &#8211; item to add separator to</li>
+<li><em>sep</em> &#8211; the separator</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.NodeBase.basename">
+<tt class="descname">basename</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.process.NodeBase.basename" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">basename of this path, &#8216;/hello/world&#8217; -&gt; &#8216;world&#8217;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.NodeBase.children">
+<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a39ed8&gt;</em><big>)</big><a class="headerlink" href="#mrv.automation.process.NodeBase.children" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of intermediate children of path, [ child1 , child2 ]</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; return True to include x in result</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">the child objects returned are supposed to be valid paths, not just relative paths</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.NodeBase.childrenDeep">
+<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c050&gt;</em><big>)</big><a class="headerlink" href="#mrv.automation.process.NodeBase.childrenDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of all children of path, [ child1 , child2 ]</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>order</em> &#8211; order enumeration</li>
+<li><em>predicate</em> &#8211; returns true if x may be returned</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">the child objects returned are supposed to be valid paths, not just relative paths</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.NodeBase.clearCache">
+<tt class="descname">clearCache</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.process.NodeBase.clearCache" title="Permalink to this definition">¶</a></dt>
+<dd>Clear the cache of all plugs on this node - this basically forces it
+to recompute the next time an output plug is being queried</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.NodeBase.compute">
+<tt class="descname">compute</tt><big>(</big><em>plug</em>, <em>mode</em><big>)</big><a class="headerlink" href="#mrv.automation.process.NodeBase.compute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called whenever a plug needs computation as the value its value is not
+cached or marked dirty ( as one of the inputs changed )</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>plug</em> &#8211; the static plug instance that requested which requested the computation.
+It is the instance you defined on the class</li>
+<li><em>mode</em> &#8211; the mode of operation. Its completely up to the superclasses how that
+attribute is going to be used</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">to be implemented by superclass</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.NodeBase.connections">
+<tt class="descname">connections</tt><big>(</big><em>inpt</em>, <em>output</em><big>)</big><a class="headerlink" href="#mrv.automation.process.NodeBase.connections" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Tuples of input shells defining a connection of the given type from
+tuple( InputNodeOuptutShell, OurNodeInputShell ) for input connections and
+tuple( OurNodeOuptutShell, OutputNodeInputShell )</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>inpt</em> &#8211; include input connections to this node</li>
+<li><em>output</em> &#8211; include output connections ( from this node to others )</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.NodeBase.copyFrom">
+<tt class="descname">copyFrom</tt><big>(</big><em>other</em>, <em>add_to_graph=True</em><big>)</big><a class="headerlink" href="#mrv.automation.process.NodeBase.copyFrom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Just take the graph from other, but do not ( never ) duplicate it</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>add_to_graph</em> &#8211; if true, the new node instance will be added to the graph of</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">default implementation does not copy plug caches ( which are stored in
+the node dict - this is because a reevaluate is usually required on the
+duplicated node</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.NodeBase.copyTo">
+<tt class="descname">copyTo</tt><big>(</big><em>instance</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.NodeBase.copyTo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy the values of ourselves onto the given instance which must be an
+instance of our class to be compatible.
+Only the common classes will be copied to instance</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">altered instance</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">instance will be altered during the process</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.NodeBase.copyToOther">
+<tt class="descname">copyToOther</tt><big>(</big><em>instance</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.NodeBase.copyToOther" title="Permalink to this definition">¶</a></dt>
+<dd>As <cite>copyTo</cite>, but does only require the objects to have a common base.
+It will match the actually compatible base classes and call <cite>copyFrom</cite>
+if possible.
+As more checking is performed, this method performs worse than <cite>copyTo</cite></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.NodeBase.createInstance">
+<tt class="descname">createInstance</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.NodeBase.createInstance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a copy of self and return it</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">override by subclass  - the __init__ methods shuld do the rest</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.NodeBase.duplicate">
+<tt class="descname">duplicate</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.NodeBase.duplicate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements a c-style copy constructor by creating a new instance of self
+and applying the <cite>copyFrom</cite> methods from base to all classes implementing the copyfrom
+method. Thus we will call the method directly on the class</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>args</em> &#8211; passed to <cite>copyFrom</cite> and <cite>createInstance</cite> method to give additional directions</li>
+<li><em>kwargs</em> &#8211; see param args</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.automation.process.NodeBase.filterCompatiblePlugs">
+<em class="property">classmethod </em><tt class="descname">filterCompatiblePlugs</tt><big>(</big><em>plugs</em>, <em>attrOrValue</em>, <em>raise_on_ambiguity=False</em>, <em>attr_affinity=False</em>, <em>attr_as_source=True</em><big>)</big><a class="headerlink" href="#mrv.automation.process.NodeBase.filterCompatiblePlugs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">sorted list of (rate,plug) tuples suitable to deal with the given attribute.
+Thus they could connect to it as well as get their value set.
+Most suitable plug comes first.
+Incompatible plugs will be pruned.</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>attrOrValue</em> &#8211; either an attribute or the value you would like to set to the
+attr at the plug in question.</li>
+<li><em>raise_on_ambiguity</em> &#8211; if True, the method raises if a plug has the same
+rating as another plug already on the output list, thus it&#8217;s not clear anymore
+which plug should handle a request</li>
+<li><em>attr_affinity</em> &#8211; if True, it will not check connection affinity, but attribute
+affinity only. It checks how compatible the attributes of the plugs are, disregarding
+whether they can be connected or not
+Only valid if attrOrValue is an attribute</li>
+<li><em>attr_as_source</em> &#8211; if True, attrOrValue will be treated as the source of a connection or
+each plug would need to take its values.
+if False, attrOrValue is the destination of a connection and it needs to take values of the given plugs
+or they would connect to it. Only used if attrOrValue is an attribute.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises TypeError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">if ambiguous input was found</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.NodeBase.fullChildName">
+<tt class="descname">fullChildName</tt><big>(</big><em>childname</em><big>)</big><a class="headerlink" href="#mrv.automation.process.NodeBase.fullChildName" title="Permalink to this definition">¶</a></dt>
+<dd>Add the given name to the string version of our instance
+:return: string with childname added like name _sep childname</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.NodeBase.id">
+<tt class="descname">id</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.process.NodeBase.id" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">ID of this instance</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.NodeBase.inputPlugs">
+<tt class="descname">inputPlugs</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.NodeBase.inputPlugs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of plugs suitable as input</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">convenience method</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.automation.process.NodeBase.inputPlugsStatic">
+<em class="property">classmethod </em><tt class="descname">inputPlugsStatic</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.NodeBase.inputPlugsStatic" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of static plugs suitable as input</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">convenience method</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.NodeBase.isPartOf">
+<tt class="descname">isPartOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.automation.process.NodeBase.isPartOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if self is a part of other, and thus can be found in other</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings only</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.NodeBase.isRoot">
+<tt class="descname">isRoot</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.process.NodeBase.isRoot" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this path is the root of the DAG</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.NodeBase.isRootOf">
+<tt class="descname">isRootOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.automation.process.NodeBase.isRootOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True other starts with self</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">we assume other has the same type as self, thus the same separator</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.NodeBase.iterParents">
+<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c230&gt;</em><big>)</big><a class="headerlink" href="#mrv.automation.process.NodeBase.iterParents" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">generator retrieving all parents up to the root</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; returns True for all x that you want to be returned</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.NodeBase.outputPlugs">
+<tt class="descname">outputPlugs</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.NodeBase.outputPlugs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of plugs suitable to deliver output</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">convenience method</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.automation.process.NodeBase.outputPlugsStatic">
+<em class="property">classmethod </em><tt class="descname">outputPlugsStatic</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.NodeBase.outputPlugsStatic" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of static plugs suitable to deliver output</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">convenience method</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.NodeBase.parent">
+<tt class="descname">parent</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.process.NodeBase.parent" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">parent of this path, &#8216;/hello/world&#8217; -&gt; &#8216;/hello&#8217; or None if this path
+is the dag&#8217;s root</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.NodeBase.parentDeep">
+<tt class="descname">parentDeep</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.process.NodeBase.parentDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">all parents of this path, &#8216;/hello/my/world&#8217; -&gt; [ &#8216;/hello/my&#8217;,&#8217;/hello&#8217; ]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.NodeBase.plugs">
+<tt class="descname">plugs</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x1d29938&gt;</em><big>)</big><a class="headerlink" href="#mrv.automation.process.NodeBase.plugs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of dynamic plugs as defined on this node - they are usually retrieved
+on class level, but may be overridden on instance level</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; return static plug only if predicate is true</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.automation.process.NodeBase.plugsStatic">
+<em class="property">classmethod </em><tt class="descname">plugsStatic</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x1d29848&gt;</em><big>)</big><a class="headerlink" href="#mrv.automation.process.NodeBase.plugsStatic" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of static plugs as defined on this node - they are class members</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; return static plug only if predicate is true</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Use this method only if you do not have an instance - there are nodes
+that actually have no static plug information, but will dynamically generate them.
+For this to work, they need an instance - thus the plugs method is an instance
+method and is meant to be the most commonly used one.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.NodeBase.root">
+<tt class="descname">root</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.process.NodeBase.root" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the root of the DAG - it has no further parents</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.NodeBase.setID">
+<tt class="descname">setID</tt><big>(</big><em>newID</em><big>)</big><a class="headerlink" href="#mrv.automation.process.NodeBase.setID" title="Permalink to this definition">¶</a></dt>
+<dd>Set id of this node to newiD
+:return: previously assigned id</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.automation.process.NodeBase.shellcls">
+<tt class="descname">shellcls</tt><a class="headerlink" href="#mrv.automation.process.NodeBase.shellcls" title="Permalink to this definition">¶</a></dt>
+<dd>alias of <tt class="xref docutils literal"><span class="pre">_PlugShell</span></tt></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.NodeBase.supports">
+<tt class="descname">supports</tt><big>(</big><em>interface_type</em><big>)</big><a class="headerlink" href="#mrv.automation.process.NodeBase.supports" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this instance supports the interface of the given type</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>interface_type</em> &#8211; Type of the interface you require this instance 
+to support</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Must be used in case you only have a weak reference of your interface
+instance or proxy which is a case where the ordinary isinstance( obj, iInterface )
+will not work</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.NodeBase.toShell">
+<tt class="descname">toShell</tt><big>(</big><em>plug</em><big>)</big><a class="headerlink" href="#mrv.automation.process.NodeBase.toShell" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">a plugshell as suitable to for this class</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.NodeBase.toShells">
+<tt class="descname">toShells</tt><big>(</big><em>plugs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.NodeBase.toShells" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of shells made from plugs and our node</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.automation.process-module.html#Or">Epydoc: mrv.automation.process</a></p>
+<dl class="class">
+<dt id="mrv.automation.process.Or">
+<em class="property">class </em><tt class="descclassname">mrv.automation.process.</tt><tt class="descname">Or</tt><big>(</big><em>*args</em><big>)</big><a class="headerlink" href="#mrv.automation.process.Or" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>For use with python&#8217;s filter method, simulates logical OR
+Usage: filter(Or(f1,f2,fn), sequence)</p>
+<dl class="attribute">
+<dt id="mrv.automation.process.Or.functions">
+<tt class="descname">functions</tt><a class="headerlink" href="#mrv.automation.process.Or.functions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.automation.process.ProcessBase-class.html">Epydoc: mrv.automation.process.ProcessBase</a></p>
+<dl class="class">
+<dt id="mrv.automation.process.ProcessBase">
+<em class="property">class </em><tt class="descclassname">mrv.automation.process.</tt><tt class="descname">ProcessBase</tt><big>(</big><em>id</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.ProcessBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.dge.NodeBase" class="reference external" href="mrv.dge.html#mrv.dge.NodeBase"><tt class="xref docutils literal"><span class="pre">mrv.dge.NodeBase</span></tt></a></p>
+<p>The base class for all processes, defining a common interface
+Inputs and Outputs of this node are statically described using plugs</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">the process base is able to duplcate properly as it stores in constructor
+arguments accordingly</td>
+</tr>
+</tbody>
+</table>
+<dl class="classmethod">
+<dt id="mrv.automation.process.ProcessBase.addSep">
+<em class="property">classmethod </em><tt class="descname">addSep</tt><big>(</big><em>item</em>, <em>sep</em><big>)</big><a class="headerlink" href="#mrv.automation.process.ProcessBase.addSep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">item with separator added to it ( just once )</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">operates best on strings</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>item</em> &#8211; item to add separator to</li>
+<li><em>sep</em> &#8211; the separator</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.ProcessBase.basename">
+<tt class="descname">basename</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.process.ProcessBase.basename" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">basename of this path, &#8216;/hello/world&#8217; -&gt; &#8216;world&#8217;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.ProcessBase.children">
+<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a39ed8&gt;</em><big>)</big><a class="headerlink" href="#mrv.automation.process.ProcessBase.children" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of intermediate children of path, [ child1 , child2 ]</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; return True to include x in result</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">the child objects returned are supposed to be valid paths, not just relative paths</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.ProcessBase.childrenDeep">
+<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c050&gt;</em><big>)</big><a class="headerlink" href="#mrv.automation.process.ProcessBase.childrenDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of all children of path, [ child1 , child2 ]</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>order</em> &#8211; order enumeration</li>
+<li><em>predicate</em> &#8211; returns true if x may be returned</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">the child objects returned are supposed to be valid paths, not just relative paths</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.ProcessBase.clearCache">
+<tt class="descname">clearCache</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.process.ProcessBase.clearCache" title="Permalink to this definition">¶</a></dt>
+<dd>Clear the cache of all plugs on this node - this basically forces it
+to recompute the next time an output plug is being queried</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.ProcessBase.compute">
+<tt class="descname">compute</tt><big>(</big><em>plug</em>, <em>mode</em><big>)</big><a class="headerlink" href="#mrv.automation.process.ProcessBase.compute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.ProcessBase.connections">
+<tt class="descname">connections</tt><big>(</big><em>inpt</em>, <em>output</em><big>)</big><a class="headerlink" href="#mrv.automation.process.ProcessBase.connections" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Tuples of input shells defining a connection of the given type from
+tuple( InputNodeOuptutShell, OurNodeInputShell ) for input connections and
+tuple( OurNodeOuptutShell, OutputNodeInputShell )</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>inpt</em> &#8211; include input connections to this node</li>
+<li><em>output</em> &#8211; include output connections ( from this node to others )</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.ProcessBase.copyFrom">
+<tt class="descname">copyFrom</tt><big>(</big><em>other</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.ProcessBase.copyFrom" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Note: we have already given our args to the class during instance creation,</dt>
+<dd>thus we do not copy args again</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.ProcessBase.copyTo">
+<tt class="descname">copyTo</tt><big>(</big><em>instance</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.ProcessBase.copyTo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy the values of ourselves onto the given instance which must be an
+instance of our class to be compatible.
+Only the common classes will be copied to instance</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">altered instance</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">instance will be altered during the process</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.ProcessBase.copyToOther">
+<tt class="descname">copyToOther</tt><big>(</big><em>instance</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.ProcessBase.copyToOther" title="Permalink to this definition">¶</a></dt>
+<dd>As <cite>copyTo</cite>, but does only require the objects to have a common base.
+It will match the actually compatible base classes and call <cite>copyFrom</cite>
+if possible.
+As more checking is performed, this method performs worse than <cite>copyTo</cite></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.ProcessBase.createInstance">
+<tt class="descname">createInstance</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.ProcessBase.createInstance" title="Permalink to this definition">¶</a></dt>
+<dd>Create a copy of self and return it</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.ProcessBase.duplicate">
+<tt class="descname">duplicate</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.ProcessBase.duplicate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements a c-style copy constructor by creating a new instance of self
+and applying the <cite>copyFrom</cite> methods from base to all classes implementing the copyfrom
+method. Thus we will call the method directly on the class</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>args</em> &#8211; passed to <cite>copyFrom</cite> and <cite>createInstance</cite> method to give additional directions</li>
+<li><em>kwargs</em> &#8211; see param args</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.ProcessBase.evaluateState">
+<tt class="descname">evaluateState</tt><big>(</big><em>plug</em>, <em>mode</em><big>)</big><a class="headerlink" href="#mrv.automation.process.ProcessBase.evaluateState" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">an instance suitable to be stored in the given plug</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>plug</em> &#8211; plug that triggered the computation - use it to compare against
+your classes plugs to see which output is required and return a result suitable
+to be stored in plug</li>
+<li><em>mode</em> &#8211; <p>bit flags as follows:</p>
+<dl class="docutils">
+<dt>is_state:</dt>
+<dd>your return value represents the current state of the process - your output will
+represent what actually is present. You may not alter the state of your environment,
+thus this operation is strictly read-only.
+According to your output, when called you need to setup a certain state
+and return the results according to that state. This flag means you are requrested
+to return everything that is right according to the state you shall create.
+If this state is disabled, you should not return the current state, but behave
+according to the other ones.</dd>
+<dt>target_state:</dt>
+<dd>your return value must represent the &#8216;should&#8217; state - thus you must assure
+that the environment is left in a state that matches your plug state - the result
+of that operation will be returned.
+Usually, but not necessarily, the is_state is also requested so that the output
+represents the complete new is_state ( the new state after you changed the environment
+to match the plug_state )</dd>
+<dt>dirty_check:</dt>
+<dd>Always comes in conjunction with is_state. You are required to return the is_state
+but raise a DirtyException if your inputs would require you to adjust the environment
+to deliver the plug state. If the is_state if the environment is the plug_state
+as there is nothing to do for you, do not raise and simply return your output.</dd>
+</dl>
+<p>The call takes place as there is no cache for plugType.</p>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">needs to be implemented by subclasses, but subclasses can just call their
+superclass for all unhandled plugs resulting in consistent error messages</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.automation.process.ProcessBase.filterCompatiblePlugs">
+<em class="property">classmethod </em><tt class="descname">filterCompatiblePlugs</tt><big>(</big><em>plugs</em>, <em>attrOrValue</em>, <em>raise_on_ambiguity=False</em>, <em>attr_affinity=False</em>, <em>attr_as_source=True</em><big>)</big><a class="headerlink" href="#mrv.automation.process.ProcessBase.filterCompatiblePlugs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">sorted list of (rate,plug) tuples suitable to deal with the given attribute.
+Thus they could connect to it as well as get their value set.
+Most suitable plug comes first.
+Incompatible plugs will be pruned.</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>attrOrValue</em> &#8211; either an attribute or the value you would like to set to the
+attr at the plug in question.</li>
+<li><em>raise_on_ambiguity</em> &#8211; if True, the method raises if a plug has the same
+rating as another plug already on the output list, thus it&#8217;s not clear anymore
+which plug should handle a request</li>
+<li><em>attr_affinity</em> &#8211; if True, it will not check connection affinity, but attribute
+affinity only. It checks how compatible the attributes of the plugs are, disregarding
+whether they can be connected or not
+Only valid if attrOrValue is an attribute</li>
+<li><em>attr_as_source</em> &#8211; if True, attrOrValue will be treated as the source of a connection or
+each plug would need to take its values.
+if False, attrOrValue is the destination of a connection and it needs to take values of the given plugs
+or they would connect to it. Only used if attrOrValue is an attribute.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises TypeError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">if ambiguous input was found</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.ProcessBase.fullChildName">
+<tt class="descname">fullChildName</tt><big>(</big><em>childname</em><big>)</big><a class="headerlink" href="#mrv.automation.process.ProcessBase.fullChildName" title="Permalink to this definition">¶</a></dt>
+<dd>Add the given name to the string version of our instance
+:return: string with childname added like name _sep childname</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.ProcessBase.id">
+<tt class="descname">id</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.process.ProcessBase.id" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">ID of this instance</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.ProcessBase.inputPlugs">
+<tt class="descname">inputPlugs</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.ProcessBase.inputPlugs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of plugs suitable as input</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">convenience method</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.automation.process.ProcessBase.inputPlugsStatic">
+<em class="property">classmethod </em><tt class="descname">inputPlugsStatic</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.ProcessBase.inputPlugsStatic" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of static plugs suitable as input</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">convenience method</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.ProcessBase.isPartOf">
+<tt class="descname">isPartOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.automation.process.ProcessBase.isPartOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if self is a part of other, and thus can be found in other</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings only</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.ProcessBase.isRoot">
+<tt class="descname">isRoot</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.process.ProcessBase.isRoot" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this path is the root of the DAG</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.ProcessBase.isRootOf">
+<tt class="descname">isRootOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.automation.process.ProcessBase.isRootOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True other starts with self</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">we assume other has the same type as self, thus the same separator</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.ProcessBase.iterParents">
+<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c230&gt;</em><big>)</big><a class="headerlink" href="#mrv.automation.process.ProcessBase.iterParents" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">generator retrieving all parents up to the root</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; returns True for all x that you want to be returned</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.ProcessBase.outputPlugs">
+<tt class="descname">outputPlugs</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.ProcessBase.outputPlugs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of plugs suitable to deliver output</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">convenience method</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.automation.process.ProcessBase.outputPlugsStatic">
+<em class="property">classmethod </em><tt class="descname">outputPlugsStatic</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.ProcessBase.outputPlugsStatic" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of static plugs suitable to deliver output</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">convenience method</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.ProcessBase.parent">
+<tt class="descname">parent</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.process.ProcessBase.parent" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">parent of this path, &#8216;/hello/world&#8217; -&gt; &#8216;/hello&#8217; or None if this path
+is the dag&#8217;s root</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.ProcessBase.parentDeep">
+<tt class="descname">parentDeep</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.process.ProcessBase.parentDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">all parents of this path, &#8216;/hello/my/world&#8217; -&gt; [ &#8216;/hello/my&#8217;,&#8217;/hello&#8217; ]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.ProcessBase.plugs">
+<tt class="descname">plugs</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x1d29938&gt;</em><big>)</big><a class="headerlink" href="#mrv.automation.process.ProcessBase.plugs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of dynamic plugs as defined on this node - they are usually retrieved
+on class level, but may be overridden on instance level</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; return static plug only if predicate is true</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.automation.process.ProcessBase.plugsStatic">
+<em class="property">classmethod </em><tt class="descname">plugsStatic</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x1d29848&gt;</em><big>)</big><a class="headerlink" href="#mrv.automation.process.ProcessBase.plugsStatic" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of static plugs as defined on this node - they are class members</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; return static plug only if predicate is true</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Use this method only if you do not have an instance - there are nodes
+that actually have no static plug information, but will dynamically generate them.
+For this to work, they need an instance - thus the plugs method is an instance
+method and is meant to be the most commonly used one.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.ProcessBase.prepareProcess">
+<tt class="descname">prepareProcess</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.process.ProcessBase.prepareProcess" title="Permalink to this definition">¶</a></dt>
+<dd>Will be called on all processes of the workflow once before a target is
+actually being queried by someone
+It should be used to do whatever you think is required to work as process.
+This uauslly is a special case for most preocesses</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.ProcessBase.root">
+<tt class="descname">root</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.process.ProcessBase.root" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the root of the DAG - it has no further parents</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.ProcessBase.setID">
+<tt class="descname">setID</tt><big>(</big><em>newID</em><big>)</big><a class="headerlink" href="#mrv.automation.process.ProcessBase.setID" title="Permalink to this definition">¶</a></dt>
+<dd>Set id of this node to newiD
+:return: previously assigned id</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.automation.process.ProcessBase.shellcls">
+<tt class="descname">shellcls</tt><a class="headerlink" href="#mrv.automation.process.ProcessBase.shellcls" title="Permalink to this definition">¶</a></dt>
+<dd>alias of <tt class="xref docutils literal"><span class="pre">_PlugShell</span></tt></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.ProcessBase.supportedTargetTypes">
+<tt class="descname">supportedTargetTypes</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.process.ProcessBase.supportedTargetTypes" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list target types that can be output</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">targetTypes are classes, not instances</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.ProcessBase.supports">
+<tt class="descname">supports</tt><big>(</big><em>interface_type</em><big>)</big><a class="headerlink" href="#mrv.automation.process.ProcessBase.supports" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this instance supports the interface of the given type</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>interface_type</em> &#8211; Type of the interface you require this instance 
+to support</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Must be used in case you only have a weak reference of your interface
+instance or proxy which is a case where the ordinary isinstance( obj, iInterface )
+will not work</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.ProcessBase.targetRating">
+<tt class="descname">targetRating</tt><big>(</big><em>target</em>, <em>check_input_plugs=True</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.ProcessBase.targetRating" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">tuple( int, PlugShell )
+int between 0 and 255 - 255 means target matches perfectly, 0
+means complete incompatability. Any inbetweens indicate the target can be
+achieved, but maybe just in a basic way</p>
+<p>If rate is 0, the object will be None, otherwise its a plugShell to the
+input attribute that can take target as input. In process terms this means
+that at least one output plug exists that produces the target.</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>target</em> &#8211; instance or class of target to check for compatability</li>
+<li><em>check_input_plugs</em> &#8211; if True, input plugs will be checked for compatability of target,
+otherwise the output plugs</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises TypeError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">if the result is ambiguous and raise_on_ambiguity = 1</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.ProcessBase.toShell">
+<tt class="descname">toShell</tt><big>(</big><em>plug</em><big>)</big><a class="headerlink" href="#mrv.automation.process.ProcessBase.toShell" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">a plugshell as suitable to for this class</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.ProcessBase.toShells">
+<tt class="descname">toShells</tt><big>(</big><em>plugs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.ProcessBase.toShells" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of shells made from plugs and our node</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.ProcessBase.workflow">
+<tt class="descname">workflow</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.process.ProcessBase.workflow" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the workflow instance we are connected with. Its used to query global data</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.automation.process.WorkflowProcessBase-class.html">Epydoc: mrv.automation.process.WorkflowProcessBase</a></p>
+<dl class="class">
+<dt id="mrv.automation.process.WorkflowProcessBase">
+<em class="property">class </em><tt class="descclassname">mrv.automation.process.</tt><tt class="descname">WorkflowProcessBase</tt><big>(</big><em>id</em>, <em>wflInstance=None</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.dgfe.GraphNodeBase" class="reference external" href="mrv.dgfe.html#mrv.dgfe.GraphNodeBase"><tt class="xref docutils literal"><span class="pre">mrv.dgfe.GraphNodeBase</span></tt></a>, <a title="mrv.automation.process.ProcessBase" class="reference internal" href="#mrv.automation.process.ProcessBase"><tt class="xref docutils literal"><span class="pre">mrv.automation.process.ProcessBase</span></tt></a></p>
+<p>A process wrapping a workflow, allowing workflows to be nested
+Derive from this class and initialize it with the workflow you would like to have wrapped
+The process works by transmitting relevant calls to its underlying workflow, allowing
+nodeInsideNestedWorkflow -&gt; thisworkflow.node.plug connections</p>
+<p>Workflows are standin nodes - they can connect anything their wrapped nodes can connect</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">to prevent dependency issues, the workflow instance will be bound on first use</td>
+</tr>
+</tbody>
+</table>
+<dl class="classmethod">
+<dt id="mrv.automation.process.WorkflowProcessBase.addSep">
+<em class="property">classmethod </em><tt class="descname">addSep</tt><big>(</big><em>item</em>, <em>sep</em><big>)</big><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase.addSep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">item with separator added to it ( just once )</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">operates best on strings</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>item</em> &#8211; item to add separator to</li>
+<li><em>sep</em> &#8211; the separator</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.WorkflowProcessBase.basename">
+<tt class="descname">basename</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase.basename" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">basename of this path, &#8216;/hello/world&#8217; -&gt; &#8216;world&#8217;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.WorkflowProcessBase.children">
+<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a39ed8&gt;</em><big>)</big><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase.children" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of intermediate children of path, [ child1 , child2 ]</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; return True to include x in result</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">the child objects returned are supposed to be valid paths, not just relative paths</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.WorkflowProcessBase.childrenDeep">
+<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c050&gt;</em><big>)</big><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase.childrenDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of all children of path, [ child1 , child2 ]</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>order</em> &#8211; order enumeration</li>
+<li><em>predicate</em> &#8211; returns true if x may be returned</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">the child objects returned are supposed to be valid paths, not just relative paths</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.WorkflowProcessBase.clearCache">
+<tt class="descname">clearCache</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase.clearCache" title="Permalink to this definition">¶</a></dt>
+<dd>Clear the cache of all plugs on this node - this basically forces it
+to recompute the next time an output plug is being queried</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.WorkflowProcessBase.clearPlugCache">
+<tt class="descname">clearPlugCache</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase.clearPlugCache" title="Permalink to this definition">¶</a></dt>
+<dd><p>if a cache has been build as caching is enabled, this method clears
+the cache forcing it to be updated on the next demand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">this could be more efficient by just deleting plugs that are
+not required anymore, but probably this method can expect the whole
+cache to be deleted right away ... so its fine</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.WorkflowProcessBase.compute">
+<tt class="descname">compute</tt><big>(</big><em>plug</em>, <em>mode</em><big>)</big><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase.compute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.WorkflowProcessBase.connections">
+<tt class="descname">connections</tt><big>(</big><em>inpt</em>, <em>output</em><big>)</big><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase.connections" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Tuples of input shells defining a connection of the given type from
+tuple( InputNodeOuptutShell, OurNodeInputShell ) for input connections and
+tuple( OurNodeOuptutShell, OutputNodeInputShell )</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>inpt</em> &#8211; include input connections to this node</li>
+<li><em>output</em> &#8211; include output connections ( from this node to others )</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.WorkflowProcessBase.copyFrom">
+<tt class="descname">copyFrom</tt><big>(</big><em>other</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase.copyFrom" title="Permalink to this definition">¶</a></dt>
+<dd>Actually, it does nothing because our plugs are linked to the internal
+nodes in a quite complex way. The good thing is that this is just a cache that
+will be updated once someone queries connections again.
+Basically it comes down to the graph duplicating itself using node and plug
+methods instead of just doing his &#8216;internal&#8217; magic</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.WorkflowProcessBase.copyTo">
+<tt class="descname">copyTo</tt><big>(</big><em>instance</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase.copyTo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy the values of ourselves onto the given instance which must be an
+instance of our class to be compatible.
+Only the common classes will be copied to instance</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">altered instance</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">instance will be altered during the process</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.WorkflowProcessBase.copyToOther">
+<tt class="descname">copyToOther</tt><big>(</big><em>instance</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase.copyToOther" title="Permalink to this definition">¶</a></dt>
+<dd>As <cite>copyTo</cite>, but does only require the objects to have a common base.
+It will match the actually compatible base classes and call <cite>copyFrom</cite>
+if possible.
+As more checking is performed, this method performs worse than <cite>copyTo</cite></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.WorkflowProcessBase.createInstance">
+<tt class="descname">createInstance</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase.createInstance" title="Permalink to this definition">¶</a></dt>
+<dd>Create a copy of self and return it - required due to our very special constructor</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.WorkflowProcessBase.duplicate">
+<tt class="descname">duplicate</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase.duplicate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements a c-style copy constructor by creating a new instance of self
+and applying the <cite>copyFrom</cite> methods from base to all classes implementing the copyfrom
+method. Thus we will call the method directly on the class</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>args</em> &#8211; passed to <cite>copyFrom</cite> and <cite>createInstance</cite> method to give additional directions</li>
+<li><em>kwargs</em> &#8211; see param args</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.WorkflowProcessBase.evaluateState">
+<tt class="descname">evaluateState</tt><big>(</big><em>plug</em>, <em>mode</em><big>)</big><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase.evaluateState" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">an instance suitable to be stored in the given plug</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>plug</em> &#8211; plug that triggered the computation - use it to compare against
+your classes plugs to see which output is required and return a result suitable
+to be stored in plug</li>
+<li><em>mode</em> &#8211; <p>bit flags as follows:</p>
+<dl class="docutils">
+<dt>is_state:</dt>
+<dd>your return value represents the current state of the process - your output will
+represent what actually is present. You may not alter the state of your environment,
+thus this operation is strictly read-only.
+According to your output, when called you need to setup a certain state
+and return the results according to that state. This flag means you are requrested
+to return everything that is right according to the state you shall create.
+If this state is disabled, you should not return the current state, but behave
+according to the other ones.</dd>
+<dt>target_state:</dt>
+<dd>your return value must represent the &#8216;should&#8217; state - thus you must assure
+that the environment is left in a state that matches your plug state - the result
+of that operation will be returned.
+Usually, but not necessarily, the is_state is also requested so that the output
+represents the complete new is_state ( the new state after you changed the environment
+to match the plug_state )</dd>
+<dt>dirty_check:</dt>
+<dd>Always comes in conjunction with is_state. You are required to return the is_state
+but raise a DirtyException if your inputs would require you to adjust the environment
+to deliver the plug state. If the is_state if the environment is the plug_state
+as there is nothing to do for you, do not raise and simply return your output.</dd>
+</dl>
+<p>The call takes place as there is no cache for plugType.</p>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">needs to be implemented by subclasses, but subclasses can just call their
+superclass for all unhandled plugs resulting in consistent error messages</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.automation.process.WorkflowProcessBase.filterCompatiblePlugs">
+<em class="property">classmethod </em><tt class="descname">filterCompatiblePlugs</tt><big>(</big><em>plugs</em>, <em>attrOrValue</em>, <em>raise_on_ambiguity=False</em>, <em>attr_affinity=False</em>, <em>attr_as_source=True</em><big>)</big><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase.filterCompatiblePlugs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">sorted list of (rate,plug) tuples suitable to deal with the given attribute.
+Thus they could connect to it as well as get their value set.
+Most suitable plug comes first.
+Incompatible plugs will be pruned.</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>attrOrValue</em> &#8211; either an attribute or the value you would like to set to the
+attr at the plug in question.</li>
+<li><em>raise_on_ambiguity</em> &#8211; if True, the method raises if a plug has the same
+rating as another plug already on the output list, thus it&#8217;s not clear anymore
+which plug should handle a request</li>
+<li><em>attr_affinity</em> &#8211; if True, it will not check connection affinity, but attribute
+affinity only. It checks how compatible the attributes of the plugs are, disregarding
+whether they can be connected or not
+Only valid if attrOrValue is an attribute</li>
+<li><em>attr_as_source</em> &#8211; if True, attrOrValue will be treated as the source of a connection or
+each plug would need to take its values.
+if False, attrOrValue is the destination of a connection and it needs to take values of the given plugs
+or they would connect to it. Only used if attrOrValue is an attribute.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises TypeError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">if ambiguous input was found</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.WorkflowProcessBase.fullChildName">
+<tt class="descname">fullChildName</tt><big>(</big><em>childname</em><big>)</big><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase.fullChildName" title="Permalink to this definition">¶</a></dt>
+<dd>Add the given name to the string version of our instance
+:return: string with childname added like name _sep childname</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.WorkflowProcessBase.id">
+<tt class="descname">id</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase.id" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">ID of this instance</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.WorkflowProcessBase.inputPlugs">
+<tt class="descname">inputPlugs</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase.inputPlugs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of plugs suitable as input</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">convenience method</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.automation.process.WorkflowProcessBase.inputPlugsStatic">
+<em class="property">classmethod </em><tt class="descname">inputPlugsStatic</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase.inputPlugsStatic" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of static plugs suitable as input</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">convenience method</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.WorkflowProcessBase.isPartOf">
+<tt class="descname">isPartOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase.isPartOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if self is a part of other, and thus can be found in other</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings only</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.WorkflowProcessBase.isRoot">
+<tt class="descname">isRoot</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase.isRoot" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this path is the root of the DAG</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.WorkflowProcessBase.isRootOf">
+<tt class="descname">isRootOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase.isRootOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True other starts with self</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">we assume other has the same type as self, thus the same separator</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.WorkflowProcessBase.iterParents">
+<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c230&gt;</em><big>)</big><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase.iterParents" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">generator retrieving all parents up to the root</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; returns True for all x that you want to be returned</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.WorkflowProcessBase.outputPlugs">
+<tt class="descname">outputPlugs</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase.outputPlugs" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of plugs suitable to deliver output</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">convenience method</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.automation.process.WorkflowProcessBase.outputPlugsStatic">
+<em class="property">classmethod </em><tt class="descname">outputPlugsStatic</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase.outputPlugsStatic" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of static plugs suitable to deliver output</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">convenience method</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.WorkflowProcessBase.parent">
+<tt class="descname">parent</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase.parent" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">parent of this path, &#8216;/hello/world&#8217; -&gt; &#8216;/hello&#8217; or None if this path
+is the dag&#8217;s root</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.WorkflowProcessBase.parentDeep">
+<tt class="descname">parentDeep</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase.parentDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">all parents of this path, &#8216;/hello/my/world&#8217; -&gt; [ &#8216;/hello/my&#8217;,&#8217;/hello&#8217; ]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.WorkflowProcessBase.plugs">
+<tt class="descname">plugs</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase.plugs" title="Permalink to this definition">¶</a></dt>
+<dd>Calls <cite>_getNodePlugs</cite> method to ask you to actuallly return your
+actual nodes and plugs or shells.
+We prepare the returned value to assure we are being called in certain occasion,
+which actually glues outside and inside worlds together</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.automation.process.WorkflowProcessBase.plugsStatic">
+<em class="property">classmethod </em><tt class="descname">plugsStatic</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x1d29848&gt;</em><big>)</big><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase.plugsStatic" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of static plugs as defined on this node - they are class members</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; return static plug only if predicate is true</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Use this method only if you do not have an instance - there are nodes
+that actually have no static plug information, but will dynamically generate them.
+For this to work, they need an instance - thus the plugs method is an instance
+method and is meant to be the most commonly used one.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.WorkflowProcessBase.prepareProcess">
+<tt class="descname">prepareProcess</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase.prepareProcess" title="Permalink to this definition">¶</a></dt>
+<dd><p>As we have different callgraphs, but want proper reports, just swap in the
+callgraph of our own workflow to allow it to be maintained correctly when the nodes
+of the wrapped graph evaluate.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">this requires that we get called after the callgraph has bene initialized</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.WorkflowProcessBase.root">
+<tt class="descname">root</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase.root" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the root of the DAG - it has no further parents</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.WorkflowProcessBase.setID">
+<tt class="descname">setID</tt><big>(</big><em>newID</em><big>)</big><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase.setID" title="Permalink to this definition">¶</a></dt>
+<dd>Set id of this node to newiD
+:return: previously assigned id</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.automation.process.WorkflowProcessBase.shellcls">
+<tt class="descname">shellcls</tt><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase.shellcls" title="Permalink to this definition">¶</a></dt>
+<dd>alias of <tt class="xref docutils literal"><span class="pre">_OIShell</span></tt></dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.WorkflowProcessBase.supportedTargetTypes">
+<tt class="descname">supportedTargetTypes</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase.supportedTargetTypes" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list target types that can be output</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">targetTypes are classes, not instances</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.WorkflowProcessBase.supports">
+<tt class="descname">supports</tt><big>(</big><em>interface_type</em><big>)</big><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase.supports" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this instance supports the interface of the given type</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>interface_type</em> &#8211; Type of the interface you require this instance 
+to support</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Must be used in case you only have a weak reference of your interface
+instance or proxy which is a case where the ordinary isinstance( obj, iInterface )
+will not work</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.WorkflowProcessBase.targetRating">
+<tt class="descname">targetRating</tt><big>(</big><em>target</em>, <em>check_input_plugs=True</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase.targetRating" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">tuple( int, PlugShell )
+int between 0 and 255 - 255 means target matches perfectly, 0
+means complete incompatability. Any inbetweens indicate the target can be
+achieved, but maybe just in a basic way</p>
+<p>If rate is 0, the object will be None, otherwise its a plugShell to the
+input attribute that can take target as input. In process terms this means
+that at least one output plug exists that produces the target.</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>target</em> &#8211; instance or class of target to check for compatability</li>
+<li><em>check_input_plugs</em> &#8211; if True, input plugs will be checked for compatability of target,
+otherwise the output plugs</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises TypeError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">if the result is ambiguous and raise_on_ambiguity = 1</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.WorkflowProcessBase.toShell">
+<tt class="descname">toShell</tt><big>(</big><em>plug</em><big>)</big><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase.toShell" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">a plugshell as suitable to for this class</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.WorkflowProcessBase.toShells">
+<tt class="descname">toShells</tt><big>(</big><em>plugs</em><big>)</big><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase.toShells" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of shells made from plugs and our node</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.automation.process.WorkflowProcessBase.workflow">
+<tt class="descname">workflow</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.automation.process.WorkflowProcessBase.workflow" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the workflow instance we are connected with. Its used to query global data</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="../index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#"><tt class="docutils literal"><span class="pre">mrv.automation.process</span></tt></a><ul>
+<li><a class="reference external" href="#functions">Functions</a></li>
+<li><a class="reference external" href="#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="mrv.maya.nt.geometry.html"
+                                  title="previous chapter"><tt class="docutils literal"><span class="pre">mrv.maya.nt.geometry</span></tt></a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="mrv.automation.base.html"
+                                  title="next chapter"><tt class="docutils literal docutils literal"><span class="pre">mrv.automation.base</span></tt></a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/generated/mrv.automation.process.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.automation.base.html" title="mrv.automation.base"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.nt.geometry.html" title="mrv.maya.nt.geometry"
+             >previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Apr 19, 2011.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

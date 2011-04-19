@@ -1,0 +1,349 @@
+<html>
+<head>
+<title>mrv.automation.process</title>
+</head>
+<body>
+mrv.automation.process
+<style>
+.coverage pre {float: left; margin: 0px 1em; border: none;
+               padding: 0px; }
+.num pre { margin: 0px }
+.nocov, .nocov pre {background-color: #faa}
+.cov, .cov pre {background-color: #cfc}
+div.coverage div { clear: both; height: 1.1em}
+</style>
+<div class="stats">
+Covered: 198 lines<br/>
+Missed: 11 lines<br/>
+Skipped 115 lines<br/>
+Percent: 94 %<br/>
+
+</div>
+<div class="coverage">
+<div class="skip"><span class="num"><pre>  1</pre></span><pre># -*- coding: utf-8 -*-</pre></div>
+<div class="cov"><span class="num"><pre>  2</pre></span><pre>&quot;&quot;&quot;Contains base class and common methods for all processes &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  3</pre></span><pre>__docformat__ = &quot;restructuredtext&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  4</pre></span><pre>__all__ = list()</pre></div>
+<div class="skip"><span class="num"><pre>  5</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  6</pre></span><pre>from mrv.dge import NodeBase</pre></div>
+<div class="cov"><span class="num"><pre>  7</pre></span><pre>from mrv.dgfe import GraphNodeBase</pre></div>
+<div class="cov"><span class="num"><pre>  8</pre></span><pre>from mrv.dge import Attribute</pre></div>
+<div class="cov"><span class="num"><pre>  9</pre></span><pre>import mrv.automation.base as wflbase</pre></div>
+<div class="skip"><span class="num"><pre> 10</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 11</pre></span><pre>from mrv.path import make_path</pre></div>
+<div class="cov"><span class="num"><pre> 12</pre></span><pre>from mrv.util import Or</pre></div>
+<div class="skip"><span class="num"><pre> 13</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 14</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 15</pre></span><pre>def track_output_call( func ):</pre></div>
+<div class="cov"><span class="num"><pre> 16</pre></span><pre>	&quot;&quot;&quot;Wraps the proecss.evaluateStateBase function allowing to gather plenty of information</pre></div>
+<div class="cov"><span class="num"><pre> 17</pre></span><pre>	about the call, as well as error statistics&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 18</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 19</pre></span><pre>	def track_func( self, plug, mode ):</pre></div>
+<div class="skip"><span class="num"><pre> 20</pre></span><pre>		# return simple result if tracking is disabled</pre></div>
+<div class="cov"><span class="num"><pre> 21</pre></span><pre>		if not self.track_compute_calls:</pre></div>
+<div class="cov"><span class="num"><pre> 22</pre></span><pre>			return func( self, plug, mode )</pre></div>
+<div class="skip"><span class="num"><pre> 23</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 24</pre></span><pre>		pdata = self.workflow()._trackOutputQueryStart( self, plug, mode )</pre></div>
+<div class="skip"><span class="num"><pre> 25</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 26</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre> 27</pre></span><pre>			result = func( self, plug, mode )</pre></div>
+<div class="nocov"><span class="num"><pre> 28</pre></span><pre>		except Exception,e:</pre></div>
+<div class="nocov"><span class="num"><pre> 29</pre></span><pre>			pdata.exception = e</pre></div>
+<div class="nocov"><span class="num"><pre> 30</pre></span><pre>			self.workflow()._trackOutputQueryEnd( None )</pre></div>
+<div class="nocov"><span class="num"><pre> 31</pre></span><pre>			raise</pre></div>
+<div class="skip"><span class="num"><pre> 32</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 33</pre></span><pre>		self.workflow()._trackOutputQueryEnd( result )</pre></div>
+<div class="cov"><span class="num"><pre> 34</pre></span><pre>		return result</pre></div>
+<div class="skip"><span class="num"><pre> 35</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 36</pre></span><pre>	# END track func</pre></div>
+<div class="skip"><span class="num"><pre> 37</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 38</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 39</pre></span><pre>	return track_func</pre></div>
+<div class="skip"><span class="num"><pre> 40</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 41</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 42</pre></span><pre>class ProcessBase( NodeBase ):</pre></div>
+<div class="cov"><span class="num"><pre> 43</pre></span><pre>	&quot;&quot;&quot;The base class for all processes, defining a common interface</pre></div>
+<div class="cov"><span class="num"><pre> 44</pre></span><pre>	Inputs and Outputs of this node are statically described using plugs</pre></div>
+<div class="skip"><span class="num"><pre> 45</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 46</pre></span><pre>	:note: the process base is able to duplcate properly as it stores in constructor</pre></div>
+<div class="cov"><span class="num"><pre> 47</pre></span><pre>		arguments accordingly</pre></div>
+<div class="cov"><span class="num"><pre> 48</pre></span><pre>	&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 49</pre></span><pre>	kNo, kGood, kPerfect = 0, 127, 255				# specify how good a certain target can be produced</pre></div>
+<div class="cov"><span class="num"><pre> 50</pre></span><pre>	is_state, target_state, dirty_check = ( 1,2,4 )</pre></div>
+<div class="skip"><span class="num"><pre> 51</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 52</pre></span><pre>	noun = &quot;Noun ProcessBase,redefine in subclass&quot;	# used in reports</pre></div>
+<div class="cov"><span class="num"><pre> 53</pre></span><pre>	verb = &quot;Verb ProcessBase,redefine in subclass&quot; # used in reports</pre></div>
+<div class="skip"><span class="num"><pre> 54</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 55</pre></span><pre>	#{ Configuration</pre></div>
+<div class="skip"><span class="num"><pre> 56</pre></span><pre>	# if False, the computation results will not be tracked in a callgraph</pre></div>
+<div class="cov"><span class="num"><pre> 57</pre></span><pre>	track_compute_calls = True</pre></div>
+<div class="skip"><span class="num"><pre> 58</pre></span><pre>	#} END configuration</pre></div>
+<div class="skip"><span class="num"><pre> 59</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 60</pre></span><pre>	__all__.append( &quot;ProcessBase&quot; )</pre></div>
+<div class="skip"><span class="num"><pre> 61</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 62</pre></span><pre>	def __init__( self, id, *args, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre> 63</pre></span><pre>		&quot;&quot;&quot;Initialize process with most common information</pre></div>
+<div class="skip"><span class="num"><pre> 64</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 65</pre></span><pre>		:param kwargs:</pre></div>
+<div class="cov"><span class="num"><pre> 66</pre></span><pre>			 * noun: noun describing the process, ( i.e. &quot;Process&quot; )</pre></div>
+<div class="cov"><span class="num"><pre> 67</pre></span><pre>			 * verb: verb describing the process, ( i.e. &quot;processing&quot; )</pre></div>
+<div class="cov"><span class="num"><pre> 68</pre></span><pre>			 * workflow: the workflow this instance is part of&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 69</pre></span><pre>		self._args = args</pre></div>
+<div class="cov"><span class="num"><pre> 70</pre></span><pre>		self._kwargs = kwargs</pre></div>
+<div class="cov"><span class="num"><pre> 71</pre></span><pre>		NodeBase.__init__( self, id = id, *args, **kwargs )		# init last - need our info first !</pre></div>
+<div class="skip"><span class="num"><pre> 72</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 73</pre></span><pre>	#{ iDuplicatable Interface</pre></div>
+<div class="cov"><span class="num"><pre> 74</pre></span><pre>	def createInstance( self, *args, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre> 75</pre></span><pre>		&quot;&quot;&quot;Create a copy of self and return it&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 76</pre></span><pre>		return self.__class__( self.id(), *self._args, **self._kwargs )</pre></div>
+<div class="skip"><span class="num"><pre> 77</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 78</pre></span><pre>	def copyFrom( self, other, *args, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre> 79</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 80</pre></span><pre>		Note: we have already given our args to the class during instance creation,</pre></div>
+<div class="cov"><span class="num"><pre> 81</pre></span><pre>			thus we do not copy args again&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 82</pre></span><pre>		pass</pre></div>
+<div class="skip"><span class="num"><pre> 83</pre></span><pre>	#} END iDuplicatable</pre></div>
+<div class="skip"><span class="num"><pre> 84</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 85</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 86</pre></span><pre>	#{ Query</pre></div>
+<div class="skip"><span class="num"><pre> 87</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 88</pre></span><pre>	def targetRating( self, target, check_input_plugs = True, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre> 89</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 90</pre></span><pre>		:return: tuple( int, PlugShell )</pre></div>
+<div class="cov"><span class="num"><pre> 91</pre></span><pre>			int between 0 and 255 - 255 means target matches perfectly, 0</pre></div>
+<div class="cov"><span class="num"><pre> 92</pre></span><pre>			means complete incompatability. Any inbetweens indicate the target can be</pre></div>
+<div class="cov"><span class="num"><pre> 93</pre></span><pre>			achieved, but maybe just in a basic way</pre></div>
+<div class="skip"><span class="num"><pre> 94</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre> 95</pre></span><pre>			If rate is 0, the object will be None, otherwise its a plugShell to the</pre></div>
+<div class="cov"><span class="num"><pre> 96</pre></span><pre>			input attribute that can take target as input. In process terms this means</pre></div>
+<div class="cov"><span class="num"><pre> 97</pre></span><pre>			that at least one output plug exists that produces the target.</pre></div>
+<div class="cov"><span class="num"><pre> 98</pre></span><pre>		:param target: instance or class of target to check for compatability</pre></div>
+<div class="cov"><span class="num"><pre> 99</pre></span><pre>		:param check_input_plugs: if True, input plugs will be checked for compatability of target,</pre></div>
+<div class="cov"><span class="num"><pre>100</pre></span><pre>			otherwise the output plugs</pre></div>
+<div class="cov"><span class="num"><pre>101</pre></span><pre>		:raise TypeError: if the result is ambiguous and raise_on_ambiguity = 1&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>102</pre></span><pre>		# query our ouput plugs for a compatible attr</pre></div>
+<div class="cov"><span class="num"><pre>103</pre></span><pre>		tarplugs = None</pre></div>
+<div class="cov"><span class="num"><pre>104</pre></span><pre>		if check_input_plugs:</pre></div>
+<div class="cov"><span class="num"><pre>105</pre></span><pre>			tarplugs = self.inputPlugs( )</pre></div>
+<div class="cov"><span class="num"><pre>106</pre></span><pre>		else:</pre></div>
+<div class="cov"><span class="num"><pre>107</pre></span><pre>			tarplugs = self.outputPlugs( )</pre></div>
+<div class="skip"><span class="num"><pre>108</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>109</pre></span><pre>		plugrating = self.filterCompatiblePlugs( tarplugs, target, attr_as_source=False , **kwargs )</pre></div>
+<div class="skip"><span class="num"><pre>110</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>111</pre></span><pre>		if not plugrating:		#	 no plug ?</pre></div>
+<div class="cov"><span class="num"><pre>112</pre></span><pre>			return ( 0 , None )</pre></div>
+<div class="skip"><span class="num"><pre>113</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>114</pre></span><pre>		# remove all non-writable plugs - they can never be targets</pre></div>
+<div class="cov"><span class="num"><pre>115</pre></span><pre>		writableRatedPlugs = []</pre></div>
+<div class="cov"><span class="num"><pre>116</pre></span><pre>		for rate,plug in plugrating:				# rate,plug tuple</pre></div>
+<div class="cov"><span class="num"><pre>117</pre></span><pre>			if plug.attr.flags &amp; Attribute.readonly:</pre></div>
+<div class="nocov"><span class="num"><pre>118</pre></span><pre>				continue			# need to set the attribute</pre></div>
+<div class="skip"><span class="num"><pre>119</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>120</pre></span><pre>			# connected plugs are an option, but prefer the ones being open</pre></div>
+<div class="cov"><span class="num"><pre>121</pre></span><pre>			if self.toShell( plug ).input():</pre></div>
+<div class="cov"><span class="num"><pre>122</pre></span><pre>				rate /= 2.0</pre></div>
+<div class="skip"><span class="num"><pre>123</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>124</pre></span><pre>			writableRatedPlugs.append( (rate,plug) )</pre></div>
+<div class="skip"><span class="num"><pre>125</pre></span><pre>		# END writable only filters</pre></div>
+<div class="skip"><span class="num"><pre>126</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>127</pre></span><pre>		if not writableRatedPlugs:</pre></div>
+<div class="nocov"><span class="num"><pre>128</pre></span><pre>			return ( 0, None )</pre></div>
+<div class="skip"><span class="num"><pre>129</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>130</pre></span><pre>		writableRatedPlugs.sort()		# high comes last</pre></div>
+<div class="skip"><span class="num"><pre>131</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>132</pre></span><pre>		rate, plug = writableRatedPlugs[-1]</pre></div>
+<div class="cov"><span class="num"><pre>133</pre></span><pre>		return ( int(rate), self.toShell( plug ) )</pre></div>
+<div class="skip"><span class="num"><pre>134</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>135</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>136</pre></span><pre>	def supportedTargetTypes( self ):</pre></div>
+<div class="cov"><span class="num"><pre>137</pre></span><pre>		&quot;&quot;&quot;:return: list target types that can be output</pre></div>
+<div class="cov"><span class="num"><pre>138</pre></span><pre>		:note: targetTypes are classes, not instances&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>139</pre></span><pre>		return [ p.attr.typecls for p in self.inputPlugs() ]</pre></div>
+<div class="skip"><span class="num"><pre>140</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>141</pre></span><pre>	#} END query</pre></div>
+<div class="skip"><span class="num"><pre>142</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>143</pre></span><pre>	#{ Interface</pre></div>
+<div class="skip"><span class="num"><pre>144</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>145</pre></span><pre>	def evaluateState( self, plug, mode ):</pre></div>
+<div class="cov"><span class="num"><pre>146</pre></span><pre>		&quot;&quot;&quot;:return: an instance suitable to be stored in the given plug</pre></div>
+<div class="skip"><span class="num"><pre>147</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>148</pre></span><pre>		:param plug: plug that triggered the computation - use it to compare against</pre></div>
+<div class="cov"><span class="num"><pre>149</pre></span><pre>			your classes plugs to see which output is required and return a result suitable</pre></div>
+<div class="cov"><span class="num"><pre>150</pre></span><pre>			to be stored in plug</pre></div>
+<div class="cov"><span class="num"><pre>151</pre></span><pre>		:param mode: bit flags as follows:</pre></div>
+<div class="skip"><span class="num"><pre>152</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>153</pre></span><pre>			is_state:</pre></div>
+<div class="cov"><span class="num"><pre>154</pre></span><pre>				your return value represents the current state of the process - your output will</pre></div>
+<div class="cov"><span class="num"><pre>155</pre></span><pre>				represent what actually is present. You may not alter the state of your environment,</pre></div>
+<div class="cov"><span class="num"><pre>156</pre></span><pre>				thus this operation is strictly read-only.</pre></div>
+<div class="cov"><span class="num"><pre>157</pre></span><pre>				According to your output, when called you need to setup a certain state</pre></div>
+<div class="cov"><span class="num"><pre>158</pre></span><pre>				and return the results according to that state. This flag means you are requrested</pre></div>
+<div class="cov"><span class="num"><pre>159</pre></span><pre>				to return everything that is right according to the state you shall create.</pre></div>
+<div class="cov"><span class="num"><pre>160</pre></span><pre>				If this state is disabled, you should not return the current state, but behave</pre></div>
+<div class="cov"><span class="num"><pre>161</pre></span><pre>				according to the other ones.</pre></div>
+<div class="skip"><span class="num"><pre>162</pre></span><pre>				</pre></div>
+<div class="cov"><span class="num"><pre>163</pre></span><pre>			target_state:</pre></div>
+<div class="cov"><span class="num"><pre>164</pre></span><pre>				your return value must represent the 'should' state - thus you must assure</pre></div>
+<div class="cov"><span class="num"><pre>165</pre></span><pre>				that the environment is left in a state that matches your plug state - the result</pre></div>
+<div class="cov"><span class="num"><pre>166</pre></span><pre>				of that operation will be returned.</pre></div>
+<div class="cov"><span class="num"><pre>167</pre></span><pre>				Usually, but not necessarily, the is_state is also requested so that the output</pre></div>
+<div class="cov"><span class="num"><pre>168</pre></span><pre>				represents the complete new is_state ( the new state after you changed the environment</pre></div>
+<div class="cov"><span class="num"><pre>169</pre></span><pre>				to match the plug_state )</pre></div>
+<div class="skip"><span class="num"><pre>170</pre></span><pre>				</pre></div>
+<div class="cov"><span class="num"><pre>171</pre></span><pre>			dirty_check:</pre></div>
+<div class="cov"><span class="num"><pre>172</pre></span><pre>				Always comes in conjunction with is_state. You are required to return the is_state</pre></div>
+<div class="cov"><span class="num"><pre>173</pre></span><pre>				but raise a DirtyException if your inputs would require you to adjust the environment</pre></div>
+<div class="cov"><span class="num"><pre>174</pre></span><pre>				to deliver the plug state. If the is_state if the environment is the plug_state</pre></div>
+<div class="cov"><span class="num"><pre>175</pre></span><pre>				as there is nothing to do for you, do not raise and simply return your output.</pre></div>
+<div class="skip"><span class="num"><pre>176</pre></span><pre>				</pre></div>
+<div class="cov"><span class="num"><pre>177</pre></span><pre>			The call takes place as there is no cache for plugType.</pre></div>
+<div class="cov"><span class="num"><pre>178</pre></span><pre>		:note: needs to be implemented by subclasses, but subclasses can just call their</pre></div>
+<div class="cov"><span class="num"><pre>179</pre></span><pre>			superclass for all unhandled plugs resulting in consistent error messages&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>180</pre></span><pre>		raise PlugUnhandled( &quot;Plug %s.%s cannot be handled - check your implementation&quot; % ( self, str( plug ) ) )</pre></div>
+<div class="skip"><span class="num"><pre>181</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>182</pre></span><pre>	# } END interface</pre></div>
+<div class="skip"><span class="num"><pre>183</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>184</pre></span><pre>	@track_output_call</pre></div>
+<div class="cov"><span class="num"><pre>185</pre></span><pre>	def compute( self, plug, mode = None ):</pre></div>
+<div class="cov"><span class="num"><pre>186</pre></span><pre>		&quot;&quot;&quot;Base implementation of the output, called by `input` Method.</pre></div>
+<div class="cov"><span class="num"><pre>187</pre></span><pre>		Its used to have a general hook for the flow tracing</pre></div>
+<div class="skip"><span class="num"><pre>188</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>189</pre></span><pre>		:param plug: plug to evaluate</pre></div>
+<div class="cov"><span class="num"><pre>190</pre></span><pre>		:param mode: the mode of the valuation</pre></div>
+<div class="cov"><span class="num"><pre>191</pre></span><pre>		:return: result of the computation&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>192</pre></span><pre>		wfl = self.workflow()</pre></div>
+<div class="cov"><span class="num"><pre>193</pre></span><pre>		finalmode = wfl._mode			# use global mode</pre></div>
+<div class="skip"><span class="num"><pre>194</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>195</pre></span><pre>		# if we are root, we take the mode given by the caller though</pre></div>
+<div class="cov"><span class="num"><pre>196</pre></span><pre>		if self.track_compute_calls:</pre></div>
+<div class="cov"><span class="num"><pre>197</pre></span><pre>			if wfl.callgraph().callRoot().process == self:</pre></div>
+<div class="cov"><span class="num"><pre>198</pre></span><pre>				finalmode = mode</pre></div>
+<div class="cov"><span class="num"><pre>199</pre></span><pre>		else:</pre></div>
+<div class="skip"><span class="num"><pre>200</pre></span><pre>			# either use the explicit mode or the global one</pre></div>
+<div class="cov"><span class="num"><pre>201</pre></span><pre>			finalmode = mode or wfl._mode</pre></div>
+<div class="skip"><span class="num"><pre>202</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>203</pre></span><pre>		# exceptions are handled by dgengine</pre></div>
+<div class="skip"><span class="num"><pre>204</pre></span><pre>		# call actually implemented method</pre></div>
+<div class="cov"><span class="num"><pre>205</pre></span><pre>		return self.evaluateState( plug, finalmode )</pre></div>
+<div class="skip"><span class="num"><pre>206</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>207</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>208</pre></span><pre>	#{ Base</pre></div>
+<div class="skip"><span class="num"><pre>209</pre></span><pre>	# methods that drive the actual call</pre></div>
+<div class="skip"><span class="num"><pre>210</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>211</pre></span><pre>	def prepareProcess( self ):</pre></div>
+<div class="cov"><span class="num"><pre>212</pre></span><pre>		&quot;&quot;&quot;Will be called on all processes of the workflow once before a target is</pre></div>
+<div class="cov"><span class="num"><pre>213</pre></span><pre>		actually being queried by someone</pre></div>
+<div class="cov"><span class="num"><pre>214</pre></span><pre>		It should be used to do whatever you think is required to work as process.</pre></div>
+<div class="cov"><span class="num"><pre>215</pre></span><pre>		This uauslly is a special case for most preocesses&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>216</pre></span><pre>		pass</pre></div>
+<div class="skip"><span class="num"><pre>217</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>218</pre></span><pre>	def workflow( self ):</pre></div>
+<div class="cov"><span class="num"><pre>219</pre></span><pre>		&quot;&quot;&quot;:return: the workflow instance we are connected with. Its used to query global data&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>220</pre></span><pre>		return self.graph</pre></div>
+<div class="skip"><span class="num"><pre>221</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>222</pre></span><pre>	#} END base</pre></div>
+<div class="skip"><span class="num"><pre>223</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>224</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>225</pre></span><pre>class WorkflowProcessBase( GraphNodeBase, ProcessBase ):</pre></div>
+<div class="cov"><span class="num"><pre>226</pre></span><pre>	&quot;&quot;&quot;A process wrapping a workflow, allowing workflows to be nested</pre></div>
+<div class="cov"><span class="num"><pre>227</pre></span><pre>	Derive from this class and initialize it with the workflow you would like to have wrapped</pre></div>
+<div class="cov"><span class="num"><pre>228</pre></span><pre>	The process works by transmitting relevant calls to its underlying workflow, allowing</pre></div>
+<div class="cov"><span class="num"><pre>229</pre></span><pre>	nodeInsideNestedWorkflow -&gt; thisworkflow.node.plug connections</pre></div>
+<div class="skip"><span class="num"><pre>230</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>231</pre></span><pre>	Workflows are standin nodes - they can connect anything their wrapped nodes can connect</pre></div>
+<div class="skip"><span class="num"><pre>232</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>233</pre></span><pre>	:note: to prevent dependency issues, the workflow instance will be bound on first use</pre></div>
+<div class="cov"><span class="num"><pre>234</pre></span><pre>	&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>235</pre></span><pre>	__all__.append( &quot;WorkflowProcessBase&quot; )</pre></div>
+<div class="cov"><span class="num"><pre>236</pre></span><pre>	workflow_file = &quot;name of the workflow dot file ( incl. extension )&quot;</pre></div>
+<div class="cov"><span class="num"><pre>237</pre></span><pre>	workflow_directory = &quot;directory containing workflows to load &quot;</pre></div>
+<div class="skip"><span class="num"><pre>238</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>239</pre></span><pre>	exclude_connected_plugs = True				# if true, all plugs that are connected will be pruned</pre></div>
+<div class="cov"><span class="num"><pre>240</pre></span><pre>	duplicate_wrapped_graph = False			# we load our copies directly and thus have a copy</pre></div>
+<div class="skip"><span class="num"><pre>241</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>242</pre></span><pre>	def __init__( self, id, wflInstance=None, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>243</pre></span><pre>		&quot;&quot;&quot; Will take all important configuration variables from its class variables</pre></div>
+<div class="cov"><span class="num"><pre>244</pre></span><pre>		- you should override these with your subclass</pre></div>
+<div class="skip"><span class="num"><pre>245</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>246</pre></span><pre>		:param wflInstance: if given, this instance will be used instead of creating</pre></div>
+<div class="cov"><span class="num"><pre>247</pre></span><pre>			a new workflow. Used by copy constructor.</pre></div>
+<div class="cov"><span class="num"><pre>248</pre></span><pre>		:param kwargs: all arguments required to initialize the ProcessBase&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>249</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>250</pre></span><pre>		wrappedwfl = wflInstance</pre></div>
+<div class="cov"><span class="num"><pre>251</pre></span><pre>		if not wrappedwfl:</pre></div>
+<div class="cov"><span class="num"><pre>252</pre></span><pre>			wrappedwfl = self._createWrappedWfl( self.workflow_directory, self.workflow_file )</pre></div>
+<div class="skip"><span class="num"><pre>253</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>254</pre></span><pre>		# NOTE: baseclass stores wrapped wfl for us</pre></div>
+<div class="skip"><span class="num"><pre>255</pre></span><pre>		# init bases</pre></div>
+<div class="cov"><span class="num"><pre>256</pre></span><pre>		GraphNodeBase.__init__( self, wrappedwfl, **kwargs )</pre></div>
+<div class="cov"><span class="num"><pre>257</pre></span><pre>		ProcessBase.__init__( self, id, **kwargs )</pre></div>
+<div class="skip"><span class="num"><pre>258</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>259</pre></span><pre>		# adjust the ids of wrapped graph nodes with the name of their graph</pre></div>
+<div class="skip"><span class="num"><pre>260</pre></span><pre>		# NO: if this is done, some recurisve facades have issues with their attribute</pre></div>
+<div class="skip"><span class="num"><pre>261</pre></span><pre>		# names - although this could possibly be solved, renaming the nodes is in</pre></div>
+<div class="skip"><span class="num"><pre>262</pre></span><pre>		# fact not required</pre></div>
+<div class="skip"><span class="num"><pre>263</pre></span><pre>		#for node in self.wgraph.iterNodes():</pre></div>
+<div class="skip"><span class="num"><pre>264</pre></span><pre>		#	node.setID( &quot;%s.%s&quot; % ( id, node.id() ) )</pre></div>
+<div class="skip"><span class="num"><pre>265</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>266</pre></span><pre>		# override name - per instance in our case</pre></div>
+<div class="cov"><span class="num"><pre>267</pre></span><pre>		self.noun = wrappedwfl.name</pre></div>
+<div class="cov"><span class="num"><pre>268</pre></span><pre>		self.verb = &quot;internally computing&quot;</pre></div>
+<div class="skip"><span class="num"><pre>269</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>270</pre></span><pre>	def createInstance( self, *args, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>271</pre></span><pre>		&quot;&quot;&quot;Create a copy of self and return it - required due to our very special constructor&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>272</pre></span><pre>		return self.__class__( self.id(), wflInstance = self.wgraph )</pre></div>
+<div class="skip"><span class="num"><pre>273</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>274</pre></span><pre>	def _createWrappedWfl( self, wfldir, wflname ):</pre></div>
+<div class="cov"><span class="num"><pre>275</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>276</pre></span><pre>		:return: our wrapped workflow instance as created by a method loading a workflow</pre></div>
+<div class="cov"><span class="num"><pre>277</pre></span><pre>			from a file&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>278</pre></span><pre>		wfl = wflbase.loadWorkflowFromDotFile( make_path( wfldir ) / wflname )</pre></div>
+<div class="cov"><span class="num"><pre>279</pre></span><pre>		return wfl</pre></div>
+<div class="skip"><span class="num"><pre>280</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>281</pre></span><pre>	def prepareProcess( self ):</pre></div>
+<div class="cov"><span class="num"><pre>282</pre></span><pre>		&quot;&quot;&quot;As we have different callgraphs, but want proper reports, just swap in the</pre></div>
+<div class="cov"><span class="num"><pre>283</pre></span><pre>		callgraph of our own workflow to allow it to be maintained correctly when the nodes</pre></div>
+<div class="cov"><span class="num"><pre>284</pre></span><pre>		of the wrapped graph evaluate.</pre></div>
+<div class="skip"><span class="num"><pre>285</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>286</pre></span><pre>		:note: this requires that we get called after the callgraph has bene initialized&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>287</pre></span><pre>		if self.graph._callgraph.number_of_nodes():</pre></div>
+<div class="nocov"><span class="num"><pre>288</pre></span><pre>			raise AssertionError( &quot;Callgraph of parent workflow %r was not empty&quot; % self.graph )</pre></div>
+<div class="skip"><span class="num"><pre>289</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>290</pre></span><pre>		self.wgraph.copyFrom( self.graph )					# copies required attributes</pre></div>
+<div class="skip"><span class="num"><pre>291</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>292</pre></span><pre>		# Prepare all our wrapped nodes</pre></div>
+<div class="cov"><span class="num"><pre>293</pre></span><pre>		for node in self.wgraph.iterNodes( ):</pre></div>
+<div class="cov"><span class="num"><pre>294</pre></span><pre>			node.prepareProcess( )</pre></div>
+<div class="skip"><span class="num"><pre>295</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>296</pre></span><pre>		# ProcessBase.prepareProcess( self )</pre></div>
+<div class="skip"><span class="num"><pre>297</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>298</pre></span><pre>	def _iterNodes( self ):</pre></div>
+<div class="cov"><span class="num"><pre>299</pre></span><pre>		&quot;&quot;&quot;:return: generator for nodes that have no output connections or no input connections &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>300</pre></span><pre>		noOutput = lambda node: not node.connections( 0, 1 )</pre></div>
+<div class="cov"><span class="num"><pre>301</pre></span><pre>		noInput = lambda node: not node.connections( 1, 0 )</pre></div>
+<div class="cov"><span class="num"><pre>302</pre></span><pre>		return self.wgraph.iterNodes( predicate = Or( noInput, noOutput ) )</pre></div>
+<div class="skip"><span class="num"><pre>303</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>304</pre></span><pre>	def _getNodePlugs( self ):</pre></div>
+<div class="cov"><span class="num"><pre>305</pre></span><pre>		&quot;&quot;&quot;Override the base method, filtering it's output so that only unconnected plugs</pre></div>
+<div class="cov"><span class="num"><pre>306</pre></span><pre>		will be returned&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>307</pre></span><pre>		outset = super( WorkflowProcessBase, self )._getNodePlugs( )</pre></div>
+<div class="skip"><span class="num"><pre>308</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>309</pre></span><pre>		if self.exclude_connected_plugs:</pre></div>
+<div class="cov"><span class="num"><pre>310</pre></span><pre>			finalset = set()</pre></div>
+<div class="cov"><span class="num"><pre>311</pre></span><pre>			for node, plug in outset:</pre></div>
+<div class="cov"><span class="num"><pre>312</pre></span><pre>				shell = node.toShell( plug )</pre></div>
+<div class="cov"><span class="num"><pre>313</pre></span><pre>				if not shell.isConnected():</pre></div>
+<div class="cov"><span class="num"><pre>314</pre></span><pre>					finalset.add( ( node , plug ) )</pre></div>
+<div class="skip"><span class="num"><pre>315</pre></span><pre>				# END if shell is unconnected</pre></div>
+<div class="skip"><span class="num"><pre>316</pre></span><pre>			# END for each node,plug pair</pre></div>
+<div class="skip"><span class="num"><pre>317</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>318</pre></span><pre>			outset = finalset</pre></div>
+<div class="cov"><span class="num"><pre>319</pre></span><pre>			self._addIncludeNodePlugs( outset )		# assure we never filter include plugs</pre></div>
+<div class="skip"><span class="num"><pre>320</pre></span><pre>		# END exclude connected plugs</pre></div>
+<div class="skip"><span class="num"><pre>321</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>322</pre></span><pre>		return outset</pre></div>
+<div class="skip"><span class="num"><pre>323</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>324</pre></span><pre></pre></div>
+</div>
+</body>
+</html>

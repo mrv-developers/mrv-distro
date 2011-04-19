@@ -1,0 +1,847 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>mrv.automation.qa</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="mrv-module.html">Package&nbsp;mrv</a> ::
+        <a href="mrv.automation-module.html">Package&nbsp;automation</a> ::
+        Module&nbsp;qa
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="mrv.automation.qa-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="mrv.automation.qa-module.html">Module mrv.automation.qa</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment"># -*- coding: utf-8 -*-</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-docstring">"""Specialization of workflow to provide quality assurance capabilities.</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-docstring">General Idiom of a quality assurance facility is to provide read-only checks for</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-docstring">possibly quaility issues and possibly a fix for them.</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-docstring">The interface is determined by plugs that define the capabilities of the node implementing</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-docstring">the checks.</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-docstring">The quality assurance framework is defined by:</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-docstring">         * `QAWorkflow`</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-docstring">         * `QAProcessBase`</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-docstring">         * `QACheckResult`</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-docstring">         * `QACheckAttribute`</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-docstring">They specialize the respective parts of the workflow"""</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-name">__docformat__</tt> <tt class="py-op">=</tt> <tt class="py-string">"restructuredtext"</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Method mrv.automation.process.ProcessBase.workflow()=mrv.automation.process.ProcessBase-class.html#workflow,Module mrv.automation.workflow=mrv.automation.workflow-module.html"><a title="mrv.automation.process.ProcessBase.workflow
+mrv.automation.workflow" class="py-name" href="#" onclick="return doclink('link-0', 'workflow', 'link-0');">workflow</a></tt> <tt class="py-keyword">import</tt> <tt id="link-1" class="py-name" targets="Class mrv.automation.workflow.Workflow=mrv.automation.workflow.Workflow-class.html"><a title="mrv.automation.workflow.Workflow" class="py-name" href="#" onclick="return doclink('link-1', 'Workflow', 'link-1');">Workflow</a></tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-2" class="py-name" targets="Module mrv.automation.process=mrv.automation.process-module.html,Variable mrv.automation.workflow.Workflow.ProcessData.process=mrv.automation.workflow.Workflow.ProcessData-class.html#process,Function mrv.batch.process()=mrv.batch-module.html#process"><a title="mrv.automation.process
+mrv.automation.workflow.Workflow.ProcessData.process
+mrv.batch.process" class="py-name" href="#" onclick="return doclink('link-2', 'process', 'link-2');">process</a></tt> <tt class="py-keyword">import</tt> <tt id="link-3" class="py-name" targets="Class mrv.automation.process.ProcessBase=mrv.automation.process.ProcessBase-class.html"><a title="mrv.automation.process.ProcessBase" class="py-name" href="#" onclick="return doclink('link-3', 'ProcessBase', 'link-3');">ProcessBase</a></tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-4" class="py-name" targets="Package mrv=mrv-module.html,Function mrv.cmd.startup.mrv()=mrv.cmd.startup-module.html#mrv"><a title="mrv
+mrv.cmd.startup.mrv" class="py-name" href="#" onclick="return doclink('link-4', 'mrv', 'link-4');">mrv</a></tt><tt class="py-op">.</tt><tt id="link-5" class="py-name" targets="Module mrv.maya.nt.util=mrv.maya.nt.util-module.html,Module mrv.maya.ui.browse.util=mrv.maya.ui.browse.util-module.html,Module mrv.maya.ui.util=mrv.maya.ui.util-module.html,Module mrv.maya.util=mrv.maya.util-module.html,Module mrv.util=mrv.util-module.html"><a title="mrv.maya.nt.util
+mrv.maya.ui.browse.util
+mrv.maya.ui.util
+mrv.maya.util
+mrv.util" class="py-name" href="#" onclick="return doclink('link-5', 'util', 'link-5');">util</a></tt> <tt class="py-keyword">import</tt> <tt id="link-6" class="py-name" targets="Class mrv.util.EventSender=mrv.util.EventSender-class.html"><a title="mrv.util.EventSender" class="py-name" href="#" onclick="return doclink('link-6', 'EventSender', 'link-6');">EventSender</a></tt><tt class="py-op">,</tt> <tt id="link-7" class="py-name" targets="Class mrv.util.Event=mrv.util.Event-class.html"><a title="mrv.util.Event" class="py-name" href="#" onclick="return doclink('link-7', 'Event', 'link-7');">Event</a></tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-8" class="py-name"><a title="mrv
+mrv.cmd.startup.mrv" class="py-name" href="#" onclick="return doclink('link-8', 'mrv', 'link-4');">mrv</a></tt><tt class="py-op">.</tt><tt id="link-9" class="py-name" targets="Module mrv.dge=mrv.dge-module.html"><a title="mrv.dge" class="py-name" href="#" onclick="return doclink('link-9', 'dge', 'link-9');">dge</a></tt> <tt class="py-keyword">import</tt> <tt id="link-10" class="py-name" targets="Class mrv.dge.Attribute=mrv.dge.Attribute-class.html,Class mrv.maya.nt.base.Attribute=mrv.maya.nt.base.Attribute-class.html"><a title="mrv.dge.Attribute
+mrv.maya.nt.base.Attribute" class="py-name" href="#" onclick="return doclink('link-10', 'Attribute', 'link-10');">Attribute</a></tt><tt class="py-op">,</tt> <tt id="link-11" class="py-name" targets="Variable mrv.automation.workflow.Workflow.ProcessData.plug=mrv.automation.workflow.Workflow.ProcessData-class.html#plug,Class mrv.dge.plug=mrv.dge.plug-class.html"><a title="mrv.automation.workflow.Workflow.ProcessData.plug
+mrv.dge.plug" class="py-name" href="#" onclick="return doclink('link-11', 'plug', 'link-11');">plug</a></tt><tt class="py-op">,</tt> <tt id="link-12" class="py-name" targets="Class mrv.dge.ComputeFailed=mrv.dge.ComputeFailed-class.html"><a title="mrv.dge.ComputeFailed" class="py-name" href="#" onclick="return doclink('link-12', 'ComputeFailed', 'link-12');">ComputeFailed</a></tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-13" class="py-name"><a title="mrv
+mrv.cmd.startup.mrv" class="py-name" href="#" onclick="return doclink('link-13', 'mrv', 'link-4');">mrv</a></tt><tt class="py-op">.</tt><tt id="link-14" class="py-name" targets="Module mrv.enum=mrv.enum-module.html"><a title="mrv.enum" class="py-name" href="#" onclick="return doclink('link-14', 'enum', 'link-14');">enum</a></tt> <tt class="py-keyword">import</tt> <tt id="link-15" class="py-name" targets="Function mrv.enum.create()=mrv.enum-module.html#create,Class Method mrv.maya.ns.Namespace.create()=mrv.maya.ns.Namespace-class.html#create,Class Method mrv.maya.nt.base.Attribute.create()=mrv.maya.nt.base.Attribute-class.html#create,Class Method mrv.maya.nt.base.Component.create()=mrv.maya.nt.base.Component-class.html#create,Class Method mrv.maya.nt.base.Data.create()=mrv.maya.nt.base.Data-class.html#create,Class Method mrv.maya.ref.FileReference.create()=mrv.maya.ref.FileReference-class.html#create,Class Method mrv.maya.util.MEnumeration.create()=mrv.maya.util.MEnumeration-class.html#create"><a title="mrv.enum.create
+mrv.maya.ns.Namespace.create
+mrv.maya.nt.base.Attribute.create
+mrv.maya.nt.base.Component.create
+mrv.maya.nt.base.Data.create
+mrv.maya.ref.FileReference.create
+mrv.maya.util.MEnumeration.create" class="py-name" href="#" onclick="return doclink('link-15', 'create', 'link-15');">create</a></tt> <tt class="py-keyword">as</tt> <tt id="link-16" class="py-name"><a title="mrv.enum" class="py-name" href="#" onclick="return doclink('link-16', 'enum', 'link-14');">enum</a></tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">sys</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">logging</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt id="link-17" class="py-name" targets="Variable mrv.automation.base.log=mrv.automation.base-module.html#log,Variable mrv.automation.qa.log=mrv.automation.qa-module.html#log,Variable mrv.automation.workflow.log=mrv.automation.workflow-module.html#log,Variable mrv.cmd.base.SpawnedCommand.log=mrv.cmd.base.SpawnedCommand-class.html#log,Variable mrv.cmd.base.log=mrv.cmd.base-module.html#log,Variable mrv.conf.log=mrv.conf-module.html#log,Variable mrv.interface.log=mrv.interface-module.html#log,Variable mrv.log=mrv-module.html#log,Variable mrv.maya.automation.qa.log=mrv.maya.automation.qa-module.html#log,Variable mrv.maya.log=mrv.maya-module.html#log,Variable mrv.maya.mdb.log=mrv.maya.mdb-module.html#log,Variable mrv.maya.nt.base.log=mrv.maya.nt.base-module.html#log,Variable mrv.maya.nt.geometry.log=mrv.maya.nt.geometry-module.html#log,Variable mrv.maya.nt.persistence.log=mrv.maya.nt.persistence-module.html#log,Variable mrv.maya.nt.typ.log=mrv.maya.nt.typ-module.html#log,Variable mrv.maya.ui.control.log=mrv.maya.ui.control-module.html#log,Variable mrv.maya.ui.dialog.log=mrv.maya.ui.dialog-module.html#log,Variable mrv.maya.ui.qa.log=mrv.maya.ui.qa-module.html#log,Variable mrv.mdepparse.log=mrv.mdepparse-module.html#log,Variable mrv.path.log=mrv.path-module.html#log,Variable mrv.util.log=mrv.util-module.html#log"><a title="mrv.automation.base.log
+mrv.automation.qa.log
+mrv.automation.workflow.log
+mrv.cmd.base.SpawnedCommand.log
+mrv.cmd.base.log
+mrv.conf.log
+mrv.interface.log
+mrv.log
+mrv.maya.automation.qa.log
+mrv.maya.log
+mrv.maya.mdb.log
+mrv.maya.nt.base.log
+mrv.maya.nt.geometry.log
+mrv.maya.nt.persistence.log
+mrv.maya.nt.typ.log
+mrv.maya.ui.control.log
+mrv.maya.ui.dialog.log
+mrv.maya.ui.qa.log
+mrv.mdepparse.log
+mrv.path.log
+mrv.util.log" class="py-name" href="#" onclick="return doclink('link-17', 'log', 'link-17');">log</a></tt> <tt class="py-op">=</tt> <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">getLogger</tt><tt class="py-op">(</tt><tt class="py-string">"mrv.automation.qa"</tt><tt class="py-op">)</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"><tt class="py-comment">#{ Exceptions</tt> </tt>
+<a name="CheckIncompatibleError"></a><div id="CheckIncompatibleError-def"><a name="L30"></a><tt class="py-lineno"> 30</tt> <a class="py-toggle" href="#" id="CheckIncompatibleError-toggle" onclick="return toggle('CheckIncompatibleError');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.automation.qa.CheckIncompatibleError-class.html">CheckIncompatibleError</a><tt class="py-op">(</tt> <tt class="py-base-class">ComputeFailed</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="CheckIncompatibleError-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="CheckIncompatibleError-expanded"><a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">        <tt class="py-docstring">"""Raised if a check cannot accomdate the requested mode and thus cannot run"""</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line">        <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"><tt class="py-comment">#} END exceptions</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"> </tt>
+<a name="QAProcessBase"></a><div id="QAProcessBase-def"><a name="L38"></a><tt class="py-lineno"> 38</tt> <a class="py-toggle" href="#" id="QAProcessBase-toggle" onclick="return toggle('QAProcessBase');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.automation.qa.QAProcessBase-class.html">QAProcessBase</a><tt class="py-op">(</tt> <tt class="py-base-class">ProcessBase</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QAProcessBase-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="QAProcessBase-expanded"><a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line">        <tt class="py-docstring">"""Quality Assurance Process including a specialized QA interface"""</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line">        <tt class="py-comment"># query: find issues and report them using `QACheckResult`, but do not attempt to fix</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line">        <tt class="py-comment"># fix: find issues and fix them, report fixed ( and possibly failed ) items by</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line">        <tt id="link-18" class="py-name" targets="Variable mrv.automation.qa.QAProcessBase.eMode=mrv.automation.qa.QAProcessBase-class.html#eMode"><a title="mrv.automation.qa.QAProcessBase.eMode" class="py-name" href="#" onclick="return doclink('link-18', 'eMode', 'link-18');">eMode</a></tt> <tt class="py-op">=</tt> <tt id="link-19" class="py-name"><a title="mrv.enum" class="py-name" href="#" onclick="return doclink('link-19', 'enum', 'link-14');">enum</a></tt><tt class="py-op">(</tt> <tt class="py-string">"query"</tt><tt class="py-op">,</tt> <tt class="py-string">"fix"</tt> <tt class="py-op">)</tt>  <tt class="py-comment"># computation mode for QAProcessBasees</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line">        <tt class="py-comment">#( Configuration</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line">        <tt class="py-comment"># QA Processes do not require this feature due to their quite simplistic call structure</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line">        <tt class="py-comment"># If required, subclasses can override this though</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line">        <tt id="link-20" class="py-name" targets="Variable mrv.automation.process.ProcessBase.track_compute_calls=mrv.automation.process.ProcessBase-class.html#track_compute_calls,Variable mrv.automation.qa.QAProcessBase.track_compute_calls=mrv.automation.qa.QAProcessBase-class.html#track_compute_calls"><a title="mrv.automation.process.ProcessBase.track_compute_calls
+mrv.automation.qa.QAProcessBase.track_compute_calls" class="py-name" href="#" onclick="return doclink('link-20', 'track_compute_calls', 'link-20');">track_compute_calls</a></tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">        <tt class="py-comment">#) END configuration</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line"> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line"> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line">        <tt class="py-comment">#{ Interface</tt> </tt>
+<a name="QAProcessBase.assureQuality"></a><div id="QAProcessBase.assureQuality-def"><a name="L53"></a><tt class="py-lineno"> 53</tt> <a class="py-toggle" href="#" id="QAProcessBase.assureQuality-toggle" onclick="return toggle('QAProcessBase.assureQuality');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.automation.qa.QAProcessBase-class.html#assureQuality">assureQuality</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">check</tt><tt class="py-op">,</tt> <tt class="py-param">mode</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QAProcessBase.assureQuality-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="QAProcessBase.assureQuality-expanded"><a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">                <tt class="py-docstring">"""Called when the test identified by plug should be handled</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line"><tt class="py-docstring">                </tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line"><tt class="py-docstring">                :param check: QACheck to be checked for issues</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line"><tt class="py-docstring">                :param mode: mode of the computation, see `QAProcessBase.eMode`</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line"><tt class="py-docstring">                :return: QACheckResult instance keeping information about the outcome of the test"""</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">                <tt class="py-keyword">raise</tt> <tt class="py-name">NotImplementedError</tt><tt class="py-op">(</tt> <tt class="py-string">"To be implemented by subclass"</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line"> </tt>
+<a name="QAProcessBase.listChecks"></a><div id="QAProcessBase.listChecks-def"><a name="L61"></a><tt class="py-lineno"> 61</tt> <a class="py-toggle" href="#" id="QAProcessBase.listChecks-toggle" onclick="return toggle('QAProcessBase.listChecks');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.automation.qa.QAProcessBase-class.html#listChecks">listChecks</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QAProcessBase.listChecks-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="QAProcessBase.listChecks-expanded"><a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">                <tt class="py-docstring">""":return: list( QACheck, ... ) list of our checks</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line"><tt class="py-docstring">                :param kwargs: see `QAWorkflow.filterChecks`"""</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-21" class="py-name"><a title="mrv.automation.process.ProcessBase.workflow
+mrv.automation.workflow" class="py-name" href="#" onclick="return doclink('link-21', 'workflow', 'link-0');">workflow</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-22" class="py-name" targets="Method mrv.automation.qa.QAWorkflow.filterChecks()=mrv.automation.qa.QAWorkflow-class.html#filterChecks"><a title="mrv.automation.qa.QAWorkflow.filterChecks" class="py-name" href="#" onclick="return doclink('link-22', 'filterChecks', 'link-22');">filterChecks</a></tt><tt class="py-op">(</tt> <tt class="py-op">[</tt> <tt class="py-name">self</tt> <tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt id="link-23" class="py-name" targets="Variable mrv.util.Call.kwargs=mrv.util.Call-class.html#kwargs"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-23', 'kwargs', 'link-23');">kwargs</a></tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line"> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">        <tt class="py-comment">#} END interface</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line"> </tt>
+<a name="QAProcessBase.evaluateState"></a><div id="QAProcessBase.evaluateState-def"><a name="L68"></a><tt class="py-lineno"> 68</tt> <a class="py-toggle" href="#" id="QAProcessBase.evaluateState-toggle" onclick="return toggle('QAProcessBase.evaluateState');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.automation.qa.QAProcessBase-class.html#evaluateState">evaluateState</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">plug</tt><tt class="py-op">,</tt> <tt class="py-param">mode</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QAProcessBase.evaluateState-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="QAProcessBase.evaluateState-expanded"><a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">                <tt class="py-docstring">"""Prepares the call to the actual quality check implemenetation and assuring</tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line"><tt class="py-docstring">                test identified by plug can actually be run in the given mode"""</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt id="link-24" class="py-name" targets="Variable mrv.automation.workflow.Workflow.ProcessData.mode=mrv.automation.workflow.Workflow.ProcessData-class.html#mode"><a title="mrv.automation.workflow.Workflow.ProcessData.mode" class="py-name" href="#" onclick="return doclink('link-24', 'mode', 'link-24');">mode</a></tt> <tt class="py-keyword">is</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-25" class="py-name"><a title="mrv.automation.qa.QAProcessBase.eMode" class="py-name" href="#" onclick="return doclink('link-25', 'eMode', 'link-18');">eMode</a></tt><tt class="py-op">.</tt><tt class="py-name">fix</tt> <tt class="py-keyword">and</tt> <tt class="py-keyword">not</tt> <tt id="link-26" class="py-name"><a title="mrv.automation.workflow.Workflow.ProcessData.plug
+mrv.dge.plug" class="py-name" href="#" onclick="return doclink('link-26', 'plug', 'link-11');">plug</a></tt><tt class="py-op">.</tt><tt class="py-name">attr</tt><tt class="py-op">.</tt><tt class="py-name">implements_fix</tt><tt class="py-op">:</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">                        <tt class="py-keyword">raise</tt> <tt id="link-27" class="py-name" targets="Class mrv.automation.qa.CheckIncompatibleError=mrv.automation.qa.CheckIncompatibleError-class.html"><a title="mrv.automation.qa.CheckIncompatibleError" class="py-name" href="#" onclick="return doclink('link-27', 'CheckIncompatibleError', 'link-27');">CheckIncompatibleError</a></tt><tt class="py-op">(</tt> <tt class="py-string">"Plug %s does not implement issue fixing"</tt> <tt class="py-op">%</tt> <tt id="link-28" class="py-name"><a title="mrv.automation.workflow.Workflow.ProcessData.plug
+mrv.dge.plug" class="py-name" href="#" onclick="return doclink('link-28', 'plug', 'link-11');">plug</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line"> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-29" class="py-name" targets="Method mrv.automation.qa.QAProcessBase.assureQuality()=mrv.automation.qa.QAProcessBase-class.html#assureQuality"><a title="mrv.automation.qa.QAProcessBase.assureQuality" class="py-name" href="#" onclick="return doclink('link-29', 'assureQuality', 'link-29');">assureQuality</a></tt><tt class="py-op">(</tt> <tt id="link-30" class="py-name"><a title="mrv.automation.workflow.Workflow.ProcessData.plug
+mrv.dge.plug" class="py-name" href="#" onclick="return doclink('link-30', 'plug', 'link-11');">plug</a></tt><tt class="py-op">,</tt> <tt id="link-31" class="py-name"><a title="mrv.automation.workflow.Workflow.ProcessData.mode" class="py-name" href="#" onclick="return doclink('link-31', 'mode', 'link-24');">mode</a></tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt id="link-32" class="py-name" targets="Variable mrv.util.Call.args=mrv.util.Call-class.html#args"><a title="mrv.util.Call.args" class="py-name" href="#" onclick="return doclink('link-32', 'args', 'link-32');">args</a></tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt id="link-33" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-33', 'kwargs', 'link-23');">kwargs</a></tt> <tt class="py-op">)</tt> </tt>
+</div></div><a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line"> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line"> </tt>
+<a name="QACheckAttribute"></a><div id="QACheckAttribute-def"><a name="L77"></a><tt class="py-lineno"> 77</tt> <a class="py-toggle" href="#" id="QACheckAttribute-toggle" onclick="return toggle('QACheckAttribute');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.automation.qa.QACheckAttribute-class.html">QACheckAttribute</a><tt class="py-op">(</tt> <tt class="py-base-class">Attribute</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QACheckAttribute-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="QACheckAttribute-expanded"><a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">        <tt class="py-docstring">"""The Test Attribute represents an interface to a specific test as implemented</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line"><tt class="py-docstring">        by the parent `QAProcessBase`.</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line"><tt class="py-docstring">        The QA Attribute returns specialized quality assurance results and provides</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line"><tt class="py-docstring">        additional information about the respective test</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line"><tt class="py-docstring">        :note: as this class holds meta information about the respective test ( see `QACheck` )</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line"><tt class="py-docstring">                user interfaces may use it to adjust it's display</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line"><tt class="py-docstring">        :note: this class depends on unknown mel implementations - on error we abort</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line"><tt class="py-docstring">                but do not throw as this would cause class creation to fail and leave the whole</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line"><tt class="py-docstring">                qa system unusable"""</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line"> </tt>
+<a name="QACheckAttribute.__init__"></a><div id="QACheckAttribute.__init__-def"><a name="L89"></a><tt class="py-lineno"> 89</tt> <a class="py-toggle" href="#" id="QACheckAttribute.__init__-toggle" onclick="return toggle('QACheckAttribute.__init__');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.automation.qa.QACheckAttribute-class.html#__init__">__init__</a><tt class="py-op">(</tt>   <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">annotation</tt><tt class="py-op">,</tt> <tt class="py-param">has_fix</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt><tt class="py-op">,</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">                                        <tt class="py-param">flags</tt> <tt class="py-op">=</tt> <tt id="link-34" class="py-name"><a title="mrv.dge.Attribute
+mrv.maya.nt.base.Attribute" class="py-name" href="#" onclick="return doclink('link-34', 'Attribute', 'link-10');">Attribute</a></tt><tt class="py-op">.</tt><tt id="link-35" class="py-name" targets="Variable mrv.dge.Attribute.computable=mrv.dge.Attribute-class.html#computable"><a title="mrv.dge.Attribute.computable" class="py-name" href="#" onclick="return doclink('link-35', 'computable', 'link-35');">computable</a></tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QACheckAttribute.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="QACheckAttribute.__init__-expanded"><a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">                <tt class="py-docstring">"""Initialize attribute with meta information</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line"><tt class="py-docstring">                </tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line"><tt class="py-docstring">                :param annotation: information string describing the purpose of the test</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line"><tt class="py-docstring">                :param has_fix: if True, the check must implement a fix for the issues it checks for,</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line"><tt class="py-docstring">                        if False, it can only report issues</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line"><tt class="py-docstring">                :param flags: configuration flags for the plug - default to trigger computation even without</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line"><tt class="py-docstring">                        input"""</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">                <tt class="py-name">super</tt><tt class="py-op">(</tt> <tt id="link-36" class="py-name" targets="Class mrv.automation.qa.QACheckAttribute=mrv.automation.qa.QACheckAttribute-class.html"><a title="mrv.automation.qa.QACheckAttribute" class="py-name" href="#" onclick="return doclink('link-36', 'QACheckAttribute', 'link-36');">QACheckAttribute</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt> <tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-37" class="py-name" targets="Method mrv.automation.attributes.RegexStringAttr.__init__()=mrv.automation.attributes.RegexStringAttr-class.html#__init__,Method mrv.automation.process.ProcessBase.__init__()=mrv.automation.process.ProcessBase-class.html#__init__,Method mrv.automation.process.WorkflowProcessBase.__init__()=mrv.automation.process.WorkflowProcessBase-class.html#__init__,Method mrv.automation.qa.QACheck.__init__()=mrv.automation.qa.QACheck-class.html#__init__,Method mrv.automation.qa.QACheckAttribute.__init__()=mrv.automation.qa.QACheckAttribute-class.html#__init__,Method mrv.automation.qa.QACheckResult.__init__()=mrv.automation.qa.QACheckResult-class.html#__init__,Method mrv.automation.qa.QAWorkflow.__init__()=mrv.automation.qa.QAWorkflow-class.html#__init__,Method mrv.automation.report.ReportBase.__init__()=mrv.automation.report.ReportBase-class.html#__init__,Method mrv.automation.workflow.DirtyException.__init__()=mrv.automation.workflow.DirtyException-class.html#__init__,Method mrv.automation.workflow.Workflow.CallGraph.__init__()=mrv.automation.workflow.Workflow.CallGraph-class.html#__init__,Method mrv.automation.workflow.Workflow.ProcessData.__init__()=mrv.automation.workflow.Workflow.ProcessData-class.html#__init__,Method mrv.automation.workflow.Workflow.__init__()=mrv.automation.workflow.Workflow-class.html#__init__,Method mrv.cmd.base.SpawnedCommand.__init__()=mrv.cmd.base.SpawnedCommand-class.html#__init__,Method mrv.cmd.base.SpawnedOptionParser.__init__()=mrv.cmd.base.SpawnedOptionParser-class.html#__init__,Method mrv.conf.ConfigAccessor.__init__()=mrv.conf.ConfigAccessor-class.html#__init__,Method mrv.conf.ConfigChain.__init__()=mrv.conf.ConfigChain-class.html#__init__,Method mrv.conf.ConfigFile.__init__()=mrv.conf.ConfigFile-class.html#__init__,Method mrv.conf.ConfigManager.__init__()=mrv.conf.ConfigManager-class.html#__init__,Method mrv.conf.ConfigNode.__init__()=mrv.conf.ConfigNode-class.html#__init__,Method mrv.conf.DictToINIFile.__init__()=mrv.conf.DictToINIFile-class.html#__init__,Method mrv.conf.DiffData.__init__()=mrv.conf.DiffData-class.html#__init__,Method mrv.conf.Key.__init__()=mrv.conf.Key-class.html#__init__,Method mrv.conf.Section.__init__()=mrv.conf.Section-class.html#__init__,Method mrv.conf._PropertyHolderBase.__init__()=mrv.conf._PropertyHolderBase-class.html#__init__,Method mrv.dge.Attribute.__init__()=mrv.dge.Attribute-class.html#__init__,Method mrv.dge.Graph.__init__()=mrv.dge.Graph-class.html#__init__,Method mrv.dge.NodeBase.__init__()=mrv.dge.NodeBase-class.html#__init__,Method mrv.dge.plug.__init__()=mrv.dge.plug-class.html#__init__,Method mrv.dgfe.FacadeNodeBase.__init__()=mrv.dgfe.FacadeNodeBase-class.html#__init__,Method mrv.dgfe.GraphNodeBase.__init__()=mrv.dgfe.GraphNodeBase-class.html#__init__,Method mrv.dgfe._IOShell.__init__()=mrv.dgfe._IOShell-class.html#__init__,Method mrv.dgfe._OIShell.__init__()=mrv.dgfe._OIShell-class.html#__init__,Method mrv.doc.base.DocGenerator.__init__()=mrv.doc.base.DocGenerator-class.html#__init__,Method mrv.enum.Element.__init__()=mrv.enum.Element-class.html#__init__,Method mrv.enum.Enumeration.__init__()=mrv.enum.Enumeration-class.html#__init__,Method mrv.exc.MRVError.__init__()=mrv.exc.MRVError-class.html#__init__,Method mrv.interface.iChoiceDialog.__init__()=mrv.interface.iChoiceDialog-class.html#__init__,Method mrv.interface.iProgressIndicator.__init__()=mrv.interface.iProgressIndicator-class.html#__init__,Method mrv.interface.iPrompt.__init__()=mrv.interface.iPrompt-class.html#__init__,Method mrv.maya.mdb.MEnumDescriptor.__init__()=mrv.maya.mdb.MEnumDescriptor-class.html#__init__,Method mrv.maya.mdb.MFnCodeGeneratorBase.__init__()=mrv.maya.mdb.MFnCodeGeneratorBase-class.html#__init__,Method mrv.maya.mdb.MMemberMap.__init__()=mrv.maya.mdb.MMemberMap-class.html#__init__,Method mrv.maya.mdb.MMethodDescriptor.__init__()=mrv.maya.mdb.MMethodDescriptor-class.html#__init__,Method mrv.maya.nt.PluginDB.__init__()=mrv.maya.nt.PluginDB-class.html#__init__,Method mrv.maya.nt.geometry._SingleIndexedComponentGenerator.__init__()=mrv.maya.nt.geometry._SingleIndexedComponentGenerator-class.html#__init__,Method mrv.maya.nt.persistence.PyPickleData.__init__()=mrv.maya.nt.persistence.PyPickleData-class.html#__init__,Method mrv.maya.nt.persistence.StoragePluginNode.__init__()=mrv.maya.nt.persistence.StoragePluginNode-class.html#__init__,Method mrv.maya.nt.set.ObjectSet._TmpSet.__init__()=mrv.maya.nt.set.ObjectSet._TmpSet-class.html#__init__,Method mrv.maya.nt.storage.StorageBase.PyPickleValue.__init__()=mrv.maya.nt.storage.StorageBase.PyPickleValue-class.html#__init__,Method mrv.maya.nt.storage.StorageBase.__init__()=mrv.maya.nt.storage.StorageBase-class.html#__init__,Method mrv.maya.nt.storage.StorageNode.__init__()=mrv.maya.nt.storage.StorageNode-class.html#__init__,Method mrv.maya.ref.FileReference.__init__()=mrv.maya.ref.FileReference-class.html#__init__,Method mrv.maya.ui.base.BaseUI.__init__()=mrv.maya.ui.base.BaseUI-class.html#__init__,Method mrv.maya.ui.base.NamedUI.__init__()=mrv.maya.ui.base.NamedUI-class.html#__init__,Method mrv.maya.ui.browse.control.BookmarkControl.__init__()=mrv.maya.ui.browse.control.BookmarkControl-class.html#__init__,Method mrv.maya.ui.browse.control.FilePathControlEditable.__init__()=mrv.maya.ui.browse.control.FilePathControlEditable-class.html#__init__,Method mrv.maya.ui.browse.control.FileProvider.__init__()=mrv.maya.ui.browse.control.FileProvider-class.html#__init__,Method mrv.maya.ui.browse.control.FileRootSelectorControl.__init__()=mrv.maya.ui.browse.control.FileRootSelectorControl-class.html#__init__,Method mrv.maya.ui.browse.control.StackControlBase.__init__()=mrv.maya.ui.browse.control.StackControlBase-class.html#__init__,Method mrv.maya.ui.browse.finder.Finder.__init__()=mrv.maya.ui.browse.finder.Finder-class.html#__init__,Method mrv.maya.ui.browse.interface.iFinderProvider.__init__()=mrv.maya.ui.browse.interface.iFinderProvider-class.html#__init__,Method mrv.maya.ui.browse.layout.FileOpenFinder.__init__()=mrv.maya.ui.browse.layout.FileOpenFinder-class.html#__init__,Method mrv.maya.ui.browse.layout.FileReferenceFinder.__init__()=mrv.maya.ui.browse.layout.FileReferenceFinder-class.html#__init__,Method mrv.maya.ui.browse.layout.FileSaveFinder.__init__()=mrv.maya.ui.browse.layout.FileSaveFinder-class.html#__init__,Method mrv.maya.ui.browse.layout.FinderLayout.__init__()=mrv.maya.ui.browse.layout.FinderLayout-class.html#__init__,Method mrv.maya.ui.browse.option.FileOpenOptions.__init__()=mrv.maya.ui.browse.option.FileOpenOptions-class.html#__init__,Method mrv.maya.ui.dialog.ProgressWindow.__init__()=mrv.maya.ui.dialog.ProgressWindow-class.html#__init__,Method mrv.maya.ui.dialog.PromptDialog.__init__()=mrv.maya.ui.dialog.PromptDialog-class.html#__init__,Method mrv.maya.ui.layout.Layout.__init__()=mrv.maya.ui.layout.Layout-class.html#__init__,Method mrv.maya.ui.qa.QACheckLayout.__init__()=mrv.maya.ui.qa.QACheckLayout-class.html#__init__,Method mrv.maya.ui.qa.QALayout.__init__()=mrv.maya.ui.qa.QALayout-class.html#__init__,Method mrv.maya.ui.util.EventSenderUI._UIEvent.__init__()=mrv.maya.ui.util.EventSenderUI._UIEvent-class.html#__init__,Method mrv.maya.ui.util.UIContainerBase.__init__()=mrv.maya.ui.util.UIContainerBase-class.html#__init__,Method mrv.maya.undo.DGModifier.__init__()=mrv.maya.undo.DGModifier-class.html#__init__,Method mrv.maya.undo.GenericOperation.__init__()=mrv.maya.undo.GenericOperation-class.html#__init__,Method mrv.maya.undo.GenericOperationStack.__init__()=mrv.maya.undo.GenericOperationStack-class.html#__init__,Method mrv.maya.undo.MuteUndo.__init__()=mrv.maya.undo.MuteUndo-class.html#__init__,Method mrv.maya.undo.Operation.__init__()=mrv.maya.undo.Operation-class.html#__init__,Method mrv.maya.undo.StartUndo.__init__()=mrv.maya.undo.StartUndo-class.html#__init__,Method mrv.maya.undo.UndoCmd.__init__()=mrv.maya.undo.UndoCmd-class.html#__init__,Method mrv.maya.undo.UndoRecorder.__init__()=mrv.maya.undo.UndoRecorder-class.html#__init__,Method mrv.maya.util.CallbackEventBase.CBStorageFunction.__init__()=mrv.maya.util.CallbackEventBase.CBStorageFunction-class.html#__init__,Method mrv.maya.util.CallbackEventBase.__init__()=mrv.maya.util.CallbackEventBase-class.html#__init__,Method mrv.maya.util.StandinClass.__init__()=mrv.maya.util.StandinClass-class.html#__init__,Method mrv.thread.TerminatableThread.__init__()=mrv.thread.TerminatableThread-class.html#__init__,Method mrv.thread.WorkerThread.__init__()=mrv.thread.WorkerThread-class.html#__init__,Method mrv.util.And.__init__()=mrv.util.And-class.html#__init__,Method mrv.util.Call.__init__()=mrv.util.Call-class.html#__init__,Method mrv.util.CallAdv.__init__()=mrv.util.CallAdv-class.html#__init__,Method mrv.util.CallOnDeletion.__init__()=mrv.util.CallOnDeletion-class.html#__init__,Method mrv.util.Event.__init__()=mrv.util.Event-class.html#__init__,Method mrv.util.InterfaceMaster.InterfaceBase.__init__()=mrv.util.InterfaceMaster.InterfaceBase-class.html#__init__,Method mrv.util.InterfaceMaster.InterfaceDescriptor.__init__()=mrv.util.InterfaceMaster.InterfaceDescriptor-class.html#__init__,Method mrv.util.InterfaceMaster._InterfaceHandler.__init__()=mrv.util.InterfaceMaster._InterfaceHandler-class.html#__init__,Method mrv.util.InterfaceMaster.__init__()=mrv.util.InterfaceMaster-class.html#__init__,Method mrv.util.Or.__init__()=mrv.util.Or-class.html#__init__,Method mrv.util.PipeSeparatedFile.__init__()=mrv.util.PipeSeparatedFile-class.html#__init__,Method mrv.util.WeakInstFunction.__init__()=mrv.util.WeakInstFunction-class.html#__init__,Method unittest.FunctionTestCase.__init__()=unittest.FunctionTestCase-class.html#__init__,Method unittest.TestCase.__init__()=unittest.TestCase-class.html#__init__,Method unittest.TestProgram.__init__()=unittest.TestProgram-class.html#__init__,Method unittest.TestResult.__init__()=unittest.TestResult-class.html#__init__,Method unittest.TestSuite.__init__()=unittest.TestSuite-class.html#__init__,Method unittest.TextTestRunner.__init__()=unittest.TextTestRunner-class.html#__init__,Method unittest._TextTestResult.__init__()=unittest._TextTestResult-class.html#__init__,Method unittest._WritelnDecorator.__init__()=unittest._WritelnDecorator-class.html#__init__"><a title="mrv.automation.attributes.RegexStringAttr.__init__
+mrv.automation.process.ProcessBase.__init__
+mrv.automation.process.WorkflowProcessBase.__init__
+mrv.automation.qa.QACheck.__init__
+mrv.automation.qa.QACheckAttribute.__init__
+mrv.automation.qa.QACheckResult.__init__
+mrv.automation.qa.QAWorkflow.__init__
+mrv.automation.report.ReportBase.__init__
+mrv.automation.workflow.DirtyException.__init__
+mrv.automation.workflow.Workflow.CallGraph.__init__
+mrv.automation.workflow.Workflow.ProcessData.__init__
+mrv.automation.workflow.Workflow.__init__
+mrv.cmd.base.SpawnedCommand.__init__
+mrv.cmd.base.SpawnedOptionParser.__init__
+mrv.conf.ConfigAccessor.__init__
+mrv.conf.ConfigChain.__init__
+mrv.conf.ConfigFile.__init__
+mrv.conf.ConfigManager.__init__
+mrv.conf.ConfigNode.__init__
+mrv.conf.DictToINIFile.__init__
+mrv.conf.DiffData.__init__
+mrv.conf.Key.__init__
+mrv.conf.Section.__init__
+mrv.conf._PropertyHolderBase.__init__
+mrv.dge.Attribute.__init__
+mrv.dge.Graph.__init__
+mrv.dge.NodeBase.__init__
+mrv.dge.plug.__init__
+mrv.dgfe.FacadeNodeBase.__init__
+mrv.dgfe.GraphNodeBase.__init__
+mrv.dgfe._IOShell.__init__
+mrv.dgfe._OIShell.__init__
+mrv.doc.base.DocGenerator.__init__
+mrv.enum.Element.__init__
+mrv.enum.Enumeration.__init__
+mrv.exc.MRVError.__init__
+mrv.interface.iChoiceDialog.__init__
+mrv.interface.iProgressIndicator.__init__
+mrv.interface.iPrompt.__init__
+mrv.maya.mdb.MEnumDescriptor.__init__
+mrv.maya.mdb.MFnCodeGeneratorBase.__init__
+mrv.maya.mdb.MMemberMap.__init__
+mrv.maya.mdb.MMethodDescriptor.__init__
+mrv.maya.nt.PluginDB.__init__
+mrv.maya.nt.geometry._SingleIndexedComponentGenerator.__init__
+mrv.maya.nt.persistence.PyPickleData.__init__
+mrv.maya.nt.persistence.StoragePluginNode.__init__
+mrv.maya.nt.set.ObjectSet._TmpSet.__init__
+mrv.maya.nt.storage.StorageBase.PyPickleValue.__init__
+mrv.maya.nt.storage.StorageBase.__init__
+mrv.maya.nt.storage.StorageNode.__init__
+mrv.maya.ref.FileReference.__init__
+mrv.maya.ui.base.BaseUI.__init__
+mrv.maya.ui.base.NamedUI.__init__
+mrv.maya.ui.browse.control.BookmarkControl.__init__
+mrv.maya.ui.browse.control.FilePathControlEditable.__init__
+mrv.maya.ui.browse.control.FileProvider.__init__
+mrv.maya.ui.browse.control.FileRootSelectorControl.__init__
+mrv.maya.ui.browse.control.StackControlBase.__init__
+mrv.maya.ui.browse.finder.Finder.__init__
+mrv.maya.ui.browse.interface.iFinderProvider.__init__
+mrv.maya.ui.browse.layout.FileOpenFinder.__init__
+mrv.maya.ui.browse.layout.FileReferenceFinder.__init__
+mrv.maya.ui.browse.layout.FileSaveFinder.__init__
+mrv.maya.ui.browse.layout.FinderLayout.__init__
+mrv.maya.ui.browse.option.FileOpenOptions.__init__
+mrv.maya.ui.dialog.ProgressWindow.__init__
+mrv.maya.ui.dialog.PromptDialog.__init__
+mrv.maya.ui.layout.Layout.__init__
+mrv.maya.ui.qa.QACheckLayout.__init__
+mrv.maya.ui.qa.QALayout.__init__
+mrv.maya.ui.util.EventSenderUI._UIEvent.__init__
+mrv.maya.ui.util.UIContainerBase.__init__
+mrv.maya.undo.DGModifier.__init__
+mrv.maya.undo.GenericOperation.__init__
+mrv.maya.undo.GenericOperationStack.__init__
+mrv.maya.undo.MuteUndo.__init__
+mrv.maya.undo.Operation.__init__
+mrv.maya.undo.StartUndo.__init__
+mrv.maya.undo.UndoCmd.__init__
+mrv.maya.undo.UndoRecorder.__init__
+mrv.maya.util.CallbackEventBase.CBStorageFunction.__init__
+mrv.maya.util.CallbackEventBase.__init__
+mrv.maya.util.StandinClass.__init__
+mrv.thread.TerminatableThread.__init__
+mrv.thread.WorkerThread.__init__
+mrv.util.And.__init__
+mrv.util.Call.__init__
+mrv.util.CallAdv.__init__
+mrv.util.CallOnDeletion.__init__
+mrv.util.Event.__init__
+mrv.util.InterfaceMaster.InterfaceBase.__init__
+mrv.util.InterfaceMaster.InterfaceDescriptor.__init__
+mrv.util.InterfaceMaster._InterfaceHandler.__init__
+mrv.util.InterfaceMaster.__init__
+mrv.util.Or.__init__
+mrv.util.PipeSeparatedFile.__init__
+mrv.util.WeakInstFunction.__init__
+unittest.FunctionTestCase.__init__
+unittest.TestCase.__init__
+unittest.TestProgram.__init__
+unittest.TestResult.__init__
+unittest.TestSuite.__init__
+unittest.TextTestRunner.__init__
+unittest._TextTestResult.__init__
+unittest._WritelnDecorator.__init__" class="py-name" href="#" onclick="return doclink('link-37', '__init__', 'link-37');">__init__</a></tt><tt class="py-op">(</tt> <tt id="link-38" class="py-name" targets="Class mrv.automation.qa.QACheckResult=mrv.automation.qa.QACheckResult-class.html"><a title="mrv.automation.qa.QACheckResult" class="py-name" href="#" onclick="return doclink('link-38', 'QACheckResult', 'link-38');">QACheckResult</a></tt><tt class="py-op">,</tt> <tt class="py-name">flags</tt> <tt class="py-op">)</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-39" class="py-name" targets="Method mrv.maya.ui.base.SizedControl.annotation()=mrv.maya.ui.base.SizedControl-class.html#annotation"><a title="mrv.maya.ui.base.SizedControl.annotation" class="py-name" href="#" onclick="return doclink('link-39', 'annotation', 'link-39');">annotation</a></tt> <tt class="py-op">=</tt> <tt id="link-40" class="py-name"><a title="mrv.maya.ui.base.SizedControl.annotation" class="py-name" href="#" onclick="return doclink('link-40', 'annotation', 'link-39');">annotation</a></tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">implements_fix</tt> <tt class="py-op">=</tt> <tt class="py-name">has_fix</tt> </tt>
+</div></div><a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line"> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line"> </tt>
+<a name="QACheck"></a><div id="QACheck-def"><a name="L103"></a><tt class="py-lineno">103</tt> <a class="py-toggle" href="#" id="QACheck-toggle" onclick="return toggle('QACheck');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.automation.qa.QACheck-class.html">QACheck</a><tt class="py-op">(</tt> <tt class="py-base-class">plug</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QACheck-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="QACheck-expanded"><a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">        <tt class="py-docstring">"""Defines a test suitable to be run and computed by a `QAProcessBase`</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line"><tt class="py-docstring">        It's nothing more than a convenience class as the actual information is held by the</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line"><tt class="py-docstring">        respective `QACheckAttribute`.</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line"><tt class="py-docstring">        All non-plug calls are passed on to the underlying attribute, allowing it to</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line"><tt class="py-docstring">        be treated like one"""</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">        <tt class="py-comment">#{ Configuration</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line"> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">        <tt class="py-comment"># class of the check attribute to use when instanciating this check</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">        <tt class="py-name">check_attribute_cls</tt> <tt class="py-op">=</tt> <tt id="link-41" class="py-name"><a title="mrv.automation.qa.QACheckAttribute" class="py-name" href="#" onclick="return doclink('link-41', 'QACheckAttribute', 'link-36');">QACheckAttribute</a></tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">        <tt class="py-comment">#} END configuration</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line"> </tt>
+<a name="QACheck.__init__"></a><div id="QACheck.__init__-def"><a name="L115"></a><tt class="py-lineno">115</tt> <a class="py-toggle" href="#" id="QACheck.__init__-toggle" onclick="return toggle('QACheck.__init__');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.automation.qa.QACheck-class.html#__init__">__init__</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QACheck.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="QACheck.__init__-expanded"><a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">                <tt class="py-name">super</tt><tt class="py-op">(</tt> <tt id="link-42" class="py-name" targets="Class mrv.automation.qa.QACheck=mrv.automation.qa.QACheck-class.html"><a title="mrv.automation.qa.QACheck" class="py-name" href="#" onclick="return doclink('link-42', 'QACheck', 'link-42');">QACheck</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt> <tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-43" class="py-name"><a title="mrv.automation.attributes.RegexStringAttr.__init__
+mrv.automation.process.ProcessBase.__init__
+mrv.automation.process.WorkflowProcessBase.__init__
+mrv.automation.qa.QACheck.__init__
+mrv.automation.qa.QACheckAttribute.__init__
+mrv.automation.qa.QACheckResult.__init__
+mrv.automation.qa.QAWorkflow.__init__
+mrv.automation.report.ReportBase.__init__
+mrv.automation.workflow.DirtyException.__init__
+mrv.automation.workflow.Workflow.CallGraph.__init__
+mrv.automation.workflow.Workflow.ProcessData.__init__
+mrv.automation.workflow.Workflow.__init__
+mrv.cmd.base.SpawnedCommand.__init__
+mrv.cmd.base.SpawnedOptionParser.__init__
+mrv.conf.ConfigAccessor.__init__
+mrv.conf.ConfigChain.__init__
+mrv.conf.ConfigFile.__init__
+mrv.conf.ConfigManager.__init__
+mrv.conf.ConfigNode.__init__
+mrv.conf.DictToINIFile.__init__
+mrv.conf.DiffData.__init__
+mrv.conf.Key.__init__
+mrv.conf.Section.__init__
+mrv.conf._PropertyHolderBase.__init__
+mrv.dge.Attribute.__init__
+mrv.dge.Graph.__init__
+mrv.dge.NodeBase.__init__
+mrv.dge.plug.__init__
+mrv.dgfe.FacadeNodeBase.__init__
+mrv.dgfe.GraphNodeBase.__init__
+mrv.dgfe._IOShell.__init__
+mrv.dgfe._OIShell.__init__
+mrv.doc.base.DocGenerator.__init__
+mrv.enum.Element.__init__
+mrv.enum.Enumeration.__init__
+mrv.exc.MRVError.__init__
+mrv.interface.iChoiceDialog.__init__
+mrv.interface.iProgressIndicator.__init__
+mrv.interface.iPrompt.__init__
+mrv.maya.mdb.MEnumDescriptor.__init__
+mrv.maya.mdb.MFnCodeGeneratorBase.__init__
+mrv.maya.mdb.MMemberMap.__init__
+mrv.maya.mdb.MMethodDescriptor.__init__
+mrv.maya.nt.PluginDB.__init__
+mrv.maya.nt.geometry._SingleIndexedComponentGenerator.__init__
+mrv.maya.nt.persistence.PyPickleData.__init__
+mrv.maya.nt.persistence.StoragePluginNode.__init__
+mrv.maya.nt.set.ObjectSet._TmpSet.__init__
+mrv.maya.nt.storage.StorageBase.PyPickleValue.__init__
+mrv.maya.nt.storage.StorageBase.__init__
+mrv.maya.nt.storage.StorageNode.__init__
+mrv.maya.ref.FileReference.__init__
+mrv.maya.ui.base.BaseUI.__init__
+mrv.maya.ui.base.NamedUI.__init__
+mrv.maya.ui.browse.control.BookmarkControl.__init__
+mrv.maya.ui.browse.control.FilePathControlEditable.__init__
+mrv.maya.ui.browse.control.FileProvider.__init__
+mrv.maya.ui.browse.control.FileRootSelectorControl.__init__
+mrv.maya.ui.browse.control.StackControlBase.__init__
+mrv.maya.ui.browse.finder.Finder.__init__
+mrv.maya.ui.browse.interface.iFinderProvider.__init__
+mrv.maya.ui.browse.layout.FileOpenFinder.__init__
+mrv.maya.ui.browse.layout.FileReferenceFinder.__init__
+mrv.maya.ui.browse.layout.FileSaveFinder.__init__
+mrv.maya.ui.browse.layout.FinderLayout.__init__
+mrv.maya.ui.browse.option.FileOpenOptions.__init__
+mrv.maya.ui.dialog.ProgressWindow.__init__
+mrv.maya.ui.dialog.PromptDialog.__init__
+mrv.maya.ui.layout.Layout.__init__
+mrv.maya.ui.qa.QACheckLayout.__init__
+mrv.maya.ui.qa.QALayout.__init__
+mrv.maya.ui.util.EventSenderUI._UIEvent.__init__
+mrv.maya.ui.util.UIContainerBase.__init__
+mrv.maya.undo.DGModifier.__init__
+mrv.maya.undo.GenericOperation.__init__
+mrv.maya.undo.GenericOperationStack.__init__
+mrv.maya.undo.MuteUndo.__init__
+mrv.maya.undo.Operation.__init__
+mrv.maya.undo.StartUndo.__init__
+mrv.maya.undo.UndoCmd.__init__
+mrv.maya.undo.UndoRecorder.__init__
+mrv.maya.util.CallbackEventBase.CBStorageFunction.__init__
+mrv.maya.util.CallbackEventBase.__init__
+mrv.maya.util.StandinClass.__init__
+mrv.thread.TerminatableThread.__init__
+mrv.thread.WorkerThread.__init__
+mrv.util.And.__init__
+mrv.util.Call.__init__
+mrv.util.CallAdv.__init__
+mrv.util.CallOnDeletion.__init__
+mrv.util.Event.__init__
+mrv.util.InterfaceMaster.InterfaceBase.__init__
+mrv.util.InterfaceMaster.InterfaceDescriptor.__init__
+mrv.util.InterfaceMaster._InterfaceHandler.__init__
+mrv.util.InterfaceMaster.__init__
+mrv.util.Or.__init__
+mrv.util.PipeSeparatedFile.__init__
+mrv.util.WeakInstFunction.__init__
+unittest.FunctionTestCase.__init__
+unittest.TestCase.__init__
+unittest.TestProgram.__init__
+unittest.TestResult.__init__
+unittest.TestSuite.__init__
+unittest.TextTestRunner.__init__
+unittest._TextTestResult.__init__
+unittest._WritelnDecorator.__init__" class="py-name" href="#" onclick="return doclink('link-43', '__init__', 'link-37');">__init__</a></tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">check_attribute_cls</tt><tt class="py-op">(</tt> <tt class="py-op">*</tt><tt id="link-44" class="py-name"><a title="mrv.util.Call.args" class="py-name" href="#" onclick="return doclink('link-44', 'args', 'link-32');">args</a></tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt id="link-45" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-45', 'kwargs', 'link-23');">kwargs</a></tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line"> </tt>
+<a name="QACheck.__getattr__"></a><div id="QACheck.__getattr__-def"><a name="L118"></a><tt class="py-lineno">118</tt> <a class="py-toggle" href="#" id="QACheck.__getattr__-toggle" onclick="return toggle('QACheck.__getattr__');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.automation.qa.QACheck-class.html#__getattr__">__getattr__</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">attrname</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QACheck.__getattr__-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="QACheck.__getattr__-expanded"><a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">getattr</tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">attr</tt><tt class="py-op">,</tt> <tt class="py-name">attrname</tt> <tt class="py-op">)</tt> </tt>
+</div></div><a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line"> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line"> </tt>
+<a name="QAWorkflow"></a><div id="QAWorkflow-def"><a name="L122"></a><tt class="py-lineno">122</tt> <a class="py-toggle" href="#" id="QAWorkflow-toggle" onclick="return toggle('QAWorkflow');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.automation.qa.QAWorkflow-class.html">QAWorkflow</a><tt class="py-op">(</tt> <tt class="py-base-class">Workflow</tt><tt class="py-op">,</tt> <tt class="py-base-class">EventSender</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QAWorkflow-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="QAWorkflow-expanded"><a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line">        <tt class="py-docstring">"""Represents a workflow of QAProcessBase instances and allows to query them more</tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line"><tt class="py-docstring">        conveniently"""</tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line"> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line">        <tt class="py-comment">#( Configuration</tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line">        <tt id="link-46" class="py-name" targets="Variable mrv.automation.qa.QAWorkflow.sender_as_argument=mrv.automation.qa.QAWorkflow-class.html#sender_as_argument,Variable mrv.maya.scene.Scene.sender_as_argument=mrv.maya.scene.Scene-class.html#sender_as_argument,Variable mrv.maya.ui.util.EventSenderUI.sender_as_argument=mrv.maya.ui.util.EventSenderUI-class.html#sender_as_argument,Variable mrv.maya.ui.util.Signal.sender_as_argument=mrv.maya.ui.util.Signal-class.html#sender_as_argument,Variable mrv.util.Event.sender_as_argument=mrv.util.Event-class.html#sender_as_argument,Variable mrv.util.EventSender.sender_as_argument=mrv.util.EventSender-class.html#sender_as_argument"><a title="mrv.automation.qa.QAWorkflow.sender_as_argument
+mrv.maya.scene.Scene.sender_as_argument
+mrv.maya.ui.util.EventSenderUI.sender_as_argument
+mrv.maya.ui.util.Signal.sender_as_argument
+mrv.util.Event.sender_as_argument
+mrv.util.EventSender.sender_as_argument" class="py-name" href="#" onclick="return doclink('link-46', 'sender_as_argument', 'link-46');">sender_as_argument</a></tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line"> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line">        <tt class="py-comment"># if True, we will abort once the first error has been raised during check execution</tt> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line">        <tt class="py-comment"># It is also held as instance variable so it can be set on per instance basis, allowing</tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line">        <tt class="py-comment"># error check callbacks to adjust the error handling behaviour and abort the operation</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line">        <tt id="link-47" class="py-name" targets="Variable mrv.automation.qa.QAWorkflow.abort_on_error=mrv.automation.qa.QAWorkflow-class.html#abort_on_error"><a title="mrv.automation.qa.QAWorkflow.abort_on_error" class="py-name" href="#" onclick="return doclink('link-47', 'abort_on_error', 'link-47');">abort_on_error</a></tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line"> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line">        <tt class="py-comment"># as checks can take some time, it might be useful to have realtime results</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line">        <tt class="py-comment"># to std out in UI mode at least. It accompanies the feedback the workflow</tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line">        <tt class="py-comment"># gives and keeps the default unittest style</tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">        <tt id="link-48" class="py-name" targets="Variable mrv.automation.qa.QAWorkflow.info_to_stdout=mrv.automation.qa.QAWorkflow-class.html#info_to_stdout"><a title="mrv.automation.qa.QAWorkflow.info_to_stdout" class="py-name" href="#" onclick="return doclink('link-48', 'info_to_stdout', 'link-48');">info_to_stdout</a></tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line">        <tt class="py-comment">#) END configuration</tt> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line"> </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line">        <tt class="py-comment">#( Filters</tt> </tt>
+<a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line">        <tt id="link-49" class="py-name" targets="Static Method mrv.automation.qa.QAWorkflow.fIsQAProcessBase()=mrv.automation.qa.QAWorkflow-class.html#fIsQAProcessBase"><a title="mrv.automation.qa.QAWorkflow.fIsQAProcessBase" class="py-name" href="#" onclick="return doclink('link-49', 'fIsQAProcessBase', 'link-49');">fIsQAProcessBase</a></tt> <tt class="py-op">=</tt> <tt class="py-name">staticmethod</tt><tt class="py-op">(</tt> <tt class="py-keyword">lambda</tt> <tt class="py-name">n</tt><tt class="py-op">:</tt> <tt id="link-50" class="py-name" targets="Function unittest.isinstance()=unittest-module.html#isinstance"><a title="unittest.isinstance" class="py-name" href="#" onclick="return doclink('link-50', 'isinstance', 'link-50');">isinstance</a></tt><tt class="py-op">(</tt> <tt class="py-name">n</tt><tt class="py-op">,</tt> <tt id="link-51" class="py-name" targets="Class mrv.automation.qa.QAProcessBase=mrv.automation.qa.QAProcessBase-class.html"><a title="mrv.automation.qa.QAProcessBase" class="py-name" href="#" onclick="return doclink('link-51', 'QAProcessBase', 'link-51');">QAProcessBase</a></tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line">        <tt id="link-52" class="py-name" targets="Static Method mrv.automation.qa.QAWorkflow.fIsQAPlug()=mrv.automation.qa.QAWorkflow-class.html#fIsQAPlug"><a title="mrv.automation.qa.QAWorkflow.fIsQAPlug" class="py-name" href="#" onclick="return doclink('link-52', 'fIsQAPlug', 'link-52');">fIsQAPlug</a></tt> <tt class="py-op">=</tt> <tt class="py-name">staticmethod</tt><tt class="py-op">(</tt> <tt class="py-keyword">lambda</tt> <tt id="link-53" class="py-name" targets="Variable mrv.info.p=mrv.info-module.html#p"><a title="mrv.info.p" class="py-name" href="#" onclick="return doclink('link-53', 'p', 'link-53');">p</a></tt><tt class="py-op">:</tt> <tt id="link-54" class="py-name"><a title="unittest.isinstance" class="py-name" href="#" onclick="return doclink('link-54', 'isinstance', 'link-50');">isinstance</a></tt><tt class="py-op">(</tt> <tt id="link-55" class="py-name"><a title="mrv.info.p" class="py-name" href="#" onclick="return doclink('link-55', 'p', 'link-53');">p</a></tt><tt class="py-op">,</tt> <tt id="link-56" class="py-name"><a title="mrv.automation.qa.QACheck" class="py-name" href="#" onclick="return doclink('link-56', 'QACheck', 'link-42');">QACheck</a></tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line">        <tt class="py-comment">#) END filters</tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line"> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line">        <tt class="py-comment">#{ Events</tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line">        <tt class="py-comment"># called before a check is run as func: func( event, check )</tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line">        <tt id="link-57" class="py-name" targets="Variable mrv.automation.qa.QAWorkflow.e_preCheck=mrv.automation.qa.QAWorkflow-class.html#e_preCheck"><a title="mrv.automation.qa.QAWorkflow.e_preCheck" class="py-name" href="#" onclick="return doclink('link-57', 'e_preCheck', 'link-57');">e_preCheck</a></tt> <tt class="py-op">=</tt> <tt id="link-58" class="py-name"><a title="mrv.util.Event" class="py-name" href="#" onclick="return doclink('link-58', 'Event', 'link-7');">Event</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line"> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line">        <tt class="py-comment"># called if a check fails with an error: func( event, check, exception, workflow )</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line">        <tt id="link-59" class="py-name" targets="Variable mrv.automation.qa.QAWorkflow.e_checkError=mrv.automation.qa.QAWorkflow-class.html#e_checkError"><a title="mrv.automation.qa.QAWorkflow.e_checkError" class="py-name" href="#" onclick="return doclink('link-59', 'e_checkError', 'link-59');">e_checkError</a></tt> <tt class="py-op">=</tt> <tt id="link-60" class="py-name"><a title="mrv.util.Event" class="py-name" href="#" onclick="return doclink('link-60', 'Event', 'link-7');">Event</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line"> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line">        <tt class="py-comment"># called after a check has been run: func( event, check, result )</tt> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line">        <tt id="link-61" class="py-name" targets="Variable mrv.automation.qa.QAWorkflow.e_postCheck=mrv.automation.qa.QAWorkflow-class.html#e_postCheck"><a title="mrv.automation.qa.QAWorkflow.e_postCheck" class="py-name" href="#" onclick="return doclink('link-61', 'e_postCheck', 'link-61');">e_postCheck</a></tt> <tt class="py-op">=</tt> <tt id="link-62" class="py-name"><a title="mrv.util.Event" class="py-name" href="#" onclick="return doclink('link-62', 'Event', 'link-7');">Event</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line">        <tt class="py-comment">#}</tt> </tt>
+<a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line"> </tt>
+<a name="QAWorkflow.__init__"></a><div id="QAWorkflow.__init__-def"><a name="L156"></a><tt class="py-lineno">156</tt> <a class="py-toggle" href="#" id="QAWorkflow.__init__-toggle" onclick="return toggle('QAWorkflow.__init__');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.automation.qa.QAWorkflow-class.html#__init__">__init__</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QAWorkflow.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="QAWorkflow.__init__-expanded"><a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line">                <tt class="py-docstring">"""Initialize our instance"""</tt> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line">                <tt class="py-name">super</tt><tt class="py-op">(</tt> <tt id="link-63" class="py-name" targets="Class mrv.automation.qa.QAWorkflow=mrv.automation.qa.QAWorkflow-class.html"><a title="mrv.automation.qa.QAWorkflow" class="py-name" href="#" onclick="return doclink('link-63', 'QAWorkflow', 'link-63');">QAWorkflow</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt> <tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-64" class="py-name"><a title="mrv.automation.attributes.RegexStringAttr.__init__
+mrv.automation.process.ProcessBase.__init__
+mrv.automation.process.WorkflowProcessBase.__init__
+mrv.automation.qa.QACheck.__init__
+mrv.automation.qa.QACheckAttribute.__init__
+mrv.automation.qa.QACheckResult.__init__
+mrv.automation.qa.QAWorkflow.__init__
+mrv.automation.report.ReportBase.__init__
+mrv.automation.workflow.DirtyException.__init__
+mrv.automation.workflow.Workflow.CallGraph.__init__
+mrv.automation.workflow.Workflow.ProcessData.__init__
+mrv.automation.workflow.Workflow.__init__
+mrv.cmd.base.SpawnedCommand.__init__
+mrv.cmd.base.SpawnedOptionParser.__init__
+mrv.conf.ConfigAccessor.__init__
+mrv.conf.ConfigChain.__init__
+mrv.conf.ConfigFile.__init__
+mrv.conf.ConfigManager.__init__
+mrv.conf.ConfigNode.__init__
+mrv.conf.DictToINIFile.__init__
+mrv.conf.DiffData.__init__
+mrv.conf.Key.__init__
+mrv.conf.Section.__init__
+mrv.conf._PropertyHolderBase.__init__
+mrv.dge.Attribute.__init__
+mrv.dge.Graph.__init__
+mrv.dge.NodeBase.__init__
+mrv.dge.plug.__init__
+mrv.dgfe.FacadeNodeBase.__init__
+mrv.dgfe.GraphNodeBase.__init__
+mrv.dgfe._IOShell.__init__
+mrv.dgfe._OIShell.__init__
+mrv.doc.base.DocGenerator.__init__
+mrv.enum.Element.__init__
+mrv.enum.Enumeration.__init__
+mrv.exc.MRVError.__init__
+mrv.interface.iChoiceDialog.__init__
+mrv.interface.iProgressIndicator.__init__
+mrv.interface.iPrompt.__init__
+mrv.maya.mdb.MEnumDescriptor.__init__
+mrv.maya.mdb.MFnCodeGeneratorBase.__init__
+mrv.maya.mdb.MMemberMap.__init__
+mrv.maya.mdb.MMethodDescriptor.__init__
+mrv.maya.nt.PluginDB.__init__
+mrv.maya.nt.geometry._SingleIndexedComponentGenerator.__init__
+mrv.maya.nt.persistence.PyPickleData.__init__
+mrv.maya.nt.persistence.StoragePluginNode.__init__
+mrv.maya.nt.set.ObjectSet._TmpSet.__init__
+mrv.maya.nt.storage.StorageBase.PyPickleValue.__init__
+mrv.maya.nt.storage.StorageBase.__init__
+mrv.maya.nt.storage.StorageNode.__init__
+mrv.maya.ref.FileReference.__init__
+mrv.maya.ui.base.BaseUI.__init__
+mrv.maya.ui.base.NamedUI.__init__
+mrv.maya.ui.browse.control.BookmarkControl.__init__
+mrv.maya.ui.browse.control.FilePathControlEditable.__init__
+mrv.maya.ui.browse.control.FileProvider.__init__
+mrv.maya.ui.browse.control.FileRootSelectorControl.__init__
+mrv.maya.ui.browse.control.StackControlBase.__init__
+mrv.maya.ui.browse.finder.Finder.__init__
+mrv.maya.ui.browse.interface.iFinderProvider.__init__
+mrv.maya.ui.browse.layout.FileOpenFinder.__init__
+mrv.maya.ui.browse.layout.FileReferenceFinder.__init__
+mrv.maya.ui.browse.layout.FileSaveFinder.__init__
+mrv.maya.ui.browse.layout.FinderLayout.__init__
+mrv.maya.ui.browse.option.FileOpenOptions.__init__
+mrv.maya.ui.dialog.ProgressWindow.__init__
+mrv.maya.ui.dialog.PromptDialog.__init__
+mrv.maya.ui.layout.Layout.__init__
+mrv.maya.ui.qa.QACheckLayout.__init__
+mrv.maya.ui.qa.QALayout.__init__
+mrv.maya.ui.util.EventSenderUI._UIEvent.__init__
+mrv.maya.ui.util.UIContainerBase.__init__
+mrv.maya.undo.DGModifier.__init__
+mrv.maya.undo.GenericOperation.__init__
+mrv.maya.undo.GenericOperationStack.__init__
+mrv.maya.undo.MuteUndo.__init__
+mrv.maya.undo.Operation.__init__
+mrv.maya.undo.StartUndo.__init__
+mrv.maya.undo.UndoCmd.__init__
+mrv.maya.undo.UndoRecorder.__init__
+mrv.maya.util.CallbackEventBase.CBStorageFunction.__init__
+mrv.maya.util.CallbackEventBase.__init__
+mrv.maya.util.StandinClass.__init__
+mrv.thread.TerminatableThread.__init__
+mrv.thread.WorkerThread.__init__
+mrv.util.And.__init__
+mrv.util.Call.__init__
+mrv.util.CallAdv.__init__
+mrv.util.CallOnDeletion.__init__
+mrv.util.Event.__init__
+mrv.util.InterfaceMaster.InterfaceBase.__init__
+mrv.util.InterfaceMaster.InterfaceDescriptor.__init__
+mrv.util.InterfaceMaster._InterfaceHandler.__init__
+mrv.util.InterfaceMaster.__init__
+mrv.util.Or.__init__
+mrv.util.PipeSeparatedFile.__init__
+mrv.util.WeakInstFunction.__init__
+unittest.FunctionTestCase.__init__
+unittest.TestCase.__init__
+unittest.TestProgram.__init__
+unittest.TestResult.__init__
+unittest.TestSuite.__init__
+unittest.TextTestRunner.__init__
+unittest._TextTestResult.__init__
+unittest._WritelnDecorator.__init__" class="py-name" href="#" onclick="return doclink('link-64', '__init__', 'link-37');">__init__</a></tt><tt class="py-op">(</tt> <tt class="py-op">*</tt><tt id="link-65" class="py-name"><a title="mrv.util.Call.args" class="py-name" href="#" onclick="return doclink('link-65', 'args', 'link-32');">args</a></tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt id="link-66" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-66', 'kwargs', 'link-23');">kwargs</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line"> </tt>
+<a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line">                <tt class="py-comment"># store abort on error as instance variable so that it can easily be overwritten</tt> </tt>
+<a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-67" class="py-name"><a title="mrv.automation.qa.QAWorkflow.abort_on_error" class="py-name" href="#" onclick="return doclink('link-67', 'abort_on_error', 'link-47');">abort_on_error</a></tt> <tt class="py-op">=</tt> <tt id="link-68" class="py-name"><a title="mrv.automation.qa.QAWorkflow" class="py-name" href="#" onclick="return doclink('link-68', 'QAWorkflow', 'link-63');">QAWorkflow</a></tt><tt class="py-op">.</tt><tt id="link-69" class="py-name"><a title="mrv.automation.qa.QAWorkflow.abort_on_error" class="py-name" href="#" onclick="return doclink('link-69', 'abort_on_error', 'link-47');">abort_on_error</a></tt> </tt>
+</div><a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line"> </tt>
+<a name="QAWorkflow.listQAProcessBasees"></a><div id="QAWorkflow.listQAProcessBasees-def"><a name="L163"></a><tt class="py-lineno">163</tt> <a class="py-toggle" href="#" id="QAWorkflow.listQAProcessBasees-toggle" onclick="return toggle('QAWorkflow.listQAProcessBasees');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.automation.qa.QAWorkflow-class.html#listQAProcessBasees">listQAProcessBasees</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">predicate</tt> <tt class="py-op">=</tt> <tt class="py-keyword">lambda</tt> <tt id="link-70" class="py-name"><a title="mrv.info.p" class="py-name" href="#" onclick="return doclink('link-70', 'p', 'link-53');">p</a></tt><tt class="py-op">:</tt> <tt class="py-name">True</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QAWorkflow.listQAProcessBasees-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="QAWorkflow.listQAProcessBasees-expanded"><a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line">                <tt class="py-docstring">""":return: list( Process, ... ) list of QA Processes known to this QA Workflow</tt> </tt>
+<a name="L165"></a><tt class="py-lineno">165</tt>  <tt class="py-line"><tt class="py-docstring">                :param predicate: include process p in result if func( p ) returns True"""</tt> </tt>
+<a name="L166"></a><tt class="py-lineno">166</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-71" class="py-name" targets="Method mrv.dge.Graph.iterNodes()=mrv.dge.Graph-class.html#iterNodes,Method mrv.maya.ns.Namespace.iterNodes()=mrv.maya.ns.Namespace-class.html#iterNodes,Method mrv.maya.ref.FileReference.iterNodes()=mrv.maya.ref.FileReference-class.html#iterNodes"><a title="mrv.dge.Graph.iterNodes
+mrv.maya.ns.Namespace.iterNodes
+mrv.maya.ref.FileReference.iterNodes" class="py-name" href="#" onclick="return doclink('link-71', 'iterNodes', 'link-71');">iterNodes</a></tt><tt class="py-op">(</tt> <tt class="py-name">predicate</tt> <tt class="py-op">=</tt> <tt class="py-keyword">lambda</tt> <tt class="py-name">n</tt><tt class="py-op">:</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-72" class="py-name"><a title="mrv.automation.qa.QAWorkflow.fIsQAProcessBase" class="py-name" href="#" onclick="return doclink('link-72', 'fIsQAProcessBase', 'link-49');">fIsQAProcessBase</a></tt><tt class="py-op">(</tt> <tt class="py-name">n</tt> <tt class="py-op">)</tt> <tt class="py-keyword">and</tt> <tt class="py-name">predicate</tt><tt class="py-op">(</tt> <tt class="py-name">n</tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line"> </tt>
+<a name="QAWorkflow.filterChecks"></a><div id="QAWorkflow.filterChecks-def"><a name="L168"></a><tt class="py-lineno">168</tt> <a class="py-toggle" href="#" id="QAWorkflow.filterChecks-toggle" onclick="return toggle('QAWorkflow.filterChecks');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.automation.qa.QAWorkflow-class.html#filterChecks">filterChecks</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">processes</tt><tt class="py-op">,</tt> <tt class="py-param">predicate</tt> <tt class="py-op">=</tt> <tt class="py-keyword">lambda</tt> <tt class="py-name">c</tt><tt class="py-op">:</tt> <tt class="py-name">True</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QAWorkflow.filterChecks-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="QAWorkflow.filterChecks-expanded"><a name="L169"></a><tt class="py-lineno">169</tt>  <tt class="py-line">                <tt class="py-docstring">"""As `listChecks`, but allows you do define the processes to use</tt> </tt>
+<a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line"><tt class="py-docstring">                </tt> </tt>
+<a name="L171"></a><tt class="py-lineno">171</tt>  <tt class="py-line"><tt class="py-docstring">                :param predicate: func( p ) for plug p returns True for it to be included in the result"""</tt> </tt>
+<a name="L172"></a><tt class="py-lineno">172</tt>  <tt class="py-line">                <tt class="py-name">outchecks</tt> <tt class="py-op">=</tt> <tt class="py-name">list</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L173"></a><tt class="py-lineno">173</tt>  <tt class="py-line">                <tt class="py-keyword">for</tt> <tt class="py-name">node</tt> <tt class="py-keyword">in</tt> <tt id="link-73" class="py-name" targets="Package mrv.automation.processes=mrv.automation.processes-module.html"><a title="mrv.automation.processes" class="py-name" href="#" onclick="return doclink('link-73', 'processes', 'link-73');">processes</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L174"></a><tt class="py-lineno">174</tt>  <tt class="py-line">                        <tt class="py-name">outchecks</tt><tt class="py-op">.</tt><tt id="link-74" class="py-name" targets="Method mrv.conf.ConfigChain.extend()=mrv.conf.ConfigChain-class.html#extend"><a title="mrv.conf.ConfigChain.extend" class="py-name" href="#" onclick="return doclink('link-74', 'extend', 'link-74');">extend</a></tt><tt class="py-op">(</tt> <tt class="py-name">node</tt><tt class="py-op">.</tt><tt id="link-75" class="py-name" targets="Method mrv.dge.NodeBase.toShells()=mrv.dge.NodeBase-class.html#toShells"><a title="mrv.dge.NodeBase.toShells" class="py-name" href="#" onclick="return doclink('link-75', 'toShells', 'link-75');">toShells</a></tt><tt class="py-op">(</tt> <tt class="py-name">node</tt><tt class="py-op">.</tt><tt id="link-76" class="py-name" targets="Method mrv.dge.NodeBase.plugs()=mrv.dge.NodeBase-class.html#plugs,Method mrv.dgfe.FacadeNodeBase.plugs()=mrv.dgfe.FacadeNodeBase-class.html#plugs"><a title="mrv.dge.NodeBase.plugs
+mrv.dgfe.FacadeNodeBase.plugs" class="py-name" href="#" onclick="return doclink('link-76', 'plugs', 'link-76');">plugs</a></tt><tt class="py-op">(</tt> <tt class="py-keyword">lambda</tt> <tt class="py-name">c</tt><tt class="py-op">:</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-77" class="py-name"><a title="mrv.automation.qa.QAWorkflow.fIsQAPlug" class="py-name" href="#" onclick="return doclink('link-77', 'fIsQAPlug', 'link-52');">fIsQAPlug</a></tt><tt class="py-op">(</tt> <tt class="py-name">c</tt> <tt class="py-op">)</tt> <tt class="py-keyword">and</tt> <tt class="py-name">predicate</tt><tt class="py-op">(</tt> <tt class="py-name">c</tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+<a name="L175"></a><tt class="py-lineno">175</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">outchecks</tt> </tt>
+</div><a name="L176"></a><tt class="py-lineno">176</tt>  <tt class="py-line"> </tt>
+<a name="QAWorkflow.listChecks"></a><div id="QAWorkflow.listChecks-def"><a name="L177"></a><tt class="py-lineno">177</tt> <a class="py-toggle" href="#" id="QAWorkflow.listChecks-toggle" onclick="return toggle('QAWorkflow.listChecks');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.automation.qa.QAWorkflow-class.html#listChecks">listChecks</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">predicate</tt> <tt class="py-op">=</tt> <tt class="py-keyword">lambda</tt> <tt class="py-name">c</tt><tt class="py-op">:</tt> <tt class="py-name">True</tt>  <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QAWorkflow.listChecks-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="QAWorkflow.listChecks-expanded"><a name="L178"></a><tt class="py-lineno">178</tt>  <tt class="py-line">                <tt class="py-docstring">"""List all checks as supported by `QAProcessBase` es in this QA Workflow</tt> </tt>
+<a name="L179"></a><tt class="py-lineno">179</tt>  <tt class="py-line"><tt class="py-docstring">                </tt> </tt>
+<a name="L180"></a><tt class="py-lineno">180</tt>  <tt class="py-line"><tt class="py-docstring">                :param predicate: include check c in result if func( c ) returns True"""</tt> </tt>
+<a name="L181"></a><tt class="py-lineno">181</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-78" class="py-name"><a title="mrv.automation.qa.QAWorkflow.filterChecks" class="py-name" href="#" onclick="return doclink('link-78', 'filterChecks', 'link-22');">filterChecks</a></tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-79" class="py-name" targets="Method mrv.automation.qa.QAWorkflow.listQAProcessBasees()=mrv.automation.qa.QAWorkflow-class.html#listQAProcessBasees"><a title="mrv.automation.qa.QAWorkflow.listQAProcessBasees" class="py-name" href="#" onclick="return doclink('link-79', 'listQAProcessBasees', 'link-79');">listQAProcessBasees</a></tt><tt class="py-op">(</tt> <tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">predicate</tt> <tt class="py-op">=</tt> <tt class="py-name">predicate</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L182"></a><tt class="py-lineno">182</tt>  <tt class="py-line"> </tt>
+<a name="QAWorkflow.runChecks"></a><div id="QAWorkflow.runChecks-def"><a name="L183"></a><tt class="py-lineno">183</tt> <a class="py-toggle" href="#" id="QAWorkflow.runChecks-toggle" onclick="return toggle('QAWorkflow.runChecks');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.automation.qa.QAWorkflow-class.html#runChecks">runChecks</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">checks</tt><tt class="py-op">,</tt> <tt class="py-param">mode</tt> <tt class="py-op">=</tt> <tt id="link-80" class="py-name"><a title="mrv.automation.qa.QAProcessBase" class="py-name" href="#" onclick="return doclink('link-80', 'QAProcessBase', 'link-51');">QAProcessBase</a></tt><tt class="py-op">.</tt><tt id="link-81" class="py-name"><a title="mrv.automation.qa.QAProcessBase.eMode" class="py-name" href="#" onclick="return doclink('link-81', 'eMode', 'link-18');">eMode</a></tt><tt class="py-op">.</tt><tt class="py-name">query</tt><tt class="py-op">,</tt> <tt class="py-param">clear_result</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QAWorkflow.runChecks-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="QAWorkflow.runChecks-expanded"><a name="L184"></a><tt class="py-lineno">184</tt>  <tt class="py-line">                <tt class="py-docstring">"""Run the given checks in the given mode and return their results</tt> </tt>
+<a name="L185"></a><tt class="py-lineno">185</tt>  <tt class="py-line"><tt class="py-docstring">                </tt> </tt>
+<a name="L186"></a><tt class="py-lineno">186</tt>  <tt class="py-line"><tt class="py-docstring">                :param checks: list( QACheckShell, ... ) as retrieved by `listChecks`</tt> </tt>
+<a name="L187"></a><tt class="py-lineno">187</tt>  <tt class="py-line"><tt class="py-docstring">                :param mode: `QAProcessBase.eMode`</tt> </tt>
+<a name="L188"></a><tt class="py-lineno">188</tt>  <tt class="py-line"><tt class="py-docstring">                :param clear_result: if True, the plug's cache will be removed forcing a computation</tt> </tt>
+<a name="L189"></a><tt class="py-lineno">189</tt>  <tt class="py-line"><tt class="py-docstring">                        if False, you might get a cached value depending on the plug's setup</tt> </tt>
+<a name="L190"></a><tt class="py-lineno">190</tt>  <tt class="py-line"><tt class="py-docstring">                :return: list( tuple( QACheckShell, QACheckResult ), ... ) list of pairs of</tt> </tt>
+<a name="L191"></a><tt class="py-lineno">191</tt>  <tt class="py-line"><tt class="py-docstring">                        QACheckShells and the check's result. The test result will be empty if the test</tt> </tt>
+<a name="L192"></a><tt class="py-lineno">192</tt>  <tt class="py-line"><tt class="py-docstring">                        did not run or failed with an exception</tt> </tt>
+<a name="L193"></a><tt class="py-lineno">193</tt>  <tt class="py-line"><tt class="py-docstring">                :note: Sends the following events: ``e_preCheck`` , ``e_postCheck``, ``e_checkError``</tt> </tt>
+<a name="L194"></a><tt class="py-lineno">194</tt>  <tt class="py-line"><tt class="py-docstring">                        e_checkError may set the abort_on_error variable to True to cause the operation</tt> </tt>
+<a name="L195"></a><tt class="py-lineno">195</tt>  <tt class="py-line"><tt class="py-docstring">                        not to proceed with other checks"""</tt> </tt>
+<a name="L196"></a><tt class="py-lineno">196</tt>  <tt class="py-line">                <tt class="py-comment"># reset abort on error to class default</tt> </tt>
+<a name="L197"></a><tt class="py-lineno">197</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-82" class="py-name"><a title="mrv.automation.qa.QAWorkflow.abort_on_error" class="py-name" href="#" onclick="return doclink('link-82', 'abort_on_error', 'link-47');">abort_on_error</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__class__</tt><tt class="py-op">.</tt><tt id="link-83" class="py-name"><a title="mrv.automation.qa.QAWorkflow.abort_on_error" class="py-name" href="#" onclick="return doclink('link-83', 'abort_on_error', 'link-47');">abort_on_error</a></tt> </tt>
+<a name="L198"></a><tt class="py-lineno">198</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-84" class="py-name" targets="Method mrv.automation.workflow.Workflow._clearState()=mrv.automation.workflow.Workflow-class.html#_clearState"><a title="mrv.automation.workflow.Workflow._clearState" class="py-name" href="#" onclick="return doclink('link-84', '_clearState', 'link-84');">_clearState</a></tt><tt class="py-op">(</tt> <tt id="link-85" class="py-name"><a title="mrv.automation.workflow.Workflow.ProcessData.mode" class="py-name" href="#" onclick="return doclink('link-85', 'mode', 'link-24');">mode</a></tt> <tt class="py-op">)</tt>        <tt class="py-comment"># assure we get a new callgraph</tt> </tt>
+<a name="L199"></a><tt class="py-lineno">199</tt>  <tt class="py-line"> </tt>
+<a name="L200"></a><tt class="py-lineno">200</tt>  <tt class="py-line">                <tt class="py-name">outresult</tt> <tt class="py-op">=</tt> <tt class="py-name">list</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L201"></a><tt class="py-lineno">201</tt>  <tt class="py-line">                <tt class="py-keyword">for</tt> <tt class="py-name">checkshell</tt> <tt class="py-keyword">in</tt> <tt id="link-86" class="py-name" targets="Method mrv.maya.ui.qa.QALayout.checks()=mrv.maya.ui.qa.QALayout-class.html#checks"><a title="mrv.maya.ui.qa.QALayout.checks" class="py-name" href="#" onclick="return doclink('link-86', 'checks', 'link-86');">checks</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L202"></a><tt class="py-lineno">202</tt>  <tt class="py-line">                        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-87" class="py-name"><a title="mrv.automation.qa.QAWorkflow.info_to_stdout" class="py-name" href="#" onclick="return doclink('link-87', 'info_to_stdout', 'link-48');">info_to_stdout</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L203"></a><tt class="py-lineno">203</tt>  <tt class="py-line">                                <tt class="py-name">checkplug</tt> <tt class="py-op">=</tt> <tt class="py-name">checkshell</tt><tt class="py-op">.</tt><tt id="link-88" class="py-name"><a title="mrv.automation.workflow.Workflow.ProcessData.plug
+mrv.dge.plug" class="py-name" href="#" onclick="return doclink('link-88', 'plug', 'link-11');">plug</a></tt> </tt>
+<a name="L204"></a><tt class="py-lineno">204</tt>  <tt class="py-line">                                <tt id="link-89" class="py-name"><a title="mrv.automation.base.log
+mrv.automation.qa.log
+mrv.automation.workflow.log
+mrv.cmd.base.SpawnedCommand.log
+mrv.cmd.base.log
+mrv.conf.log
+mrv.interface.log
+mrv.log
+mrv.maya.automation.qa.log
+mrv.maya.log
+mrv.maya.mdb.log
+mrv.maya.nt.base.log
+mrv.maya.nt.geometry.log
+mrv.maya.nt.persistence.log
+mrv.maya.nt.typ.log
+mrv.maya.ui.control.log
+mrv.maya.ui.dialog.log
+mrv.maya.ui.qa.log
+mrv.mdepparse.log
+mrv.path.log
+mrv.util.log" class="py-name" href="#" onclick="return doclink('link-89', 'log', 'link-17');">log</a></tt><tt class="py-op">.</tt><tt id="link-90" class="py-name" targets="Module mrv.info=mrv.info-module.html,Variable mrv.maya.util.Mel.info=mrv.maya.util.Mel-class.html#info"><a title="mrv.info
+mrv.maya.util.Mel.info" class="py-name" href="#" onclick="return doclink('link-90', 'info', 'link-90');">info</a></tt><tt class="py-op">(</tt> <tt class="py-string">"Running %s: %s ... "</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt> <tt class="py-name">checkplug</tt><tt class="py-op">.</tt><tt id="link-91" class="py-name" targets="Method mrv.conf.ConfigFile.name()=mrv.conf.ConfigFile-class.html#name,Method mrv.conf.ConfigStringIO.name()=mrv.conf.ConfigStringIO-class.html#name,Method mrv.conf.DictConfigINIFile.name()=mrv.conf.DictConfigINIFile-class.html#name,Variable mrv.conf.DiffData.name=mrv.conf.DiffData-class.html#name,Method mrv.conf.ExtendedFileInterface.name()=mrv.conf.ExtendedFileInterface-class.html#name,Variable mrv.conf.Key.name=mrv.conf.Key-class.html#name,Variable mrv.conf.Section.name=mrv.conf.Section-class.html#name,Variable mrv.conf._PropertyHolderBase.name=mrv.conf._PropertyHolderBase-class.html#name,Method mrv.dge.iPlug.name()=mrv.dge.iPlug-class.html#name,Method mrv.dge.plug.name()=mrv.dge.plug-class.html#name,Method mrv.dgfe.OIFacadePlug.name()=mrv.dgfe.OIFacadePlug-class.html#name,Method mrv.enum.Element.name()=mrv.enum.Element-class.html#name,Method mrv.maya.nt.base.DagNode.name()=mrv.maya.nt.base.DagNode-class.html#name,Method mrv.maya.nt.persistence.PyPickleData.name()=mrv.maya.nt.persistence.PyPickleData-class.html#name,Class Method mrv.maya.scene.Scene.name()=mrv.maya.scene.Scene-class.html#name"><a title="mrv.conf.ConfigFile.name
+mrv.conf.ConfigStringIO.name
+mrv.conf.DictConfigINIFile.name
+mrv.conf.DiffData.name
+mrv.conf.ExtendedFileInterface.name
+mrv.conf.Key.name
+mrv.conf.Section.name
+mrv.conf._PropertyHolderBase.name
+mrv.dge.iPlug.name
+mrv.dge.plug.name
+mrv.dgfe.OIFacadePlug.name
+mrv.enum.Element.name
+mrv.maya.nt.base.DagNode.name
+mrv.maya.nt.persistence.PyPickleData.name
+mrv.maya.scene.Scene.name" class="py-name" href="#" onclick="return doclink('link-91', 'name', 'link-91');">name</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">checkplug</tt><tt class="py-op">.</tt><tt id="link-92" class="py-name"><a title="mrv.maya.ui.base.SizedControl.annotation" class="py-name" href="#" onclick="return doclink('link-92', 'annotation', 'link-39');">annotation</a></tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+<a name="L205"></a><tt class="py-lineno">205</tt>  <tt class="py-line">                        <tt class="py-comment"># END extra info</tt> </tt>
+<a name="L206"></a><tt class="py-lineno">206</tt>  <tt class="py-line"> </tt>
+<a name="L207"></a><tt class="py-lineno">207</tt>  <tt class="py-line">                        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-93" class="py-name"><a title="mrv.automation.qa.QAWorkflow.e_preCheck" class="py-name" href="#" onclick="return doclink('link-93', 'e_preCheck', 'link-57');">e_preCheck</a></tt><tt class="py-op">.</tt><tt id="link-94" class="py-name" targets="Method mrv.maya.ui.util.EventSenderUI._UIEvent.send()=mrv.maya.ui.util.EventSenderUI._UIEvent-class.html#send,Method mrv.maya.util.CallbackEventBase.send()=mrv.maya.util.CallbackEventBase-class.html#send,Method mrv.util.Event.send()=mrv.util.Event-class.html#send"><a title="mrv.maya.ui.util.EventSenderUI._UIEvent.send
+mrv.maya.util.CallbackEventBase.send
+mrv.util.Event.send" class="py-name" href="#" onclick="return doclink('link-94', 'send', 'link-94');">send</a></tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-95" class="py-name"><a title="mrv.automation.qa.QAWorkflow.e_preCheck" class="py-name" href="#" onclick="return doclink('link-95', 'e_preCheck', 'link-57');">e_preCheck</a></tt><tt class="py-op">,</tt> <tt class="py-name">checkshell</tt> <tt class="py-op">)</tt> </tt>
+<a name="L208"></a><tt class="py-lineno">208</tt>  <tt class="py-line"> </tt>
+<a name="L209"></a><tt class="py-lineno">209</tt>  <tt class="py-line">                        <tt id="link-96" class="py-name" targets="Method mrv.automation.workflow.Workflow.ProcessData.result()=mrv.automation.workflow.Workflow.ProcessData-class.html#result"><a title="mrv.automation.workflow.Workflow.ProcessData.result" class="py-name" href="#" onclick="return doclink('link-96', 'result', 'link-96');">result</a></tt> <tt class="py-op">=</tt> <tt id="link-97" class="py-name"><a title="mrv.automation.qa.QACheckResult" class="py-name" href="#" onclick="return doclink('link-97', 'QACheckResult', 'link-38');">QACheckResult</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt>                <tt class="py-comment"># null value</tt> </tt>
+<a name="L210"></a><tt class="py-lineno">210</tt>  <tt class="py-line">                        <tt class="py-keyword">if</tt> <tt class="py-name">clear_result</tt><tt class="py-op">:</tt> </tt>
+<a name="L211"></a><tt class="py-lineno">211</tt>  <tt class="py-line">                                <tt class="py-name">checkshell</tt><tt class="py-op">.</tt><tt id="link-98" class="py-name" targets="Method mrv.dge.Graph.clearCache()=mrv.dge.Graph-class.html#clearCache,Method mrv.dge.NodeBase.clearCache()=mrv.dge.NodeBase-class.html#clearCache,Method mrv.dge._PlugShell.clearCache()=mrv.dge._PlugShell-class.html#clearCache,Method mrv.dgfe._IOShell.clearCache()=mrv.dgfe._IOShell-class.html#clearCache,Method mrv.dgfe._OIShell.clearCache()=mrv.dgfe._OIShell-class.html#clearCache"><a title="mrv.dge.Graph.clearCache
+mrv.dge.NodeBase.clearCache
+mrv.dge._PlugShell.clearCache
+mrv.dgfe._IOShell.clearCache
+mrv.dgfe._OIShell.clearCache" class="py-name" href="#" onclick="return doclink('link-98', 'clearCache', 'link-98');">clearCache</a></tt><tt class="py-op">(</tt> <tt class="py-name">clear_affected</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> <tt class="py-op">)</tt> </tt>
+<a name="L212"></a><tt class="py-lineno">212</tt>  <tt class="py-line"> </tt>
+<a name="L213"></a><tt class="py-lineno">213</tt>  <tt class="py-line">                        <tt class="py-name">shellmode</tt> <tt class="py-op">=</tt> <tt id="link-99" class="py-name"><a title="mrv.automation.workflow.Workflow.ProcessData.mode" class="py-name" href="#" onclick="return doclink('link-99', 'mode', 'link-24');">mode</a></tt> </tt>
+<a name="L214"></a><tt class="py-lineno">214</tt>  <tt class="py-line">                        <tt class="py-comment"># some only can do check mode</tt> </tt>
+<a name="L215"></a><tt class="py-lineno">215</tt>  <tt class="py-line">                        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">checkshell</tt><tt class="py-op">.</tt><tt id="link-100" class="py-name"><a title="mrv.automation.workflow.Workflow.ProcessData.plug
+mrv.dge.plug" class="py-name" href="#" onclick="return doclink('link-100', 'plug', 'link-11');">plug</a></tt><tt class="py-op">.</tt><tt class="py-name">implements_fix</tt><tt class="py-op">:</tt> </tt>
+<a name="L216"></a><tt class="py-lineno">216</tt>  <tt class="py-line">                                <tt class="py-name">shellmode</tt> <tt class="py-op">=</tt> <tt class="py-name">checkshell</tt><tt class="py-op">.</tt><tt class="py-name">node</tt><tt class="py-op">.</tt><tt id="link-101" class="py-name"><a title="mrv.automation.qa.QAProcessBase.eMode" class="py-name" href="#" onclick="return doclink('link-101', 'eMode', 'link-18');">eMode</a></tt><tt class="py-op">.</tt><tt class="py-name">query</tt> </tt>
+<a name="L217"></a><tt class="py-lineno">217</tt>  <tt class="py-line"> </tt>
+<a name="L218"></a><tt class="py-lineno">218</tt>  <tt class="py-line">                        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L219"></a><tt class="py-lineno">219</tt>  <tt class="py-line">                                <tt id="link-102" class="py-name"><a title="mrv.automation.workflow.Workflow.ProcessData.result" class="py-name" href="#" onclick="return doclink('link-102', 'result', 'link-96');">result</a></tt> <tt class="py-op">=</tt> <tt class="py-name">checkshell</tt><tt class="py-op">.</tt><tt id="link-103" class="py-name" targets="Method mrv.conf.ConfigAccessor.get()=mrv.conf.ConfigAccessor-class.html#get,Method mrv.dge._PlugShell.get()=mrv.dge._PlugShell-class.html#get,Method mrv.dgfe._IOShell.get()=mrv.dgfe._IOShell-class.html#get,Method mrv.dgfe._OIShell.get()=mrv.dgfe._OIShell-class.html#get,Method mrv.interface.iProgressIndicator.get()=mrv.interface.iProgressIndicator-class.html#get,Method mrv.maya.util.OptionVarDict.get()=mrv.maya.util.OptionVarDict-class.html#get"><a title="mrv.conf.ConfigAccessor.get
+mrv.dge._PlugShell.get
+mrv.dgfe._IOShell.get
+mrv.dgfe._OIShell.get
+mrv.interface.iProgressIndicator.get
+mrv.maya.util.OptionVarDict.get" class="py-name" href="#" onclick="return doclink('link-103', 'get', 'link-103');">get</a></tt><tt class="py-op">(</tt> <tt class="py-name">shellmode</tt> <tt class="py-op">)</tt> </tt>
+<a name="L220"></a><tt class="py-lineno">220</tt>  <tt class="py-line">                        <tt class="py-keyword">except</tt> <tt class="py-name">Exception</tt><tt class="py-op">,</tt> <tt class="py-name">e</tt><tt class="py-op">:</tt> </tt>
+<a name="L221"></a><tt class="py-lineno">221</tt>  <tt class="py-line">                                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-104" class="py-name"><a title="mrv.automation.qa.QAWorkflow.e_checkError" class="py-name" href="#" onclick="return doclink('link-104', 'e_checkError', 'link-59');">e_checkError</a></tt><tt class="py-op">.</tt><tt id="link-105" class="py-name"><a title="mrv.maya.ui.util.EventSenderUI._UIEvent.send
+mrv.maya.util.CallbackEventBase.send
+mrv.util.Event.send" class="py-name" href="#" onclick="return doclink('link-105', 'send', 'link-94');">send</a></tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-106" class="py-name"><a title="mrv.automation.qa.QAWorkflow.e_checkError" class="py-name" href="#" onclick="return doclink('link-106', 'e_checkError', 'link-59');">e_checkError</a></tt><tt class="py-op">,</tt> <tt class="py-name">checkshell</tt><tt class="py-op">,</tt> <tt class="py-name">e</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt> <tt class="py-op">)</tt> </tt>
+<a name="L222"></a><tt class="py-lineno">222</tt>  <tt class="py-line"> </tt>
+<a name="L223"></a><tt class="py-lineno">223</tt>  <tt class="py-line">                                <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-107" class="py-name"><a title="mrv.automation.qa.QAWorkflow.abort_on_error" class="py-name" href="#" onclick="return doclink('link-107', 'abort_on_error', 'link-47');">abort_on_error</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L224"></a><tt class="py-lineno">224</tt>  <tt class="py-line">                                        <tt class="py-keyword">raise</tt> </tt>
+<a name="L225"></a><tt class="py-lineno">225</tt>  <tt class="py-line">                        <tt class="py-comment"># END error handling</tt> </tt>
+<a name="L226"></a><tt class="py-lineno">226</tt>  <tt class="py-line"> </tt>
+<a name="L227"></a><tt class="py-lineno">227</tt>  <tt class="py-line">                        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-108" class="py-name"><a title="mrv.automation.qa.QAWorkflow.info_to_stdout" class="py-name" href="#" onclick="return doclink('link-108', 'info_to_stdout', 'link-48');">info_to_stdout</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L228"></a><tt class="py-lineno">228</tt>  <tt class="py-line">                                <tt class="py-name">msg</tt> <tt class="py-op">=</tt> <tt class="py-string">"FAILED"</tt> </tt>
+<a name="L229"></a><tt class="py-lineno">229</tt>  <tt class="py-line">                                <tt class="py-keyword">if</tt> <tt id="link-109" class="py-name"><a title="mrv.automation.workflow.Workflow.ProcessData.result" class="py-name" href="#" onclick="return doclink('link-109', 'result', 'link-96');">result</a></tt><tt class="py-op">.</tt><tt id="link-110" class="py-name" targets="Method mrv.automation.qa.QACheckResult.isSuccessful()=mrv.automation.qa.QACheckResult-class.html#isSuccessful"><a title="mrv.automation.qa.QACheckResult.isSuccessful" class="py-name" href="#" onclick="return doclink('link-110', 'isSuccessful', 'link-110');">isSuccessful</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L230"></a><tt class="py-lineno">230</tt>  <tt class="py-line">                                        <tt class="py-name">msg</tt> <tt class="py-op">=</tt> <tt class="py-string">"OK"</tt> </tt>
+<a name="L231"></a><tt class="py-lineno">231</tt>  <tt class="py-line">                                <tt id="link-111" class="py-name"><a title="mrv.automation.base.log
+mrv.automation.qa.log
+mrv.automation.workflow.log
+mrv.cmd.base.SpawnedCommand.log
+mrv.cmd.base.log
+mrv.conf.log
+mrv.interface.log
+mrv.log
+mrv.maya.automation.qa.log
+mrv.maya.log
+mrv.maya.mdb.log
+mrv.maya.nt.base.log
+mrv.maya.nt.geometry.log
+mrv.maya.nt.persistence.log
+mrv.maya.nt.typ.log
+mrv.maya.ui.control.log
+mrv.maya.ui.dialog.log
+mrv.maya.ui.qa.log
+mrv.mdepparse.log
+mrv.path.log
+mrv.util.log" class="py-name" href="#" onclick="return doclink('link-111', 'log', 'link-17');">log</a></tt><tt class="py-op">.</tt><tt id="link-112" class="py-name"><a title="mrv.info
+mrv.maya.util.Mel.info" class="py-name" href="#" onclick="return doclink('link-112', 'info', 'link-90');">info</a></tt><tt class="py-op">(</tt><tt class="py-name">msg</tt><tt class="py-op">)</tt> </tt>
+<a name="L232"></a><tt class="py-lineno">232</tt>  <tt class="py-line">                        <tt class="py-comment"># END extra info</tt> </tt>
+<a name="L233"></a><tt class="py-lineno">233</tt>  <tt class="py-line"> </tt>
+<a name="L234"></a><tt class="py-lineno">234</tt>  <tt class="py-line">                        <tt class="py-comment"># record result</tt> </tt>
+<a name="L235"></a><tt class="py-lineno">235</tt>  <tt class="py-line">                        <tt class="py-name">outresult</tt><tt class="py-op">.</tt><tt id="link-113" class="py-name" targets="Method mrv.conf.ConfigChain.append()=mrv.conf.ConfigChain-class.html#append"><a title="mrv.conf.ConfigChain.append" class="py-name" href="#" onclick="return doclink('link-113', 'append', 'link-113');">append</a></tt><tt class="py-op">(</tt> <tt class="py-op">(</tt> <tt class="py-name">checkshell</tt><tt class="py-op">,</tt> <tt id="link-114" class="py-name"><a title="mrv.automation.workflow.Workflow.ProcessData.result" class="py-name" href="#" onclick="return doclink('link-114', 'result', 'link-96');">result</a></tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+<a name="L236"></a><tt class="py-lineno">236</tt>  <tt class="py-line">                        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-115" class="py-name"><a title="mrv.automation.qa.QAWorkflow.e_postCheck" class="py-name" href="#" onclick="return doclink('link-115', 'e_postCheck', 'link-61');">e_postCheck</a></tt><tt class="py-op">.</tt><tt id="link-116" class="py-name"><a title="mrv.maya.ui.util.EventSenderUI._UIEvent.send
+mrv.maya.util.CallbackEventBase.send
+mrv.util.Event.send" class="py-name" href="#" onclick="return doclink('link-116', 'send', 'link-94');">send</a></tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-117" class="py-name"><a title="mrv.automation.qa.QAWorkflow.e_postCheck" class="py-name" href="#" onclick="return doclink('link-117', 'e_postCheck', 'link-61');">e_postCheck</a></tt><tt class="py-op">,</tt> <tt class="py-name">checkshell</tt><tt class="py-op">,</tt> <tt id="link-118" class="py-name"><a title="mrv.automation.workflow.Workflow.ProcessData.result" class="py-name" href="#" onclick="return doclink('link-118', 'result', 'link-96');">result</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L237"></a><tt class="py-lineno">237</tt>  <tt class="py-line">                <tt class="py-comment"># END for each check to run</tt> </tt>
+<a name="L238"></a><tt class="py-lineno">238</tt>  <tt class="py-line"> </tt>
+<a name="L239"></a><tt class="py-lineno">239</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">outresult</tt> </tt>
+</div></div><a name="L240"></a><tt class="py-lineno">240</tt>  <tt class="py-line"> </tt>
+<a name="QACheckResult"></a><div id="QACheckResult-def"><a name="L241"></a><tt class="py-lineno">241</tt> <a class="py-toggle" href="#" id="QACheckResult-toggle" onclick="return toggle('QACheckResult');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.automation.qa.QACheckResult-class.html">QACheckResult</a><tt class="py-op">(</tt> <tt class="py-base-class">object</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QACheckResult-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="QACheckResult-expanded"><a name="L242"></a><tt class="py-lineno">242</tt>  <tt class="py-line">        <tt class="py-docstring">"""Wrapper class declaring test results as a type that provides a simple interface</tt> </tt>
+<a name="L243"></a><tt class="py-lineno">243</tt>  <tt class="py-line"><tt class="py-docstring">        to retrieve the test results</tt> </tt>
+<a name="L244"></a><tt class="py-lineno">244</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L245"></a><tt class="py-lineno">245</tt>  <tt class="py-line"><tt class="py-docstring">        :note: test results are only reqtrieved by QACheckAttribute plugs"""</tt> </tt>
+<a name="QACheckResult.__init__"></a><div id="QACheckResult.__init__-def"><a name="L246"></a><tt class="py-lineno">246</tt> <a class="py-toggle" href="#" id="QACheckResult.__init__-toggle" onclick="return toggle('QACheckResult.__init__');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.automation.qa.QACheckResult-class.html#__init__">__init__</a><tt class="py-op">(</tt> <tt class="py-param">self</tt> <tt class="py-op">,</tt> <tt class="py-param">fixed_items</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> <tt class="py-op">,</tt> <tt class="py-param">failed_items</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">header</tt> <tt class="py-op">=</tt> <tt class="py-string">""</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QACheckResult.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="QACheckResult.__init__-expanded"><a name="L247"></a><tt class="py-lineno">247</tt>  <tt class="py-line">                <tt class="py-docstring">"""Initialize ourselves with default values</tt> </tt>
+<a name="L248"></a><tt class="py-lineno">248</tt>  <tt class="py-line"><tt class="py-docstring">                </tt> </tt>
+<a name="L249"></a><tt class="py-lineno">249</tt>  <tt class="py-line"><tt class="py-docstring">                :param fixed_items: if list of items, the instance is initialized with it</tt> </tt>
+<a name="L250"></a><tt class="py-lineno">250</tt>  <tt class="py-line"><tt class="py-docstring">                :param failed_items: list of items that could not be fixed</tt> </tt>
+<a name="L251"></a><tt class="py-lineno">251</tt>  <tt class="py-line"><tt class="py-docstring">                :param header: optional string giving additional specialized information on the</tt> </tt>
+<a name="L252"></a><tt class="py-lineno">252</tt>  <tt class="py-line"><tt class="py-docstring">                        outcome of the test. Tests must supply a header - otherwise the result will be treated</tt> </tt>
+<a name="L253"></a><tt class="py-lineno">253</tt>  <tt class="py-line"><tt class="py-docstring">                        as failed check"""</tt> </tt>
+<a name="L254"></a><tt class="py-lineno">254</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">header</tt> <tt class="py-op">=</tt> <tt class="py-name">header</tt> </tt>
+<a name="L255"></a><tt class="py-lineno">255</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">fixed_items</tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt> <tt id="link-119" class="py-name"><a title="unittest.isinstance" class="py-name" href="#" onclick="return doclink('link-119', 'isinstance', 'link-50');">isinstance</a></tt><tt class="py-op">(</tt> <tt class="py-name">fixed_items</tt><tt class="py-op">,</tt> <tt class="py-name">list</tt> <tt class="py-op">)</tt> <tt class="py-keyword">and</tt> <tt class="py-name">fixed_items</tt> <tt class="py-op">)</tt> <tt class="py-keyword">or</tt> <tt class="py-name">list</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L256"></a><tt class="py-lineno">256</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">failed_items</tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt> <tt id="link-120" class="py-name"><a title="unittest.isinstance" class="py-name" href="#" onclick="return doclink('link-120', 'isinstance', 'link-50');">isinstance</a></tt><tt class="py-op">(</tt> <tt class="py-name">failed_items</tt><tt class="py-op">,</tt> <tt class="py-name">list</tt> <tt class="py-op">)</tt> <tt class="py-keyword">and</tt> <tt class="py-name">failed_items</tt> <tt class="py-op">)</tt> <tt class="py-keyword">or</tt> <tt class="py-name">list</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L257"></a><tt class="py-lineno">257</tt>  <tt class="py-line"> </tt>
+<a name="QACheckResult.fixedItems"></a><div id="QACheckResult.fixedItems-def"><a name="L258"></a><tt class="py-lineno">258</tt> <a class="py-toggle" href="#" id="QACheckResult.fixedItems-toggle" onclick="return toggle('QACheckResult.fixedItems');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.automation.qa.QACheckResult-class.html#fixedItems">fixedItems</a><tt class="py-op">(</tt> <tt class="py-param">self</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QACheckResult.fixedItems-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="QACheckResult.fixedItems-expanded"><a name="L259"></a><tt class="py-lineno">259</tt>  <tt class="py-line">                <tt class="py-docstring">"""</tt> </tt>
+<a name="L260"></a><tt class="py-lineno">260</tt>  <tt class="py-line"><tt class="py-docstring">                :return: list( Item , ... ) list of items ( the exact type may differ</tt> </tt>
+<a name="L261"></a><tt class="py-lineno">261</tt>  <tt class="py-line"><tt class="py-docstring">                        depending on the actual test ) which have been fixed so they represent the</tt> </tt>
+<a name="L262"></a><tt class="py-lineno">262</tt>  <tt class="py-line"><tt class="py-docstring">                        desired state"""</tt> </tt>
+<a name="L263"></a><tt class="py-lineno">263</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">fixed_items</tt> </tt>
+</div><a name="L264"></a><tt class="py-lineno">264</tt>  <tt class="py-line"> </tt>
+<a name="QACheckResult.failedItems"></a><div id="QACheckResult.failedItems-def"><a name="L265"></a><tt class="py-lineno">265</tt> <a class="py-toggle" href="#" id="QACheckResult.failedItems-toggle" onclick="return toggle('QACheckResult.failedItems');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.automation.qa.QACheckResult-class.html#failedItems">failedItems</a><tt class="py-op">(</tt> <tt class="py-param">self</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QACheckResult.failedItems-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="QACheckResult.failedItems-expanded"><a name="L266"></a><tt class="py-lineno">266</tt>  <tt class="py-line">                <tt class="py-docstring">"""</tt> </tt>
+<a name="L267"></a><tt class="py-lineno">267</tt>  <tt class="py-line"><tt class="py-docstring">                :return: ( list( Item, ... ) list of failed items being items that could not be</tt> </tt>
+<a name="L268"></a><tt class="py-lineno">268</tt>  <tt class="py-line"><tt class="py-docstring">                        fixed and are not yet in the desired state"""</tt> </tt>
+<a name="L269"></a><tt class="py-lineno">269</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">failed_items</tt> </tt>
+</div><a name="L270"></a><tt class="py-lineno">270</tt>  <tt class="py-line"> </tt>
+<a name="QACheckResult.isNull"></a><div id="QACheckResult.isNull-def"><a name="L271"></a><tt class="py-lineno">271</tt> <a class="py-toggle" href="#" id="QACheckResult.isNull-toggle" onclick="return toggle('QACheckResult.isNull');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.automation.qa.QACheckResult-class.html#isNull">isNull</a><tt class="py-op">(</tt> <tt class="py-param">self</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QACheckResult.isNull-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="QACheckResult.isNull-expanded"><a name="L272"></a><tt class="py-lineno">272</tt>  <tt class="py-line">                <tt class="py-docstring">""":return: True if the test result is empty, and thus resembles a null value"""</tt> </tt>
+<a name="L273"></a><tt class="py-lineno">273</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-keyword">not</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">header</tt> <tt class="py-keyword">or</tt> <tt class="py-op">(</tt> <tt class="py-keyword">not</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">failed_items</tt> <tt class="py-keyword">and</tt> <tt class="py-keyword">not</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">fixed_items</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L274"></a><tt class="py-lineno">274</tt>  <tt class="py-line"> </tt>
+<a name="QACheckResult.isSuccessful"></a><div id="QACheckResult.isSuccessful-def"><a name="L275"></a><tt class="py-lineno">275</tt> <a class="py-toggle" href="#" id="QACheckResult.isSuccessful-toggle" onclick="return toggle('QACheckResult.isSuccessful');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.automation.qa.QACheckResult-class.html#isSuccessful">isSuccessful</a><tt class="py-op">(</tt> <tt class="py-param">self</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QACheckResult.isSuccessful-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="QACheckResult.isSuccessful-expanded"><a name="L276"></a><tt class="py-lineno">276</tt>  <tt class="py-line">                <tt class="py-docstring">""":return: True if the check is successful, and False if there are at least some failed objects"""</tt> </tt>
+<a name="L277"></a><tt class="py-lineno">277</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">header</tt><tt class="py-op">:</tt> </tt>
+<a name="L278"></a><tt class="py-lineno">278</tt>  <tt class="py-line">                        <tt class="py-keyword">return</tt> <tt class="py-name">False</tt> </tt>
+<a name="L279"></a><tt class="py-lineno">279</tt>  <tt class="py-line"> </tt>
+<a name="L280"></a><tt class="py-lineno">280</tt>  <tt class="py-line">                <tt class="py-comment"># we are successful if there are no failed items left</tt> </tt>
+<a name="L281"></a><tt class="py-lineno">281</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-keyword">not</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">failed_items</tt> </tt>
+</div><a name="L282"></a><tt class="py-lineno">282</tt>  <tt class="py-line"> </tt>
+<a name="QACheckResult.__str__"></a><div id="QACheckResult.__str__-def"><a name="L283"></a><tt class="py-lineno">283</tt> <a class="py-toggle" href="#" id="QACheckResult.__str__-toggle" onclick="return toggle('QACheckResult.__str__');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.automation.qa.QACheckResult-class.html#__str__">__str__</a><tt class="py-op">(</tt> <tt class="py-param">self</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="QACheckResult.__str__-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="QACheckResult.__str__-expanded"><a name="L284"></a><tt class="py-lineno">284</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">header</tt><tt class="py-op">:</tt> </tt>
+<a name="L285"></a><tt class="py-lineno">285</tt>  <tt class="py-line">                        <tt class="py-keyword">return</tt> <tt class="py-string">"No check-result available"</tt> </tt>
+<a name="L286"></a><tt class="py-lineno">286</tt>  <tt class="py-line"> </tt>
+<a name="L287"></a><tt class="py-lineno">287</tt>  <tt class="py-line">                <tt class="py-name">msg</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">header</tt> <tt class="py-op">+</tt> <tt class="py-string">"\n"</tt> </tt>
+<a name="L288"></a><tt class="py-lineno">288</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">fixed_items</tt><tt class="py-op">:</tt> </tt>
+<a name="L289"></a><tt class="py-lineno">289</tt>  <tt class="py-line">                        <tt class="py-name">msg</tt> <tt class="py-op">+=</tt> <tt class="py-string">", "</tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt> <tt class="py-name">i</tt> <tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">i</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">fixed_items</tt> <tt class="py-op">)</tt> <tt class="py-op">+</tt> <tt class="py-string">"\n"</tt> </tt>
+<a name="L290"></a><tt class="py-lineno">290</tt>  <tt class="py-line">                <tt class="py-name">msg</tt> <tt class="py-op">+=</tt> <tt class="py-string">", "</tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt> <tt class="py-name">i</tt> <tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">i</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">failed_items</tt> <tt class="py-op">)</tt> </tt>
+<a name="L291"></a><tt class="py-lineno">291</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">msg</tt> </tt>
+</div></div><a name="L292"></a><tt class="py-lineno">292</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Apr 19 15:39:21 2011
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

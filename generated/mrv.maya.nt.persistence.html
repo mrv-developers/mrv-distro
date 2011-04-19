@@ -1,0 +1,464 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>mrv.maya.nt.persistence &mdash; mrv v1.0.2-develop documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.2-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="mrv v1.0.2-develop documentation" href="../index.html" />
+    <link rel="next" title="mrv.maya.nt.apipatch" href="mrv.maya.nt.apipatch.html" />
+    <link rel="prev" title="mrv.maya.nt.set" href="mrv.maya.nt.set.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.nt.apipatch.html" title="mrv.maya.nt.apipatch"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.nt.set.html" title="mrv.maya.nt.set"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-mrv.maya.nt.persistence">
+<h1><tt class="xref docutils literal"><span class="pre">mrv.maya.nt.persistence</span></tt><a class="headerlink" href="#module-mrv.maya.nt.persistence" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="api/mrv.maya.nt.persistence-module.html">Epydoc: mrv.maya.nt.persistence</a></p>
+<p>generic python style persitance plugin
+This module contains a storage interface able to easily handle python-style
+data within maya scenes.</p>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mrv.maya.nt.persistence.__initialize">
+<tt class="descclassname">mrv.maya.nt.persistence.</tt><tt class="descname">__initialize</tt><big>(</big><em>nodes_module</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.__initialize" title="Permalink to this definition">¶</a></dt>
+<dd>Assure our plugin is loaded - called during module intialization.
+Its a tough time to run, it feels more like bootstrapping as we initialize
+ourselves although the system is not quite there yet.</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.nt.persistence.createStorageAttribute">
+<tt class="descclassname">mrv.maya.nt.persistence.</tt><tt class="descname">createStorageAttribute</tt><big>(</big><em>dataType</em>, <em>name_prefix=''</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.createStorageAttribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method creates an Attribute in a configuration suitable to be used
+with the <tt class="docutils literal"><span class="pre">StorageBase</span></tt> interface.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">this allows your own plugin node to receive storage compatibility</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>dataType</em> &#8211; the type of the typed attribute - either MTypeID or MFnData enumeration
+An MTypeID must point to a valid and already registered plugin data.
+In order for the <tt class="docutils literal"><span class="pre">StorageBase</span></tt> interface to work, it must by <tt class="docutils literal"><span class="pre">PyPickleData.kPluginDataId</span></tt>.</li>
+<li><em>name_prefix</em> &#8211; string to be used as prefix for all short and long attribute names. 
+Useful if you want to have more than one storage attributes.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">attribute api object of its master compound attribute</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.nt.persistence.initStoragePluginNodeAttrs">
+<tt class="descclassname">mrv.maya.nt.persistence.</tt><tt class="descname">initStoragePluginNodeAttrs</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.initStoragePluginNodeAttrs" title="Permalink to this definition">¶</a></dt>
+<dd>Called to initialize the attributes of the storage node</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.nt.persistence.initializePlugin">
+<tt class="descclassname">mrv.maya.nt.persistence.</tt><tt class="descname">initializePlugin</tt><big>(</big><em>mobject</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.initializePlugin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.nt.persistence.uninitializePlugin">
+<tt class="descclassname">mrv.maya.nt.persistence.</tt><tt class="descname">uninitializePlugin</tt><big>(</big><em>mobject</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.uninitializePlugin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="api/mrv.maya.nt.persistence.PyPickleData-class.html">Epydoc: mrv.maya.nt.persistence.PyPickleData</a></p>
+<dl class="class">
+<dt id="mrv.maya.nt.persistence.PyPickleData">
+<em class="property">class </em><tt class="descclassname">mrv.maya.nt.persistence.</tt><tt class="descname">PyPickleData</tt><a class="headerlink" href="#mrv.maya.nt.persistence.PyPickleData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">maya.OpenMayaMPx.MPxData</span></tt></p>
+<p>Allows to access a pickled data object natively within a maya file.
+In ascii mode, the pickle will be encoded into string data, in binary mode
+the cPickle will be taken in its original value.</p>
+<p>To get the respective dict-references back, we use a tracking dict as proposed
+by the API Docs</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">This datatype is copies the data by reference which is why maya always calls
+the copy constructor, even if you retrieve a const data reference, where this would not be
+required actually. This is fine for most uses</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">as the datatype is reference based, undo is currently not supported (or does not
+work as it is expected to do</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.PyPickleData.copy">
+<tt class="descname">copy</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.PyPickleData.copy" title="Permalink to this definition">¶</a></dt>
+<dd>Copy other into self - allows copy pointers as maya copies the data each
+time you retrieve it</dd></dl>
+
+<dl class="staticmethod">
+<dt id="mrv.maya.nt.persistence.PyPickleData.creator">
+<em class="property">static </em><tt class="descname">creator</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.PyPickleData.creator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.PyPickleData.name">
+<tt class="descname">name</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.PyPickleData.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.PyPickleData.readASCII">
+<tt class="descname">readASCII</tt><big>(</big><em>args</em>, <em>lastParsedElement</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.PyPickleData.readASCII" title="Permalink to this definition">¶</a></dt>
+<dd>Read base64 element and decode to cStringIO, then unpickle</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.PyPickleData.readBinary">
+<tt class="descname">readBinary</tt><big>(</big><em>inStream</em>, <em>numBytesToRead</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.PyPickleData.readBinary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read in 4 byte packs to cStringIO, unpickle from there</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">this method is more complicated than it needs be since asCharPtr does not work !
+It returns a string of a single char ... which is not the same :) !</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">YES, this is a CUMBERSOME way to deal with bytes ... terrible, thanks maya :), thanks python</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.nt.persistence.PyPickleData.thisown">
+<tt class="descname">thisown</tt><a class="headerlink" href="#mrv.maya.nt.persistence.PyPickleData.thisown" title="Permalink to this definition">¶</a></dt>
+<dd>The membership flag</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.PyPickleData.typeId">
+<tt class="descname">typeId</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.PyPickleData.typeId" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.PyPickleData.writeASCII">
+<tt class="descname">writeASCII</tt><big>(</big><em>out</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.PyPickleData.writeASCII" title="Permalink to this definition">¶</a></dt>
+<dd>cPickle to cStringIO, encode with base64 encoding</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.PyPickleData.writeBinary">
+<tt class="descname">writeBinary</tt><big>(</big><em>out</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.PyPickleData.writeBinary" title="Permalink to this definition">¶</a></dt>
+<dd>cPickle to cStringIO, write in 4 byte packs using ScriptUtil</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.nt.persistence.StoragePluginNode-class.html">Epydoc: mrv.maya.nt.persistence.StoragePluginNode</a></p>
+<dl class="class">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode">
+<em class="property">class </em><tt class="descclassname">mrv.maya.nt.persistence.</tt><tt class="descname">StoragePluginNode</tt><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">maya.OpenMayaMPx.MPxNode</span></tt></p>
+<p>Base Class defining the storage node data interfaces</p>
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.addAttribute">
+<tt class="descname">addAttribute</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.addAttribute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.attributeAffects">
+<tt class="descname">attributeAffects</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.attributeAffects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.caching">
+<tt class="descname">caching</tt><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.caching" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.className">
+<tt class="descname">className</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.className" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.compute">
+<tt class="descname">compute</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.compute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.connectionBroken">
+<tt class="descname">connectionBroken</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.connectionBroken" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.connectionMade">
+<tt class="descname">connectionMade</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.connectionMade" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.copyInternalData">
+<tt class="descname">copyInternalData</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.copyInternalData" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.creator">
+<em class="property">static </em><tt class="descname">creator</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.creator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.existWithoutInConnections">
+<tt class="descname">existWithoutInConnections</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.existWithoutInConnections" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.existWithoutOutConnections">
+<tt class="descname">existWithoutOutConnections</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.existWithoutOutConnections" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.getFilesToArchive">
+<tt class="descname">getFilesToArchive</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.getFilesToArchive" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.getInternalValue">
+<tt class="descname">getInternalValue</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.getInternalValue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.getInternalValueInContext">
+<tt class="descname">getInternalValueInContext</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.getInternalValueInContext" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.inheritAttributesFrom">
+<tt class="descname">inheritAttributesFrom</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.inheritAttributesFrom" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.internalArrayCount">
+<tt class="descname">internalArrayCount</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.internalArrayCount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.isAbstractClass">
+<tt class="descname">isAbstractClass</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.isAbstractClass" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.isHistoricallyInteresting">
+<tt class="descname">isHistoricallyInteresting</tt><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.isHistoricallyInteresting" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.isPassiveOutput">
+<tt class="descname">isPassiveOutput</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.isPassiveOutput" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.legalConnection">
+<tt class="descname">legalConnection</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.legalConnection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.legalDisconnection">
+<tt class="descname">legalDisconnection</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.legalDisconnection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.message">
+<tt class="descname">message</tt><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.name">
+<tt class="descname">name</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.passThroughToMany">
+<tt class="descname">passThroughToMany</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.passThroughToMany" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.passThroughToOne">
+<tt class="descname">passThroughToOne</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.passThroughToOne" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.postConstructor">
+<tt class="descname">postConstructor</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.postConstructor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.setDependentsDirty">
+<tt class="descname">setDependentsDirty</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.setDependentsDirty" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.setExistWithoutInConnections">
+<tt class="descname">setExistWithoutInConnections</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.setExistWithoutInConnections" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.setExistWithoutOutConnections">
+<tt class="descname">setExistWithoutOutConnections</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.setExistWithoutOutConnections" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.setInternalValue">
+<tt class="descname">setInternalValue</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.setInternalValue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.setInternalValueInContext">
+<tt class="descname">setInternalValueInContext</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.setInternalValueInContext" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.shouldSave">
+<tt class="descname">shouldSave</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.shouldSave" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.state">
+<tt class="descname">state</tt><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.state" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.thisMObject">
+<tt class="descname">thisMObject</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.thisMObject" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.thisown">
+<tt class="descname">thisown</tt><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.thisown" title="Permalink to this definition">¶</a></dt>
+<dd>The membership flag</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.type">
+<tt class="descname">type</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.typeId">
+<tt class="descname">typeId</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.typeId" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.persistence.StoragePluginNode.typeName">
+<tt class="descname">typeName</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.persistence.StoragePluginNode.typeName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="../index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#"><tt class="docutils literal"><span class="pre">mrv.maya.nt.persistence</span></tt></a><ul>
+<li><a class="reference external" href="#functions">Functions</a></li>
+<li><a class="reference external" href="#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="mrv.maya.nt.set.html"
+                                  title="previous chapter">mrv.maya.nt.set</a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="mrv.maya.nt.apipatch.html"
+                                  title="next chapter"><tt class="docutils literal docutils literal docutils literal"><span class="pre">mrv.maya.nt.apipatch</span></tt></a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/generated/mrv.maya.nt.persistence.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.nt.apipatch.html" title="mrv.maya.nt.apipatch"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.nt.set.html" title="mrv.maya.nt.set"
+             >previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Apr 19, 2011.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,1338 @@
+<html>
+<head>
+<title>mrv.dge</title>
+</head>
+<body>
+mrv.dge
+<style>
+.coverage pre {float: left; margin: 0px 1em; border: none;
+               padding: 0px; }
+.num pre { margin: 0px }
+.nocov, .nocov pre {background-color: #faa}
+.cov, .cov pre {background-color: #cfc}
+div.coverage div { clear: both; height: 1.1em}
+</style>
+<div class="stats">
+Covered: 782 lines<br/>
+Missed: 54 lines<br/>
+Skipped 477 lines<br/>
+Percent: 93 %<br/>
+
+</div>
+<div class="coverage">
+<div class="skip"><span class="num"><pre>   1</pre></span><pre># -*- coding: utf-8 -*-</pre></div>
+<div class="cov"><span class="num"><pre>   2</pre></span><pre>&quot;&quot;&quot;Contains a simple but yet powerful dependency graph engine allowing computations</pre></div>
+<div class="cov"><span class="num"><pre>   3</pre></span><pre>to be organized more efficiently.</pre></div>
+<div class="cov"><span class="num"><pre>   4</pre></span><pre>&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>   5</pre></span><pre>__docformat__ = &quot;restructuredtext&quot;</pre></div>
+<div class="skip"><span class="num"><pre>   6</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>   7</pre></span><pre>import networkx as nx</pre></div>
+<div class="cov"><span class="num"><pre>   8</pre></span><pre>from collections import deque</pre></div>
+<div class="cov"><span class="num"><pre>   9</pre></span><pre>import inspect</pre></div>
+<div class="cov"><span class="num"><pre>  10</pre></span><pre>import weakref</pre></div>
+<div class="cov"><span class="num"><pre>  11</pre></span><pre>import itertools</pre></div>
+<div class="cov"><span class="num"><pre>  12</pre></span><pre>from util import iDuplicatable</pre></div>
+<div class="skip"><span class="num"><pre>  13</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  14</pre></span><pre>__all__ = (&quot;ConnectionError&quot;, &quot;PlugIncompatible&quot;, &quot;PlugAlreadyConnected&quot;, &quot;AccessError&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>  15</pre></span><pre>           &quot;NotWritableError&quot;, &quot;NotReadableError&quot;, &quot;MissingDefaultValueError&quot;, &quot;ComputeError&quot;, </pre></div>
+<div class="cov"><span class="num"><pre>  16</pre></span><pre>           &quot;ComputeFailed&quot;, &quot;ComputeFailed&quot;, &quot;PlugUnhandled&quot;, </pre></div>
+<div class="cov"><span class="num"><pre>  17</pre></span><pre>           &quot;iterShells&quot;, &quot;Attribute&quot;, &quot;iPlug&quot;, &quot;plug&quot;, &quot;Graph&quot;, &quot;NodeBase&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>  18</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>  19</pre></span><pre>#####################</pre></div>
+<div class="skip"><span class="num"><pre>  20</pre></span><pre>## EXCEPTIONS ######</pre></div>
+<div class="skip"><span class="num"><pre>  21</pre></span><pre>###################</pre></div>
+<div class="skip"><span class="num"><pre>  22</pre></span><pre>#{ Exceptions</pre></div>
+<div class="skip"><span class="num"><pre>  23</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  24</pre></span><pre>class ConnectionError( Exception ):</pre></div>
+<div class="cov"><span class="num"><pre>  25</pre></span><pre>	&quot;&quot;&quot;Exception base for all plug related errors&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>  26</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  27</pre></span><pre>class PlugIncompatible( ConnectionError, TypeError ):</pre></div>
+<div class="cov"><span class="num"><pre>  28</pre></span><pre>	&quot;&quot;&quot;Thrown whenever plugs are not compatible with each other during connection&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>  29</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  30</pre></span><pre>class PlugAlreadyConnected( ConnectionError ):</pre></div>
+<div class="cov"><span class="num"><pre>  31</pre></span><pre>	&quot;&quot;&quot;Thrown if one tries to connect a plug to otherplug when otherplug is already connected&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>  32</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  33</pre></span><pre>class AccessError( Exception ):</pre></div>
+<div class="cov"><span class="num"><pre>  34</pre></span><pre>	&quot;&quot;&quot;Base class for all errors indicating invalid access&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>  35</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  36</pre></span><pre>class NotWritableError( AccessError ):</pre></div>
+<div class="cov"><span class="num"><pre>  37</pre></span><pre>	&quot;&quot;&quot;Thrown if a non-writable plug is being written to&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>  38</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  39</pre></span><pre>class NotReadableError( AccessError ):</pre></div>
+<div class="cov"><span class="num"><pre>  40</pre></span><pre>	&quot;&quot;&quot;Thrown if a non-readable attribute is being read&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>  41</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  42</pre></span><pre>class MissingDefaultValueError( AccessError ):</pre></div>
+<div class="cov"><span class="num"><pre>  43</pre></span><pre>	&quot;&quot;&quot;Thrown if a default value is missing for input attributes that are not connected&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>  44</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  45</pre></span><pre>class ComputeError( Exception ):</pre></div>
+<div class="cov"><span class="num"><pre>  46</pre></span><pre>	&quot;&quot;&quot;Thrown if the computation done by a plug failed by an unknown exception</pre></div>
+<div class="cov"><span class="num"><pre>  47</pre></span><pre>	It will be passed on in the exception&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>  48</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  49</pre></span><pre>class ComputeFailed( ComputeError ):</pre></div>
+<div class="cov"><span class="num"><pre>  50</pre></span><pre>	&quot;&quot;&quot;Raised by the derived class computing a value if the computational goal</pre></div>
+<div class="cov"><span class="num"><pre>  51</pre></span><pre>	cannot be achieved ( anymore )&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>  52</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  53</pre></span><pre>class PlugUnhandled( ComputeError ):</pre></div>
+<div class="cov"><span class="num"><pre>  54</pre></span><pre>	&quot;&quot;&quot;Raised if a plug was not handled by the node's compute method&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>  55</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>  56</pre></span><pre>#} END exceptions</pre></div>
+<div class="skip"><span class="num"><pre>  57</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>  58</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>  59</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>  60</pre></span><pre>#####################</pre></div>
+<div class="skip"><span class="num"><pre>  61</pre></span><pre>## Iterators  ######</pre></div>
+<div class="skip"><span class="num"><pre>  62</pre></span><pre>###################</pre></div>
+<div class="skip"><span class="num"><pre>  63</pre></span><pre>#{ Iterators</pre></div>
+<div class="cov"><span class="num"><pre>  64</pre></span><pre>def iterShells( rootPlugShell, stopAt = lambda x: False, prune = lambda x: False,</pre></div>
+<div class="cov"><span class="num"><pre>  65</pre></span><pre>			   direction = &quot;up&quot;, visit_once = False, branch_first = False ):</pre></div>
+<div class="cov"><span class="num"><pre>  66</pre></span><pre>	&quot;&quot;&quot;Iterator starting at rootPlugShell going &quot;up&quot;stream ( input ) or &quot;down&quot;stream ( output )</pre></div>
+<div class="cov"><span class="num"><pre>  67</pre></span><pre>	breadth first over plugs, applying filter functions as defined.</pre></div>
+<div class="skip"><span class="num"><pre>  68</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>  69</pre></span><pre>	:param rootPlugShell: shell at which to start the traversal. The root plug will be returned as well</pre></div>
+<div class="cov"><span class="num"><pre>  70</pre></span><pre>	:param stopAt: if function returns true for given PlugShell, iteration will not proceed</pre></div>
+<div class="cov"><span class="num"><pre>  71</pre></span><pre>		at that point ( possibly continuing at other spots ). Function will always be called, even</pre></div>
+<div class="cov"><span class="num"><pre>  72</pre></span><pre>		if the shell would be pruned as well. The shell serving as stop marker will not be returned</pre></div>
+<div class="cov"><span class="num"><pre>  73</pre></span><pre>	:param prune: if function returns true for given PlugShell, the shell will not be returned</pre></div>
+<div class="cov"><span class="num"><pre>  74</pre></span><pre>		but iteration continues.</pre></div>
+<div class="cov"><span class="num"><pre>  75</pre></span><pre>	:param direction: traversal direction</pre></div>
+<div class="cov"><span class="num"><pre>  76</pre></span><pre>			&quot;up&quot; upstream, in direction of inputs of plugs</pre></div>
+<div class="cov"><span class="num"><pre>  77</pre></span><pre>			&quot;down&quot; downstream, in direction of outputs of plugs</pre></div>
+<div class="cov"><span class="num"><pre>  78</pre></span><pre>	:param visit_once: if True, plugs will only be returned once, even though they are</pre></div>
+<div class="cov"><span class="num"><pre>  79</pre></span><pre>	:param branch_first: if True, individual branches will be travelled first ( thuse the node will be left quickly following the datastream ).</pre></div>
+<div class="cov"><span class="num"><pre>  80</pre></span><pre>			If False, the plugs on the ndoe will be returned first before proceeding to the next node</pre></div>
+<div class="cov"><span class="num"><pre>  81</pre></span><pre>			encountered several times as several noodes are connected to them in some way. &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  82</pre></span><pre>	visited = set()</pre></div>
+<div class="cov"><span class="num"><pre>  83</pre></span><pre>	stack = deque()</pre></div>
+<div class="cov"><span class="num"><pre>  84</pre></span><pre>	stack.append( rootPlugShell )</pre></div>
+<div class="skip"><span class="num"><pre>  85</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  86</pre></span><pre>	def addToStack( node, stack, lst, branch_first ):</pre></div>
+<div class="cov"><span class="num"><pre>  87</pre></span><pre>		if branch_first:</pre></div>
+<div class="cov"><span class="num"><pre>  88</pre></span><pre>			stack.extend( node.toShell( plug ) for plug in lst )</pre></div>
+<div class="cov"><span class="num"><pre>  89</pre></span><pre>		else:</pre></div>
+<div class="cov"><span class="num"><pre>  90</pre></span><pre>			reviter = ( node.toShell( lst[i] ) for i in range( len( lst )-1,-1,-1) )</pre></div>
+<div class="cov"><span class="num"><pre>  91</pre></span><pre>			stack.extendleft( reviter )</pre></div>
+<div class="skip"><span class="num"><pre>  92</pre></span><pre>	# END addToStack local method</pre></div>
+<div class="skip"><span class="num"><pre>  93</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  94</pre></span><pre>	def addOutputToStack( stack, lst, branch_first ):</pre></div>
+<div class="cov"><span class="num"><pre>  95</pre></span><pre>		if branch_first:</pre></div>
+<div class="cov"><span class="num"><pre>  96</pre></span><pre>			stack.extend( lst )</pre></div>
+<div class="cov"><span class="num"><pre>  97</pre></span><pre>		else:</pre></div>
+<div class="cov"><span class="num"><pre>  98</pre></span><pre>			stack.extendleft( reversed( lst[:] ) )</pre></div>
+<div class="skip"><span class="num"><pre>  99</pre></span><pre>	# END addOutputToStack local method</pre></div>
+<div class="skip"><span class="num"><pre> 100</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 101</pre></span><pre>	while stack:</pre></div>
+<div class="cov"><span class="num"><pre> 102</pre></span><pre>		shell = stack.pop()</pre></div>
+<div class="cov"><span class="num"><pre> 103</pre></span><pre>		if shell in visited:</pre></div>
+<div class="cov"><span class="num"><pre> 104</pre></span><pre>			continue</pre></div>
+<div class="skip"><span class="num"><pre> 105</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 106</pre></span><pre>		if visit_once:</pre></div>
+<div class="cov"><span class="num"><pre> 107</pre></span><pre>			visited.add( shell )</pre></div>
+<div class="skip"><span class="num"><pre> 108</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 109</pre></span><pre>		if stopAt( shell ):</pre></div>
+<div class="nocov"><span class="num"><pre> 110</pre></span><pre>			continue</pre></div>
+<div class="skip"><span class="num"><pre> 111</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 112</pre></span><pre>		if not prune( shell ):</pre></div>
+<div class="cov"><span class="num"><pre> 113</pre></span><pre>			yield shell</pre></div>
+<div class="skip"><span class="num"><pre> 114</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 115</pre></span><pre>		if direction == 'up':</pre></div>
+<div class="skip"><span class="num"><pre> 116</pre></span><pre>			# I-N-O</pre></div>
+<div class="cov"><span class="num"><pre> 117</pre></span><pre>			addToStack( shell.node, stack, shell.plug.affectedBy(), branch_first )</pre></div>
+<div class="skip"><span class="num"><pre> 118</pre></span><pre>			# END if provides output</pre></div>
+<div class="skip"><span class="num"><pre> 119</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 120</pre></span><pre>			# O&lt;-I</pre></div>
+<div class="cov"><span class="num"><pre> 121</pre></span><pre>			ishell = shell.input( )</pre></div>
+<div class="cov"><span class="num"><pre> 122</pre></span><pre>			if ishell:</pre></div>
+<div class="cov"><span class="num"><pre> 123</pre></span><pre>				if branch_first:</pre></div>
+<div class="cov"><span class="num"><pre> 124</pre></span><pre>					stack.append( ishell )</pre></div>
+<div class="cov"><span class="num"><pre> 125</pre></span><pre>				else:</pre></div>
+<div class="cov"><span class="num"><pre> 126</pre></span><pre>					stack.appendleft( ishell )</pre></div>
+<div class="skip"><span class="num"><pre> 127</pre></span><pre>			# END has input connection</pre></div>
+<div class="skip"><span class="num"><pre> 128</pre></span><pre>		# END upstream</pre></div>
+<div class="cov"><span class="num"><pre> 129</pre></span><pre>		else:</pre></div>
+<div class="skip"><span class="num"><pre> 130</pre></span><pre>			# I-N-O and I-&gt;O</pre></div>
+<div class="skip"><span class="num"><pre> 131</pre></span><pre>			# could also be connected - follow them</pre></div>
+<div class="cov"><span class="num"><pre> 132</pre></span><pre>			if branch_first:</pre></div>
+<div class="skip"><span class="num"><pre> 133</pre></span><pre>				# fist the outputs, then the internals ( this ends up with the same effect )</pre></div>
+<div class="cov"><span class="num"><pre> 134</pre></span><pre>				addToStack( shell.node, stack, shell.plug.affected(), branch_first )</pre></div>
+<div class="cov"><span class="num"><pre> 135</pre></span><pre>				addOutputToStack( stack, shell.outputs(), branch_first )</pre></div>
+<div class="cov"><span class="num"><pre> 136</pre></span><pre>			else:</pre></div>
+<div class="cov"><span class="num"><pre> 137</pre></span><pre>				addOutputToStack( stack, shell.outputs(), branch_first )</pre></div>
+<div class="cov"><span class="num"><pre> 138</pre></span><pre>				addToStack( shell.node, stack, shell.plug.affected(), branch_first )</pre></div>
+<div class="skip"><span class="num"><pre> 139</pre></span><pre>		# END downstream</pre></div>
+<div class="skip"><span class="num"><pre> 140</pre></span><pre>	# END for each shell on work stack</pre></div>
+<div class="skip"><span class="num"><pre> 141</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 142</pre></span><pre>#} END iterators</pre></div>
+<div class="skip"><span class="num"><pre> 143</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 144</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 145</pre></span><pre>#####################</pre></div>
+<div class="skip"><span class="num"><pre> 146</pre></span><pre>## Classes    ######</pre></div>
+<div class="skip"><span class="num"><pre> 147</pre></span><pre>###################</pre></div>
+<div class="skip"><span class="num"><pre> 148</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 149</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 150</pre></span><pre>#{ END Plugs and Attributes</pre></div>
+<div class="skip"><span class="num"><pre> 151</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 152</pre></span><pre>class Attribute( object ):</pre></div>
+<div class="cov"><span class="num"><pre> 153</pre></span><pre>	&quot;&quot;&quot;Simple class defining the type of a plug and several flags that</pre></div>
+<div class="cov"><span class="num"><pre> 154</pre></span><pre>	affect it. Additionally it can determine how well suited another attribute is</pre></div>
+<div class="skip"><span class="num"><pre> 155</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 156</pre></span><pre>	**Flags**:</pre></div>
+<div class="cov"><span class="num"><pre> 157</pre></span><pre>		exact_type: if True, derived classes of our typecls are not considered to be a valid type.</pre></div>
+<div class="cov"><span class="num"><pre> 158</pre></span><pre>		i.e: basestring could be stored in a str attr if exact type is false - its less than we need, but</pre></div>
+<div class="cov"><span class="num"><pre> 159</pre></span><pre>		still something.</pre></div>
+<div class="cov"><span class="num"><pre> 160</pre></span><pre>		Putting a str into a basestring attribute will always work though, as it would be more than we need</pre></div>
+<div class="cov"><span class="num"><pre> 161</pre></span><pre>		readonly: if True, the attribute's plug cannot be written to. Read-only attributes can be used</pre></div>
+<div class="cov"><span class="num"><pre> 162</pre></span><pre>		as storage that the user can read, but not write.</pre></div>
+<div class="cov"><span class="num"><pre> 163</pre></span><pre>		You can write read-only plugs by directly setting its cache - this of course - is only</pre></div>
+<div class="cov"><span class="num"><pre> 164</pre></span><pre>		for the node itself, but will never be done by the framework</pre></div>
+<div class="skip"><span class="num"><pre> 165</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 166</pre></span><pre>	**computable**:</pre></div>
+<div class="cov"><span class="num"><pre> 167</pre></span><pre>		Nodes are automatically computable if they are affected by another plug.</pre></div>
+<div class="cov"><span class="num"><pre> 168</pre></span><pre>		If this is not the case, they are marked input only and are not computed.</pre></div>
+<div class="cov"><span class="num"><pre> 169</pre></span><pre>		If this flag is true, even unaffeted plugs are computable.</pre></div>
+<div class="cov"><span class="num"><pre> 170</pre></span><pre>		Plugs that affect something are automatically input plugs and will not be computed.</pre></div>
+<div class="cov"><span class="num"><pre> 171</pre></span><pre>		If the plug does not affect anything and this flag is False, they are seen as input plugs</pre></div>
+<div class="cov"><span class="num"><pre> 172</pre></span><pre>		anyway.</pre></div>
+<div class="skip"><span class="num"><pre> 173</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 174</pre></span><pre>		The system does not allow plugs to be input and output plugs at the same time, thus your compute</pre></div>
+<div class="cov"><span class="num"><pre> 175</pre></span><pre>		cannot be triggered by your own compute</pre></div>
+<div class="skip"><span class="num"><pre> 176</pre></span><pre>				</pre></div>
+<div class="cov"><span class="num"><pre> 177</pre></span><pre>		cls: if True, the plug requires classes to be set ( instances of 'type' ) , but no instances of these classes</pre></div>
+<div class="cov"><span class="num"><pre> 178</pre></span><pre>		uncached: if False, computed values may be cached, otherwise they will always be recomputed.</pre></div>
+<div class="cov"><span class="num"><pre> 179</pre></span><pre>		unconnectable: if True, the node cannot be the destination of a connection</pre></div>
+<div class="cov"><span class="num"><pre> 180</pre></span><pre>		check_passing_values: check each value as it flows through a connection - usually compatability is only checked</pre></div>
+<div class="cov"><span class="num"><pre> 181</pre></span><pre>		on connection and once values are set, but not if they flow through an existing connection</pre></div>
+<div class="skip"><span class="num"><pre> 182</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 183</pre></span><pre>	**Default Values**:</pre></div>
+<div class="cov"><span class="num"><pre> 184</pre></span><pre>		Although default values can be simple primitives are classes, a callable is specifically supported.</pre></div>
+<div class="cov"><span class="num"><pre> 185</pre></span><pre>		It allows you to get a callback whenever a default value is required.</pre></div>
+<div class="cov"><span class="num"><pre> 186</pre></span><pre>		The same result could be achieved by connected the plug in question, but dynamic defaults are a quick</pre></div>
+<div class="cov"><span class="num"><pre> 187</pre></span><pre>		way to achive that.</pre></div>
+<div class="cov"><span class="num"><pre> 188</pre></span><pre>		Your returned value will be type-checked against the required type if check_passing_values is set.&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 189</pre></span><pre>	kNo, kGood, kPerfect = 0, 127, 255				# specify how good attributes fit together</pre></div>
+<div class="cov"><span class="num"><pre> 190</pre></span><pre>	exact_type, readonly, computable, cls, uncached, unconnectable,check_passing_values = ( 1, 2, 4, 8, 16, 32, 64 )</pre></div>
+<div class="skip"><span class="num"><pre> 191</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 192</pre></span><pre>	def __init__( self, typeClass, flags, default = None ):</pre></div>
+<div class="cov"><span class="num"><pre> 193</pre></span><pre>		self.typecls = typeClass</pre></div>
+<div class="cov"><span class="num"><pre> 194</pre></span><pre>		self.flags = flags			# used for bitflags describing mode</pre></div>
+<div class="cov"><span class="num"><pre> 195</pre></span><pre>		self._default = default</pre></div>
+<div class="skip"><span class="num"><pre> 196</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 197</pre></span><pre>		# check default value for compatability !</pre></div>
+<div class="cov"><span class="num"><pre> 198</pre></span><pre>		if default is not None:</pre></div>
+<div class="cov"><span class="num"><pre> 199</pre></span><pre>			if not hasattr( default, '__call__' ) and self.compatabilityRate( default ) == 0:</pre></div>
+<div class="nocov"><span class="num"><pre> 200</pre></span><pre>				raise TypeError( &quot;Default value %r is not compatible with this attribute&quot; % default )</pre></div>
+<div class="skip"><span class="num"><pre> 201</pre></span><pre>		# END default type check</pre></div>
+<div class="skip"><span class="num"><pre> 202</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 203</pre></span><pre>	def _getClassRating( self, cls, exact_type ):</pre></div>
+<div class="cov"><span class="num"><pre> 204</pre></span><pre>		&quot;&quot;&quot; compute class rating</pre></div>
+<div class="skip"><span class="num"><pre> 205</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 206</pre></span><pre>		:return: rating based on value being a class and compare.</pre></div>
+<div class="cov"><span class="num"><pre> 207</pre></span><pre>				0 means there is no type compatability, 255 matches comparecls, or linearly </pre></div>
+<div class="cov"><span class="num"><pre> 208</pre></span><pre>				less if is just part of the mro of value</pre></div>
+<div class="cov"><span class="num"><pre> 209</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 210</pre></span><pre>		if not isinstance( cls, type ):</pre></div>
+<div class="nocov"><span class="num"><pre> 211</pre></span><pre>			return 0</pre></div>
+<div class="skip"><span class="num"><pre> 212</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 213</pre></span><pre>		mro = self.typecls.mro()</pre></div>
+<div class="cov"><span class="num"><pre> 214</pre></span><pre>		mro.reverse()</pre></div>
+<div class="skip"><span class="num"><pre> 215</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 216</pre></span><pre>		if not cls in mro:</pre></div>
+<div class="skip"><span class="num"><pre> 217</pre></span><pre>			# if we are in the classes mr, then we can perfectly store the class</pre></div>
+<div class="skip"><span class="num"><pre> 218</pre></span><pre>			# as it is more than we need</pre></div>
+<div class="cov"><span class="num"><pre> 219</pre></span><pre>			if not exact_type and self.typecls in cls.mro():</pre></div>
+<div class="nocov"><span class="num"><pre> 220</pre></span><pre>				return self.kPerfect</pre></div>
+<div class="cov"><span class="num"><pre> 221</pre></span><pre>			return 0</pre></div>
+<div class="skip"><span class="num"><pre> 222</pre></span><pre>		# END simple mro checking</pre></div>
+<div class="skip"><span class="num"><pre> 223</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 224</pre></span><pre>		if len( mro ) == 1:</pre></div>
+<div class="cov"><span class="num"><pre> 225</pre></span><pre>			return self.kPerfect</pre></div>
+<div class="skip"><span class="num"><pre> 226</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 227</pre></span><pre>		rate = ( float( mro.index( cls ) ) / float( len( mro ) - 1 ) ) * self.kPerfect</pre></div>
+<div class="skip"><span class="num"><pre> 228</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 229</pre></span><pre>		if exact_type and rate != self.kPerfect:		# exact type check</pre></div>
+<div class="nocov"><span class="num"><pre> 230</pre></span><pre>			return 0</pre></div>
+<div class="skip"><span class="num"><pre> 231</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 232</pre></span><pre>		return rate</pre></div>
+<div class="skip"><span class="num"><pre> 233</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 234</pre></span><pre>	#{ Interface</pre></div>
+<div class="skip"><span class="num"><pre> 235</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 236</pre></span><pre>	def affinity( self, otherattr ):</pre></div>
+<div class="cov"><span class="num"><pre> 237</pre></span><pre>		&quot;&quot;&quot;Compute affinity for otherattr.</pre></div>
+<div class="skip"><span class="num"><pre> 238</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 239</pre></span><pre>		:return: </pre></div>
+<div class="cov"><span class="num"><pre> 240</pre></span><pre>			rating from 0 to 255 defining how good the attribtues match each</pre></div>
+<div class="cov"><span class="num"><pre> 241</pre></span><pre>			other in general - how good can we store values of otherattr ? </pre></div>
+<div class="cov"><span class="num"><pre> 242</pre></span><pre>			Thus this comparison is directed.</pre></div>
+<div class="skip"><span class="num"><pre> 243</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 244</pre></span><pre>		:note: for checking connections, use `connectionAffinity`&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 245</pre></span><pre>		# see whether our class flags match</pre></div>
+<div class="cov"><span class="num"><pre> 246</pre></span><pre>		if self.flags &amp; self.cls != otherattr.flags &amp; self.cls:</pre></div>
+<div class="cov"><span class="num"><pre> 247</pre></span><pre>			return 0</pre></div>
+<div class="skip"><span class="num"><pre> 248</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 249</pre></span><pre>		# DEFAULT VALUE CHECK</pre></div>
+<div class="skip"><span class="num"><pre> 250</pre></span><pre>		#######################</pre></div>
+<div class="skip"><span class="num"><pre> 251</pre></span><pre>		# see whether we destination can handle our default value - if not</pre></div>
+<div class="skip"><span class="num"><pre> 252</pre></span><pre>		# just go for a class comparison</pre></div>
+<div class="cov"><span class="num"><pre> 253</pre></span><pre>		rate = self.kNo</pre></div>
+<div class="cov"><span class="num"><pre> 254</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre> 255</pre></span><pre>			defvalue = otherattr.default()</pre></div>
+<div class="cov"><span class="num"><pre> 256</pre></span><pre>			rate = self.compatabilityRate( defvalue )</pre></div>
+<div class="cov"><span class="num"><pre> 257</pre></span><pre>		except (MissingDefaultValueError,TypeError):</pre></div>
+<div class="cov"><span class="num"><pre> 258</pre></span><pre>			rate = self._getClassRating( otherattr.typecls, self.flags &amp; self.exact_type )</pre></div>
+<div class="skip"><span class="num"><pre> 259</pre></span><pre>		# finally check how good our types match</pre></div>
+<div class="skip"><span class="num"><pre> 260</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 261</pre></span><pre>		return rate</pre></div>
+<div class="skip"><span class="num"><pre> 262</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 263</pre></span><pre>	def connectionAffinity( self, destinationattr ):</pre></div>
+<div class="cov"><span class="num"><pre> 264</pre></span><pre>		&quot;&quot;&quot;Compute connection affinity for given destination attribute</pre></div>
+<div class="skip"><span class="num"><pre> 265</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 266</pre></span><pre>		:return: </pre></div>
+<div class="cov"><span class="num"><pre> 267</pre></span><pre>			rating from 0 to 255 defining the quality of the connection to</pre></div>
+<div class="cov"><span class="num"><pre> 268</pre></span><pre>			otherplug. an affinity of 0 mean connection is not possible, 255 mean the connection</pre></div>
+<div class="cov"><span class="num"><pre> 269</pre></span><pre>			is perfectly suited.</pre></div>
+<div class="cov"><span class="num"><pre> 270</pre></span><pre>			The connection is a directed one from self -&gt; otherplug &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 271</pre></span><pre>		if destinationattr.flags &amp; self.unconnectable:		# destination must be connectable</pre></div>
+<div class="nocov"><span class="num"><pre> 272</pre></span><pre>			return 0</pre></div>
+<div class="skip"><span class="num"><pre> 273</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 274</pre></span><pre>		# how good can the destination attr deal with us ?</pre></div>
+<div class="cov"><span class="num"><pre> 275</pre></span><pre>		return destinationattr.affinity( self )</pre></div>
+<div class="skip"><span class="num"><pre> 276</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 277</pre></span><pre>	def compatabilityRate( self, value ):</pre></div>
+<div class="cov"><span class="num"><pre> 278</pre></span><pre>		&quot;&quot;&quot;Compute value's compatability rate</pre></div>
+<div class="skip"><span class="num"><pre> 279</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 280</pre></span><pre>		:return: value between 0 and 255, 0 means no compatability, 255 a perfect match. </pre></div>
+<div class="cov"><span class="num"><pre> 281</pre></span><pre>			if larger than 0, the plug can hold the value ( assumed the flags are set correctly ). &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 282</pre></span><pre>		if isinstance( value, type ):</pre></div>
+<div class="skip"><span class="num"><pre> 283</pre></span><pre>			# do we need a class ?</pre></div>
+<div class="cov"><span class="num"><pre> 284</pre></span><pre>			if not self.flags &amp; self.cls:</pre></div>
+<div class="cov"><span class="num"><pre> 285</pre></span><pre>				return 0		# its a class</pre></div>
+<div class="skip"><span class="num"><pre> 286</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 287</pre></span><pre>			# check compatability</pre></div>
+<div class="cov"><span class="num"><pre> 288</pre></span><pre>			return self._getClassRating( value, self.flags &amp; self.exact_type )</pre></div>
+<div class="skip"><span class="num"><pre> 289</pre></span><pre>		# END is class type</pre></div>
+<div class="cov"><span class="num"><pre> 290</pre></span><pre>		else:</pre></div>
+<div class="cov"><span class="num"><pre> 291</pre></span><pre>			if not self.flags &amp; self.cls:</pre></div>
+<div class="cov"><span class="num"><pre> 292</pre></span><pre>				return self._getClassRating( value.__class__, self.flags &amp; self.exact_type )</pre></div>
+<div class="skip"><span class="num"><pre> 293</pre></span><pre>		# END is instance type</pre></div>
+<div class="skip"><span class="num"><pre> 294</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 295</pre></span><pre>		return 0</pre></div>
+<div class="skip"><span class="num"><pre> 296</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 297</pre></span><pre>	def default( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 298</pre></span><pre>		&quot;&quot;&quot;:return: default value stored for this attribute, or raise</pre></div>
+<div class="cov"><span class="num"><pre> 299</pre></span><pre>		:note: handles dynamic defaults, so you should not directly access the default member variable</pre></div>
+<div class="cov"><span class="num"><pre> 300</pre></span><pre>		:raise MissingDefaultValueError: if attribute does not have a default value</pre></div>
+<div class="cov"><span class="num"><pre> 301</pre></span><pre>		:raise TypeError: if value returned by dynamic attribute has incorrect type&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 302</pre></span><pre>		if self._default is None:</pre></div>
+<div class="cov"><span class="num"><pre> 303</pre></span><pre>			raise MissingDefaultValueError( &quot;Attribute %r has no default value&quot; % self )</pre></div>
+<div class="skip"><span class="num"><pre> 304</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 305</pre></span><pre>		# DYNAMIC ATTRIBUTES</pre></div>
+<div class="skip"><span class="num"><pre> 306</pre></span><pre>		######################</pre></div>
+<div class="cov"><span class="num"><pre> 307</pre></span><pre>		if hasattr( self._default, '__call__' ):</pre></div>
+<div class="nocov"><span class="num"><pre> 308</pre></span><pre>			default = self._default()</pre></div>
+<div class="nocov"><span class="num"><pre> 309</pre></span><pre>			if self.flags &amp; self.check_passing_values and self.compatabilityRate( default ) == 0:</pre></div>
+<div class="nocov"><span class="num"><pre> 310</pre></span><pre>				raise TypeError( &quot;Dynamic default value had incorrect type: %s&quot; % type( default ) )</pre></div>
+<div class="nocov"><span class="num"><pre> 311</pre></span><pre>			return default</pre></div>
+<div class="skip"><span class="num"><pre> 312</pre></span><pre>		# END dynamic default handling</pre></div>
+<div class="skip"><span class="num"><pre> 313</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 314</pre></span><pre>		# normal static default</pre></div>
+<div class="cov"><span class="num"><pre> 315</pre></span><pre>		return self._default</pre></div>
+<div class="skip"><span class="num"><pre> 316</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 317</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 318</pre></span><pre>	#} END interface</pre></div>
+<div class="skip"><span class="num"><pre> 319</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 320</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 321</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 322</pre></span><pre>class iPlug( object ):</pre></div>
+<div class="cov"><span class="num"><pre> 323</pre></span><pre>	&quot;&quot;&quot;Defines an interface allowing to compare compatabilies according to types.</pre></div>
+<div class="skip"><span class="num"><pre> 324</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 325</pre></span><pre>	Plugs can either be input plugs or output plugs - output plugs affect no other</pre></div>
+<div class="cov"><span class="num"><pre> 326</pre></span><pre>	plug on a node, but are affected by 0 or more plugs .</pre></div>
+<div class="skip"><span class="num"><pre> 327</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 328</pre></span><pre>	By convention, a plug has a name - that name must also be the name of the</pre></div>
+<div class="cov"><span class="num"><pre> 329</pre></span><pre>	member attribute that stores the plag. Plugs, possibly different instances of it,</pre></div>
+<div class="cov"><span class="num"><pre> 330</pre></span><pre>	need to be re-retrieved on freshly duplicated nodes to allow graph duplication to</pre></div>
+<div class="cov"><span class="num"><pre> 331</pre></span><pre>	be done properly</pre></div>
+<div class="skip"><span class="num"><pre> 332</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 333</pre></span><pre>	:note: if your plug class supports the ``setName`` method, a metaclass will</pre></div>
+<div class="cov"><span class="num"><pre> 334</pre></span><pre>		adjust the name of your plug to match the name it has in the parent class</pre></div>
+<div class="cov"><span class="num"><pre> 335</pre></span><pre>	&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 336</pre></span><pre>	kNo,kGood,kPerfect = ( 0, 127, 255 )</pre></div>
+<div class="skip"><span class="num"><pre> 337</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 338</pre></span><pre>	#{ Base Implementation</pre></div>
+<div class="cov"><span class="num"><pre> 339</pre></span><pre>	def __str__( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 340</pre></span><pre>		return self.name()</pre></div>
+<div class="skip"><span class="num"><pre> 341</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 342</pre></span><pre>	#} END base implementation</pre></div>
+<div class="skip"><span class="num"><pre> 343</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 344</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 345</pre></span><pre>	#{ Interface</pre></div>
+<div class="cov"><span class="num"><pre> 346</pre></span><pre>	def name( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 347</pre></span><pre>		&quot;&quot;&quot;:return: name of the plug ( the name that identifies it on the node&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 348</pre></span><pre>		raise NotImplementedError( &quot;Implement this in subclass&quot; )</pre></div>
+<div class="skip"><span class="num"><pre> 349</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 350</pre></span><pre>	def affects( self, otherplug ):</pre></div>
+<div class="cov"><span class="num"><pre> 351</pre></span><pre>		&quot;&quot;&quot;Set an affects relation ship between this plug and otherplug, saying</pre></div>
+<div class="cov"><span class="num"><pre> 352</pre></span><pre>		that this plug affects otherplug.&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 353</pre></span><pre>		raise NotImplementedError( &quot;Implement this in subclass&quot; )</pre></div>
+<div class="skip"><span class="num"><pre> 354</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 355</pre></span><pre>	def affected( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 356</pre></span><pre>		&quot;&quot;&quot;:return: tuple containing affected plugs ( plugs that are affected by our value )&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 357</pre></span><pre>		raise NotImplementedError( &quot;Implement this in subclass&quot; )</pre></div>
+<div class="skip"><span class="num"><pre> 358</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 359</pre></span><pre>	def affectedBy( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 360</pre></span><pre>		&quot;&quot;&quot;:return: tuple containing plugs that affect us ( plugs affecting our value )&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 361</pre></span><pre>		raise NotImplementedError( &quot;Implement this in subclass&quot; )</pre></div>
+<div class="skip"><span class="num"><pre> 362</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 363</pre></span><pre>	def providesOutput( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 364</pre></span><pre>		&quot;&quot;&quot;:return: True if this is an output plug that can trigger computations&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 365</pre></span><pre>		raise NotImplementedError( &quot;Implement this in subclass&quot; )</pre></div>
+<div class="skip"><span class="num"><pre> 366</pre></span><pre>                                                                                                  </pre></div>
+<div class="cov"><span class="num"><pre> 367</pre></span><pre>	def providesInput( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 368</pre></span><pre>		&quot;&quot;&quot;:return: True if this is an input plug that will never cause computations&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 369</pre></span><pre>		raise NotImplementedError( &quot;Implement this in subclass&quot; )</pre></div>
+<div class="skip"><span class="num"><pre> 370</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 371</pre></span><pre>	#} END interface</pre></div>
+<div class="skip"><span class="num"><pre> 372</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 373</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 374</pre></span><pre>class plug( iPlug ):</pre></div>
+<div class="cov"><span class="num"><pre> 375</pre></span><pre>	&quot;&quot;&quot;Defines an interface allowing to compare compatabilies according to types.</pre></div>
+<div class="skip"><span class="num"><pre> 376</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 377</pre></span><pre>	Plugs are implemented as descriptors, thus they will be defined on node class</pre></div>
+<div class="cov"><span class="num"><pre> 378</pre></span><pre>	level, and all static information will remain static</pre></div>
+<div class="skip"><span class="num"><pre> 379</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 380</pre></span><pre>	As descriptors, they are defined statically on the class, and some additional information</pre></div>
+<div class="cov"><span class="num"><pre> 381</pre></span><pre>	such as connectivity, is stored on the respective class instance. These special methods</pre></div>
+<div class="cov"><span class="num"><pre> 382</pre></span><pre>	are handled using `NodeBase` class</pre></div>
+<div class="skip"><span class="num"><pre> 383</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 384</pre></span><pre>	Plugs are implemented as descriptors as all type information can be kept per class,</pre></div>
+<div class="cov"><span class="num"><pre> 385</pre></span><pre>	whereas only connection information changes per node instance.</pre></div>
+<div class="skip"><span class="num"><pre> 386</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 387</pre></span><pre>	Plugs can either be input plugs or output plugs - output plugs affect no other</pre></div>
+<div class="cov"><span class="num"><pre> 388</pre></span><pre>	plug on a node, but are affected by 0 or more plugs</pre></div>
+<div class="skip"><span class="num"><pre> 389</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 390</pre></span><pre>	:note: class is lowercase as it is used as descriptor ( acting more like a function )</pre></div>
+<div class="cov"><span class="num"><pre> 391</pre></span><pre>	&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 392</pre></span><pre>	kNo,kGood,kPerfect = ( 0, 127, 255 )</pre></div>
+<div class="skip"><span class="num"><pre> 393</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 394</pre></span><pre>	#{ Overridden object methods</pre></div>
+<div class="cov"><span class="num"><pre> 395</pre></span><pre>	def __init__( self, attribute ):</pre></div>
+<div class="cov"><span class="num"><pre> 396</pre></span><pre>		&quot;&quot;&quot;Intialize the plug with a distinctive name&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 397</pre></span><pre>		self._name = None</pre></div>
+<div class="cov"><span class="num"><pre> 398</pre></span><pre>		self.attr = attribute</pre></div>
+<div class="cov"><span class="num"><pre> 399</pre></span><pre>		self._affects = list()			# list of plugs that are affected by us</pre></div>
+<div class="cov"><span class="num"><pre> 400</pre></span><pre>		self._affectedBy = list()		# keeps record of all plugs that affect us</pre></div>
+<div class="skip"><span class="num"><pre> 401</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 402</pre></span><pre>	#} END object overridden methods</pre></div>
+<div class="skip"><span class="num"><pre> 403</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 404</pre></span><pre>	#{ Value access</pre></div>
+<div class="skip"><span class="num"><pre> 405</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 406</pre></span><pre>	def __get__( self, obj, cls=None ):</pre></div>
+<div class="cov"><span class="num"><pre> 407</pre></span><pre>		&quot;&quot;&quot;A value has been requested - return our plugshell that brings together</pre></div>
+<div class="cov"><span class="num"><pre> 408</pre></span><pre>		both, the object and the static plug&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 409</pre></span><pre>		# in class mode we return ourselves for access</pre></div>
+<div class="cov"><span class="num"><pre> 410</pre></span><pre>		if obj is not None:</pre></div>
+<div class="cov"><span class="num"><pre> 411</pre></span><pre>			return obj.toShell( self )</pre></div>
+<div class="skip"><span class="num"><pre> 412</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 413</pre></span><pre>		# class attributes just return the descriptor itself for direct access</pre></div>
+<div class="cov"><span class="num"><pre> 414</pre></span><pre>		return self</pre></div>
+<div class="skip"><span class="num"><pre> 415</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 416</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 417</pre></span><pre>	#def __set__( self, obj, value ):</pre></div>
+<div class="cov"><span class="num"><pre> 418</pre></span><pre>		&quot;&quot;&quot;We do not use a set method, allowing to override our descriptor through</pre></div>
+<div class="cov"><span class="num"><pre> 419</pre></span><pre>		actual plug instances in the instance dict. Once deleted, we shine through again&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 420</pre></span><pre>		# raise AssertionError( &quot;To set this value, use the node.plug.set( value ) syntax&quot; )</pre></div>
+<div class="skip"><span class="num"><pre> 421</pre></span><pre>		# obj.toShell( self ).set( value )</pre></div>
+<div class="skip"><span class="num"><pre> 422</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 423</pre></span><pre>	#} value access</pre></div>
+<div class="skip"><span class="num"><pre> 424</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 425</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 426</pre></span><pre>	def name( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 427</pre></span><pre>		&quot;&quot;&quot;:return: name of plug&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 428</pre></span><pre>		return self._name</pre></div>
+<div class="skip"><span class="num"><pre> 429</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 430</pre></span><pre>	def setName( self, name ):</pre></div>
+<div class="cov"><span class="num"><pre> 431</pre></span><pre>		&quot;&quot;&quot;Set the name of this plug - can be set only once&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 432</pre></span><pre>		if not self._name:</pre></div>
+<div class="cov"><span class="num"><pre> 433</pre></span><pre>			self._name = name</pre></div>
+<div class="nocov"><span class="num"><pre> 434</pre></span><pre>		else:</pre></div>
+<div class="nocov"><span class="num"><pre> 435</pre></span><pre>			raise ValueError( &quot;The name of the plug can only be set once&quot; )</pre></div>
+<div class="skip"><span class="num"><pre> 436</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 437</pre></span><pre>	def affects( self, otherplug ):</pre></div>
+<div class="cov"><span class="num"><pre> 438</pre></span><pre>		&quot;&quot;&quot;Set an affects relation ship between this plug and otherplug, saying</pre></div>
+<div class="cov"><span class="num"><pre> 439</pre></span><pre>		that this plug affects otherplug.&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 440</pre></span><pre>		if otherplug not in self._affects:</pre></div>
+<div class="cov"><span class="num"><pre> 441</pre></span><pre>			self._affects.append( otherplug )</pre></div>
+<div class="skip"><span class="num"><pre> 442</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 443</pre></span><pre>		if self not in otherplug._affectedBy:</pre></div>
+<div class="cov"><span class="num"><pre> 444</pre></span><pre>			otherplug._affectedBy.append( self )</pre></div>
+<div class="skip"><span class="num"><pre> 445</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 446</pre></span><pre>	def affected( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 447</pre></span><pre>		&quot;&quot;&quot;:return: tuple containing affected plugs ( plugs that are affected by our value )&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 448</pre></span><pre>		return tuple( self._affects )</pre></div>
+<div class="skip"><span class="num"><pre> 449</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 450</pre></span><pre>	def affectedBy( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 451</pre></span><pre>		&quot;&quot;&quot;:return: tuple containing plugs that affect us ( plugs affecting our value )&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 452</pre></span><pre>		return tuple( self._affectedBy )</pre></div>
+<div class="skip"><span class="num"><pre> 453</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 454</pre></span><pre>	def providesOutput( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 455</pre></span><pre>		&quot;&quot;&quot;:return: True if this is an output plug that can trigger computations&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 456</pre></span><pre>		return bool( len( self.affectedBy() ) != 0 or self.attr.flags &amp; Attribute.computable )</pre></div>
+<div class="skip"><span class="num"><pre> 457</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 458</pre></span><pre>	def providesInput( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 459</pre></span><pre>		&quot;&quot;&quot;:return: True if this is an input plug that will never cause computations&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 460</pre></span><pre>		#return len( self._affects ) != 0 and not self.providesOutput( )</pre></div>
+<div class="cov"><span class="num"><pre> 461</pre></span><pre>		return not self.providesOutput() # previous version did not recognize storage plugs as input</pre></div>
+<div class="skip"><span class="num"><pre> 462</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 463</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 464</pre></span><pre>#} END plugs and attributes</pre></div>
+<div class="skip"><span class="num"><pre> 465</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 466</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 467</pre></span><pre>class _PlugShell( tuple ):</pre></div>
+<div class="cov"><span class="num"><pre> 468</pre></span><pre>	&quot;&quot;&quot;Handles per-node-instance plug connection setup and storage. As plugs are</pre></div>
+<div class="cov"><span class="num"><pre> 469</pre></span><pre>	descriptors and thus an instance of the class, per-node-instance information needs</pre></div>
+<div class="cov"><span class="num"><pre> 470</pre></span><pre>	special treatment.</pre></div>
+<div class="cov"><span class="num"><pre> 471</pre></span><pre>	This class is being returned whenever the descriptors get and set methods are called,</pre></div>
+<div class="cov"><span class="num"><pre> 472</pre></span><pre>	it contains information about the node and the plug being involved, allowing to track</pre></div>
+<div class="cov"><span class="num"><pre> 473</pre></span><pre>	connection info directly using the node dict</pre></div>
+<div class="skip"><span class="num"><pre> 474</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 475</pre></span><pre>	This allows plugs to be connected, and information to flow through the dependency graph.</pre></div>
+<div class="cov"><span class="num"><pre> 476</pre></span><pre>	Plugs never act alone since they always belong to a parent node that will be asked for</pre></div>
+<div class="cov"><span class="num"><pre> 477</pre></span><pre>	value computations if the value is not yet cached.</pre></div>
+<div class="cov"><span class="num"><pre> 478</pre></span><pre>	:note: Do not instantiate this class youself, it must be created by the node as different</pre></div>
+<div class="cov"><span class="num"><pre> 479</pre></span><pre>	node types can use different versions of this shell&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 480</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 481</pre></span><pre>	#{ Object Overrides</pre></div>
+<div class="skip"><span class="num"><pre> 482</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 483</pre></span><pre>	def __new__( cls, *args ):</pre></div>
+<div class="cov"><span class="num"><pre> 484</pre></span><pre>		return tuple.__new__( cls, args )</pre></div>
+<div class="skip"><span class="num"><pre> 485</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 486</pre></span><pre>	def __getattr__( self, attr ):</pre></div>
+<div class="cov"><span class="num"><pre> 487</pre></span><pre>		&quot;&quot;&quot;Allow easy attribute access while staying memory efficient&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 488</pre></span><pre>		if attr == 'node':</pre></div>
+<div class="cov"><span class="num"><pre> 489</pre></span><pre>			return self[0]</pre></div>
+<div class="cov"><span class="num"><pre> 490</pre></span><pre>		if attr == 'plug':</pre></div>
+<div class="cov"><span class="num"><pre> 491</pre></span><pre>			return self[1]</pre></div>
+<div class="skip"><span class="num"><pre> 492</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 493</pre></span><pre>		# let it raise the typical error</pre></div>
+<div class="nocov"><span class="num"><pre> 494</pre></span><pre>		return super( _PlugShell, self ).__getattribute__( attr )</pre></div>
+<div class="skip"><span class="num"><pre> 495</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 496</pre></span><pre>	def __repr__ ( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 497</pre></span><pre>		return &quot;%s.%s&quot; % ( self.node, self.plug )</pre></div>
+<div class="skip"><span class="num"><pre> 498</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 499</pre></span><pre>	def __str__( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 500</pre></span><pre>		return repr( self )</pre></div>
+<div class="skip"><span class="num"><pre> 501</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 502</pre></span><pre>	#} END object overrides</pre></div>
+<div class="skip"><span class="num"><pre> 503</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 504</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 505</pre></span><pre>	#{ Values</pre></div>
+<div class="skip"><span class="num"><pre> 506</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 507</pre></span><pre>	def get( self, mode = None ):</pre></div>
+<div class="cov"><span class="num"><pre> 508</pre></span><pre>		&quot;&quot;&quot;:return: value of the plug</pre></div>
+<div class="cov"><span class="num"><pre> 509</pre></span><pre>		:param mode: optional arbitary value specifying the mode of the get attempt&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 510</pre></span><pre>		if self.hasCache( ):</pre></div>
+<div class="cov"><span class="num"><pre> 511</pre></span><pre>			return self.cache( )</pre></div>
+<div class="skip"><span class="num"><pre> 512</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 513</pre></span><pre>		# Output plugs compute values</pre></div>
+<div class="cov"><span class="num"><pre> 514</pre></span><pre>		if self.plug.providesOutput( ):</pre></div>
+<div class="skip"><span class="num"><pre> 515</pre></span><pre>			# otherwise compute the value</pre></div>
+<div class="cov"><span class="num"><pre> 516</pre></span><pre>			try:</pre></div>
+<div class="cov"><span class="num"><pre> 517</pre></span><pre>				result = self.node.compute( self.plug, mode )</pre></div>
+<div class="cov"><span class="num"><pre> 518</pre></span><pre>			except ComputeError,e:</pre></div>
+<div class="cov"><span class="num"><pre> 519</pre></span><pre>				raise ComputeError( &quot;%s-&gt;%s&quot; % ( repr( self ), str( e ) ) )</pre></div>
+<div class="cov"><span class="num"><pre> 520</pre></span><pre>			except Exception:		# except all - this is an unknown excetion - just pass it on, keeping the origin</pre></div>
+<div class="cov"><span class="num"><pre> 521</pre></span><pre>				raise</pre></div>
+<div class="skip"><span class="num"><pre> 522</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 523</pre></span><pre>			if result is None:</pre></div>
+<div class="nocov"><span class="num"><pre> 524</pre></span><pre>				raise AssertionError( &quot;Plug %s returned None - check your node implementation&quot; % ( str( self ) ) )</pre></div>
+<div class="skip"><span class="num"><pre> 525</pre></span><pre>			# END result check</pre></div>
+<div class="skip"><span class="num"><pre> 526</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 527</pre></span><pre>			# try to cache computed values</pre></div>
+<div class="cov"><span class="num"><pre> 528</pre></span><pre>			self.setCache( result )</pre></div>
+<div class="cov"><span class="num"><pre> 529</pre></span><pre>			return result</pre></div>
+<div class="skip"><span class="num"><pre> 530</pre></span><pre>		# END plug provides output</pre></div>
+<div class="cov"><span class="num"><pre> 531</pre></span><pre>		elif self.plug.providesInput( ):	# has to be separately checked</pre></div>
+<div class="skip"><span class="num"><pre> 532</pre></span><pre>			# check for connection</pre></div>
+<div class="cov"><span class="num"><pre> 533</pre></span><pre>			inputshell = self.input()</pre></div>
+<div class="cov"><span class="num"><pre> 534</pre></span><pre>			if not inputshell:</pre></div>
+<div class="skip"><span class="num"><pre> 535</pre></span><pre>				# check for default value</pre></div>
+<div class="cov"><span class="num"><pre> 536</pre></span><pre>				try:</pre></div>
+<div class="cov"><span class="num"><pre> 537</pre></span><pre>					return self.plug.attr.default()</pre></div>
+<div class="cov"><span class="num"><pre> 538</pre></span><pre>				except ( TypeError, MissingDefaultValueError ),e:</pre></div>
+<div class="cov"><span class="num"><pre> 539</pre></span><pre>					raise MissingDefaultValueError( &quot;Plug %r failed to getrieve its default value and is not connected&quot; % repr( self ), e )</pre></div>
+<div class="skip"><span class="num"><pre> 540</pre></span><pre>			# END if we have no input</pre></div>
+<div class="skip"><span class="num"><pre> 541</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 542</pre></span><pre>			# query the connected plug for the value</pre></div>
+<div class="cov"><span class="num"><pre> 543</pre></span><pre>			value = inputshell.get( mode )</pre></div>
+<div class="cov"><span class="num"><pre> 544</pre></span><pre>			if self.plug.attr.flags &amp; Attribute.check_passing_values:</pre></div>
+<div class="nocov"><span class="num"><pre> 545</pre></span><pre>				if not self.plug.attr.compatabilityRate( value ):</pre></div>
+<div class="nocov"><span class="num"><pre> 546</pre></span><pre>					raise TypeError( &quot;Value coming from input %s is not compatible with %s&quot; % ( str( inputshell ), str( self ) ) )</pre></div>
+<div class="skip"><span class="num"><pre> 547</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 548</pre></span><pre>			return value</pre></div>
+<div class="skip"><span class="num"><pre> 549</pre></span><pre>		# END plug provides input</pre></div>
+<div class="skip"><span class="num"><pre> 550</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 551</pre></span><pre>		raise AssertionError( &quot;Plug %s did not provide any output or input!&quot; % repr( self ) )</pre></div>
+<div class="skip"><span class="num"><pre> 552</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 553</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 554</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 555</pre></span><pre>	def set( self, value, ignore_connection = False ):</pre></div>
+<div class="cov"><span class="num"><pre> 556</pre></span><pre>		&quot;&quot;&quot;Set the given value to be used in our plug</pre></div>
+<div class="cov"><span class="num"><pre> 557</pre></span><pre>		:param ignore_connection: if True, the plug can be destination of a connection and</pre></div>
+<div class="cov"><span class="num"><pre> 558</pre></span><pre>		will still get its value set - usually it would be overwritten by the value form the</pre></div>
+<div class="cov"><span class="num"><pre> 559</pre></span><pre>		connection. The set value will be cleared if something upstream in it's connection chain</pre></div>
+<div class="cov"><span class="num"><pre> 560</pre></span><pre>		changes.</pre></div>
+<div class="cov"><span class="num"><pre> 561</pre></span><pre>		:raise AssertionError: the respective attribute must be cached, otherwise</pre></div>
+<div class="cov"><span class="num"><pre> 562</pre></span><pre>		the value will be lost&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 563</pre></span><pre>		flags = self.plug.attr.flags</pre></div>
+<div class="cov"><span class="num"><pre> 564</pre></span><pre>		if flags &amp; Attribute.readonly:</pre></div>
+<div class="cov"><span class="num"><pre> 565</pre></span><pre>			raise NotWritableError( &quot;Plug %r is not writable&quot; % repr(self) )</pre></div>
+<div class="skip"><span class="num"><pre> 566</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 567</pre></span><pre>		if self.plug.providesOutput( ):</pre></div>
+<div class="cov"><span class="num"><pre> 568</pre></span><pre>			raise NotWritableError( &quot;Plug %r is not writable as it provides an output itself&quot; % repr(self) )</pre></div>
+<div class="skip"><span class="num"><pre> 569</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 570</pre></span><pre>		if flags &amp; Attribute.uncached:</pre></div>
+<div class="nocov"><span class="num"><pre> 571</pre></span><pre>			raise AssertionError( &quot;Writable attributes must be cached - otherwise the value will not be held&quot; )</pre></div>
+<div class="skip"><span class="num"><pre> 572</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 573</pre></span><pre>		# check connection</pre></div>
+<div class="cov"><span class="num"><pre> 574</pre></span><pre>		if not ignore_connection and self.input() is not None:</pre></div>
+<div class="cov"><span class="num"><pre> 575</pre></span><pre>			raise NotWritableError( &quot;Plug %r is connected to %r and thus not explicitly writable&quot; % ( self, self.input() ) )</pre></div>
+<div class="skip"><span class="num"><pre> 576</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 577</pre></span><pre>		self.setCache( value )</pre></div>
+<div class="skip"><span class="num"><pre> 578</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 579</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 580</pre></span><pre>	def compatabilityRate( self, value ):</pre></div>
+<div class="cov"><span class="num"><pre> 581</pre></span><pre>		&quot;&quot;&quot;Compute compatability rate for teh given value</pre></div>
+<div class="skip"><span class="num"><pre> 582</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 583</pre></span><pre>		:return: value between 0 and 255, 0 means no compatability, 255 a perfect match</pre></div>
+<div class="cov"><span class="num"><pre> 584</pre></span><pre>			if larger than 0, the plug can hold the value ( assumed the flags are set correctly )</pre></div>
+<div class="cov"><span class="num"><pre> 585</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 586</pre></span><pre>		return self.plug.attr.compatabilityRate( value )</pre></div>
+<div class="skip"><span class="num"><pre> 587</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 588</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 589</pre></span><pre>	#} END values</pre></div>
+<div class="skip"><span class="num"><pre> 590</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 591</pre></span><pre>	#{ Connections</pre></div>
+<div class="skip"><span class="num"><pre> 592</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 593</pre></span><pre>	def connect( self, otherplugshell, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre> 594</pre></span><pre>		&quot;&quot;&quot;Connect this plug to otherplugshell such that otherplugshell is an input plug for our output</pre></div>
+<div class="skip"><span class="num"><pre> 595</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 596</pre></span><pre>		:param kwargs: everything supported by `Graph.connect`</pre></div>
+<div class="cov"><span class="num"><pre> 597</pre></span><pre>		:return: self on success, allows chained connections</pre></div>
+<div class="cov"><span class="num"><pre> 598</pre></span><pre>		:raise PlugAlreadyConnected: if otherplugshell is connected and force is False</pre></div>
+<div class="cov"><span class="num"><pre> 599</pre></span><pre>		:raise PlugIncompatible: if otherplugshell does not appear to be compatible to this one&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 600</pre></span><pre>		if not isinstance( otherplugshell, _PlugShell ):</pre></div>
+<div class="nocov"><span class="num"><pre> 601</pre></span><pre>			raise AssertionError( &quot;Invalid Type given to connect: %r&quot; % repr( otherplugshell ) )</pre></div>
+<div class="skip"><span class="num"><pre> 602</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 603</pre></span><pre>		return self.node.graph.connect( self, otherplugshell, **kwargs )</pre></div>
+<div class="skip"><span class="num"><pre> 604</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 605</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 606</pre></span><pre>	def disconnect( self, otherplugshell ):</pre></div>
+<div class="cov"><span class="num"><pre> 607</pre></span><pre>		&quot;&quot;&quot;Remove the connection to otherplugshell if we are connected to it.</pre></div>
+<div class="cov"><span class="num"><pre> 608</pre></span><pre>		:note: does not raise if no connection is present&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 609</pre></span><pre>		if not isinstance( otherplugshell, _PlugShell ):</pre></div>
+<div class="nocov"><span class="num"><pre> 610</pre></span><pre>			raise AssertionError( &quot;Invalid Type given to connect: %r&quot; % repr( otherplugshell ) )</pre></div>
+<div class="skip"><span class="num"><pre> 611</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 612</pre></span><pre>		return self.node.graph.disconnect( self, otherplugshell )</pre></div>
+<div class="skip"><span class="num"><pre> 613</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 614</pre></span><pre>	def input( self, predicate = lambda shell: True ):</pre></div>
+<div class="cov"><span class="num"><pre> 615</pre></span><pre>		&quot;&quot;&quot;:return: the connected input plug or None if there is no such connection</pre></div>
+<div class="cov"><span class="num"><pre> 616</pre></span><pre>		:param predicate: plug will only be returned if predicate is true for it</pre></div>
+<div class="cov"><span class="num"><pre> 617</pre></span><pre>		:note: input plugs have on plug at most, output plugs can have more than one</pre></div>
+<div class="cov"><span class="num"><pre> 618</pre></span><pre>			connected plug&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 619</pre></span><pre>		sourceshell = self.node.graph.input( self )</pre></div>
+<div class="cov"><span class="num"><pre> 620</pre></span><pre>		if sourceshell and predicate( sourceshell ):</pre></div>
+<div class="cov"><span class="num"><pre> 621</pre></span><pre>			return sourceshell</pre></div>
+<div class="cov"><span class="num"><pre> 622</pre></span><pre>		return None</pre></div>
+<div class="skip"><span class="num"><pre> 623</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 624</pre></span><pre>	def outputs( self, predicate = lambda shell: True ):</pre></div>
+<div class="cov"><span class="num"><pre> 625</pre></span><pre>		&quot;&quot;&quot;:return: a list of plugs being the destination of the connection</pre></div>
+<div class="cov"><span class="num"><pre> 626</pre></span><pre>		:param predicate: plug will only be returned if predicate is true for it - shells will be passed in &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 627</pre></span><pre>		return self.node.graph.outputs( self, predicate = predicate )</pre></div>
+<div class="skip"><span class="num"><pre> 628</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 629</pre></span><pre>	def connections( self, inpt, output, predicate = lambda shell: True ):</pre></div>
+<div class="cov"><span class="num"><pre> 630</pre></span><pre>		&quot;&quot;&quot;:return: get all input and or output connections from this shell</pre></div>
+<div class="cov"><span class="num"><pre> 631</pre></span><pre>			or to this shell as edges ( sourceshell, destinationshell )</pre></div>
+<div class="cov"><span class="num"><pre> 632</pre></span><pre>		:param predicate: return true for each destination shell that you can except in the</pre></div>
+<div class="cov"><span class="num"><pre> 633</pre></span><pre>			returned edge or the sourceshell where your shell is the destination.</pre></div>
+<div class="cov"><span class="num"><pre> 634</pre></span><pre>		:note: Use this method to get edges read for connection/disconnection&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 635</pre></span><pre>		outcons = list()</pre></div>
+<div class="cov"><span class="num"><pre> 636</pre></span><pre>		if inpt:</pre></div>
+<div class="cov"><span class="num"><pre> 637</pre></span><pre>			sourceshell = self.input( predicate = predicate )</pre></div>
+<div class="cov"><span class="num"><pre> 638</pre></span><pre>			if sourceshell:</pre></div>
+<div class="cov"><span class="num"><pre> 639</pre></span><pre>				outcons.append( ( sourceshell, self ) )</pre></div>
+<div class="skip"><span class="num"><pre> 640</pre></span><pre>		# END input connection handling</pre></div>
+<div class="skip"><span class="num"><pre> 641</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 642</pre></span><pre>		if output:</pre></div>
+<div class="cov"><span class="num"><pre> 643</pre></span><pre>			outcons.extend( ( self, oshell ) for oshell in self.outputs( predicate = predicate ) )</pre></div>
+<div class="skip"><span class="num"><pre> 644</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 645</pre></span><pre>		return outcons</pre></div>
+<div class="skip"><span class="num"><pre> 646</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 647</pre></span><pre>	def isConnected( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 648</pre></span><pre>		&quot;&quot;&quot;:return: True, if the shell is connected as source or as destination of a connection&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 649</pre></span><pre>		return self.input() or self.outputs()</pre></div>
+<div class="skip"><span class="num"><pre> 650</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 651</pre></span><pre>	def iterShells( self, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre> 652</pre></span><pre>		&quot;&quot;&quot;Iterate plugs and their connections starting at this plug</pre></div>
+<div class="cov"><span class="num"><pre> 653</pre></span><pre>		:return: generator for plug shells</pre></div>
+<div class="cov"><span class="num"><pre> 654</pre></span><pre>		:note: supports all options of `iterShells`, this method allows syntax like:</pre></div>
+<div class="cov"><span class="num"><pre> 655</pre></span><pre>		node.outAttribute.iterShells( )&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 656</pre></span><pre>		return iterShells( self, **kwargs )</pre></div>
+<div class="skip"><span class="num"><pre> 657</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 658</pre></span><pre>	#} END connections</pre></div>
+<div class="skip"><span class="num"><pre> 659</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 660</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 661</pre></span><pre>	#{Caching</pre></div>
+<div class="cov"><span class="num"><pre> 662</pre></span><pre>	def _cachename( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 663</pre></span><pre>		return self.plug.name() + &quot;_c&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 664</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 665</pre></span><pre>	def hasCache( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 666</pre></span><pre>		&quot;&quot;&quot;:return: True if currently store a cached value&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 667</pre></span><pre>		return hasattr( self.node, self._cachename() )</pre></div>
+<div class="skip"><span class="num"><pre> 668</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 669</pre></span><pre>	def setCache( self, value ):</pre></div>
+<div class="cov"><span class="num"><pre> 670</pre></span><pre>		&quot;&quot;&quot;Set the given value to be stored in our cache</pre></div>
+<div class="cov"><span class="num"><pre> 671</pre></span><pre>		:raise: TypeError if the value is not compatible to our defined type&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 672</pre></span><pre>		# attr compatability - always run this as we want to be warned if the compute</pre></div>
+<div class="skip"><span class="num"><pre> 673</pre></span><pre>		# method returns a value that does not match</pre></div>
+<div class="cov"><span class="num"><pre> 674</pre></span><pre>		if self.plug.attr.compatabilityRate( value ) == 0:</pre></div>
+<div class="cov"><span class="num"><pre> 675</pre></span><pre>			raise TypeError( &quot;Plug %r cannot hold value %r as it is not compatible&quot; % ( repr( self ), repr( value ) ) )</pre></div>
+<div class="skip"><span class="num"><pre> 676</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 677</pre></span><pre>		if self.plug.attr.flags &amp; Attribute.uncached:</pre></div>
+<div class="cov"><span class="num"><pre> 678</pre></span><pre>			return</pre></div>
+<div class="skip"><span class="num"><pre> 679</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 680</pre></span><pre>		# our cache changed - dirty downstream plugs - thus clear the cache</pre></div>
+<div class="skip"><span class="num"><pre> 681</pre></span><pre>		# NOTE: this clears our own cache by deleting it, but we re-set it</pre></div>
+<div class="cov"><span class="num"><pre> 682</pre></span><pre>		self.clearCache( clear_affected = True )</pre></div>
+<div class="cov"><span class="num"><pre> 683</pre></span><pre>		setattr( self.node, self._cachename(), value )</pre></div>
+<div class="skip"><span class="num"><pre> 684</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 685</pre></span><pre>	def cache( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 686</pre></span><pre>		&quot;&quot;&quot;:return: the cached value or raise</pre></div>
+<div class="cov"><span class="num"><pre> 687</pre></span><pre>		:raise ValueError:&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 688</pre></span><pre>		if self.hasCache():</pre></div>
+<div class="cov"><span class="num"><pre> 689</pre></span><pre>			return getattr( self.node, self._cachename() )</pre></div>
+<div class="skip"><span class="num"><pre> 690</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 691</pre></span><pre>		raise ValueError( &quot;Plug %r did not have a cached value&quot; % repr( self ) )</pre></div>
+<div class="skip"><span class="num"><pre> 692</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 693</pre></span><pre>	def clearCache( self, clear_affected = False, cleared_shells_set = None ):</pre></div>
+<div class="cov"><span class="num"><pre> 694</pre></span><pre>		&quot;&quot;&quot;Empty the cache of our plug</pre></div>
+<div class="cov"><span class="num"><pre> 695</pre></span><pre>		:param clear_affected: if True, the caches of our affected plugs ( connections</pre></div>
+<div class="cov"><span class="num"><pre> 696</pre></span><pre>		or affects relations ) will also be cleared</pre></div>
+<div class="cov"><span class="num"><pre> 697</pre></span><pre>		This operation is recursive, and needs to be as different shells on different nodes</pre></div>
+<div class="cov"><span class="num"><pre> 698</pre></span><pre>		might do things differently.</pre></div>
+<div class="cov"><span class="num"><pre> 699</pre></span><pre>		:param cleared_shells_set: if set, it can be used to track which plugs have already been dirtied to</pre></div>
+<div class="cov"><span class="num"><pre> 700</pre></span><pre>		prevent recursive loops</pre></div>
+<div class="cov"><span class="num"><pre> 701</pre></span><pre>		Propagation will happen even if we do not have a cache to clear ourselves &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 702</pre></span><pre>		if self.hasCache():</pre></div>
+<div class="cov"><span class="num"><pre> 703</pre></span><pre>			del( self.node.__dict__[ self._cachename() ] )</pre></div>
+<div class="skip"><span class="num"><pre> 704</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 705</pre></span><pre>		if clear_affected:</pre></div>
+<div class="skip"><span class="num"><pre> 706</pre></span><pre>			# our cache changed - dirty downstream plugs - thus clear the cache</pre></div>
+<div class="cov"><span class="num"><pre> 707</pre></span><pre>			if not cleared_shells_set:		# initialize our tracking list</pre></div>
+<div class="cov"><span class="num"><pre> 708</pre></span><pre>				cleared_shells_set = set()</pre></div>
+<div class="skip"><span class="num"><pre> 709</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 710</pre></span><pre>			if self in cleared_shells_set:</pre></div>
+<div class="cov"><span class="num"><pre> 711</pre></span><pre>				return</pre></div>
+<div class="skip"><span class="num"><pre> 712</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 713</pre></span><pre>			cleared_shells_set.add( self )	# assure we do not come here twice</pre></div>
+<div class="skip"><span class="num"><pre> 714</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 715</pre></span><pre>			all_shells = itertools.chain( self.node.toShells( self.plug.affected() ), self.outputs() )</pre></div>
+<div class="cov"><span class="num"><pre> 716</pre></span><pre>			for shell in all_shells:</pre></div>
+<div class="cov"><span class="num"><pre> 717</pre></span><pre>				shell.clearCache( clear_affected = True, cleared_shells_set = cleared_shells_set )</pre></div>
+<div class="skip"><span class="num"><pre> 718</pre></span><pre>			# END for each shell in all_shells to clear</pre></div>
+<div class="skip"><span class="num"><pre> 719</pre></span><pre>	#} END caching</pre></div>
+<div class="skip"><span class="num"><pre> 720</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 721</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 722</pre></span><pre>	#{ Name Overrides</pre></div>
+<div class="cov"><span class="num"><pre> 723</pre></span><pre>	__rshift__ = lambda self,other: self.connect( other, force=True )</pre></div>
+<div class="skip"><span class="num"><pre> 724</pre></span><pre>	# NOTE: this will cause problems when sorting them :) - so lets just use &gt;&gt; for the</pre></div>
+<div class="skip"><span class="num"><pre> 725</pre></span><pre>	# forced connection !</pre></div>
+<div class="skip"><span class="num"><pre> 726</pre></span><pre>	# __gt__ = lambda self,other: self.connect( other, force=False )</pre></div>
+<div class="skip"><span class="num"><pre> 727</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 728</pre></span><pre>	#} END name overrides</pre></div>
+<div class="skip"><span class="num"><pre> 729</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 730</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 731</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 732</pre></span><pre>class Graph( nx.DiGraph, iDuplicatable ):</pre></div>
+<div class="cov"><span class="num"><pre> 733</pre></span><pre>	&quot;&quot;&quot;Holds the nodes and their connections</pre></div>
+<div class="skip"><span class="num"><pre> 734</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 735</pre></span><pre>	Nodes are kept in a separate list whereas the plug connections are kept</pre></div>
+<div class="cov"><span class="num"><pre> 736</pre></span><pre>	in the underlying DiGraph&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 737</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 738</pre></span><pre>	#{ Overridden Object Methods</pre></div>
+<div class="cov"><span class="num"><pre> 739</pre></span><pre>	def __init__( self, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre> 740</pre></span><pre>		&quot;&quot;&quot;initialize the DiGraph and add some additional attributes&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 741</pre></span><pre>		super( Graph, self ).__init__( **kwargs )</pre></div>
+<div class="cov"><span class="num"><pre> 742</pre></span><pre>		self._nodes = set()			# our processes from which we can make connections</pre></div>
+<div class="skip"><span class="num"><pre> 743</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 744</pre></span><pre>	def __del__( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 745</pre></span><pre>		&quot;&quot;&quot;Clear our graph&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 746</pre></span><pre>		self.clear()				# clear connections</pre></div>
+<div class="skip"><span class="num"><pre> 747</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 748</pre></span><pre>		# NOTE : nodes will remove themselves once they are not referenced anymore</pre></div>
+<div class="cov"><span class="num"><pre> 749</pre></span><pre>		self._nodes.clear()</pre></div>
+<div class="skip"><span class="num"><pre> 750</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 751</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 752</pre></span><pre>	def __getattr__( self , attr ):</pre></div>
+<div class="cov"><span class="num"><pre> 753</pre></span><pre>		&quot;&quot;&quot;Allows access to nodes by name just by accessing the graph directly&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 754</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre> 755</pre></span><pre>			return self.nodeByID( attr )</pre></div>
+<div class="cov"><span class="num"><pre> 756</pre></span><pre>		except NameError:</pre></div>
+<div class="cov"><span class="num"><pre> 757</pre></span><pre>			return super( Graph, self ).__getattribute__( attr )</pre></div>
+<div class="skip"><span class="num"><pre> 758</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 759</pre></span><pre>	#} END object methods</pre></div>
+<div class="skip"><span class="num"><pre> 760</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 761</pre></span><pre>	#{ Debugging</pre></div>
+<div class="cov"><span class="num"><pre> 762</pre></span><pre>	def writeDot( self , fileOrPath  ):</pre></div>
+<div class="cov"><span class="num"><pre> 763</pre></span><pre>		&quot;&quot;&quot;Write the connections in self to the given file object or path</pre></div>
+<div class="cov"><span class="num"><pre> 764</pre></span><pre>		:todo: remove if no longer needed&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 765</pre></span><pre>		# associate every plugshell with its node create a more native look</pre></div>
+<div class="cov"><span class="num"><pre> 766</pre></span><pre>		writegraph = nx.DiGraph()</pre></div>
+<div class="skip"><span class="num"><pre> 767</pre></span><pre>		# but we do not use it as the edge attrs cannot be assigned anymore - dict has no unique keys</pre></div>
+<div class="skip"><span class="num"><pre> 768</pre></span><pre>		# writegraph.allow_multiedges()</pre></div>
+<div class="skip"><span class="num"><pre> 769</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 770</pre></span><pre>		# EXTRACT DATA</pre></div>
+<div class="cov"><span class="num"><pre> 771</pre></span><pre>		for node in self.iterNodes():</pre></div>
+<div class="cov"><span class="num"><pre> 772</pre></span><pre>			writegraph.add_node( node, color=&quot;#ebba66&quot;, width=4, height=2, fontsize=22 )</pre></div>
+<div class="skip"><span class="num"><pre> 773</pre></span><pre>		# END for each node in graph</pre></div>
+<div class="skip"><span class="num"><pre> 774</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 775</pre></span><pre>		# now all the connections - just transfer them</pre></div>
+<div class="cov"><span class="num"><pre> 776</pre></span><pre>		for sshell,eshell in self.edges_iter():</pre></div>
+<div class="cov"><span class="num"><pre> 777</pre></span><pre>			writegraph.add_edge( sshell,eshell )</pre></div>
+<div class="skip"><span class="num"><pre> 778</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 779</pre></span><pre>			writegraph.add_edge( sshell.node, sshell, color=&quot;#000000&quot; )</pre></div>
+<div class="skip"><span class="num"><pre> 780</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre> 781</pre></span><pre>			writegraph.add_node( sshell, color=&quot;#000000&quot;, label=sshell.plug )</pre></div>
+<div class="cov"><span class="num"><pre> 782</pre></span><pre>			writegraph.add_node( eshell, color=&quot;#000000&quot;, label=eshell.plug )</pre></div>
+<div class="skip"><span class="num"><pre> 783</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 784</pre></span><pre>			writegraph.add_edge( eshell,eshell.node, color=&quot;#000000&quot; )</pre></div>
+<div class="skip"><span class="num"><pre> 785</pre></span><pre>		# END for each edge in graph</pre></div>
+<div class="skip"><span class="num"><pre> 786</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 787</pre></span><pre>		# WRITE DOT FILE</pre></div>
+<div class="cov"><span class="num"><pre> 788</pre></span><pre>		nx.write_dot(writegraph, fileOrPath)</pre></div>
+<div class="skip"><span class="num"><pre> 789</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 790</pre></span><pre>	#} END debugging</pre></div>
+<div class="skip"><span class="num"><pre> 791</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 792</pre></span><pre>	#{ iDuplicatable Interface</pre></div>
+<div class="cov"><span class="num"><pre> 793</pre></span><pre>	def createInstance( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 794</pre></span><pre>		&quot;&quot;&quot;Create a copy of self and return it&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 795</pre></span><pre>		return self.__class__( )</pre></div>
+<div class="skip"><span class="num"><pre> 796</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 797</pre></span><pre>	def copyFrom( self, other ):</pre></div>
+<div class="cov"><span class="num"><pre> 798</pre></span><pre>		&quot;&quot;&quot;Duplicate all data from other graph into this one, create a duplicate</pre></div>
+<div class="cov"><span class="num"><pre> 799</pre></span><pre>		of the nodes as well&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 800</pre></span><pre>		def copyshell( shell, nodemap ):</pre></div>
+<div class="cov"><span class="num"><pre> 801</pre></span><pre>			nodecpy = nodemap[ shell.node ]</pre></div>
+<div class="skip"><span class="num"><pre> 802</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 803</pre></span><pre>			# nodecpy - just get the shell of the given name directly - getattr always creates</pre></div>
+<div class="skip"><span class="num"><pre> 804</pre></span><pre>			# shells as it is equal to node.plugname</pre></div>
+<div class="cov"><span class="num"><pre> 805</pre></span><pre>			return getattr( nodecpy, shell.plug.name() )</pre></div>
+<div class="skip"><span class="num"><pre> 806</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 807</pre></span><pre>		# copy name ( networkx )</pre></div>
+<div class="cov"><span class="num"><pre> 808</pre></span><pre>		self.name = other.name</pre></div>
+<div class="skip"><span class="num"><pre> 809</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 810</pre></span><pre>		# copy nodes first</pre></div>
+<div class="cov"><span class="num"><pre> 811</pre></span><pre>		nodemap = dict()</pre></div>
+<div class="cov"><span class="num"><pre> 812</pre></span><pre>		for node in other.iterNodes():</pre></div>
+<div class="cov"><span class="num"><pre> 813</pre></span><pre>			nodecpy = node.duplicate( add_to_graph = False )		# copy node</pre></div>
+<div class="cov"><span class="num"><pre> 814</pre></span><pre>			nodemap[ node ] = nodecpy</pre></div>
+<div class="skip"><span class="num"><pre> 815</pre></span><pre>		# END for each node</pre></div>
+<div class="skip"><span class="num"><pre> 816</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 817</pre></span><pre>		# add all nodemap values as nodes ( now that iteration is done</pre></div>
+<div class="cov"><span class="num"><pre> 818</pre></span><pre>		for duplnode in nodemap.itervalues():</pre></div>
+<div class="cov"><span class="num"><pre> 819</pre></span><pre>			self.addNode( duplnode )</pre></div>
+<div class="skip"><span class="num"><pre> 820</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 821</pre></span><pre>		# COPY CONNECTIONS</pre></div>
+<div class="cov"><span class="num"><pre> 822</pre></span><pre>		for sshell,eshell in other.edges_iter():</pre></div>
+<div class="skip"><span class="num"><pre> 823</pre></span><pre>			# make fresh connections through shells - we do not know what kind of</pre></div>
+<div class="skip"><span class="num"><pre> 824</pre></span><pre>			# plugs they use, so they could be special and thus need special</pre></div>
+<div class="skip"><span class="num"><pre> 825</pre></span><pre>			# copy procedures</pre></div>
+<div class="cov"><span class="num"><pre> 826</pre></span><pre>			cstart = copyshell( sshell, nodemap )</pre></div>
+<div class="cov"><span class="num"><pre> 827</pre></span><pre>			cend = copyshell( eshell, nodemap )</pre></div>
+<div class="skip"><span class="num"><pre> 828</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 829</pre></span><pre>			cstart.connect( cend )</pre></div>
+<div class="skip"><span class="num"><pre> 830</pre></span><pre>		# END for each edge( startshell, endshell )</pre></div>
+<div class="skip"><span class="num"><pre> 831</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 832</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 833</pre></span><pre>	# END iDuplicatable</pre></div>
+<div class="skip"><span class="num"><pre> 834</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 835</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 836</pre></span><pre>	#{ Node Handling</pre></div>
+<div class="cov"><span class="num"><pre> 837</pre></span><pre>	def addNode( self, node ):</pre></div>
+<div class="cov"><span class="num"><pre> 838</pre></span><pre>		&quot;&quot;&quot;Add a new node instance to the graph</pre></div>
+<div class="cov"><span class="num"><pre> 839</pre></span><pre>		:note: node membership is exclusive, thus node instances</pre></div>
+<div class="cov"><span class="num"><pre> 840</pre></span><pre>		can only be in one graph at a time</pre></div>
+<div class="cov"><span class="num"><pre> 841</pre></span><pre>		:return: self, for chained calls&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 842</pre></span><pre>		if not isinstance( node, NodeBase ):</pre></div>
+<div class="nocov"><span class="num"><pre> 843</pre></span><pre>			raise TypeError( &quot;Node %r must be of type NodeBase&quot; % node )</pre></div>
+<div class="skip"><span class="num"><pre> 844</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 845</pre></span><pre>		# assure we do not remove ( and kill connections ) and re-add to ourselves</pre></div>
+<div class="cov"><span class="num"><pre> 846</pre></span><pre>		if node in self._nodes:</pre></div>
+<div class="nocov"><span class="num"><pre> 847</pre></span><pre>			return self</pre></div>
+<div class="skip"><span class="num"><pre> 848</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 849</pre></span><pre>		# remove node from existing graph</pre></div>
+<div class="cov"><span class="num"><pre> 850</pre></span><pre>		if node.graph is not None:</pre></div>
+<div class="nocov"><span class="num"><pre> 851</pre></span><pre>			node.graph.removeNode( node )</pre></div>
+<div class="skip"><span class="num"><pre> 852</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 853</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 854</pre></span><pre>		self._nodes.add( node )		# assure the node knows us</pre></div>
+<div class="cov"><span class="num"><pre> 855</pre></span><pre>		node.graph = weakref.proxy( self )</pre></div>
+<div class="skip"><span class="num"><pre> 856</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 857</pre></span><pre>		return self		# assure we have the graph set</pre></div>
+<div class="skip"><span class="num"><pre> 858</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 859</pre></span><pre>	def removeNode( self, node ):</pre></div>
+<div class="cov"><span class="num"><pre> 860</pre></span><pre>		&quot;&quot;&quot;Remove the given node from the graph ( if it exists in it )&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 861</pre></span><pre>		try:</pre></div>
+<div class="skip"><span class="num"><pre> 862</pre></span><pre>			# remove connections</pre></div>
+<div class="cov"><span class="num"><pre> 863</pre></span><pre>			for sshell, eshell in node.connections( 1, 1 ):</pre></div>
+<div class="cov"><span class="num"><pre> 864</pre></span><pre>				self.disconnect( sshell, eshell )</pre></div>
+<div class="skip"><span class="num"><pre> 865</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 866</pre></span><pre>			# assure the node does not call us anymore</pre></div>
+<div class="cov"><span class="num"><pre> 867</pre></span><pre>			node.graph = None</pre></div>
+<div class="cov"><span class="num"><pre> 868</pre></span><pre>			self._nodes.remove( node )</pre></div>
+<div class="nocov"><span class="num"><pre> 869</pre></span><pre>		except KeyError:</pre></div>
+<div class="nocov"><span class="num"><pre> 870</pre></span><pre>			pass</pre></div>
+<div class="skip"><span class="num"><pre> 871</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 872</pre></span><pre>	def clearCache( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 873</pre></span><pre>		&quot;&quot;&quot;Clear the cache of all nodes in the graph - this forces the graph</pre></div>
+<div class="cov"><span class="num"><pre> 874</pre></span><pre>		to reevaluate on the next request&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 875</pre></span><pre>		for node in self._nodes:</pre></div>
+<div class="nocov"><span class="num"><pre> 876</pre></span><pre>			node.clearCache()</pre></div>
+<div class="skip"><span class="num"><pre> 877</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 878</pre></span><pre>	#} END node handling</pre></div>
+<div class="skip"><span class="num"><pre> 879</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 880</pre></span><pre>	#{ Query</pre></div>
+<div class="skip"><span class="num"><pre> 881</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 882</pre></span><pre>	def hasNode( self , node ):</pre></div>
+<div class="cov"><span class="num"><pre> 883</pre></span><pre>		&quot;&quot;&quot;:return: True if the node is in this graph, false otherwise&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 884</pre></span><pre>		return node in self._nodes</pre></div>
+<div class="skip"><span class="num"><pre> 885</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 886</pre></span><pre>	def iterNodes( self, predicate = lambda node: True ):</pre></div>
+<div class="cov"><span class="num"><pre> 887</pre></span><pre>		&quot;&quot;&quot;:return: generator returning all nodes in this graph</pre></div>
+<div class="cov"><span class="num"><pre> 888</pre></span><pre>		:param predicate: if True for node, it will be returned</pre></div>
+<div class="cov"><span class="num"><pre> 889</pre></span><pre>		:note: there is no particular order&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 890</pre></span><pre>		for node in self._nodes:</pre></div>
+<div class="cov"><span class="num"><pre> 891</pre></span><pre>			if predicate( node ):</pre></div>
+<div class="cov"><span class="num"><pre> 892</pre></span><pre>				yield node</pre></div>
+<div class="skip"><span class="num"><pre> 893</pre></span><pre>		# END for each node</pre></div>
+<div class="skip"><span class="num"><pre> 894</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 895</pre></span><pre>	def iterConnectedNodes( self, predicate = lambda node: True ):</pre></div>
+<div class="cov"><span class="num"><pre> 896</pre></span><pre>		&quot;&quot;&quot;:return: generator returning all nodes that are connected in this graph,</pre></div>
+<div class="cov"><span class="num"><pre> 897</pre></span><pre>			in no particular order.</pre></div>
+<div class="cov"><span class="num"><pre> 898</pre></span><pre>			For an ordered itereration, use `iterShells`.</pre></div>
+<div class="skip"><span class="num"><pre> 899</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre> 900</pre></span><pre>		:param predicate: if True for node, it will be returned&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 901</pre></span><pre>		# iterate digraph keeping the plugs only ( and thus connected nodes )</pre></div>
+<div class="cov"><span class="num"><pre> 902</pre></span><pre>		nodes_seen = set()</pre></div>
+<div class="cov"><span class="num"><pre> 903</pre></span><pre>		for node,plug in self.nodes_iter():</pre></div>
+<div class="cov"><span class="num"><pre> 904</pre></span><pre>			if node in nodes_seen:</pre></div>
+<div class="cov"><span class="num"><pre> 905</pre></span><pre>				continue</pre></div>
+<div class="cov"><span class="num"><pre> 906</pre></span><pre>			nodes_seen.add( node )</pre></div>
+<div class="cov"><span class="num"><pre> 907</pre></span><pre>			if predicate( node ):</pre></div>
+<div class="cov"><span class="num"><pre> 908</pre></span><pre>				yield node</pre></div>
+<div class="skip"><span class="num"><pre> 909</pre></span><pre>		# END for each node</pre></div>
+<div class="skip"><span class="num"><pre> 910</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 911</pre></span><pre>	def nodes( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 912</pre></span><pre>		&quot;&quot;&quot;:return: immutable copy of the nodes used in the graph&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 913</pre></span><pre>		return tuple( self._nodes )</pre></div>
+<div class="skip"><span class="num"><pre> 914</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 915</pre></span><pre>	def numNodes( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 916</pre></span><pre>		&quot;&quot;&quot;:return: number of nodes in the graph&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 917</pre></span><pre>		return len( self._nodes )</pre></div>
+<div class="skip"><span class="num"><pre> 918</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 919</pre></span><pre>	def nodeByID( self, nodeID ):</pre></div>
+<div class="cov"><span class="num"><pre> 920</pre></span><pre>		&quot;&quot;&quot;:return: instance of a node according to the given node id</pre></div>
+<div class="cov"><span class="num"><pre> 921</pre></span><pre>		:raise NameError: if no such node exists in graph&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 922</pre></span><pre>		for node in self.iterNodes():</pre></div>
+<div class="cov"><span class="num"><pre> 923</pre></span><pre>			if node.id() == nodeID:</pre></div>
+<div class="cov"><span class="num"><pre> 924</pre></span><pre>				return node</pre></div>
+<div class="skip"><span class="num"><pre> 925</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 926</pre></span><pre>		raise NameError( &quot;Node with ID %s not found in graph&quot; % nodeID )</pre></div>
+<div class="skip"><span class="num"><pre> 927</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 928</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 929</pre></span><pre>	#} END query</pre></div>
+<div class="skip"><span class="num"><pre> 930</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 931</pre></span><pre>	#{ Connecitons</pre></div>
+<div class="cov"><span class="num"><pre> 932</pre></span><pre>	def connect( self, sourceshell, destinationshell, force = False ):</pre></div>
+<div class="cov"><span class="num"><pre> 933</pre></span><pre>		&quot;&quot;&quot;Connect this plug to destinationshell such that destinationshell is an input plug for our output</pre></div>
+<div class="skip"><span class="num"><pre> 934</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 935</pre></span><pre>		:param sourceshell: PlugShell being source of the connection</pre></div>
+<div class="cov"><span class="num"><pre> 936</pre></span><pre>		:param destinationshell: PlugShell being destination of the connection</pre></div>
+<div class="cov"><span class="num"><pre> 937</pre></span><pre>		:param force: if False, existing connections to destinationshell will not be broken, but an exception is raised</pre></div>
+<div class="cov"><span class="num"><pre> 938</pre></span><pre>			if True, existing connection may be broken</pre></div>
+<div class="cov"><span class="num"><pre> 939</pre></span><pre>		:return: self on success, allows chained connections</pre></div>
+<div class="cov"><span class="num"><pre> 940</pre></span><pre>		:raise PlugAlreadyConnected: if destinationshell is connected and force is False</pre></div>
+<div class="cov"><span class="num"><pre> 941</pre></span><pre>		:raise PlugIncompatible: if destinationshell does not appear to be compatible to this one&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 942</pre></span><pre>		# assure both nodes are known to the graph</pre></div>
+<div class="cov"><span class="num"><pre> 943</pre></span><pre>		if not sourceshell.node.graph is destinationshell.node.graph:</pre></div>
+<div class="nocov"><span class="num"><pre> 944</pre></span><pre>			raise AssertionError( &quot;You cannot connect nodes from different graphs&quot; )</pre></div>
+<div class="skip"><span class="num"><pre> 945</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 946</pre></span><pre>		self._nodes.add( sourceshell.node )</pre></div>
+<div class="cov"><span class="num"><pre> 947</pre></span><pre>		self._nodes.add( destinationshell.node )</pre></div>
+<div class="skip"><span class="num"><pre> 948</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 949</pre></span><pre>		# check compatability</pre></div>
+<div class="cov"><span class="num"><pre> 950</pre></span><pre>		if sourceshell.plug.attr.connectionAffinity( destinationshell.plug.attr ) == 0:</pre></div>
+<div class="nocov"><span class="num"><pre> 951</pre></span><pre>			raise PlugIncompatible( &quot;Cannot connect %r to %r as they are incompatible&quot; % ( repr( sourceshell ), repr( destinationshell ) ) )</pre></div>
+<div class="skip"><span class="num"><pre> 952</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 953</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 954</pre></span><pre>		oinput = destinationshell.input( )</pre></div>
+<div class="cov"><span class="num"><pre> 955</pre></span><pre>		if oinput is not None:</pre></div>
+<div class="cov"><span class="num"><pre> 956</pre></span><pre>			if oinput == sourceshell:</pre></div>
+<div class="cov"><span class="num"><pre> 957</pre></span><pre>				return sourceshell</pre></div>
+<div class="skip"><span class="num"><pre> 958</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 959</pre></span><pre>			if not force:</pre></div>
+<div class="cov"><span class="num"><pre> 960</pre></span><pre>				raise PlugAlreadyConnected( &quot;Cannot connect %r to %r as it is already connected&quot; % ( repr( sourceshell ), repr( destinationshell ) ) )</pre></div>
+<div class="skip"><span class="num"><pre> 961</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 962</pre></span><pre>			# break existing one</pre></div>
+<div class="cov"><span class="num"><pre> 963</pre></span><pre>			oinput.disconnect( destinationshell )</pre></div>
+<div class="skip"><span class="num"><pre> 964</pre></span><pre>		# END destinationshell already connected</pre></div>
+<div class="skip"><span class="num"><pre> 965</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 966</pre></span><pre>		# connect us</pre></div>
+<div class="cov"><span class="num"><pre> 967</pre></span><pre>		self.add_edge( sourceshell, v = destinationshell )</pre></div>
+<div class="cov"><span class="num"><pre> 968</pre></span><pre>		return sourceshell</pre></div>
+<div class="skip"><span class="num"><pre> 969</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 970</pre></span><pre>	def disconnect( self, sourceshell, destinationshell ):</pre></div>
+<div class="cov"><span class="num"><pre> 971</pre></span><pre>		&quot;&quot;&quot;Remove the connection between sourceshell to destinationshell if they are connected</pre></div>
+<div class="cov"><span class="num"><pre> 972</pre></span><pre>		:note: does not raise if no connection is present&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 973</pre></span><pre>		self.remove_edge( sourceshell, v = destinationshell )</pre></div>
+<div class="skip"><span class="num"><pre> 974</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 975</pre></span><pre>		# also, delete the plugshells if they are not connnected elsewhere</pre></div>
+<div class="cov"><span class="num"><pre> 976</pre></span><pre>		for shell in sourceshell,destinationshell:</pre></div>
+<div class="cov"><span class="num"><pre> 977</pre></span><pre>			if len( self.neighbors( shell ) ) == 0:</pre></div>
+<div class="cov"><span class="num"><pre> 978</pre></span><pre>				self.remove_node( shell )</pre></div>
+<div class="skip"><span class="num"><pre> 979</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 980</pre></span><pre>	def input( self, plugshell ):</pre></div>
+<div class="cov"><span class="num"><pre> 981</pre></span><pre>		&quot;&quot;&quot;:return: the connected input plug of plugshell or None if there is no such connection</pre></div>
+<div class="cov"><span class="num"><pre> 982</pre></span><pre>		:note: input plugs have on plug at most, output plugs can have more than one connected plug&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 983</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre> 984</pre></span><pre>			pred = self.predecessors( plugshell )</pre></div>
+<div class="cov"><span class="num"><pre> 985</pre></span><pre>			if pred:</pre></div>
+<div class="cov"><span class="num"><pre> 986</pre></span><pre>				return pred[0]</pre></div>
+<div class="cov"><span class="num"><pre> 987</pre></span><pre>		except nx.NetworkXError:</pre></div>
+<div class="cov"><span class="num"><pre> 988</pre></span><pre>			pass</pre></div>
+<div class="skip"><span class="num"><pre> 989</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 990</pre></span><pre>		return None</pre></div>
+<div class="skip"><span class="num"><pre> 991</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 992</pre></span><pre>	def outputs( self, plugshell, predicate = lambda x : True ):</pre></div>
+<div class="cov"><span class="num"><pre> 993</pre></span><pre>		&quot;&quot;&quot;:return: a list of plugs being the destination of the connection to plugshell</pre></div>
+<div class="cov"><span class="num"><pre> 994</pre></span><pre>		:param predicate: plug will only be returned if predicate is true for it - shells will be passed in &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 995</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre> 996</pre></span><pre>			return [ s for s in self.successors( plugshell ) if predicate( s ) ]</pre></div>
+<div class="cov"><span class="num"><pre> 997</pre></span><pre>		except nx.NetworkXError:</pre></div>
+<div class="cov"><span class="num"><pre> 998</pre></span><pre>			return list()</pre></div>
+<div class="skip"><span class="num"><pre> 999</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1000</pre></span><pre>	#} END connections</pre></div>
+<div class="skip"><span class="num"><pre>1001</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1002</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1003</pre></span><pre>class _NodeBaseCheckMeta( type ):</pre></div>
+<div class="cov"><span class="num"><pre>1004</pre></span><pre>	&quot;&quot;&quot;Class checking the consistency of the nodebase class before it is being created&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1005</pre></span><pre>	def __new__( metacls, name, bases, clsdict ):</pre></div>
+<div class="cov"><span class="num"><pre>1006</pre></span><pre>		&quot;&quot;&quot;Check:</pre></div>
+<div class="cov"><span class="num"><pre>1007</pre></span><pre>			- every plugname must correspond to a node member name</pre></div>
+<div class="cov"><span class="num"><pre>1008</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1009</pre></span><pre>		newcls = super( _NodeBaseCheckMeta, metacls ).__new__( metacls, name, bases, clsdict )</pre></div>
+<div class="skip"><span class="num"><pre>1010</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1011</pre></span><pre>		# EVERY PLUG NAME MUST MATCH WITH THE ACTUAL NAME IN THE CLASS</pre></div>
+<div class="skip"><span class="num"><pre>1012</pre></span><pre>		# set the name according to its slot name in the parent class</pre></div>
+<div class="cov"><span class="num"><pre>1013</pre></span><pre>		membersdict = inspect.getmembers( newcls )		# do not filter, as plugs could be overridden</pre></div>
+<div class="cov"><span class="num"><pre>1014</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre>1015</pre></span><pre>			if hasattr( newcls, &quot;plugsStatic&quot; ):</pre></div>
+<div class="cov"><span class="num"><pre>1016</pre></span><pre>				for plug in newcls.plugsStatic( ):</pre></div>
+<div class="cov"><span class="num"><pre>1017</pre></span><pre>					for name,member in membersdict:</pre></div>
+<div class="cov"><span class="num"><pre>1018</pre></span><pre>						if member == plug and plug.name() != name:</pre></div>
+<div class="skip"><span class="num"><pre>1019</pre></span><pre>							# try to set it</pre></div>
+<div class="cov"><span class="num"><pre>1020</pre></span><pre>							if hasattr( plug, 'setName' ):</pre></div>
+<div class="cov"><span class="num"><pre>1021</pre></span><pre>								plug.setName( name )</pre></div>
+<div class="nocov"><span class="num"><pre>1022</pre></span><pre>							else:</pre></div>
+<div class="nocov"><span class="num"><pre>1023</pre></span><pre>								raise AssertionError( &quot;Plug %r is named %s, but must be named %s as in its class %s&quot; % ( plug, plug.name(), name, newcls ) )</pre></div>
+<div class="skip"><span class="num"><pre>1024</pre></span><pre>							# END setName special handling</pre></div>
+<div class="skip"><span class="num"><pre>1025</pre></span><pre>						# END if member nanme is wrong</pre></div>
+<div class="skip"><span class="num"><pre>1026</pre></span><pre>					# END for each class member</pre></div>
+<div class="skip"><span class="num"><pre>1027</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1028</pre></span><pre>					# ignore plugs we possibly did not find in the physical class</pre></div>
+<div class="skip"><span class="num"><pre>1029</pre></span><pre>				# END for each plug in class</pre></div>
+<div class="skip"><span class="num"><pre>1030</pre></span><pre>			# END if method exists</pre></div>
+<div class="nocov"><span class="num"><pre>1031</pre></span><pre>		except TypeError:</pre></div>
+<div class="skip"><span class="num"><pre>1032</pre></span><pre>			# it can be that a subclass overrides this method and makes it an instance method</pre></div>
+<div class="skip"><span class="num"><pre>1033</pre></span><pre>			# this is valid - the rest of the dgengine always accesses this method</pre></div>
+<div class="skip"><span class="num"><pre>1034</pre></span><pre>			# through instance - so we have to handle it</pre></div>
+<div class="nocov"><span class="num"><pre>1035</pre></span><pre>			pass</pre></div>
+<div class="skip"><span class="num"><pre>1036</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1037</pre></span><pre>		return newcls</pre></div>
+<div class="skip"><span class="num"><pre>1038</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1039</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1040</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1041</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1042</pre></span><pre>class NodeBase( iDuplicatable ):</pre></div>
+<div class="cov"><span class="num"><pre>1043</pre></span><pre>	&quot;&quot;&quot;Base class that provides support for plugs to the superclass.</pre></div>
+<div class="cov"><span class="num"><pre>1044</pre></span><pre>	It will create some simple tracking attriubtes required for the plug system</pre></div>
+<div class="cov"><span class="num"><pre>1045</pre></span><pre>	to work</pre></div>
+<div class="skip"><span class="num"><pre>1046</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1047</pre></span><pre>	Nodes can compute values of their plugs if these do not have a cache.</pre></div>
+<div class="skip"><span class="num"><pre>1048</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1049</pre></span><pre>	Nodes are identified by an ID - the default graph implementation though will</pre></div>
+<div class="cov"><span class="num"><pre>1050</pre></span><pre>	be okay with just having instances.</pre></div>
+<div class="cov"><span class="num"><pre>1051</pre></span><pre>	It is also being used for string representations of this node&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1052</pre></span><pre>	shellcls = _PlugShell					# class used to instantiate new shells</pre></div>
+<div class="cov"><span class="num"><pre>1053</pre></span><pre>	__metaclass__ = _NodeBaseCheckMeta		# check the class before its being created</pre></div>
+<div class="skip"><span class="num"><pre>1054</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1055</pre></span><pre>	#{ Overridden from Object</pre></div>
+<div class="cov"><span class="num"><pre>1056</pre></span><pre>	def __init__( self, *args, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>1057</pre></span><pre>		&quot;&quot;&quot;We require a directed graph to track the connectivity between the plugs.</pre></div>
+<div class="cov"><span class="num"><pre>1058</pre></span><pre>		It must be supplied by the super class and should be as global as required to</pre></div>
+<div class="cov"><span class="num"><pre>1059</pre></span><pre>		connecte the NodeBases together properly.</pre></div>
+<div class="skip"><span class="num"><pre>1060</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>1061</pre></span><pre>		:param kwargs: 'id' = id of the instance, defaults to None if it is not required</pre></div>
+<div class="cov"><span class="num"><pre>1062</pre></span><pre>		:note: we are super() compatible, and assure our base is initialized correctly&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1063</pre></span><pre>		self.graph = None</pre></div>
+<div class="cov"><span class="num"><pre>1064</pre></span><pre>		self._id = None</pre></div>
+<div class="skip"><span class="num"><pre>1065</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1066</pre></span><pre>		# set id</pre></div>
+<div class="cov"><span class="num"><pre>1067</pre></span><pre>		newid = kwargs.get( 'id', None )</pre></div>
+<div class="cov"><span class="num"><pre>1068</pre></span><pre>		if newid:</pre></div>
+<div class="cov"><span class="num"><pre>1069</pre></span><pre>			self.setID( newid )</pre></div>
+<div class="skip"><span class="num"><pre>1070</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1071</pre></span><pre>	def __del__( self ):</pre></div>
+<div class="cov"><span class="num"><pre>1072</pre></span><pre>		&quot;&quot;&quot;Remove ourselves from the graph and delete our connections&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>1073</pre></span><pre>		# check if item does still exist - this is not the case if the graph</pre></div>
+<div class="skip"><span class="num"><pre>1074</pre></span><pre>		# is currently being deleted</pre></div>
+<div class="cov"><span class="num"><pre>1075</pre></span><pre>		try:</pre></div>
+<div class="skip"><span class="num"><pre>1076</pre></span><pre>			#self.graph.removeNode( self )		# TODO: take back in and make it work ! Problems with facade nodes</pre></div>
+<div class="cov"><span class="num"><pre>1077</pre></span><pre>			pass</pre></div>
+<div class="nocov"><span class="num"><pre>1078</pre></span><pre>		except (AttributeError,ReferenceError):		# .graph could be None</pre></div>
+<div class="nocov"><span class="num"><pre>1079</pre></span><pre>			pass</pre></div>
+<div class="skip"><span class="num"><pre>1080</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1081</pre></span><pre>	def __str__( self ):</pre></div>
+<div class="cov"><span class="num"><pre>1082</pre></span><pre>		&quot;&quot;&quot;Use our id as string or the default implementation&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1083</pre></span><pre>		if self.id() is not None:</pre></div>
+<div class="cov"><span class="num"><pre>1084</pre></span><pre>			return str( self.id() )</pre></div>
+<div class="skip"><span class="num"><pre>1085</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>1086</pre></span><pre>		return super( NodeBase, self ).__str__( )</pre></div>
+<div class="skip"><span class="num"><pre>1087</pre></span><pre>	#} Overridden from Object</pre></div>
+<div class="skip"><span class="num"><pre>1088</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1089</pre></span><pre>	#{ iDuplicatable Interface</pre></div>
+<div class="cov"><span class="num"><pre>1090</pre></span><pre>	def createInstance( self, *args, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>1091</pre></span><pre>		&quot;&quot;&quot;Create a copy of self and return it</pre></div>
+<div class="skip"><span class="num"><pre>1092</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>1093</pre></span><pre>		:note: override by subclass  - the __init__ methods shuld do the rest&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>1094</pre></span><pre>		return self.__class__( id = self.id() )</pre></div>
+<div class="skip"><span class="num"><pre>1095</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1096</pre></span><pre>	def copyFrom( self, other, add_to_graph = True ):</pre></div>
+<div class="cov"><span class="num"><pre>1097</pre></span><pre>		&quot;&quot;&quot;Just take the graph from other, but do not ( never ) duplicate it</pre></div>
+<div class="skip"><span class="num"><pre>1098</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>1099</pre></span><pre>		:param add_to_graph: if true, the new node instance will be added to the graph of</pre></div>
+<div class="cov"><span class="num"><pre>1100</pre></span><pre>		:note: default implementation does not copy plug caches ( which are stored in</pre></div>
+<div class="cov"><span class="num"><pre>1101</pre></span><pre>			the node dict - this is because a reevaluate is usually required on the</pre></div>
+<div class="cov"><span class="num"><pre>1102</pre></span><pre>			duplicated node&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1103</pre></span><pre>		self.setID( other.id() )				# id copying would create equally named clones for now</pre></div>
+<div class="cov"><span class="num"><pre>1104</pre></span><pre>		if add_to_graph and other.graph:		# add ourselves to the graph of the other node</pre></div>
+<div class="nocov"><span class="num"><pre>1105</pre></span><pre>			other.graph.addNode( self )</pre></div>
+<div class="skip"><span class="num"><pre>1106</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1107</pre></span><pre>	#} END iDuplicatable</pre></div>
+<div class="skip"><span class="num"><pre>1108</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1109</pre></span><pre>	#{ Base Interface</pre></div>
+<div class="cov"><span class="num"><pre>1110</pre></span><pre>	def compute( self, plug, mode ):</pre></div>
+<div class="cov"><span class="num"><pre>1111</pre></span><pre>		&quot;&quot;&quot;Called whenever a plug needs computation as the value its value is not</pre></div>
+<div class="cov"><span class="num"><pre>1112</pre></span><pre>		cached or marked dirty ( as one of the inputs changed )</pre></div>
+<div class="skip"><span class="num"><pre>1113</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>1114</pre></span><pre>		:param plug: the static plug instance that requested which requested the computation.</pre></div>
+<div class="cov"><span class="num"><pre>1115</pre></span><pre>			It is the instance you defined on the class</pre></div>
+<div class="cov"><span class="num"><pre>1116</pre></span><pre>		:param mode: the mode of operation. Its completely up to the superclasses how that</pre></div>
+<div class="cov"><span class="num"><pre>1117</pre></span><pre>			attribute is going to be used</pre></div>
+<div class="cov"><span class="num"><pre>1118</pre></span><pre>		:note: to be implemented by superclass &quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>1119</pre></span><pre>		raise NotImplementedError( &quot;To be implemented by subclass&quot; )</pre></div>
+<div class="skip"><span class="num"><pre>1120</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1121</pre></span><pre>	#} END base interface</pre></div>
+<div class="skip"><span class="num"><pre>1122</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1123</pre></span><pre>	#{ ID Handling</pre></div>
+<div class="cov"><span class="num"><pre>1124</pre></span><pre>	def setID( self, newID ):</pre></div>
+<div class="cov"><span class="num"><pre>1125</pre></span><pre>		&quot;&quot;&quot;Set id of this node to newiD</pre></div>
+<div class="cov"><span class="num"><pre>1126</pre></span><pre>		:return: previously assigned id&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1127</pre></span><pre>		curid = self.id()</pre></div>
+<div class="cov"><span class="num"><pre>1128</pre></span><pre>		self._id = newID</pre></div>
+<div class="cov"><span class="num"><pre>1129</pre></span><pre>		return curid</pre></div>
+<div class="skip"><span class="num"><pre>1130</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1131</pre></span><pre>	def id( self ):</pre></div>
+<div class="cov"><span class="num"><pre>1132</pre></span><pre>		&quot;&quot;&quot;:return: ID of this instance&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1133</pre></span><pre>		return self._id</pre></div>
+<div class="skip"><span class="num"><pre>1134</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1135</pre></span><pre>	#} END id handling</pre></div>
+<div class="skip"><span class="num"><pre>1136</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1137</pre></span><pre>	#{ Base</pre></div>
+<div class="cov"><span class="num"><pre>1138</pre></span><pre>	def toShells( self, plugs ):</pre></div>
+<div class="cov"><span class="num"><pre>1139</pre></span><pre>		&quot;&quot;&quot;:return: list of shells made from plugs and our node&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>1140</pre></span><pre>		# may not use it as generator as it binds variables ( of course ! )</pre></div>
+<div class="cov"><span class="num"><pre>1141</pre></span><pre>		outlist = list()</pre></div>
+<div class="cov"><span class="num"><pre>1142</pre></span><pre>		for plug in plugs:</pre></div>
+<div class="cov"><span class="num"><pre>1143</pre></span><pre>			outlist.append( self.toShell( plug ) )</pre></div>
+<div class="cov"><span class="num"><pre>1144</pre></span><pre>		return outlist</pre></div>
+<div class="skip"><span class="num"><pre>1145</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1146</pre></span><pre>	def toShell( self, plug ):</pre></div>
+<div class="cov"><span class="num"><pre>1147</pre></span><pre>		&quot;&quot;&quot;:return: a plugshell as suitable to for this class&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1148</pre></span><pre>		return getattr( self, 'shellcls' )( self, plug )		# prevent cls variable to be bound !</pre></div>
+<div class="skip"><span class="num"><pre>1149</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1150</pre></span><pre>	def clearCache( self ):</pre></div>
+<div class="cov"><span class="num"><pre>1151</pre></span><pre>		&quot;&quot;&quot;Clear the cache of all plugs on this node - this basically forces it</pre></div>
+<div class="cov"><span class="num"><pre>1152</pre></span><pre>		to recompute the next time an output plug is being queried&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>1153</pre></span><pre>		for plug in self.plugs( ):</pre></div>
+<div class="nocov"><span class="num"><pre>1154</pre></span><pre>			self.toShell( plug ).clearCache( clear_affected = False )</pre></div>
+<div class="skip"><span class="num"><pre>1155</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1156</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre>1157</pre></span><pre>	def plugsStatic( cls, predicate = lambda x: True ):</pre></div>
+<div class="cov"><span class="num"><pre>1158</pre></span><pre>		&quot;&quot;&quot;:return: list of static plugs as defined on this node - they are class members</pre></div>
+<div class="cov"><span class="num"><pre>1159</pre></span><pre>		:param predicate: return static plug only if predicate is true</pre></div>
+<div class="cov"><span class="num"><pre>1160</pre></span><pre>		:note: Use this method only if you do not have an instance - there are nodes</pre></div>
+<div class="cov"><span class="num"><pre>1161</pre></span><pre>			that actually have no static plug information, but will dynamically generate them.</pre></div>
+<div class="cov"><span class="num"><pre>1162</pre></span><pre>			For this to work, they need an instance - thus the plugs method is an instance</pre></div>
+<div class="cov"><span class="num"><pre>1163</pre></span><pre>			method and is meant to be the most commonly used one.&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1164</pre></span><pre>		pred = lambda m: isinstance( m, plug )</pre></div>
+<div class="skip"><span class="num"><pre>1165</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1166</pre></span><pre>		# END sanity check</pre></div>
+<div class="cov"><span class="num"><pre>1167</pre></span><pre>		pluggen = ( m[1] for m in inspect.getmembers( cls, predicate = pred ) if predicate( m[1] ) )</pre></div>
+<div class="cov"><span class="num"><pre>1168</pre></span><pre>		return list( pluggen )</pre></div>
+<div class="skip"><span class="num"><pre>1169</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1170</pre></span><pre>	def plugs( self, predicate = lambda x: True ):</pre></div>
+<div class="cov"><span class="num"><pre>1171</pre></span><pre>		&quot;&quot;&quot;:return: list of dynamic plugs as defined on this node - they are usually retrieved</pre></div>
+<div class="cov"><span class="num"><pre>1172</pre></span><pre>			on class level, but may be overridden on instance level</pre></div>
+<div class="cov"><span class="num"><pre>1173</pre></span><pre>		:param predicate: return static plug only if predicate is true&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>1174</pre></span><pre>		# the getmembers function appears to be ... buggy with my classes</pre></div>
+<div class="skip"><span class="num"><pre>1175</pre></span><pre>		# use special handling to assure he gets all the instance members AND the class members</pre></div>
+<div class="skip"><span class="num"><pre>1176</pre></span><pre>		# In ipython tests this worked as expected - get the dicts individually</pre></div>
+<div class="cov"><span class="num"><pre>1177</pre></span><pre>		all_dict_holders = itertools.chain( ( self, ), self.__class__.mro() )</pre></div>
+<div class="cov"><span class="num"><pre>1178</pre></span><pre>		all_dicts = ( instance.__dict__ for instance in all_dict_holders )</pre></div>
+<div class="cov"><span class="num"><pre>1179</pre></span><pre>		pluggen = ( v for d in all_dicts for v in d.itervalues() if isinstance( v, plug ) and predicate( v ) )</pre></div>
+<div class="skip"><span class="num"><pre>1180</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1181</pre></span><pre>		return list( pluggen )</pre></div>
+<div class="skip"><span class="num"><pre>1182</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1183</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre>1184</pre></span><pre>	def inputPlugsStatic( cls, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>1185</pre></span><pre>		&quot;&quot;&quot;:return: list of static plugs suitable as input</pre></div>
+<div class="cov"><span class="num"><pre>1186</pre></span><pre>		:note: convenience method&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1187</pre></span><pre>		return cls.plugsStatic( predicate = lambda p: p.providesInput(), **kwargs )</pre></div>
+<div class="skip"><span class="num"><pre>1188</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1189</pre></span><pre>	def inputPlugs( self, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>1190</pre></span><pre>		&quot;&quot;&quot;:return: list of plugs suitable as input</pre></div>
+<div class="cov"><span class="num"><pre>1191</pre></span><pre>		:note: convenience method&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1192</pre></span><pre>		return self.plugs( predicate = lambda p: p.providesInput(), **kwargs )</pre></div>
+<div class="skip"><span class="num"><pre>1193</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1194</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre>1195</pre></span><pre>	def outputPlugsStatic( cls, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>1196</pre></span><pre>		&quot;&quot;&quot;:return: list of static plugs suitable to deliver output</pre></div>
+<div class="cov"><span class="num"><pre>1197</pre></span><pre>		:note: convenience method&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>1198</pre></span><pre>		return cls.plugsStatic( predicate = lambda p: p.providesOutput(), **kwargs )</pre></div>
+<div class="skip"><span class="num"><pre>1199</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1200</pre></span><pre>	def outputPlugs( self, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>1201</pre></span><pre>		&quot;&quot;&quot;:return: list of plugs suitable to deliver output</pre></div>
+<div class="cov"><span class="num"><pre>1202</pre></span><pre>		:note: convenience method&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1203</pre></span><pre>		return self.plugs( predicate = lambda p: p.providesOutput(), **kwargs )</pre></div>
+<div class="skip"><span class="num"><pre>1204</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1205</pre></span><pre>	def connections( self, inpt, output ):</pre></div>
+<div class="cov"><span class="num"><pre>1206</pre></span><pre>		&quot;&quot;&quot;:return: Tuples of input shells defining a connection of the given type from</pre></div>
+<div class="cov"><span class="num"><pre>1207</pre></span><pre>			tuple( InputNodeOuptutShell, OurNodeInputShell ) for input connections and</pre></div>
+<div class="cov"><span class="num"><pre>1208</pre></span><pre>			tuple( OurNodeOuptutShell, OutputNodeInputShell )</pre></div>
+<div class="cov"><span class="num"><pre>1209</pre></span><pre>		:param inpt: include input connections to this node</pre></div>
+<div class="cov"><span class="num"><pre>1210</pre></span><pre>		:param output: include output connections ( from this node to others )&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1211</pre></span><pre>		outConnections = list()</pre></div>
+<div class="cov"><span class="num"><pre>1212</pre></span><pre>		plugs = self.plugs()</pre></div>
+<div class="skip"><span class="num"><pre>1213</pre></span><pre>		# HANDLE INPUT</pre></div>
+<div class="cov"><span class="num"><pre>1214</pre></span><pre>		if inpt:</pre></div>
+<div class="cov"><span class="num"><pre>1215</pre></span><pre>			shells = self.toShells( ( p for p in plugs if p.providesInput() ) )</pre></div>
+<div class="cov"><span class="num"><pre>1216</pre></span><pre>			for shell in shells:</pre></div>
+<div class="cov"><span class="num"><pre>1217</pre></span><pre>				ishell = shell.input( )</pre></div>
+<div class="cov"><span class="num"><pre>1218</pre></span><pre>				if ishell:</pre></div>
+<div class="cov"><span class="num"><pre>1219</pre></span><pre>					outConnections.append( ( ishell, shell ) )</pre></div>
+<div class="skip"><span class="num"><pre>1220</pre></span><pre>			# END for each shell in this node's shells</pre></div>
+<div class="skip"><span class="num"><pre>1221</pre></span><pre>		# END input handling</pre></div>
+<div class="skip"><span class="num"><pre>1222</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1223</pre></span><pre>		# HANDLE OUTPUT</pre></div>
+<div class="cov"><span class="num"><pre>1224</pre></span><pre>		if output:</pre></div>
+<div class="cov"><span class="num"><pre>1225</pre></span><pre>			shells = self.toShells( ( p for p in plugs if p.providesOutput() ) )</pre></div>
+<div class="cov"><span class="num"><pre>1226</pre></span><pre>			for shell in shells:</pre></div>
+<div class="cov"><span class="num"><pre>1227</pre></span><pre>				outConnections.extend( ( ( shell, oshell ) for oshell in shell.outputs() ) )</pre></div>
+<div class="skip"><span class="num"><pre>1228</pre></span><pre>		# END output handling</pre></div>
+<div class="skip"><span class="num"><pre>1229</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1230</pre></span><pre>		return outConnections</pre></div>
+<div class="skip"><span class="num"><pre>1231</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1232</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre>1233</pre></span><pre>	def filterCompatiblePlugs( cls, plugs, attrOrValue, raise_on_ambiguity = False, attr_affinity = False,</pre></div>
+<div class="cov"><span class="num"><pre>1234</pre></span><pre>							  	attr_as_source=True ):</pre></div>
+<div class="cov"><span class="num"><pre>1235</pre></span><pre>		&quot;&quot;&quot;:return: sorted list of (rate,plug) tuples suitable to deal with the given attribute.</pre></div>
+<div class="cov"><span class="num"><pre>1236</pre></span><pre>			Thus they could connect to it as well as get their value set.</pre></div>
+<div class="cov"><span class="num"><pre>1237</pre></span><pre>			Most suitable plug comes first.</pre></div>
+<div class="cov"><span class="num"><pre>1238</pre></span><pre>			Incompatible plugs will be pruned.</pre></div>
+<div class="cov"><span class="num"><pre>1239</pre></span><pre>		:param attrOrValue: either an attribute or the value you would like to set to the</pre></div>
+<div class="cov"><span class="num"><pre>1240</pre></span><pre>			attr at the plug in question.</pre></div>
+<div class="cov"><span class="num"><pre>1241</pre></span><pre>		:param raise_on_ambiguity: if True, the method raises if a plug has the same</pre></div>
+<div class="cov"><span class="num"><pre>1242</pre></span><pre>			rating as another plug already on the output list, thus it's not clear anymore</pre></div>
+<div class="cov"><span class="num"><pre>1243</pre></span><pre>			which plug should handle a request</pre></div>
+<div class="cov"><span class="num"><pre>1244</pre></span><pre>		:param attr_affinity: if True, it will not check connection affinity, but attribute</pre></div>
+<div class="cov"><span class="num"><pre>1245</pre></span><pre>			affinity only. It checks how compatible the attributes of the plugs are, disregarding</pre></div>
+<div class="cov"><span class="num"><pre>1246</pre></span><pre>			whether they can be connected or not</pre></div>
+<div class="cov"><span class="num"><pre>1247</pre></span><pre>			Only valid if attrOrValue is an attribute</pre></div>
+<div class="cov"><span class="num"><pre>1248</pre></span><pre>		:param attr_as_source: if True, attrOrValue will be treated as the source of a connection or</pre></div>
+<div class="cov"><span class="num"><pre>1249</pre></span><pre>			each plug would need to take its values.</pre></div>
+<div class="cov"><span class="num"><pre>1250</pre></span><pre>			if False, attrOrValue is the destination of a connection and it needs to take values of the given plugs</pre></div>
+<div class="cov"><span class="num"><pre>1251</pre></span><pre>			or they would connect to it. Only used if attrOrValue is an attribute.</pre></div>
+<div class="cov"><span class="num"><pre>1252</pre></span><pre>		:raise TypeError: if ambiguous input was found&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>1253</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1254</pre></span><pre>		attribute = None</pre></div>
+<div class="cov"><span class="num"><pre>1255</pre></span><pre>		value = attrOrValue</pre></div>
+<div class="cov"><span class="num"><pre>1256</pre></span><pre>		if isinstance( attrOrValue, Attribute ):</pre></div>
+<div class="cov"><span class="num"><pre>1257</pre></span><pre>			attribute = attrOrValue</pre></div>
+<div class="skip"><span class="num"><pre>1258</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1259</pre></span><pre>		outSorted = list()</pre></div>
+<div class="cov"><span class="num"><pre>1260</pre></span><pre>		for plug in plugs:</pre></div>
+<div class="skip"><span class="num"><pre>1261</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1262</pre></span><pre>			if attribute:</pre></div>
+<div class="cov"><span class="num"><pre>1263</pre></span><pre>				sourceattr = attribute</pre></div>
+<div class="cov"><span class="num"><pre>1264</pre></span><pre>				destinationattr = plug.attr</pre></div>
+<div class="cov"><span class="num"><pre>1265</pre></span><pre>				if not attr_as_source:</pre></div>
+<div class="nocov"><span class="num"><pre>1266</pre></span><pre>					destinationattr = attribute</pre></div>
+<div class="nocov"><span class="num"><pre>1267</pre></span><pre>					sourceattr = plug.attr</pre></div>
+<div class="skip"><span class="num"><pre>1268</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1269</pre></span><pre>				if attr_affinity:</pre></div>
+<div class="nocov"><span class="num"><pre>1270</pre></span><pre>					rate = destinationattr.affinity( sourceattr )	# how good can dest store source ?</pre></div>
+<div class="cov"><span class="num"><pre>1271</pre></span><pre>				else:</pre></div>
+<div class="cov"><span class="num"><pre>1272</pre></span><pre>					rate = sourceattr.connectionAffinity( destinationattr )</pre></div>
+<div class="skip"><span class="num"><pre>1273</pre></span><pre>				# END which affinity type</pre></div>
+<div class="skip"><span class="num"><pre>1274</pre></span><pre>			# END attribute rating</pre></div>
+<div class="cov"><span class="num"><pre>1275</pre></span><pre>			else:</pre></div>
+<div class="cov"><span class="num"><pre>1276</pre></span><pre>				rate = plug.attr.compatabilityRate( value )</pre></div>
+<div class="skip"><span class="num"><pre>1277</pre></span><pre>			# END value rating</pre></div>
+<div class="skip"><span class="num"><pre>1278</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1279</pre></span><pre>			if not rate:</pre></div>
+<div class="cov"><span class="num"><pre>1280</pre></span><pre>				continue</pre></div>
+<div class="skip"><span class="num"><pre>1281</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1282</pre></span><pre>			outSorted.append( ( rate, plug ) )</pre></div>
+<div class="skip"><span class="num"><pre>1283</pre></span><pre>		# END for each plug</pre></div>
+<div class="skip"><span class="num"><pre>1284</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1285</pre></span><pre>		outSorted.sort()</pre></div>
+<div class="cov"><span class="num"><pre>1286</pre></span><pre>		outSorted.reverse()		# high rates first</pre></div>
+<div class="skip"><span class="num"><pre>1287</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1288</pre></span><pre>		if raise_on_ambiguity:</pre></div>
+<div class="cov"><span class="num"><pre>1289</pre></span><pre>			ratemap = dict()</pre></div>
+<div class="cov"><span class="num"><pre>1290</pre></span><pre>			for rate,plug in outSorted:</pre></div>
+<div class="cov"><span class="num"><pre>1291</pre></span><pre>				ratemap.setdefault( rate, list() ).append( plug )</pre></div>
+<div class="skip"><span class="num"><pre>1292</pre></span><pre>			# END for each compatible plug</pre></div>
+<div class="cov"><span class="num"><pre>1293</pre></span><pre>			report = &quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1294</pre></span><pre>			for rate, pluglist in ratemap.iteritems( ):</pre></div>
+<div class="cov"><span class="num"><pre>1295</pre></span><pre>				if len( pluglist ) &gt; 1:</pre></div>
+<div class="cov"><span class="num"><pre>1296</pre></span><pre>					report += &quot;Rate: %i :&quot; % rate</pre></div>
+<div class="cov"><span class="num"><pre>1297</pre></span><pre>					for plug in pluglist:</pre></div>
+<div class="cov"><span class="num"><pre>1298</pre></span><pre>						report += &quot;\n%s&quot; % str(plug)</pre></div>
+<div class="skip"><span class="num"><pre>1299</pre></span><pre>				# END if ambiguous plugs</pre></div>
+<div class="skip"><span class="num"><pre>1300</pre></span><pre>			# END for each rate in ratemap</pre></div>
+<div class="cov"><span class="num"><pre>1301</pre></span><pre>			if report:</pre></div>
+<div class="cov"><span class="num"><pre>1302</pre></span><pre>				report = &quot;Ambiguous plugs found\n&quot; + report</pre></div>
+<div class="cov"><span class="num"><pre>1303</pre></span><pre>				raise TypeError( report  )</pre></div>
+<div class="skip"><span class="num"><pre>1304</pre></span><pre>		# END ambiguous check</pre></div>
+<div class="skip"><span class="num"><pre>1305</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1306</pre></span><pre>		return outSorted</pre></div>
+<div class="skip"><span class="num"><pre>1307</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1308</pre></span><pre>	#} END base</pre></div>
+<div class="skip"><span class="num"><pre>1309</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1310</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1311</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1312</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1313</pre></span><pre></pre></div>
+</div>
+</body>
+</html>

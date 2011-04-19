@@ -1,0 +1,568 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>mrv.maya.util &mdash; mrv v1.0.2-develop documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.2-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="mrv v1.0.2-develop documentation" href="../index.html" />
+    <link rel="next" title="mrv.maya.ref" href="mrv.maya.ref.html" />
+    <link rel="prev" title="mrv.maya.mdb" href="mrv.maya.mdb.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.ref.html" title="mrv.maya.ref"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.mdb.html" title="mrv.maya.mdb"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-mrv.maya.util">
+<h1><tt class="xref docutils literal"><span class="pre">mrv.maya.util</span></tt><a class="headerlink" href="#module-mrv.maya.util" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="api/mrv.maya.util-module.html">Epydoc: mrv.maya.util</a></p>
+<p>All kinds of utility methods and classes that are used in more than one modules</p>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mrv.maya.util._logException">
+<tt class="descclassname">mrv.maya.util.</tt><tt class="descname">_logException</tt><big>(</big><em>func</em>, <em>reraise</em><big>)</big><a class="headerlink" href="#mrv.maya.util._logException" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.util.capitalize">
+<tt class="descclassname">mrv.maya.util.</tt><tt class="descname">capitalize</tt><big>(</big><em>s</em><big>)</big><a class="headerlink" href="#mrv.maya.util.capitalize" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">s with first letter capitalized</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.util.editMethod">
+<tt class="descclassname">mrv.maya.util.</tt><tt class="descname">editMethod</tt><big>(</big><em>inCmd</em>, <em>flag</em>, <em>methodName=None</em><big>)</big><a class="headerlink" href="#mrv.maya.util.editMethod" title="Permalink to this definition">¶</a></dt>
+<dd>Shorthand edit version of makeEditOrQueryMethod</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.util.isIterable">
+<tt class="descclassname">mrv.maya.util.</tt><tt class="descname">isIterable</tt><big>(</big><em>obj</em><big>)</big><a class="headerlink" href="#mrv.maya.util.isIterable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.util.logException">
+<tt class="descclassname">mrv.maya.util.</tt><tt class="descname">logException</tt><big>(</big><em>func</em><big>)</big><a class="headerlink" href="#mrv.maya.util.logException" title="Permalink to this definition">¶</a></dt>
+<dd>Decorator which shows short exception information in a popup and a full
+stack trace to stdout. Finally the exception will be reraised</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.util.makeEditOrQueryMethod">
+<tt class="descclassname">mrv.maya.util.</tt><tt class="descname">makeEditOrQueryMethod</tt><big>(</big><em>inCmd</em>, <em>flag</em>, <em>isEdit=False</em>, <em>methodName=None</em><big>)</big><a class="headerlink" href="#mrv.maya.util.makeEditOrQueryMethod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a function calling inFunc with an edit or query flag set.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">THIS CODE HAS BEEN DUPLICATED TO <cite>mrv.maya.ui.util</cite> !</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>inCmd</em> &#8211; maya command to call</li>
+<li><em>flag</em> &#8211; name of the query or edit flag</li>
+<li><em>isEdit</em> &#8211; If not False, the method returned will be an edit function</li>
+<li><em>methodName</em> &#8211; the name of the method returned, defaults to inCmd name</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.util.noneToList">
+<tt class="descclassname">mrv.maya.util.</tt><tt class="descname">noneToList</tt><big>(</big><em>res</em><big>)</big><a class="headerlink" href="#mrv.maya.util.noneToList" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list instead of None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.util.notifyException">
+<tt class="descclassname">mrv.maya.util.</tt><tt class="descname">notifyException</tt><big>(</big><em>func</em><big>)</big><a class="headerlink" href="#mrv.maya.util.notifyException" title="Permalink to this definition">¶</a></dt>
+<dd>As logException, but does not reraise on error. This is useful if you just 
+want to see a popup, but not cause maya to remove the possibly problematic UI
+callback. Additionally, no stacktrace will be shown</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.util.propertyQE">
+<tt class="descclassname">mrv.maya.util.</tt><tt class="descname">propertyQE</tt><big>(</big><em>inCmd</em>, <em>flag</em>, <em>methodName=None</em><big>)</big><a class="headerlink" href="#mrv.maya.util.propertyQE" title="Permalink to this definition">¶</a></dt>
+<dd>Shorthand for simple query and edit properties</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.util.pythonToMel">
+<tt class="descclassname">mrv.maya.util.</tt><tt class="descname">pythonToMel</tt><big>(</big><em>arg</em><big>)</big><a class="headerlink" href="#mrv.maya.util.pythonToMel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.util.queryMethod">
+<tt class="descclassname">mrv.maya.util.</tt><tt class="descname">queryMethod</tt><big>(</big><em>inCmd</em>, <em>flag</em>, <em>methodName=None</em><big>)</big><a class="headerlink" href="#mrv.maya.util.queryMethod" title="Permalink to this definition">¶</a></dt>
+<dd>Shorthand query version of makeEditOrQueryMethod</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.util.uncapitalize">
+<tt class="descclassname">mrv.maya.util.</tt><tt class="descname">uncapitalize</tt><big>(</big><em>s</em>, <em>preserveAcronymns=False</em><big>)</big><a class="headerlink" href="#mrv.maya.util.uncapitalize" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal"><span class="pre">s</span></tt> with first letter lower case</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>preserveAcronymns</em> &#8211; enabled ensures that &#8216;NTSC&#8217; does not become &#8216;nTSC&#8217;</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">from pymel</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="api/mrv.maya.util.CallbackEventBase-class.html">Epydoc: mrv.maya.util.CallbackEventBase</a></p>
+<dl class="class">
+<dt id="mrv.maya.util.CallbackEventBase">
+<em class="property">class </em><tt class="descclassname">mrv.maya.util.</tt><tt class="descname">CallbackEventBase</tt><big>(</big><em>eventId</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.util.CallbackEventBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.util.Event" class="reference external" href="mrv.util.html#mrv.util.Event"><tt class="xref docutils literal"><span class="pre">mrv.util.Event</span></tt></a></p>
+<p>Allows the mapping of MMessage callbacks to mrv&#8217;s event sender system.
+This event will register a new message once the first event receiver registers
+itself. Once the last event receiver deregisters, the message will be deregistered in 
+maya as well.</p>
+<p>Derived types have to implement the <cite>_getRegisterFunction</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Its important that you care about deregistering your event to make sure the maya event can 
+be deregistered. Its worth knowing that the eventSender in question is strongly 
+bound to his callback event, so it cannot be deleted while the event is active.</td>
+</tr>
+</tbody>
+</table>
+<dl class="class">
+<dt id="mrv.maya.util.CallbackEventBase.CBStorageFunction">
+<em class="property">class </em><tt class="descname">CBStorageFunction</tt><big>(</big><em>callbackID=None</em><big>)</big><a class="headerlink" href="#mrv.maya.util.CallbackEventBase.CBStorageFunction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<dl class="method">
+<dt id="mrv.maya.util.CallbackEventBase.CBStorageFunction.callbackID">
+<tt class="descname">callbackID</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.util.CallbackEventBase.CBStorageFunction.callbackID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.util.CallbackEventBase.CBStorageFunction.removeCallback">
+<tt class="descname">removeCallback</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.util.CallbackEventBase.CBStorageFunction.removeCallback" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.util.CallbackEventBase.CBStorageFunction.setCallbackID">
+<tt class="descname">setCallbackID</tt><big>(</big><em>callbackID</em><big>)</big><a class="headerlink" href="#mrv.maya.util.CallbackEventBase.CBStorageFunction.setCallbackID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.util.CallbackEventBase.duplicate">
+<tt class="descclassname">CallbackEventBase.</tt><tt class="descname">duplicate</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.util.CallbackEventBase.duplicate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.util.CallbackEventBase.remove">
+<tt class="descclassname">CallbackEventBase.</tt><tt class="descname">remove</tt><big>(</big><em>eventfunc</em><big>)</big><a class="headerlink" href="#mrv.maya.util.CallbackEventBase.remove" title="Permalink to this definition">¶</a></dt>
+<dd>Also removes our callback if the last receiver is gone</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.util.CallbackEventBase.send">
+<tt class="descclassname">CallbackEventBase.</tt><tt class="descname">send</tt><big>(</big><em>inst</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.util.CallbackEventBase.send" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets our instance prior to calling the super class</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">must not be called manually</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.util.MEnumeration-class.html">Epydoc: mrv.maya.util.MEnumeration</a></p>
+<dl class="class">
+<dt id="mrv.maya.util.MEnumeration">
+<em class="property">class </em><tt class="descclassname">mrv.maya.util.</tt><tt class="descname">MEnumeration</tt><a class="headerlink" href="#mrv.maya.util.MEnumeration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">tuple</span></tt></p>
+<p>Simple enumeration class which allows access to its enumeration using 
+getattr access. 
+As it is a tuple as well, one can access the enumeration values in the right sequencial
+order</p>
+<dl class="attribute">
+<dt id="mrv.maya.util.MEnumeration.count">
+<tt class="descname">count</tt><a class="headerlink" href="#mrv.maya.util.MEnumeration.count" title="Permalink to this definition">¶</a></dt>
+<dd>T.count(value) -&gt; integer &#8211; return number of occurrences of value</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.maya.util.MEnumeration.create">
+<em class="property">classmethod </em><tt class="descname">create</tt><big>(</big><em>ed</em>, <em>mfncls</em><big>)</big><a class="headerlink" href="#mrv.maya.util.MEnumeration.create" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">new instance of this type as initialized from the EnumDescriptor ed and 
+the mfncls</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.util.MEnumeration.index">
+<tt class="descname">index</tt><a class="headerlink" href="#mrv.maya.util.MEnumeration.index" title="Permalink to this definition">¶</a></dt>
+<dd>T.index(value, [start, [stop]]) -&gt; integer &#8211; return first index of value.
+Raises ValueError if the value is not present.</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.util.MEnumeration.nameByValue">
+<tt class="descname">nameByValue</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#mrv.maya.util.MEnumeration.nameByValue" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">name string with the given integer value</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>value</em> &#8211; integer value of this enumeration</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises ValueError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if value is not in the enumeration</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.util.Mel-class.html">Epydoc: mrv.maya.util.Mel</a></p>
+<dl class="class">
+<dt id="mrv.maya.util.Mel">
+<em class="property">class </em><tt class="descclassname">mrv.maya.util.</tt><tt class="descname">Mel</tt><a class="headerlink" href="#mrv.maya.util.Mel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.util.Singleton" class="reference external" href="mrv.util.html#mrv.util.Singleton"><tt class="xref docutils literal"><span class="pre">mrv.util.Singleton</span></tt></a></p>
+<p>This class is a necessity for calling mel scripts from python. It allows scripts to be called
+in a cleaner fashion, by automatically formatting python arguments into a string
+which is executed via maya.mel.eval().</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">originated from pymel, added customizations</td>
+</tr>
+</tbody>
+</table>
+<dl class="staticmethod">
+<dt id="mrv.maya.util.Mel.call">
+<em class="property">static </em><tt class="descname">call</tt><big>(</big><em>command</em>, <em>*args</em><big>)</big><a class="headerlink" href="#mrv.maya.util.Mel.call" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call a mel script , very simpilar to Mel.myscript( args )</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Todo:</th><td class="field-body">more docs</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="mrv.maya.util.Mel.error">
+<em class="property">static </em><tt class="descname">error</tt><big>(</big><em>*args</em><big>)</big><a class="headerlink" href="#mrv.maya.util.Mel.error" title="Permalink to this definition">¶</a></dt>
+<dd>error</dd></dl>
+
+<dl class="staticmethod">
+<dt id="mrv.maya.util.Mel.eval">
+<em class="property">static </em><tt class="descname">eval</tt><big>(</big><em>command</em><big>)</big><a class="headerlink" href="#mrv.maya.util.Mel.eval" title="Permalink to this definition">¶</a></dt>
+<dd>same as maya.mel eval</dd></dl>
+
+<dl class="staticmethod">
+<dt id="mrv.maya.util.Mel.info">
+<em class="property">static </em><tt class="descname">info</tt><big>(</big><em>*args</em><big>)</big><a class="headerlink" href="#mrv.maya.util.Mel.info" title="Permalink to this definition">¶</a></dt>
+<dd>print</dd></dl>
+
+<dl class="staticmethod">
+<dt id="mrv.maya.util.Mel.mprint">
+<em class="property">static </em><tt class="descname">mprint</tt><big>(</big><em>*args</em><big>)</big><a class="headerlink" href="#mrv.maya.util.Mel.mprint" title="Permalink to this definition">¶</a></dt>
+<dd>mel print command in case the python print command doesn&#8217;t cut it. i have noticed that python print does not appear
+in certain output, such as the rush render-queue manager.</dd></dl>
+
+<dl class="staticmethod">
+<dt id="mrv.maya.util.Mel.trace">
+<em class="property">static </em><tt class="descname">trace</tt><big>(</big><em>*args</em><big>)</big><a class="headerlink" href="#mrv.maya.util.Mel.trace" title="Permalink to this definition">¶</a></dt>
+<dd>trace</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.util.MetaClassCreator-class.html">Epydoc: mrv.maya.util.MetaClassCreator</a></p>
+<dl class="class">
+<dt id="mrv.maya.util.MetaClassCreator">
+<em class="property">class </em><tt class="descclassname">mrv.maya.util.</tt><tt class="descname">MetaClassCreator</tt><a class="headerlink" href="#mrv.maya.util.MetaClassCreator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">type</span></tt></p>
+<p>Builds the base hierarchy for the given classname based on our
+typetree</p>
+<dl class="attribute">
+<dt id="mrv.maya.util.MetaClassCreator.mro">
+<tt class="descname">mro</tt><a class="headerlink" href="#mrv.maya.util.MetaClassCreator.mro" title="Permalink to this definition">¶</a></dt>
+<dd>mro() -&gt; list
+return a type&#8217;s method resolution order</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.util.OptionVarDict-class.html">Epydoc: mrv.maya.util.OptionVarDict</a></p>
+<dl class="class">
+<dt id="mrv.maya.util.OptionVarDict">
+<em class="property">class </em><tt class="descclassname">mrv.maya.util.</tt><tt class="descname">OptionVarDict</tt><a class="headerlink" href="#mrv.maya.util.OptionVarDict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.util.Singleton" class="reference external" href="mrv.util.html#mrv.util.Singleton"><tt class="xref docutils literal"><span class="pre">mrv.util.Singleton</span></tt></a></p>
+<p>A singleton dictionary-like class for accessing and modifying optionVars.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Idea and base Implementation from PyMel, modified to adapt to mrv</td>
+</tr>
+</tbody>
+</table>
+<dl class="class">
+<dt id="mrv.maya.util.OptionVarDict.OptionVarList">
+<em class="property">class </em><tt class="descname">OptionVarList</tt><a class="headerlink" href="#mrv.maya.util.OptionVarDict.OptionVarList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">tuple</span></tt></p>
+<dl class="method">
+<dt id="mrv.maya.util.OptionVarDict.OptionVarList.appendVar">
+<tt class="descname">appendVar</tt><big>(</big><em>val</em><big>)</big><a class="headerlink" href="#mrv.maya.util.OptionVarDict.OptionVarList.appendVar" title="Permalink to this definition">¶</a></dt>
+<dd>values appended to the OptionVarList with this method will be 
+added to the Maya optionVar at the key denoted by self.key.</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.util.OptionVarDict.OptionVarList.count">
+<tt class="descname">count</tt><a class="headerlink" href="#mrv.maya.util.OptionVarDict.OptionVarList.count" title="Permalink to this definition">¶</a></dt>
+<dd>T.count(value) -&gt; integer &#8211; return number of occurrences of value</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.util.OptionVarDict.OptionVarList.index">
+<tt class="descname">index</tt><a class="headerlink" href="#mrv.maya.util.OptionVarDict.OptionVarList.index" title="Permalink to this definition">¶</a></dt>
+<dd>T.index(value, [start, [stop]]) -&gt; integer &#8211; return first index of value.
+Raises ValueError if the value is not present.</dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.util.OptionVarDict.get">
+<tt class="descclassname">OptionVarDict.</tt><tt class="descname">get</tt><big>(</big><em>key</em>, <em>default=None</em><big>)</big><a class="headerlink" href="#mrv.maya.util.OptionVarDict.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.util.OptionVarDict.has_key">
+<tt class="descclassname">OptionVarDict.</tt><tt class="descname">has_key</tt><big>(</big><em>key</em><big>)</big><a class="headerlink" href="#mrv.maya.util.OptionVarDict.has_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.util.OptionVarDict.iteritems">
+<tt class="descclassname">OptionVarDict.</tt><tt class="descname">iteritems</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.util.OptionVarDict.iteritems" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">iterators to tuple of key,value pairs</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.util.OptionVarDict.iterkeys">
+<tt class="descclassname">OptionVarDict.</tt><tt class="descname">iterkeys</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.util.OptionVarDict.iterkeys" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">iterator to option var names</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.util.OptionVarDict.itervalues">
+<tt class="descclassname">OptionVarDict.</tt><tt class="descname">itervalues</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.util.OptionVarDict.itervalues" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">iterator to optionvar values</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.util.OptionVarDict.keys">
+<tt class="descclassname">OptionVarDict.</tt><tt class="descname">keys</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.util.OptionVarDict.keys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.util.OptionVarDict.pop">
+<tt class="descclassname">OptionVarDict.</tt><tt class="descname">pop</tt><big>(</big><em>key</em><big>)</big><a class="headerlink" href="#mrv.maya.util.OptionVarDict.pop" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.util.StandinClass-class.html">Epydoc: mrv.maya.util.StandinClass</a></p>
+<dl class="class">
+<dt id="mrv.maya.util.StandinClass">
+<em class="property">class </em><tt class="descclassname">mrv.maya.util.</tt><tt class="descname">StandinClass</tt><big>(</big><em>classname</em>, <em>classcreator=&lt;type 'type'&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.util.StandinClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>Simple Function Object allowing to embed the name of the type as well as
+the metaclass object supposed to create the actual class. It mus be able to completely
+create the given class.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Use it at placeholder for classes that are to be created on first call, without
+vasting large amounts of memory if one wants to precreate them.</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="mrv.maya.util.StandinClass.classcreator">
+<tt class="descname">classcreator</tt><a class="headerlink" href="#mrv.maya.util.StandinClass.classcreator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.util.StandinClass.clsname">
+<tt class="descname">clsname</tt><a class="headerlink" href="#mrv.maya.util.StandinClass.clsname" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.util.StandinClass.createCls">
+<tt class="descname">createCls</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.util.StandinClass.createCls" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the class of type self.clsname using our classcreator - can only be called once !</p>
+<p>:return : the newly created class</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="../index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#"><tt class="docutils literal"><span class="pre">mrv.maya.util</span></tt></a><ul>
+<li><a class="reference external" href="#functions">Functions</a></li>
+<li><a class="reference external" href="#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="mrv.maya.mdb.html"
+                                  title="previous chapter"><tt class="docutils literal docutils literal docutils literal"><span class="pre">mrv.maya.mdb</span></tt></a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="mrv.maya.ref.html"
+                                  title="next chapter"><tt class="docutils literal docutils literal docutils literal"><span class="pre">mrv.maya.ref</span></tt></a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/generated/mrv.maya.util.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.ref.html" title="mrv.maya.ref"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.mdb.html" title="mrv.maya.mdb"
+             >previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Apr 19, 2011.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

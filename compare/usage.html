@@ -1,0 +1,296 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Usage Examples &mdash; mrv v1.0.2-develop documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.2-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="mrv v1.0.2-develop documentation" href="../index.html" />
+    <link rel="up" title="Comparison to PyMel" href="index.html" />
+    <link rel="next" title="License" href="../license.html" />
+    <link rel="prev" title="Performance" href="performance.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="../license.html" title="License"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="performance.html" title="Performance"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Comparison to PyMel</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="usage-examples">
+<h1>Usage Examples<a class="headerlink" href="#usage-examples" title="Permalink to this headline">¶</a></h1>
+<p>The listing concentrates on the code required to perform everyday and  simple tasks. It assumes that all required classes and functions have been  imported into the module where the code is run. This is done most easily using <tt class="docutils literal"><span class="pre">from</span> <span class="pre">pymel.all</span> <span class="pre">import</span> <span class="pre">*</span></tt> (<tt class="docutils literal"><span class="pre">PyMel</span></tt>) or <tt class="docutils literal"><span class="pre">from</span> <span class="pre">mrv.maya.all</span> <span class="pre">import</span> <span class="pre">*</span></tt> (<tt class="docutils literal"><span class="pre">MRV</span></tt>).</p>
+<p>As a general difference you will notice that PyMel is very convenient to use through a variety of smart methods which handle many details behind the scenes.</p>
+<p>MRV is derived from the MayaAPI, and uses its interface. Compared to MayaAPI code, its like a short hand writing style, yet it remains verbose compared to PyMel and very explicit.</p>
+<div class="section" id="set-handling">
+<h2>Set Handling<a class="headerlink" href="#set-handling" title="Permalink to this headline">¶</a></h2>
+<p>Sets are a very nice feature in Maya, as well as their implementation. Handling of sets should be easy and intuitive in the framework you use.</p>
+<ul>
+<li><p class="first"><strong>PyMel</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">p</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="n">PyNode</span><span class="p">(</span><span class="s">&#39;persp&#39;</span><span class="p">),</span> <span class="n">PyNode</span><span class="p">(</span><span class="s">&#39;top&#39;</span><span class="p">),</span> <span class="n">PyNode</span><span class="p">(</span><span class="s">&#39;front&#39;</span><span class="p">)</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">sets</span><span class="p">()</span>
+
+<span class="c"># add single</span>
+<span class="n">s</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">s</span>
+
+<span class="c"># add multiple - need sets command for undo support</span>
+<span class="n">sets</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">add</span><span class="o">=</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">f</span><span class="p">))</span>
+<span class="c"># same in MEL, argument meaning changed in PyMel</span>
+<span class="n">cmds</span><span class="o">.</span><span class="n">sets</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">f</span><span class="p">),</span> <span class="n">add</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+
+<span class="c"># remove single</span>
+<span class="n">s</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+
+<span class="c"># remove multiple</span>
+<span class="n">sets</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">rm</span><span class="o">=</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">f</span><span class="p">))</span>
+<span class="k">assert</span> <span class="n">sets</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><strong>MRV</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">p</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s">&#39;persp&#39;</span><span class="p">),</span> <span class="n">Node</span><span class="p">(</span><span class="s">&#39;top&#39;</span><span class="p">),</span> <span class="n">Node</span><span class="p">(</span><span class="s">&#39;front&#39;</span><span class="p">)</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">ObjectSet</span><span class="p">()</span>
+
+<span class="c"># add single - set centric or object centric</span>
+<span class="n">s</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">addTo</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">s</span>
+
+<span class="c"># add multiple</span>
+<span class="n">s</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="n">f</span><span class="p">))</span>
+
+<span class="c"># remove single - set or object centric</span>
+<span class="n">s</span><span class="o">.</span><span class="n">discard</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">removeFrom</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+<span class="c"># remove multiple</span>
+<span class="n">s</span><span class="o">.</span><span class="n">discard</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="n">f</span><span class="p">))</span>
+
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="shading-engine-handling">
+<h2>Shading Engine Handling<a class="headerlink" href="#shading-engine-handling" title="Permalink to this headline">¶</a></h2>
+<p>ShadingEngines are ObjectSets, but are specialized for the purpose of rendering. The renderPartition assures that one object or face is only handled by exactly one shading engine.</p>
+<ul>
+<li><p class="first"><strong>PyMel</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">isg</span> <span class="o">=</span> <span class="n">PyNode</span><span class="p">(</span><span class="s">&quot;initialShadingGroup&quot;</span><span class="p">)</span>
+<span class="n">rp</span> <span class="o">=</span> <span class="n">PyNode</span><span class="p">(</span><span class="s">&quot;renderPartition&quot;</span><span class="p">)</span>
+
+<span class="c"># assign new shading engine to the render partition</span>
+<span class="n">sg</span> <span class="o">=</span> <span class="n">createNode</span><span class="p">(</span><span class="s">&#39;shadingEngine&#39;</span><span class="p">)</span>
+<span class="n">rp</span><span class="o">.</span><span class="n">sets</span><span class="o">.</span><span class="n">evaluateNumElements</span><span class="p">()</span>
+
+<span class="c"># the partition plug is overridden by the &#39;partition&#39; function of the</span>
+<span class="c"># underlying pseudostring</span>
+<span class="c"># sg.partition &gt; rp.sets[rp.sets.getNumElements()]</span>
+<span class="n">sg</span><span class="o">.</span><span class="n">pa</span> <span class="o">&gt;</span> <span class="n">rp</span><span class="o">.</span><span class="n">sets</span><span class="p">[</span><span class="n">rp</span><span class="o">.</span><span class="n">sets</span><span class="o">.</span><span class="n">getNumElements</span><span class="p">()]</span>
+
+<span class="n">m</span> <span class="o">=</span> <span class="n">polySphere</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getShape</span><span class="p">()</span>
+
+<span class="c"># assign all faces to the initial shading group</span>
+<span class="c"># m is automatically part of the default shading engine</span>
+<span class="n">isg</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="n">isg</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">f</span><span class="p">)</span>
+
+<span class="c"># assign 200 faces to another shading group</span>
+<span class="c"># Cannot use object as it does not allow to force the membersship</span>
+<span class="c"># sg.add(m.f[0:199])</span>
+<span class="n">sets</span><span class="p">(</span><span class="n">sg</span><span class="p">,</span> <span class="n">fe</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">199</span><span class="p">])</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><strong>MRV</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># NOTE: this test is part of the pymel comparison</span>
+<span class="n">isg</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s">&quot;initialShadingGroup&quot;</span><span class="p">)</span>
+<span class="n">rp</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s">&quot;renderPartition&quot;</span><span class="p">)</span>
+
+<span class="c"># assign new shading engine to the render partition</span>
+<span class="n">sg</span> <span class="o">=</span> <span class="n">ShadingEngine</span><span class="p">()</span>
+<span class="n">sg</span><span class="o">.</span><span class="n">setPartition</span><span class="p">(</span><span class="n">rp</span><span class="p">)</span>
+
+
+<span class="c"># create a poly sphere</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">()</span>
+<span class="n">PolySphere</span><span class="p">()</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">mconnectTo</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">inMesh</span><span class="p">)</span>
+
+<span class="c"># assign all faces to the initial shading group</span>
+<span class="c"># Cannot use the m.cf[:] shortcut to get a complete component as</span>
+<span class="c"># shading engines apparently don&#39;t deal with it properly</span>
+<span class="n">m</span><span class="o">.</span><span class="n">addTo</span><span class="p">(</span><span class="n">isg</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">cf</span><span class="p">[:</span><span class="n">m</span><span class="o">.</span><span class="n">numPolygons</span><span class="p">()])</span>
+
+<span class="c"># force the first 200 faces into another shading engine</span>
+<span class="n">m</span><span class="o">.</span><span class="n">addTo</span><span class="p">(</span><span class="n">sg</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">cf</span><span class="p">[:</span><span class="mi">200</span><span class="p">],</span> <span class="n">force</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="mixed">
+<h2>Mixed<a class="headerlink" href="#mixed" title="Permalink to this headline">¶</a></h2>
+<p>The following example was taken from the PyMel homepage at <a class="reference external" href="http://code.google.com/p/pymel/">http://code.google.com/p/pymel/</a> as it goes through a few general tasks.</p>
+<ul>
+<li><p class="first"><strong>PyMel</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ls</span><span class="p">(</span> <span class="nb">type</span><span class="o">=</span><span class="s">&#39;transform&#39;</span><span class="p">):</span>
+        <span class="k">print</span> <span class="n">x</span><span class="o">.</span><span class="n">longName</span><span class="p">()</span>                <span class="c"># object oriented design</span>
+
+        <span class="n">x</span><span class="o">.</span><span class="n">sx</span> <span class="o">&gt;&gt;</span> <span class="n">x</span><span class="o">.</span><span class="n">sy</span>                      <span class="c"># connection operator</span>
+        <span class="n">x</span><span class="o">.</span><span class="n">sx</span> <span class="o">&gt;&gt;</span> <span class="n">x</span><span class="o">.</span><span class="n">sz</span>
+        <span class="n">x</span><span class="o">.</span><span class="n">sx</span> <span class="o">//</span> <span class="n">x</span><span class="o">.</span><span class="n">sy</span>                      <span class="c"># disconnection operator</span>
+        <span class="n">x</span><span class="o">.</span><span class="n">sx</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>                 <span class="c"># smarter methods -- (automatically disconnects all inputs and outputs when no arg is passed)</span>
+
+<span class="c"># add and set a string array attribute with the history of this transform&#39;s shape</span>
+        <span class="n">x</span><span class="o">.</span><span class="n">setAttr</span><span class="p">(</span> <span class="s">&#39;newAt&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">getShape</span><span class="p">()</span><span class="o">.</span><span class="n">history</span><span class="p">(),</span> <span class="n">force</span><span class="o">=</span><span class="mi">1</span> <span class="p">)</span>
+
+        <span class="c"># get and set some attributes</span>
+        <span class="n">x</span><span class="o">.</span><span class="n">rotate</span><span class="o">.</span><span class="n">set</span><span class="p">(</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="p">)</span>
+        <span class="n">trans</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">translate</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">trans</span> <span class="o">*=</span> <span class="n">x</span><span class="o">.</span><span class="n">scale</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>           <span class="c"># vector math</span>
+        <span class="n">x</span><span class="o">.</span><span class="n">translate</span><span class="o">.</span><span class="n">set</span><span class="p">(</span> <span class="n">trans</span> <span class="p">)</span>         <span class="c"># ability to pass list/vector args</span>
+        <span class="c"># mel.myMelScript(x.type(), trans) # automatic handling of mel procedures</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><strong>MRV</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">mrv.maya</span> <span class="kn">as</span> <span class="nn">mrvmaya</span>                  <span class="c"># required for some utilities</span>
+<span class="c"># later we query the shape, hence we must assure we actually have one</span>
+<span class="c"># and setup a custom predicate</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">iterDagNodes</span><span class="p">(</span><span class="n">Node</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">kTransform</span><span class="p">,</span> <span class="n">predicate</span><span class="o">=</span><span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="n">n</span><span class="o">.</span><span class="n">childCount</span><span class="p">()):</span>
+    <span class="k">print</span> <span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="p">()</span>                          <span class="c"># name() always returns the full path name</span>
+
+    <span class="n">x</span><span class="o">.</span><span class="n">sx</span><span class="o">.</span><span class="n">mconnectTo</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">sy</span><span class="p">)</span>                   <span class="c"># Convenience methods are located in the &#39;m&#39; namespace of the MPlug type</span>
+    <span class="n">x</span><span class="o">.</span><span class="n">sx</span><span class="o">.</span><span class="n">mconnectTo</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">sz</span><span class="p">)</span>
+    <span class="n">x</span><span class="o">.</span><span class="n">sx</span><span class="o">.</span><span class="n">mdisconnectFrom</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">sy</span><span class="p">)</span>
+    <span class="n">x</span><span class="o">.</span><span class="n">sx</span><span class="o">.</span><span class="n">mdisconnect</span><span class="p">()</span>
+
+    <span class="n">default</span> <span class="o">=</span> <span class="n">StringArrayData</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="nb">list</span><span class="p">())</span>
+    <span class="n">shapehistory</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">iterGraph</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">input</span><span class="o">=</span><span class="bp">True</span><span class="p">)]</span>
+    <span class="n">x</span><span class="o">.</span><span class="n">addAttribute</span><span class="p">(</span><span class="n">TypedAttribute</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s">&#39;newAt&#39;</span><span class="p">,</span> <span class="s">&#39;na&#39;</span><span class="p">,</span> <span class="n">Data</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">kStringArray</span><span class="p">,</span> <span class="n">default</span><span class="p">))</span><span class="o">.</span><span class="n">masData</span><span class="p">()</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">shapehistory</span><span class="p">)</span>
+
+    <span class="n">x</span><span class="o">.</span><span class="n">rx</span><span class="o">.</span><span class="n">msetFloat</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>                     <span class="c"># using individual plugs to have undo support, otherwise you would use MFn methods, like setRotation(...)</span>
+    <span class="n">x</span><span class="o">.</span><span class="n">ry</span><span class="o">.</span><span class="n">msetFloat</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+    <span class="n">x</span><span class="o">.</span><span class="n">rz</span><span class="o">.</span><span class="n">msetFloat</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+
+    <span class="n">trans</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">getTranslation</span><span class="p">(</span><span class="n">api</span><span class="o">.</span><span class="n">MSpace</span><span class="o">.</span><span class="n">kTransform</span><span class="p">)</span>
+    <span class="n">dot</span> <span class="o">=</span> <span class="n">trans</span> <span class="o">*</span> <span class="n">x</span><span class="o">.</span><span class="n">getScale</span><span class="p">()</span>                   <span class="c"># the dot product is a single float, MVector has no in-place dot-product as the type changes</span>
+    <span class="n">x</span><span class="o">.</span><span class="n">tx</span><span class="o">.</span><span class="n">msetFloat</span><span class="p">(</span><span class="n">dot</span><span class="p">)</span>                   <span class="c"># have to use child plugs for undo support</span>
+    <span class="n">x</span><span class="o">.</span><span class="n">ty</span><span class="o">.</span><span class="n">msetFloat</span><span class="p">(</span><span class="n">dot</span><span class="p">)</span>
+    <span class="n">x</span><span class="o">.</span><span class="n">tz</span><span class="o">.</span><span class="n">msetFloat</span><span class="p">(</span><span class="n">dot</span><span class="p">)</span>
+
+    <span class="c"># mrvmaya.Mel.myScript(x.typeName(), trans) # its essentially the pymel implementation which is used here.</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p class="rubric">Footnotes</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="../index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#">Usage Examples</a><ul>
+<li><a class="reference external" href="#set-handling">Set Handling</a></li>
+<li><a class="reference external" href="#shading-engine-handling">Shading Engine Handling</a></li>
+<li><a class="reference external" href="#mixed">Mixed</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="performance.html"
+                                  title="previous chapter">Performance</a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="../license.html"
+                                  title="next chapter">License</a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/compare/usage.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../license.html" title="License"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="performance.html" title="Performance"
+             >previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li>
+          <li><a href="index.html" >Comparison to PyMel</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Apr 19, 2011.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

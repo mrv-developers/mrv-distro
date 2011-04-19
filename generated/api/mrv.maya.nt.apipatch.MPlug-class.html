@@ -1,0 +1,2366 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>mrv.maya.nt.apipatch.MPlug</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="mrv-module.html">Package&nbsp;mrv</a> ::
+        <a href="mrv.maya-module.html">Package&nbsp;maya</a> ::
+        <a href="mrv.maya.nt-module.html">Package&nbsp;nt</a> ::
+        <a href="mrv.maya.nt.apipatch-module.html">Module&nbsp;apipatch</a> ::
+        Class&nbsp;MPlug
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="mrv.maya.nt.apipatch.MPlug-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class MPlug</h1><p class="nomargin-top"><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug">source&nbsp;code</a></span></p>
+<pre class="base-tree">
+OpenMaya.MPlug --+
+                 |
+                <strong class="uidshort">MPlug</strong>
+</pre>
+
+<hr />
+<p>Patch applying mrv specific functionality to the MPlug. These methods will be
+available through methods with the 'm' prefix.</p>
+<p>Other methods are overridden to allow more pythonic usage of the MPlug class
+if and only if it is not specific to mrv.</p>
+<p>Additionally it provides aliases for all MPlug methods that are getters, but
+don't start with a 'get'.</p>
+
+<hr />
+<div class="fields">      <p><strong>Note:</strong>
+        Theoretically the MPlug would satisfy the 'iDagItem' interface, but due
+to the method prefixes, it could not work here as it calls un-prefixed methods only.
+      </p>
+</div><!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#__getattribute__" class="summary-sig-name">__getattribute__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">attr</span>)</span><br />
+      Get attribute for MPlug which will raise if a setX method is used.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#__getattribute__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Overridden Methods</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#length" class="summary-sig-name">length</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns:
+number of physical elements in the array, but only if they are
+not connected.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.length">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#__iter__" class="summary-sig-name">__iter__</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns:
+iterator object</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.__iter__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#__repr__" class="summary-sig-name">__repr__</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns:
+our class representation</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.__repr__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__eq__"></a><span class="summary-sig-name">__eq__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>)</span><br />
+      Compare plugs,handle elements correctly</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.__eq__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__ne__"></a><span class="summary-sig-name">__ne__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.__ne__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Plug Hierarchy Query</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#mparent" class="summary-sig-name">mparent</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns:
+parent of this plug or None</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mparent">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#mchildren" class="summary-sig-name">mchildren</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">predicate</span>=<span class="summary-sig-default">lambda x: True</span>)</span><br />
+      Returns:
+list of intermediate child plugs, [ plug1 , plug2 ]</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mchildren">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#mchildByName" class="summary-sig-name">mchildByName</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">childname</span>)</span><br />
+      Returns:
+MPlug with the given childname</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mchildByName">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#msubPlugs" class="summary-sig-name">msubPlugs</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">predicate</span>=<span class="summary-sig-default">lambda x: True</span>)</span><br />
+      Returns:
+list of intermediate sub-plugs that are either child plugs or element plugs.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.msubPlugs">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Attributes ( Edit )</th></tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_mhandleAttrSet"></a><span class="summary-sig-name">_mhandleAttrSet</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">state</span>,
+        <span class="summary-sig-arg">getfunc</span>,
+        <span class="summary-sig-arg">setfunc</span>)</span><br />
+      Generic attribute handling</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug._mhandleAttrSet">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#msetLocked" class="summary-sig-name">msetLocked</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">state</span>)</span><br />
+      If True, the plug's value may not be changed anymore</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.msetLocked">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#msetKeyable" class="summary-sig-name">msetKeyable</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">state</span>)</span><br />
+      if True, the plug may be set using animation curves</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.msetKeyable">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#msetCaching" class="summary-sig-name">msetCaching</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">state</span>)</span><br />
+      if True, the plug's value will be cached, preventing unnecessary computations</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.msetCaching">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#msetChannelBox" class="summary-sig-name">msetChannelBox</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">state</span>)</span><br />
+      if True, the plug will be visible in the channelbox, even though it might not
+be keyable or viceversa</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.msetChannelBox">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Connections ( Edit )</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#mconnectTo" class="summary-sig-name">mconnectTo</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">destplug</span>,
+        <span class="summary-sig-arg">force</span>=<span class="summary-sig-default">True</span>)</span><br />
+      Connect this plug to the right hand side plug</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mconnectTo">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#mconnectToArray" class="summary-sig-name">mconnectToArray</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">arrayplug</span>,
+        <span class="summary-sig-arg">force</span>=<span class="summary-sig-default">True</span>,
+        <span class="summary-sig-arg">exclusive_connection</span>=<span class="summary-sig-default">False</span>)</span><br />
+      Connect self an element of the given arrayplug.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mconnectToArray">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#mdisconnect" class="summary-sig-name">mdisconnect</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Completely disconnect all inputs and outputs of this plug.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mdisconnect">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#mdisconnectInput" class="summary-sig-name">mdisconnectInput</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Disconnect the input connection if one exists</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mdisconnectInput">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#mdisconnectOutputs" class="summary-sig-name">mdisconnectOutputs</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Disconnect all outgoing connections if they exist</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mdisconnectOutputs">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#mdisconnectFrom" class="summary-sig-name">mdisconnectFrom</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>)</span><br />
+      Disconnect this plug from other plug if they are connected</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mdisconnectFrom">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#mdisconnectNode" class="summary-sig-name">mdisconnectNode</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>)</span><br />
+      Disconnect this plug from the given node if they are connected</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mdisconnectNode">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Connections ( Query )</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#misConnectedTo" class="summary-sig-name">misConnectedTo</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">destplug</span>)</span><br />
+      Returns:
+True if this plug is connected to destination plug ( in that order )</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.misConnectedTo">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#moutputs" class="summary-sig-name">moutputs</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns:
+MPlugArray with all plugs having this plug as source</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.moutputs">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#moutput" class="summary-sig-name">moutput</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns:
+first plug that has this plug as source of a connection, or null plug
+if no such plug exists.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.moutput">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#minput" class="summary-sig-name">minput</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns:
+plug being the source of a connection to this plug or a null plug
+if no such plug exists</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.minput">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#minputs" class="summary-sig-name">minputs</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Special handler returning the input plugs of array elements</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.minputs">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#miterGraph" class="summary-sig-name">miterGraph</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Returns:
+graph iterator with self as root, args and kwargs are passed to it.iterGraph.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.miterGraph">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#miterInputGraph" class="summary-sig-name">miterInputGraph</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Returns:
+iterator over the graph starting at this plug in input(upstream) direction.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.miterInputGraph">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#miterOutputGraph" class="summary-sig-name">miterOutputGraph</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Returns:
+iterator over the graph starting at this plug in output(downstream) direction.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.miterOutputGraph">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#mconnections" class="summary-sig-name">mconnections</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns:
+tuple with input and outputs ( inputPlug, outputPlugs )</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mconnections">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Affects Query</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#mdependencyInfo" class="summary-sig-name">mdependencyInfo</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">by</span>=<span class="summary-sig-default">False</span>)</span><br />
+      Returns:
+list of plugs on this node that this plug affects or is being affected by</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mdependencyInfo">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#maffects" class="summary-sig-name">maffects</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns:
+list of plugs affected by this one</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.maffects">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#maffected" class="summary-sig-name">maffected</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns:
+list of plugs affecting this one</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.maffected">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;General Query</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#mnextLogicalIndex" class="summary-sig-name">mnextLogicalIndex</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns:
+index of logical indexed plug that does not yet exist</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mnextLogicalIndex">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#mnextLogicalPlug" class="summary-sig-name">mnextLogicalPlug</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns:
+plug at newly created logical index</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mnextLogicalPlug">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#mwrappedAttribute" class="summary-sig-name">mwrappedAttribute</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns:
+Attribute instance of our underlying attribute</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mwrappedAttribute">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#mwrappedNode" class="summary-sig-name">mwrappedNode</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns:
+wrapped Node of the plugs node</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mwrappedNode">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#masData" class="summary-sig-name">masData</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Returns:
+our data Mobject wrapped in <a href="mrv.maya.nt.base.Data-class.html" class="link">base.Data</a></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.masData">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#mfullyQualifiedName" class="summary-sig-name">mfullyQualifiedName</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns:
+string returning the absolute and fully qualified name of the
+plug.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mfullyQualifiedName">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Name Remapping</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#mict" class="summary-sig-name">mict</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">destplug</span>)</span><br />
+      Returns:
+True if this plug is connected to destination plug ( in that order )</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.misConnectedTo">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#mdc" class="summary-sig-name">mdc</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>)</span><br />
+      Disconnect this plug from other plug if they are connected</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mdisconnectFrom">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#mwn" class="summary-sig-name">mwn</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns:
+wrapped Node of the plugs node</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mwrappedNode">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#mwa" class="summary-sig-name">mwa</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns:
+Attribute instance of our underlying attribute</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mwrappedAttribute">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS METHODS ==================== -->
+<a name="section-ClassMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Connections ( Edit )</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#mconnectMultiToMulti" class="summary-sig-name">mconnectMultiToMulti</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">iter_source_destination</span>,
+        <span class="summary-sig-arg">force</span>=<span class="summary-sig-default">False</span>)</span><br />
+      Connect multiple source plugs to the same amount of detsination plugs.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mconnectMultiToMulti">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== STATIC METHODS ==================== -->
+<a name="section-StaticMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Static Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-StaticMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Connections ( Query )</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.maya.nt.apipatch.MPlug-class.html#mhaveConnection" class="summary-sig-name">mhaveConnection</a>(<span class="summary-sig-arg">lhsplug</span>,
+        <span class="summary-sig-arg">rhsplug</span>)</span><br />
+      Returns:
+True if lhsplug and rhs plug are connected - the direction does not matter</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mhaveConnection">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="pa"></a><span class="summary-name">pa</span> = <code title="api.MPlugArray()">api.MPlugArray()</code>
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Overridden Methods</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="__str__"></a><span class="summary-name">__str__</span> = <code title="api.MPlug.name">api.MPlug.name</code>
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Set Data with Undo</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="msetBool"></a><span class="summary-name">msetBool</span> = <code title="_mplug_createUndoSetFunc(&quot;Bool&quot;)">_mplug_createUndoSetFunc(&quot;Bool&quot;)</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="msetChar"></a><span class="summary-name">msetChar</span> = <code title="_mplug_createUndoSetFunc(&quot;Char&quot;)">_mplug_createUndoSetFunc(&quot;Char&quot;)</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="msetShort"></a><span class="summary-name">msetShort</span> = <code title="_mplug_createUndoSetFunc(&quot;Short&quot;)">_mplug_createUndoSetFunc(&quot;Short&quot;)</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="msetInt"></a><span class="summary-name">msetInt</span> = <code title="_mplug_createUndoSetFunc(&quot;Int&quot;)">_mplug_createUndoSetFunc(&quot;Int&quot;)</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="msetFloat"></a><span class="summary-name">msetFloat</span> = <code title="_mplug_createUndoSetFunc(&quot;Float&quot;)">_mplug_createUndoSetFunc(&quot;Float&quot;)</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="msetDouble"></a><span class="summary-name">msetDouble</span> = <code title="_mplug_createUndoSetFunc(&quot;Double&quot;)">_mplug_createUndoSetFunc(&quot;Double&quot;)</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="msetString"></a><span class="summary-name">msetString</span> = <code title="_mplug_createUndoSetFunc(&quot;String&quot;)">_mplug_createUndoSetFunc(&quot;String&quot;)</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="msetMAngle"></a><span class="summary-name">msetMAngle</span> = <code title="_mplug_createUndoSetFunc(&quot;MAngle&quot;)">_mplug_createUndoSetFunc(&quot;MAngle&quot;)</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="msetMDistance"></a><span class="summary-name">msetMDistance</span> = <code title="_mplug_createUndoSetFunc(&quot;MDistance&quot;)">_mplug_createUndoSetFunc(&quot;MDistance&quot;)</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="msetMTime"></a><span class="summary-name">msetMTime</span> = <code title="_mplug_createUndoSetFunc(&quot;MTime&quot;)">_mplug_createUndoSetFunc(&quot;MTime&quot;)</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="msetMObject"></a><span class="summary-name">msetMObject</span> = <code title="_mplug_createUndoSetFunc(&quot;MObject&quot;)">_mplug_createUndoSetFunc(&quot;MObject&quot;)</code>
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Name Remapping</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="mctf"></a><span class="summary-name">mctf</span> = <code title="lambda self, other:">lambda self, other:</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="mct"></a><span class="summary-name">mct</span> = <code title="lambda self, other:">lambda self, other:</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="mhc"></a><span class="summary-name">mhc</span> = <code title="lambda lhs, rhs:">lambda lhs, rhs:</code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="length"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">length</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.length">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>number of physical elements in the array, but only if they are
+not connected. If in doubt, run evaluateNumElements beforehand</dd>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        cannot use __len__ as it would break printing of pymel
+      </p>
+</div></td></tr></table>
+</div>
+<a name="__iter__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__iter__</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.__iter__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>iterator object</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__repr__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__repr__</span>(<span class="sig-arg">self</span>)</span>
+    <br /><em class="fname">(Representation operator)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.__repr__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>our class representation</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="mparent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">mparent</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mparent">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>parent of this plug or None</dd>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        for array plugs, this is the array, for child plugs the actual parent
+      </p>
+</div></td></tr></table>
+</div>
+<a name="mchildren"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">mchildren</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">predicate</span>=<span class="sig-default">lambda x: True</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mchildren">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>predicate</code></strong> - return True to include x in result</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>list of intermediate child plugs, [ plug1 , plug2 ]</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="mchildByName"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">mchildByName</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">childname</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mchildByName">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>MPlug with the given childname</dd>
+    <dt>Raises:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code><strong class='fraise'>AttributeError</strong></code> - if no child plug of the appropriate name could be found</li>
+        <li><code><strong class='fraise'>TypeError</strong></code> - self is not a compound plug</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="msubPlugs"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">msubPlugs</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">predicate</span>=<span class="sig-default">lambda x: True</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.msubPlugs">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>predicate</code></strong> - return True to include x in result</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>list of intermediate sub-plugs that are either child plugs or element plugs.
+Returned list will be empty for leaf-level plugs</dd>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        use this function recursively for easy deep traversal of all
+combinations of array and compound plugs
+      </p>
+</div></td></tr></table>
+</div>
+<a name="msetLocked"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">msetLocked</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">state</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.msetLocked">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  If True, the plug's value may not be changed anymore
+  <dl class="fields">
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@undoable</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="msetKeyable"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">msetKeyable</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">state</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.msetKeyable">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  if True, the plug may be set using animation curves
+  <dl class="fields">
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@undoable</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="msetCaching"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">msetCaching</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">state</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.msetCaching">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  if True, the plug's value will be cached, preventing unnecessary computations
+  <dl class="fields">
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@undoable</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="msetChannelBox"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">msetChannelBox</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">state</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.msetChannelBox">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  if True, the plug will be visible in the channelbox, even though it might not
+be keyable or viceversa
+  <dl class="fields">
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@undoable</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="mconnectMultiToMulti"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">mconnectMultiToMulti</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">iter_source_destination</span>,
+        <span class="sig-arg">force</span>=<span class="sig-default">False</span>)</span>
+    <br /><em class="fname">Class Method</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mconnectMultiToMulti">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Connect multiple source plugs to the same amount of detsination plugs.
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>iter_source_destination</code></strong> - Iterator yielding pairs of source and destination plugs to connect</li>
+        <li><strong class="pname"><code>force</code></strong> - If True, existing input connections on the destination side will
+be broken automatically. Otherwise the whole operation will fail if one
+connection could not be made.</li>
+    </ul></dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@undoable</code></li>
+    </ul></dd>
+  </dl>
+<div class="fields">      <strong>Notes:</strong>
+      <ul class="nomargin-top">
+        <li>
+        This method provides the most efficient way to connect a large known
+amount of plugs to each other
+        </li>
+        <li>
+        Both iterators need to yield the same total amount of plugs
+        </li>
+        <li>
+        In the current implementation, performance will be hurt if force
+is specified as each destination has to be checked for a connection in advance
+        </li>
+      </ul>
+</div></td></tr></table>
+</div>
+<a name="mconnectTo"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">mconnectTo</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">destplug</span>,
+        <span class="sig-arg">force</span>=<span class="sig-default">True</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mconnectTo">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Connect this plug to the right hand side plug
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>destplug</code></strong> - the plug to which to connect this plug to.</li>
+        <li><strong class="pname"><code>force</code></strong> - if True, the connection will be created even if another connection
+has to be broken to achieve that.
+If False, the connection will fail if destplug is already connected to another plug</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>destplug allowing chained connections a.connectTo(b).connectTo(c)</dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@undoable</code></li>
+    </ul></dd>
+    <dt>Raises:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code><strong class='fraise'>RuntimeError</strong></code> - If destination is already connected and force = False</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="mconnectToArray"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">mconnectToArray</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">arrayplug</span>,
+        <span class="sig-arg">force</span>=<span class="sig-default">True</span>,
+        <span class="sig-arg">exclusive_connection</span>=<span class="sig-default">False</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mconnectToArray">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Connect self an element of the given arrayplug.
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>arrayplug</code></strong> - the array plug to which you want to connect to</li>
+        <li><strong class="pname"><code>force</code></strong> - if True, the connection will be created even if another connection
+has to be broken to achieve that.</li>
+        <li><strong class="pname"><code>exclusive_connection</code></strong> - if True and destplug is an array, the plug will only be connected
+to an array element if it is not yet connected</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>newly created element plug or the existing one</dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@undoable</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="mdisconnect"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">mdisconnect</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mdisconnect">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Completely disconnect all inputs and outputs of this plug. The plug will not
+be connected anymore.
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>self, allowing chained commands</dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@undoable</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="mdisconnectInput"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">mdisconnectInput</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mdisconnectInput">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Disconnect the input connection if one exists
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>self, allowing chained commands</dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@undoable</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="mdisconnectOutputs"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">mdisconnectOutputs</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mdisconnectOutputs">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Disconnect all outgoing connections if they exist
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>self, allowing chained commands</dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@undoable</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="mdisconnectFrom"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">mdisconnectFrom</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">other</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mdisconnectFrom">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Disconnect this plug from other plug if they are connected
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>other</code></strong> - MPlug that will be disconnected from this plug</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>other plug allowing to chain disconnections</dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@undoable</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="mdisconnectNode"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">mdisconnectNode</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">other</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mdisconnectNode">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Disconnect this plug from the given node if they are connected
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>other</code></strong> - Node that will be completely disconnected from this plug</li>
+    </ul></dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@undoable</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="mhaveConnection"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">mhaveConnection</span>(<span class="sig-arg">lhsplug</span>,
+        <span class="sig-arg">rhsplug</span>)</span>
+    <br /><em class="fname">Static Method</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mhaveConnection">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>True if lhsplug and rhs plug are connected - the direction does not matter</dd>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        equals lhsplug &amp; rhsplug
+      </p>
+</div></td></tr></table>
+</div>
+<a name="misConnectedTo"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">misConnectedTo</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">destplug</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.misConnectedTo">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>True if this plug is connected to destination plug ( in that order )</dd>
+  </dl>
+<div class="fields">      <strong>Notes:</strong>
+      <ul class="nomargin-top">
+        <li>
+        return true for self.misConnectedTo(destplug) but false for destplug.misConnectedTo(self)
+        </li>
+        <li>
+        use the mhaveConnection method whether both plugs have a connection no matter which direction
+        </li>
+        <li>
+        use <code class="link">misConnected</code> to find out whether this plug is connected at all
+        </li>
+      </ul>
+</div></td></tr></table>
+</div>
+<a name="moutputs"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">moutputs</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.moutputs">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>MPlugArray with all plugs having this plug as source</dd>
+  </dl>
+<div class="fields">      <p><strong>To Do:</strong>
+        should the method be smarter and deal nicer with complex array or compound plugs ?
+      </p>
+</div></td></tr></table>
+</div>
+<a name="moutput"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">moutput</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.moutput">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>first plug that has this plug as source of a connection, or null plug
+if no such plug exists.</dd>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        convenience method
+      </p>
+</div></td></tr></table>
+</div>
+<a name="minput"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">minput</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.minput">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>plug being the source of a connection to this plug or a null plug
+if no such plug exists</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="minputs"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">minputs</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.minputs">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Special handler returning the input plugs of array elements
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>list of plugs connected to the elements of this arrayplug</dd>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        if self is not an array, a list with 1 or 0 plugs will be returned
+      </p>
+</div></td></tr></table>
+</div>
+<a name="miterGraph"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">miterGraph</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.miterGraph">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>graph iterator with self as root, args and kwargs are passed to it.iterGraph.
+Plugs are returned by default, but this can be specified explicitly using
+the plug=True kwarg</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="miterInputGraph"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">miterInputGraph</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.miterInputGraph">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>iterator over the graph starting at this plug in input(upstream) direction.
+Plugs will be returned by default</dd>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        see it.iterGraph for valid args and kwargs
+      </p>
+</div></td></tr></table>
+</div>
+<a name="miterOutputGraph"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">miterOutputGraph</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.miterOutputGraph">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>iterator over the graph starting at this plug in output(downstream) direction.
+Plugs will be returned by default</dd>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        see it.iterGraph for valid args and kwargs
+      </p>
+</div></td></tr></table>
+</div>
+<a name="mconnections"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">mconnections</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mconnections">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>tuple with input and outputs ( inputPlug, outputPlugs )</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="mdependencyInfo"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">mdependencyInfo</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">by</span>=<span class="sig-default">False</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mdependencyInfo">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>by</code></strong> - if false, affected attributplugs will be returned, otherwise the attributeplugs affecting this one</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>list of plugs on this node that this plug affects or is being affected by</dd>
+  </dl>
+<div class="fields">      <strong>Notes:</strong>
+      <ul class="nomargin-top">
+        <li>
+        you can also use the <a href="mrv.maya.nt.base.DependNode-class.html#dependencyInfo" class="link">base.DependNode.dependencyInfo</a> method on the node itself if plugs are not
+required - this will also be faster
+        </li>
+        <li>
+        have to use MEL :(
+        </li>
+      </ul>
+</div></td></tr></table>
+</div>
+<a name="maffects"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">maffects</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.maffects">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>list of plugs affected by this one</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="maffected"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">maffected</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.maffected">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>list of plugs affecting this one</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="mnextLogicalIndex"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">mnextLogicalIndex</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mnextLogicalIndex">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>index of logical indexed plug that does not yet exist</dd>
+  </dl>
+<div class="fields">      <strong>Notes:</strong>
+      <ul class="nomargin-top">
+        <li>
+        as this method does a thorough search, it is relatively slow
+compared to a simple numPlugs + 1 algorithm
+        </li>
+        <li>
+        only makes sense for array plugs
+        </li>
+      </ul>
+</div></td></tr></table>
+</div>
+<a name="mnextLogicalPlug"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">mnextLogicalPlug</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mnextLogicalPlug">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>plug at newly created logical index</dd>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        only valid for array plugs
+      </p>
+</div></td></tr></table>
+</div>
+<a name="mwrappedAttribute"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">mwrappedAttribute</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mwrappedAttribute">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>Attribute instance of our underlying attribute</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="mwrappedNode"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">mwrappedNode</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mwrappedNode">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>wrapped Node of the plugs node</dd>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        instance information gets lost this way, the respective instance
+can be re-retrieved using the instance information on this instanced
+attribute, if this is an instanced attribute
+      </p>
+</div></td></tr></table>
+</div>
+<a name="masData"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">masData</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.masData">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>our data Mobject wrapped in <a href="mrv.maya.nt.base.Data-class.html" class="link">base.Data</a></dd>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        args and kwagrs have to be provided as MDGContext.fsNormal
+does not exist in maya 8.5, so we have to hide that fact.
+      </p>
+</div></td></tr></table>
+</div>
+<a name="mfullyQualifiedName"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">mfullyQualifiedName</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mfullyQualifiedName">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>string returning the absolute and fully qualified name of the
+plug. It might take longer to evaluate but is safe to use if you want to
+convert the resulting string back to the actual plug</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="mict"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">mict</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">destplug</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.misConnectedTo">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>True if this plug is connected to destination plug ( in that order )</dd>
+  </dl>
+<div class="fields">      <strong>Notes:</strong>
+      <ul class="nomargin-top">
+        <li>
+        return true for self.misConnectedTo(destplug) but false for destplug.misConnectedTo(self)
+        </li>
+        <li>
+        use the mhaveConnection method whether both plugs have a connection no matter which direction
+        </li>
+        <li>
+        use <code class="link">misConnected</code> to find out whether this plug is connected at all
+        </li>
+      </ul>
+</div></td></tr></table>
+</div>
+<a name="mdc"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">mdc</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">other</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mdisconnectFrom">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Disconnect this plug from other plug if they are connected
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>other</code></strong> - MPlug that will be disconnected from this plug</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>other plug allowing to chain disconnections</dd>
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@undoable</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="mwn"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">mwn</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mwrappedNode">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>wrapped Node of the plugs node</dd>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        instance information gets lost this way, the respective instance
+can be re-retrieved using the instance information on this instanced
+attribute, if this is an instanced attribute
+      </p>
+</div></td></tr></table>
+</div>
+<a name="mwa"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">mwa</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#MPlug.mwrappedAttribute">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>Attribute instance of our underlying attribute</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__getattribute__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__getattribute__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">attr</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.maya.nt.apipatch-pysrc.html#__getattribute__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Get attribute for MPlug which will raise if a setX method is used.
+This could cause undo bugs that you'd better catch before they hit the user
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Apr 19 15:39:12 2011
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

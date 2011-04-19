@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>The Template Project &mdash; mrv v1.0.2-develop documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.2-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="mrv v1.0.2-develop documentation" href="../index.html" />
+    <link rel="up" title="Development" href="index.html" />
+    <link rel="next" title="Extensions" href="../extend.html" />
+    <link rel="prev" title="Distribution Workflow" href="distribute/workflow.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="../extend.html" title="Extensions"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="distribute/workflow.html" title="Distribution Workflow"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Development</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="the-template-project">
+<span id="template-project-label"></span><h1>The Template Project<a class="headerlink" href="#the-template-project" title="Permalink to this headline">¶</a></h1>
+<p>As MRV calls itself a &#8216;Development Framework&#8217;, it must be simple to create new tools based upon it. The template project gives you a kick-start to do exactly that.</p>
+<p>At this stage, the template project itself is still to be created, however, there is a demo project from which it will be derived one day - its called <a class="reference external" href="https://github.com/mrv-developers/AnimIO">AnimIO</a>  by Martin Freitag, and allows to export and import animation of nodes.</p>
+<p>AnimIO was initially created as MEL script, which makes it especially interesting to see it re-implemented in python, using an Object-Based design and TDD.</p>
+<p>The interested reader may have a look at its code. After cloning the repository at <a class="reference external" href="https://github.com/mrv-developers/AnimIO">https://github.com/mrv-developers/AnimIO</a> ( <tt class="docutils literal"><span class="pre">git</span> <span class="pre">clone</span></tt> ), it is required to recursively initialize the submodules ( <tt class="docutils literal"><span class="pre">git</span> <span class="pre">submodule</span> <span class="pre">update</span> <span class="pre">--init</span> <span class="pre">--recursive</span></tt> ). Now you would be ready to run the tests. To sum it up:</p>
+<div class="highlight-python"><pre>$ git clone git://github.com/mrv-developers/AnimIO.git
+$ cd animio
+$ git submodule update --init --recursive
+
+$ # Test the library
+$ ext/mrv/test/bin/tmrv [&lt;maya version&gt;]
+
+$ # Test the performance
+$ ext/mrv/test/bin/tmrv [&lt;maya version&gt;] test/performance
+
+$ # Test the user interface
+$ ext/mrv/test/bin/tmrv [&lt;maya version&gt;] --mrv-maya test/ui</pre>
+</div>
+<div class="section" id="todo">
+<h2>TODO<a class="headerlink" href="#todo" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>About info module, link to distribute documentation</li>
+<li>Explain which release type to use, distributed source or developer version</li>
+<li>Provide examples for different setup file configurations, including proper binary distribution with mrv post-testing support, and mrv source distribution with post-testing support.</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="../index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#">The Template Project</a><ul>
+<li><a class="reference external" href="#todo">TODO</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="distribute/workflow.html"
+                                  title="previous chapter">Distribution Workflow</a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="../extend.html"
+                                  title="next chapter">Extensions</a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/develop/projects.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../extend.html" title="Extensions"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="distribute/workflow.html" title="Distribution Workflow"
+             >previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li>
+          <li><a href="index.html" >Development</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Apr 19, 2011.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

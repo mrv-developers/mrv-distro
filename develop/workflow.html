@@ -1,0 +1,333 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Workflow &mdash; mrv v1.0.2-develop documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.2-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="mrv v1.0.2-develop documentation" href="../index.html" />
+    <link rel="up" title="Development" href="index.html" />
+    <link rel="next" title="Integrating MRV into Production-Pipelines" href="integrate.html" />
+    <link rel="prev" title="Contributing" href="contribute.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="integrate.html" title="Integrating MRV into Production-Pipelines"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="contribute.html" title="Contributing"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Development</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="workflow">
+<span id="development-workflow-label"></span><h1>Workflow<a class="headerlink" href="#workflow" title="Permalink to this headline">¶</a></h1>
+<p>MRV&#8217;s goal as development framework is to enable the programmer to write reliable, maintainable and well-performing code in less time compared to the conventional methods.</p>
+<p>MRV natively assures that the code is well-performing, but reliability cannot be assured without proper testing. Maintainability comes with a good design, and clean code.</p>
+<p>If one wanted to find a development strategy which fits the previously mentioned goals, one would definitely encounter TDD on the way - <a class="reference external" href="http://en.wikipedia.org/wiki/Test-driven_development">Test Driven Development</a>.</p>
+<p>For the sake of brevity, only the most important points will be mentioned here, check the wiki link above for more information.</p>
+<p>When developing for python within maya, one generally has the problem that simply &#8216;sourcing&#8217; a file is not possible anymore. Instances of your classes which are still floating around somewhere use the code they have been instantiated with, not the new one which you might just have <tt class="docutils literal"><span class="pre">reload</span></tt> &#8216;ed.</p>
+<p>This makes it cumbersome and hard to predict whether you are actually seeing your changes or not.</p>
+<p>The only way to be 100% sure that your changes are actually kicking in is to restart the python interpreter ( or maya ), and try again. This of course is not feasible if it is done manually as it takes too much time.</p>
+<p>Being aware of this issue, MRV has been developed using TestCases from the ground up. This is why it is possible to rerun a single test every ~3.5s in a standalone interpreter ( as a comparison, maya -batch takes ~5.5 seconds to startup ). The whole test suite can be run in just ~7s, and all regression tests in for Maya 8.5 to 2010 take less than two minutes.</p>
+<p>This makes it possible to write code in a test-driven manner, running tests is easy and fast.</p>
+<p>Please note that the following examples use a linux shell, but the same development style will work on windows as well provided that you exchange the command-line shown here with a cmd prompt compatible one.</p>
+<div class="section" id="id1">
+<h2>Test-Driven-Development<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>When implementing a new MRV feature, it is useful to start by getting a clear idea of what the feature should be like, and who will use it, and how it will be used. Then it is wise to conduct a quick manual test to see whether it is generally possible to do - usually the answer is yes, but its good to get an impression on how difficult it is going to be.</p>
+<p>The next step is to find a good place for the code, either it is placed into an existing module, or a new one is created. Before writing a line of code though, a first test case is added into an existing test module, or into a new one.</p>
+<p>Ideally you have at least two panes available in your editor, one is for the implementation, the other one for the test. For brevity, lets call the implementation <tt class="docutils literal"><span class="pre">lefty</span></tt>, the test <tt class="docutils literal"><span class="pre">righty</span></tt>.</p>
+<p>In <tt class="docutils literal"><span class="pre">lefty</span></tt>, sketch out the design required to implement the feature - do you need a class, or several classes, which member functions do they have, are module level functions reasonable, or do you want to use classmethods instead ?</p>
+<p>Once the design has been sketched, its about defining the signature of the methods and functions. Go through them one by one in a suitable order and write the documentation for them - use <a class="reference external" href="http://sphinx.pocoo.org/markup/index.html">restructured Text</a>.</p>
+<p>Write down what the method is supposed to do, think about the possible input arguments and their types, the return type, as well as possible exceptions.
+While writing this, you essentially define the domain within which this method is supposed to work.</p>
+<p>Whenever you set a pile for the fence of your domain, switch to <tt class="docutils literal"><span class="pre">righty</span></tt> and note down what the method can do, or what it can&#8217;t do to assure you don&#8217;t forget about the individual things that need to be tested:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># &lt;feature.py&gt; in lefty</span>
+<span class="k">def</span> <span class="nf">makeFoo</span><span class="p">(</span><span class="n">bar_iterable</span><span class="p">,</span> <span class="n">big</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a new Foo instance which contains the Bar instances</span>
+<span class="sd">    retrieved from the bar_iterable.</span>
+
+<span class="sd">    :return: ``Foo`` compatible instance. If big was True, it will</span>
+<span class="sd">        support the ``BigFoo`` interface</span>
+<span class="sd">    :param bar_iterable: iterable yielding Bar instances. As Foo&#39;s</span>
+<span class="sd">         cannot exist without Bars, an empty iterable is invalid.</span>
+<span class="sd">    :param big: if True, change the return type from ``Foo`` to ``BigFoo``</span>
+<span class="sd">    :raise ValueError: if bar_iterable did not yield any Bar instance&quot;&quot;&quot;</span>
+    <span class="k">pass</span> <span class="c"># todo implementation</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># &lt;test/test_feature.py&gt; in righty</span>
+<span class="c"># It has been written while putting down the docs for the method</span>
+<span class="k">def</span> <span class="nf">test_makeFoo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">pass</span>
+    <span class="c"># assure it returns Foo instances, BigFoo if the flag is set</span>
+
+    <span class="c"># which contain the bars we passed in</span>
+
+    <span class="c"># empty iterables raise</span>
+</pre></div>
+</div>
+<p>Next up is the implementation of the test case - as it knows the interface of the method to test, it can be fully implemented before writing any actual implementation:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># assure it returns Foo instances, BigFoo if the flag is set</span>
+<span class="n">bars</span> <span class="o">=</span> <span class="p">(</span><span class="n">Bar</span><span class="p">(),</span> <span class="n">Bar</span><span class="p">())</span>
+<span class="k">for</span> <span class="n">big</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+        <span class="n">foo</span> <span class="o">=</span> <span class="n">makeFoo</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">bars</span><span class="p">),</span> <span class="n">big</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">foo</span><span class="p">,</span> <span class="n">Foo</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">big</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">foo</span><span class="p">,</span> <span class="n">BigFoo</span><span class="p">)</span>
+        <span class="c"># END check rval type</span>
+
+        <span class="c"># which contain the bars we passed in</span>
+        <span class="k">assert</span> <span class="n">foo</span><span class="o">.</span><span class="n">bars</span> <span class="o">==</span> <span class="n">bars</span>
+
+        <span class="c"># empty iterables raise</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">failUnlessRaises</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="n">makeFoo</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(),</span> <span class="n">big</span><span class="p">)</span>
+<span class="c"># END for each value of &#39;big&#39;</span>
+</pre></div>
+</div>
+<p>Now you have a full frame for all the boundary cases that you have documented before. Run the test repeatedly while implementing your actual classes. Once the test succeeds, you can at least be quite confident that your code is actually working.</p>
+<p>The full implementation of the example can be found in <tt class="docutils literal"><span class="pre">mrv.test.maya.nt.test_general</span></tt> ( <em>test_makeFoo</em> ).</p>
+<p>The case presented here is of course nothing more than a constructed example, in many cases the flow of the development will be much less &#8216;predefined&#8217; and more fluid, and it is usually iterative as well. The basic steps are the same though:</p>
+<blockquote>
+<ol class="arabic simple">
+<li>Understand the problem to solve</li>
+<li>Design your Interface, Class or Method by sketching it - write documentation to get an even clearer understanding of the problem, as well as the limits within which you will solve it.</li>
+</ol>
+<blockquote>
+<ul class="simple">
+<li>Track the sub-tests that you will need while writing the documentation</li>
+</ul>
+</blockquote>
+<ol class="arabic simple" start="3">
+<li>Implement the test case(s)</li>
+<li>Write your actual implementation.</li>
+</ol>
+</blockquote>
+<p>Of course it is totally valid to switch order, or jump back and forth between the steps - but the list presented here gives a good outline on how MRV is being developed.</p>
+</div>
+<div class="section" id="running-tests">
+<span id="runtestsdoc-label"></span><h2>Running Tests<a class="headerlink" href="#running-tests" title="Permalink to this headline">¶</a></h2>
+<p>In Test-Driven-Development, running the test is a major part of the workflow, which is why this section presents a few commonly used strategies to test efficiently and conveniently.</p>
+<p>Nose is the main test driver, it offers pretty much everything you ever wanted and allows to be extended using plugins rather easily - the following presentation shows only some of the vast amount of features available, you can read more on the <a class="reference external" href="http://somethingaboutorange.com/mrl/projects/nose">official homepage</a>, the examples should work on linux, OSX and windows.</p>
+<p>If your working directory is the MRV root directory, the following command will run all tests ( in about ~7s ):</p>
+<div class="highlight-python"><pre>$ test/bin/tmrv &lt;mayaversion&gt;</pre>
+</div>
+<p>Run individual test packages or module by specifying their paths:</p>
+<div class="highlight-python"><pre>$ # runs the Path test, as well as all maya related tests of the given maya version
+$ test/bin/tmrv &lt;mayaversion&gt; test/test_path.py test/maya</pre>
+</div>
+<p>Running tests outside of the maya test package will not startup maya, hence it will return much quicker:</p>
+<div class="highlight-python"><pre>$ test/bin/tmrv &lt;mayaversion&gt; test/test_enum.py</pre>
+</div>
+<p>If an exception is raised in the tests, you will see it in the final output, as well as the caught standard output generated when the test case ran. The <tt class="docutils literal"><span class="pre">-d</span></tt> flag resolves traceback symbols to their actual values. In case you want to jump right into the exception when it occurs, specify <tt class="docutils literal"><span class="pre">--pdb</span></tt>. If you just have a failing test and want to inspect the variable values yourself, use <tt class="docutils literal"><span class="pre">--pdb-failure</span></tt>:</p>
+<div class="highlight-python"><pre>$ test/bin/tmrv &lt;mayaversion&gt; test/test_fails.py -d
+$ test/bin/tmrv &lt;mayaversion&gt; test/test_fails.py --pdb
+$ test/bin/tmrv &lt;mayaversion&gt; test/test_fails.py --pdb-failure</pre>
+</div>
+<p>As nose will by default catch all standard output of your program, it may also suppress messages you print during the first import of your program. To show all of these as they occur, use the <tt class="docutils literal"><span class="pre">-s</span></tt> flag:</p>
+<div class="highlight-python"><pre>$ test/bin/tmrv &lt;mayaversion&gt; test/test_startup_issues.py -s</pre>
+</div>
+<div class="section" id="testing-user-interfaces">
+<h3>Testing User Interfaces<a class="headerlink" href="#testing-user-interfaces" title="Permalink to this headline">¶</a></h3>
+<p>Testing of user interfaces used to be a manual process, which clearly degrades the reliability of software as its user interface will only be tested occasionally in an unrepeatable and possibly incomplete manner.</p>
+<p>Using python, it became far easier to automate user interface testing as your interface elements may provide a clear interface to interact with them. Within certain limits - you will most probably not get around testing a few things manually - you  can at least outline the expected functionality and verify the functionality within these bounds.</p>
+<p>The tests currently available in the <tt class="docutils literal"><span class="pre">mrv.test.maya.ui</span></tt> package are showing a few windows, the knowing user may also click a few buttons to verify that callbacks work alright. Considering the possibilities, the tests are rather primitive and are assumed to be working if there is no exception - there are <a class="reference external" href="https://github.com/mrv-developers/AnimIO">other tools</a> which do much better in that respect.</p>
+<p>These tests currently only show that the UI system is not fundamentally broken, and that Callbacks and Signals work - nonetheless the manual nature of them causes them not to be run very often.</p>
+<p>The commandline required to run the tests is the following ( all platforms ):</p>
+<div class="highlight-python"><pre>$ test/bin/tmrv [maya_version] --mrv-maya [ nose arguments ]</pre>
+</div>
+<p>In future, this testing system is likely to be improved, also considering that QT offers a <a class="reference external" href="http://qt.nokia.com/doc/4.2/qtestlib-manual.html">test library</a> which can virtualize mouse clicks and keyboard input, in order to fully automate user interface testing.</p>
+<p>Other techniques may be used to allow automated tests on default Maya user interfaces, for more information, please see the <a class="reference external" href="projects.html#template-project-label"><em>The Template Project</em></a> section.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For UI tests to work, <tt class="docutils literal"><span class="pre">mayapy</span></tt> needs to be able to import <tt class="docutils literal"><span class="pre">nose</span></tt> to run the actual tests.</p>
+</div>
+</div>
+<div class="section" id="verifying-test-coverage">
+<h3>Verifying Test Coverage<a class="headerlink" href="#verifying-test-coverage" title="Permalink to this headline">¶</a></h3>
+<p>In statically typed languages, one benefits from the great blessing of having a compiler which is able to check types and their compatibility, as well as to verify names at compile time.</p>
+<p>Unfortunately, Python will only be able to discover this big class of errors at runtime, which essentially is too late. Test cases help to run your code, but are you sure it is running every line of it ?</p>
+<p>Nose comes with an excellent tool which verifies the tests code coverage. As it needs a few options, there is a tmrv flag which configures nose to run all or the specified tests with coverage output:</p>
+<div class="highlight-python"><pre>$ test/bin/tmrv &lt;mayaversion&gt; --tmrv-coverage
+$ firefox coverage/index.html</pre>
+</div>
+<p>The resulting web page highlights all lines that ran, and shows the ones that did not run, which enables you to adjust your tests to run all the lines.</p>
+<p>At the time of writing (April 19, 2011), MRV had a <a href="../_downloads/index.html"><strong class="xref">test coverage of 90%</strong></a>, but of course <a class="reference external" href="http://www.infoq.com/news/2007/05/100_test_coverage">test coverage is not everything</a>.</p>
+</div>
+<div class="section" id="regression-testing">
+<h3>Regression Testing<a class="headerlink" href="#regression-testing" title="Permalink to this headline">¶</a></h3>
+<p>As MRV is meant to be useful in all Maya Releases which support python, namely 8.5 till X where X is the latest release, it must be verified that all tests indeed succeed in all available Maya versions, ideally on all platforms.</p>
+<p><tt class="docutils literal"><span class="pre">tmrvr</span></tt> greatly facilitates running these tests:</p>
+<div class="highlight-python"><pre>$ test/bin/tmrvr
+$ test/bin/tmrv [maya version] --mrv-maya test/maya/ui</pre>
+</div>
+</div>
+</div>
+<div class="section" id="ipython-and-imrv">
+<h2>IPython and IMRV<a class="headerlink" href="#ipython-and-imrv" title="Permalink to this headline">¶</a></h2>
+<p>During development, it is unlikely that one remembers all methods available on instances of a certain type, sometimes its required to just quickly test or verify something, or to pull up the docs on a basic but rarely used python built-in function. Searching the Web is possible, but using <tt class="docutils literal"><span class="pre">ipython</span></tt> is much more convenient.</p>
+<p><tt class="docutils literal"><span class="pre">imrv</span></tt>, one of MRVs <a class="reference external" href="../tools.html"><em>Commandline Tools</em></a>,  essentially is an ipython shell which has been setup to load a specialized version of the MRV runtime to provide you with a fully initialized MRV runtime environment:</p>
+<div class="highlight-python"><pre>$ bin/imrv</pre>
+</div>
+<div class="highlight-python"><pre>&gt;&gt;&gt; p = Node("persp")
+&gt;&gt;&gt; Transform("|persp")
+&gt;&gt;&gt;
+&gt;&gt;&gt; List all available methods on the perspective transform:
+&gt;&gt;&gt; p.&lt;tab-key&gt;
+&gt;&gt;&gt;
+&gt;&gt;&gt; Show the doc-string of a method:
+&gt;&gt;&gt; p.name?
+&gt;&gt;&gt;
+&gt;&gt;&gt; Jump into the debugger next time an exception occurs:
+&gt;&gt;&gt; pdb
+
+&gt;&gt;&gt; Disable the debugger
+&gt;&gt;&gt; pdb</pre>
+</div>
+</div>
+<div class="section" id="avoiding-trouble-a-word-about-reference-counts">
+<h2>Avoiding Trouble - A Word about Reference Counts<a class="headerlink" href="#avoiding-trouble-a-word-about-reference-counts" title="Permalink to this headline">¶</a></h2>
+<p>As MRV nearly exclusively uses the API to do work, it also allows you to use the underlying API types, MObject and MDagPath, directly.</p>
+<p>If used correctly, the benefit is performance and ease of use, but in the worst case, maya will crash - this happens more easily when using the Maya API than when using MEL for example.</p>
+<p>To understand the source of the issue, one has to understand what an MObject is: MObjects are containers with a reference count, a type and a pointer to the actual data. This in fact is very similar to the <tt class="docutils literal"><span class="pre">object</span></tt> base type in python.</p>
+<p>If you see an MObject in python, such as in the following snippet ...</p>
+<div class="highlight-python"><pre>p = Node("persp")
+po = p.object()
+&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x36a2ee0&gt; &gt;</pre>
+</div>
+<p>... what you actually see is a proxy object which serves as a python handle to the actual C++ MObject. The reference count of that proxy object is 1, as it is stored in only one named variable, <tt class="docutils literal"><span class="pre">po</span></tt>. The caveat here is that this does not affect the reference count of the underlying MObject at all - its reference count is the same as it was before. The only one who actually holds a reference to it is Maya, and it is allowed to drop it at any time, or copy its memory to a different location. If that would happen, any access to <tt class="docutils literal"><span class="pre">p</span></tt> or <tt class="docutils literal"><span class="pre">po</span></tt> may cause a crash or destabilize Maya to cause a crash later, which is even worse.</p>
+<p>The only way to forcibly increment the reference count is by copying the MObject explicitly:</p>
+<div class="highlight-python"><pre>poc = api.MObject(po)
+po, poc
+(&lt;maya.OpenMaya.MObject; proxy of C++ MObject instance at _f0d5050500000000_p_MObject&gt;,
+&lt;maya.OpenMaya.MObjectPtr; proxy of C++ MObject instance at _1008460200000000_p_MObject&gt;)</pre>
+</div>
+<p>This invoked the C++ copy constructor, and incremented the reference count on the MObject. Copying MObjects might come at additional costs though in case the MObject encapsulates data.</p>
+<p>When adding attributes with the bare python Maya API, this situation can easily occur:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">p</span><span class="o">.</span><span class="n">addAttribute</span><span class="p">(</span><span class="n">api</span><span class="o">.</span><span class="n">MFnTypedAttribute</span><span class="p">()</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;sa&quot;</span><span class="p">,</span> <span class="s">&quot;stringarray&quot;</span><span class="p">,</span> <span class="n">api</span><span class="o">.</span><span class="n">MFnData</span><span class="o">.</span><span class="n">kStringArray</span><span class="p">,</span> <span class="n">api</span><span class="o">.</span><span class="n">MFnStringArrayData</span><span class="p">()</span><span class="o">.</span><span class="n">create</span><span class="p">()))</span>
+</pre></div>
+</div>
+<p>In this example, we created two temporary function sets, <tt class="docutils literal"><span class="pre">MFnTypedAttribute</span></tt> and <tt class="docutils literal"><span class="pre">MFnStringArrayData</span></tt>. The <tt class="docutils literal"><span class="pre">create</span></tt> methods of the respective sets return newly created MObjects - the only one who keeps a reference is the actual function set. Two bad things happened in the example:</p>
+<ol class="arabic simple">
+<li><tt class="docutils literal"><span class="pre">MFnStringArrayData</span></tt> returned an MObject encapsulating an empty string array, then it goes out of scope, and decrements its reference count on the returned MObject during its destruction sequence. The MObject has no one referencing it anymore, so it will destroy itself and its data. Python still has a handle onto the memory location that once kept the MObject, and it is passed to <tt class="docutils literal"><span class="pre">MFnTypedAttribute.create</span></tt>.</li>
+<li><tt class="docutils literal"><span class="pre">MFnTypedAttribute.create</span></tt> produces a new attribute <tt class="docutils literal"><span class="pre">MObject</span></tt> with (possibly) invalid default data, returns it and destroys itself as it goes out of scope. Again, the reference count of the newly created Attribute MObject decrements to 0, which destroys the Attribute and its data. The python handle you got will be passed to the <tt class="docutils literal"><span class="pre">p.addAttribute</span></tt> method, which tries to create an attribute from deleted data.</li>
+</ol>
+<p>If you try that line, you will see that it apparently works, but its not guaranteed to do so, nor will you be able to tell whether the caused memory corruption will crash Maya at a later point.</p>
+<p>The alternative to the line above is to use the Attribute wrappers that MRV provides:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">p</span><span class="o">.</span><span class="n">addAttribute</span><span class="p">(</span><span class="n">TypedAttribute</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;sa&quot;</span><span class="p">,</span> <span class="s">&quot;stringarray&quot;</span><span class="p">,</span> <span class="n">Data</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">kStringArray</span><span class="p">,</span> <span class="n">StringArrayData</span><span class="o">.</span><span class="n">create</span><span class="p">()))</span>
+</pre></div>
+</div>
+<p>In the version above, both create methods implicitly copy the returned MObject, which forcibly increments its reference count. Once the underlying MFnFunctionSet goes out of scope, it will decrement the MObject&#8217;s reference counts to 1, keeping it alive and healthy.</p>
+<p>Generally, when dealing with MObjects directly, keep the reference count in mind especially in case of MObjects that have just been created.</p>
+<p>In c++, this is not a problem as MObjects are copied automatically when being assigned to a variable for instance or when being passed into functions ( most of the time ). If you have a proper compiler though, the above line would be invalid as well as you return temporary objects and pass them in as reference.</p>
+<p>In python, there is no compiler who would be able to check for this.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="../index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#">Workflow</a><ul>
+<li><a class="reference external" href="#id1">Test-Driven-Development</a></li>
+<li><a class="reference external" href="#running-tests">Running Tests</a><ul>
+<li><a class="reference external" href="#testing-user-interfaces">Testing User Interfaces</a></li>
+<li><a class="reference external" href="#verifying-test-coverage">Verifying Test Coverage</a></li>
+<li><a class="reference external" href="#regression-testing">Regression Testing</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#ipython-and-imrv">IPython and IMRV</a></li>
+<li><a class="reference external" href="#avoiding-trouble-a-word-about-reference-counts">Avoiding Trouble - A Word about Reference Counts</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="contribute.html"
+                                  title="previous chapter">Contributing</a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="integrate.html"
+                                  title="next chapter">Integrating MRV into Production-Pipelines</a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/develop/workflow.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="integrate.html" title="Integrating MRV into Production-Pipelines"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="contribute.html" title="Contributing"
+             >previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li>
+          <li><a href="index.html" >Development</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Apr 19, 2011.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

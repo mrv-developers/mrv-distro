@@ -1,0 +1,357 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Extensions &mdash; mrv v1.0.2-develop documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '#',
+        VERSION:     '1.0.2-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="top" title="mrv v1.0.2-develop documentation" href="index.html" />
+    <link rel="next" title="Commandline Tools" href="tools.html" />
+    <link rel="prev" title="The Template Project" href="develop/projects.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="tools.html" title="Commandline Tools"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="develop/projects.html" title="The Template Project"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="extensions">
+<h1>Extensions<a class="headerlink" href="#extensions" title="Permalink to this headline">¶</a></h1>
+<p>Although MRV is fully usable without any modifications, it was designed with extensibility in mind. This means that you can add custom node types at runtime, extend existing ones with own methods, or provide virtual subclasses that extend an existing type.</p>
+<p>MRV&#8217;s dynamic wrapping engine is based on a simple ascii text file database, which can easily be adjusted if the requirement should arise.</p>
+<div class="section" id="plugin-node-types">
+<h2>Plugin Node Types<a class="headerlink" href="#plugin-node-types" title="Permalink to this headline">¶</a></h2>
+<p>Whenever a plugin is loaded, MRV will query the registered node types and create a custom python type for them. The type in question subclasses the actual plugin type, which could be <tt class="docutils literal"><span class="pre">MFn.kPluginLocatorNode</span></tt> or <tt class="docutils literal"><span class="pre">MFn.kPluginDependNode</span></tt> for example. The truncated inheritance diagram would look like this:</p>
+<div class="highlight-python"><pre>[...]
+-&gt; DependNode
+--&gt; UnknownPluginDependNode
+---&gt; YourPluginType</pre>
+</div>
+<p>Registering own node types is simple, and an example of the required techniques is given with the <em>Persistence</em> implementation of MRV. For completeness, we outline this case. Please note that the example given here is somewhat constructed, as the persistence system in fact does not need any special registration as it is natively a part of <tt class="docutils literal"><span class="pre">mrv.maya.nt</span></tt>.</p>
+<p>The persistence plugin implements a simple Dependency Node which performs no computations, but hosts a set of attributes to store data and connections. Its implementation can be found in <tt class="docutils literal"><span class="pre">mrv.maya.nt.persistence</span></tt>. Once the plugin is loaded, MRV will be notified about the event and add a dummy node type called <tt class="docutils literal"><span class="pre">storageNode</span></tt> to its internal type hierarchy - the inheritance follows the previous example. This allows the nodes to be created and wrapped, but access to the actual data storage capabilities is not yet available:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># load the plugin</span>
+<span class="kn">from</span> <span class="nn">mrv.maya.nt</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="n">sn</span> <span class="o">=</span> <span class="n">StorageNode</span><span class="p">()</span>
+<span class="n">sn</span><span class="o">.</span><span class="n">dataIDs</span><span class="p">()</span>            <span class="c"># ERROR: default wraps have no special capabilities</span>
+</pre></div>
+</div>
+<p>The interface to access storage node data conveniently is implemented on the <tt class="docutils literal"><span class="pre">StorageNode</span></tt> type, located in <tt class="docutils literal"><span class="pre">mrv.maya.nt.storage</span></tt>. To teach MRV your new type, you have to register it. In this case its important to unregister the default type first:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># Lets assume the StorageNode implementation is not yet imported into mrv.maya.nt</span>
+<span class="kn">import</span> <span class="nn">mrv.maya.nt.storage</span> <span class="kn">as</span> <span class="nn">modstorage</span>
+<span class="kn">import</span> <span class="nn">mrv.maya.nt</span> <span class="kn">as</span> <span class="nn">nt</span>
+
+<span class="c"># remove the previous &#39;dummy&#39; type</span>
+<span class="n">nt</span><span class="o">.</span><span class="n">removeCustomType</span><span class="p">(</span><span class="s">&quot;StorageNode&quot;</span><span class="p">)</span>
+<span class="c"># add our implementation</span>
+<span class="n">nt</span><span class="o">.</span><span class="n">addCustomType</span><span class="p">(</span><span class="n">modstorage</span><span class="o">.</span><span class="n">StorageNode</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Please note that the name of your implemented type, i.e. <tt class="docutils literal"><span class="pre">StorageNode</span></tt> must match the name of the node registered by your plugin.</p>
+<p>The inheritance of your type matters, as it defines your base abilities which should match the actual type of your plugin node. In this case, the class definition of the <tt class="docutils literal"><span class="pre">StorageNode</span></tt> type looks like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># file mrv/maya/nt/storage.py</span>
+<span class="k">class</span> <span class="nc">StorageNode</span><span class="p">(</span> <span class="n">DependNode</span><span class="p">,</span> <span class="n">StorageBase</span> <span class="p">):</span>
+        <span class="p">[</span> <span class="o">...</span> <span class="p">]</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>Here we see two interesting concepts:</dt>
+<dd><p class="first">First is that we make our StorageNode type a real DependencyNode ( in the context of MRV&#8217;s type system ) simply by deriving from the type <tt class="docutils literal"><span class="pre">mrv.maya.nt.base.DependNode</span></tt>.</p>
+<p class="last">Secondly we will find the actual implementation in a type named <tt class="docutils literal"><span class="pre">StorageBase</span></tt> which allows further customizations in its initializer, which effectively allows you to create own custom types with <tt class="docutils literal"><span class="pre">StorageNode</span></tt>-Capabilities, by inheriting the default implementation.</p>
+</dd>
+</dl>
+<p>As we previously registered our type, we are now able to access additional functionality. Please note that we need a new wrap to the existing node - the previously created instance still uses the dummy type:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># create a new wrap, using the new type this time</span>
+<span class="n">snnew</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="n">sn</span><span class="o">.</span><span class="n">object</span><span class="p">())</span>
+<span class="n">snnew</span><span class="o">.</span><span class="n">dataIDs</span><span class="p">()</span>
+<span class="p">[]</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>As a summary:</dt>
+<dd><ol class="first last arabic simple">
+<li>Split your implementation into at least two modules, one for the maya plugin, one for the MRV interface ( see <tt class="docutils literal"><span class="pre">mrv.maya.nt.persistence</span></tt> and <tt class="docutils literal"><span class="pre">mrv.may.nt.storage</span></tt> )</li>
+<li>Once your plugin is loaded, remove the dummy type MRV creates for you using <tt class="docutils literal"><span class="pre">mrv.maya.nt.removeCustomType</span></tt>, and add your own one instead using <tt class="docutils literal"><span class="pre">mrv.maya.nt.addCustomType</span></tt>.</li>
+</ol>
+</dd>
+</dl>
+<p>You can automate the process of registering your implementation by putting the MRV type registration into your <tt class="docutils literal"><span class="pre">initializePlugin</span></tt> method.</p>
+<p>Although it is technically not required, you could consider it good style to unregister your own types once your plugin unloads. It should naturally be done once the <tt class="docutils literal"><span class="pre">uninitializePlugin</span></tt> method of your plugin is executed.</p>
+</div>
+<div class="section" id="virtual-subtypes">
+<h2>Virtual Subtypes<a class="headerlink" href="#virtual-subtypes" title="Permalink to this headline">¶</a></h2>
+<p><em>Virtual Subclassing</em> is a technique allowing to bring custom implementations into MRV without the need to write a plugin in order to get a custom node type.</p>
+<p>In the case of the simple <tt class="docutils literal"><span class="pre">StorageNode</span></tt> maya type, the plugin does (nearly) nothing more than defining a set of attributes that the <tt class="docutils literal"><span class="pre">StorageNode</span></tt> type implementation can operate on. There is no objection against dynamically adding these attributes to any maya node at runtime, and using the <tt class="docutils literal"><span class="pre">StorageBase</span></tt> interface to operate on it. A <strong>Virtual Subtype</strong> can be used to operate on the attributes.</p>
+<p>The most significant difference between using a custom Plugin and Virtual Subtypes is that MRV will not automatically create these for you when they are encountered, instead you have to use your own methods to wrap the Virtual Subtypes around existing nodes.</p>
+<dl class="docutils">
+<dt>The process of doing so is outlined here, for a fully working example, see <tt class="docutils literal"><span class="pre">mrv.test.maya.nt.test_general.StorageNetworkNode</span></tt> and <tt class="docutils literal"><span class="pre">mrv.test.maya.nt.test_general.test_virtual_subtype</span></tt>:</dt>
+<dd><ol class="first last arabic simple">
+<li>Derive your Virtual Subtype from an existing MRV node type, it is <em>not</em> required to be a leaf-level type.</li>
+<li>Define the <tt class="docutils literal"><span class="pre">__mrv_virtual_subtype__</span></tt> class member and set it to a True value.</li>
+<li>Create a new instance of your Virtual Subtype by wrapping an existing node of the correct maya type - your constructor (<tt class="docutils literal"><span class="pre">__new__</span></tt>) by default supports everything that <tt class="docutils literal"><span class="pre">mrv.maya.nt.base.Node</span></tt> supports, i.e. <tt class="docutils literal"><span class="pre">MyVirtualType(node.object())</span></tt> is just fine.</li>
+</ol>
+</dd>
+</dl>
+<p>Using Virtual Subtypes is a very convenient way to non-intrusively extend maya types.</p>
+<p>In case you find yourself adding convenience to basic maya types that way, you might consider putting your code directly onto the respective MRV node type and <a class="reference external" href="develop/contribute.html#contribute-label"><em>contribute it</em></a> to the project, so everyone will benefit from your improvements.</p>
+</div>
+<div class="section" id="replacing-default-node-types">
+<h2>Replacing Default Node Types<a class="headerlink" href="#replacing-default-node-types" title="Permalink to this headline">¶</a></h2>
+<p>In case Virtual Subtypes do not quite cut it and you wish to alter the behavior of existing node types, you may easily and permanently substitute in your own type. This implies that calls to <tt class="docutils literal"><span class="pre">Node</span></tt> and <tt class="docutils literal"><span class="pre">NodeFromObj</span></tt> will automatically return your type.</p>
+<dl class="docutils">
+<dt>This can be required if you are not able or willing to contribute code to MRV, but still want to completely override (parts) of the default implementation:</dt>
+<dd><ol class="first last arabic simple">
+<li>Derive your own Type ( directly or indirectly ) from the MRV node type to override and make sure your type has the same name, i.e. <tt class="docutils literal"><span class="pre">class</span> <span class="pre">Mesh(nt.Mesh)</span> <span class="pre">[...]</span></tt>. This is all you have to do as your derived type inherits a metaclass which takes care of the details.</li>
+<li>Override existing methods or add your own ones. Its important to bare in mind that you must not restrict the existing interface so that code which doesn&#8217;t expect your type continues to work properly.</li>
+</ol>
+</dd>
+</dl>
+<p>For a complete example, see <tt class="docutils literal"><span class="pre">mrv.test.maya.nt.test_general.test_replacing_default_node_types</span></tt>.</p>
+<p>This procedure is not recommended for software that is distributed into uncontrolled environments as you can never be sure that you don&#8217;t affect existing code negatively.</p>
+<p>Please note that this technique can only be used to replace leaf node types, that is types with no additional child types. As all of the foundation classes, from which each node type inherits, are already implemented in MRV, replacing these foundation classes would not affect the existing leaf node types as they have been created with the previous base classes already - these cannot be changed anymore.</p>
+<p>If you need to override existing base functionality, for example to customize the <tt class="docutils literal"><span class="pre">__str__</span></tt> representation of nodes, consider using monkey patching techniques, which may only be done in highly controlled code environments.</p>
+<p>For an example of the presented aspects, see <tt class="docutils literal"><span class="pre">mrv.test.maya.nt.test_general.test_replace_non_leaf_node_types</span></tt>.</p>
+</div>
+<div class="section" id="plugin-node-types-revisited">
+<h2>Plugin Node Types Revisited<a class="headerlink" href="#plugin-node-types-revisited" title="Permalink to this headline">¶</a></h2>
+<p>Considering that a simple type deriving from a MRV node type already creates a valid MRV type that will be returned by <tt class="docutils literal"><span class="pre">Node</span></tt> and <tt class="docutils literal"><span class="pre">NodeFromObj</span></tt>, the <tt class="docutils literal"><span class="pre">addCustomType</span></tt> method might seem dispensable.</p>
+<p>In fact this is True as the plugin-changed event carried out by MRV once your plugin loaded will never overwrite existing types, hence it does not matter whether your custom types gets imported before or after your plugin was loaded. If it was imported beforehand, your custom type will not be overwritten, if it is imported afterwards, your custom type will overwrite the dummy type automatically.</p>
+<p>The only difference compared to using <tt class="docutils literal"><span class="pre">addCustomType</span></tt> is that the internal node inheritance tree will be updated with your custom type. This does not happen if the type is automatically added to the <tt class="docutils literal"><span class="pre">nt</span></tt> package by the metaclass. The tree is used by the <tt class="docutils literal"><span class="pre">createNode</span></tt> method to predetermine whether the node to be created is a dag or a dg node. In the general case, this will work even if <tt class="docutils literal"><span class="pre">addCustomType</span></tt>
+was not used as the default type added to the tree already identifies it ( assuming it was not removed using <tt class="docutils literal"><span class="pre">removeCustomType</span></tt> ). If it was removed, <tt class="docutils literal"><span class="pre">createNode</span></tt> will still work although it might do slightly more work.</p>
+</div>
+<div class="section" id="convenience-by-contribution">
+<h2>Convenience by Contribution<a class="headerlink" href="#convenience-by-contribution" title="Permalink to this headline">¶</a></h2>
+<p>In case you find yourself writing certain convenience methods over and over again, you might as well consider to contribute you code to the MRV project.</p>
+<p>In the most common case, convenience can be added directly to the node type in question. This requires you to find the implementation of the type. There it is totally valid to add new methods according to your liking. An example for this would be the <tt class="docutils literal"><span class="pre">Mesh</span></tt> implementation, which can be found in the <tt class="docutils literal"><span class="pre">mrv.maya.nt.geometry</span></tt> module:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Mesh</span><span class="p">(</span><span class="n">SurfaceShape</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">getTweaks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="p">[</span> <span class="n">implementation</span> <span class="p">]</span>
+</pre></div>
+</div>
+<p>If the type in question has not been implemented yet, it can be added to an existing or new module in the <tt class="docutils literal"><span class="pre">mrv.maya.nt</span></tt> package. As this package is only being accessed as a whole, its absolutely valid and common practice to reorganize the types within the modules as the modules grow.</p>
+<p>If you intend to adjust MRVs code base, please have a closer look at the <a class="reference external" href="develop/workflow.html#development-workflow-label"><em>Workflow</em></a> section. In short words, its important to use git during development as it keeps you connected to the mainline of the development, and once you have cloned the MRV repository hosted at <a class="reference external" href="https://github.com/mrv-developers/mrv">https://github.com/mrv-developers/mrv</a>, you are ready to go.</p>
+<p>Even if you don&#8217;t want to ( or cannot ) contribute it is highly advised to work on a git clone of the MRV mainline as git will allow you to rebase your changes onto the latest version.</p>
+</div>
+</div>
+<div class="section" id="the-database">
+<span id="database-label"></span><h1>The Database<a class="headerlink" href="#the-database" title="Permalink to this headline">¶</a></h1>
+<p>MRV provides python wrappers for the MObjects and MDagPaths used by the maya API. These wrappers come in a massive amount of Types - each maya node type, DataType, AttributeType and ComponentType has a representation within python - although within maya, these are only MObjects or MDagPaths respectively.</p>
+<p>MRVs type system is defined in a database which allows to define all of these types automatically. Auto-created types are complemented by hand-written code whenever required, or based on hand-implemented base types.</p>
+<div class="section" id="file-types">
+<h2>File Types<a class="headerlink" href="#file-types" title="Permalink to this headline">¶</a></h2>
+<p>The database consists of simple text files which come in two formats, <em>P.ipe S.eparated F.ile</em> and <em>H.ierarchy F.ile</em>. Both types are human readable, human editable, and extremely easy to parse.</p>
+<div class="section" id="hierarchy-file">
+<h3>Hierarchy File<a class="headerlink" href="#hierarchy-file" title="Permalink to this headline">¶</a></h3>
+<p>As the name suggest, the hierarchy file represents a simple hierarchy of items. Items are encoded in ascii and may contain all characters but &lt;tab&gt; or &lt;newline&gt;. Each tab-indentation in the file increases the level at which the following item is set:</p>
+<div class="highlight-python"><pre>root
+    parent
+            child
+                    subchild
+    parent2
+    [...]</pre>
+</div>
+</div>
+<div class="section" id="pipe-separated-file">
+<h3>Pipe Separated File<a class="headerlink" href="#pipe-separated-file" title="Permalink to this headline">¶</a></h3>
+<p>This file format is somewhat similar to the CSV file standard, the separator is a pipe in this case. It has a fixed amount of columns and any amount of rows. The items separated by the pipe may contain ascii characters, excluding a pipe and newline:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Project</span> <span class="o">|</span> <span class="n">Maintainer</span> <span class="o">|</span> <span class="n">Nationality</span>
+<span class="n">MRV</span>     <span class="o">|</span> <span class="n">Sebastian</span>  <span class="o">|</span> <span class="n">German</span>
+</pre></div>
+</div>
+<p>It is up to the implementor which information is put into the actual rows - in this example, we have a dedicated header line. MRV does not use a header line though as the column&#8217;s meaning is predefined in code.</p>
+</div>
+</div>
+<div class="section" id="node-type-hierarchy">
+<h2>Node Type Hierarchy<a class="headerlink" href="#node-type-hierarchy" title="Permalink to this headline">¶</a></h2>
+<p>MRV keeps the hierarchy of all built-in maya node types, data types, attribute types and component types in files called <tt class="docutils literal"><span class="pre">nodeHierarchy&lt;mayaversion&gt;.hf</span></tt>, hence each maya release has its own file. This is because with each maya release, at least one built-in type base changes name, or moves in the hierarchy, which makes the tree incompatible between the releases.</p>
+<p>The tree is generated automatically, and does not contain any plugin nodes. Plugin nodes are supported by providing plugin base types, such as <tt class="docutils literal"><span class="pre">unknownPluginDependNode</span></tt> or <tt class="docutils literal"><span class="pre">unknownPluginLocatorNode</span></tt>, which serve as base class for dynamically generated plugin wrapper types added when the plugin loads.</p>
+</div>
+<div class="section" id="mapping-mfnfunctionsets-to-nodetypes">
+<h2>Mapping MFnFunctionSets to NodeTypes<a class="headerlink" href="#mapping-mfnfunctionsets-to-nodetypes" title="Permalink to this headline">¶</a></h2>
+<p>Maya node types may be compatible to one or more function sets, which are prefixed with <tt class="docutils literal"><span class="pre">MFn</span></tt> within the Maya API. Information about which function set can be attached to which node type is held in a file called <tt class="docutils literal"><span class="pre">nodeTypeToMfnCls.map</span></tt>, defining a simple one-on-one mapping.</p>
+<p>As node types derive from each other, all sub types are automatically compatible to the function sets of their base types. All Dag Nodes support the <tt class="docutils literal"><span class="pre">MFnDagNode</span></tt> function set for example.</p>
+<p>As MRV also provides custom ( but fully maya API compatible ) types for Data, Components and Attributes, their function set mappings are listed in that file as well.</p>
+<p>As maya only adds new function sets between the versions, but does not alter the compatibility of existing ones, it is possible to have one file for all maya versions. It will always represent the state of the latest available release.</p>
+</div>
+<div class="section" id="mfn-database-files">
+<span id="mfnmethodmutator-label"></span><h2>MFn Database Files<a class="headerlink" href="#mfn-database-files" title="Permalink to this headline">¶</a></h2>
+<p>Each node type may call any method on any of its compatible function sets. The way how these methods are called, and more, is defined in the pipe separated files of the MFn Database. Each function set has its own database file in the following format:</p>
+<div class="highlight-python"><pre>flags | methodname      | rvalue conversion function | alias
+      | parentNamespace | Namespace                  | namespace
+  x   | setName         | None                       |</pre>
+</div>
+<ul>
+<li><dl class="first docutils">
+<dt><strong>flags</strong></dt>
+<dd><p class="first last">Currently supported method flags are <strong>x</strong> which makes the method in question unavailable for calls. This is done if there is a more specialized method available in MRV. <tt class="docutils literal"><span class="pre">setName</span></tt> for example will change the name of the node without undo support, the corresponding <tt class="docutils literal"><span class="pre">rename</span></tt> method implemented by MRV supports undo and more.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><strong>methodname</strong></dt>
+<dd><p class="first last">The original name of the function set method.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><strong>rval value conversion function</strong></dt>
+<dd><p class="first last">If set, the return value of the method in question will be passed to the conversion function, which in turn returns a converted type compatible to the inserted one. Its used mainly to automatically convert return values of MFn methods into the respective MRV type.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><strong>alias</strong></dt>
+<dd><p class="first last">An optional alias for the MFn method. If set, the method can be called using the original <em>or</em> the alias name. The method <tt class="docutils literal"><span class="pre">parentNamespace</span></tt> for instance can just be called using <tt class="docutils literal"><span class="pre">namespace</span></tt> for convenience.
+MRV will only provide an alias if the new name is significantly more convenient to use, easier to remember, or just less &#8216;out-of-place&#8217; than the original method name, but it will not be used to try to fix perceived maya API method naming inconsistencies.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Please note that the database is manually maintained at the current time - future releases will add functionality to auto-set certain values according to reasonable rules. This means the database will continue to be hand-editable to stay in maximum control, but maintenance will become easier.</p>
+<p>As the Maya API never changes the signature of existing methods, or removes them completely, its valid to keep only one MFn Database for all maya releases.</p>
+</div>
+<div class="section" id="upgrading-to-a-new-maya-release">
+<h2>Upgrading to a new Maya Release<a class="headerlink" href="#upgrading-to-a-new-maya-release" title="Permalink to this headline">¶</a></h2>
+<p>Whenever a new major maya release hits the scene, it is required to update the database with the latest additions and more importantly, changes to the node hierarchy.</p>
+<p>To achieve this proceed as follows:</p>
+<blockquote>
+<ol class="arabic simple">
+<li>Create the new branch &#8216;release_upgrade&#8217; and check it out.</li>
+<li>In <tt class="docutils literal"><span class="pre">mrv/cmd/base.py</span></tt> add a new mayaversion|pyversion string matching your maya and python version. You cannot start bin/mrv &lt;mayaversion&gt; if this was not adjusted.</li>
+</ol>
+<blockquote>
+<ul class="simple">
+<li>e.g. 2012: 2.7</li>
+</ul>
+</blockquote>
+<ol class="arabic">
+<li><p class="first">In <tt class="docutils literal"><span class="pre">mrv.test.maya.test_mdb</span></tt>, remove the <em>_DISABLED_</em> portion in front of the <tt class="docutils literal"><span class="pre">test_init_new_maya_release</span></tt></p>
+</li>
+<li><p class="first">Run the test using the new maya release, for example:</p>
+<div class="highlight-python"><pre>Runs the upgrade procedure for maya 2020 from the root of the repository.
+test/bin/tmrv 2020 test/maya/test_mdb.py -s</pre>
+</div>
+</li>
+<li><p class="first">Go through the list of instructions printed on screen, commit your changes and merge your branch into master.</p>
+</li>
+</ol>
+</blockquote>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#">Extensions</a><ul>
+<li><a class="reference external" href="#plugin-node-types">Plugin Node Types</a></li>
+<li><a class="reference external" href="#virtual-subtypes">Virtual Subtypes</a></li>
+<li><a class="reference external" href="#replacing-default-node-types">Replacing Default Node Types</a></li>
+<li><a class="reference external" href="#plugin-node-types-revisited">Plugin Node Types Revisited</a></li>
+<li><a class="reference external" href="#convenience-by-contribution">Convenience by Contribution</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#the-database">The Database</a><ul>
+<li><a class="reference external" href="#file-types">File Types</a><ul>
+<li><a class="reference external" href="#hierarchy-file">Hierarchy File</a></li>
+<li><a class="reference external" href="#pipe-separated-file">Pipe Separated File</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#node-type-hierarchy">Node Type Hierarchy</a></li>
+<li><a class="reference external" href="#mapping-mfnfunctionsets-to-nodetypes">Mapping MFnFunctionSets to NodeTypes</a></li>
+<li><a class="reference external" href="#mfn-database-files">MFn Database Files</a></li>
+<li><a class="reference external" href="#upgrading-to-a-new-maya-release">Upgrading to a new Maya Release</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="develop/projects.html"
+                                  title="previous chapter">The Template Project</a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="tools.html"
+                                  title="next chapter">Commandline Tools</a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="_sources/extend.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="tools.html" title="Commandline Tools"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="develop/projects.html" title="The Template Project"
+             >previous</a> |</li>
+        <li><a href="index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Apr 19, 2011.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

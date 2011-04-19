@@ -1,0 +1,244 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Performance and Memory Considerations &mdash; mrv v1.0.2-develop documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.2-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="mrv v1.0.2-develop documentation" href="../index.html" />
+    <link rel="up" title="Development" href="index.html" />
+    <link rel="next" title="Distribution" href="distribute/index.html" />
+    <link rel="prev" title="Integrating MRV into Production-Pipelines" href="integrate.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="distribute/index.html" title="Distribution"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="integrate.html" title="Integrating MRV into Production-Pipelines"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Development</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="performance-and-memory-considerations">
+<span id="performance-docs-label"></span><h1>Performance and Memory Considerations<a class="headerlink" href="#performance-and-memory-considerations" title="Permalink to this headline">¶</a></h1>
+<p>MRV has been created with performance in mind. Core code as gone through several iteration in order to be as fast as it can possibly be within python. This is beneficial to the developer as he can be sure that conveniently written code will run at a high pace.
+Usually this kind of code is the most readable and the most maintainable which is why it is preferred. Nonetheless there are situations when performance outweighs code maintainability. This section explains what to look out for and how to improve the performance of your programs.</p>
+<p>The respective tips are listed in the order of simplicity and effect, hence simpler and more effective ways to enhance performance come first.</p>
+<div class="section" id="iterators">
+<h2>Iterators<a class="headerlink" href="#iterators" title="Permalink to this headline">¶</a></h2>
+<p>When operating in large scenes, its important to limit the amount of nodes that are returned by iterators. The fastest way to do this is to use an MFn.kType pre-filter to limit the yielded Nodes to certain types. As the pre-filtering will happen in C++, it will be very fast:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">iterDagNodes</span><span class="p">(</span><span class="n">api</span><span class="o">.</span><span class="n">MFn</span><span class="o">.</span><span class="n">kTransform</span><span class="p">,</span> <span class="n">api</span><span class="o">.</span><span class="n">MFn</span><span class="o">.</span><span class="n">kShape</span><span class="p">)</span>                <span class="c"># Fast !</span>
+<span class="n">iterDagNodes</span><span class="p">(</span><span class="n">predicate</span><span class="o">=</span><span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="p">(</span><span class="n">Transform</span><span class="p">,</span> <span class="n">Shape</span><span class="p">)))</span>     <span class="c"># slow and wasteful</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="undo">
+<h2>Undo<a class="headerlink" href="#undo" title="Permalink to this headline">¶</a></h2>
+<p>Turn off the undo queue completely by setting the MRV_UNDO_ENABLED=0 in your environment. This will reduce overhead by at least 10% and increase the performance of many core methods. As a positive side-effect, you have more memory at runtime as the undoqueue will not store the history of operations.</p>
+<p>Turning off the undo queue is feasible if you run in maya batch mode and a very easy way to speed up programs.</p>
+</div>
+<div class="section" id="single-vs-multi">
+<h2>Single vs. Multi<a class="headerlink" href="#single-vs-multi" title="Permalink to this headline">¶</a></h2>
+<p>Many programs operate on multiple objects of the same type, as a lot of work needs to be done. Interestingly, many API&#8217;s seem to embrace the &#8216;single object operation&#8217;  paradigm which means that you have to call a single method on all objects individually.</p>
+<p>Considering that some boilerplate is involved with each call, which may even weigh more than the actual operation you intend to apply, it obvious that methods that operate on multiple objects at the same time are preferable in many cases.</p>
+<p>The Maya API actually does mainly well here, and even though you will find many single object operations, there are many multi-object operations as well.</p>
+<p>This implies that it might be worth accumulating the objects you want to work on before sending it to a multi method, which will ideally process the bunch within c++. This costs memory, but will be faster, but memory &lt;-&gt; performance tradeoffs are very common in general.</p>
+<p>There are times when you may use iterators instead of lists, they combine the benefits of passing in multiple objects ( at a slight overhead ) without notable memory consumption.</p>
+<p>A method worth noting at this point is <tt class="docutils literal"><span class="pre">MPlug.mconnectMultiToMulti</span></tt>, which connects multiple source to multiple destination plugs. It also adds the benefit that it will more efficiently deal with the undo queue, effectively boosting the performance by factor 8 to 14.</p>
+</div>
+<div class="section" id="convenience-methods">
+<h2>Convenience Methods<a class="headerlink" href="#convenience-methods" title="Permalink to this headline">¶</a></h2>
+<p>Use specialized methods instead of generic ones. Generic methods that accept different types of inputs have to figure out what these types are in order to handle them correctly, each time you call. This is very wasteful especially if your input types do not change in that 20k iteration loop of yours.</p>
+<p>That kind of code will perform better if the specialized version of the method is used instead - it only takes a specific input type and comes right to the point.</p>
+<p>An example for this would be the overridden <tt class="docutils literal"><span class="pre">__getitem__</span></tt> method of the patched <tt class="docutils literal"><span class="pre">MPlug</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">names</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;persp&quot;</span><span class="p">,</span> <span class="s">&quot;top&quot;</span><span class="p">,</span> <span class="s">&quot;time.output&quot;</span><span class="p">)</span>
+<span class="n">sl</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">MSelectionList</span><span class="o">.</span><span class="n">mfromList</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>    <span class="c"># slow(er)</span>
+<span class="n">sl</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">MSelectionList</span><span class="o">.</span><span class="n">mfromStrings</span><span class="p">(</span><span class="n">names</span><span class="p">)</span> <span class="c"># better</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="findplug-vs-node-plug">
+<h2>findPlug vs. node.plug<a class="headerlink" href="#findplug-vs-node-plug" title="Permalink to this headline">¶</a></h2>
+<p>In fact, using the <tt class="docutils literal"><span class="pre">node.plug</span></tt> convention is a convenience method as well. Internally some processing is needed figure out that you actually want a plug. A more direct way to retrieve plugs is by using the <tt class="docutils literal"><span class="pre">findPlug('plug')</span></tt> method which boost plug lookup performance by quite exactly 7%:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">iterDagNodes</span><span class="p">(</span><span class="n">api</span><span class="o">.</span><span class="n">MFn</span><span class="o">.</span><span class="n">kTransform</span><span class="p">):</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">findPlug</span><span class="p">(</span><span class="s">&#39;tx&#39;</span><span class="p">)</span>  <span class="c"># 7% faster than ...</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">tx</span>              <span class="c"># ... this</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="api-calling-convention">
+<h2>_api_ calling convention<a class="headerlink" href="#api-calling-convention" title="Permalink to this headline">¶</a></h2>
+<p>What happens whenever you call a method on a wrapped node is the following:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">node</span><span class="o">.</span><span class="n">findPlug</span><span class="p">(</span><span class="s">&#39;plugname&#39;</span><span class="p">)</span>
+<span class="c"># this is equivalent to ...</span>
+<span class="n">mfninst</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">MFnDependencyNode</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">getMObject</span><span class="p">())</span>
+<span class="n">mfninst</span><span class="o">.</span><span class="n">findPlug</span><span class="p">(</span><span class="s">&#39;plugname&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>As you see, you get a temporary function set which gets wrapped around the MObject or MDagPath associated with your node. This is costly as it involves the instantiation of a function set with an API object as well as an API function call. This will happen each time you call the function, even though it would be possible and better to reuse an existing function set.</p>
+<dl class="docutils">
+<dt>The <tt class="docutils literal"><span class="pre">_api_</span></tt> calling convention does two things.</dt>
+<dd><ul class="first last simple">
+<li>For patched API types, like MPlug, you receive the original, unpatched instance method.</li>
+<li>For Node types, _api_ will return a method which reuses its initialized function set. This will cache the function set, the associated api object as well as the function object itself directly on your node.</li>
+</ul>
+</dd>
+</dl>
+<p>To illustrate the _api_ convention on Node types, have a look at this example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">10000</span><span class="p">):</span>
+        <span class="n">perspShape</span><span class="o">.</span><span class="n">focalLength</span><span class="p">()</span>               <span class="c"># much overhead for every call</span>
+        <span class="n">topShape</span><span class="o">.</span><span class="n">_api_focalLength</span><span class="p">()</span>            <span class="c"># very fast after first call</span>
+</pre></div>
+</div>
+<p>Its good to know about the _api_convention, but it clearly does <em>not</em> mean that you should preventively make all calls using it. This is because the performance gain shows up after the first call only, and only on that specific node. First the cache is built, and used in subsequent calls. In practice, it is unlikely that you are going to repeatetly call the same function on the same node in a tight loop.</p>
+<p>Also its worth considering that the cache consumes additional memory, an MFn function set is instantiated and cached for each _api_ call on a Node.</p>
+<p>Last but not least, its worth noting that maya controls the lifetime of your API Objects, hence these should not be cached. The _api_ cache usually is very short-lived though and should not make trouble, but it stays a cached MObject within a cached function of the corresponding MFnFunctionSet.</p>
+<p>If you find yourself using _api_ method calls all the time, you might consider using the respective function set directly:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">mfncamera</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">MFnCamera</span><span class="p">(</span><span class="n">topShape</span><span class="o">.</span><span class="n">getMObject</span><span class="p">())</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">10000</span><span class="p">):</span>
+        <span class="n">mfncamera</span><span class="o">.</span><span class="n">focalLength</span><span class="p">()</span>
+        <span class="c"># ... make additional calls at no additional overhead.</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="python-method-caching">
+<h2>Python Method Caching<a class="headerlink" href="#python-method-caching" title="Permalink to this headline">¶</a></h2>
+<p>Generally within python, each attribute access costs time, time that tends to matter in tight loops. You can gain a lot of performance by caching the methods and attributes you have to use in local variables. The previous example could be rewritten like this, maximizing the examples performance:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">mfncamera</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">MFnCamera</span><span class="p">(</span><span class="n">topShape</span><span class="o">.</span><span class="n">getMObject</span><span class="p">())</span>
+<span class="n">getFocalLength</span> <span class="o">=</span> <span class="n">mfncamera</span><span class="o">.</span><span class="n">focalLength</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">10000</span><span class="p">):</span>
+        <span class="n">getFocalLength</span><span class="p">()</span>                        <span class="c"># as fast as it gets</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="node-wrapping">
+<h2>Node-Wrapping<a class="headerlink" href="#node-wrapping" title="Permalink to this headline">¶</a></h2>
+<p>MRV is very aware of the fact that the added convenience comes at a cost. Where programming convenience and programmer&#8217;s efficiency is improved, its likely that the runtime of the resulting programs is much less than optimal.</p>
+<p>Here its important to make a tradeoff by keeping the code maintainable and readable in most spots, and to optimize it only where it matters.</p>
+<p>The wrapping of Nodes takes a considerable amount of time. On a 2 Ghz dual core machine you will get no more than 80k wrapped nodes per second. Turning the wrapping off and going bare API is supported by all methods which automatically wrap nodes, the kwarg is always named <tt class="docutils literal"><span class="pre">asNode</span></tt> which should be set to False in order to get bare MObjects or MDagPaths. This implies that you have to use MFn function sets explicitly:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">mfndag</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">MFnDagNode</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">mdagpath</span> <span class="ow">in</span> <span class="n">iterDagNodes</span><span class="p">(</span><span class="n">api</span><span class="o">.</span><span class="n">MFn</span><span class="o">.</span><span class="n">kTransform</span><span class="p">,</span> <span class="n">asNode</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>         <span class="c"># uses pre-filter as well</span>
+        <span class="n">mfndag</span><span class="o">.</span><span class="n">setObject</span><span class="p">(</span><span class="n">mdagpath</span><span class="p">)</span>              <span class="c"># initialize the function set ...</span>
+        <span class="n">mfndag</span><span class="o">.</span><span class="n">findPlug</span><span class="p">(</span><span class="s">&#39;translate&#39;</span><span class="p">)</span>    <span class="c"># ... and use it</span>
+</pre></div>
+</div>
+<p>Combining this example with the Python Method Caching, you can maximize the performance of the given example by writing:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">mfndag</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">MFnDagNode</span><span class="p">()</span>
+<span class="n">setObject</span> <span class="o">=</span> <span class="n">mfndag</span><span class="o">.</span><span class="n">setObject</span>
+<span class="n">findPlug</span> <span class="o">=</span> <span class="n">mfndag</span><span class="o">.</span><span class="n">findPlug</span>
+<span class="k">for</span> <span class="n">mdagpath</span> <span class="ow">in</span> <span class="n">iterDagNodes</span><span class="p">(</span><span class="n">api</span><span class="o">.</span><span class="n">MFn</span><span class="o">.</span><span class="n">kTransform</span><span class="p">,</span> <span class="n">asNode</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>         <span class="c"># uses pre-filter as well</span>
+        <span class="n">setObject</span><span class="p">(</span><span class="n">mdagpath</span><span class="p">)</span>
+        <span class="n">findPlug</span><span class="p">(</span><span class="s">&#39;translate&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The only way to make the previous example even faster is to use the dag node iterator directly with cached methods. This is usually not worth the effort though and will add even more boilerplate code which at some point might just not be worth the maintenance effort anymore.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="../index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#">Performance and Memory Considerations</a><ul>
+<li><a class="reference external" href="#iterators">Iterators</a></li>
+<li><a class="reference external" href="#undo">Undo</a></li>
+<li><a class="reference external" href="#single-vs-multi">Single vs. Multi</a></li>
+<li><a class="reference external" href="#convenience-methods">Convenience Methods</a></li>
+<li><a class="reference external" href="#findplug-vs-node-plug">findPlug vs. node.plug</a></li>
+<li><a class="reference external" href="#api-calling-convention">_api_ calling convention</a></li>
+<li><a class="reference external" href="#python-method-caching">Python Method Caching</a></li>
+<li><a class="reference external" href="#node-wrapping">Node-Wrapping</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="integrate.html"
+                                  title="previous chapter">Integrating MRV into Production-Pipelines</a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="distribute/index.html"
+                                  title="next chapter">Distribution</a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/develop/performance.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="distribute/index.html" title="Distribution"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="integrate.html" title="Integrating MRV into Production-Pipelines"
+             >previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li>
+          <li><a href="index.html" >Development</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Apr 19, 2011.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

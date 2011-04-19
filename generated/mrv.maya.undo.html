@@ -1,0 +1,826 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>mrv.maya.undo &mdash; mrv v1.0.2-develop documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.2-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="mrv v1.0.2-develop documentation" href="../index.html" />
+    <link rel="next" title="mrv.maya.env" href="mrv.maya.env.html" />
+    <link rel="prev" title="mrv.maya.scene" href="mrv.maya.scene.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.env.html" title="mrv.maya.env"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.scene.html" title="mrv.maya.scene"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-mrv.maya.undo">
+<h1><tt class="xref docutils literal"><span class="pre">mrv.maya.undo</span></tt><a class="headerlink" href="#module-mrv.maya.undo" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="api/mrv.maya.undo-module.html">Epydoc: mrv.maya.undo</a></p>
+<p>Contains the undo engine allowing to adjust the scene with api commands while
+providing full undo and redo support.</p>
+<div class="section" id="features">
+<h2>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<ul class="simple">
+<li>modify dag or dg using the undo-enabled DG and DAG modifiers</li>
+<li>modify values using Nodes and their plugs (as the plugs are overridden
+to store undo information)</li>
+</ul>
+</blockquote>
+</div>
+<div class="section" id="limitations">
+<h2>Limitations<a class="headerlink" href="#limitations" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<ul class="simple">
+<li>You cannot mix mel and API proprely unless you use an MDGModifier.commandToExecute</li>
+<li>Calling operations that flush the undo queue from within an undoable method
+causes the internal python undo stack not to be flushed, leaving dangling objects
+that might crash maya once they are undon.</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>WORKAROUND: Mark these methods with &#64;notundoable and assure they are not
+called by an undoable method</li>
+</ul>
+</blockquote>
+<ul class="simple">
+<li>calling MFn methods on a node usually means that undo is not supported for it.</li>
+</ul>
+</blockquote>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>To globally disable the undo queue using cmds.undo will disable tracking of opeartions, but will
+still call the mel command.</p>
+<p>Disable the &#8216;undoable&#8217; decorator effectively remove the surrounding mel script calls
+by setting the <tt class="docutils literal"><span class="pre">MRV_UNDO_ENABLED</span></tt> environment variable to 0 (default 1). 
+Additionally it will turn off the maya undo queue as a convenience.</p>
+<p>If the mrv undo queue is disabled, MPlugs will not store undo information anymore
+and do not incur any overhead.</p>
+</div>
+<div class="section" id="implementing-an-undoable-method">
+<h2>Implementing an undoable method<a class="headerlink" href="#implementing-an-undoable-method" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<ul class="simple">
+<li>decorate with &#64;undoable</li>
+<li>minimize probability that your operation will fail before creating an operation (for efficiency)</li>
+<li>only use operation&#8217;s doIt() method to apply your changes</li>
+<li>if you raise, you should not have created an undo operation</li>
+</ul>
+</blockquote>
+</div>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mrv.maya.undo.__initialize">
+<tt class="descclassname">mrv.maya.undo.</tt><tt class="descname">__initialize</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.__initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assure our plugin is loaded - called during module intialization</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">will only load the plugin if the undo system is not disabled</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.undo._decrStack">
+<tt class="descclassname">mrv.maya.undo.</tt><tt class="descname">_decrStack</tt><big>(</big><em>name='unnamed'</em><big>)</big><a class="headerlink" href="#mrv.maya.undo._decrStack" title="Permalink to this definition">¶</a></dt>
+<dd>Indicate that a method level was exitted - and cause the
+undo queue to be stored on the command if appropriate
+We try to call the command only if needed</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.undo._incrStack">
+<tt class="descclassname">mrv.maya.undo.</tt><tt class="descname">_incrStack</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo._incrStack" title="Permalink to this definition">¶</a></dt>
+<dd>Indicate that a new method level was reached</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.undo.endUndo">
+<tt class="descclassname">mrv.maya.undo.</tt><tt class="descname">endUndo</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.endUndo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call before your function with undoable operations ends</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">prefer the &#64;undoable decorator</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.undo.forceundoable">
+<tt class="descclassname">mrv.maya.undo.</tt><tt class="descname">forceundoable</tt><big>(</big><em>func</em><big>)</big><a class="headerlink" href="#mrv.maya.undo.forceundoable" title="Permalink to this definition">¶</a></dt>
+<dd><p>As undoable, but will enable the undo queue if it is currently disabled. It will 
+forcibly enable maya&#8217;s undo queue.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">can only be employed reasonably if used in conjunction with <cite>undoAndClear</cite>
+as it will restore the old state of the undoqueue afterwards, which might be off, thus
+rendering attempts to undo impossible</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.undo.initializePlugin">
+<tt class="descclassname">mrv.maya.undo.</tt><tt class="descname">initializePlugin</tt><big>(</big><em>mobject</em><big>)</big><a class="headerlink" href="#mrv.maya.undo.initializePlugin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.undo.notundoable">
+<tt class="descclassname">mrv.maya.undo.</tt><tt class="descname">notundoable</tt><big>(</big><em>func</em><big>)</big><a class="headerlink" href="#mrv.maya.undo.notundoable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator wrapping a function into a muteUndo call, thus all undoable operations
+called from this method will not enter the UndoRecorder and thus pollute it.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">use it if your method cannot support undo, butcalls undoable operations itself</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">all functions using a notundoable should be notundoable themselves</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">does nothing if the undo queue is globally disabled</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.undo.startUndo">
+<tt class="descclassname">mrv.maya.undo.</tt><tt class="descname">startUndo</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.startUndo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call before you start undoable operations</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">prefer the &#64;undoable decorator</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.undo.undoAndClear">
+<tt class="descclassname">mrv.maya.undo.</tt><tt class="descname">undoAndClear</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.undoAndClear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Undo all operations on the undo stack and clear it afterwards. The respective
+undo command will do nothing once undo, but would undo all future operations.
+The state of the undoqueue is well defined afterwards, but callers may stop functioning
+if their changes have been undone.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">can be used if you need control over undo in very specific operations and in
+a well defined context</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.undo.undoable">
+<tt class="descclassname">mrv.maya.undo.</tt><tt class="descname">undoable</tt><big>(</big><em>func</em><big>)</big><a class="headerlink" href="#mrv.maya.undo.undoable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator wrapping func so that it will start undo when it begins and end undo
+when it ends. It assures that only toplevel undoable functions will actually produce
+an undo event
+To mark a function undoable, decorate it:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="nd">@undoable</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">func</span><span class="p">():</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">pass</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Using decorated functions appears to be only FASTER  than implementing it
+manually, thus using these is will greatly improve code readability</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">if you use undoable functions, you should mark yourself undoable too - otherwise the
+functions you call will create individual undo steps</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">if the undo queue is disabled, the decorator does nothing</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.maya.undo.uninitializePlugin">
+<tt class="descclassname">mrv.maya.undo.</tt><tt class="descname">uninitializePlugin</tt><big>(</big><em>mobject</em><big>)</big><a class="headerlink" href="#mrv.maya.undo.uninitializePlugin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="api/mrv.maya.undo.DGModifier-class.html">Epydoc: mrv.maya.undo.DGModifier</a></p>
+<dl class="class">
+<dt id="mrv.maya.undo.DGModifier">
+<em class="property">class </em><tt class="descclassname">mrv.maya.undo.</tt><tt class="descname">DGModifier</tt><a class="headerlink" href="#mrv.maya.undo.DGModifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.maya.undo.Operation" class="reference internal" href="#mrv.maya.undo.Operation"><tt class="xref docutils literal"><span class="pre">mrv.maya.undo.Operation</span></tt></a></p>
+<p>Undo-aware DG Modifier - using it will automatically put it onto the API undo queue</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">You MUST call doIt() before once you have instantiated an instance, even though you
+have nothing on it. This requiredment is related to the undo queue mechanism</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">May NOT derive directly from dg modifier!</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mrv.maya.undo.DGModifier.doIt">
+<tt class="descname">doIt</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.DGModifier.doIt" title="Permalink to this definition">¶</a></dt>
+<dd>Override from Operation</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.undo.DGModifier.undoIt">
+<tt class="descname">undoIt</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.DGModifier.undoIt" title="Permalink to this definition">¶</a></dt>
+<dd>Override from Operation</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.undo.DagModifier-class.html">Epydoc: mrv.maya.undo.DagModifier</a></p>
+<dl class="class">
+<dt id="mrv.maya.undo.DagModifier">
+<em class="property">class </em><tt class="descclassname">mrv.maya.undo.</tt><tt class="descname">DagModifier</tt><a class="headerlink" href="#mrv.maya.undo.DagModifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.maya.undo.DGModifier" class="reference internal" href="#mrv.maya.undo.DGModifier"><tt class="xref docutils literal"><span class="pre">mrv.maya.undo.DGModifier</span></tt></a></p>
+<p>undo-aware DAG modifier, copying all extra functions from DGModifier</p>
+<dl class="method">
+<dt id="mrv.maya.undo.DagModifier.doIt">
+<tt class="descname">doIt</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.DagModifier.doIt" title="Permalink to this definition">¶</a></dt>
+<dd>Override from Operation</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.undo.DagModifier.undoIt">
+<tt class="descname">undoIt</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.DagModifier.undoIt" title="Permalink to this definition">¶</a></dt>
+<dd>Override from Operation</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.undo.GenericOperation-class.html">Epydoc: mrv.maya.undo.GenericOperation</a></p>
+<dl class="class">
+<dt id="mrv.maya.undo.GenericOperation">
+<em class="property">class </em><tt class="descclassname">mrv.maya.undo.</tt><tt class="descname">GenericOperation</tt><a class="headerlink" href="#mrv.maya.undo.GenericOperation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.maya.undo.Operation" class="reference internal" href="#mrv.maya.undo.Operation"><tt class="xref docutils literal"><span class="pre">mrv.maya.undo.Operation</span></tt></a></p>
+<p>Simple oeration allowing to use a generic doit and untoit call to be accessed
+using the operation interface.</p>
+<p>In other words: If you do not want to derive from operation just because you would like
+to have your own custom ( but simple) do it and undo it methods, you would just
+use this all-in-one operation</p>
+<dl class="method">
+<dt id="mrv.maya.undo.GenericOperation.doIt">
+<tt class="descname">doIt</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.GenericOperation.doIt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute the doit command</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">result of the doit command</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.undo.GenericOperation.setDoitCmd">
+<tt class="descname">setDoitCmd</tt><big>(</big><em>func</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.undo.GenericOperation.setDoitCmd" title="Permalink to this definition">¶</a></dt>
+<dd>Add the doit call to our instance</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.undo.GenericOperation.setUndoitCmd">
+<tt class="descname">setUndoitCmd</tt><big>(</big><em>func</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.undo.GenericOperation.setUndoitCmd" title="Permalink to this definition">¶</a></dt>
+<dd>Add the undoit call to our instance</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.undo.GenericOperation.undoIt">
+<tt class="descname">undoIt</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.GenericOperation.undoIt" title="Permalink to this definition">¶</a></dt>
+<dd>Execute undoit if doit did not fail</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.undo.GenericOperationStack-class.html">Epydoc: mrv.maya.undo.GenericOperationStack</a></p>
+<dl class="class">
+<dt id="mrv.maya.undo.GenericOperationStack">
+<em class="property">class </em><tt class="descclassname">mrv.maya.undo.</tt><tt class="descname">GenericOperationStack</tt><a class="headerlink" href="#mrv.maya.undo.GenericOperationStack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.maya.undo.Operation" class="reference internal" href="#mrv.maya.undo.Operation"><tt class="xref docutils literal"><span class="pre">mrv.maya.undo.Operation</span></tt></a></p>
+<p>Operation able to undo generic callable commands (one or multiple). It would be used
+whenever a simple generic operatino is not sufficient</p>
+<p>In your api command, create a GenericOperationStack operation instance, add your (mel) commands
+that should be executed in a row as Call. To apply them, call doIt once (and only once !).
+You can have only one command stored, or many if they should be executed in a row.
+The vital part is that with each do command, you supply an undo command.
+This way your operations can be undone and redone once undo / redo is requested</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">this class works well with <cite>mrv.util.Call</cite></td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">to execute the calls added, you must call <cite>doIt</cite> or <cite>addCmdAndCall</cite> - otherwise
+the undoqueue might brake if exceptions occour !</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">your calls may use MEL commands safely as the undo-queue will be torn off during execution</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Undocommand will be applied in reversed order automatically</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mrv.maya.undo.GenericOperationStack.addCmd">
+<tt class="descname">addCmd</tt><big>(</big><em>doCall</em>, <em>undoCall</em><big>)</big><a class="headerlink" href="#mrv.maya.undo.GenericOperationStack.addCmd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a command to the queue for later application</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>doCall</em> &#8211; instance supporting __call__ interface, called on doIt</li>
+<li><em>undoCall</em> &#8211; instance supporting __call__ interface, called on undoIt</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.undo.GenericOperationStack.addCmdAndCall">
+<tt class="descname">addCmdAndCall</tt><big>(</big><em>doCall</em>, <em>undoCall</em><big>)</big><a class="headerlink" href="#mrv.maya.undo.GenericOperationStack.addCmdAndCall" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add commands to the queue and execute it right away - either always use
+this way to add your commands or the <cite>addCmd</cite> method, never mix them !</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">return value of the doCall</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">use this method if you need the return value of the doCall right away</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.undo.GenericOperationStack.doIt">
+<tt class="descname">doIt</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.GenericOperationStack.doIt" title="Permalink to this definition">¶</a></dt>
+<dd>Call all doIt commands stored in our instance after temporarily disabling the undo queue</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.undo.GenericOperationStack.undoIt">
+<tt class="descname">undoIt</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.GenericOperationStack.undoIt" title="Permalink to this definition">¶</a></dt>
+<dd>Call all undoIt commands stored in our instance after temporarily disabling the undo queue</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.undo.MuteUndo-class.html">Epydoc: mrv.maya.undo.MuteUndo</a></p>
+<dl class="class">
+<dt id="mrv.maya.undo.MuteUndo">
+<em class="property">class </em><tt class="descclassname">mrv.maya.undo.</tt><tt class="descname">MuteUndo</tt><a class="headerlink" href="#mrv.maya.undo.MuteUndo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>Instantiate this class to disable the maya undo queue - on deletion, the
+previous state will be restored</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">useful if you want to save the undo overhead involved in an operation,
+but assure that the previous state is always being reset</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="mrv.maya.undo.MuteUndo.prevstate">
+<tt class="descname">prevstate</tt><a class="headerlink" href="#mrv.maya.undo.MuteUndo.prevstate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.undo.Operation-class.html">Epydoc: mrv.maya.undo.Operation</a></p>
+<dl class="class">
+<dt id="mrv.maya.undo.Operation">
+<em class="property">class </em><tt class="descclassname">mrv.maya.undo.</tt><tt class="descname">Operation</tt><a class="headerlink" href="#mrv.maya.undo.Operation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>Simple command class as base for all operations
+All undoable/redoable operation must support it</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">only operations may be placed on the undo stack !</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mrv.maya.undo.Operation.doIt">
+<tt class="descname">doIt</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.Operation.doIt" title="Permalink to this definition">¶</a></dt>
+<dd>Do whatever you do</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.undo.Operation.undoIt">
+<tt class="descname">undoIt</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.Operation.undoIt" title="Permalink to this definition">¶</a></dt>
+<dd>Undo whatever you did</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.undo.StartUndo-class.html">Epydoc: mrv.maya.undo.StartUndo</a></p>
+<dl class="class">
+<dt id="mrv.maya.undo.StartUndo">
+<em class="property">class </em><tt class="descclassname">mrv.maya.undo.</tt><tt class="descname">StartUndo</tt><big>(</big><em>id=None</em><big>)</big><a class="headerlink" href="#mrv.maya.undo.StartUndo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>Utility class that will push the undo stack on __init__ and pop it on __del__</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Prefer the undoable decorator over this one as they are easier to use and FASTER !</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">use this class to assure that you pop undo when your method exists</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="mrv.maya.undo.StartUndo.id">
+<tt class="descname">id</tt><a class="headerlink" href="#mrv.maya.undo.StartUndo.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.undo.UndoCmd-class.html">Epydoc: mrv.maya.undo.UndoCmd</a></p>
+<dl class="class">
+<dt id="mrv.maya.undo.UndoCmd">
+<em class="property">class </em><tt class="descclassname">mrv.maya.undo.</tt><tt class="descname">UndoCmd</tt><a class="headerlink" href="#mrv.maya.undo.UndoCmd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">maya.OpenMayaMPx.MPxCommand</span></tt></p>
+<dl class="method">
+<dt id="mrv.maya.undo.UndoCmd.appendToResult">
+<tt class="descname">appendToResult</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.UndoCmd.appendToResult" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.undo.UndoCmd.className">
+<tt class="descname">className</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.UndoCmd.className" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.undo.UndoCmd.clearResult">
+<tt class="descname">clearResult</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.UndoCmd.clearResult" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.undo.UndoCmd.commandString">
+<tt class="descname">commandString</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.UndoCmd.commandString" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="mrv.maya.undo.UndoCmd.createSyntax">
+<em class="property">static </em><tt class="descname">createSyntax</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.UndoCmd.createSyntax" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="mrv.maya.undo.UndoCmd.creator">
+<em class="property">static </em><tt class="descname">creator</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.UndoCmd.creator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.undo.UndoCmd.currentDoubleResult">
+<tt class="descname">currentDoubleResult</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.UndoCmd.currentDoubleResult" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.undo.UndoCmd.currentIntResult">
+<tt class="descname">currentIntResult</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.UndoCmd.currentIntResult" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.undo.UndoCmd.currentResultType">
+<tt class="descname">currentResultType</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.UndoCmd.currentResultType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.undo.UndoCmd.currentStringResult">
+<tt class="descname">currentStringResult</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.UndoCmd.currentStringResult" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.undo.UndoCmd.displayError">
+<tt class="descname">displayError</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.UndoCmd.displayError" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.undo.UndoCmd.displayInfo">
+<tt class="descname">displayInfo</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.UndoCmd.displayInfo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.undo.UndoCmd.displayWarning">
+<tt class="descname">displayWarning</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.UndoCmd.displayWarning" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.undo.UndoCmd.doIt">
+<tt class="descname">doIt</tt><big>(</big><em>argList</em><big>)</big><a class="headerlink" href="#mrv.maya.undo.UndoCmd.doIt" title="Permalink to this definition">¶</a></dt>
+<dd>Store out undo information on maya&#8217;s undo stack</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.undo.UndoCmd.getCurrentResult">
+<tt class="descname">getCurrentResult</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.UndoCmd.getCurrentResult" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.undo.UndoCmd.hasSyntax">
+<tt class="descname">hasSyntax</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.UndoCmd.hasSyntax" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.undo.UndoCmd.isCurrentResultArray">
+<tt class="descname">isCurrentResultArray</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.UndoCmd.isCurrentResultArray" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.undo.UndoCmd.isHistoryOn">
+<tt class="descname">isHistoryOn</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.UndoCmd.isHistoryOn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.undo.UndoCmd.isUndoable">
+<tt class="descname">isUndoable</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.UndoCmd.isUndoable" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if we are undoable - it depends on the state of our
+undo stack</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">This doesn&#8217;t really seem to have an effect as we will always end
+up on the undo-queue it seems</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.undo.UndoCmd.redoIt">
+<tt class="descname">redoIt</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.UndoCmd.redoIt" title="Permalink to this definition">¶</a></dt>
+<dd>Called on once a redo is requested</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.undo.UndoCmd.setCommandString">
+<tt class="descname">setCommandString</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.UndoCmd.setCommandString" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.undo.UndoCmd.setHistoryOn">
+<tt class="descname">setHistoryOn</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.UndoCmd.setHistoryOn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.undo.UndoCmd.setResult">
+<tt class="descname">setResult</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.UndoCmd.setResult" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.undo.UndoCmd.setUndoable">
+<tt class="descname">setUndoable</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.UndoCmd.setUndoable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.undo.UndoCmd.syntax">
+<tt class="descname">syntax</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.UndoCmd.syntax" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.undo.UndoCmd.thisown">
+<tt class="descname">thisown</tt><a class="headerlink" href="#mrv.maya.undo.UndoCmd.thisown" title="Permalink to this definition">¶</a></dt>
+<dd>The membership flag</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.undo.UndoCmd.undoIt">
+<tt class="descname">undoIt</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.UndoCmd.undoIt" title="Permalink to this definition">¶</a></dt>
+<dd>Called once undo is requested</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.undo.UndoRecorder-class.html">Epydoc: mrv.maya.undo.UndoRecorder</a></p>
+<dl class="class">
+<dt id="mrv.maya.undo.UndoRecorder">
+<em class="property">class </em><tt class="descclassname">mrv.maya.undo.</tt><tt class="descname">UndoRecorder</tt><a class="headerlink" href="#mrv.maya.undo.UndoRecorder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>Utility class allowing to undo and redo operations on the python command 
+stack so far to be undone and redone separately and independently of maya&#8217;s 
+undo queue.</p>
+<p>It can be used to define sections that need to be undone afterwards, for example
+to reset a scene to its original state after it was prepared for export.</p>
+<p>Use the <cite>startRecording</cite> method to record all future undoable operations 
+onto the stack. <cite>stopRecording</cite> will finalize the operation, allowing 
+the <cite>undo</cite> and <cite>redo</cite> methods to be used.</p>
+<p>If you never call startRecording, the instance does not do anything.
+If you call startRecording and stopRecording but do not call <cite>undo</cite>, it 
+will integrate itself transparently with the default undo queue.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">as opposed to <cite>undoAndClear</cite>, this utility may be used even if the 
+user is not at the very beginning of an undoable operation.</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">If this utility is used incorrectly, the undo queue will be in an 
+inconsistent state which may crash maya or cause unexpected behaviour</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">You may not interleave the start/stop recording areas of different 
+instances which could happen easily in recursive calls.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mrv.maya.undo.UndoRecorder.doIt">
+<tt class="descname">doIt</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.UndoRecorder.doIt" title="Permalink to this definition">¶</a></dt>
+<dd>Called only if the user didn&#8217;t call undo</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.undo.UndoRecorder.redo">
+<tt class="descname">redo</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.UndoRecorder.redo" title="Permalink to this definition">¶</a></dt>
+<dd>Redo all stored operations after they have been undone
+:raise AssertionError: if called before <cite>stopRecording</cite></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.undo.UndoRecorder.startRecording">
+<tt class="descname">startRecording</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.UndoRecorder.startRecording" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start recording all future undoable commands onto this stack.
+The previous stack will be safed and restored once this class gets destroyed
+or once <cite>stopRecording</cite> gets called.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">this method may only be called once, subsequent calls have no effect</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">This will forcibly enable the undo queue if required until 
+stopRecording is called.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.undo.UndoRecorder.stopRecording">
+<tt class="descname">stopRecording</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.UndoRecorder.stopRecording" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stop recording of undoable comamnds and restore the previous command stack.
+The instance is now ready to undo and redo the recorded commands</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">this method may only be called once, subsequent calls have no effect</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.undo.UndoRecorder.undo">
+<tt class="descname">undo</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.UndoRecorder.undo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Undo all stored operations</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Must be called at the right time, otherwise the undo queue is in an 
+inconsistent state.</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">If this method is never being called, the undo-stack will undo itself
+as part of mayas undo queue, and thus behaves transparently</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises AssertionError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if called before <cite>stopRecording</cite> as called</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.undo.UndoRecorder.undoIt">
+<tt class="descname">undoIt</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.undo.UndoRecorder.undoIt" title="Permalink to this definition">¶</a></dt>
+<dd>called only if the user didnt call undo</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="../index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#"><tt class="docutils literal"><span class="pre">mrv.maya.undo</span></tt></a><ul>
+<li><a class="reference external" href="#features">Features</a></li>
+<li><a class="reference external" href="#limitations">Limitations</a></li>
+<li><a class="reference external" href="#configuration">Configuration</a></li>
+<li><a class="reference external" href="#implementing-an-undoable-method">Implementing an undoable method</a></li>
+<li><a class="reference external" href="#functions">Functions</a></li>
+<li><a class="reference external" href="#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="mrv.maya.scene.html"
+                                  title="previous chapter"><tt class="docutils literal docutils literal docutils literal"><span class="pre">mrv.maya.scene</span></tt></a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="mrv.maya.env.html"
+                                  title="next chapter"><tt class="docutils literal docutils literal docutils literal"><span class="pre">mrv.maya.env</span></tt></a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/generated/mrv.maya.undo.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.env.html" title="mrv.maya.env"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.scene.html" title="mrv.maya.scene"
+             >previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Apr 19, 2011.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

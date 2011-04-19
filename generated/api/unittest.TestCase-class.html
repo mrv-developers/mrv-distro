@@ -1,0 +1,1270 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>unittest.TestCase</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="unittest-module.html">Module&nbsp;unittest</a> ::
+        Class&nbsp;TestCase
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="unittest.TestCase-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class TestCase</h1><p class="nomargin-top"><span class="codelink"><a href="unittest-pysrc.html#TestCase">source&nbsp;code</a></span></p>
+<pre class="base-tree">
+object --+
+         |
+        <strong class="uidshort">TestCase</strong>
+</pre>
+
+<dl><dt>Known Subclasses:</dt>
+<dd>
+      <ul class="subclass-list">
+<li><a href="unittest.FunctionTestCase-class.html">FunctionTestCase</a></li>  </ul>
+</dd></dl>
+
+<hr />
+<p>A class whose instances are single test cases.</p>
+  <p>By default, the test code itself should be placed in a method named 
+  'runTest'.</p>
+  <p>If the fixture may be used for many test cases, create as many test 
+  methods as are needed. When instantiating such a TestCase subclass, 
+  specify in the constructor arguments the name of the test method that the
+  instance is to execute.</p>
+  <p>Test authors should subclass TestCase for their own tests. 
+  Construction and deconstruction of the test's environment ('fixture') can
+  be implemented by overriding the 'setUp' and 'tearDown' methods 
+  respectively.</p>
+  <p>If it is necessary to override the __init__ method, the base class 
+  __init__ method must always be called. It is important that subclasses 
+  should not change the signature of their __init__ method, since instances
+  of the classes are instantiated automatically by parts of the framework 
+  in order to be run.</p>
+
+<!-- ==================== NESTED CLASSES ==================== -->
+<a name="section-NestedClasses"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Nested Classes</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-NestedClasses"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="exceptions.AssertionError-class.html" class="summary-name">failureException</a><br />
+      Assertion failed.
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="unittest.TestCase-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">methodName</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">runTest</code><code class="variable-quote">'</code></span>)</span><br />
+      Create an instance of the class that will use the named test method 
+      when executed.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#TestCase.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setUp"></a><span class="summary-sig-name">setUp</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Hook method for setting up the test fixture before exercising it.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#TestCase.setUp">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="tearDown"></a><span class="summary-sig-name">tearDown</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Hook method for deconstructing the test fixture after testing it.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#TestCase.tearDown">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="countTestCases"></a><span class="summary-sig-name">countTestCases</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#TestCase.countTestCases">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="defaultTestResult"></a><span class="summary-sig-name">defaultTestResult</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#TestCase.defaultTestResult">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="unittest.TestCase-class.html#shortDescription" class="summary-sig-name">shortDescription</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns a one-line description of the test, or None if no description
+      has been provided.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#TestCase.shortDescription">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="id"></a><span class="summary-sig-name">id</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#TestCase.id">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__eq__"></a><span class="summary-sig-name">__eq__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#TestCase.__eq__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__ne__"></a><span class="summary-sig-name">__ne__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#TestCase.__ne__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="unittest.TestCase-class.html#__hash__" class="summary-sig-name">__hash__</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      hash(x)</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#TestCase.__hash__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="unittest.TestCase-class.html#__str__" class="summary-sig-name">__str__</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      str(x)</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#TestCase.__str__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="unittest.TestCase-class.html#__repr__" class="summary-sig-name">__repr__</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      repr(x)</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#TestCase.__repr__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="run"></a><span class="summary-sig-name">run</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">result</span>=<span class="summary-sig-default">None</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#TestCase.run">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__call__"></a><span class="summary-sig-name">__call__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwds</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#TestCase.__call__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="debug"></a><span class="summary-sig-name">debug</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Run the test without collecting errors in a TestResult</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#TestCase.debug">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_exc_info"></a><span class="summary-sig-name">_exc_info</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Return a version of sys.exc_info() with the traceback frame 
+      minimised; usually the top level of the traceback frame is not 
+      needed.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#TestCase._exc_info">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="fail"></a><span class="summary-sig-name">fail</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">msg</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Fail immediately, with the given message.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#TestCase.fail">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="failIf"></a><span class="summary-sig-name">failIf</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">expr</span>,
+        <span class="summary-sig-arg">msg</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Fail the test if the expression is true.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#TestCase.failIf">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="failUnless"></a><span class="summary-sig-name">failUnless</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">expr</span>,
+        <span class="summary-sig-arg">msg</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Fail the test unless the expression is true.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#TestCase.failUnless">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="unittest.TestCase-class.html#failUnlessRaises" class="summary-sig-name">failUnlessRaises</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">excClass</span>,
+        <span class="summary-sig-arg">callableObj</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Fail unless an exception of class excClass is thrown by callableObj 
+      when invoked with arguments args and keyword arguments kwargs.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#TestCase.failUnlessRaises">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="failUnlessEqual"></a><span class="summary-sig-name">failUnlessEqual</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">first</span>,
+        <span class="summary-sig-arg">second</span>,
+        <span class="summary-sig-arg">msg</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Fail if the two objects are unequal as determined by the '==' 
+      operator.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#TestCase.failUnlessEqual">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="failIfEqual"></a><span class="summary-sig-name">failIfEqual</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">first</span>,
+        <span class="summary-sig-arg">second</span>,
+        <span class="summary-sig-arg">msg</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Fail if the two objects are equal as determined by the '==' operator.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#TestCase.failIfEqual">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="unittest.TestCase-class.html#failUnlessAlmostEqual" class="summary-sig-name">failUnlessAlmostEqual</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">first</span>,
+        <span class="summary-sig-arg">second</span>,
+        <span class="summary-sig-arg">places</span>=<span class="summary-sig-default">7</span>,
+        <span class="summary-sig-arg">msg</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Fail if the two objects are unequal as determined by their difference
+      rounded to the given number of decimal places (default 7) and 
+      comparing to zero.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#TestCase.failUnlessAlmostEqual">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="unittest.TestCase-class.html#failIfAlmostEqual" class="summary-sig-name">failIfAlmostEqual</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">first</span>,
+        <span class="summary-sig-arg">second</span>,
+        <span class="summary-sig-arg">places</span>=<span class="summary-sig-default">7</span>,
+        <span class="summary-sig-arg">msg</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Fail if the two objects are equal as determined by their difference 
+      rounded to the given number of decimal places (default 7) and 
+      comparing to zero.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#TestCase.failIfAlmostEqual">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="assertEquals"></a><span class="summary-sig-name">assertEquals</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">first</span>,
+        <span class="summary-sig-arg">second</span>,
+        <span class="summary-sig-arg">msg</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Fail if the two objects are unequal as determined by the '==' 
+      operator.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#TestCase.failUnlessEqual">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="assertEqual"></a><span class="summary-sig-name">assertEqual</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">first</span>,
+        <span class="summary-sig-arg">second</span>,
+        <span class="summary-sig-arg">msg</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Fail if the two objects are unequal as determined by the '==' 
+      operator.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#TestCase.failUnlessEqual">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="assertNotEquals"></a><span class="summary-sig-name">assertNotEquals</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">first</span>,
+        <span class="summary-sig-arg">second</span>,
+        <span class="summary-sig-arg">msg</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Fail if the two objects are equal as determined by the '==' operator.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#TestCase.failIfEqual">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="assertNotEqual"></a><span class="summary-sig-name">assertNotEqual</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">first</span>,
+        <span class="summary-sig-arg">second</span>,
+        <span class="summary-sig-arg">msg</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Fail if the two objects are equal as determined by the '==' operator.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#TestCase.failIfEqual">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="unittest.TestCase-class.html#assertAlmostEquals" class="summary-sig-name">assertAlmostEquals</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">first</span>,
+        <span class="summary-sig-arg">second</span>,
+        <span class="summary-sig-arg">places</span>=<span class="summary-sig-default">7</span>,
+        <span class="summary-sig-arg">msg</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Fail if the two objects are unequal as determined by their difference
+      rounded to the given number of decimal places (default 7) and 
+      comparing to zero.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#TestCase.failUnlessAlmostEqual">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="unittest.TestCase-class.html#assertAlmostEqual" class="summary-sig-name">assertAlmostEqual</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">first</span>,
+        <span class="summary-sig-arg">second</span>,
+        <span class="summary-sig-arg">places</span>=<span class="summary-sig-default">7</span>,
+        <span class="summary-sig-arg">msg</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Fail if the two objects are unequal as determined by their difference
+      rounded to the given number of decimal places (default 7) and 
+      comparing to zero.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#TestCase.failUnlessAlmostEqual">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="unittest.TestCase-class.html#assertNotAlmostEquals" class="summary-sig-name">assertNotAlmostEquals</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">first</span>,
+        <span class="summary-sig-arg">second</span>,
+        <span class="summary-sig-arg">places</span>=<span class="summary-sig-default">7</span>,
+        <span class="summary-sig-arg">msg</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Fail if the two objects are equal as determined by their difference 
+      rounded to the given number of decimal places (default 7) and 
+      comparing to zero.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#TestCase.failIfAlmostEqual">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="unittest.TestCase-class.html#assertNotAlmostEqual" class="summary-sig-name">assertNotAlmostEqual</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">first</span>,
+        <span class="summary-sig-arg">second</span>,
+        <span class="summary-sig-arg">places</span>=<span class="summary-sig-default">7</span>,
+        <span class="summary-sig-arg">msg</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Fail if the two objects are equal as determined by their difference 
+      rounded to the given number of decimal places (default 7) and 
+      comparing to zero.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#TestCase.failIfAlmostEqual">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="unittest.TestCase-class.html#assertRaises" class="summary-sig-name">assertRaises</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">excClass</span>,
+        <span class="summary-sig-arg">callableObj</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Fail unless an exception of class excClass is thrown by callableObj 
+      when invoked with arguments args and keyword arguments kwargs.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#TestCase.failUnlessRaises">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="assertTrue"></a><span class="summary-sig-name">assertTrue</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">expr</span>,
+        <span class="summary-sig-arg">msg</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Fail the test unless the expression is true.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#TestCase.failUnless">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="assert_"></a><span class="summary-sig-name">assert_</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">expr</span>,
+        <span class="summary-sig-arg">msg</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Fail the test unless the expression is true.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#TestCase.failUnless">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="assertFalse"></a><span class="summary-sig-name">assertFalse</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">expr</span>,
+        <span class="summary-sig-arg">msg</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Fail the test if the expression is true.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="unittest-pysrc.html#TestCase.failIf">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">methodName</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">runTest</code><code class="variable-quote">'</code></span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="unittest-pysrc.html#TestCase.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Create an instance of the class that will use the named test method 
+  when executed. Raises a ValueError if the instance does not have a method
+  with the specified name.</p>
+  <dl class="fields">
+    <dt>Overrides:
+        object.__init__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="shortDescription"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">shortDescription</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="unittest-pysrc.html#TestCase.shortDescription">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Returns a one-line description of the test, or None if no description 
+  has been provided.</p>
+  <p>The default implementation of this method returns the first line of 
+  the specified test method's docstring.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="__hash__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__hash__</span>(<span class="sig-arg">self</span>)</span>
+    <br /><em class="fname">(Hashing function)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="unittest-pysrc.html#TestCase.__hash__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>hash(x)</p>
+  <dl class="fields">
+    <dt>Overrides:
+        object.__hash__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__str__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__str__</span>(<span class="sig-arg">self</span>)</span>
+    <br /><em class="fname">(Informal representation operator)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="unittest-pysrc.html#TestCase.__str__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>str(x)</p>
+  <dl class="fields">
+    <dt>Overrides:
+        object.__str__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__repr__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__repr__</span>(<span class="sig-arg">self</span>)</span>
+    <br /><em class="fname">(Representation operator)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="unittest-pysrc.html#TestCase.__repr__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>repr(x)</p>
+  <dl class="fields">
+    <dt>Overrides:
+        object.__repr__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="failUnlessRaises"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">failUnlessRaises</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">excClass</span>,
+        <span class="sig-arg">callableObj</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="unittest-pysrc.html#TestCase.failUnlessRaises">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Fail unless an exception of class excClass is thrown by callableObj 
+  when invoked with arguments args and keyword arguments kwargs. If a 
+  different type of exception is thrown, it will not be caught, and the 
+  test case will be deemed to have suffered an error, exactly as for an 
+  unexpected exception.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="failUnlessAlmostEqual"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">failUnlessAlmostEqual</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">first</span>,
+        <span class="sig-arg">second</span>,
+        <span class="sig-arg">places</span>=<span class="sig-default">7</span>,
+        <span class="sig-arg">msg</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="unittest-pysrc.html#TestCase.failUnlessAlmostEqual">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Fail if the two objects are unequal as determined by their difference 
+  rounded to the given number of decimal places (default 7) and comparing 
+  to zero.</p>
+  <p>Note that decimal places (from zero) are usually not the same as 
+  significant digits (measured from the most signficant digit).</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="failIfAlmostEqual"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">failIfAlmostEqual</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">first</span>,
+        <span class="sig-arg">second</span>,
+        <span class="sig-arg">places</span>=<span class="sig-default">7</span>,
+        <span class="sig-arg">msg</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="unittest-pysrc.html#TestCase.failIfAlmostEqual">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Fail if the two objects are equal as determined by their difference 
+  rounded to the given number of decimal places (default 7) and comparing 
+  to zero.</p>
+  <p>Note that decimal places (from zero) are usually not the same as 
+  significant digits (measured from the most signficant digit).</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="assertAlmostEquals"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">assertAlmostEquals</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">first</span>,
+        <span class="sig-arg">second</span>,
+        <span class="sig-arg">places</span>=<span class="sig-default">7</span>,
+        <span class="sig-arg">msg</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="unittest-pysrc.html#TestCase.failUnlessAlmostEqual">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Fail if the two objects are unequal as determined by their difference 
+  rounded to the given number of decimal places (default 7) and comparing 
+  to zero.</p>
+  <p>Note that decimal places (from zero) are usually not the same as 
+  significant digits (measured from the most signficant digit).</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="assertAlmostEqual"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">assertAlmostEqual</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">first</span>,
+        <span class="sig-arg">second</span>,
+        <span class="sig-arg">places</span>=<span class="sig-default">7</span>,
+        <span class="sig-arg">msg</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="unittest-pysrc.html#TestCase.failUnlessAlmostEqual">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Fail if the two objects are unequal as determined by their difference 
+  rounded to the given number of decimal places (default 7) and comparing 
+  to zero.</p>
+  <p>Note that decimal places (from zero) are usually not the same as 
+  significant digits (measured from the most signficant digit).</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="assertNotAlmostEquals"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">assertNotAlmostEquals</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">first</span>,
+        <span class="sig-arg">second</span>,
+        <span class="sig-arg">places</span>=<span class="sig-default">7</span>,
+        <span class="sig-arg">msg</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="unittest-pysrc.html#TestCase.failIfAlmostEqual">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Fail if the two objects are equal as determined by their difference 
+  rounded to the given number of decimal places (default 7) and comparing 
+  to zero.</p>
+  <p>Note that decimal places (from zero) are usually not the same as 
+  significant digits (measured from the most signficant digit).</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="assertNotAlmostEqual"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">assertNotAlmostEqual</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">first</span>,
+        <span class="sig-arg">second</span>,
+        <span class="sig-arg">places</span>=<span class="sig-default">7</span>,
+        <span class="sig-arg">msg</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="unittest-pysrc.html#TestCase.failIfAlmostEqual">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Fail if the two objects are equal as determined by their difference 
+  rounded to the given number of decimal places (default 7) and comparing 
+  to zero.</p>
+  <p>Note that decimal places (from zero) are usually not the same as 
+  significant digits (measured from the most signficant digit).</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="assertRaises"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">assertRaises</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">excClass</span>,
+        <span class="sig-arg">callableObj</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="unittest-pysrc.html#TestCase.failUnlessRaises">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Fail unless an exception of class excClass is thrown by callableObj 
+  when invoked with arguments args and keyword arguments kwargs. If a 
+  different type of exception is thrown, it will not be caught, and the 
+  test case will be deemed to have suffered an error, exactly as for an 
+  unexpected exception.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Apr 19 15:39:18 2011
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

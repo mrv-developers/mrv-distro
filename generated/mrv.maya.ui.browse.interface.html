@@ -1,0 +1,1076 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>mrv.maya.ui.browse.interface &mdash; mrv v1.0.2-develop documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.2-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="mrv v1.0.2-develop documentation" href="../index.html" />
+    <link rel="next" title="mrv.maya.ui.browse.control" href="mrv.maya.ui.browse.control.html" />
+    <link rel="prev" title="mrv.maya.ui.browse.util" href="mrv.maya.ui.browse.util.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.ui.browse.control.html" title="mrv.maya.ui.browse.control"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.ui.browse.util.html" title="mrv.maya.ui.browse.util"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-mrv.maya.ui.browse.interface">
+<h1><tt class="xref docutils literal"><span class="pre">mrv.maya.ui.browse.interface</span></tt><a class="headerlink" href="#module-mrv.maya.ui.browse.interface" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="api/mrv.maya.ui.browse.interface-module.html">Epydoc: mrv.maya.ui.browse.interface</a></p>
+<p>module with interfaces to define contracts</p>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="api/mrv.maya.ui.browse.interface-module.html#Interface">Epydoc: mrv.maya.ui.browse.interface</a></p>
+<dl class="class">
+<dt id="mrv.maya.ui.browse.interface.Interface">
+<em class="property">class </em><tt class="descclassname">mrv.maya.ui.browse.interface.</tt><tt class="descname">Interface</tt><a class="headerlink" href="#mrv.maya.ui.browse.interface.Interface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>Base for all interfaces.
+All interfaces should derive from here.</p>
+<dl class="classmethod">
+<dt id="mrv.maya.ui.browse.interface.Interface.addSep">
+<em class="property">classmethod </em><tt class="descname">addSep</tt><big>(</big><em>item</em>, <em>sep</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.Interface.addSep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">item with separator added to it ( just once )</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">operates best on strings</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>item</em> &#8211; item to add separator to</li>
+<li><em>sep</em> &#8211; the separator</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.Interface.basename">
+<tt class="descname">basename</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.Interface.basename" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">basename of this path, &#8216;/hello/world&#8217; -&gt; &#8216;world&#8217;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.Interface.children">
+<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a39ed8&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.Interface.children" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of intermediate children of path, [ child1 , child2 ]</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; return True to include x in result</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">the child objects returned are supposed to be valid paths, not just relative paths</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.Interface.childrenDeep">
+<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c050&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.Interface.childrenDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of all children of path, [ child1 , child2 ]</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>order</em> &#8211; order enumeration</li>
+<li><em>predicate</em> &#8211; returns true if x may be returned</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">the child objects returned are supposed to be valid paths, not just relative paths</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.Interface.fullChildName">
+<tt class="descname">fullChildName</tt><big>(</big><em>childname</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.Interface.fullChildName" title="Permalink to this definition">¶</a></dt>
+<dd>Add the given name to the string version of our instance
+:return: string with childname added like name _sep childname</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.Interface.isPartOf">
+<tt class="descname">isPartOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.Interface.isPartOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if self is a part of other, and thus can be found in other</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings only</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.Interface.isRoot">
+<tt class="descname">isRoot</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.Interface.isRoot" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this path is the root of the DAG</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.Interface.isRootOf">
+<tt class="descname">isRootOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.Interface.isRootOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True other starts with self</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">we assume other has the same type as self, thus the same separator</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.Interface.iterParents">
+<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c230&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.Interface.iterParents" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">generator retrieving all parents up to the root</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; returns True for all x that you want to be returned</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.Interface.parent">
+<tt class="descname">parent</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.Interface.parent" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">parent of this path, &#8216;/hello/world&#8217; -&gt; &#8216;/hello&#8217; or None if this path
+is the dag&#8217;s root</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.Interface.parentDeep">
+<tt class="descname">parentDeep</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.Interface.parentDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">all parents of this path, &#8216;/hello/my/world&#8217; -&gt; [ &#8216;/hello/my&#8217;,&#8217;/hello&#8217; ]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.Interface.root">
+<tt class="descname">root</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.Interface.root" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the root of the DAG - it has no further parents</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.Interface.supports">
+<tt class="descname">supports</tt><big>(</big><em>interface_type</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.Interface.supports" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this instance supports the interface of the given type</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>interface_type</em> &#8211; Type of the interface you require this instance 
+to support</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Must be used in case you only have a weak reference of your interface
+instance or proxy which is a case where the ordinary isinstance( obj, iInterface )
+will not work</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.ui.browse.interface.iFinderFilter-class.html">Epydoc: mrv.maya.ui.browse.interface.iFinderFilter</a></p>
+<dl class="class">
+<dt id="mrv.maya.ui.browse.interface.iFinderFilter">
+<em class="property">class </em><tt class="descclassname">mrv.maya.ui.browse.interface.</tt><tt class="descname">iFinderFilter</tt><a class="headerlink" href="#mrv.maya.ui.browse.interface.iFinderFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.interface.Interface" class="reference external" href="mrv.interface.html#mrv.interface.Interface"><tt class="xref docutils literal"><span class="pre">mrv.interface.Interface</span></tt></a></p>
+<p>Filter interface suitable to perform item filter operations for Finder controls</p>
+<dl class="classmethod">
+<dt id="mrv.maya.ui.browse.interface.iFinderFilter.addSep">
+<em class="property">classmethod </em><tt class="descname">addSep</tt><big>(</big><em>item</em>, <em>sep</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iFinderFilter.addSep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">item with separator added to it ( just once )</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">operates best on strings</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>item</em> &#8211; item to add separator to</li>
+<li><em>sep</em> &#8211; the separator</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iFinderFilter.basename">
+<tt class="descname">basename</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iFinderFilter.basename" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">basename of this path, &#8216;/hello/world&#8217; -&gt; &#8216;world&#8217;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iFinderFilter.children">
+<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a39ed8&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iFinderFilter.children" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of intermediate children of path, [ child1 , child2 ]</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; return True to include x in result</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">the child objects returned are supposed to be valid paths, not just relative paths</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iFinderFilter.childrenDeep">
+<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c050&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iFinderFilter.childrenDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of all children of path, [ child1 , child2 ]</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>order</em> &#8211; order enumeration</li>
+<li><em>predicate</em> &#8211; returns true if x may be returned</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">the child objects returned are supposed to be valid paths, not just relative paths</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iFinderFilter.filtered">
+<tt class="descname">filtered</tt><big>(</big><em>finder</em>, <em>element_index</em>, <em>base_url</em>, <em>items</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iFinderFilter.filtered" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of items which may be shown in the element at element_index</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>finder</em> &#8211; finder instance issueing the call</li>
+<li><em>element_index</em> &#8211; index of the element which is to be filled with items</li>
+<li><em>base_url</em> &#8211; url at which the given items exist</li>
+<li><em>items</em> &#8211; list of relative item ids which are to be shown in the finder element</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iFinderFilter.fullChildName">
+<tt class="descname">fullChildName</tt><big>(</big><em>childname</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iFinderFilter.fullChildName" title="Permalink to this definition">¶</a></dt>
+<dd>Add the given name to the string version of our instance
+:return: string with childname added like name _sep childname</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iFinderFilter.isPartOf">
+<tt class="descname">isPartOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iFinderFilter.isPartOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if self is a part of other, and thus can be found in other</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings only</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iFinderFilter.isRoot">
+<tt class="descname">isRoot</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iFinderFilter.isRoot" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this path is the root of the DAG</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iFinderFilter.isRootOf">
+<tt class="descname">isRootOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iFinderFilter.isRootOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True other starts with self</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">we assume other has the same type as self, thus the same separator</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iFinderFilter.iterParents">
+<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c230&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iFinderFilter.iterParents" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">generator retrieving all parents up to the root</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; returns True for all x that you want to be returned</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iFinderFilter.parent">
+<tt class="descname">parent</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iFinderFilter.parent" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">parent of this path, &#8216;/hello/world&#8217; -&gt; &#8216;/hello&#8217; or None if this path
+is the dag&#8217;s root</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iFinderFilter.parentDeep">
+<tt class="descname">parentDeep</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iFinderFilter.parentDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">all parents of this path, &#8216;/hello/my/world&#8217; -&gt; [ &#8216;/hello/my&#8217;,&#8217;/hello&#8217; ]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iFinderFilter.root">
+<tt class="descname">root</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iFinderFilter.root" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the root of the DAG - it has no further parents</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iFinderFilter.supports">
+<tt class="descname">supports</tt><big>(</big><em>interface_type</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iFinderFilter.supports" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this instance supports the interface of the given type</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>interface_type</em> &#8211; Type of the interface you require this instance 
+to support</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Must be used in case you only have a weak reference of your interface
+instance or proxy which is a case where the ordinary isinstance( obj, iInterface )
+will not work</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.ui.browse.interface.iFinderProvider-class.html">Epydoc: mrv.maya.ui.browse.interface.iFinderProvider</a></p>
+<dl class="class">
+<dt id="mrv.maya.ui.browse.interface.iFinderProvider">
+<em class="property">class </em><tt class="descclassname">mrv.maya.ui.browse.interface.</tt><tt class="descname">iFinderProvider</tt><big>(</big><em>root</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iFinderProvider" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.interface.Interface" class="reference external" href="mrv.interface.html#mrv.interface.Interface"><tt class="xref docutils literal"><span class="pre">mrv.interface.Interface</span></tt></a></p>
+<p>Interface defining the capabilities of a provider to be usable by a Finder
+control. Every finder as a root, which is used as basis for listing urls.</p>
+<p>Besides its function to provide sub-items for given urls, it is also used 
+to store recently selected items on a given level of a url. This memory
+allows the finder to restore common portions of URLs accordingly.</p>
+<p>The base implementation of the memorization feature already.</p>
+<dl class="classmethod">
+<dt id="mrv.maya.ui.browse.interface.iFinderProvider.addSep">
+<em class="property">classmethod </em><tt class="descname">addSep</tt><big>(</big><em>item</em>, <em>sep</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iFinderProvider.addSep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">item with separator added to it ( just once )</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">operates best on strings</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>item</em> &#8211; item to add separator to</li>
+<li><em>sep</em> &#8211; the separator</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iFinderProvider.basename">
+<tt class="descname">basename</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iFinderProvider.basename" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">basename of this path, &#8216;/hello/world&#8217; -&gt; &#8216;world&#8217;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iFinderProvider.children">
+<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a39ed8&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iFinderProvider.children" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of intermediate children of path, [ child1 , child2 ]</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; return True to include x in result</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">the child objects returned are supposed to be valid paths, not just relative paths</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iFinderProvider.childrenDeep">
+<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c050&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iFinderProvider.childrenDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of all children of path, [ child1 , child2 ]</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>order</em> &#8211; order enumeration</li>
+<li><em>predicate</em> &#8211; returns true if x may be returned</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">the child objects returned are supposed to be valid paths, not just relative paths</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iFinderProvider.formatItem">
+<tt class="descname">formatItem</tt><big>(</big><em>url_base</em>, <em>url_index</em>, <em>url_item</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iFinderProvider.formatItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given the url_item, as well as additional information such as its base
+and its index inside of the url, this method encodes the item for presentation
+in the user interface.
+:param url_base: relative url at which the url_item resides. Is &#8220;&#8221; if url_index</p>
+<blockquote>
+is 0</blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>url_index</em> &#8211; index representing the position of the url_item within the
+url</li>
+<li><em>url_item</em> &#8211; item which is to be formatted.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">string representing the formatted url.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iFinderProvider.fullChildName">
+<tt class="descname">fullChildName</tt><big>(</big><em>childname</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iFinderProvider.fullChildName" title="Permalink to this definition">¶</a></dt>
+<dd>Add the given name to the string version of our instance
+:return: string with childname added like name _sep childname</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iFinderProvider.isPartOf">
+<tt class="descname">isPartOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iFinderProvider.isPartOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if self is a part of other, and thus can be found in other</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings only</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iFinderProvider.isRoot">
+<tt class="descname">isRoot</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iFinderProvider.isRoot" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this path is the root of the DAG</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iFinderProvider.isRootOf">
+<tt class="descname">isRootOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iFinderProvider.isRootOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True other starts with self</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">we assume other has the same type as self, thus the same separator</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iFinderProvider.iterParents">
+<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c230&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iFinderProvider.iterParents" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">generator retrieving all parents up to the root</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; returns True for all x that you want to be returned</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iFinderProvider.parent">
+<tt class="descname">parent</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iFinderProvider.parent" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">parent of this path, &#8216;/hello/world&#8217; -&gt; &#8216;/hello&#8217; or None if this path
+is the dag&#8217;s root</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iFinderProvider.parentDeep">
+<tt class="descname">parentDeep</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iFinderProvider.parentDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">all parents of this path, &#8216;/hello/my/world&#8217; -&gt; [ &#8216;/hello/my&#8217;,&#8217;/hello&#8217; ]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iFinderProvider.root">
+<tt class="descname">root</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iFinderProvider.root" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">string representing the file root</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iFinderProvider.storeUrlItem">
+<tt class="descname">storeUrlItem</tt><big>(</big><em>url_index</em>, <em>url_item</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iFinderProvider.storeUrlItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores and associates a given url_index with a url_item. Makes the stored
+item queryable by the <tt class="docutils literal"><span class="pre">storedUrlItemByIndex</span></tt> method
+:param url_index: index from 0 to n, where 0 corresponds to the first item</p>
+<blockquote>
+in the url</blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>url_item</em> &#8211; the string item to store at the given index</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iFinderProvider.storedUrlItemByIndex">
+<tt class="descname">storedUrlItemByIndex</tt><big>(</big><em>url_index</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iFinderProvider.storedUrlItemByIndex" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">string item previously stored at the given index, or None</td>
+</tr>
+</tbody>
+</table>
+<p>if there is no information available</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iFinderProvider.supports">
+<tt class="descname">supports</tt><big>(</big><em>interface_type</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iFinderProvider.supports" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this instance supports the interface of the given type</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>interface_type</em> &#8211; Type of the interface you require this instance 
+to support</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Must be used in case you only have a weak reference of your interface
+instance or proxy which is a case where the ordinary isinstance( obj, iInterface )
+will not work</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iFinderProvider.urlItems">
+<tt class="descname">urlItems</tt><big>(</big><em>url</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iFinderProvider.urlItems" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of string-like items which can be found at the given url.</td>
+</tr>
+</tbody>
+</table>
+<p>If this url is combined with one of the returned items separated by a slash, 
+a valid url is formed, i.e. url/item
+:param url: A given slash-separated url like base/subitem or &#8216;&#8217;, which</p>
+<blockquote>
+requests items at the root of all urls</blockquote>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.ui.browse.interface.iOptions-class.html">Epydoc: mrv.maya.ui.browse.interface.iOptions</a></p>
+<dl class="class">
+<dt id="mrv.maya.ui.browse.interface.iOptions">
+<em class="property">class </em><tt class="descclassname">mrv.maya.ui.browse.interface.</tt><tt class="descname">iOptions</tt><a class="headerlink" href="#mrv.maya.ui.browse.interface.iOptions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.interface.Interface" class="reference external" href="mrv.interface.html#mrv.interface.Interface"><tt class="xref docutils literal"><span class="pre">mrv.interface.Interface</span></tt></a></p>
+<p>Interface for all custom options layouts to be used with the FinderLayout. 
+They take a weak-reference to their parent FinderLayout allowing them to 
+set themselves up if necessary.
+The options they represent must be read by a custom implementation of the
+FinderLayout</p>
+<dl class="classmethod">
+<dt id="mrv.maya.ui.browse.interface.iOptions.addSep">
+<em class="property">classmethod </em><tt class="descname">addSep</tt><big>(</big><em>item</em>, <em>sep</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iOptions.addSep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">item with separator added to it ( just once )</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">operates best on strings</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>item</em> &#8211; item to add separator to</li>
+<li><em>sep</em> &#8211; the separator</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iOptions.basename">
+<tt class="descname">basename</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iOptions.basename" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">basename of this path, &#8216;/hello/world&#8217; -&gt; &#8216;world&#8217;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iOptions.children">
+<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a39ed8&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iOptions.children" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of intermediate children of path, [ child1 , child2 ]</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; return True to include x in result</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">the child objects returned are supposed to be valid paths, not just relative paths</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iOptions.childrenDeep">
+<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c050&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iOptions.childrenDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of all children of path, [ child1 , child2 ]</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>order</em> &#8211; order enumeration</li>
+<li><em>predicate</em> &#8211; returns true if x may be returned</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">the child objects returned are supposed to be valid paths, not just relative paths</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iOptions.fullChildName">
+<tt class="descname">fullChildName</tt><big>(</big><em>childname</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iOptions.fullChildName" title="Permalink to this definition">¶</a></dt>
+<dd>Add the given name to the string version of our instance
+:return: string with childname added like name _sep childname</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iOptions.isPartOf">
+<tt class="descname">isPartOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iOptions.isPartOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if self is a part of other, and thus can be found in other</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings only</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iOptions.isRoot">
+<tt class="descname">isRoot</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iOptions.isRoot" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this path is the root of the DAG</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iOptions.isRootOf">
+<tt class="descname">isRootOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iOptions.isRootOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True other starts with self</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">we assume other has the same type as self, thus the same separator</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iOptions.iterParents">
+<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c230&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iOptions.iterParents" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">generator retrieving all parents up to the root</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; returns True for all x that you want to be returned</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iOptions.parent">
+<tt class="descname">parent</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iOptions.parent" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">parent of this path, &#8216;/hello/world&#8217; -&gt; &#8216;/hello&#8217; or None if this path
+is the dag&#8217;s root</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iOptions.parentDeep">
+<tt class="descname">parentDeep</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iOptions.parentDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">all parents of this path, &#8216;/hello/my/world&#8217; -&gt; [ &#8216;/hello/my&#8217;,&#8217;/hello&#8217; ]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iOptions.root">
+<tt class="descname">root</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iOptions.root" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the root of the DAG - it has no further parents</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.ui.browse.interface.iOptions.supports">
+<tt class="descname">supports</tt><big>(</big><em>interface_type</em><big>)</big><a class="headerlink" href="#mrv.maya.ui.browse.interface.iOptions.supports" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this instance supports the interface of the given type</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>interface_type</em> &#8211; Type of the interface you require this instance 
+to support</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Must be used in case you only have a weak reference of your interface
+instance or proxy which is a case where the ordinary isinstance( obj, iInterface )
+will not work</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="../index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#"><tt class="docutils literal"><span class="pre">mrv.maya.ui.browse.interface</span></tt></a><ul>
+<li><a class="reference external" href="#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="mrv.maya.ui.browse.util.html"
+                                  title="previous chapter"><tt class="docutils literal"><span class="pre">mrv.maya.ui.browse.util</span></tt></a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="mrv.maya.ui.browse.control.html"
+                                  title="next chapter"><tt class="docutils literal docutils literal docutils literal"><span class="pre">mrv.maya.ui.browse.control</span></tt></a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/generated/mrv.maya.ui.browse.interface.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.ui.browse.control.html" title="mrv.maya.ui.browse.control"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.ui.browse.util.html" title="mrv.maya.ui.browse.util"
+             >previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Apr 19, 2011.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

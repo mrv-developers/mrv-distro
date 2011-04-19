@@ -1,0 +1,1113 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>mrv.dge.NodeBase</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="mrv-module.html">Package&nbsp;mrv</a> ::
+        <a href="mrv.dge-module.html">Module&nbsp;dge</a> ::
+        Class&nbsp;NodeBase
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="mrv.dge.NodeBase-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class NodeBase</h1><p class="nomargin-top"><span class="codelink"><a href="mrv.dge-pysrc.html#NodeBase">source&nbsp;code</a></span></p>
+<pre class="base-tree">
+         object --+        
+                  |        
+<a href="mrv.interface.Interface-class.html">interface.Interface</a> --+    
+                      |    
+<a href="mrv.interface.iDuplicatable-class.html">interface.iDuplicatable</a> --+
+                          |
+                         <strong class="uidshort">NodeBase</strong>
+</pre>
+
+<dl><dt>Known Subclasses:</dt>
+<dd>
+      <ul class="subclass-list">
+<li><a href="mrv.dgfe.FacadeNodeBase-class.html">dgfe.FacadeNodeBase</a></li><li>, <a href="mrv.automation.process.ProcessBase-class.html">automation.process.ProcessBase</a></li>  </ul>
+</dd></dl>
+
+<hr />
+<p>Base class that provides support for plugs to the superclass.
+It will create some simple tracking attriubtes required for the plug system
+to work</p>
+<p>Nodes can compute values of their plugs if these do not have a cache.</p>
+<p>Nodes are identified by an ID - the default graph implementation though will
+be okay with just having instances.
+It is also being used for string representations of this node</p>
+
+<!-- ==================== NESTED CLASSES ==================== -->
+<a name="section-NestedClasses"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Nested Classes</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-NestedClasses"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="mrv.dge._PlugShell-class.html" class="summary-name">shellcls</a><br />
+      Handles per-node-instance plug connection setup and storage.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="mrv.dge._NodeBaseCheckMeta-class.html" class="summary-name">__metaclass__</a><br />
+      Class checking the consistency of the nodebase class before it is being created
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.interface.iDuplicatable-class.html">interface.iDuplicatable</a></code></b>:
+      <code><a href="mrv.interface.iDuplicatable-class.html#copyTo">copyTo</a></code>,
+      <code><a href="mrv.interface.iDuplicatable-class.html#copyToOther">copyToOther</a></code>,
+      <code><a href="mrv.interface.iDuplicatable-class.html#duplicate">duplicate</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.interface.Interface-class.html">interface.Interface</a></code></b>:
+      <code><a href="mrv.interface.Interface-class.html#supports">supports</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Overridden from Object</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dge.NodeBase-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      We require a directed graph to track the connectivity between the plugs.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dge-pysrc.html#NodeBase.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__del__"></a><span class="summary-sig-name">__del__</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Remove ourselves from the graph and delete our connections</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dge-pysrc.html#NodeBase.__del__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dge.NodeBase-class.html#__str__" class="summary-sig-name">__str__</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Use our id as string or the default implementation</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dge-pysrc.html#NodeBase.__str__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;iDuplicatable Interface</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dge.NodeBase-class.html#createInstance" class="summary-sig-name">createInstance</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Create a copy of self and return it</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dge-pysrc.html#NodeBase.createInstance">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dge.NodeBase-class.html#copyFrom" class="summary-sig-name">copyFrom</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>,
+        <span class="summary-sig-arg">add_to_graph</span>=<span class="summary-sig-default">True</span>)</span><br />
+      Just take the graph from other, but do not ( never ) duplicate it</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dge-pysrc.html#NodeBase.copyFrom">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Base Interface</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dge.NodeBase-class.html#compute" class="summary-sig-name">compute</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">plug</span>,
+        <span class="summary-sig-arg">mode</span>)</span><br />
+      Called whenever a plug needs computation as the value its value is not
+cached or marked dirty ( as one of the inputs changed )</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dge-pysrc.html#NodeBase.compute">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;ID Handling</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setID"></a><span class="summary-sig-name">setID</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">newID</span>)</span><br />
+      Set id of this node to newiD
+:return: previously assigned id</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dge-pysrc.html#NodeBase.setID">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dge.NodeBase-class.html#id" class="summary-sig-name">id</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns:
+ID of this instance</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dge-pysrc.html#NodeBase.id">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Base</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dge.NodeBase-class.html#toShells" class="summary-sig-name">toShells</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">plugs</span>)</span><br />
+      Returns:
+list of shells made from plugs and our node</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dge-pysrc.html#NodeBase.toShells">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dge.NodeBase-class.html#toShell" class="summary-sig-name">toShell</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">plug</span>)</span><br />
+      Returns:
+a plugshell as suitable to for this class</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dge-pysrc.html#NodeBase.toShell">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="clearCache"></a><span class="summary-sig-name">clearCache</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Clear the cache of all plugs on this node - this basically forces it
+to recompute the next time an output plug is being queried</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dge-pysrc.html#NodeBase.clearCache">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dge.NodeBase-class.html#plugs" class="summary-sig-name">plugs</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">predicate</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x385e050&gt;</span>)</span><br />
+      Returns:
+list of dynamic plugs as defined on this node - they are usually retrieved
+on class level, but may be overridden on instance level</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dge-pysrc.html#NodeBase.plugs">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dge.NodeBase-class.html#inputPlugs" class="summary-sig-name">inputPlugs</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Returns:
+list of plugs suitable as input</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dge-pysrc.html#NodeBase.inputPlugs">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dge.NodeBase-class.html#outputPlugs" class="summary-sig-name">outputPlugs</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Returns:
+list of plugs suitable to deliver output</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dge-pysrc.html#NodeBase.outputPlugs">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dge.NodeBase-class.html#connections" class="summary-sig-name">connections</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">inpt</span>,
+        <span class="summary-sig-arg">output</span>)</span><br />
+      Returns:
+Tuples of input shells defining a connection of the given type from
+tuple( InputNodeOuptutShell, OurNodeInputShell ) for input connections and
+tuple( OurNodeOuptutShell, OutputNodeInputShell )</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dge-pysrc.html#NodeBase.connections">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS METHODS ==================== -->
+<a name="section-ClassMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Base</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dge.NodeBase-class.html#plugsStatic" class="summary-sig-name">plugsStatic</a>(<span class="summary-sig-arg">cls</span>,
+        <span class="summary-sig-arg">predicate</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x385ded8&gt;</span>)</span><br />
+      Returns:
+list of static plugs as defined on this node - they are class members</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dge-pysrc.html#NodeBase.plugsStatic">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dge.NodeBase-class.html#inputPlugsStatic" class="summary-sig-name">inputPlugsStatic</a>(<span class="summary-sig-arg">cls</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Returns:
+list of static plugs suitable as input</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dge-pysrc.html#NodeBase.inputPlugsStatic">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dge.NodeBase-class.html#outputPlugsStatic" class="summary-sig-name">outputPlugsStatic</a>(<span class="summary-sig-arg">cls</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Returns:
+list of static plugs suitable to deliver output</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dge-pysrc.html#NodeBase.outputPlugsStatic">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dge.NodeBase-class.html#filterCompatiblePlugs" class="summary-sig-name">filterCompatiblePlugs</a>(<span class="summary-sig-arg">cls</span>,
+        <span class="summary-sig-arg">plugs</span>,
+        <span class="summary-sig-arg">attrOrValue</span>,
+        <span class="summary-sig-arg">raise_on_ambiguity</span>=<span class="summary-sig-default">False</span>,
+        <span class="summary-sig-arg">attr_affinity</span>=<span class="summary-sig-default">False</span>,
+        <span class="summary-sig-arg">attr_as_source</span>=<span class="summary-sig-default">True</span>)</span><br />
+      Returns:
+sorted list of (rate,plug) tuples suitable to deal with the given attribute.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dge-pysrc.html#NodeBase.filterCompatiblePlugs">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dge-pysrc.html#NodeBase.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  We require a directed graph to track the connectivity between the plugs.
+It must be supplied by the super class and should be as global as required to
+connecte the NodeBases together properly.
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>kwargs</code></strong> - 'id' = id of the instance, defaults to None if it is not required</li>
+    </ul></dd>
+    <dt>Overrides:
+        object.__init__
+    </dt>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        we are super() compatible, and assure our base is initialized correctly
+      </p>
+</div></td></tr></table>
+</div>
+<a name="__str__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__str__</span>(<span class="sig-arg">self</span>)</span>
+    <br /><em class="fname">(Informal representation operator)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dge-pysrc.html#NodeBase.__str__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Use our id as string or the default implementation
+  <dl class="fields">
+    <dt>Overrides:
+        object.__str__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="createInstance"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">createInstance</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dge-pysrc.html#NodeBase.createInstance">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Create a copy of self and return it
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>new instance of self</dd>
+    <dt>Overrides:
+        <a href="mrv.interface.iDuplicatable-class.html#createInstance">interface.iDuplicatable.createInstance</a>
+    </dt>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        override by subclass  - the __init__ methods shuld do the rest
+      </p>
+</div></td></tr></table>
+</div>
+<a name="copyFrom"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">copyFrom</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">other</span>,
+        <span class="sig-arg">add_to_graph</span>=<span class="sig-default">True</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dge-pysrc.html#NodeBase.copyFrom">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Just take the graph from other, but do not ( never ) duplicate it
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>add_to_graph</code></strong> - if true, the new node instance will be added to the graph of</li>
+    </ul></dd>
+    <dt>Overrides:
+        <a href="mrv.interface.iDuplicatable-class.html#copyFrom">interface.iDuplicatable.copyFrom</a>
+    </dt>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        default implementation does not copy plug caches ( which are stored in
+the node dict - this is because a reevaluate is usually required on the
+duplicated node
+      </p>
+</div></td></tr></table>
+</div>
+<a name="compute"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">compute</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">plug</span>,
+        <span class="sig-arg">mode</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dge-pysrc.html#NodeBase.compute">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Called whenever a plug needs computation as the value its value is not
+cached or marked dirty ( as one of the inputs changed )
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>plug</code></strong> - the static plug instance that requested which requested the computation.
+It is the instance you defined on the class</li>
+        <li><strong class="pname"><code>mode</code></strong> - the mode of operation. Its completely up to the superclasses how that
+attribute is going to be used</li>
+    </ul></dd>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        to be implemented by superclass
+      </p>
+</div></td></tr></table>
+</div>
+<a name="id"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">id</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dge-pysrc.html#NodeBase.id">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>ID of this instance</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="toShells"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">toShells</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">plugs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dge-pysrc.html#NodeBase.toShells">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>list of shells made from plugs and our node</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="toShell"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">toShell</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">plug</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dge-pysrc.html#NodeBase.toShell">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>a plugshell as suitable to for this class</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="plugsStatic"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">plugsStatic</span>(<span class="sig-arg">cls</span>,
+        <span class="sig-arg">predicate</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x385ded8&gt;</span>)</span>
+    <br /><em class="fname">Class Method</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dge-pysrc.html#NodeBase.plugsStatic">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>predicate</code></strong> - return static plug only if predicate is true</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>list of static plugs as defined on this node - they are class members</dd>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        Use this method only if you do not have an instance - there are nodes
+that actually have no static plug information, but will dynamically generate them.
+For this to work, they need an instance - thus the plugs method is an instance
+method and is meant to be the most commonly used one.
+      </p>
+</div></td></tr></table>
+</div>
+<a name="plugs"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">plugs</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">predicate</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x385e050&gt;</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dge-pysrc.html#NodeBase.plugs">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>predicate</code></strong> - return static plug only if predicate is true</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>list of dynamic plugs as defined on this node - they are usually retrieved
+on class level, but may be overridden on instance level</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="inputPlugsStatic"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">inputPlugsStatic</span>(<span class="sig-arg">cls</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+    <br /><em class="fname">Class Method</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dge-pysrc.html#NodeBase.inputPlugsStatic">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>list of static plugs suitable as input</dd>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        convenience method
+      </p>
+</div></td></tr></table>
+</div>
+<a name="inputPlugs"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">inputPlugs</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dge-pysrc.html#NodeBase.inputPlugs">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>list of plugs suitable as input</dd>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        convenience method
+      </p>
+</div></td></tr></table>
+</div>
+<a name="outputPlugsStatic"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">outputPlugsStatic</span>(<span class="sig-arg">cls</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+    <br /><em class="fname">Class Method</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dge-pysrc.html#NodeBase.outputPlugsStatic">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>list of static plugs suitable to deliver output</dd>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        convenience method
+      </p>
+</div></td></tr></table>
+</div>
+<a name="outputPlugs"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">outputPlugs</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dge-pysrc.html#NodeBase.outputPlugs">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>list of plugs suitable to deliver output</dd>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        convenience method
+      </p>
+</div></td></tr></table>
+</div>
+<a name="connections"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">connections</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">inpt</span>,
+        <span class="sig-arg">output</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dge-pysrc.html#NodeBase.connections">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>inpt</code></strong> - include input connections to this node</li>
+        <li><strong class="pname"><code>output</code></strong> - include output connections ( from this node to others )</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>Tuples of input shells defining a connection of the given type from
+tuple( InputNodeOuptutShell, OurNodeInputShell ) for input connections and
+tuple( OurNodeOuptutShell, OutputNodeInputShell )</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="filterCompatiblePlugs"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">filterCompatiblePlugs</span>(<span class="sig-arg">cls</span>,
+        <span class="sig-arg">plugs</span>,
+        <span class="sig-arg">attrOrValue</span>,
+        <span class="sig-arg">raise_on_ambiguity</span>=<span class="sig-default">False</span>,
+        <span class="sig-arg">attr_affinity</span>=<span class="sig-default">False</span>,
+        <span class="sig-arg">attr_as_source</span>=<span class="sig-default">True</span>)</span>
+    <br /><em class="fname">Class Method</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dge-pysrc.html#NodeBase.filterCompatiblePlugs">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>attrOrValue</code></strong> - either an attribute or the value you would like to set to the
+attr at the plug in question.</li>
+        <li><strong class="pname"><code>raise_on_ambiguity</code></strong> - if True, the method raises if a plug has the same
+rating as another plug already on the output list, thus it's not clear anymore
+which plug should handle a request</li>
+        <li><strong class="pname"><code>attr_affinity</code></strong> - if True, it will not check connection affinity, but attribute
+affinity only. It checks how compatible the attributes of the plugs are, disregarding
+whether they can be connected or not
+Only valid if attrOrValue is an attribute</li>
+        <li><strong class="pname"><code>attr_as_source</code></strong> - if True, attrOrValue will be treated as the source of a connection or
+each plug would need to take its values.
+if False, attrOrValue is the destination of a connection and it needs to take values of the given plugs
+or they would connect to it. Only used if attrOrValue is an attribute.</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>sorted list of (rate,plug) tuples suitable to deal with the given attribute.
+Thus they could connect to it as well as get their value set.
+Most suitable plug comes first.
+Incompatible plugs will be pruned.</dd>
+    <dt>Raises:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code><strong class='fraise'>TypeError</strong></code> - if ambiguous input was found</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Apr 19 15:39:12 2011
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

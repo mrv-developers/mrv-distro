@@ -1,0 +1,438 @@
+<html>
+<head>
+<title>mrv.maya.ui.browse.control</title>
+</head>
+<body>
+mrv.maya.ui.browse.control
+<style>
+.coverage pre {float: left; margin: 0px 1em; border: none;
+               padding: 0px; }
+.num pre { margin: 0px }
+.nocov, .nocov pre {background-color: #faa}
+.cov, .cov pre {background-color: #cfc}
+div.coverage div { clear: both; height: 1.1em}
+</style>
+<div class="stats">
+Covered: 118 lines<br/>
+Missed: 146 lines<br/>
+Skipped 149 lines<br/>
+Percent: 44 %<br/>
+
+</div>
+<div class="coverage">
+<div class="skip"><span class="num"><pre>  1</pre></span><pre># -*- coding: utf-8 -*-</pre></div>
+<div class="cov"><span class="num"><pre>  2</pre></span><pre>&quot;&quot;&quot;Contains ui modules to build a finder-like browser for items of any kind&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  3</pre></span><pre>__docformat__ = &quot;restructuredtext&quot;</pre></div>
+<div class="skip"><span class="num"><pre>  4</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  5</pre></span><pre>from interface import (iFinderProvider, iFinderFilter)</pre></div>
+<div class="skip"><span class="num"><pre>  6</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  7</pre></span><pre>import mrv.maya.ui as ui</pre></div>
+<div class="cov"><span class="num"><pre>  8</pre></span><pre>from mrv.maya.util import (OptionVarDict, logException )</pre></div>
+<div class="cov"><span class="num"><pre>  9</pre></span><pre>from util import concat_url</pre></div>
+<div class="skip"><span class="num"><pre> 10</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 11</pre></span><pre>from mrv.path import Path</pre></div>
+<div class="cov"><span class="num"><pre> 12</pre></span><pre>opts = OptionVarDict()</pre></div>
+<div class="skip"><span class="num"><pre> 13</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 14</pre></span><pre>__all__ = ( 'FileProvider', 'BookmarkControl',  </pre></div>
+<div class="cov"><span class="num"><pre> 15</pre></span><pre>			'FilePathControl', 'FileFilterControl', 'FinderElement', </pre></div>
+<div class="cov"><span class="num"><pre> 16</pre></span><pre>			'FileStack', 'FileRootSelectorControl', 'FilePathControlEditable')</pre></div>
+<div class="skip"><span class="num"><pre> 17</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 18</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 19</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 20</pre></span><pre>#{ Utilities</pre></div>
+<div class="skip"><span class="num"><pre> 21</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 22</pre></span><pre>class FileProvider(iFinderProvider):</pre></div>
+<div class="cov"><span class="num"><pre> 23</pre></span><pre>	&quot;&quot;&quot;Implements a provider for a file system&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 24</pre></span><pre>	__slots__ = &quot;_root&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 25</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 26</pre></span><pre>	def __init__(self, root):</pre></div>
+<div class="nocov"><span class="num"><pre> 27</pre></span><pre>		super(FileProvider, self).__init__(root)</pre></div>
+<div class="nocov"><span class="num"><pre> 28</pre></span><pre>		self._root = Path(self._root)</pre></div>
+<div class="skip"><span class="num"><pre> 29</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 30</pre></span><pre>	def formatItem(self, url_base, url_index, url_item):</pre></div>
+<div class="nocov"><span class="num"><pre> 31</pre></span><pre>		return url_item</pre></div>
+<div class="skip"><span class="num"><pre> 32</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 33</pre></span><pre>	def urlItems(self, url):</pre></div>
+<div class="cov"><span class="num"><pre> 34</pre></span><pre>		&quot;&quot;&quot;Return directory items alphabetically, directories first&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 35</pre></span><pre>		path = self._root / url</pre></div>
+<div class="nocov"><span class="num"><pre> 36</pre></span><pre>		dirs, files = list(), list()</pre></div>
+<div class="skip"><span class="num"><pre> 37</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre> 38</pre></span><pre>		try:</pre></div>
+<div class="nocov"><span class="num"><pre> 39</pre></span><pre>			for abs_path in path.listdir():</pre></div>
+<div class="nocov"><span class="num"><pre> 40</pre></span><pre>				if abs_path.isdir():</pre></div>
+<div class="nocov"><span class="num"><pre> 41</pre></span><pre>					dirs.append(abs_path)</pre></div>
+<div class="nocov"><span class="num"><pre> 42</pre></span><pre>				else:</pre></div>
+<div class="nocov"><span class="num"><pre> 43</pre></span><pre>					files.append(abs_path)</pre></div>
+<div class="skip"><span class="num"><pre> 44</pre></span><pre>				# END sort by type</pre></div>
+<div class="skip"><span class="num"><pre> 45</pre></span><pre>			# END for each listed path</pre></div>
+<div class="nocov"><span class="num"><pre> 46</pre></span><pre>			dirs.sort()</pre></div>
+<div class="nocov"><span class="num"><pre> 47</pre></span><pre>			files.sort()</pre></div>
+<div class="nocov"><span class="num"><pre> 48</pre></span><pre>			return [abspath.basename() for abspath in (dirs + files)] </pre></div>
+<div class="nocov"><span class="num"><pre> 49</pre></span><pre>		except OSError:</pre></div>
+<div class="skip"><span class="num"><pre> 50</pre></span><pre>			# ignore attempts to get path on a file for instance</pre></div>
+<div class="nocov"><span class="num"><pre> 51</pre></span><pre>			return list()</pre></div>
+<div class="skip"><span class="num"><pre> 52</pre></span><pre>		# END exception handling</pre></div>
+<div class="skip"><span class="num"><pre> 53</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre> 54</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 55</pre></span><pre>class StackControlBase(ui.TextScrollList):</pre></div>
+<div class="cov"><span class="num"><pre> 56</pre></span><pre>	&quot;&quot;&quot;stack base implementation. A stack keeps multiple items which can be added </pre></div>
+<div class="cov"><span class="num"><pre> 57</pre></span><pre>	and removed. Additionally, it allows to remap the items, effectively showing </pre></div>
+<div class="cov"><span class="num"><pre> 58</pre></span><pre>	a formatted item, which is kept in sync with an unformatted item.</pre></div>
+<div class="cov"><span class="num"><pre> 59</pre></span><pre>	:note: for now, only adding items, format will be applied. All other methods</pre></div>
+<div class="cov"><span class="num"><pre> 60</pre></span><pre>		operate on the formatted items.&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 61</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre> 62</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 63</pre></span><pre>	def __init__(self, *args, **kwargs):</pre></div>
+<div class="nocov"><span class="num"><pre> 64</pre></span><pre>		super(StackControlBase, self).__init__(*args, **kwargs)</pre></div>
+<div class="skip"><span class="num"><pre> 65</pre></span><pre>		# unformatted items</pre></div>
+<div class="nocov"><span class="num"><pre> 66</pre></span><pre>		self.base_items = list()</pre></div>
+<div class="skip"><span class="num"><pre> 67</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre> 68</pre></span><pre>	#{ Interface</pre></div>
+<div class="skip"><span class="num"><pre> 69</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 70</pre></span><pre>	def formatItem(self, item):</pre></div>
+<div class="cov"><span class="num"><pre> 71</pre></span><pre>		&quot;&quot;&quot;:return: formatted version of item&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 72</pre></span><pre>		return item</pre></div>
+<div class="skip"><span class="num"><pre> 73</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 74</pre></span><pre>	def selectedUnformattedItem(self):</pre></div>
+<div class="cov"><span class="num"><pre> 75</pre></span><pre>		&quot;&quot;&quot;:return: unformatted selected item or None&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 76</pre></span><pre>		index = self.selectedIndex()</pre></div>
+<div class="nocov"><span class="num"><pre> 77</pre></span><pre>		if index &lt; 0:</pre></div>
+<div class="nocov"><span class="num"><pre> 78</pre></span><pre>			return None</pre></div>
+<div class="nocov"><span class="num"><pre> 79</pre></span><pre>		return self.base_items[index-1]</pre></div>
+<div class="skip"><span class="num"><pre> 80</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 81</pre></span><pre>	def selectUnformattedItem(self, index_or_item):</pre></div>
+<div class="cov"><span class="num"><pre> 82</pre></span><pre>		&quot;&quot;&quot;Select the unformatted item as identified by either the index or item</pre></div>
+<div class="cov"><span class="num"><pre> 83</pre></span><pre>		:param index_or_item: integer representing the 0-based index of the item to </pre></div>
+<div class="cov"><span class="num"><pre> 84</pre></span><pre>			select, or the item's id</pre></div>
+<div class="cov"><span class="num"><pre> 85</pre></span><pre>		:raise ValueError: if the item does not exist&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 86</pre></span><pre>		index = index_or_item</pre></div>
+<div class="nocov"><span class="num"><pre> 87</pre></span><pre>		if not isinstance(index_or_item, int):</pre></div>
+<div class="nocov"><span class="num"><pre> 88</pre></span><pre>			index = self.base_items.index(index_or_item)</pre></div>
+<div class="nocov"><span class="num"><pre> 89</pre></span><pre>		self.p_selectIndexedItem = index+1</pre></div>
+<div class="skip"><span class="num"><pre> 90</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre> 91</pre></span><pre>	#} END Interface</pre></div>
+<div class="skip"><span class="num"><pre> 92</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre> 93</pre></span><pre>	#{ Overridden Methods</pre></div>
+<div class="skip"><span class="num"><pre> 94</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 95</pre></span><pre>	def removeItem(self, item):</pre></div>
+<div class="cov"><span class="num"><pre> 96</pre></span><pre>		&quot;&quot;&quot;Remove the given formatted item from the list, as well as the corresponding</pre></div>
+<div class="cov"><span class="num"><pre> 97</pre></span><pre>		unformtted item. Its not an error if the item does not exist&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 98</pre></span><pre>		try:</pre></div>
+<div class="nocov"><span class="num"><pre> 99</pre></span><pre>			index = self.items().index(item)</pre></div>
+<div class="nocov"><span class="num"><pre>100</pre></span><pre>			del(self.base_items[index])</pre></div>
+<div class="nocov"><span class="num"><pre>101</pre></span><pre>			super(StackControlBase, self).removeItem(item)</pre></div>
+<div class="nocov"><span class="num"><pre>102</pre></span><pre>		except (ValueError, IndexError):</pre></div>
+<div class="nocov"><span class="num"><pre>103</pre></span><pre>			pass</pre></div>
+<div class="skip"><span class="num"><pre>104</pre></span><pre>		# END exception handling</pre></div>
+<div class="nocov"><span class="num"><pre>105</pre></span><pre>		return self</pre></div>
+<div class="skip"><span class="num"><pre>106</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>107</pre></span><pre>	def addItem(self, item):</pre></div>
+<div class="nocov"><span class="num"><pre>108</pre></span><pre>		self.base_items.append(item)</pre></div>
+<div class="nocov"><span class="num"><pre>109</pre></span><pre>		return super(StackControlBase, self).addItem(self.formatItem(item))</pre></div>
+<div class="skip"><span class="num"><pre>110</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>111</pre></span><pre>	#} END overridden methods</pre></div>
+<div class="skip"><span class="num"><pre>112</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>113</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>114</pre></span><pre>class FinderElement(StackControlBase):</pre></div>
+<div class="cov"><span class="num"><pre>115</pre></span><pre>	&quot;&quot;&quot;Element with special abilities to suite the finder better. This involves</pre></div>
+<div class="cov"><span class="num"><pre>116</pre></span><pre>	keeping a list of unformatted items which can be used as unique item identifiers.</pre></div>
+<div class="skip"><span class="num"><pre>117</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>118</pre></span><pre>	Set the items to a list of unique identifiers which represent the possibly different</pre></div>
+<div class="cov"><span class="num"><pre>119</pre></span><pre>	items actually present in the list.&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>120</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>121</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>122</pre></span><pre>class FileStack(StackControlBase):</pre></div>
+<div class="cov"><span class="num"><pre>123</pre></span><pre>	&quot;&quot;&quot;Implements a stack which shows only the base names of files&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>124</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>125</pre></span><pre>	#{ Overrides </pre></div>
+<div class="skip"><span class="num"><pre>126</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>127</pre></span><pre>	def formatItem(self, item):</pre></div>
+<div class="nocov"><span class="num"><pre>128</pre></span><pre>		return Path(item).basename()</pre></div>
+<div class="skip"><span class="num"><pre>129</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>130</pre></span><pre>	#} END overrides</pre></div>
+<div class="skip"><span class="num"><pre>131</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>132</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre>133</pre></span><pre>class FilePathControl(ui.TextField):</pre></div>
+<div class="cov"><span class="num"><pre>134</pre></span><pre>	&quot;&quot;&quot;Control displaying a relative url. If it is ediable, a filepath may be </pre></div>
+<div class="cov"><span class="num"><pre>135</pre></span><pre>	entered and queried&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>136</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>137</pre></span><pre>	#{ Interface</pre></div>
+<div class="cov"><span class="num"><pre>138</pre></span><pre>	def path(self):</pre></div>
+<div class="cov"><span class="num"><pre>139</pre></span><pre>		&quot;&quot;&quot;:return: string representing the currently active path&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>140</pre></span><pre>		return self.p_text</pre></div>
+<div class="skip"><span class="num"><pre>141</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>142</pre></span><pre>	def setPath(self, path):</pre></div>
+<div class="cov"><span class="num"><pre>143</pre></span><pre>		&quot;&quot;&quot;Set the control to display the given path&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>144</pre></span><pre>		if path is None:</pre></div>
+<div class="nocov"><span class="num"><pre>145</pre></span><pre>			path = ''</pre></div>
+<div class="nocov"><span class="num"><pre>146</pre></span><pre>		self.p_text = str(path)</pre></div>
+<div class="skip"><span class="num"><pre>147</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>148</pre></span><pre>	def setEditable(self, state):</pre></div>
+<div class="nocov"><span class="num"><pre>149</pre></span><pre>		self.p_editable = state</pre></div>
+<div class="skip"><span class="num"><pre>150</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>151</pre></span><pre>	def editable(self):</pre></div>
+<div class="cov"><span class="num"><pre>152</pre></span><pre>		&quot;&quot;&quot;:return: True if the control can be edited by the user&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>153</pre></span><pre>		return self.p_editable</pre></div>
+<div class="skip"><span class="num"><pre>154</pre></span><pre>	#} END interface</pre></div>
+<div class="skip"><span class="num"><pre>155</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>156</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>157</pre></span><pre>class FilePathControlEditable(FilePathControl):</pre></div>
+<div class="cov"><span class="num"><pre>158</pre></span><pre>	&quot;&quot;&quot;A filepath control which tries to maintain changes applied by the user.</pre></div>
+<div class="cov"><span class="num"><pre>159</pre></span><pre>	It assumes that the system will use setPath to adjust the path, and checks</pre></div>
+<div class="cov"><span class="num"><pre>160</pre></span><pre>	for changes in the path string which will be reapplied to the newly set path</pre></div>
+<div class="cov"><span class="num"><pre>161</pre></span><pre>	if possible&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>162</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>163</pre></span><pre>	def __init__(self, *args, **kwargs):</pre></div>
+<div class="nocov"><span class="num"><pre>164</pre></span><pre>		super(FilePathControlEditable, self).__init__(*args, **kwargs)</pre></div>
+<div class="nocov"><span class="num"><pre>165</pre></span><pre>		self._prev_path = ''</pre></div>
+<div class="skip"><span class="num"><pre>166</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>167</pre></span><pre>	def setPath(self, path):</pre></div>
+<div class="skip"><span class="num"><pre>168</pre></span><pre>		# figure out the changes - only care for append operations</pre></div>
+<div class="nocov"><span class="num"><pre>169</pre></span><pre>		if path is not None:</pre></div>
+<div class="nocov"><span class="num"><pre>170</pre></span><pre>			appended_text = self.p_text.replace(self._prev_path, '', 1)</pre></div>
+<div class="nocov"><span class="num"><pre>171</pre></span><pre>			self._prev_path = path</pre></div>
+<div class="nocov"><span class="num"><pre>172</pre></span><pre>			path += appended_text</pre></div>
+<div class="skip"><span class="num"><pre>173</pre></span><pre>		# END handle previous path</pre></div>
+<div class="nocov"><span class="num"><pre>174</pre></span><pre>		super(FilePathControlEditable, self).setPath(path)</pre></div>
+<div class="skip"><span class="num"><pre>175</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>176</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>177</pre></span><pre>class BookmarkControl(StackControlBase):</pre></div>
+<div class="cov"><span class="num"><pre>178</pre></span><pre>	&quot;&quot;&quot;Control allowing to display a set of custom bookmarks, which are stored</pre></div>
+<div class="cov"><span class="num"><pre>179</pre></span><pre>	in optionVars&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>180</pre></span><pre>	#{ Configuration</pre></div>
+<div class="skip"><span class="num"><pre>181</pre></span><pre>	# Default name used to store bookmarks in optionVars. Adjust this id in case</pre></div>
+<div class="skip"><span class="num"><pre>182</pre></span><pre>	# you have different sets of bookmarks to store </pre></div>
+<div class="cov"><span class="num"><pre>183</pre></span><pre>	k_bookmark_store = &quot;MRV_bookmarks&quot;</pre></div>
+<div class="skip"><span class="num"><pre>184</pre></span><pre>	#} END configuration</pre></div>
+<div class="skip"><span class="num"><pre>185</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>186</pre></span><pre>	#{ Signals</pre></div>
+<div class="skip"><span class="num"><pre>187</pre></span><pre>	# s(root, path)</pre></div>
+<div class="cov"><span class="num"><pre>188</pre></span><pre>	bookmark_changed = ui.Signal()</pre></div>
+<div class="skip"><span class="num"><pre>189</pre></span><pre>	#} END signals</pre></div>
+<div class="skip"><span class="num"><pre>190</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>191</pre></span><pre>	def __init__(self, *args, **kwargs):</pre></div>
+<div class="skip"><span class="num"><pre>192</pre></span><pre>		# fill ourselves with the stored bookmarks</pre></div>
+<div class="skip"><span class="num"><pre>193</pre></span><pre>		# List of tuples: root,relative_path</pre></div>
+<div class="nocov"><span class="num"><pre>194</pre></span><pre>		super(BookmarkControl, self).__init__(*args, **kwargs)</pre></div>
+<div class="nocov"><span class="num"><pre>195</pre></span><pre>		self.setItems(self._unpack_stored_bookmarks())</pre></div>
+<div class="nocov"><span class="num"><pre>196</pre></span><pre>		self.e_selectCommand = self._selection_changed</pre></div>
+<div class="skip"><span class="num"><pre>197</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>198</pre></span><pre>	def _parse_bookmark(self, bookmark):</pre></div>
+<div class="cov"><span class="num"><pre>199</pre></span><pre>		&quot;&quot;&quot;:return: root,path tuple or raise&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>200</pre></span><pre>		root, path = None, None</pre></div>
+<div class="nocov"><span class="num"><pre>201</pre></span><pre>		if isinstance(bookmark, tuple) and len(bookmark) == 2:</pre></div>
+<div class="nocov"><span class="num"><pre>202</pre></span><pre>			root, path = bookmark</pre></div>
+<div class="nocov"><span class="num"><pre>203</pre></span><pre>		else:</pre></div>
+<div class="nocov"><span class="num"><pre>204</pre></span><pre>			bookmark = Path(bookmark)</pre></div>
+<div class="nocov"><span class="num"><pre>205</pre></span><pre>			root = bookmark.root()</pre></div>
+<div class="nocov"><span class="num"><pre>206</pre></span><pre>			root_with_sep = (root.endswith(root.sep) and root) or (root + root.sep)</pre></div>
+<div class="nocov"><span class="num"><pre>207</pre></span><pre>			path = Path(bookmark.replace(root_with_sep, '', 1))</pre></div>
+<div class="skip"><span class="num"><pre>208</pre></span><pre>		# END handle bookmark</pre></div>
+<div class="skip"><span class="num"><pre>209</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>210</pre></span><pre>		return root, path</pre></div>
+<div class="skip"><span class="num"><pre>211</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>212</pre></span><pre>	def _unpack_stored_bookmarks(self):</pre></div>
+<div class="cov"><span class="num"><pre>213</pre></span><pre>		&quot;&quot;&quot;:return: list of tuples of root,path pairs&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>214</pre></span><pre>		miter = iter(opts.get(self.k_bookmark_store, list()))</pre></div>
+<div class="nocov"><span class="num"><pre>215</pre></span><pre>		return [item for item in zip(miter, miter)]</pre></div>
+<div class="skip"><span class="num"><pre>216</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>217</pre></span><pre>	def _store_item_list(self, items):</pre></div>
+<div class="cov"><span class="num"><pre>218</pre></span><pre>		&quot;&quot;&quot;Store a list of pairs&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>219</pre></span><pre>		flattened_list = list()</pre></div>
+<div class="nocov"><span class="num"><pre>220</pre></span><pre>		for pair in items:</pre></div>
+<div class="nocov"><span class="num"><pre>221</pre></span><pre>			flattened_list.extend(pair)</pre></div>
+<div class="skip"><span class="num"><pre>222</pre></span><pre>		# END flatten list</pre></div>
+<div class="nocov"><span class="num"><pre>223</pre></span><pre>		opts[self.k_bookmark_store] = flattened_list</pre></div>
+<div class="skip"><span class="num"><pre>224</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>225</pre></span><pre>	def _store_bookmark(self, root, path, add=True):</pre></div>
+<div class="cov"><span class="num"><pre>226</pre></span><pre>		&quot;&quot;&quot;Store the given path under the given root</pre></div>
+<div class="cov"><span class="num"><pre>227</pre></span><pre>		:param add: if True, the path will be added to the bookmarks of the given </pre></div>
+<div class="cov"><span class="num"><pre>228</pre></span><pre>			root, otherwise it will be removed&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>229</pre></span><pre>		items = self._unpack_stored_bookmarks()</pre></div>
+<div class="nocov"><span class="num"><pre>230</pre></span><pre>		index_to_remove = None</pre></div>
+<div class="nocov"><span class="num"><pre>231</pre></span><pre>		for index, (oroot, opath) in enumerate(items):</pre></div>
+<div class="nocov"><span class="num"><pre>232</pre></span><pre>			if oroot == root and opath == path:</pre></div>
+<div class="nocov"><span class="num"><pre>233</pre></span><pre>				if add:</pre></div>
+<div class="nocov"><span class="num"><pre>234</pre></span><pre>					return</pre></div>
+<div class="nocov"><span class="num"><pre>235</pre></span><pre>				else:</pre></div>
+<div class="nocov"><span class="num"><pre>236</pre></span><pre>					index_to_remove = index</pre></div>
+<div class="nocov"><span class="num"><pre>237</pre></span><pre>					break</pre></div>
+<div class="skip"><span class="num"><pre>238</pre></span><pre>				# END skip existing</pre></div>
+<div class="skip"><span class="num"><pre>239</pre></span><pre>			# END similar item is stored already</pre></div>
+<div class="skip"><span class="num"><pre>240</pre></span><pre>		# END for each stored item</pre></div>
+<div class="skip"><span class="num"><pre>241</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>242</pre></span><pre>		if add:</pre></div>
+<div class="nocov"><span class="num"><pre>243</pre></span><pre>			items.append((root, path))</pre></div>
+<div class="nocov"><span class="num"><pre>244</pre></span><pre>		else:</pre></div>
+<div class="nocov"><span class="num"><pre>245</pre></span><pre>			if index_to_remove is None:</pre></div>
+<div class="nocov"><span class="num"><pre>246</pre></span><pre>				return</pre></div>
+<div class="skip"><span class="num"><pre>247</pre></span><pre>			# END ignore items that do not exist</pre></div>
+<div class="nocov"><span class="num"><pre>248</pre></span><pre>			del(items[index_to_remove])</pre></div>
+<div class="skip"><span class="num"><pre>249</pre></span><pre>		# END end handle stored</pre></div>
+<div class="skip"><span class="num"><pre>250</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>251</pre></span><pre>		self._store_item_list(items)</pre></div>
+<div class="skip"><span class="num"><pre>252</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>253</pre></span><pre>	@logException</pre></div>
+<div class="cov"><span class="num"><pre>254</pre></span><pre>	def _selection_changed(self, *args):</pre></div>
+<div class="cov"><span class="num"><pre>255</pre></span><pre>		&quot;&quot;&quot;Convert the default callback into our signals&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>256</pre></span><pre>		if not self.base_items:</pre></div>
+<div class="nocov"><span class="num"><pre>257</pre></span><pre>			return</pre></div>
+<div class="nocov"><span class="num"><pre>258</pre></span><pre>		root, path = self.base_items[self.selectedIndex()-1]</pre></div>
+<div class="nocov"><span class="num"><pre>259</pre></span><pre>		self.bookmark_changed.send(root, path)</pre></div>
+<div class="skip"><span class="num"><pre>260</pre></span><pre>		# as we are one-time actions only, deselect everything</pre></div>
+<div class="nocov"><span class="num"><pre>261</pre></span><pre>		self.setSelectedItem(None)</pre></div>
+<div class="skip"><span class="num"><pre>262</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>263</pre></span><pre>	#{ StackControl Interface</pre></div>
+<div class="cov"><span class="num"><pre>264</pre></span><pre>	def formatItem(self, root_path_tuple):</pre></div>
+<div class="nocov"><span class="num"><pre>265</pre></span><pre>		if isinstance(root_path_tuple, tuple):</pre></div>
+<div class="nocov"><span class="num"><pre>266</pre></span><pre>			return Path(root_path_tuple[-1]).basename()</pre></div>
+<div class="nocov"><span class="num"><pre>267</pre></span><pre>		else:</pre></div>
+<div class="nocov"><span class="num"><pre>268</pre></span><pre>			return Path(root_path_tuple).basename()</pre></div>
+<div class="skip"><span class="num"><pre>269</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>270</pre></span><pre>	#} END stackcontrol interface</pre></div>
+<div class="skip"><span class="num"><pre>271</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>272</pre></span><pre>	def addItem(self, bookmark):</pre></div>
+<div class="cov"><span class="num"><pre>273</pre></span><pre>		&quot;&quot;&quot;Add a new bookmark</pre></div>
+<div class="cov"><span class="num"><pre>274</pre></span><pre>		:param bookmark: tuple of root,relative_path or a single absolute path. In the </pre></div>
+<div class="cov"><span class="num"><pre>275</pre></span><pre>			latter case, the root will be the natural root of the absolute path&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>276</pre></span><pre>		root, path = self._parse_bookmark(bookmark)</pre></div>
+<div class="nocov"><span class="num"><pre>277</pre></span><pre>		bm_formatted = self.formatItem((root, path))</pre></div>
+<div class="skip"><span class="num"><pre>278</pre></span><pre>		# duplicate prevention</pre></div>
+<div class="nocov"><span class="num"><pre>279</pre></span><pre>		if bm_formatted in self.items():</pre></div>
+<div class="nocov"><span class="num"><pre>280</pre></span><pre>			return</pre></div>
+<div class="skip"><span class="num"><pre>281</pre></span><pre>		# END handle duplicates</pre></div>
+<div class="nocov"><span class="num"><pre>282</pre></span><pre>		self._store_bookmark(root, path, add=True)</pre></div>
+<div class="nocov"><span class="num"><pre>283</pre></span><pre>		super(BookmarkControl, self).addItem((root, path))</pre></div>
+<div class="skip"><span class="num"><pre>284</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>285</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>286</pre></span><pre>	def setItems(self, bookmarks):</pre></div>
+<div class="cov"><span class="num"><pre>287</pre></span><pre>		&quot;&quot;&quot;Set this control to a list of bookmarks</pre></div>
+<div class="cov"><span class="num"><pre>288</pre></span><pre>		:param bookmarks: list of either tuples of (root, path) pairs or absolute paths</pre></div>
+<div class="cov"><span class="num"><pre>289</pre></span><pre>			whose root will be chosen automatically&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>290</pre></span><pre>		bms = list()</pre></div>
+<div class="nocov"><span class="num"><pre>291</pre></span><pre>		self.base_items = list()</pre></div>
+<div class="nocov"><span class="num"><pre>292</pre></span><pre>		for item in bookmarks:</pre></div>
+<div class="nocov"><span class="num"><pre>293</pre></span><pre>			self.base_items.append(self._parse_bookmark(item))</pre></div>
+<div class="nocov"><span class="num"><pre>294</pre></span><pre>			bms.append(self.formatItem(self.base_items[-1]))</pre></div>
+<div class="skip"><span class="num"><pre>295</pre></span><pre>		# END for each item</pre></div>
+<div class="nocov"><span class="num"><pre>296</pre></span><pre>		super(BookmarkControl, self).setItems(bms)</pre></div>
+<div class="skip"><span class="num"><pre>297</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>298</pre></span><pre>		# store all items together</pre></div>
+<div class="nocov"><span class="num"><pre>299</pre></span><pre>		del(opts[self.k_bookmark_store])</pre></div>
+<div class="nocov"><span class="num"><pre>300</pre></span><pre>		self._store_item_list(self.base_items)</pre></div>
+<div class="skip"><span class="num"><pre>301</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>302</pre></span><pre>	def removeItem(self, bookmark):</pre></div>
+<div class="cov"><span class="num"><pre>303</pre></span><pre>		&quot;&quot;&quot;Remove the given bookmark from the list of bookmarks</pre></div>
+<div class="cov"><span class="num"><pre>304</pre></span><pre>		:param bookmark: full path to the bookmark to remove. Its not an error</pre></div>
+<div class="cov"><span class="num"><pre>305</pre></span><pre>			if it doesn't exist in the first place&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>306</pre></span><pre>		items = self.items()</pre></div>
+<div class="nocov"><span class="num"><pre>307</pre></span><pre>		try:</pre></div>
+<div class="nocov"><span class="num"><pre>308</pre></span><pre>			index = self.items().index(bookmark)</pre></div>
+<div class="nocov"><span class="num"><pre>309</pre></span><pre>			root, path = self.base_items[index]</pre></div>
+<div class="nocov"><span class="num"><pre>310</pre></span><pre>			super(BookmarkControl, self).removeItem(bookmark)</pre></div>
+<div class="nocov"><span class="num"><pre>311</pre></span><pre>			self._store_bookmark(root, path, add=False)</pre></div>
+<div class="nocov"><span class="num"><pre>312</pre></span><pre>		except (ValueError, IndexError):</pre></div>
+<div class="nocov"><span class="num"><pre>313</pre></span><pre>			return</pre></div>
+<div class="skip"><span class="num"><pre>314</pre></span><pre>		# END exception handling</pre></div>
+<div class="skip"><span class="num"><pre>315</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>316</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>317</pre></span><pre>class FileRootSelectorControl(ui.TextScrollList):</pre></div>
+<div class="cov"><span class="num"><pre>318</pre></span><pre>	&quot;&quot;&quot;Keeps a list of possible roots which can be chosen. Each root is represented </pre></div>
+<div class="cov"><span class="num"><pre>319</pre></span><pre>	by a Provider instance.&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>320</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>321</pre></span><pre>	#{ Signals</pre></div>
+<div class="skip"><span class="num"><pre>322</pre></span><pre>	# s(Provider)</pre></div>
+<div class="cov"><span class="num"><pre>323</pre></span><pre>	root_changed = ui.Signal()</pre></div>
+<div class="skip"><span class="num"><pre>324</pre></span><pre>	#} END signals</pre></div>
+<div class="skip"><span class="num"><pre>325</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>326</pre></span><pre>	def __init__(self, *args, **kwargs):</pre></div>
+<div class="nocov"><span class="num"><pre>327</pre></span><pre>		self._providers = list()</pre></div>
+<div class="nocov"><span class="num"><pre>328</pre></span><pre>		self.e_selectCommand = self._selection_changed</pre></div>
+<div class="skip"><span class="num"><pre>329</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>330</pre></span><pre>	def _provider_by_root(self, root):</pre></div>
+<div class="cov"><span class="num"><pre>331</pre></span><pre>		&quot;&quot;&quot;:return: provider instance having the given root, or None&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>332</pre></span><pre>		for p in self._providers:</pre></div>
+<div class="nocov"><span class="num"><pre>333</pre></span><pre>			if p.root() == root:</pre></div>
+<div class="nocov"><span class="num"><pre>334</pre></span><pre>				return p</pre></div>
+<div class="skip"><span class="num"><pre>335</pre></span><pre>			# END check match</pre></div>
+<div class="skip"><span class="num"><pre>336</pre></span><pre>		# END for each of our providers</pre></div>
+<div class="nocov"><span class="num"><pre>337</pre></span><pre>		return None</pre></div>
+<div class="skip"><span class="num"><pre>338</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>339</pre></span><pre>	def setItems(self, providers):</pre></div>
+<div class="cov"><span class="num"><pre>340</pre></span><pre>		&quot;&quot;&quot;Set the given providers to be used by this instance</pre></div>
+<div class="cov"><span class="num"><pre>341</pre></span><pre>		:param providers: list of FileProvider instances&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>342</pre></span><pre>		for provider in providers:</pre></div>
+<div class="nocov"><span class="num"><pre>343</pre></span><pre>			if not isinstance(provider, FileProvider):</pre></div>
+<div class="nocov"><span class="num"><pre>344</pre></span><pre>				raise ValueError(&quot;Require %s instances&quot; % FileProvider)</pre></div>
+<div class="skip"><span class="num"><pre>345</pre></span><pre>			# END verify type</pre></div>
+<div class="skip"><span class="num"><pre>346</pre></span><pre>		# END for each provider</pre></div>
+<div class="nocov"><span class="num"><pre>347</pre></span><pre>		self._providers = providers</pre></div>
+<div class="nocov"><span class="num"><pre>348</pre></span><pre>		super(FileRootSelectorControl, self).setItems(p.root() for p in self._providers)</pre></div>
+<div class="skip"><span class="num"><pre>349</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>350</pre></span><pre>	def addItem(self, provider):</pre></div>
+<div class="cov"><span class="num"><pre>351</pre></span><pre>		&quot;&quot;&quot;Add the given provider to our list of provides&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>352</pre></span><pre>		super(FileRootSelectorControl, self).addItem(provider.root())</pre></div>
+<div class="nocov"><span class="num"><pre>353</pre></span><pre>		self._providers.append(provider)</pre></div>
+<div class="skip"><span class="num"><pre>354</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>355</pre></span><pre>	def removeItem(self, provider):</pre></div>
+<div class="cov"><span class="num"><pre>356</pre></span><pre>		&quot;&quot;&quot;Remove the given provider from the list</pre></div>
+<div class="cov"><span class="num"><pre>357</pre></span><pre>		:param provider: FileProvider instance or root from which the provider</pre></div>
+<div class="cov"><span class="num"><pre>358</pre></span><pre>			can be determined&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>359</pre></span><pre>		if isinstance(provider, basestring):</pre></div>
+<div class="nocov"><span class="num"><pre>360</pre></span><pre>			provider = self._provider_by_root(provider)</pre></div>
+<div class="nocov"><span class="num"><pre>361</pre></span><pre>			if provider is None:</pre></div>
+<div class="nocov"><span class="num"><pre>362</pre></span><pre>				return</pre></div>
+<div class="skip"><span class="num"><pre>363</pre></span><pre>			# END abort if not found</pre></div>
+<div class="skip"><span class="num"><pre>364</pre></span><pre>		# END handle provider type</pre></div>
+<div class="skip"><span class="num"><pre>365</pre></span><pre>		</pre></div>
+<div class="nocov"><span class="num"><pre>366</pre></span><pre>		try:</pre></div>
+<div class="nocov"><span class="num"><pre>367</pre></span><pre>			self._providers.remove(provider)</pre></div>
+<div class="nocov"><span class="num"><pre>368</pre></span><pre>		except ValueError:</pre></div>
+<div class="nocov"><span class="num"><pre>369</pre></span><pre>			return</pre></div>
+<div class="nocov"><span class="num"><pre>370</pre></span><pre>		else:</pre></div>
+<div class="nocov"><span class="num"><pre>371</pre></span><pre>			self.setItems(self._providers)</pre></div>
+<div class="skip"><span class="num"><pre>372</pre></span><pre>		# END exception handling</pre></div>
+<div class="skip"><span class="num"><pre>373</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>374</pre></span><pre>	def setSelectedItem(self, item):</pre></div>
+<div class="cov"><span class="num"><pre>375</pre></span><pre>		&quot;&quot;&quot;Fires a root_changed event if the item actually caused a selection change&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>376</pre></span><pre>		cur_index = self.selectedIndex()</pre></div>
+<div class="nocov"><span class="num"><pre>377</pre></span><pre>		super(FileRootSelectorControl, self).setSelectedItem(item)</pre></div>
+<div class="nocov"><span class="num"><pre>378</pre></span><pre>		if cur_index == self.selectedIndex():</pre></div>
+<div class="nocov"><span class="num"><pre>379</pre></span><pre>			return</pre></div>
+<div class="skip"><span class="num"><pre>380</pre></span><pre>		# END skip if no change</pre></div>
+<div class="nocov"><span class="num"><pre>381</pre></span><pre>		self._selection_changed()</pre></div>
+<div class="skip"><span class="num"><pre>382</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>383</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>384</pre></span><pre>	#{ Interface</pre></div>
+<div class="skip"><span class="num"><pre>385</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>386</pre></span><pre>	def providers(self):</pre></div>
+<div class="cov"><span class="num"><pre>387</pre></span><pre>		&quot;&quot;&quot;:return: list of currently used providers&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>388</pre></span><pre>		return list(self._providers)</pre></div>
+<div class="skip"><span class="num"><pre>389</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>390</pre></span><pre>	#} END interface</pre></div>
+<div class="skip"><span class="num"><pre>391</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>392</pre></span><pre>	#{ Callbacks</pre></div>
+<div class="skip"><span class="num"><pre>393</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>394</pre></span><pre>	def _selection_changed(self, *args):</pre></div>
+<div class="nocov"><span class="num"><pre>395</pre></span><pre>		index = self.selectedIndex()-1</pre></div>
+<div class="nocov"><span class="num"><pre>396</pre></span><pre>		self.root_changed.send(self._providers[index])</pre></div>
+<div class="skip"><span class="num"><pre>397</pre></span><pre>	#} END callbacks</pre></div>
+<div class="skip"><span class="num"><pre>398</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>399</pre></span><pre>#} END utilities</pre></div>
+<div class="skip"><span class="num"><pre>400</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>401</pre></span><pre>#{ Modules</pre></div>
+<div class="skip"><span class="num"><pre>402</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>403</pre></span><pre>class FileFilterControl(ui.FormLayout, iFinderFilter):</pre></div>
+<div class="cov"><span class="num"><pre>404</pre></span><pre>	&quot;&quot;&quot;Control providing a filter for finder urls which are file paths&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>405</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>406</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>407</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>408</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>409</pre></span><pre>#} END modules</pre></div>
+<div class="skip"><span class="num"><pre>410</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>411</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>412</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>413</pre></span><pre></pre></div>
+</div>
+</body>
+</html>

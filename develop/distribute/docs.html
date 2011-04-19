@@ -1,0 +1,194 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>The Documentation Generator &mdash; mrv v1.0.2-develop documentation</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.2-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="top" title="mrv v1.0.2-develop documentation" href="../../index.html" />
+    <link rel="up" title="Distribution" href="index.html" />
+    <link rel="next" title="Distribution Workflow" href="workflow.html" />
+    <link rel="prev" title="The Setup Script" href="setup.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="workflow.html" title="Distribution Workflow"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="setup.html" title="The Setup Script"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Development</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Distribution</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="the-documentation-generator">
+<span id="gendocs-label"></span><h1>The Documentation Generator<a class="headerlink" href="#the-documentation-generator" title="Permalink to this headline">¶</a></h1>
+<p>The documentation generally consists of two parts, the manual and API documentation.</p>
+<p>The manual is an 100% handwritten collection of text files using <a class="reference external" href="http://docutils.sourceforge.net/rst.html">restructured text</a> markup which are bound together via index files. Index files are special in that they contain <tt class="docutils literal"><span class="pre">toctree</span></tt> directives to maintain a table of contents.</p>
+<p>The API documentation is created automatically from the <a class="reference external" href="http://docutils.sourceforge.net/rst.html">restructured text</a> compatible doc strings of packages, modules, classes, methods and functions.</p>
+<p>The layout and conversion of the markup is performed by <a class="reference external" href="http://sphinx.pocoo.org/">sphinx</a>. As the way sphinx generates the API documentation involves everything imported into the respective module, not only the defined routines are auto-documented, but also everything else. As this is hard to read and hard to understand at the current time, <a class="reference external" href="http://epydoc.sourceforge.net/">epydoc</a> fills the gap and is provided as alternative API documentation.</p>
+<p>In order to provide more information to the interested reader about the state of the project, a coverage report can be generated automatically and then linked to by the manual where needed.</p>
+<div class="section" id="makedoc">
+<h2>makedoc<a class="headerlink" href="#makedoc" title="Permalink to this headline">¶</a></h2>
+<p>The previously mentioned features involve multiple tools and passes to compile the final html documentation ( which is currently the only one being directly supported ).</p>
+<p>The <tt class="docutils literal"><span class="pre">makedoc</span></tt> script is located in the <tt class="docutils literal"><span class="pre">doc</span></tt> directory and needs to be run from there or the <tt class="docutils literal"><span class="pre">doc</span></tt> directory of your derived project.</p>
+<p>The script supports multiple flags to control the usage of individual features. To assure consistency, it will use the <a class="reference external" href="pinfo.html"><em>info module</em></a> to retrieve basic project information.</p>
+<ul>
+<li><dl class="cmdoption">
+<dt id="cmdoption--sphinx">
+<tt class="descname">--sphinx</tt><tt class="descclassname"> 0|1 (-s)</tt><a class="headerlink" href="#cmdoption--sphinx" title="Permalink to this definition">¶</a></dt>
+<dd><p>If 1, default 1, the <a class="reference external" href="http://sphinx.pocoo.org/">sphinx</a> based manual will be generated. If False, neither that nor the autogen documentation will be built.</p>
+</dd></dl>
+
+</li>
+<li><dl class="cmdoption">
+<dt id="cmdoption--sphinx-autogen">
+<tt class="descname">--sphinx-autogen</tt><tt class="descclassname"> 0|1 (-a)</tt><a class="headerlink" href="#cmdoption--sphinx-autogen" title="Permalink to this definition">¶</a></dt>
+<dd><p>If 1, default 1, <a class="reference external" href="http://sphinx.pocoo.org/">sphinx</a> API documentation will be generated. As it usually takes longest of all operations, its worth turning it off when writing the manual.</p>
+</dd></dl>
+
+</li>
+<li><dl class="cmdoption">
+<dt id="cmdoption--epydoc">
+<tt class="descname">--epydoc</tt><tt class="descclassname"> 0|1 (-e)</tt><a class="headerlink" href="#cmdoption--epydoc" title="Permalink to this definition">¶</a></dt>
+<dd><p>If 1, default 1, <a class="reference external" href="http://epydoc.sourceforge.net/">epydoc</a> html API documentation will generated from your projects sources and embedded into the respective API documentation created by <a class="reference external" href="http://sphinx.pocoo.org/">sphinx</a>.</p>
+</dd></dl>
+
+</li>
+<li><dl class="cmdoption">
+<dt id="cmdoption--coverage">
+<tt class="descname">--coverage</tt><tt class="descclassname"> 0|1 (-c)</tt><a class="headerlink" href="#cmdoption--coverage" title="Permalink to this definition">¶</a></dt>
+<dd><p>If 1, default 1, a nose coverage report is created to which sphinx documents may link as required.</p>
+</dd></dl>
+
+</li>
+<li><dl class="cmdoption">
+<dt id="cmdoption--clean">
+<tt class="descname">--clean</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption--clean" title="Permalink to this definition">¶</a></dt>
+<dd><p>If set, instead of generating documentation, previously generated files will be removed. This flag modified all previously mentioned flags, and to clean only the coverage report, your would type:</p>
+<div class="highlight-python"><pre>$ ./makedoc --clean -e 0 -s 0 -c 1</pre>
+</div>
+</dd></dl>
+
+</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In order to generate sphinx or epydoc docuementation, <tt class="docutils literal"><span class="pre">sphinx</span></tt> and <tt class="docutils literal"><span class="pre">epydoc</span></tt> need to be installed in the python installation executing <tt class="docutils literal"><span class="pre">makedoc</span></tt>. To generate a coverage report, you will need <tt class="docutils literal"><span class="pre">nose</span></tt> and <tt class="docutils literal"><span class="pre">coverage</span></tt> installed in the interpreter matching your latest available maya version.</p>
+</div>
+<div class="section" id="version-info-files">
+<h3>version_info Files<a class="headerlink" href="#version-info-files" title="Permalink to this headline">¶</a></h3>
+<p>As building documentation can take a long time, especially if the sphinx API documentation is involved, it is useful to protect it from being regenerated unnecessarily, especially when setting up your project for <a class="reference external" href="index.html"><em>distribution</em></a>.</p>
+<p>Assuming that it is usually enough to build the documentation once per project version, it only needs to be rebuild if your project version changed relative to the project version stored in the <tt class="docutils literal"><span class="pre">*.version_info</span></tt> files. One is created for each documentation target, so you will see <tt class="docutils literal"><span class="pre">epydoc.version_info</span></tt>, <tt class="docutils literal"><span class="pre">coverage.version_info</span></tt> and <tt class="docutils literal"><span class="pre">sphinx.version_info</span></tt> in your doc directory after a complete build.</p>
+<p>Running <tt class="docutils literal"><span class="pre">makedoc</span></tt> will always regenerate the documentation, but when the script is executed from within the <a class="reference external" href="setup.html"><em>setup script</em></a>, documentation generation will be skipped if the version_info matches the version you are currently distributing.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This distribution behavior might not always be desired or correct - in the latter case it is up to your judgement to run a <tt class="docutils literal"><span class="pre">makedoc</span> <span class="pre">--clean</span></tt> before redoing the distribution.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="../../index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#">The Documentation Generator</a><ul>
+<li><a class="reference external" href="#makedoc">makedoc</a><ul>
+<li><a class="reference external" href="#version-info-files">version_info Files</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="setup.html"
+                                  title="previous chapter">The Setup Script</a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="workflow.html"
+                                  title="next chapter">Distribution Workflow</a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../../_sources/develop/distribute/docs.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="workflow.html" title="Distribution Workflow"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="setup.html" title="The Setup Script"
+             >previous</a> |</li>
+        <li><a href="../../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Development</a> &raquo;</li>
+          <li><a href="index.html" >Distribution</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Apr 19, 2011.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

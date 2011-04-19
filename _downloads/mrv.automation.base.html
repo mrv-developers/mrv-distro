@@ -1,0 +1,218 @@
+<html>
+<head>
+<title>mrv.automation.base</title>
+</head>
+<body>
+mrv.automation.base
+<style>
+.coverage pre {float: left; margin: 0px 1em; border: none;
+               padding: 0px; }
+.num pre { margin: 0px }
+.nocov, .nocov pre {background-color: #faa}
+.cov, .cov pre {background-color: #cfc}
+div.coverage div { clear: both; height: 1.1em}
+</style>
+<div class="stats">
+Covered: 89 lines<br/>
+Missed: 32 lines<br/>
+Skipped 72 lines<br/>
+Percent: 73 %<br/>
+
+</div>
+<div class="coverage">
+<div class="skip"><span class="num"><pre>  1</pre></span><pre># -*- coding: utf-8 -*-</pre></div>
+<div class="cov"><span class="num"><pre>  2</pre></span><pre>&quot;&quot;&quot;general methods and classes &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  3</pre></span><pre>__docformat__ = &quot;restructuredtext&quot;</pre></div>
+<div class="skip"><span class="num"><pre>  4</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  5</pre></span><pre>from mrv.dge import PlugAlreadyConnected</pre></div>
+<div class="cov"><span class="num"><pre>  6</pre></span><pre>import logging</pre></div>
+<div class="cov"><span class="num"><pre>  7</pre></span><pre>log = logging.getLogger(&quot;mrv.automation.base&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>  8</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>  9</pre></span><pre>#{ Edit</pre></div>
+<div class="skip"><span class="num"><pre> 10</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 11</pre></span><pre>def _toSimpleType( stringtype ):</pre></div>
+<div class="cov"><span class="num"><pre> 12</pre></span><pre>	for cls in [ int, float, str ]:</pre></div>
+<div class="cov"><span class="num"><pre> 13</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre> 14</pre></span><pre>			return cls( stringtype )</pre></div>
+<div class="cov"><span class="num"><pre> 15</pre></span><pre>		except ValueError:</pre></div>
+<div class="cov"><span class="num"><pre> 16</pre></span><pre>			pass</pre></div>
+<div class="skip"><span class="num"><pre> 17</pre></span><pre>	# END for each simple type</pre></div>
+<div class="nocov"><span class="num"><pre> 18</pre></span><pre>	raise ValueError( &quot;Could not convert %r to any simple type&quot; % stringtype )</pre></div>
+<div class="skip"><span class="num"><pre> 19</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 20</pre></span><pre>def _getNodeInfo( node ):</pre></div>
+<div class="cov"><span class="num"><pre> 21</pre></span><pre>	&quot;&quot;&quot;:return: ( nodename, args, kwargs ) - all arguments have been parsed&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 22</pre></span><pre>	args = [ node.get_name().strip('&quot;') ]</pre></div>
+<div class="cov"><span class="num"><pre> 23</pre></span><pre>	nodeattrs = node.get_attributes()</pre></div>
+<div class="cov"><span class="num"><pre> 24</pre></span><pre>	tl = nodeattrs.get('toplabel', '').strip('&quot;')</pre></div>
+<div class="cov"><span class="num"><pre> 25</pre></span><pre>	if tl:</pre></div>
+<div class="cov"><span class="num"><pre> 26</pre></span><pre>		args.extend( [ _toSimpleType( a ) for a in tl.split(',') ] )</pre></div>
+<div class="skip"><span class="num"><pre> 27</pre></span><pre>	# END if args are set</pre></div>
+<div class="skip"><span class="num"><pre> 28</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 29</pre></span><pre>	kwargs = dict()</pre></div>
+<div class="cov"><span class="num"><pre> 30</pre></span><pre>	bl = nodeattrs.get('bottomlabel', '').strip('&quot;')</pre></div>
+<div class="cov"><span class="num"><pre> 31</pre></span><pre>	if bl:</pre></div>
+<div class="nocov"><span class="num"><pre> 32</pre></span><pre>		for kwa in bl.split(','):</pre></div>
+<div class="nocov"><span class="num"><pre> 33</pre></span><pre>			k,v = tuple(kwa.split('='))</pre></div>
+<div class="nocov"><span class="num"><pre> 34</pre></span><pre>			kwargs[ k ] = _toSimpleType( v )</pre></div>
+<div class="skip"><span class="num"><pre> 35</pre></span><pre>		# END for each kw value</pre></div>
+<div class="skip"><span class="num"><pre> 36</pre></span><pre>	# END if bottom label is set</pre></div>
+<div class="skip"><span class="num"><pre> 37</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 38</pre></span><pre>	# convert name such that if one can write nodename(args,kwargs), without</pre></div>
+<div class="skip"><span class="num"><pre> 39</pre></span><pre>	# destroing the original node name</pre></div>
+<div class="cov"><span class="num"><pre> 40</pre></span><pre>	typename = node.get_label()</pre></div>
+<div class="cov"><span class="num"><pre> 41</pre></span><pre>	if typename:</pre></div>
+<div class="cov"><span class="num"><pre> 42</pre></span><pre>		typename = typename.strip('&quot;').split( &quot;(&quot; )[0]</pre></div>
+<div class="skip"><span class="num"><pre> 43</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 44</pre></span><pre>	return ( typename, args,kwargs )</pre></div>
+<div class="skip"><span class="num"><pre> 45</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 46</pre></span><pre>def loadWorkflowFromDotFile( dotfile, workflowcls = None ):</pre></div>
+<div class="cov"><span class="num"><pre> 47</pre></span><pre>	&quot;&quot;&quot;Create a graph from the given dotfile and create a workflow from it.</pre></div>
+<div class="cov"><span class="num"><pre> 48</pre></span><pre>	The workflow will be fully intiialized with connected process instances.</pre></div>
+<div class="cov"><span class="num"><pre> 49</pre></span><pre>	The all compatible plugs will automatically be connected for all processes</pre></div>
+<div class="cov"><span class="num"><pre> 50</pre></span><pre>	connected in the dot file</pre></div>
+<div class="skip"><span class="num"><pre> 51</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 52</pre></span><pre>	:param workflowcls: if not None, a dgengine.Graph compatible class to be used</pre></div>
+<div class="cov"><span class="num"><pre> 53</pre></span><pre>		for workflow creation. Defaults to automation.workflow.Workflow.</pre></div>
+<div class="cov"><span class="num"><pre> 54</pre></span><pre>	:return: List of initialized workflow classes - as they can be nested, the</pre></div>
+<div class="cov"><span class="num"><pre> 55</pre></span><pre>		creation of one workflow can actually create several of them&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 56</pre></span><pre>	import pydot</pre></div>
+<div class="cov"><span class="num"><pre> 57</pre></span><pre>	import processes</pre></div>
+<div class="cov"><span class="num"><pre> 58</pre></span><pre>	from workflow import Workflow</pre></div>
+<div class="cov"><span class="num"><pre> 59</pre></span><pre>	wflclass = workflowcls or Workflow</pre></div>
+<div class="cov"><span class="num"><pre> 60</pre></span><pre>	dotgraph = pydot.graph_from_dot_file( dotfile )</pre></div>
+<div class="skip"><span class="num"><pre> 61</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 62</pre></span><pre>	if not dotgraph:</pre></div>
+<div class="nocov"><span class="num"><pre> 63</pre></span><pre>		raise AssertionError( &quot;Returned graph from file %r was None&quot; % dotfile )</pre></div>
+<div class="skip"><span class="num"><pre> 64</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 65</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 66</pre></span><pre>	# use the filename as name</pre></div>
+<div class="cov"><span class="num"><pre> 67</pre></span><pre>	edge_lut = {}									# string -&gt; processinst</pre></div>
+<div class="cov"><span class="num"><pre> 68</pre></span><pre>	wfl = wflclass( name=dotfile.namebase() )</pre></div>
+<div class="skip"><span class="num"><pre> 69</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 70</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 71</pre></span><pre>	for node in dotgraph.get_node_list():</pre></div>
+<div class="skip"><span class="num"><pre> 72</pre></span><pre>		# can have initializers</pre></div>
+<div class="cov"><span class="num"><pre> 73</pre></span><pre>		nodeid = node.get_name().strip( '&quot;' )</pre></div>
+<div class="skip"><span class="num"><pre> 74</pre></span><pre>		# ignore default node</pre></div>
+<div class="cov"><span class="num"><pre> 75</pre></span><pre>		if nodeid == &quot;node&quot;:</pre></div>
+<div class="cov"><span class="num"><pre> 76</pre></span><pre>			continue	</pre></div>
+<div class="cov"><span class="num"><pre> 77</pre></span><pre>		processname,args,kwargs = _getNodeInfo( node )</pre></div>
+<div class="skip"><span class="num"><pre> 78</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 79</pre></span><pre>		# skip nodes with incorrect label - the parser returns one node each time it appears</pre></div>
+<div class="skip"><span class="num"><pre> 80</pre></span><pre>		# in the file, although its mentioned in connections, at least if labels are used</pre></div>
+<div class="cov"><span class="num"><pre> 81</pre></span><pre>		if not isinstance( processname, basestring ):</pre></div>
+<div class="nocov"><span class="num"><pre> 82</pre></span><pre>			continue</pre></div>
+<div class="skip"><span class="num"><pre> 83</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 84</pre></span><pre>		# GET PROCESS CLASS</pre></div>
+<div class="cov"><span class="num"><pre> 85</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre> 86</pre></span><pre>			processcls = getattr( processes, processname )</pre></div>
+<div class="nocov"><span class="num"><pre> 87</pre></span><pre>		except AttributeError:</pre></div>
+<div class="nocov"><span class="num"><pre> 88</pre></span><pre>			raise TypeError( &quot;Process '%s' not found in 'processes' module&quot; % processname )</pre></div>
+<div class="skip"><span class="num"><pre> 89</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 90</pre></span><pre>		# create instance and add to workflow</pre></div>
+<div class="cov"><span class="num"><pre> 91</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre> 92</pre></span><pre>			processinst = processcls( *args, **kwargs )</pre></div>
+<div class="nocov"><span class="num"><pre> 93</pre></span><pre>		except TypeError:</pre></div>
+<div class="nocov"><span class="num"><pre> 94</pre></span><pre>			log.error( &quot;Process %r could not be created as it required a different init call&quot; % processcls )</pre></div>
+<div class="nocov"><span class="num"><pre> 95</pre></span><pre>			raise</pre></div>
+<div class="cov"><span class="num"><pre> 96</pre></span><pre>		else:</pre></div>
+<div class="cov"><span class="num"><pre> 97</pre></span><pre>			edge_lut[ nodeid ] = processinst</pre></div>
+<div class="cov"><span class="num"><pre> 98</pre></span><pre>			wfl.addNode( processinst )</pre></div>
+<div class="skip"><span class="num"><pre> 99</pre></span><pre>	# END for each node in graph</pre></div>
+<div class="skip"><span class="num"><pre>100</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>101</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>102</pre></span><pre>	# ADD EDGES</pre></div>
+<div class="skip"><span class="num"><pre>103</pre></span><pre>	#############</pre></div>
+<div class="skip"><span class="num"><pre>104</pre></span><pre>	# create most suitable plug connections</pre></div>
+<div class="cov"><span class="num"><pre>105</pre></span><pre>	for edge in dotgraph.get_edge_list():</pre></div>
+<div class="cov"><span class="num"><pre>106</pre></span><pre>		snode = edge_lut[ edge.get_source().strip('&quot;') ]</pre></div>
+<div class="cov"><span class="num"><pre>107</pre></span><pre>		dnode = edge_lut[ edge.get_destination().strip('&quot;') ]</pre></div>
+<div class="cov"><span class="num"><pre>108</pre></span><pre>		destplugs = dnode.inputPlugs( )</pre></div>
+<div class="skip"><span class="num"><pre>109</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>110</pre></span><pre>		numConnections = 0</pre></div>
+<div class="cov"><span class="num"><pre>111</pre></span><pre>		for sourceplug in snode.outputPlugs():</pre></div>
+<div class="cov"><span class="num"><pre>112</pre></span><pre>			try:</pre></div>
+<div class="skip"><span class="num"><pre>113</pre></span><pre>				# first is best</pre></div>
+<div class="cov"><span class="num"><pre>114</pre></span><pre>				targetcandidates = snode.filterCompatiblePlugs( destplugs, sourceplug.attr, raise_on_ambiguity = 0, attr_affinity = False, attr_as_source = True )</pre></div>
+<div class="nocov"><span class="num"><pre>115</pre></span><pre>			except ( TypeError,IndexError ),e:	# could have no compatible plugs or is ambigous</pre></div>
+<div class="nocov"><span class="num"><pre>116</pre></span><pre>				log.debug(str(e.args))		# debug</pre></div>
+<div class="nocov"><span class="num"><pre>117</pre></span><pre>				continue</pre></div>
+<div class="cov"><span class="num"><pre>118</pre></span><pre>			else:</pre></div>
+<div class="skip"><span class="num"><pre>119</pre></span><pre>				# if a plug is already connected, try another one</pre></div>
+<div class="cov"><span class="num"><pre>120</pre></span><pre>				blockedDestinationShells = list()</pre></div>
+<div class="cov"><span class="num"><pre>121</pre></span><pre>				numplugconnections = 0</pre></div>
+<div class="cov"><span class="num"><pre>122</pre></span><pre>				for rate,targetplug in targetcandidates:</pre></div>
+<div class="cov"><span class="num"><pre>123</pre></span><pre>					try:</pre></div>
+<div class="cov"><span class="num"><pre>124</pre></span><pre>						sshell = snode.toShell( sourceplug )</pre></div>
+<div class="cov"><span class="num"><pre>125</pre></span><pre>						dshell = dnode.toShell( targetplug )</pre></div>
+<div class="cov"><span class="num"><pre>126</pre></span><pre>						sshell.connect( dshell )</pre></div>
+<div class="skip"><span class="num"><pre>127</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>128</pre></span><pre>						numConnections += 1</pre></div>
+<div class="cov"><span class="num"><pre>129</pre></span><pre>						numplugconnections += 1</pre></div>
+<div class="nocov"><span class="num"><pre>130</pre></span><pre>					except PlugAlreadyConnected:</pre></div>
+<div class="skip"><span class="num"><pre>131</pre></span><pre>						# remember the connected d-shell - we might disconnect it later</pre></div>
+<div class="nocov"><span class="num"><pre>132</pre></span><pre>						blockedDestinationShells.append( dnode.toShell( targetplug ) )</pre></div>
+<div class="nocov"><span class="num"><pre>133</pre></span><pre>					else:</pre></div>
+<div class="nocov"><span class="num"><pre>134</pre></span><pre>						pass 			# allow several connections ( if no other claims one ... )</pre></div>
+<div class="skip"><span class="num"><pre>135</pre></span><pre>				# END for each candidate</pre></div>
+<div class="skip"><span class="num"><pre>136</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>137</pre></span><pre>				# if we have no connecitons, and one node already connected has at least two from</pre></div>
+<div class="skip"><span class="num"><pre>138</pre></span><pre>				# the same plug disconnect the node in question</pre></div>
+<div class="skip"><span class="num"><pre>139</pre></span><pre>				# Dont do anything if we are connected or have less than 2 blocked</pre></div>
+<div class="cov"><span class="num"><pre>140</pre></span><pre>				if numplugconnections &gt; 0 or len( blockedDestinationShells ) &lt; 2:</pre></div>
+<div class="cov"><span class="num"><pre>141</pre></span><pre>					continue</pre></div>
+<div class="skip"><span class="num"><pre>142</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>143</pre></span><pre>				# count connections by sourceshell</pre></div>
+<div class="nocov"><span class="num"><pre>144</pre></span><pre>				sourcemap = dict()			# source-&gt;list( edge( s-&gt;d  ) ... )</pre></div>
+<div class="nocov"><span class="num"><pre>145</pre></span><pre>				for shell in blockedDestinationShells:</pre></div>
+<div class="nocov"><span class="num"><pre>146</pre></span><pre>					inshell = dshell.input()</pre></div>
+<div class="nocov"><span class="num"><pre>147</pre></span><pre>					sourcemap.setdefault( inshell, list() ).append( ( inshell,dshell ) )</pre></div>
+<div class="skip"><span class="num"><pre>148</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>149</pre></span><pre>				# find multiple edges</pre></div>
+<div class="nocov"><span class="num"><pre>150</pre></span><pre>				for sourceshell, edgelist in sourcemap.iteritems():</pre></div>
+<div class="nocov"><span class="num"><pre>151</pre></span><pre>					if len( edgelist ) &lt; 2:</pre></div>
+<div class="nocov"><span class="num"><pre>152</pre></span><pre>						continue</pre></div>
+<div class="nocov"><span class="num"><pre>153</pre></span><pre>					sshell = snode.toShell( sourceplug )</pre></div>
+<div class="nocov"><span class="num"><pre>154</pre></span><pre>					dshell = edgelist[-1][1]				# take the last edge as it possibly has lowest connection priority</pre></div>
+<div class="nocov"><span class="num"><pre>155</pre></span><pre>					sshell.connect( dshell, force = 1 )	# connect breaking existing ones</pre></div>
+<div class="skip"><span class="num"><pre>156</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>157</pre></span><pre>					numConnections += 1</pre></div>
+<div class="nocov"><span class="num"><pre>158</pre></span><pre>					break</pre></div>
+<div class="skip"><span class="num"><pre>159</pre></span><pre>				# END for each sourceshell record</pre></div>
+<div class="skip"><span class="num"><pre>160</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>161</pre></span><pre>			# END try connecting plugs</pre></div>
+<div class="skip"><span class="num"><pre>162</pre></span><pre>		# END for each output plug on snode</pre></div>
+<div class="skip"><span class="num"><pre>163</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>164</pre></span><pre>		# assure we have a connection</pre></div>
+<div class="cov"><span class="num"><pre>165</pre></span><pre>		if numConnections == 0:</pre></div>
+<div class="nocov"><span class="num"><pre>166</pre></span><pre>			raise AssertionError( &quot;Found no compatible connection from %s to %s in workflow %s - check your processes&quot; % ( snode, dnode, wfl ) )</pre></div>
+<div class="skip"><span class="num"><pre>167</pre></span><pre>	# END for each edge</pre></div>
+<div class="skip"><span class="num"><pre>168</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>169</pre></span><pre>	return wfl</pre></div>
+<div class="skip"><span class="num"><pre>170</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>171</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>172</pre></span><pre>def addWorkflowsFromDotFiles( module, dotfiles, workflowcls = None ):</pre></div>
+<div class="cov"><span class="num"><pre>173</pre></span><pre>	&quot;&quot;&quot;Create workflows from a list of dot-files and add them to the module</pre></div>
+<div class="skip"><span class="num"><pre>174</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>175</pre></span><pre>	:param workflowcls: see `loadWorkflowFromDotFile`</pre></div>
+<div class="cov"><span class="num"><pre>176</pre></span><pre>	:return: list of workflow instances created from the given files&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>177</pre></span><pre>	outwfls = list()</pre></div>
+<div class="cov"><span class="num"><pre>178</pre></span><pre>	for dotfile in dotfiles:</pre></div>
+<div class="cov"><span class="num"><pre>179</pre></span><pre>		wflname = dotfile.namebase()</pre></div>
+<div class="skip"><span class="num"><pre>180</pre></span><pre>		# it can be that a previous nested workflow already created the workflow</pre></div>
+<div class="skip"><span class="num"><pre>181</pre></span><pre>		# in which case we do not want to recreate it</pre></div>
+<div class="cov"><span class="num"><pre>182</pre></span><pre>		if hasattr( module, wflname ):</pre></div>
+<div class="nocov"><span class="num"><pre>183</pre></span><pre>			continue</pre></div>
+<div class="skip"><span class="num"><pre>184</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>185</pre></span><pre>		wflinst = loadWorkflowFromDotFile( dotfile, workflowcls = workflowcls )</pre></div>
+<div class="cov"><span class="num"><pre>186</pre></span><pre>		setattr( module, wflname , wflinst )</pre></div>
+<div class="cov"><span class="num"><pre>187</pre></span><pre>		outwfls.append( wflinst )</pre></div>
+<div class="skip"><span class="num"><pre>188</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>189</pre></span><pre>	return outwfls</pre></div>
+<div class="skip"><span class="num"><pre>190</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>191</pre></span><pre>#} END interface</pre></div>
+<div class="skip"><span class="num"><pre>192</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>193</pre></span><pre></pre></div>
+</div>
+</body>
+</html>

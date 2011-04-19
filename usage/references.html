@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>References &mdash; mrv v1.0.2-develop documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.2-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="mrv v1.0.2-develop documentation" href="../index.html" />
+    <link rel="up" title="Usage" href="index.html" />
+    <link rel="next" title="Scene Handling" href="scenes.html" />
+    <link rel="prev" title="Namespaces" href="namespaces.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="scenes.html" title="Scene Handling"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="namespaces.html" title="Namespaces"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Usage</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="references">
+<h1>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h1>
+<p>References within maya can be referred to by Path or by Reference Node. The latter one is a stable entity in your scene, whereas the first one is dependent on the amount of references as well as the actual reference file.</p>
+<p>Dealing with references correctly can be complex in times, but the <tt class="docutils literal"><span class="pre">FileReference</span></tt> type in MRV greatly facilitates this.</p>
+<p>Maya organizes its references hierarchically, which can be queried using the <tt class="docutils literal"><span class="pre">iDagItem</span></tt> interface of the FileReference type. Additional functionality includes reference creation, import, removal as well as to query information and to iterate its contained nodes.</p>
+<p>The example uses files from the test system and respective utilities:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">mrv.maya.ref</span> <span class="kn">import</span> <span class="n">FileReference</span>
+<span class="n">refa</span> <span class="o">=</span> <span class="n">FileReference</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">get_maya_file</span><span class="p">(</span><span class="s">&#39;ref8m.ma&#39;</span><span class="p">))</span>     <span class="c"># file with 8 meshes</span>
+<span class="n">refb</span> <span class="o">=</span> <span class="n">FileReference</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">get_maya_file</span><span class="p">(</span><span class="s">&#39;ref2re.ma&#39;</span><span class="p">))</span>    <span class="c"># two subreferences with subreferences</span>
+
+<span class="k">assert</span> <span class="n">refb</span><span class="o">.</span><span class="n">isLoaded</span><span class="p">()</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">FileReference</span><span class="o">.</span><span class="n">ls</span><span class="p">())</span> <span class="o">==</span> <span class="mi">2</span>
+
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">refa</span><span class="o">.</span><span class="n">children</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">refb</span><span class="o">.</span><span class="n">children</span><span class="p">())</span> <span class="o">==</span> <span class="mi">2</span>
+<span class="n">subrefa</span><span class="p">,</span> <span class="n">subrefb</span> <span class="o">=</span> <span class="n">refb</span><span class="o">.</span><span class="n">children</span><span class="p">()</span>
+
+<span class="k">assert</span> <span class="n">subrefa</span><span class="o">.</span><span class="n">namespace</span><span class="p">()</span> <span class="o">!=</span> <span class="n">subrefb</span><span class="o">.</span><span class="n">namespace</span><span class="p">()</span>
+<span class="k">assert</span> <span class="n">subrefa</span><span class="o">.</span><span class="n">path</span><span class="p">()</span> <span class="o">==</span> <span class="n">subrefb</span><span class="o">.</span><span class="n">path</span><span class="p">()</span>
+<span class="k">assert</span> <span class="n">subrefa</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span> <span class="o">==</span> <span class="n">refb</span>
+
+<span class="n">refa</span><span class="o">.</span><span class="n">setLoaded</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+<span class="k">assert</span> <span class="ow">not</span> <span class="n">refa</span><span class="o">.</span><span class="n">isLoaded</span><span class="p">()</span>
+<span class="k">assert</span> <span class="n">refa</span><span class="o">.</span><span class="n">setLoaded</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">isLoaded</span><span class="p">()</span>
+
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">refa</span><span class="o">.</span><span class="n">iterNodes</span><span class="p">(</span><span class="n">api</span><span class="o">.</span><span class="n">MFn</span><span class="o">.</span><span class="n">kMesh</span><span class="p">)))</span> <span class="o">==</span> <span class="mi">8</span>
+
+<span class="n">refa</span><span class="o">.</span><span class="n">remove</span><span class="p">();</span> <span class="n">refb</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+<span class="k">assert</span> <span class="ow">not</span> <span class="n">refa</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">refb</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">FileReference</span><span class="o">.</span><span class="n">ls</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="namespaces.html"
+                                  title="previous chapter">Namespaces</a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="scenes.html"
+                                  title="next chapter">Scene Handling</a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/usage/references.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scenes.html" title="Scene Handling"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="namespaces.html" title="Namespaces"
+             >previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li>
+          <li><a href="index.html" >Usage</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Apr 19, 2011.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

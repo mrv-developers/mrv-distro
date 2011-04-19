@@ -1,0 +1,1202 @@
+<html>
+<head>
+<title>mrv.maya.nt.apipatch</title>
+</head>
+<body>
+mrv.maya.nt.apipatch
+<style>
+.coverage pre {float: left; margin: 0px 1em; border: none;
+               padding: 0px; }
+.num pre { margin: 0px }
+.nocov, .nocov pre {background-color: #faa}
+.cov, .cov pre {background-color: #cfc}
+div.coverage div { clear: both; height: 1.1em}
+</style>
+<div class="stats">
+Covered: 794 lines<br/>
+Missed: 25 lines<br/>
+Skipped 358 lines<br/>
+Percent: 96 %<br/>
+
+</div>
+<div class="coverage">
+<div class="skip"><span class="num"><pre>   1</pre></span><pre># -*- coding: utf-8 -*-</pre></div>
+<div class="cov"><span class="num"><pre>   2</pre></span><pre>&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>   3</pre></span><pre>Contains patch classes that are altering their respective api classes</pre></div>
+<div class="skip"><span class="num"><pre>   4</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>   5</pre></span><pre>The classes here are rather verbose and used as patch-template which can be</pre></div>
+<div class="cov"><span class="num"><pre>   6</pre></span><pre>handled correctly by epydoc, and whose method will be used to patch the respective</pre></div>
+<div class="cov"><span class="num"><pre>   7</pre></span><pre>api classes.</pre></div>
+<div class="skip"><span class="num"><pre>   8</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>   9</pre></span><pre>As they are usually derived from the class they patch , they could also be used directly</pre></div>
+<div class="skip"><span class="num"><pre>  10</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  11</pre></span><pre>:note: **never import classes directly in here**, import the module instead, thus</pre></div>
+<div class="cov"><span class="num"><pre>  12</pre></span><pre>	**not**: thisImportedClass **but**: module.thisImportedClass !</pre></div>
+<div class="cov"><span class="num"><pre>  13</pre></span><pre>&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  14</pre></span><pre>__docformat__ = &quot;restructuredtext&quot;</pre></div>
+<div class="skip"><span class="num"><pre>  15</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  16</pre></span><pre>import base</pre></div>
+<div class="cov"><span class="num"><pre>  17</pre></span><pre>import mrv.maya.undo as undo</pre></div>
+<div class="cov"><span class="num"><pre>  18</pre></span><pre>import mrv.util as util</pre></div>
+<div class="cov"><span class="num"><pre>  19</pre></span><pre>from mrv.interface import iDagItem</pre></div>
+<div class="skip"><span class="num"><pre>  20</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  21</pre></span><pre>import maya.OpenMaya as api</pre></div>
+<div class="cov"><span class="num"><pre>  22</pre></span><pre>import maya.cmds as cmds</pre></div>
+<div class="skip"><span class="num"><pre>  23</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  24</pre></span><pre>import inspect</pre></div>
+<div class="cov"><span class="num"><pre>  25</pre></span><pre>import itertools</pre></div>
+<div class="cov"><span class="num"><pre>  26</pre></span><pre>import it</pre></div>
+<div class="cov"><span class="num"><pre>  27</pre></span><pre>import os</pre></div>
+<div class="skip"><span class="num"><pre>  28</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>  29</pre></span><pre># Doesnt need all as it is just a utility package containing patches that are applies</pre></div>
+<div class="skip"><span class="num"><pre>  30</pre></span><pre># to API classes</pre></div>
+<div class="skip"><span class="num"><pre>  31</pre></span><pre># __all__ </pre></div>
+<div class="skip"><span class="num"><pre>  32</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  33</pre></span><pre>def init_applyPatches( ):</pre></div>
+<div class="cov"><span class="num"><pre>  34</pre></span><pre>	&quot;&quot;&quot;Called by package __init__ method to finally apply the patch according to</pre></div>
+<div class="cov"><span class="num"><pre>  35</pre></span><pre>	the template classes</pre></div>
+<div class="cov"><span class="num"><pre>  36</pre></span><pre>	Template classes must derive from the to-be-patched api class first, and can derive</pre></div>
+<div class="cov"><span class="num"><pre>  37</pre></span><pre>	from helper classes providing basic patch methods.</pre></div>
+<div class="cov"><span class="num"><pre>  38</pre></span><pre>	Helper classes must derive from Abstract to indicate their purpose</pre></div>
+<div class="skip"><span class="num"><pre>  39</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  40</pre></span><pre>	If a class has an _applyPatch method, it will be called and not additional. If</pre></div>
+<div class="cov"><span class="num"><pre>  41</pre></span><pre>	it returns True, the class members will be applied as usual, if False the method will stop</pre></div>
+<div class="skip"><span class="num"><pre>  42</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  43</pre></span><pre>	:note: overwritten api methods will be renamed to _api_methodname</pre></div>
+<div class="cov"><span class="num"><pre>  44</pre></span><pre>	:note: currently this method works not recursively&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  45</pre></span><pre>	module = __import__( &quot;mrv.maya.nt.apipatch&quot;, globals(), locals(), ['apipatch'] )</pre></div>
+<div class="cov"><span class="num"><pre>  46</pre></span><pre>	classes = [ v for v in globals().values() if inspect.isclass(v) ]</pre></div>
+<div class="cov"><span class="num"><pre>  47</pre></span><pre>	forbiddenMembers = [ '__module__','_applyPatch','__dict__','__weakref__','__doc__' ]</pre></div>
+<div class="cov"><span class="num"><pre>  48</pre></span><pre>	apply_globally = int(os.environ.get('MRV_APIPATCH_APPLY_GLOBALLY', 0))</pre></div>
+<div class="skip"><span class="num"><pre>  49</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>  50</pre></span><pre>	ns = None</pre></div>
+<div class="cov"><span class="num"><pre>  51</pre></span><pre>	if apply_globally:</pre></div>
+<div class="nocov"><span class="num"><pre>  52</pre></span><pre>		ns = 'm'</pre></div>
+<div class="skip"><span class="num"><pre>  53</pre></span><pre>	# END configure namespace mode</pre></div>
+<div class="skip"><span class="num"><pre>  54</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>  55</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>  56</pre></span><pre>	for cls in classes:</pre></div>
+<div class="skip"><span class="num"><pre>  57</pre></span><pre>		# use the main class as well as all following base</pre></div>
+<div class="skip"><span class="num"><pre>  58</pre></span><pre>		# the first base is always the main maya type that is patched - we skip it</pre></div>
+<div class="cov"><span class="num"><pre>  59</pre></span><pre>		templateclasses = [ cls ]</pre></div>
+<div class="cov"><span class="num"><pre>  60</pre></span><pre>		templateclasses.extend( cls.__bases__[ 1: ] )</pre></div>
+<div class="skip"><span class="num"><pre>  61</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>  62</pre></span><pre>		# assure that the actual class rules over methods from lower base classes</pre></div>
+<div class="skip"><span class="num"><pre>  63</pre></span><pre>		# by applying them last</pre></div>
+<div class="cov"><span class="num"><pre>  64</pre></span><pre>		templateclasses.reverse()</pre></div>
+<div class="skip"><span class="num"><pre>  65</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>  66</pre></span><pre>		# skip abstract classes ?</pre></div>
+<div class="cov"><span class="num"><pre>  67</pre></span><pre>		if cls is Abstract or cls.__bases__[0] is Abstract:</pre></div>
+<div class="cov"><span class="num"><pre>  68</pre></span><pre>			continue</pre></div>
+<div class="skip"><span class="num"><pre>  69</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  70</pre></span><pre>		apicls = cls.__bases__[0]</pre></div>
+<div class="skip"><span class="num"><pre>  71</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>  72</pre></span><pre>		# SPECIAL CALL INTERFACE ?</pre></div>
+<div class="skip"><span class="num"><pre>  73</pre></span><pre>		# If so, call and let the class do the rest</pre></div>
+<div class="cov"><span class="num"><pre>  74</pre></span><pre>		if hasattr( cls, &quot;_applyPatch&quot; ):</pre></div>
+<div class="cov"><span class="num"><pre>  75</pre></span><pre>			if not cls._applyPatch(  ):</pre></div>
+<div class="nocov"><span class="num"><pre>  76</pre></span><pre>				continue</pre></div>
+<div class="skip"><span class="num"><pre>  77</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  78</pre></span><pre>		for tplcls in templateclasses:</pre></div>
+<div class="cov"><span class="num"><pre>  79</pre></span><pre>			util.copyClsMembers( tplcls, apicls, overwritePrefix=&quot;_api_&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>  80</pre></span><pre>										forbiddenMembers = forbiddenMembers, </pre></div>
+<div class="cov"><span class="num"><pre>  81</pre></span><pre>										copyNamespaceGlobally=ns)</pre></div>
+<div class="skip"><span class="num"><pre>  82</pre></span><pre>		# END for each template class</pre></div>
+<div class="skip"><span class="num"><pre>  83</pre></span><pre>	# END for each cls of this module</pre></div>
+<div class="cov"><span class="num"><pre>  84</pre></span><pre>	pass</pre></div>
+<div class="skip"><span class="num"><pre>  85</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>  86</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  87</pre></span><pre>class Abstract:</pre></div>
+<div class="cov"><span class="num"><pre>  88</pre></span><pre>	&quot;&quot;&quot;Class flagging that subclasses should be abstract and are only to be used</pre></div>
+<div class="cov"><span class="num"><pre>  89</pre></span><pre>	as superclass &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  90</pre></span><pre>	pass</pre></div>
+<div class="skip"><span class="num"><pre>  91</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>  92</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>  93</pre></span><pre>#{ Primitive Types</pre></div>
+<div class="cov"><span class="num"><pre>  94</pre></span><pre>class TimeDistanceAngleBase( Abstract ):</pre></div>
+<div class="cov"><span class="num"><pre>  95</pre></span><pre>	&quot;&quot;&quot;Base patch class for all indicated classes</pre></div>
+<div class="skip"><span class="num"><pre>  96</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>  97</pre></span><pre>	:note: idea for patches from pymel&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  98</pre></span><pre>	def __str__( self ): return str(float(self))</pre></div>
+<div class="cov"><span class="num"><pre>  99</pre></span><pre>	def __int__( self ): return int(float(self))</pre></div>
+<div class="skip"><span class="num"><pre> 100</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre> 101</pre></span><pre>	# in Maya 2010, these classes have an as_units method allowing </pre></div>
+<div class="skip"><span class="num"><pre> 102</pre></span><pre>	# it to be used in python without the use of getattr</pre></div>
+<div class="cov"><span class="num"><pre> 103</pre></span><pre>	if hasattr(api.MTime, 'asUnits'):</pre></div>
+<div class="cov"><span class="num"><pre> 104</pre></span><pre>		def __float__( self ): return self.asUnits(self.uiUnit())</pre></div>
+<div class="nocov"><span class="num"><pre> 105</pre></span><pre>	else:</pre></div>
+<div class="nocov"><span class="num"><pre> 106</pre></span><pre>		def __float__( self ): return getattr(self, 'as')(self.uiUnit())</pre></div>
+<div class="skip"><span class="num"><pre> 107</pre></span><pre>	# END conditional implementation</pre></div>
+<div class="cov"><span class="num"><pre> 108</pre></span><pre>	def __repr__(self): return '%s(%s)' % ( self.__class__.__name__, float(self) )</pre></div>
+<div class="skip"><span class="num"><pre> 109</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 110</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 111</pre></span><pre>class MTime( api.MTime, TimeDistanceAngleBase ) :</pre></div>
+<div class="cov"><span class="num"><pre> 112</pre></span><pre>	pass</pre></div>
+<div class="skip"><span class="num"><pre> 113</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 114</pre></span><pre>class MDistance( api.MDistance, TimeDistanceAngleBase ) :</pre></div>
+<div class="cov"><span class="num"><pre> 115</pre></span><pre>	pass</pre></div>
+<div class="skip"><span class="num"><pre> 116</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 117</pre></span><pre>class MAngle( api.MAngle, TimeDistanceAngleBase ) :</pre></div>
+<div class="cov"><span class="num"><pre> 118</pre></span><pre>	pass</pre></div>
+<div class="skip"><span class="num"><pre> 119</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 120</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 121</pre></span><pre># patch some Maya api classes that miss __iter__ to make them iterable / convertible to list</pre></div>
+<div class="cov"><span class="num"><pre> 122</pre></span><pre>class PatchIterablePrimitives( Abstract ):</pre></div>
+<div class="cov"><span class="num"><pre> 123</pre></span><pre>	&quot;&quot;&quot;:note: Classes derived from this base should not be used directly&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 124</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre> 125</pre></span><pre>	def _applyPatch( cls ):</pre></div>
+<div class="cov"><span class="num"><pre> 126</pre></span><pre>		&quot;&quot;&quot;Read per-class values from self and create appropriate methods and</pre></div>
+<div class="cov"><span class="num"><pre> 127</pre></span><pre>		set them as well</pre></div>
+<div class="skip"><span class="num"><pre> 128</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 129</pre></span><pre>		:note: idea from pymel&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 130</pre></span><pre>		def __len__(self):</pre></div>
+<div class="cov"><span class="num"><pre> 131</pre></span><pre>			&quot;&quot;&quot; Number of components in Maya api iterable &quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 132</pre></span><pre>			return self._length</pre></div>
+<div class="skip"><span class="num"><pre> 133</pre></span><pre>		# END __len__</pre></div>
+<div class="cov"><span class="num"><pre> 134</pre></span><pre>		type.__setattr__( cls.__bases__[0], '__len__', __len__ )</pre></div>
+<div class="skip"><span class="num"><pre> 135</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 136</pre></span><pre>		def __iter__(self):</pre></div>
+<div class="cov"><span class="num"><pre> 137</pre></span><pre>			&quot;&quot;&quot; Iterates on all components of a Maya base iterable &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 138</pre></span><pre>			for i in range( self._length ) :</pre></div>
+<div class="cov"><span class="num"><pre> 139</pre></span><pre>				yield self.__getitem__( i )</pre></div>
+<div class="skip"><span class="num"><pre> 140</pre></span><pre>		# END __iter__</pre></div>
+<div class="cov"><span class="num"><pre> 141</pre></span><pre>		type.__setattr__( cls.__bases__[0], '__iter__', __iter__)</pre></div>
+<div class="skip"><span class="num"><pre> 142</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 143</pre></span><pre>		def __str__( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 144</pre></span><pre>			return &quot;[ %s ]&quot; % &quot; &quot;.join( str( f ) for f in self )</pre></div>
+<div class="skip"><span class="num"><pre> 145</pre></span><pre>		# END __str__</pre></div>
+<div class="skip"><span class="num"><pre> 146</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 147</pre></span><pre>		type.__setattr__( cls.__bases__[0], '__str__', __str__)</pre></div>
+<div class="skip"><span class="num"><pre> 148</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 149</pre></span><pre>		def __repr__( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 150</pre></span><pre>			return &quot;%s([ %s ])&quot; % (type(self).__name__, &quot; &quot;.join( str( f ) for f in self ))</pre></div>
+<div class="skip"><span class="num"><pre> 151</pre></span><pre>		# END __str__</pre></div>
+<div class="skip"><span class="num"><pre> 152</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 153</pre></span><pre>		type.__setattr__( cls.__bases__[0], '__repr__', __repr__)</pre></div>
+<div class="skip"><span class="num"><pre> 154</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 155</pre></span><pre>		# allow the class members to be used ( required as we are using them )</pre></div>
+<div class="cov"><span class="num"><pre> 156</pre></span><pre>		return True</pre></div>
+<div class="skip"><span class="num"><pre> 157</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 158</pre></span><pre>class PatchMatrix( Abstract, PatchIterablePrimitives ):</pre></div>
+<div class="cov"><span class="num"><pre> 159</pre></span><pre>	&quot;&quot;&quot;Only for matrices&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 160</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre> 161</pre></span><pre>	def _applyPatch( cls ):</pre></div>
+<div class="cov"><span class="num"><pre> 162</pre></span><pre>		&quot;&quot;&quot;Special version for matrices&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 163</pre></span><pre>		PatchIterablePrimitives._applyPatch.im_func( cls )</pre></div>
+<div class="cov"><span class="num"><pre> 164</pre></span><pre>		def __iter__(self):</pre></div>
+<div class="cov"><span class="num"><pre> 165</pre></span><pre>			&quot;&quot;&quot; Iterates on all 4 rows of a Maya api MMatrix &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 166</pre></span><pre>			for r in range( self._length ) :</pre></div>
+<div class="cov"><span class="num"><pre> 167</pre></span><pre>				row = self.__getitem__( r )</pre></div>
+<div class="cov"><span class="num"><pre> 168</pre></span><pre>				yield [ self.scriptutil( row, c ) for c in range( self._length ) ]</pre></div>
+<div class="skip"><span class="num"><pre> 169</pre></span><pre>		# END __iter__</pre></div>
+<div class="cov"><span class="num"><pre> 170</pre></span><pre>		type.__setattr__( cls.__bases__[0], '__iter__', __iter__ )</pre></div>
+<div class="skip"><span class="num"><pre> 171</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 172</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 173</pre></span><pre>		def __str__( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 174</pre></span><pre>			return &quot;\n&quot;.join( str( v ) for v in self )</pre></div>
+<div class="skip"><span class="num"><pre> 175</pre></span><pre>		# END __str__</pre></div>
+<div class="skip"><span class="num"><pre> 176</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 177</pre></span><pre>		type.__setattr__( cls.__bases__[0], '__str__', __str__)</pre></div>
+<div class="skip"><span class="num"><pre> 178</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 179</pre></span><pre>		return True</pre></div>
+<div class="skip"><span class="num"><pre> 180</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 181</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 182</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 183</pre></span><pre>class MVector( api.MVector, PatchIterablePrimitives ):</pre></div>
+<div class="cov"><span class="num"><pre> 184</pre></span><pre>	_length =3</pre></div>
+<div class="skip"><span class="num"><pre> 185</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 186</pre></span><pre>class MFloatVector( api.MFloatVector, PatchIterablePrimitives ):</pre></div>
+<div class="cov"><span class="num"><pre> 187</pre></span><pre>	_length =3</pre></div>
+<div class="skip"><span class="num"><pre> 188</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 189</pre></span><pre>class MPoint( api.MPoint, PatchIterablePrimitives ):</pre></div>
+<div class="cov"><span class="num"><pre> 190</pre></span><pre>	_length =4</pre></div>
+<div class="skip"><span class="num"><pre> 191</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 192</pre></span><pre>class MFloatPoint( api.MFloatPoint, PatchIterablePrimitives ):</pre></div>
+<div class="cov"><span class="num"><pre> 193</pre></span><pre>	_length =4</pre></div>
+<div class="skip"><span class="num"><pre> 194</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 195</pre></span><pre>class MColor( api.MColor, PatchIterablePrimitives ):</pre></div>
+<div class="cov"><span class="num"><pre> 196</pre></span><pre>	_length =4</pre></div>
+<div class="skip"><span class="num"><pre> 197</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 198</pre></span><pre>class MQuaternion( api.MQuaternion, PatchIterablePrimitives ):</pre></div>
+<div class="cov"><span class="num"><pre> 199</pre></span><pre>	_length =4</pre></div>
+<div class="skip"><span class="num"><pre> 200</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 201</pre></span><pre>class MEulerRotation( api.MEulerRotation, PatchIterablePrimitives ):</pre></div>
+<div class="cov"><span class="num"><pre> 202</pre></span><pre>	_length =4</pre></div>
+<div class="skip"><span class="num"><pre> 203</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 204</pre></span><pre>class MMatrix( api.MMatrix, PatchMatrix ):</pre></div>
+<div class="cov"><span class="num"><pre> 205</pre></span><pre>	_length =4</pre></div>
+<div class="cov"><span class="num"><pre> 206</pre></span><pre>	scriptutil = api.MScriptUtil.getDoubleArrayItem</pre></div>
+<div class="skip"><span class="num"><pre> 207</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 208</pre></span><pre>class MFloatMatrix( api.MFloatMatrix, PatchMatrix ):</pre></div>
+<div class="cov"><span class="num"><pre> 209</pre></span><pre>	_length =4</pre></div>
+<div class="cov"><span class="num"><pre> 210</pre></span><pre>	scriptutil = api.MScriptUtil.getFloatArrayItem</pre></div>
+<div class="skip"><span class="num"><pre> 211</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 212</pre></span><pre>class MTransformationMatrix( api.MTransformationMatrix, PatchMatrix ):</pre></div>
+<div class="cov"><span class="num"><pre> 213</pre></span><pre>	_length =4</pre></div>
+<div class="skip"><span class="num"><pre> 214</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 215</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre> 216</pre></span><pre>	def _applyPatch( cls ):</pre></div>
+<div class="cov"><span class="num"><pre> 217</pre></span><pre>		&quot;&quot;&quot;Special version for matrices&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 218</pre></span><pre>		PatchMatrix._applyPatch.im_func( cls )</pre></div>
+<div class="cov"><span class="num"><pre> 219</pre></span><pre>		def __iter__(self):</pre></div>
+<div class="cov"><span class="num"><pre> 220</pre></span><pre>			&quot;&quot;&quot; Iterates on all 4 rows of a Maya api MMatrix &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 221</pre></span><pre>			return self.asMatrix().__iter__()</pre></div>
+<div class="skip"><span class="num"><pre> 222</pre></span><pre>		# END __iter__</pre></div>
+<div class="cov"><span class="num"><pre> 223</pre></span><pre>		type.__setattr__( cls.__bases__[0], '__iter__', __iter__ )</pre></div>
+<div class="cov"><span class="num"><pre> 224</pre></span><pre>		return True</pre></div>
+<div class="skip"><span class="num"><pre> 225</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 226</pre></span><pre>	def mgetScale( self , space = api.MSpace.kTransform ):</pre></div>
+<div class="cov"><span class="num"><pre> 227</pre></span><pre>		ms = api.MScriptUtil()</pre></div>
+<div class="cov"><span class="num"><pre> 228</pre></span><pre>		ms.createFromDouble( 1.0, 1.0, 1.0 )</pre></div>
+<div class="cov"><span class="num"><pre> 229</pre></span><pre>		p = ms.asDoublePtr()</pre></div>
+<div class="cov"><span class="num"><pre> 230</pre></span><pre>		self.getScale( p, space );</pre></div>
+<div class="cov"><span class="num"><pre> 231</pre></span><pre>		return MVector( *( ms.getDoubleArrayItem (p, i) for i in range(3) ) )</pre></div>
+<div class="skip"><span class="num"><pre> 232</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 233</pre></span><pre>	def msetScale( self, value, space = api.MSpace.kTransform ):</pre></div>
+<div class="cov"><span class="num"><pre> 234</pre></span><pre>		ms = api.MScriptUtil()</pre></div>
+<div class="cov"><span class="num"><pre> 235</pre></span><pre>		ms.createFromDouble( *value )</pre></div>
+<div class="cov"><span class="num"><pre> 236</pre></span><pre>		p = ms.asDoublePtr()</pre></div>
+<div class="cov"><span class="num"><pre> 237</pre></span><pre>		self.setScale ( p, space )</pre></div>
+<div class="skip"><span class="num"><pre> 238</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 239</pre></span><pre>	def getTranslation( self, space = api.MSpace.kTransform ):</pre></div>
+<div class="cov"><span class="num"><pre> 240</pre></span><pre>		&quot;&quot;&quot;This patch is fully compatible to the default method&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 241</pre></span><pre>		return self._api_getTranslation( space )</pre></div>
+<div class="skip"><span class="num"><pre> 242</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 243</pre></span><pre>	def setTranslation( self, vector, space = api.MSpace.kTransform ):</pre></div>
+<div class="cov"><span class="num"><pre> 244</pre></span><pre>		&quot;&quot;&quot;This patch is fully compatible to the default method&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 245</pre></span><pre>		return self._api_setTranslation( vector, space )</pre></div>
+<div class="skip"><span class="num"><pre> 246</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 247</pre></span><pre>#} END primitve types</pre></div>
+<div class="skip"><span class="num"><pre> 248</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 249</pre></span><pre>#{ Basic Types</pre></div>
+<div class="skip"><span class="num"><pre> 250</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 251</pre></span><pre>def _mplug_createUndoSetFunc( dataTypeId, getattroverride = None ):</pre></div>
+<div class="cov"><span class="num"><pre> 252</pre></span><pre>	&quot;&quot;&quot;Create a function setting a value with undo support</pre></div>
+<div class="skip"><span class="num"><pre> 253</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 254</pre></span><pre>	:param dataTypeId: string naming the datatype, like &quot;Bool&quot; - capitalization is</pre></div>
+<div class="cov"><span class="num"><pre> 255</pre></span><pre>		important</pre></div>
+<div class="cov"><span class="num"><pre> 256</pre></span><pre>	:note: if undo is globally disabled, we will resolve to implementing a faster</pre></div>
+<div class="cov"><span class="num"><pre> 257</pre></span><pre>		function instead as we do not store the previous value.</pre></div>
+<div class="cov"><span class="num"><pre> 258</pre></span><pre>	:note: to use the orinal method without undo, use api.MPlug.setX(your_plug, value)&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 259</pre></span><pre>	# this binds the original setattr and getattr, not the patched one</pre></div>
+<div class="cov"><span class="num"><pre> 260</pre></span><pre>	getattrfunc = getattroverride</pre></div>
+<div class="cov"><span class="num"><pre> 261</pre></span><pre>	if not getattrfunc:</pre></div>
+<div class="cov"><span class="num"><pre> 262</pre></span><pre>		getattrfunc = getattr( api.MPlug, &quot;as&quot;+dataTypeId )</pre></div>
+<div class="cov"><span class="num"><pre> 263</pre></span><pre>	setattrfunc = getattr( api.MPlug, &quot;set&quot;+dataTypeId )</pre></div>
+<div class="skip"><span class="num"><pre> 264</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 265</pre></span><pre>	# YES, WE DUPLICATE CODE FOR SPEED</pre></div>
+<div class="skip"><span class="num"><pre> 266</pre></span><pre>	####################################</pre></div>
+<div class="skip"><span class="num"><pre> 267</pre></span><pre>	# Create actual functions</pre></div>
+<div class="cov"><span class="num"><pre> 268</pre></span><pre>	finalWrappedSetAttr = None</pre></div>
+<div class="cov"><span class="num"><pre> 269</pre></span><pre>	if dataTypeId == &quot;MObject&quot;:</pre></div>
+<div class="cov"><span class="num"><pre> 270</pre></span><pre>		def wrappedSetAttr( self, data ):</pre></div>
+<div class="skip"><span class="num"><pre> 271</pre></span><pre>			# asMObject can fail instead of returning a null object !</pre></div>
+<div class="cov"><span class="num"><pre> 272</pre></span><pre>			try:</pre></div>
+<div class="cov"><span class="num"><pre> 273</pre></span><pre>				curdata = getattrfunc( self )</pre></div>
+<div class="cov"><span class="num"><pre> 274</pre></span><pre>			except RuntimeError:</pre></div>
+<div class="cov"><span class="num"><pre> 275</pre></span><pre>				curdata = api.MObject()</pre></div>
+<div class="cov"><span class="num"><pre> 276</pre></span><pre>			op = undo.GenericOperation( )</pre></div>
+<div class="skip"><span class="num"><pre> 277</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 278</pre></span><pre>			op.setDoitCmd( setattrfunc, self, data )</pre></div>
+<div class="cov"><span class="num"><pre> 279</pre></span><pre>			op.setUndoitCmd( setattrfunc, self, curdata )</pre></div>
+<div class="skip"><span class="num"><pre> 280</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 281</pre></span><pre>			op.doIt()</pre></div>
+<div class="skip"><span class="num"><pre> 282</pre></span><pre>		# END wrapped method</pre></div>
+<div class="cov"><span class="num"><pre> 283</pre></span><pre>		finalWrappedSetAttr = wrappedSetAttr</pre></div>
+<div class="cov"><span class="num"><pre> 284</pre></span><pre>	else:</pre></div>
+<div class="cov"><span class="num"><pre> 285</pre></span><pre>		def wrappedSetAttr( self, data ):</pre></div>
+<div class="skip"><span class="num"><pre> 286</pre></span><pre>			# asMObject can fail instead of returning a null object !</pre></div>
+<div class="cov"><span class="num"><pre> 287</pre></span><pre>			curdata = getattrfunc( self )</pre></div>
+<div class="cov"><span class="num"><pre> 288</pre></span><pre>			op = undo.GenericOperation( )</pre></div>
+<div class="skip"><span class="num"><pre> 289</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 290</pre></span><pre>			op.setDoitCmd( setattrfunc, self, data )</pre></div>
+<div class="cov"><span class="num"><pre> 291</pre></span><pre>			op.setUndoitCmd( setattrfunc, self, curdata )</pre></div>
+<div class="skip"><span class="num"><pre> 292</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 293</pre></span><pre>			op.doIt()</pre></div>
+<div class="skip"><span class="num"><pre> 294</pre></span><pre>		# END wrappedSetAttr method</pre></div>
+<div class="cov"><span class="num"><pre> 295</pre></span><pre>		finalWrappedSetAttr = wrappedSetAttr</pre></div>
+<div class="skip"><span class="num"><pre> 296</pre></span><pre>	# END MObject special case</pre></div>
+<div class="skip"><span class="num"><pre> 297</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 298</pre></span><pre>	# did undoable do anything ? If not, its disabled and we return the original</pre></div>
+<div class="cov"><span class="num"><pre> 299</pre></span><pre>	wrappedUndoableSetAttr = undoable( finalWrappedSetAttr )</pre></div>
+<div class="cov"><span class="num"><pre> 300</pre></span><pre>	if wrappedUndoableSetAttr is finalWrappedSetAttr:</pre></div>
+<div class="nocov"><span class="num"><pre> 301</pre></span><pre>		return setattrfunc</pre></div>
+<div class="skip"><span class="num"><pre> 302</pre></span><pre>	# END return original </pre></div>
+<div class="skip"><span class="num"><pre> 303</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 304</pre></span><pre>	return wrappedUndoableSetAttr</pre></div>
+<div class="skip"><span class="num"><pre> 305</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 306</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 307</pre></span><pre>class MPlug( api.MPlug ):</pre></div>
+<div class="cov"><span class="num"><pre> 308</pre></span><pre>	&quot;&quot;&quot;Patch applying mrv specific functionality to the MPlug. These methods will be</pre></div>
+<div class="cov"><span class="num"><pre> 309</pre></span><pre>	available through methods with the 'm' prefix.</pre></div>
+<div class="skip"><span class="num"><pre> 310</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 311</pre></span><pre>	Other methods are overridden to allow more pythonic usage of the MPlug class</pre></div>
+<div class="cov"><span class="num"><pre> 312</pre></span><pre>	if and only if it is not specific to mrv.</pre></div>
+<div class="skip"><span class="num"><pre> 313</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 314</pre></span><pre>	Additionally it provides aliases for all MPlug methods that are getters, but </pre></div>
+<div class="cov"><span class="num"><pre> 315</pre></span><pre>	don't start with a 'get'.</pre></div>
+<div class="skip"><span class="num"><pre> 316</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 317</pre></span><pre>	:note: Theoretically the MPlug would satisfy the 'iDagItem' interface, but due </pre></div>
+<div class="cov"><span class="num"><pre> 318</pre></span><pre>		to the method prefixes, it could not work here as it calls un-prefixed methods only.&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 319</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 320</pre></span><pre>	pa = api.MPlugArray( )		# the only way to get a null plug for use</pre></div>
+<div class="cov"><span class="num"><pre> 321</pre></span><pre>	pa.setLength( 1 )</pre></div>
+<div class="skip"><span class="num"><pre> 322</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 323</pre></span><pre>	#{ Overridden Methods</pre></div>
+<div class="skip"><span class="num"><pre> 324</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 325</pre></span><pre>	def length( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 326</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 327</pre></span><pre>		:return: number of physical elements in the array, but only if they are </pre></div>
+<div class="cov"><span class="num"><pre> 328</pre></span><pre>			not connected. If in doubt, run evaluateNumElements beforehand</pre></div>
+<div class="cov"><span class="num"><pre> 329</pre></span><pre>		:note: cannot use __len__ as it would break printing of pymel&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 330</pre></span><pre>		if not self.isArray( ): return 0</pre></div>
+<div class="cov"><span class="num"><pre> 331</pre></span><pre>		return self.numElements( )</pre></div>
+<div class="skip"><span class="num"><pre> 332</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 333</pre></span><pre>	def __iter__( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 334</pre></span><pre>		&quot;&quot;&quot;:return: iterator object&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 335</pre></span><pre>		for i in xrange(self.length()):</pre></div>
+<div class="cov"><span class="num"><pre> 336</pre></span><pre>			yield self.elementByPhysicalIndex(i)</pre></div>
+<div class="skip"><span class="num"><pre> 337</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 338</pre></span><pre>	__str__ = api.MPlug.name</pre></div>
+<div class="skip"><span class="num"><pre> 339</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 340</pre></span><pre>	def __repr__( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 341</pre></span><pre>		&quot;&quot;&quot;:return: our class representation&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 342</pre></span><pre>		return &quot;MPlug(%s)&quot; % self.name()</pre></div>
+<div class="skip"><span class="num"><pre> 343</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 344</pre></span><pre>	def __eq__( self, other ):</pre></div>
+<div class="cov"><span class="num"><pre> 345</pre></span><pre>		&quot;&quot;&quot;Compare plugs,handle elements correctly&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 346</pre></span><pre>		if not api.MPlug._api___eq__( self, other ):</pre></div>
+<div class="cov"><span class="num"><pre> 347</pre></span><pre>			return False</pre></div>
+<div class="skip"><span class="num"><pre> 348</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 349</pre></span><pre>		# see whether elements are right - both must be elements if one is</pre></div>
+<div class="cov"><span class="num"><pre> 350</pre></span><pre>		if self.isElement():</pre></div>
+<div class="cov"><span class="num"><pre> 351</pre></span><pre>			return self.logicalIndex( ) == other.logicalIndex()</pre></div>
+<div class="skip"><span class="num"><pre> 352</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 353</pre></span><pre>		return True</pre></div>
+<div class="skip"><span class="num"><pre> 354</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 355</pre></span><pre>	def __ne__( self, other ):</pre></div>
+<div class="cov"><span class="num"><pre> 356</pre></span><pre>		return not( self.__eq__( other ) )</pre></div>
+<div class="skip"><span class="num"><pre> 357</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 358</pre></span><pre>	#} Overridden Methods</pre></div>
+<div class="skip"><span class="num"><pre> 359</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 360</pre></span><pre>	#{ Plug Hierarchy Query</pre></div>
+<div class="cov"><span class="num"><pre> 361</pre></span><pre>	def mparent( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 362</pre></span><pre>		&quot;&quot;&quot;:return: parent of this plug or None</pre></div>
+<div class="cov"><span class="num"><pre> 363</pre></span><pre>		:note: for array plugs, this is the array, for child plugs the actual parent &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 364</pre></span><pre>		p = None</pre></div>
+<div class="cov"><span class="num"><pre> 365</pre></span><pre>		if self.isChild():</pre></div>
+<div class="cov"><span class="num"><pre> 366</pre></span><pre>			p = self.parent()</pre></div>
+<div class="cov"><span class="num"><pre> 367</pre></span><pre>		elif self.isElement():</pre></div>
+<div class="cov"><span class="num"><pre> 368</pre></span><pre>			p = self.array()</pre></div>
+<div class="skip"><span class="num"><pre> 369</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 370</pre></span><pre>		if p.isNull( ):	# sanity check - not all</pre></div>
+<div class="nocov"><span class="num"><pre> 371</pre></span><pre>			return None</pre></div>
+<div class="cov"><span class="num"><pre> 372</pre></span><pre>		return p</pre></div>
+<div class="skip"><span class="num"><pre> 373</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 374</pre></span><pre>	def mchildren( self , predicate = lambda x: True):</pre></div>
+<div class="cov"><span class="num"><pre> 375</pre></span><pre>		&quot;&quot;&quot;:return: list of intermediate child plugs, [ plug1 , plug2 ]</pre></div>
+<div class="cov"><span class="num"><pre> 376</pre></span><pre>		:param predicate: return True to include x in result&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 377</pre></span><pre>		outchildren = []</pre></div>
+<div class="cov"><span class="num"><pre> 378</pre></span><pre>		if self.isCompound():</pre></div>
+<div class="cov"><span class="num"><pre> 379</pre></span><pre>			nc = self.numChildren()</pre></div>
+<div class="cov"><span class="num"><pre> 380</pre></span><pre>			for c in xrange( nc ):</pre></div>
+<div class="cov"><span class="num"><pre> 381</pre></span><pre>				child = self.child( c )</pre></div>
+<div class="cov"><span class="num"><pre> 382</pre></span><pre>				if predicate( child ):</pre></div>
+<div class="cov"><span class="num"><pre> 383</pre></span><pre>					outchildren.append( child )</pre></div>
+<div class="skip"><span class="num"><pre> 384</pre></span><pre>			# END FOR EACH CHILD</pre></div>
+<div class="skip"><span class="num"><pre> 385</pre></span><pre>		# END if is compound</pre></div>
+<div class="skip"><span class="num"><pre> 386</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 387</pre></span><pre>		return outchildren</pre></div>
+<div class="skip"><span class="num"><pre> 388</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 389</pre></span><pre>	def mchildByName( self, childname ):</pre></div>
+<div class="cov"><span class="num"><pre> 390</pre></span><pre>		&quot;&quot;&quot;:return: MPlug with the given childname</pre></div>
+<div class="cov"><span class="num"><pre> 391</pre></span><pre>		:raise AttributeError: if no child plug of the appropriate name could be found</pre></div>
+<div class="cov"><span class="num"><pre> 392</pre></span><pre>		:raise TypeError: self is not a compound plug&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 393</pre></span><pre>		if not self.isCompound( ):</pre></div>
+<div class="cov"><span class="num"><pre> 394</pre></span><pre>			raise TypeError( &quot;Plug %s is not a compound plug&quot; % self )</pre></div>
+<div class="skip"><span class="num"><pre> 395</pre></span><pre>		# END if is compound</pre></div>
+<div class="skip"><span class="num"><pre> 396</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 397</pre></span><pre>		nc = self.numChildren( )</pre></div>
+<div class="cov"><span class="num"><pre> 398</pre></span><pre>		for c in xrange( nc ):</pre></div>
+<div class="cov"><span class="num"><pre> 399</pre></span><pre>			child = self.child( c )</pre></div>
+<div class="cov"><span class="num"><pre> 400</pre></span><pre>			if (	child.partialName( ).split('.')[-1] == childname or</pre></div>
+<div class="cov"><span class="num"><pre> 401</pre></span><pre>					child.partialName( 0, 0, 0, 0, 0, 1 ).split('.')[-1] == childname ):</pre></div>
+<div class="cov"><span class="num"><pre> 402</pre></span><pre>				return child</pre></div>
+<div class="skip"><span class="num"><pre> 403</pre></span><pre>			# END if it is the child we look for</pre></div>
+<div class="skip"><span class="num"><pre> 404</pre></span><pre>		# END FOR EACH CHILD</pre></div>
+<div class="cov"><span class="num"><pre> 405</pre></span><pre>		raise AttributeError( &quot;Plug %s has no child plug called %s&quot; % ( self, childname ) )</pre></div>
+<div class="skip"><span class="num"><pre> 406</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 407</pre></span><pre>	def msubPlugs( self , predicate = lambda x: True):</pre></div>
+<div class="cov"><span class="num"><pre> 408</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 409</pre></span><pre>		:return: list of intermediate sub-plugs that are either child plugs or element plugs.</pre></div>
+<div class="cov"><span class="num"><pre> 410</pre></span><pre>			Returned list will be empty for leaf-level plugs</pre></div>
+<div class="cov"><span class="num"><pre> 411</pre></span><pre>		:param predicate: return True to include x in result</pre></div>
+<div class="cov"><span class="num"><pre> 412</pre></span><pre>		:note: use this function recursively for easy deep traversal of all</pre></div>
+<div class="cov"><span class="num"><pre> 413</pre></span><pre>			combinations of array and compound plugs&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 414</pre></span><pre>		if self.isCompound( ):</pre></div>
+<div class="cov"><span class="num"><pre> 415</pre></span><pre>			outchildren = []</pre></div>
+<div class="cov"><span class="num"><pre> 416</pre></span><pre>			nc = self.numChildren( )</pre></div>
+<div class="cov"><span class="num"><pre> 417</pre></span><pre>			for c in xrange( nc ):</pre></div>
+<div class="cov"><span class="num"><pre> 418</pre></span><pre>				child = self.child( c )</pre></div>
+<div class="cov"><span class="num"><pre> 419</pre></span><pre>				if predicate( child ):</pre></div>
+<div class="cov"><span class="num"><pre> 420</pre></span><pre>					outchildren.append( child )</pre></div>
+<div class="skip"><span class="num"><pre> 421</pre></span><pre>			# END FOR EACH CHILD</pre></div>
+<div class="cov"><span class="num"><pre> 422</pre></span><pre>			return outchildren</pre></div>
+<div class="cov"><span class="num"><pre> 423</pre></span><pre>		elif self.isArray( ):</pre></div>
+<div class="cov"><span class="num"><pre> 424</pre></span><pre>			return [ elm for elm in self ]</pre></div>
+<div class="skip"><span class="num"><pre> 425</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 426</pre></span><pre>		# we have no sub plugs</pre></div>
+<div class="cov"><span class="num"><pre> 427</pre></span><pre>		return []</pre></div>
+<div class="skip"><span class="num"><pre> 428</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 429</pre></span><pre>	#} END hierarcy query</pre></div>
+<div class="skip"><span class="num"><pre> 430</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 431</pre></span><pre>	#{ Attributes ( Edit )</pre></div>
+<div class="skip"><span class="num"><pre> 432</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 433</pre></span><pre>	def _mhandleAttrSet( self, state, getfunc, setfunc ):</pre></div>
+<div class="cov"><span class="num"><pre> 434</pre></span><pre>		&quot;&quot;&quot;Generic attribute handling&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 435</pre></span><pre>		op = undo.GenericOperation()</pre></div>
+<div class="cov"><span class="num"><pre> 436</pre></span><pre>		op.setDoitCmd( setfunc, state )</pre></div>
+<div class="cov"><span class="num"><pre> 437</pre></span><pre>		op.setUndoitCmd( setfunc, getfunc( ) )</pre></div>
+<div class="cov"><span class="num"><pre> 438</pre></span><pre>		op.doIt()</pre></div>
+<div class="skip"><span class="num"><pre> 439</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 440</pre></span><pre>	@undoable</pre></div>
+<div class="cov"><span class="num"><pre> 441</pre></span><pre>	def msetLocked( self, state ):</pre></div>
+<div class="cov"><span class="num"><pre> 442</pre></span><pre>		&quot;&quot;&quot;If True, the plug's value may not be changed anymore&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 443</pre></span><pre>		self._mhandleAttrSet( state, self.isLocked, self.setLocked )</pre></div>
+<div class="skip"><span class="num"><pre> 444</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 445</pre></span><pre>	@undoable</pre></div>
+<div class="cov"><span class="num"><pre> 446</pre></span><pre>	def msetKeyable( self, state ):</pre></div>
+<div class="cov"><span class="num"><pre> 447</pre></span><pre>		&quot;&quot;&quot;if True, the plug may be set using animation curves&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 448</pre></span><pre>		self._mhandleAttrSet( state, self.isKeyable, self.setKeyable )</pre></div>
+<div class="skip"><span class="num"><pre> 449</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 450</pre></span><pre>	@undoable</pre></div>
+<div class="cov"><span class="num"><pre> 451</pre></span><pre>	def msetCaching( self, state ):</pre></div>
+<div class="cov"><span class="num"><pre> 452</pre></span><pre>		&quot;&quot;&quot;if True, the plug's value will be cached, preventing unnecessary computations&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 453</pre></span><pre>		self._mhandleAttrSet( state, self.isCachingFlagSet, self.setCaching )</pre></div>
+<div class="skip"><span class="num"><pre> 454</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 455</pre></span><pre>	@undoable</pre></div>
+<div class="cov"><span class="num"><pre> 456</pre></span><pre>	def msetChannelBox( self, state ):</pre></div>
+<div class="cov"><span class="num"><pre> 457</pre></span><pre>		&quot;&quot;&quot;if True, the plug will be visible in the channelbox, even though it might not</pre></div>
+<div class="cov"><span class="num"><pre> 458</pre></span><pre>		be keyable or viceversa &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 459</pre></span><pre>		self._mhandleAttrSet( state, self.isChannelBoxFlagSet, self.setChannelBox )</pre></div>
+<div class="skip"><span class="num"><pre> 460</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 461</pre></span><pre>	#} END attributes edit</pre></div>
+<div class="skip"><span class="num"><pre> 462</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 463</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 464</pre></span><pre>	#{ Connections ( Edit )</pre></div>
+<div class="skip"><span class="num"><pre> 465</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 466</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre> 467</pre></span><pre>	@undoable</pre></div>
+<div class="cov"><span class="num"><pre> 468</pre></span><pre>	def mconnectMultiToMulti(self, iter_source_destination, force=False):</pre></div>
+<div class="cov"><span class="num"><pre> 469</pre></span><pre>		&quot;&quot;&quot;Connect multiple source plugs to the same amount of detsination plugs.</pre></div>
+<div class="skip"><span class="num"><pre> 470</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 471</pre></span><pre>		:note: This method provides the most efficient way to connect a large known </pre></div>
+<div class="cov"><span class="num"><pre> 472</pre></span><pre>			amount of plugs to each other</pre></div>
+<div class="cov"><span class="num"><pre> 473</pre></span><pre>		:param iter_source_destination: Iterator yielding pairs of source and destination plugs to connect</pre></div>
+<div class="cov"><span class="num"><pre> 474</pre></span><pre>		:param force: If True, existing input connections on the destination side will </pre></div>
+<div class="cov"><span class="num"><pre> 475</pre></span><pre>			be broken automatically. Otherwise the whole operation will fail if one </pre></div>
+<div class="cov"><span class="num"><pre> 476</pre></span><pre>			connection could not be made.</pre></div>
+<div class="cov"><span class="num"><pre> 477</pre></span><pre>		:note: Both iterators need to yield the same total amount of plugs</pre></div>
+<div class="cov"><span class="num"><pre> 478</pre></span><pre>		:note: In the current implementation, performance will be hurt if force </pre></div>
+<div class="cov"><span class="num"><pre> 479</pre></span><pre>			is specified as each destination has to be checked for a connection in advance&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 480</pre></span><pre>		mod = undo.DGModifier( )</pre></div>
+<div class="cov"><span class="num"><pre> 481</pre></span><pre>		for source, dest in iter_source_destination:</pre></div>
+<div class="cov"><span class="num"><pre> 482</pre></span><pre>			if force:</pre></div>
+<div class="cov"><span class="num"><pre> 483</pre></span><pre>				destinputplug = dest.minput()</pre></div>
+<div class="cov"><span class="num"><pre> 484</pre></span><pre>				if not destinputplug.isNull():</pre></div>
+<div class="cov"><span class="num"><pre> 485</pre></span><pre>					if source == destinputplug:</pre></div>
+<div class="nocov"><span class="num"><pre> 486</pre></span><pre>						continue</pre></div>
+<div class="skip"><span class="num"><pre> 487</pre></span><pre>					# END skip this plug if it is already connected</pre></div>
+<div class="cov"><span class="num"><pre> 488</pre></span><pre>					mod.disconnect(destinputplug, dest)</pre></div>
+<div class="skip"><span class="num"><pre> 489</pre></span><pre>				# END destination is connected</pre></div>
+<div class="skip"><span class="num"><pre> 490</pre></span><pre>			# END handle force</pre></div>
+<div class="cov"><span class="num"><pre> 491</pre></span><pre>			mod.connect(source, dest)</pre></div>
+<div class="skip"><span class="num"><pre> 492</pre></span><pre>		# END for each source, dest pair</pre></div>
+<div class="cov"><span class="num"><pre> 493</pre></span><pre>		mod.doIt()</pre></div>
+<div class="cov"><span class="num"><pre> 494</pre></span><pre>		return mod</pre></div>
+<div class="skip"><span class="num"><pre> 495</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre> 496</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 497</pre></span><pre>	@undoable</pre></div>
+<div class="cov"><span class="num"><pre> 498</pre></span><pre>	def mconnectTo( self, destplug, force=True ):</pre></div>
+<div class="cov"><span class="num"><pre> 499</pre></span><pre>		&quot;&quot;&quot;Connect this plug to the right hand side plug</pre></div>
+<div class="skip"><span class="num"><pre> 500</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 501</pre></span><pre>		:param destplug: the plug to which to connect this plug to.</pre></div>
+<div class="cov"><span class="num"><pre> 502</pre></span><pre>		:param force: if True, the connection will be created even if another connection</pre></div>
+<div class="cov"><span class="num"><pre> 503</pre></span><pre>			has to be broken to achieve that.</pre></div>
+<div class="cov"><span class="num"><pre> 504</pre></span><pre>			If False, the connection will fail if destplug is already connected to another plug</pre></div>
+<div class="cov"><span class="num"><pre> 505</pre></span><pre>		:return: destplug allowing chained connections a.connectTo(b).connectTo(c)</pre></div>
+<div class="cov"><span class="num"><pre> 506</pre></span><pre>		:raise RuntimeError: If destination is already connected and force = False&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 507</pre></span><pre>		mod = undo.DGModifier( )</pre></div>
+<div class="skip"><span class="num"><pre> 508</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 509</pre></span><pre>		# is destination already input-connected ? - disconnect it if required</pre></div>
+<div class="skip"><span class="num"><pre> 510</pre></span><pre>		# Optimization: We only care if force is specified. It will fail otherwise</pre></div>
+<div class="cov"><span class="num"><pre> 511</pre></span><pre>		if force:</pre></div>
+<div class="cov"><span class="num"><pre> 512</pre></span><pre>			destinputplug = destplug.minput()</pre></div>
+<div class="cov"><span class="num"><pre> 513</pre></span><pre>			if not destinputplug.isNull():</pre></div>
+<div class="skip"><span class="num"><pre> 514</pre></span><pre>				# handle possibly connected plugs</pre></div>
+<div class="cov"><span class="num"><pre> 515</pre></span><pre>				if self == destinputplug:		# is it us already ?</pre></div>
+<div class="nocov"><span class="num"><pre> 516</pre></span><pre>					return destplug</pre></div>
+<div class="skip"><span class="num"><pre> 517</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre> 518</pre></span><pre>				# disconnect</pre></div>
+<div class="cov"><span class="num"><pre> 519</pre></span><pre>				mod.disconnect( destinputplug, destplug )</pre></div>
+<div class="skip"><span class="num"><pre> 520</pre></span><pre>				# END disconnect existing</pre></div>
+<div class="skip"><span class="num"><pre> 521</pre></span><pre>			# END destination is connected</pre></div>
+<div class="skip"><span class="num"><pre> 522</pre></span><pre>		# END force mode</pre></div>
+<div class="cov"><span class="num"><pre> 523</pre></span><pre>		mod.connect( self, destplug )	# finally do the connection</pre></div>
+<div class="skip"><span class="num"><pre> 524</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 525</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre> 526</pre></span><pre>			mod.doIt( )</pre></div>
+<div class="cov"><span class="num"><pre> 527</pre></span><pre>		except RuntimeError:</pre></div>
+<div class="cov"><span class="num"><pre> 528</pre></span><pre>			raise RuntimeError(&quot;Failed to connect %s to %s as destination is already connected or incompatible&quot; % (self, destplug))</pre></div>
+<div class="skip"><span class="num"><pre> 529</pre></span><pre>		# END connection failed handling</pre></div>
+<div class="cov"><span class="num"><pre> 530</pre></span><pre>		return destplug</pre></div>
+<div class="skip"><span class="num"><pre> 531</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 532</pre></span><pre>	@undoable</pre></div>
+<div class="cov"><span class="num"><pre> 533</pre></span><pre>	def mconnectToArray( self, arrayplug, force = True, exclusive_connection = False ):</pre></div>
+<div class="cov"><span class="num"><pre> 534</pre></span><pre>		&quot;&quot;&quot;Connect self an element of the given arrayplug.</pre></div>
+<div class="skip"><span class="num"><pre> 535</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 536</pre></span><pre>		:param arrayplug: the array plug to which you want to connect to</pre></div>
+<div class="cov"><span class="num"><pre> 537</pre></span><pre>		:param force: if True, the connection will be created even if another connection</pre></div>
+<div class="cov"><span class="num"><pre> 538</pre></span><pre>			has to be broken to achieve that.</pre></div>
+<div class="cov"><span class="num"><pre> 539</pre></span><pre>		:param exclusive_connection: if True and destplug is an array, the plug will only be connected</pre></div>
+<div class="cov"><span class="num"><pre> 540</pre></span><pre>			to an array element if it is not yet connected</pre></div>
+<div class="cov"><span class="num"><pre> 541</pre></span><pre>		:return: newly created element plug or the existing one&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 542</pre></span><pre>		# ARRAY PLUG HANDLING</pre></div>
+<div class="skip"><span class="num"><pre> 543</pre></span><pre>		######################</pre></div>
+<div class="cov"><span class="num"><pre> 544</pre></span><pre>		if arrayplug.isArray( ):</pre></div>
+<div class="cov"><span class="num"><pre> 545</pre></span><pre>			if exclusive_connection:</pre></div>
+<div class="cov"><span class="num"><pre> 546</pre></span><pre>				arrayplug.evaluateNumElements( )</pre></div>
+<div class="cov"><span class="num"><pre> 547</pre></span><pre>				for delm in arrayplug:</pre></div>
+<div class="cov"><span class="num"><pre> 548</pre></span><pre>					if self == delm.minput():</pre></div>
+<div class="cov"><span class="num"><pre> 549</pre></span><pre>						return delm</pre></div>
+<div class="skip"><span class="num"><pre> 550</pre></span><pre>					# END if self == elm plug</pre></div>
+<div class="skip"><span class="num"><pre> 551</pre></span><pre>				# END for each elemnt in destplug</pre></div>
+<div class="skip"><span class="num"><pre> 552</pre></span><pre>			# END if exclusive array connection</pre></div>
+<div class="skip"><span class="num"><pre> 553</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 554</pre></span><pre>			# connect the next free plug</pre></div>
+<div class="cov"><span class="num"><pre> 555</pre></span><pre>			return self.mconnectTo( arrayplug.mnextLogicalPlug( ), force = force )</pre></div>
+<div class="skip"><span class="num"><pre> 556</pre></span><pre>		# END Array handling</pre></div>
+<div class="nocov"><span class="num"><pre> 557</pre></span><pre>		raise AssertionError( &quot;Given plug %r was not an array plug&quot; % arrayplug )</pre></div>
+<div class="skip"><span class="num"><pre> 558</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 559</pre></span><pre>	@undoable</pre></div>
+<div class="cov"><span class="num"><pre> 560</pre></span><pre>	def mdisconnect( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 561</pre></span><pre>		&quot;&quot;&quot;Completely disconnect all inputs and outputs of this plug. The plug will not </pre></div>
+<div class="cov"><span class="num"><pre> 562</pre></span><pre>		be connected anymore.</pre></div>
+<div class="skip"><span class="num"><pre> 563</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 564</pre></span><pre>		:return: self, allowing chained commands&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 565</pre></span><pre>		self.mdisconnectInput()</pre></div>
+<div class="cov"><span class="num"><pre> 566</pre></span><pre>		self.mdisconnectOutputs()</pre></div>
+<div class="cov"><span class="num"><pre> 567</pre></span><pre>		return self</pre></div>
+<div class="skip"><span class="num"><pre> 568</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 569</pre></span><pre>	@undoable</pre></div>
+<div class="cov"><span class="num"><pre> 570</pre></span><pre>	def mdisconnectInput( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 571</pre></span><pre>		&quot;&quot;&quot;Disconnect the input connection if one exists</pre></div>
+<div class="skip"><span class="num"><pre> 572</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 573</pre></span><pre>		:return: self, allowing chained commands&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 574</pre></span><pre>		inputplug = self.minput()</pre></div>
+<div class="cov"><span class="num"><pre> 575</pre></span><pre>		if inputplug.isNull():</pre></div>
+<div class="nocov"><span class="num"><pre> 576</pre></span><pre>			return self</pre></div>
+<div class="skip"><span class="num"><pre> 577</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 578</pre></span><pre>		mod = undo.DGModifier( )</pre></div>
+<div class="cov"><span class="num"><pre> 579</pre></span><pre>		mod.disconnect( inputplug, self )</pre></div>
+<div class="cov"><span class="num"><pre> 580</pre></span><pre>		mod.doIt()</pre></div>
+<div class="cov"><span class="num"><pre> 581</pre></span><pre>		return self</pre></div>
+<div class="skip"><span class="num"><pre> 582</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 583</pre></span><pre>	@undoable</pre></div>
+<div class="cov"><span class="num"><pre> 584</pre></span><pre>	def mdisconnectOutputs( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 585</pre></span><pre>		&quot;&quot;&quot;Disconnect all outgoing connections if they exist</pre></div>
+<div class="skip"><span class="num"><pre> 586</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 587</pre></span><pre>		:return: self, allowing chained commands&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 588</pre></span><pre>		outputplugs = self.moutputs()</pre></div>
+<div class="cov"><span class="num"><pre> 589</pre></span><pre>		if not len( outputplugs ):</pre></div>
+<div class="cov"><span class="num"><pre> 590</pre></span><pre>			return self</pre></div>
+<div class="skip"><span class="num"><pre> 591</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 592</pre></span><pre>		mod = undo.DGModifier()</pre></div>
+<div class="cov"><span class="num"><pre> 593</pre></span><pre>		for destplug in outputplugs:</pre></div>
+<div class="cov"><span class="num"><pre> 594</pre></span><pre>			mod.disconnect( self, destplug )</pre></div>
+<div class="cov"><span class="num"><pre> 595</pre></span><pre>		mod.doIt()</pre></div>
+<div class="cov"><span class="num"><pre> 596</pre></span><pre>		return self</pre></div>
+<div class="skip"><span class="num"><pre> 597</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 598</pre></span><pre>	@undoable</pre></div>
+<div class="cov"><span class="num"><pre> 599</pre></span><pre>	def mdisconnectFrom( self, other ):</pre></div>
+<div class="cov"><span class="num"><pre> 600</pre></span><pre>		&quot;&quot;&quot;Disconnect this plug from other plug if they are connected</pre></div>
+<div class="skip"><span class="num"><pre> 601</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 602</pre></span><pre>		:param other: MPlug that will be disconnected from this plug</pre></div>
+<div class="cov"><span class="num"><pre> 603</pre></span><pre>		:return: other plug allowing to chain disconnections&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 604</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre> 605</pre></span><pre>			mod = undo.DGModifier( )</pre></div>
+<div class="cov"><span class="num"><pre> 606</pre></span><pre>			mod.disconnect( self, other )</pre></div>
+<div class="cov"><span class="num"><pre> 607</pre></span><pre>			mod.doIt()</pre></div>
+<div class="nocov"><span class="num"><pre> 608</pre></span><pre>		except RuntimeError:</pre></div>
+<div class="nocov"><span class="num"><pre> 609</pre></span><pre>			pass</pre></div>
+<div class="cov"><span class="num"><pre> 610</pre></span><pre>		return other</pre></div>
+<div class="skip"><span class="num"><pre> 611</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 612</pre></span><pre>	@undoable</pre></div>
+<div class="cov"><span class="num"><pre> 613</pre></span><pre>	def mdisconnectNode( self, other ):</pre></div>
+<div class="cov"><span class="num"><pre> 614</pre></span><pre>		&quot;&quot;&quot;Disconnect this plug from the given node if they are connected</pre></div>
+<div class="skip"><span class="num"><pre> 615</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 616</pre></span><pre>		:param other: Node that will be completely disconnected from this plug&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 617</pre></span><pre>		for p in self.moutputs():</pre></div>
+<div class="cov"><span class="num"><pre> 618</pre></span><pre>			if p.mwrappedNode() == other:</pre></div>
+<div class="cov"><span class="num"><pre> 619</pre></span><pre>				self.mdisconnectFrom(p)</pre></div>
+<div class="skip"><span class="num"><pre> 620</pre></span><pre>		# END for each plug in output</pre></div>
+<div class="skip"><span class="num"><pre> 621</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 622</pre></span><pre>	#} END connections edit</pre></div>
+<div class="skip"><span class="num"><pre> 623</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 624</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 625</pre></span><pre>	#{ Connections ( Query )</pre></div>
+<div class="cov"><span class="num"><pre> 626</pre></span><pre>	@staticmethod</pre></div>
+<div class="cov"><span class="num"><pre> 627</pre></span><pre>	def mhaveConnection( lhsplug, rhsplug ):</pre></div>
+<div class="cov"><span class="num"><pre> 628</pre></span><pre>		&quot;&quot;&quot;:return: True if lhsplug and rhs plug are connected - the direction does not matter</pre></div>
+<div class="cov"><span class="num"><pre> 629</pre></span><pre>		:note: equals lhsplug &amp; rhsplug&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 630</pre></span><pre>		return lhsplug.misConnectedTo( rhsplug ) or rhsplug.misConnectedTo( lhsplug )</pre></div>
+<div class="skip"><span class="num"><pre> 631</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 632</pre></span><pre>	def misConnectedTo( self, destplug ):</pre></div>
+<div class="cov"><span class="num"><pre> 633</pre></span><pre>		&quot;&quot;&quot;:return: True if this plug is connected to destination plug ( in that order )</pre></div>
+<div class="cov"><span class="num"><pre> 634</pre></span><pre>		:note: return true for self.misConnectedTo(destplug) but false for destplug.misConnectedTo(self)</pre></div>
+<div class="cov"><span class="num"><pre> 635</pre></span><pre>		:note: use the mhaveConnection method whether both plugs have a connection no matter which direction</pre></div>
+<div class="cov"><span class="num"><pre> 636</pre></span><pre>		:note: use `misConnected` to find out whether this plug is connected at all&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 637</pre></span><pre>		return destplug in self.moutputs()</pre></div>
+<div class="skip"><span class="num"><pre> 638</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 639</pre></span><pre>	def moutputs( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 640</pre></span><pre>		&quot;&quot;&quot;:return: MPlugArray with all plugs having this plug as source</pre></div>
+<div class="cov"><span class="num"><pre> 641</pre></span><pre>		:todo: should the method be smarter and deal nicer with complex array or compound plugs ?&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 642</pre></span><pre>		outputs = api.MPlugArray()</pre></div>
+<div class="cov"><span class="num"><pre> 643</pre></span><pre>		self.connectedTo( outputs, False, True )</pre></div>
+<div class="cov"><span class="num"><pre> 644</pre></span><pre>		return outputs</pre></div>
+<div class="skip"><span class="num"><pre> 645</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 646</pre></span><pre>	def moutput( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 647</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 648</pre></span><pre>		:return: first plug that has this plug as source of a connection, or null plug </pre></div>
+<div class="cov"><span class="num"><pre> 649</pre></span><pre>			if no such plug exists.</pre></div>
+<div class="cov"><span class="num"><pre> 650</pre></span><pre>		:note: convenience method&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 651</pre></span><pre>		outputs = self.moutputs()</pre></div>
+<div class="cov"><span class="num"><pre> 652</pre></span><pre>		if len( outputs ) == 0:</pre></div>
+<div class="cov"><span class="num"><pre> 653</pre></span><pre>			return self.pa[0]</pre></div>
+<div class="cov"><span class="num"><pre> 654</pre></span><pre>		return outputs[0]</pre></div>
+<div class="skip"><span class="num"><pre> 655</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 656</pre></span><pre>	def minput( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 657</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 658</pre></span><pre>		:return: plug being the source of a connection to this plug or a null plug</pre></div>
+<div class="cov"><span class="num"><pre> 659</pre></span><pre>			if no such plug exists&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 660</pre></span><pre>		inputs = api.MPlugArray()</pre></div>
+<div class="cov"><span class="num"><pre> 661</pre></span><pre>		self.connectedTo( inputs, True, False )</pre></div>
+<div class="skip"><span class="num"><pre> 662</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 663</pre></span><pre>		noInputs = len( inputs )</pre></div>
+<div class="cov"><span class="num"><pre> 664</pre></span><pre>		if noInputs == 0:</pre></div>
+<div class="skip"><span class="num"><pre> 665</pre></span><pre>			# TODO: find a better way to get a MPlugPtr type that can properly be tested for isNull</pre></div>
+<div class="cov"><span class="num"><pre> 666</pre></span><pre>			return self.pa[0]</pre></div>
+<div class="cov"><span class="num"><pre> 667</pre></span><pre>		elif noInputs == 1:</pre></div>
+<div class="cov"><span class="num"><pre> 668</pre></span><pre>			return inputs[0]</pre></div>
+<div class="skip"><span class="num"><pre> 669</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 670</pre></span><pre>		# must have more than one input - can this ever be ?</pre></div>
+<div class="nocov"><span class="num"><pre> 671</pre></span><pre>		raise ValueError( &quot;Plug %s has more than one input plug - check how that can be&quot; % self )</pre></div>
+<div class="skip"><span class="num"><pre> 672</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 673</pre></span><pre>	def minputs( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 674</pre></span><pre>		&quot;&quot;&quot;Special handler returning the input plugs of array elements</pre></div>
+<div class="skip"><span class="num"><pre> 675</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 676</pre></span><pre>		:return: list of plugs connected to the elements of this arrayplug</pre></div>
+<div class="cov"><span class="num"><pre> 677</pre></span><pre>		:note: if self is not an array, a list with 1 or 0 plugs will be returned&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 678</pre></span><pre>		out = list()</pre></div>
+<div class="cov"><span class="num"><pre> 679</pre></span><pre>		if self.isArray():</pre></div>
+<div class="cov"><span class="num"><pre> 680</pre></span><pre>			self.evaluateNumElements()</pre></div>
+<div class="cov"><span class="num"><pre> 681</pre></span><pre>			for elm in self:</pre></div>
+<div class="cov"><span class="num"><pre> 682</pre></span><pre>				elminput = elm.minput()</pre></div>
+<div class="cov"><span class="num"><pre> 683</pre></span><pre>				if elminput.isNull():</pre></div>
+<div class="cov"><span class="num"><pre> 684</pre></span><pre>					continue</pre></div>
+<div class="cov"><span class="num"><pre> 685</pre></span><pre>				out.append( elminput )</pre></div>
+<div class="skip"><span class="num"><pre> 686</pre></span><pre>			# END for each elm plug in sets</pre></div>
+<div class="cov"><span class="num"><pre> 687</pre></span><pre>		else:</pre></div>
+<div class="cov"><span class="num"><pre> 688</pre></span><pre>			inplug = self.minput()</pre></div>
+<div class="cov"><span class="num"><pre> 689</pre></span><pre>			if not inplug.isNull():</pre></div>
+<div class="cov"><span class="num"><pre> 690</pre></span><pre>				out.append( inplug )</pre></div>
+<div class="skip"><span class="num"><pre> 691</pre></span><pre>		# END array handling</pre></div>
+<div class="cov"><span class="num"><pre> 692</pre></span><pre>		return out</pre></div>
+<div class="skip"><span class="num"><pre> 693</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 694</pre></span><pre>	def miterGraph( self, *args, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre> 695</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 696</pre></span><pre>		:return: graph iterator with self as root, args and kwargs are passed to `it.iterGraph`.</pre></div>
+<div class="cov"><span class="num"><pre> 697</pre></span><pre>			Plugs are returned by default, but this can be specified explicitly using </pre></div>
+<div class="cov"><span class="num"><pre> 698</pre></span><pre>			the plug=True kwarg&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 699</pre></span><pre>		import it</pre></div>
+<div class="cov"><span class="num"><pre> 700</pre></span><pre>		kwargs['plug'] = kwargs.get('plug', True)</pre></div>
+<div class="cov"><span class="num"><pre> 701</pre></span><pre>		return it.iterGraph(self, *args, **kwargs)</pre></div>
+<div class="skip"><span class="num"><pre> 702</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 703</pre></span><pre>	def miterInputGraph( self, *args, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre> 704</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 705</pre></span><pre>		:return: iterator over the graph starting at this plug in input(upstream) direction.</pre></div>
+<div class="cov"><span class="num"><pre> 706</pre></span><pre>			Plugs will be returned by default</pre></div>
+<div class="cov"><span class="num"><pre> 707</pre></span><pre>		:note: see `it.iterGraph` for valid args and kwargs&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 708</pre></span><pre>		kwargs['input'] = True</pre></div>
+<div class="cov"><span class="num"><pre> 709</pre></span><pre>		return self.miterGraph(*args, **kwargs)</pre></div>
+<div class="skip"><span class="num"><pre> 710</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 711</pre></span><pre>	def miterOutputGraph( self, *args, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre> 712</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 713</pre></span><pre>		:return: iterator over the graph starting at this plug in output(downstream) direction.</pre></div>
+<div class="cov"><span class="num"><pre> 714</pre></span><pre>			Plugs will be returned by default</pre></div>
+<div class="cov"><span class="num"><pre> 715</pre></span><pre>		:note: see `it.iterGraph` for valid args and kwargs&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 716</pre></span><pre>		kwargs['input'] = False</pre></div>
+<div class="cov"><span class="num"><pre> 717</pre></span><pre>		return self.miterGraph(*args, **kwargs)</pre></div>
+<div class="skip"><span class="num"><pre> 718</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 719</pre></span><pre>	def mconnections( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 720</pre></span><pre>		&quot;&quot;&quot;:return: tuple with input and outputs ( inputPlug, outputPlugs )&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 721</pre></span><pre>		return ( self.minput( ), self.moutputs( ) )</pre></div>
+<div class="skip"><span class="num"><pre> 722</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 723</pre></span><pre>	#} END connections query</pre></div>
+<div class="skip"><span class="num"><pre> 724</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 725</pre></span><pre>	#{ Affects Query</pre></div>
+<div class="cov"><span class="num"><pre> 726</pre></span><pre>	def mdependencyInfo( self, by=False ):</pre></div>
+<div class="cov"><span class="num"><pre> 727</pre></span><pre>		&quot;&quot;&quot;:return: list of plugs on this node that this plug affects or is being affected by</pre></div>
+<div class="cov"><span class="num"><pre> 728</pre></span><pre>		:param by: if false, affected attributplugs will be returned, otherwise the attributeplugs affecting this one</pre></div>
+<div class="cov"><span class="num"><pre> 729</pre></span><pre>		:note: you can also use the `base.DependNode.dependencyInfo` method on the node itself if plugs are not</pre></div>
+<div class="cov"><span class="num"><pre> 730</pre></span><pre>			required - this will also be faster</pre></div>
+<div class="cov"><span class="num"><pre> 731</pre></span><pre>		:note: have to use MEL :(&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 732</pre></span><pre>		ownnode = self.mwrappedNode()</pre></div>
+<div class="cov"><span class="num"><pre> 733</pre></span><pre>		attrs = cmds.affects( self.mwrappedAttribute().name() , ownnode.name(), by=by ) or list()</pre></div>
+<div class="cov"><span class="num"><pre> 734</pre></span><pre>		outplugs = list()</pre></div>
+<div class="cov"><span class="num"><pre> 735</pre></span><pre>		depfn = api.MFnDependencyNode( ownnode.object() )</pre></div>
+<div class="skip"><span class="num"><pre> 736</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 737</pre></span><pre>		for attr in attrs:</pre></div>
+<div class="cov"><span class="num"><pre> 738</pre></span><pre>			outplugs.append( depfn.findPlug( attr ) )</pre></div>
+<div class="cov"><span class="num"><pre> 739</pre></span><pre>		return outplugs</pre></div>
+<div class="skip"><span class="num"><pre> 740</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 741</pre></span><pre>	def maffects( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 742</pre></span><pre>		&quot;&quot;&quot;:return: list of plugs affected by this one&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 743</pre></span><pre>		return self.mdependencyInfo( by = False )</pre></div>
+<div class="skip"><span class="num"><pre> 744</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 745</pre></span><pre>	def maffected( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 746</pre></span><pre>		&quot;&quot;&quot;:return: list of plugs affecting this one&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 747</pre></span><pre>		return self.mdependencyInfo( by = True )</pre></div>
+<div class="skip"><span class="num"><pre> 748</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 749</pre></span><pre>	#} END affects query</pre></div>
+<div class="skip"><span class="num"><pre> 750</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 751</pre></span><pre>	#{ General Query</pre></div>
+<div class="cov"><span class="num"><pre> 752</pre></span><pre>	def mnextLogicalIndex( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 753</pre></span><pre>		&quot;&quot;&quot;:return: index of logical indexed plug that does not yet exist</pre></div>
+<div class="cov"><span class="num"><pre> 754</pre></span><pre>		:note: as this method does a thorough search, it is relatively slow</pre></div>
+<div class="cov"><span class="num"><pre> 755</pre></span><pre>			compared to a simple numPlugs + 1 algorithm</pre></div>
+<div class="cov"><span class="num"><pre> 756</pre></span><pre>		:note: only makes sense for array plugs&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 757</pre></span><pre>		indices = api.MIntArray()</pre></div>
+<div class="cov"><span class="num"><pre> 758</pre></span><pre>		self.getExistingArrayAttributeIndices( indices )</pre></div>
+<div class="skip"><span class="num"><pre> 759</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 760</pre></span><pre>		logicalIndex = 0</pre></div>
+<div class="cov"><span class="num"><pre> 761</pre></span><pre>		numIndices = indices.length()</pre></div>
+<div class="skip"><span class="num"><pre> 762</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 763</pre></span><pre>		# do a proper search</pre></div>
+<div class="cov"><span class="num"><pre> 764</pre></span><pre>		if numIndices == 1:</pre></div>
+<div class="cov"><span class="num"><pre> 765</pre></span><pre>			logicalIndex =  indices[0] + 1	# just increment the first one</pre></div>
+<div class="cov"><span class="num"><pre> 766</pre></span><pre>		else:</pre></div>
+<div class="skip"><span class="num"><pre> 767</pre></span><pre>			# assume indices are SORTED, smallest first</pre></div>
+<div class="cov"><span class="num"><pre> 768</pre></span><pre>			for i in xrange( numIndices - 1 ):</pre></div>
+<div class="cov"><span class="num"><pre> 769</pre></span><pre>				if indices[i+1] - indices[i] &gt; 1:</pre></div>
+<div class="nocov"><span class="num"><pre> 770</pre></span><pre>					logicalIndex = indices[i] + 1 	# at least one free slot here</pre></div>
+<div class="nocov"><span class="num"><pre> 771</pre></span><pre>					break</pre></div>
+<div class="cov"><span class="num"><pre> 772</pre></span><pre>				else:</pre></div>
+<div class="cov"><span class="num"><pre> 773</pre></span><pre>					logicalIndex = indices[i+1] + 1	# be always one larger than the last one</pre></div>
+<div class="skip"><span class="num"><pre> 774</pre></span><pre>			# END for each logical index</pre></div>
+<div class="skip"><span class="num"><pre> 775</pre></span><pre>		# END if more than one indices exist</pre></div>
+<div class="cov"><span class="num"><pre> 776</pre></span><pre>		return logicalIndex</pre></div>
+<div class="skip"><span class="num"><pre> 777</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 778</pre></span><pre>	def mnextLogicalPlug( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 779</pre></span><pre>		&quot;&quot;&quot;:return: plug at newly created logical index</pre></div>
+<div class="cov"><span class="num"><pre> 780</pre></span><pre>		:note: only valid for array plugs&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 781</pre></span><pre>		return self.elementByLogicalIndex(self.mnextLogicalIndex())</pre></div>
+<div class="skip"><span class="num"><pre> 782</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 783</pre></span><pre>	def mwrappedAttribute( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 784</pre></span><pre>		&quot;&quot;&quot;:return: Attribute instance of our underlying attribute&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 785</pre></span><pre>		return base.Attribute(self.attribute())</pre></div>
+<div class="skip"><span class="num"><pre> 786</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 787</pre></span><pre>	def mwrappedNode( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 788</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 789</pre></span><pre>		:return: wrapped Node of the plugs node</pre></div>
+<div class="cov"><span class="num"><pre> 790</pre></span><pre>		:note: instance information gets lost this way, the respective instance </pre></div>
+<div class="cov"><span class="num"><pre> 791</pre></span><pre>			can be re-retrieved using the instance information on this instanced </pre></div>
+<div class="cov"><span class="num"><pre> 792</pre></span><pre>			attribute, if this is an instanced attribute&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 793</pre></span><pre>		return base.NodeFromObj(self.node())</pre></div>
+<div class="skip"><span class="num"><pre> 794</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 795</pre></span><pre>	def masData( self, *args, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre> 796</pre></span><pre>		&quot;&quot;&quot;:return: our data Mobject wrapped in `base.Data`</pre></div>
+<div class="cov"><span class="num"><pre> 797</pre></span><pre>		:note: args and kwagrs have to be provided as MDGContext.fsNormal</pre></div>
+<div class="cov"><span class="num"><pre> 798</pre></span><pre>			does not exist in maya 8.5, so we have to hide that fact.&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 799</pre></span><pre>		return base.Data(self.asMObject(*args, **kwargs))</pre></div>
+<div class="skip"><span class="num"><pre> 800</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 801</pre></span><pre>	def mfullyQualifiedName( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 802</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 803</pre></span><pre>		:return: string returning the absolute and fully qualified name of the</pre></div>
+<div class="cov"><span class="num"><pre> 804</pre></span><pre>			plug. It might take longer to evaluate but is safe to use if you want to </pre></div>
+<div class="cov"><span class="num"><pre> 805</pre></span><pre>			convert the resulting string back to the actual plug&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 806</pre></span><pre>		return self.partialName(1, 1, 1, 0, 1, 1)</pre></div>
+<div class="skip"><span class="num"><pre> 807</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre> 808</pre></span><pre>	#} END query</pre></div>
+<div class="skip"><span class="num"><pre> 809</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 810</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 811</pre></span><pre>	#{ Set Data with Undo</pre></div>
+<div class="skip"><span class="num"><pre> 812</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 813</pre></span><pre>	# wrap the methods</pre></div>
+<div class="cov"><span class="num"><pre> 814</pre></span><pre>	msetBool = _mplug_createUndoSetFunc( &quot;Bool&quot; )</pre></div>
+<div class="cov"><span class="num"><pre> 815</pre></span><pre>	msetChar = _mplug_createUndoSetFunc( &quot;Char&quot; )</pre></div>
+<div class="cov"><span class="num"><pre> 816</pre></span><pre>	msetShort = _mplug_createUndoSetFunc( &quot;Short&quot; )</pre></div>
+<div class="cov"><span class="num"><pre> 817</pre></span><pre>	msetInt = _mplug_createUndoSetFunc( &quot;Int&quot; )</pre></div>
+<div class="cov"><span class="num"><pre> 818</pre></span><pre>	msetFloat = _mplug_createUndoSetFunc( &quot;Float&quot; )</pre></div>
+<div class="cov"><span class="num"><pre> 819</pre></span><pre>	msetDouble = _mplug_createUndoSetFunc( &quot;Double&quot; )</pre></div>
+<div class="cov"><span class="num"><pre> 820</pre></span><pre>	msetString = _mplug_createUndoSetFunc( &quot;String&quot; )</pre></div>
+<div class="cov"><span class="num"><pre> 821</pre></span><pre>	msetMAngle = _mplug_createUndoSetFunc( &quot;MAngle&quot; )</pre></div>
+<div class="cov"><span class="num"><pre> 822</pre></span><pre>	msetMDistance = _mplug_createUndoSetFunc( &quot;MDistance&quot; )</pre></div>
+<div class="cov"><span class="num"><pre> 823</pre></span><pre>	msetMTime = _mplug_createUndoSetFunc( &quot;MTime&quot; )</pre></div>
+<div class="cov"><span class="num"><pre> 824</pre></span><pre>	msetMObject = _mplug_createUndoSetFunc( &quot;MObject&quot; )</pre></div>
+<div class="skip"><span class="num"><pre> 825</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 826</pre></span><pre>	#} END set data</pre></div>
+<div class="skip"><span class="num"><pre> 827</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 828</pre></span><pre>	#{ Name Remapping</pre></div>
+<div class="cov"><span class="num"><pre> 829</pre></span><pre>	mctf = lambda self,other: self.mconnectTo( other, force=True )</pre></div>
+<div class="cov"><span class="num"><pre> 830</pre></span><pre>	mct = lambda self,other: self.mconnectTo( other, force=False )</pre></div>
+<div class="cov"><span class="num"><pre> 831</pre></span><pre>	mict = misConnectedTo</pre></div>
+<div class="cov"><span class="num"><pre> 832</pre></span><pre>	mhc = lambda lhs,rhs: MPlug.mhaveConnection( lhs, rhs )</pre></div>
+<div class="cov"><span class="num"><pre> 833</pre></span><pre>	mdc = mdisconnectFrom</pre></div>
+<div class="cov"><span class="num"><pre> 834</pre></span><pre>	mwn = mwrappedNode</pre></div>
+<div class="cov"><span class="num"><pre> 835</pre></span><pre>	mwa = mwrappedAttribute</pre></div>
+<div class="skip"><span class="num"><pre> 836</pre></span><pre>	#} END name remapping</pre></div>
+<div class="skip"><span class="num"><pre> 837</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 838</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 839</pre></span><pre># SETUP DEBUG MODE ?</pre></div>
+<div class="cov"><span class="num"><pre> 840</pre></span><pre>if int(os.environ.get('MRV_DEBUG_MPLUG_SETX', 0)):</pre></div>
+<div class="nocov"><span class="num"><pre> 841</pre></span><pre>	def __getattribute__(self, attr):</pre></div>
+<div class="nocov"><span class="num"><pre> 842</pre></span><pre>		&quot;&quot;&quot;Get attribute for MPlug which will raise if a setX method is used.</pre></div>
+<div class="nocov"><span class="num"><pre> 843</pre></span><pre>		This could cause undo bugs that you'd better catch before they hit the user&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 844</pre></span><pre>		if attr.startswith('set'):</pre></div>
+<div class="nocov"><span class="num"><pre> 845</pre></span><pre>			raise AssertionError(&quot;%s method called on MPlug - this causes undo-issues if it happens unintended&quot; % attr)</pre></div>
+<div class="nocov"><span class="num"><pre> 846</pre></span><pre>		return api.MPlug._api___getattribute__(self, attr)</pre></div>
+<div class="skip"><span class="num"><pre> 847</pre></span><pre>	# END method override</pre></div>
+<div class="skip"><span class="num"><pre> 848</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre> 849</pre></span><pre>	# will be transferred onto api.MPlug when the patches are auto-applied.</pre></div>
+<div class="nocov"><span class="num"><pre> 850</pre></span><pre>	MPlug.__getattribute__ = __getattribute__</pre></div>
+<div class="skip"><span class="num"><pre> 851</pre></span><pre># END setup debug mode</pre></div>
+<div class="skip"><span class="num"><pre> 852</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 853</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 854</pre></span><pre>#} END basic types</pre></div>
+<div class="skip"><span class="num"><pre> 855</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 856</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 857</pre></span><pre>#{ Arrays</pre></div>
+<div class="skip"><span class="num"><pre> 858</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 859</pre></span><pre>class ArrayBase( Abstract ):</pre></div>
+<div class="cov"><span class="num"><pre> 860</pre></span><pre>	&quot;&quot;&quot; Base class for all maya arrays to easily fix them</pre></div>
+<div class="skip"><span class="num"><pre> 861</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 862</pre></span><pre>	:note: set _apicls class variable to your api base class &quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 863</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 864</pre></span><pre>	def __len__( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 865</pre></span><pre>		return self._apicls.length( self )</pre></div>
+<div class="skip"><span class="num"><pre> 866</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 867</pre></span><pre>	def __setitem__ ( self, index, item ):</pre></div>
+<div class="cov"><span class="num"><pre> 868</pre></span><pre>		&quot;&quot;&quot;:note: does not work as it expects a pointer type - probably a bug&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 869</pre></span><pre>		return self.set( item, index )</pre></div>
+<div class="skip"><span class="num"><pre> 870</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 871</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre> 872</pre></span><pre>	def mfromMultiple(cls, *args):</pre></div>
+<div class="cov"><span class="num"><pre> 873</pre></span><pre>		&quot;&quot;&quot;:return: Array created from the given elements&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 874</pre></span><pre>		ia = cls()</pre></div>
+<div class="cov"><span class="num"><pre> 875</pre></span><pre>		ia.setLength(len(args))</pre></div>
+<div class="skip"><span class="num"><pre> 876</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 877</pre></span><pre>		ci = 0</pre></div>
+<div class="cov"><span class="num"><pre> 878</pre></span><pre>		for elm in args:</pre></div>
+<div class="cov"><span class="num"><pre> 879</pre></span><pre>			ia[ci] = elm</pre></div>
+<div class="cov"><span class="num"><pre> 880</pre></span><pre>			ci += 1</pre></div>
+<div class="skip"><span class="num"><pre> 881</pre></span><pre>		# END for each index</pre></div>
+<div class="skip"><span class="num"><pre> 882</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 883</pre></span><pre>		return ia</pre></div>
+<div class="skip"><span class="num"><pre> 884</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 885</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre> 886</pre></span><pre>	def mfromIter(cls, iter):</pre></div>
+<div class="cov"><span class="num"><pre> 887</pre></span><pre>		&quot;&quot;&quot;:return: Array created from elements yielded by iter</pre></div>
+<div class="cov"><span class="num"><pre> 888</pre></span><pre>		:note: this one is less efficient than `mfromList` as the final length </pre></div>
+<div class="cov"><span class="num"><pre> 889</pre></span><pre>			of the array is not predetermined&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 890</pre></span><pre>		ia = cls()</pre></div>
+<div class="cov"><span class="num"><pre> 891</pre></span><pre>		append = ia.append</pre></div>
+<div class="cov"><span class="num"><pre> 892</pre></span><pre>		for index in iter:</pre></div>
+<div class="cov"><span class="num"><pre> 893</pre></span><pre>			append(index)</pre></div>
+<div class="cov"><span class="num"><pre> 894</pre></span><pre>		return ia</pre></div>
+<div class="skip"><span class="num"><pre> 895</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 896</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre> 897</pre></span><pre>	def mfromList(cls, list):</pre></div>
+<div class="cov"><span class="num"><pre> 898</pre></span><pre>		&quot;&quot;&quot;:return: Array created from the given list of elements&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 899</pre></span><pre>		ia = cls()</pre></div>
+<div class="cov"><span class="num"><pre> 900</pre></span><pre>		ia.setLength(len(list))</pre></div>
+<div class="skip"><span class="num"><pre> 901</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 902</pre></span><pre>		ci = 0</pre></div>
+<div class="cov"><span class="num"><pre> 903</pre></span><pre>		set = ia.set</pre></div>
+<div class="cov"><span class="num"><pre> 904</pre></span><pre>		for elm in list:</pre></div>
+<div class="cov"><span class="num"><pre> 905</pre></span><pre>			set(elm, ci)</pre></div>
+<div class="cov"><span class="num"><pre> 906</pre></span><pre>			ci += 1</pre></div>
+<div class="skip"><span class="num"><pre> 907</pre></span><pre>		# END for each item</pre></div>
+<div class="skip"><span class="num"><pre> 908</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 909</pre></span><pre>		return ia</pre></div>
+<div class="skip"><span class="num"><pre> 910</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 911</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 912</pre></span><pre>_plugarray_getitem = api.MPlugArray.__getitem__</pre></div>
+<div class="cov"><span class="num"><pre> 913</pre></span><pre>_objectarray_getitem = api.MObjectArray.__getitem__</pre></div>
+<div class="cov"><span class="num"><pre> 914</pre></span><pre>_colorarray_getitem = api.MColorArray.__getitem__</pre></div>
+<div class="cov"><span class="num"><pre> 915</pre></span><pre>_pointarray_getitem = api.MPointArray.__getitem__</pre></div>
+<div class="cov"><span class="num"><pre> 916</pre></span><pre>_floatpointarray_getitem = api.MFloatPointArray.__getitem__</pre></div>
+<div class="cov"><span class="num"><pre> 917</pre></span><pre>_doublearray_getitem = api.MDoubleArray.__getitem__</pre></div>
+<div class="cov"><span class="num"><pre> 918</pre></span><pre>_floatarray_getitem = api.MFloatArray.__getitem__</pre></div>
+<div class="cov"><span class="num"><pre> 919</pre></span><pre>_floatvectorarray_getitem = api.MFloatVectorArray.__getitem__</pre></div>
+<div class="cov"><span class="num"><pre> 920</pre></span><pre>_vectorarray_getitem = api.MVectorArray.__getitem__</pre></div>
+<div class="cov"><span class="num"><pre> 921</pre></span><pre>class MPlugArray( api.MPlugArray, ArrayBase ):</pre></div>
+<div class="cov"><span class="num"><pre> 922</pre></span><pre>	&quot;&quot;&quot; Wrap MPlugArray to make it compatible to pythonic contructs</pre></div>
+<div class="skip"><span class="num"><pre> 923</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 924</pre></span><pre>	:note: for performance reasons, we do not provide negative index support&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 925</pre></span><pre>	_apicls = api.MPlugArray</pre></div>
+<div class="skip"><span class="num"><pre> 926</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 927</pre></span><pre>	def __iter__( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 928</pre></span><pre>		&quot;&quot;&quot;:return: iterator object&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 929</pre></span><pre>		for i in xrange(len(self)):</pre></div>
+<div class="cov"><span class="num"><pre> 930</pre></span><pre>			yield api.MPlug(_plugarray_getitem( self,  i ))</pre></div>
+<div class="skip"><span class="num"><pre> 931</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 932</pre></span><pre>	def __getitem__ ( self, index ):</pre></div>
+<div class="cov"><span class="num"><pre> 933</pre></span><pre>		&quot;&quot;&quot;Copy the MPlugs we return to assure their ref count gets incremented&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 934</pre></span><pre>		return api.MPlug(_plugarray_getitem( self,  index ))</pre></div>
+<div class="skip"><span class="num"><pre> 935</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre> 936</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 937</pre></span><pre>class MObjectArray( api.MObjectArray, ArrayBase ):</pre></div>
+<div class="cov"><span class="num"><pre> 938</pre></span><pre>	&quot;&quot;&quot; Wrap MObject to make it compatible to pythonic contructs.</pre></div>
+<div class="skip"><span class="num"><pre> 939</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 940</pre></span><pre>	:note: This array also fixes an inherent issue that comes into play when </pre></div>
+<div class="cov"><span class="num"><pre> 941</pre></span><pre>		MObjects are returned using __getitem__, as the reference count does not natively</pre></div>
+<div class="cov"><span class="num"><pre> 942</pre></span><pre>		get incremented, and the MObjects will be obsolete once the parent-array goes out </pre></div>
+<div class="cov"><span class="num"><pre> 943</pre></span><pre>		of scope</pre></div>
+<div class="cov"><span class="num"><pre> 944</pre></span><pre>	:note: for performance reasons, we do not provide negative index support&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 945</pre></span><pre>	_apicls = api.MObjectArray</pre></div>
+<div class="skip"><span class="num"><pre> 946</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 947</pre></span><pre>	def __iter__( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 948</pre></span><pre>		&quot;&quot;&quot;:return: iterator object&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 949</pre></span><pre>		for i in xrange(len(self)):</pre></div>
+<div class="cov"><span class="num"><pre> 950</pre></span><pre>			yield api.MObject(_objectarray_getitem( self,  i ))</pre></div>
+<div class="skip"><span class="num"><pre> 951</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 952</pre></span><pre>	def __getitem__ ( self, index ):</pre></div>
+<div class="cov"><span class="num"><pre> 953</pre></span><pre>		&quot;&quot;&quot;Copy the MObjects we return to assure their ref count gets incremented&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 954</pre></span><pre>		return api.MObject(_objectarray_getitem( self,  index ))</pre></div>
+<div class="skip"><span class="num"><pre> 955</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 956</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 957</pre></span><pre>class MColorArray( api.MColorArray, ArrayBase ):</pre></div>
+<div class="cov"><span class="num"><pre> 958</pre></span><pre>	&quot;&quot;&quot; Wrap MColor to make it compatible to pythonic contructs.</pre></div>
+<div class="skip"><span class="num"><pre> 959</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 960</pre></span><pre>	:note: for performance reasons, we do not provide negative index support&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 961</pre></span><pre>	_apicls = api.MColorArray</pre></div>
+<div class="skip"><span class="num"><pre> 962</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 963</pre></span><pre>	def __iter__( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 964</pre></span><pre>		&quot;&quot;&quot;:return: iterator object&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 965</pre></span><pre>		for i in xrange(len(self)):</pre></div>
+<div class="cov"><span class="num"><pre> 966</pre></span><pre>			yield _colorarray_getitem( self,  i )</pre></div>
+<div class="skip"><span class="num"><pre> 967</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre> 968</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 969</pre></span><pre>class MPointArray( api.MPointArray, ArrayBase ):</pre></div>
+<div class="cov"><span class="num"><pre> 970</pre></span><pre>	&quot;&quot;&quot; Wrap MPoint to make it compatible to pythonic contructs.</pre></div>
+<div class="skip"><span class="num"><pre> 971</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 972</pre></span><pre>	:note: for performance reasons, we do not provide negative index support&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 973</pre></span><pre>	_apicls = api.MPointArray</pre></div>
+<div class="skip"><span class="num"><pre> 974</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 975</pre></span><pre>	def __iter__( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 976</pre></span><pre>		&quot;&quot;&quot;:return: iterator object&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 977</pre></span><pre>		for i in xrange(len(self)):</pre></div>
+<div class="cov"><span class="num"><pre> 978</pre></span><pre>			yield _pointarray_getitem( self,  i )</pre></div>
+<div class="skip"><span class="num"><pre> 979</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 980</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 981</pre></span><pre>class MFloatVectorArray( api.MFloatVectorArray, ArrayBase ):</pre></div>
+<div class="cov"><span class="num"><pre> 982</pre></span><pre>	&quot;&quot;&quot; Wrap MFloatVector to make it compatible to pythonic contructs.</pre></div>
+<div class="skip"><span class="num"><pre> 983</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 984</pre></span><pre>	:note: for performance reasons, we do not provide negative index support&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 985</pre></span><pre>	_apicls = api.MFloatVectorArray</pre></div>
+<div class="skip"><span class="num"><pre> 986</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 987</pre></span><pre>	def __iter__( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 988</pre></span><pre>		&quot;&quot;&quot;:return: iterator object&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 989</pre></span><pre>		for i in xrange(len(self)):</pre></div>
+<div class="cov"><span class="num"><pre> 990</pre></span><pre>			yield _floatvectorarray_getitem( self,  i )</pre></div>
+<div class="skip"><span class="num"><pre> 991</pre></span><pre>			</pre></div>
+<div class="skip"><span class="num"><pre> 992</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 993</pre></span><pre>class MVectorArray( api.MVectorArray, ArrayBase ):</pre></div>
+<div class="cov"><span class="num"><pre> 994</pre></span><pre>	&quot;&quot;&quot;:note: for performance reasons, we do not provide negative index support&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 995</pre></span><pre>	_apicls = api.MVectorArray</pre></div>
+<div class="skip"><span class="num"><pre> 996</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 997</pre></span><pre>	def __iter__( self ):</pre></div>
+<div class="cov"><span class="num"><pre> 998</pre></span><pre>		&quot;&quot;&quot;:return: iterator object&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 999</pre></span><pre>		for i in xrange(len(self)):</pre></div>
+<div class="cov"><span class="num"><pre>1000</pre></span><pre>			yield _vectorarray_getitem( self,  i )</pre></div>
+<div class="skip"><span class="num"><pre>1001</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1002</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1003</pre></span><pre>class MFloatPointArray( api.MFloatPointArray, ArrayBase ):</pre></div>
+<div class="cov"><span class="num"><pre>1004</pre></span><pre>	&quot;&quot;&quot; Wrap MFloatPoint to make it compatible to pythonic contructs.</pre></div>
+<div class="skip"><span class="num"><pre>1005</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>1006</pre></span><pre>	:note: for performance reasons, we do not provide negative index support&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1007</pre></span><pre>	_apicls = api.MFloatPointArray</pre></div>
+<div class="skip"><span class="num"><pre>1008</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>1009</pre></span><pre>	def __iter__( self ):</pre></div>
+<div class="cov"><span class="num"><pre>1010</pre></span><pre>		&quot;&quot;&quot;:return: iterator object&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1011</pre></span><pre>		for i in xrange(len(self)):</pre></div>
+<div class="cov"><span class="num"><pre>1012</pre></span><pre>			yield _floatpointarray_getitem( self,  i )</pre></div>
+<div class="skip"><span class="num"><pre>1013</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1014</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1015</pre></span><pre>class MDoubleArray( api.MDoubleArray, ArrayBase ):</pre></div>
+<div class="cov"><span class="num"><pre>1016</pre></span><pre>	&quot;&quot;&quot;:note: for performance reasons, we do not provide negative index support&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1017</pre></span><pre>	_apicls = api.MDoubleArray</pre></div>
+<div class="skip"><span class="num"><pre>1018</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>1019</pre></span><pre>	def __iter__( self ):</pre></div>
+<div class="cov"><span class="num"><pre>1020</pre></span><pre>		&quot;&quot;&quot;:return: iterator object&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1021</pre></span><pre>		for i in xrange(len(self)):</pre></div>
+<div class="cov"><span class="num"><pre>1022</pre></span><pre>			yield _doublearray_getitem( self,  i )</pre></div>
+<div class="skip"><span class="num"><pre>1023</pre></span><pre>			</pre></div>
+<div class="skip"><span class="num"><pre>1024</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre>1025</pre></span><pre>class MFloatArray( api.MFloatArray, ArrayBase ):</pre></div>
+<div class="cov"><span class="num"><pre>1026</pre></span><pre>	&quot;&quot;&quot;:note: for performance reasons, we do not provide negative index support&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1027</pre></span><pre>	_apicls = api.MFloatArray</pre></div>
+<div class="skip"><span class="num"><pre>1028</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>1029</pre></span><pre>	def __iter__( self ):</pre></div>
+<div class="cov"><span class="num"><pre>1030</pre></span><pre>		&quot;&quot;&quot;:return: iterator object&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1031</pre></span><pre>		for i in xrange(len(self)):</pre></div>
+<div class="cov"><span class="num"><pre>1032</pre></span><pre>			yield _floatarray_getitem( self,  i )</pre></div>
+<div class="skip"><span class="num"><pre>1033</pre></span><pre>			</pre></div>
+<div class="skip"><span class="num"><pre>1034</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1035</pre></span><pre>class MIntArray( api.MIntArray, ArrayBase ):</pre></div>
+<div class="cov"><span class="num"><pre>1036</pre></span><pre>	&quot;&quot;&quot;Attach additional creator functions&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1037</pre></span><pre>	_apicls = api.MIntArray</pre></div>
+<div class="skip"><span class="num"><pre>1038</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>1039</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre>1040</pre></span><pre>	def mfromRange(cls, i, j):</pre></div>
+<div class="cov"><span class="num"><pre>1041</pre></span><pre>		&quot;&quot;&quot;:return: An MIntArray initialized with integers ranging from i to j</pre></div>
+<div class="cov"><span class="num"><pre>1042</pre></span><pre>		:param i: first integer of the returned array</pre></div>
+<div class="cov"><span class="num"><pre>1043</pre></span><pre>		:param j: last integer of returned array will have the value j-1&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1044</pre></span><pre>		if j &lt; i:</pre></div>
+<div class="cov"><span class="num"><pre>1045</pre></span><pre>			raise ValueError(&quot;j &lt; i violated&quot;)</pre></div>
+<div class="cov"><span class="num"><pre>1046</pre></span><pre>		if j &lt; 0 or i &lt; 0:</pre></div>
+<div class="nocov"><span class="num"><pre>1047</pre></span><pre>			raise ValueError(&quot;negative ranges are not supported&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>1048</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>1049</pre></span><pre>		ia = api.MIntArray()</pre></div>
+<div class="cov"><span class="num"><pre>1050</pre></span><pre>		l = j - i</pre></div>
+<div class="cov"><span class="num"><pre>1051</pre></span><pre>		ia.setLength(l)</pre></div>
+<div class="skip"><span class="num"><pre>1052</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>1053</pre></span><pre>		# wouldn't it be great to have a real for loop now ?</pre></div>
+<div class="cov"><span class="num"><pre>1054</pre></span><pre>		ci = 0</pre></div>
+<div class="cov"><span class="num"><pre>1055</pre></span><pre>		set = ia.set</pre></div>
+<div class="cov"><span class="num"><pre>1056</pre></span><pre>		for i in xrange(i, j):</pre></div>
+<div class="cov"><span class="num"><pre>1057</pre></span><pre>			set(i, ci)</pre></div>
+<div class="cov"><span class="num"><pre>1058</pre></span><pre>			ci += 1</pre></div>
+<div class="skip"><span class="num"><pre>1059</pre></span><pre>		# END for each integer</pre></div>
+<div class="skip"><span class="num"><pre>1060</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>1061</pre></span><pre>		# this is slightly slower</pre></div>
+<div class="skip"><span class="num"><pre>1062</pre></span><pre>		#for ci, i in enumerate(xrange(i, j)):</pre></div>
+<div class="skip"><span class="num"><pre>1063</pre></span><pre>		#	ia[ci] = i</pre></div>
+<div class="skip"><span class="num"><pre>1064</pre></span><pre>		# END for each index/value pair</pre></div>
+<div class="skip"><span class="num"><pre>1065</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>1066</pre></span><pre>		return ia</pre></div>
+<div class="skip"><span class="num"><pre>1067</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1068</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1069</pre></span><pre>class MSelectionList( api.MSelectionList, ArrayBase ):</pre></div>
+<div class="cov"><span class="num"><pre>1070</pre></span><pre>	_apicls = api.MSelectionList</pre></div>
+<div class="skip"><span class="num"><pre>1071</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>1072</pre></span><pre>	def mhasItem( self, rhs ):</pre></div>
+<div class="cov"><span class="num"><pre>1073</pre></span><pre>		&quot;&quot;&quot;:return: True if we contain rhs</pre></div>
+<div class="cov"><span class="num"><pre>1074</pre></span><pre>		:note: As we check for Nodes as well as MayaAPI objects, we are possibly slow&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1075</pre></span><pre>		if isinstance(rhs, base.DagNode):</pre></div>
+<div class="cov"><span class="num"><pre>1076</pre></span><pre>			return self.hasItem(rhs.dagPath())</pre></div>
+<div class="cov"><span class="num"><pre>1077</pre></span><pre>		elif isinstance(rhs, base.DependNode):</pre></div>
+<div class="cov"><span class="num"><pre>1078</pre></span><pre>			return self.hasItem(rhs.object())</pre></div>
+<div class="cov"><span class="num"><pre>1079</pre></span><pre>		else:</pre></div>
+<div class="cov"><span class="num"><pre>1080</pre></span><pre>			return self.hasItem(rhs)</pre></div>
+<div class="skip"><span class="num"><pre>1081</pre></span><pre>		# END handle input type</pre></div>
+<div class="skip"><span class="num"><pre>1082</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>1083</pre></span><pre>	@staticmethod</pre></div>
+<div class="cov"><span class="num"><pre>1084</pre></span><pre>	def mfromStrings( iter_strings, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>1085</pre></span><pre>		&quot;&quot;&quot;:return: MSelectionList initialized from the given iterable of strings</pre></div>
+<div class="cov"><span class="num"><pre>1086</pre></span><pre>		:param kwargs: passed to `base.toSelectionListFromNames`&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1087</pre></span><pre>		return base.toSelectionListFromNames(iter_strings, **kwargs)</pre></div>
+<div class="skip"><span class="num"><pre>1088</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>1089</pre></span><pre>	@staticmethod</pre></div>
+<div class="cov"><span class="num"><pre>1090</pre></span><pre>	def mfromList( iter_items, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>1091</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1092</pre></span><pre>		:return: MSelectionList as initialized from the given iterable of Nodes, </pre></div>
+<div class="cov"><span class="num"><pre>1093</pre></span><pre>			MObjects, MDagPaths, MPlugs or strings</pre></div>
+<div class="cov"><span class="num"><pre>1094</pre></span><pre>		:param kwargs: passed to `base.toSelectionList`&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1095</pre></span><pre>		return base.toSelectionList(iter_items, **kwargs)</pre></div>
+<div class="skip"><span class="num"><pre>1096</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>1097</pre></span><pre>	# We need to override the respective method on the base class as it wouldnt work</pre></div>
+<div class="cov"><span class="num"><pre>1098</pre></span><pre>	mfromIter = mfromList</pre></div>
+<div class="skip"><span class="num"><pre>1099</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>1100</pre></span><pre>	@staticmethod</pre></div>
+<div class="cov"><span class="num"><pre>1101</pre></span><pre>	def mfromMultiple( *args, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>1102</pre></span><pre>		&quot;&quot;&quot;Alternative form of `mfromList` as args can be passed in.&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1103</pre></span><pre>		return MSelectionList.mfromList(args, **kwargs)</pre></div>
+<div class="skip"><span class="num"><pre>1104</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>1105</pre></span><pre>	@staticmethod</pre></div>
+<div class="cov"><span class="num"><pre>1106</pre></span><pre>	def mfromComponentList( iter_components, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>1107</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1108</pre></span><pre>		:return: MSelectionList as initialized from the given list of tuple( DagNode, Component ), </pre></div>
+<div class="cov"><span class="num"><pre>1109</pre></span><pre>			Component can be a filled Component object or null MObject</pre></div>
+<div class="cov"><span class="num"><pre>1110</pre></span><pre>		:param kwargs: passed to `base.toComponentSelectionList`&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1111</pre></span><pre>		return base.toComponentSelectionList(iter_components, **kwargs)</pre></div>
+<div class="skip"><span class="num"><pre>1112</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>1113</pre></span><pre>	def mtoList( self, *args, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>1114</pre></span><pre>		&quot;&quot;&quot;:return: list with the contents of this MSelectionList</pre></div>
+<div class="cov"><span class="num"><pre>1115</pre></span><pre>		:note: all args and kwargs passed to `it.iterSelectionList`&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1116</pre></span><pre>		return list(self.mtoIter(*args, **kwargs))</pre></div>
+<div class="skip"><span class="num"><pre>1117</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>1118</pre></span><pre>	def mtoIter( self, *args, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>1119</pre></span><pre>		&quot;&quot;&quot;:return: iterator yielding of Nodes and MPlugs stored in this given selection list</pre></div>
+<div class="cov"><span class="num"><pre>1120</pre></span><pre>		:note: all args and kwargs are passed to `it.iterSelectionList`&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1121</pre></span><pre>		return it.iterSelectionList( self, *args, **kwargs )</pre></div>
+<div class="skip"><span class="num"><pre>1122</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>1123</pre></span><pre>	def miterComponents( self, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>1124</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1125</pre></span><pre>		:return: Iterator yielding node, component pairs, component is guaranteed </pre></div>
+<div class="cov"><span class="num"><pre>1126</pre></span><pre>			to carry a component, implying that this iterator applies a filter</pre></div>
+<div class="cov"><span class="num"><pre>1127</pre></span><pre>		:param kwargs: passed on to `it.iterSelectionList`&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1128</pre></span><pre>		kwargs['handleComponents'] = True</pre></div>
+<div class="cov"><span class="num"><pre>1129</pre></span><pre>		pred = lambda pair: not pair[1].isNull()</pre></div>
+<div class="cov"><span class="num"><pre>1130</pre></span><pre>		kwargs['predicate'] = pred</pre></div>
+<div class="cov"><span class="num"><pre>1131</pre></span><pre>		return it.iterSelectionList( self, **kwargs )</pre></div>
+<div class="skip"><span class="num"><pre>1132</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>1133</pre></span><pre>	def miterPlugs( self, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>1134</pre></span><pre>		&quot;&quot;&quot;:return: Iterator yielding all plugs on this selection list.</pre></div>
+<div class="cov"><span class="num"><pre>1135</pre></span><pre>		:param kwargs: passed on to `it.iterSelectionList`&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1136</pre></span><pre>		kwargs['handlePlugs'] = True</pre></div>
+<div class="cov"><span class="num"><pre>1137</pre></span><pre>		pred = lambda n: isinstance(n, api.MPlug)</pre></div>
+<div class="cov"><span class="num"><pre>1138</pre></span><pre>		kwargs['predicate'] = pred</pre></div>
+<div class="cov"><span class="num"><pre>1139</pre></span><pre>		return it.iterSelectionList( self, **kwargs )</pre></div>
+<div class="skip"><span class="num"><pre>1140</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>1141</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>1142</pre></span><pre>class MeshIteratorBase( Abstract ):</pre></div>
+<div class="cov"><span class="num"><pre>1143</pre></span><pre>	&quot;&quot;&quot;Provides common functionality for all MItMesh classes&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>1144</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>1145</pre></span><pre>	def __iter__(self):</pre></div>
+<div class="cov"><span class="num"><pre>1146</pre></span><pre>		&quot;&quot;&quot;:return: Iterator yielding self for each item in the iteration</pre></div>
+<div class="cov"><span class="num"><pre>1147</pre></span><pre>		:note: the iteration will be reset before beginning it</pre></div>
+<div class="cov"><span class="num"><pre>1148</pre></span><pre>		:note: extract the information you are interested in yourself&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1149</pre></span><pre>		self.reset()</pre></div>
+<div class="cov"><span class="num"><pre>1150</pre></span><pre>		next = self.next</pre></div>
+<div class="cov"><span class="num"><pre>1151</pre></span><pre>		if hasattr(self, 'count'):</pre></div>
+<div class="cov"><span class="num"><pre>1152</pre></span><pre>			for i in xrange(self.count()):</pre></div>
+<div class="cov"><span class="num"><pre>1153</pre></span><pre>				yield self</pre></div>
+<div class="cov"><span class="num"><pre>1154</pre></span><pre>				next()</pre></div>
+<div class="skip"><span class="num"><pre>1155</pre></span><pre>			# END for each item </pre></div>
+<div class="cov"><span class="num"><pre>1156</pre></span><pre>		else:</pre></div>
+<div class="cov"><span class="num"><pre>1157</pre></span><pre>			isDone = self.isDone</pre></div>
+<div class="cov"><span class="num"><pre>1158</pre></span><pre>			while not isDone():</pre></div>
+<div class="cov"><span class="num"><pre>1159</pre></span><pre>				yield self</pre></div>
+<div class="cov"><span class="num"><pre>1160</pre></span><pre>				next()</pre></div>
+<div class="skip"><span class="num"><pre>1161</pre></span><pre>			# END while we have items</pre></div>
+<div class="skip"><span class="num"><pre>1162</pre></span><pre>		# END handle optimized iteration, saving function calls</pre></div>
+<div class="skip"><span class="num"><pre>1163</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>1164</pre></span><pre>class MItMeshVertex( api.MItMeshVertex, MeshIteratorBase ):</pre></div>
+<div class="cov"><span class="num"><pre>1165</pre></span><pre>	pass</pre></div>
+<div class="skip"><span class="num"><pre>1166</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1167</pre></span><pre>class MItMeshEdge( api.MItMeshEdge, MeshIteratorBase ):</pre></div>
+<div class="cov"><span class="num"><pre>1168</pre></span><pre>	pass</pre></div>
+<div class="skip"><span class="num"><pre>1169</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1170</pre></span><pre>class MItMeshPolygon( api.MItMeshPolygon, MeshIteratorBase ):</pre></div>
+<div class="cov"><span class="num"><pre>1171</pre></span><pre>	pass</pre></div>
+<div class="skip"><span class="num"><pre>1172</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1173</pre></span><pre>class MItMeshFaceVertex( api.MItMeshFaceVertex, MeshIteratorBase ):</pre></div>
+<div class="cov"><span class="num"><pre>1174</pre></span><pre>	pass</pre></div>
+<div class="skip"><span class="num"><pre>1175</pre></span><pre>#}</pre></div>
+<div class="skip"><span class="num"><pre>1176</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1177</pre></span><pre></pre></div>
+</div>
+</body>
+</html>

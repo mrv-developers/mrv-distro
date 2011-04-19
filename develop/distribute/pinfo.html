@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Project Information Module &mdash; mrv v1.0.2-develop documentation</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.2-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="top" title="mrv v1.0.2-develop documentation" href="../../index.html" />
+    <link rel="up" title="Distribution" href="index.html" />
+    <link rel="next" title="The Setup Script" href="setup.html" />
+    <link rel="prev" title="Distribution" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="setup.html" title="The Setup Script"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Distribution"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Development</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Distribution</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="project-information-module">
+<h1>Project Information Module<a class="headerlink" href="#project-information-module" title="Permalink to this headline">¶</a></h1>
+<p>When preparing a project for distribution, project information such at the project&#8217;s name and the project&#8217;s version need to be accessible by various parties, like the documentation compiler or the <a class="reference external" href="setup.html#setup-label"><em>setup script</em></a>.</p>
+<p>Its of utmost importance to keep this information consistent at all times, hence it is stored at exactly one location, the project information module, called <tt class="docutils literal"><span class="pre">info.py</span></tt>.</p>
+<p>The <tt class="docutils literal"><span class="pre">info</span></tt> module is located in the project&#8217;s root package.</p>
+<div class="section" id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<p>The <tt class="docutils literal"><span class="pre">info</span></tt> module contains global variables to which the respective values are assigned directly, such as:</p>
+<ul class="simple">
+<li>The name of the project</li>
+<li>The name of the root package, which might be <tt class="docutils literal"><span class="pre">yp</span></tt> for a project named <tt class="docutils literal"><span class="pre">Your</span> <span class="pre">Project</span></tt></li>
+<li>the <strong>version</strong> of the project in python <tt class="docutils literal"><span class="pre">sys.version_info</span></tt> compatible format.</li>
+<li>Author &amp; License Information</li>
+</ul>
+<p>For more information, please see the file itself for in-source documentation.</p>
+<div class="section" id="executables">
+<h3>Executables<a class="headerlink" href="#executables" title="Permalink to this headline">¶</a></h3>
+<p>Worthy of special mention are the executable paths which are important to the <a class="reference external" href="docs.html"><em>documentation generator</em></a> as well as the <a class="reference external" href="setup.html"><em>distribution system</em></a>.</p>
+<p>As MRV aims to be used by derived projects, it will try not make direct calls to its own script executables, but instead reads their location from the module info to give such projects a chance to put in their specialized, but commandline-compatible versions of default <a class="reference external" href="../../tools.html"><em>MRV scripts</em></a> as <tt class="docutils literal"><span class="pre">makedoc</span></tt>, <tt class="docutils literal"><span class="pre">tmrv</span></tt> and <tt class="docutils literal"><span class="pre">tmrvr</span></tt>.</p>
+</div>
+<div class="section" id="setup-kwargs">
+<h3>Setup KWargs<a class="headerlink" href="#setup-kwargs" title="Permalink to this headline">¶</a></h3>
+<p>The setup kwargs are passed to the setup routine in the <tt class="docutils literal"><span class="pre">makedoc</span></tt> script such as in <tt class="docutils literal"><span class="pre">setup(**info.setup_kwargs)</span></tt>, where they eventually wind in the <tt class="docutils literal"><span class="pre">Distribution</span></tt> instance that drives the distribution process itself.</p>
+<p>The MRV version of the setup_kwargs looks quite massive and cluttered, but in-place comments should help to make it decipherable, so it is worth a look if you intend to distribute your project and want to understand more.</p>
+<p>The version of the dictionary of the <a class="reference external" href="../projects.html#template-project-label"><em>Template Project</em></a> is much less frightening though and might be a good first introduction as well.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="../../index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#">Project Information Module</a><ul>
+<li><a class="reference external" href="#module-contents">Module Contents</a><ul>
+<li><a class="reference external" href="#executables">Executables</a></li>
+<li><a class="reference external" href="#setup-kwargs">Setup KWargs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="index.html"
+                                  title="previous chapter">Distribution</a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="setup.html"
+                                  title="next chapter">The Setup Script</a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../../_sources/develop/distribute/pinfo.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="setup.html" title="The Setup Script"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Distribution"
+             >previous</a> |</li>
+        <li><a href="../../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Development</a> &raquo;</li>
+          <li><a href="index.html" >Distribution</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Apr 19, 2011.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

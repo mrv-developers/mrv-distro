@@ -1,0 +1,1769 @@
+<html>
+<head>
+<title>mrv.conf</title>
+</head>
+<body>
+mrv.conf
+<style>
+.coverage pre {float: left; margin: 0px 1em; border: none;
+               padding: 0px; }
+.num pre { margin: 0px }
+.nocov, .nocov pre {background-color: #faa}
+.cov, .cov pre {background-color: #cfc}
+div.coverage div { clear: both; height: 1.1em}
+</style>
+<div class="stats">
+Covered: 1070 lines<br/>
+Missed: 95 lines<br/>
+Skipped 579 lines<br/>
+Percent: 91 %<br/>
+
+</div>
+<div class="coverage">
+<div class="skip"><span class="num"><pre>   1</pre></span><pre># -*- coding: utf-8 -*-</pre></div>
+<div class="cov"><span class="num"><pre>   2</pre></span><pre>&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>   3</pre></span><pre>Contains implementation of the configuration system allowing to flexibly control</pre></div>
+<div class="cov"><span class="num"><pre>   4</pre></span><pre>the programs behaviour.</pre></div>
+<div class="skip"><span class="num"><pre>   5</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>   6</pre></span><pre> * read and write sections with key=value pairs from and to INI style file-like objects !</pre></div>
+<div class="cov"><span class="num"><pre>   7</pre></span><pre> * Wrappers for these file-like objects allow virtually any source for the operation</pre></div>
+<div class="cov"><span class="num"><pre>   8</pre></span><pre> * configuration inheritance</pre></div>
+<div class="cov"><span class="num"><pre>   9</pre></span><pre> * allow precise control over the inheritance behaviour and inheritance</pre></div>
+<div class="cov"><span class="num"><pre>  10</pre></span><pre>   defaults</pre></div>
+<div class="cov"><span class="num"><pre>  11</pre></span><pre> * final results of the inheritance operation will be cached into the `ConfigManager`</pre></div>
+<div class="cov"><span class="num"><pre>  12</pre></span><pre> * Environment Variables can serve as final instance to override values using the `DictConfigINIFile`</pre></div>
+<div class="cov"><span class="num"><pre>  13</pre></span><pre> * Creation and Maintenance of individual configuration files as controlled by</pre></div>
+<div class="cov"><span class="num"><pre>  14</pre></span><pre>   submodules of the application</pre></div>
+<div class="cov"><span class="num"><pre>  15</pre></span><pre> * These configuration go to a default location, or to the given file-like object</pre></div>
+<div class="cov"><span class="num"><pre>  16</pre></span><pre> * embed more complex data to be read by specialised classes using URLs</pre></div>
+<div class="cov"><span class="num"><pre>  17</pre></span><pre> * its safe and easy to write back possibly altered values even if complex inheritance</pre></div>
+<div class="cov"><span class="num"><pre>  18</pre></span><pre>   schemes are applied</pre></div>
+<div class="cov"><span class="num"><pre>  19</pre></span><pre>&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  20</pre></span><pre>__docformat__ = &quot;restructuredtext&quot;</pre></div>
+<div class="skip"><span class="num"><pre>  21</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  22</pre></span><pre>from ConfigParser import (	RawConfigParser,</pre></div>
+<div class="cov"><span class="num"><pre>  23</pre></span><pre>							NoSectionError,</pre></div>
+<div class="cov"><span class="num"><pre>  24</pre></span><pre>							NoOptionError,</pre></div>
+<div class="cov"><span class="num"><pre>  25</pre></span><pre>							ParsingError)</pre></div>
+<div class="cov"><span class="num"><pre>  26</pre></span><pre>from exc import MRVError</pre></div>
+<div class="cov"><span class="num"><pre>  27</pre></span><pre>import copy</pre></div>
+<div class="cov"><span class="num"><pre>  28</pre></span><pre>import re</pre></div>
+<div class="cov"><span class="num"><pre>  29</pre></span><pre>import sys</pre></div>
+<div class="cov"><span class="num"><pre>  30</pre></span><pre>import StringIO</pre></div>
+<div class="cov"><span class="num"><pre>  31</pre></span><pre>import os</pre></div>
+<div class="cov"><span class="num"><pre>  32</pre></span><pre>import logging</pre></div>
+<div class="cov"><span class="num"><pre>  33</pre></span><pre>log = logging.getLogger(&quot;mrv.conf&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>  34</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  35</pre></span><pre>__all__ = (&quot;ConfigParsingError&quot;, &quot;ConfigParsingPropertyError&quot;, &quot;DictToINIFile&quot;, </pre></div>
+<div class="cov"><span class="num"><pre>  36</pre></span><pre>           &quot;ConfigAccessor&quot;, &quot;ConfigManager&quot;, &quot;ExtendedFileInterface&quot;, &quot;ConfigFile&quot;, </pre></div>
+<div class="cov"><span class="num"><pre>  37</pre></span><pre>           &quot;DictConfigINIFile&quot;, &quot;ConfigStringIO&quot;, &quot;ConfigChain&quot;, &quot;BasicSet&quot;, </pre></div>
+<div class="cov"><span class="num"><pre>  38</pre></span><pre>           &quot;Key&quot;, &quot;Section&quot;, &quot;PropertySection&quot;, &quot;ConfigNode&quot;, &quot;DiffData&quot;, </pre></div>
+<div class="cov"><span class="num"><pre>  39</pre></span><pre>           &quot;DiffKey&quot;, &quot;DiffSection&quot;, &quot;ConfigDiffer&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>  40</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>  41</pre></span><pre>#{ Exceptions</pre></div>
+<div class="skip"><span class="num"><pre>  42</pre></span><pre>################################################################################</pre></div>
+<div class="cov"><span class="num"><pre>  43</pre></span><pre>class ConfigParsingError(MRVError):</pre></div>
+<div class="cov"><span class="num"><pre>  44</pre></span><pre>	&quot;&quot;&quot; Indicates that the parsing failed &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  45</pre></span><pre>	pass</pre></div>
+<div class="skip"><span class="num"><pre>  46</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  47</pre></span><pre>class ConfigParsingPropertyError(ConfigParsingError):</pre></div>
+<div class="cov"><span class="num"><pre>  48</pre></span><pre>	&quot;&quot;&quot; Indicates that the property-parsing encountered a problem &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  49</pre></span><pre>	pass</pre></div>
+<div class="skip"><span class="num"><pre>  50</pre></span><pre>#} End Exceptions</pre></div>
+<div class="skip"><span class="num"><pre>  51</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>  52</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>  53</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>  54</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>  55</pre></span><pre>#{ INI File Converters</pre></div>
+<div class="skip"><span class="num"><pre>  56</pre></span><pre>################################################################################</pre></div>
+<div class="skip"><span class="num"><pre>  57</pre></span><pre># Wrap arbitary sources and implicitly convert them to INI files when read</pre></div>
+<div class="cov"><span class="num"><pre>  58</pre></span><pre>class DictToINIFile(StringIO.StringIO):</pre></div>
+<div class="cov"><span class="num"><pre>  59</pre></span><pre>	&quot;&quot;&quot; Wraps a dictionary into an objects returning an INI file when read</pre></div>
+<div class="skip"><span class="num"><pre>  60</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  61</pre></span><pre>	This class can be used to make configuration information as supplied by os.environ</pre></div>
+<div class="cov"><span class="num"><pre>  62</pre></span><pre>	natively available to the configuration system</pre></div>
+<div class="skip"><span class="num"><pre>  63</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  64</pre></span><pre>	:note: writing back values to the object will not alter the original dict</pre></div>
+<div class="cov"><span class="num"><pre>  65</pre></span><pre>	:note: the current implementation caches the dict's INI representation, data</pre></div>
+<div class="cov"><span class="num"><pre>  66</pre></span><pre>		is not generated on demand</pre></div>
+<div class="skip"><span class="num"><pre>  67</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>  68</pre></span><pre>	:note: implementation speed has been preferred over runtime speed &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  69</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre>  70</pre></span><pre>	def _checkstr(cls, string):</pre></div>
+<div class="cov"><span class="num"><pre>  71</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  72</pre></span><pre>		:return: unaltered string if there was not issue</pre></div>
+<div class="cov"><span class="num"><pre>  73</pre></span><pre>		:raise ValueError: if string contains newline &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  74</pre></span><pre>		if string.find('\n') != -1:</pre></div>
+<div class="cov"><span class="num"><pre>  75</pre></span><pre>			raise ValueError(&quot;Strings in INI files may not contain newline characters: %s&quot; % string)</pre></div>
+<div class="nocov"><span class="num"><pre>  76</pre></span><pre>		return string</pre></div>
+<div class="skip"><span class="num"><pre>  77</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  78</pre></span><pre>	def __init__(self, option_dict, section = 'DEFAULT', description = &quot;&quot;):</pre></div>
+<div class="cov"><span class="num"><pre>  79</pre></span><pre>		&quot;&quot;&quot;Initialize the file-like object</pre></div>
+<div class="skip"><span class="num"><pre>  80</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>  81</pre></span><pre>		:param option_dict: dictionary with simple key-value pairs - the keys and</pre></div>
+<div class="cov"><span class="num"><pre>  82</pre></span><pre>			values must translate to meaningful strings ! Empty dicts are allowed</pre></div>
+<div class="skip"><span class="num"><pre>  83</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre>  84</pre></span><pre>		:param section: the parent section of the key-value pairs</pre></div>
+<div class="cov"><span class="num"><pre>  85</pre></span><pre>		:param description: will be used as comment directly below the section, it</pre></div>
+<div class="cov"><span class="num"><pre>  86</pre></span><pre>			must be a single line only</pre></div>
+<div class="skip"><span class="num"><pre>  87</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  88</pre></span><pre>		:raise ValueError: newlines are are generally not allowed and will cause a parsing error later on &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  89</pre></span><pre>		StringIO.StringIO.__init__(self)</pre></div>
+<div class="skip"><span class="num"><pre>  90</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  91</pre></span><pre>		self.write('[' + str(section) + ']\n')</pre></div>
+<div class="cov"><span class="num"><pre>  92</pre></span><pre>		if len(description):</pre></div>
+<div class="cov"><span class="num"><pre>  93</pre></span><pre>			self.write('#'+ self._checkstr(description) + &quot;\n&quot;)</pre></div>
+<div class="cov"><span class="num"><pre>  94</pre></span><pre>		for k in option_dict:</pre></div>
+<div class="cov"><span class="num"><pre>  95</pre></span><pre>			self.write(str(k) + &quot; = &quot; + str(option_dict[k]) + &quot;\n&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>  96</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>  97</pre></span><pre>		# reset the file to the beginning</pre></div>
+<div class="cov"><span class="num"><pre>  98</pre></span><pre>		self.seek(0)</pre></div>
+<div class="skip"><span class="num"><pre>  99</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 100</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 101</pre></span><pre>#} END GROUP</pre></div>
+<div class="skip"><span class="num"><pre> 102</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 103</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 104</pre></span><pre>#{ Configuration Access</pre></div>
+<div class="skip"><span class="num"><pre> 105</pre></span><pre>################################################################################</pre></div>
+<div class="skip"><span class="num"><pre> 106</pre></span><pre># Classes that allow direct access to the respective configuration</pre></div>
+<div class="skip"><span class="num"><pre> 107</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 108</pre></span><pre>class ConfigAccessor(object):</pre></div>
+<div class="cov"><span class="num"><pre> 109</pre></span><pre>	&quot;&quot;&quot;Provides full access to the Configuration</pre></div>
+<div class="skip"><span class="num"><pre> 110</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 111</pre></span><pre>	**Differences to ConfigParser**:</pre></div>
+<div class="cov"><span class="num"><pre> 112</pre></span><pre>		As the functionality and featureset is very different from the original</pre></div>
+<div class="cov"><span class="num"><pre> 113</pre></span><pre>		ConfigParser implementation, this class does not support the interface directly.</pre></div>
+<div class="cov"><span class="num"><pre> 114</pre></span><pre>		It contains functions to create original ConfigParser able to fully write and alter</pre></div>
+<div class="cov"><span class="num"><pre> 115</pre></span><pre>		the contained data in an unchecked manner.</pre></div>
+<div class="skip"><span class="num"><pre> 116</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 117</pre></span><pre>		Additional Exceptions have been defined to cover extended functionality.</pre></div>
+<div class="skip"><span class="num"><pre> 118</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 119</pre></span><pre>	**Sources and Nodes**:</pre></div>
+<div class="cov"><span class="num"><pre> 120</pre></span><pre>		Each input providing configuration data is stored in a node. This node</pre></div>
+<div class="cov"><span class="num"><pre> 121</pre></span><pre>		knows about its writable state. Nodes that are not writable can be altered in memory,</pre></div>
+<div class="cov"><span class="num"><pre> 122</pre></span><pre>		but the changes cannot be written back to the source.</pre></div>
+<div class="cov"><span class="num"><pre> 123</pre></span><pre>		This does not impose a problem though as changes will be applied as long as there is</pre></div>
+<div class="cov"><span class="num"><pre> 124</pre></span><pre>		one writable node in the chain - due to the inheritance scheme applied by the configmanager,</pre></div>
+<div class="cov"><span class="num"><pre> 125</pre></span><pre>		the final configuration result will match the changes applied at runtime.</pre></div>
+<div class="skip"><span class="num"><pre> 126</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 127</pre></span><pre>	**Additional Information**:</pre></div>
+<div class="cov"><span class="num"><pre> 128</pre></span><pre>		The term configuration is rather complex though</pre></div>
+<div class="cov"><span class="num"><pre> 129</pre></span><pre>		configuration is based on an extended INI file format</pre></div>
+<div class="cov"><span class="num"><pre> 130</pre></span><pre>		its not fully compatible, but slightly more narrow regarding allowed input to support extended functionality</pre></div>
+<div class="cov"><span class="num"><pre> 131</pre></span><pre>		configuration is read from file-like objects</pre></div>
+<div class="cov"><span class="num"><pre> 132</pre></span><pre>		a list of file-like objects creates a configuration chain</pre></div>
+<div class="cov"><span class="num"><pre> 133</pre></span><pre>		keys have properties attached to them defining how they behave when being overridden</pre></div>
+<div class="cov"><span class="num"><pre> 134</pre></span><pre>		once all the INI configurations have been read and processed, one can access</pre></div>
+<div class="cov"><span class="num"><pre> 135</pre></span><pre>		the configuration as if it was just in one file.</pre></div>
+<div class="cov"><span class="num"><pre> 136</pre></span><pre>		Direct access is obtained though `Key` and `Section` objects</pre></div>
+<div class="cov"><span class="num"><pre> 137</pre></span><pre>		Keys and Sections have property attributes of type `Section`</pre></div>
+<div class="cov"><span class="num"><pre> 138</pre></span><pre>		Their keys and values are used to further define key merging behaviour for example</pre></div>
+<div class="skip"><span class="num"><pre> 139</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 140</pre></span><pre>	:note: The configaccessor should only be used in conjunction with the `ConfigManager`&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 141</pre></span><pre>	__slots__ = &quot;_configChain&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 142</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 143</pre></span><pre>	def __init__(self):</pre></div>
+<div class="cov"><span class="num"><pre> 144</pre></span><pre>		&quot;&quot;&quot; Initialize instance variables &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 145</pre></span><pre>		self._configChain = ConfigChain()  # keeps configuration from different sources</pre></div>
+<div class="skip"><span class="num"><pre> 146</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 147</pre></span><pre>	def __repr__(self):</pre></div>
+<div class="nocov"><span class="num"><pre> 148</pre></span><pre>		stream = ConfigStringIO()</pre></div>
+<div class="nocov"><span class="num"><pre> 149</pre></span><pre>		fca = self.flatten(stream)</pre></div>
+<div class="nocov"><span class="num"><pre> 150</pre></span><pre>		fca.write(close_fp = False)</pre></div>
+<div class="nocov"><span class="num"><pre> 151</pre></span><pre>		return stream.getvalue()</pre></div>
+<div class="skip"><span class="num"><pre> 152</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 153</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre> 154</pre></span><pre>	def _isProperty(cls, propname):</pre></div>
+<div class="cov"><span class="num"><pre> 155</pre></span><pre>		&quot;&quot;&quot;:return: true if propname appears to be an attribute &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 156</pre></span><pre>		return propname.startswith('+')</pre></div>
+<div class="skip"><span class="num"><pre> 157</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 158</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre> 159</pre></span><pre>	def _getNameTuple(cls, propname):</pre></div>
+<div class="cov"><span class="num"><pre> 160</pre></span><pre>		&quot;&quot;&quot;:return: [sectionname,keyname], sectionname can be None&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 161</pre></span><pre>		tokens = propname[1:].split(':')	# cut initial + sign</pre></div>
+<div class="skip"><span class="num"><pre> 162</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 163</pre></span><pre>		if len(tokens) == 1:		# no fully qualified name</pre></div>
+<div class="cov"><span class="num"><pre> 164</pre></span><pre>			tokens.insert(0, None)</pre></div>
+<div class="cov"><span class="num"><pre> 165</pre></span><pre>		return tokens</pre></div>
+<div class="skip"><span class="num"><pre> 166</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 167</pre></span><pre>	def _parseProperties(self):</pre></div>
+<div class="cov"><span class="num"><pre> 168</pre></span><pre>		&quot;&quot;&quot;Analyse the freshly parsed configuration chain and add the found properties</pre></div>
+<div class="cov"><span class="num"><pre> 169</pre></span><pre>		to the respective sections and keys</pre></div>
+<div class="skip"><span class="num"><pre> 170</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 171</pre></span><pre>		:note: we are userfriendly regarding the error handling - if there is an invlid</pre></div>
+<div class="cov"><span class="num"><pre> 172</pre></span><pre>			property, we warn and simply ignore it - for the system it will stay just a key and will</pre></div>
+<div class="cov"><span class="num"><pre> 173</pre></span><pre>			thus be written back to the file as required</pre></div>
+<div class="skip"><span class="num"><pre> 174</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 175</pre></span><pre>		:raise ConfigParsingPropertyError: &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 176</pre></span><pre>		sectioniter = self._configChain.sectionIterator()</pre></div>
+<div class="cov"><span class="num"><pre> 177</pre></span><pre>		exc = ConfigParsingPropertyError()</pre></div>
+<div class="cov"><span class="num"><pre> 178</pre></span><pre>		for section in sectioniter:</pre></div>
+<div class="cov"><span class="num"><pre> 179</pre></span><pre>			if not self._isProperty(section.name):</pre></div>
+<div class="cov"><span class="num"><pre> 180</pre></span><pre>				continue</pre></div>
+<div class="skip"><span class="num"><pre> 181</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 182</pre></span><pre>			# handle attributes</pre></div>
+<div class="cov"><span class="num"><pre> 183</pre></span><pre>			propname = section.name</pre></div>
+<div class="cov"><span class="num"><pre> 184</pre></span><pre>			targetkeytokens = self._getNameTuple(propname) # fully qualified property name</pre></div>
+<div class="skip"><span class="num"><pre> 185</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 186</pre></span><pre>			# find all keys matching the keyname !</pre></div>
+<div class="cov"><span class="num"><pre> 187</pre></span><pre>			keymatchtuples = self.keysByName(targetkeytokens[1])</pre></div>
+<div class="skip"><span class="num"><pre> 188</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 189</pre></span><pre>			# SEARCH FOR KEYS primarily !</pre></div>
+<div class="cov"><span class="num"><pre> 190</pre></span><pre>			propertytarget = None		# will later be key or section</pre></div>
+<div class="cov"><span class="num"><pre> 191</pre></span><pre>			lenmatch = len(keymatchtuples)</pre></div>
+<div class="cov"><span class="num"><pre> 192</pre></span><pre>			excmessage = &quot;&quot;				# keeps exc messages until we know whether to keep them or not</pre></div>
+<div class="skip"><span class="num"><pre> 193</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 194</pre></span><pre>			if lenmatch == 0:</pre></div>
+<div class="cov"><span class="num"><pre> 195</pre></span><pre>				excmessage += &quot;Key '&quot; + propname + &quot;' referenced by property was not found\n&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 196</pre></span><pre>				# continue searching in sections</pre></div>
+<div class="cov"><span class="num"><pre> 197</pre></span><pre>			else:</pre></div>
+<div class="skip"><span class="num"><pre> 198</pre></span><pre>				# here it must be a key - failure leads to continuation</pre></div>
+<div class="cov"><span class="num"><pre> 199</pre></span><pre>				if targetkeytokens[0] != None:</pre></div>
+<div class="skip"><span class="num"><pre> 200</pre></span><pre>					# search the key matches for the right section</pre></div>
+<div class="cov"><span class="num"><pre> 201</pre></span><pre>					for fkey,fsection in keymatchtuples:</pre></div>
+<div class="cov"><span class="num"><pre> 202</pre></span><pre>						if not fsection.name == targetkeytokens[0]: continue</pre></div>
+<div class="cov"><span class="num"><pre> 203</pre></span><pre>						else: propertytarget = fkey</pre></div>
+<div class="skip"><span class="num"><pre> 204</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 205</pre></span><pre>					if propertytarget is None:</pre></div>
+<div class="nocov"><span class="num"><pre> 206</pre></span><pre>						exc.message += (&quot;Section '&quot; + targetkeytokens[0] + &quot;' of key '&quot; + targetkeytokens[1] +</pre></div>
+<div class="nocov"><span class="num"><pre> 207</pre></span><pre>										&quot;' could not be found in &quot; + str(lenmatch) + &quot; candiate sections\n&quot;)</pre></div>
+<div class="nocov"><span class="num"><pre> 208</pre></span><pre>						continue</pre></div>
+<div class="cov"><span class="num"><pre> 209</pre></span><pre>				else:</pre></div>
+<div class="skip"><span class="num"><pre> 210</pre></span><pre>					# section is not qualified - could be section or keyname</pre></div>
+<div class="skip"><span class="num"><pre> 211</pre></span><pre>					# prefer keynames</pre></div>
+<div class="cov"><span class="num"><pre> 212</pre></span><pre>					if lenmatch == 1:</pre></div>
+<div class="cov"><span class="num"><pre> 213</pre></span><pre>						propertytarget = keymatchtuples[0][0]	# [(key,section)]</pre></div>
+<div class="cov"><span class="num"><pre> 214</pre></span><pre>					else:</pre></div>
+<div class="cov"><span class="num"><pre> 215</pre></span><pre>						excmessage += &quot;Key for property section named '&quot; + propname + &quot;' was found in &quot; + str(lenmatch) + &quot; sections and needs to be qualified as in: 'sectionname:&quot;+propname+&quot;'\n&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 216</pre></span><pre>						# continue searching - perhaps we find a section that fits perfectly</pre></div>
+<div class="skip"><span class="num"><pre> 217</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 218</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 219</pre></span><pre>			# could be a section property</pre></div>
+<div class="cov"><span class="num"><pre> 220</pre></span><pre>			if propertytarget is None:</pre></div>
+<div class="cov"><span class="num"><pre> 221</pre></span><pre>				try:</pre></div>
+<div class="cov"><span class="num"><pre> 222</pre></span><pre>					propertytarget = self.section(targetkeytokens[1])</pre></div>
+<div class="cov"><span class="num"><pre> 223</pre></span><pre>				except NoSectionError:</pre></div>
+<div class="skip"><span class="num"><pre> 224</pre></span><pre>					# nothing found - skip it</pre></div>
+<div class="cov"><span class="num"><pre> 225</pre></span><pre>					excmessage += &quot;Property '&quot; + propname + &quot;' references unknown section or key\n&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 226</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 227</pre></span><pre>			# safety check</pre></div>
+<div class="cov"><span class="num"><pre> 228</pre></span><pre>			if propertytarget is None:</pre></div>
+<div class="cov"><span class="num"><pre> 229</pre></span><pre>				exc.message += excmessage</pre></div>
+<div class="cov"><span class="num"><pre> 230</pre></span><pre>				continue</pre></div>
+<div class="skip"><span class="num"><pre> 231</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 232</pre></span><pre>			propertytarget.properties.mergeWith(section)</pre></div>
+<div class="skip"><span class="num"><pre> 233</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 234</pre></span><pre>		# finally raise our report-exception if required</pre></div>
+<div class="cov"><span class="num"><pre> 235</pre></span><pre>		if len(exc.message):</pre></div>
+<div class="cov"><span class="num"><pre> 236</pre></span><pre>			raise exc</pre></div>
+<div class="skip"><span class="num"><pre> 237</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 238</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 239</pre></span><pre>	#{ IO Interface</pre></div>
+<div class="cov"><span class="num"><pre> 240</pre></span><pre>	def readfp(self, filefporlist, close_fp = True):</pre></div>
+<div class="cov"><span class="num"><pre> 241</pre></span><pre>		&quot;&quot;&quot; Read the configuration from the file like object(s) representing INI files.</pre></div>
+<div class="skip"><span class="num"><pre> 242</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 243</pre></span><pre>		:note: This will overwrite and discard all existing configuration.</pre></div>
+<div class="cov"><span class="num"><pre> 244</pre></span><pre>		:param filefporlist: single file like object or list of such</pre></div>
+<div class="skip"><span class="num"><pre> 245</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 246</pre></span><pre>		:param close_fp: if True, the file-like object will be closed before the method returns,</pre></div>
+<div class="cov"><span class="num"><pre> 247</pre></span><pre>			but only for file-like objects that have actually been processed</pre></div>
+<div class="skip"><span class="num"><pre> 248</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 249</pre></span><pre>		:raise ConfigParsingError: &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 250</pre></span><pre>		fileobjectlist = filefporlist</pre></div>
+<div class="cov"><span class="num"><pre> 251</pre></span><pre>		if not isinstance(fileobjectlist, (list,tuple)):</pre></div>
+<div class="cov"><span class="num"><pre> 252</pre></span><pre>			fileobjectlist = (filefporlist,)</pre></div>
+<div class="skip"><span class="num"><pre> 253</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 254</pre></span><pre>		# create one parser per file, append information to our configuration chain</pre></div>
+<div class="cov"><span class="num"><pre> 255</pre></span><pre>		tmpchain = ConfigChain()			# to be stored later if we do not have an exception</pre></div>
+<div class="skip"><span class="num"><pre> 256</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 257</pre></span><pre>		for fp in fileobjectlist:</pre></div>
+<div class="cov"><span class="num"><pre> 258</pre></span><pre>			try:</pre></div>
+<div class="cov"><span class="num"><pre> 259</pre></span><pre>				node = ConfigNode(fp)</pre></div>
+<div class="cov"><span class="num"><pre> 260</pre></span><pre>				tmpchain.append(node)</pre></div>
+<div class="cov"><span class="num"><pre> 261</pre></span><pre>				node.parse()</pre></div>
+<div class="cov"><span class="num"><pre> 262</pre></span><pre>			finally:</pre></div>
+<div class="cov"><span class="num"><pre> 263</pre></span><pre>				if close_fp:</pre></div>
+<div class="cov"><span class="num"><pre> 264</pre></span><pre>					fp.close()</pre></div>
+<div class="skip"><span class="num"><pre> 265</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 266</pre></span><pre>		# keep the chain - no error so far</pre></div>
+<div class="cov"><span class="num"><pre> 267</pre></span><pre>		self._configChain = tmpchain</pre></div>
+<div class="skip"><span class="num"><pre> 268</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 269</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre> 270</pre></span><pre>			self._parseProperties()</pre></div>
+<div class="cov"><span class="num"><pre> 271</pre></span><pre>		except ConfigParsingPropertyError:</pre></div>
+<div class="cov"><span class="num"><pre> 272</pre></span><pre>			self._configChain = ConfigChain()	# undo changes and reraise</pre></div>
+<div class="cov"><span class="num"><pre> 273</pre></span><pre>			raise</pre></div>
+<div class="skip"><span class="num"><pre> 274</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 275</pre></span><pre>	def write(self, close_fp=True):</pre></div>
+<div class="cov"><span class="num"><pre> 276</pre></span><pre>		&quot;&quot;&quot; Write current state back to files.</pre></div>
+<div class="cov"><span class="num"><pre> 277</pre></span><pre>			During initialization in `readfp`, `ExtendedFileInterface` objects have been passed in - these</pre></div>
+<div class="cov"><span class="num"><pre> 278</pre></span><pre>			will now be used to write back the current state of the configuration - the files will be</pre></div>
+<div class="cov"><span class="num"><pre> 279</pre></span><pre>			opened for writing if possible.</pre></div>
+<div class="skip"><span class="num"><pre> 280</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 281</pre></span><pre>		:param close_fp: close the file-object after writing to it</pre></div>
+<div class="skip"><span class="num"><pre> 282</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 283</pre></span><pre>		:return: list of names of files that have actually been written - as files can be read-only</pre></div>
+<div class="cov"><span class="num"><pre> 284</pre></span><pre>			this list might be smaller than the amount of nodes in the accessor.</pre></div>
+<div class="cov"><span class="num"><pre> 285</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 286</pre></span><pre>		writtenFiles = list()</pre></div>
+<div class="skip"><span class="num"><pre> 287</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 288</pre></span><pre>		# for each node put the information into the parser and write to the node's</pre></div>
+<div class="skip"><span class="num"><pre> 289</pre></span><pre>		# file object after assuring it is opened</pre></div>
+<div class="cov"><span class="num"><pre> 290</pre></span><pre>		for cn in self._configChain:</pre></div>
+<div class="cov"><span class="num"><pre> 291</pre></span><pre>			try:</pre></div>
+<div class="cov"><span class="num"><pre> 292</pre></span><pre>				writtenFiles.append(cn.write(_FixedConfigParser(), close_fp=close_fp))</pre></div>
+<div class="nocov"><span class="num"><pre> 293</pre></span><pre>			except IOError:</pre></div>
+<div class="nocov"><span class="num"><pre> 294</pre></span><pre>				pass</pre></div>
+<div class="skip"><span class="num"><pre> 295</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 296</pre></span><pre>		return writtenFiles</pre></div>
+<div class="skip"><span class="num"><pre> 297</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 298</pre></span><pre>	#} END GROUP</pre></div>
+<div class="skip"><span class="num"><pre> 299</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 300</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 301</pre></span><pre>	#{Transformations</pre></div>
+<div class="cov"><span class="num"><pre> 302</pre></span><pre>	def flatten(self, fp):</pre></div>
+<div class="cov"><span class="num"><pre> 303</pre></span><pre>		&quot;&quot;&quot;Copy all our members into a new ConfigAccessor which only has one node, instead of N nodes</pre></div>
+<div class="skip"><span class="num"><pre> 304</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 305</pre></span><pre>		By default, a configuration can be made up of several different sources that create a chain.</pre></div>
+<div class="cov"><span class="num"><pre> 306</pre></span><pre>		Each source can redefine and alter values previously defined by other sources.</pre></div>
+<div class="skip"><span class="num"><pre> 307</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 308</pre></span><pre>		A flattened chain though does only conist of one of such node containing concrete values that</pre></div>
+<div class="cov"><span class="num"><pre> 309</pre></span><pre>		can quickly be accessed.</pre></div>
+<div class="skip"><span class="num"><pre> 310</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 311</pre></span><pre>		Flattened configurations are provided by the `ConfigManager`.</pre></div>
+<div class="skip"><span class="num"><pre> 312</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 313</pre></span><pre>		:param fp: file-like object that will be used as storage once the configuration is written</pre></div>
+<div class="cov"><span class="num"><pre> 314</pre></span><pre>		:return: Flattened copy of self&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 315</pre></span><pre>		# create config node</pre></div>
+<div class="cov"><span class="num"><pre> 316</pre></span><pre>		ca = ConfigAccessor()</pre></div>
+<div class="cov"><span class="num"><pre> 317</pre></span><pre>		ca._configChain.append(ConfigNode(fp))</pre></div>
+<div class="cov"><span class="num"><pre> 318</pre></span><pre>		cn = ca._configChain[0]</pre></div>
+<div class="skip"><span class="num"><pre> 319</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 320</pre></span><pre>		# transfer copies of sections and keys - requires knowledge of internal</pre></div>
+<div class="skip"><span class="num"><pre> 321</pre></span><pre>		# data strudctures</pre></div>
+<div class="cov"><span class="num"><pre> 322</pre></span><pre>		count = 0</pre></div>
+<div class="cov"><span class="num"><pre> 323</pre></span><pre>		for mycn in self._configChain:</pre></div>
+<div class="cov"><span class="num"><pre> 324</pre></span><pre>			for mysection in mycn._sections:</pre></div>
+<div class="cov"><span class="num"><pre> 325</pre></span><pre>				section = cn.sectionDefault(mysection.name)</pre></div>
+<div class="cov"><span class="num"><pre> 326</pre></span><pre>				section.order = count</pre></div>
+<div class="cov"><span class="num"><pre> 327</pre></span><pre>				count += 1</pre></div>
+<div class="cov"><span class="num"><pre> 328</pre></span><pre>				section.mergeWith(mysection)</pre></div>
+<div class="cov"><span class="num"><pre> 329</pre></span><pre>		return ca</pre></div>
+<div class="skip"><span class="num"><pre> 330</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 331</pre></span><pre>	#} END GROUP</pre></div>
+<div class="skip"><span class="num"><pre> 332</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 333</pre></span><pre>	#{ Iterators</pre></div>
+<div class="cov"><span class="num"><pre> 334</pre></span><pre>	def sectionIterator(self):</pre></div>
+<div class="cov"><span class="num"><pre> 335</pre></span><pre>		&quot;&quot;&quot;:return: iterator returning all sections&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 336</pre></span><pre>		return self._configChain.sectionIterator()</pre></div>
+<div class="skip"><span class="num"><pre> 337</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 338</pre></span><pre>	def keyIterator(self):</pre></div>
+<div class="cov"><span class="num"><pre> 339</pre></span><pre>		&quot;&quot;&quot;:return: iterator returning tuples of (`Key`,`Section`) pairs&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 340</pre></span><pre>		return self._configChain.keyIterator()</pre></div>
+<div class="skip"><span class="num"><pre> 341</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 342</pre></span><pre>	#} END GROUP</pre></div>
+<div class="skip"><span class="num"><pre> 343</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 344</pre></span><pre>	#{ Utitlities</pre></div>
+<div class="cov"><span class="num"><pre> 345</pre></span><pre>	def isEmpty(self):</pre></div>
+<div class="cov"><span class="num"><pre> 346</pre></span><pre>		&quot;&quot;&quot;:return: True if the accessor does not stor information&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 347</pre></span><pre>		if not self._configChain:</pre></div>
+<div class="cov"><span class="num"><pre> 348</pre></span><pre>			return True</pre></div>
+<div class="skip"><span class="num"><pre> 349</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre> 350</pre></span><pre>		for node in self._configChain:</pre></div>
+<div class="cov"><span class="num"><pre> 351</pre></span><pre>			if node.listSections():</pre></div>
+<div class="cov"><span class="num"><pre> 352</pre></span><pre>				return False</pre></div>
+<div class="skip"><span class="num"><pre> 353</pre></span><pre>		# END for each node </pre></div>
+<div class="nocov"><span class="num"><pre> 354</pre></span><pre>		return True</pre></div>
+<div class="skip"><span class="num"><pre> 355</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre> 356</pre></span><pre>	#} END GROUP </pre></div>
+<div class="skip"><span class="num"><pre> 357</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 358</pre></span><pre>	#{ General Access (disregarding writable state)</pre></div>
+<div class="cov"><span class="num"><pre> 359</pre></span><pre>	def hasSection(self, name):</pre></div>
+<div class="cov"><span class="num"><pre> 360</pre></span><pre>		&quot;&quot;&quot;:return: True if the given section exists&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 361</pre></span><pre>		try:</pre></div>
+<div class="nocov"><span class="num"><pre> 362</pre></span><pre>			self.section(name)</pre></div>
+<div class="nocov"><span class="num"><pre> 363</pre></span><pre>		except NoSectionError:</pre></div>
+<div class="nocov"><span class="num"><pre> 364</pre></span><pre>			return False</pre></div>
+<div class="skip"><span class="num"><pre> 365</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 366</pre></span><pre>		return True</pre></div>
+<div class="skip"><span class="num"><pre> 367</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 368</pre></span><pre>	def section(self, section):</pre></div>
+<div class="cov"><span class="num"><pre> 369</pre></span><pre>		&quot;&quot;&quot; :return: first section with name</pre></div>
+<div class="cov"><span class="num"><pre> 370</pre></span><pre>		:note: as there might be several nodes defining the section for inheritance,</pre></div>
+<div class="cov"><span class="num"><pre> 371</pre></span><pre>			you might not get the desired results unless this config accessor acts on a</pre></div>
+<div class="cov"><span class="num"><pre> 372</pre></span><pre>			`flatten` ed list.</pre></div>
+<div class="skip"><span class="num"><pre> 373</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre> 374</pre></span><pre>		:raise NoSectionError: if the requested section name does not exist &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 375</pre></span><pre>		for node in self._configChain:</pre></div>
+<div class="cov"><span class="num"><pre> 376</pre></span><pre>			if section in node._sections:</pre></div>
+<div class="cov"><span class="num"><pre> 377</pre></span><pre>				return node.section(section)</pre></div>
+<div class="skip"><span class="num"><pre> 378</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 379</pre></span><pre>		raise NoSectionError(section)</pre></div>
+<div class="skip"><span class="num"><pre> 380</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 381</pre></span><pre>	def keyDefault(self, sectionname, keyname, value):</pre></div>
+<div class="cov"><span class="num"><pre> 382</pre></span><pre>		&quot;&quot;&quot;Convenience Function: get key with keyname in first section with sectionname with the key's value being initialized to value if it did not exist.</pre></div>
+<div class="skip"><span class="num"><pre> 383</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 384</pre></span><pre>		:param sectionname: the name of the sectionname the key is supposed to be in - it will be created if needed</pre></div>
+<div class="cov"><span class="num"><pre> 385</pre></span><pre>		:param keyname: the name of the key you wish to find</pre></div>
+<div class="cov"><span class="num"><pre> 386</pre></span><pre>		:param value: the value you wish to receive as as default if the key has to be created.</pre></div>
+<div class="cov"><span class="num"><pre> 387</pre></span><pre>			It can be a list of values as well, basically anything that `Key` allows as value</pre></div>
+<div class="skip"><span class="num"><pre> 388</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre> 389</pre></span><pre>		:return: `Key`&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 390</pre></span><pre>		return self.sectionDefault(sectionname).keyDefault(keyname, value)[0]</pre></div>
+<div class="skip"><span class="num"><pre> 391</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 392</pre></span><pre>	def keysByName(self, name):</pre></div>
+<div class="cov"><span class="num"><pre> 393</pre></span><pre>		&quot;&quot;&quot;:param name: the name of the key you wish to find</pre></div>
+<div class="cov"><span class="num"><pre> 394</pre></span><pre>		:return: List of  (`Key`,`Section`) tuples of key(s) matching name found in section, or empty list&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 395</pre></span><pre>		return list(self.iterateKeysByName(name))</pre></div>
+<div class="skip"><span class="num"><pre> 396</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 397</pre></span><pre>	def iterateKeysByName(self, name):</pre></div>
+<div class="cov"><span class="num"><pre> 398</pre></span><pre>		&quot;&quot;&quot;As `keysByName`, but returns an iterator instead&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 399</pre></span><pre>		return self._configChain.iterateKeysByName(name)</pre></div>
+<div class="skip"><span class="num"><pre> 400</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 401</pre></span><pre>	def get(self, key_id, default = None):</pre></div>
+<div class="cov"><span class="num"><pre> 402</pre></span><pre>		&quot;&quot;&quot;Convenience function allowing to easily specify the key you wish to retrieve</pre></div>
+<div class="cov"><span class="num"><pre> 403</pre></span><pre>		with the option to provide a default value</pre></div>
+<div class="skip"><span class="num"><pre> 404</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 405</pre></span><pre>		:param key_id: string specifying a key, either as ``sectionname.keyname``</pre></div>
+<div class="cov"><span class="num"><pre> 406</pre></span><pre>			or ``keyname``.</pre></div>
+<div class="cov"><span class="num"><pre> 407</pre></span><pre>			In case you specify a section, the key must reside in the given section, </pre></div>
+<div class="cov"><span class="num"><pre> 408</pre></span><pre>			if only a keyname is given, it may reside in any section</pre></div>
+<div class="skip"><span class="num"><pre> 409</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre> 410</pre></span><pre>		:param default: Default value to be given to a newly created key in case </pre></div>
+<div class="cov"><span class="num"><pre> 411</pre></span><pre>			there is no existing value. If None, the method may raise in case the given</pre></div>
+<div class="cov"><span class="num"><pre> 412</pre></span><pre>			key_id does not exist.</pre></div>
+<div class="skip"><span class="num"><pre> 413</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre> 414</pre></span><pre>		:return: `Key` instance whose value may be queried through its ``value`` or </pre></div>
+<div class="cov"><span class="num"><pre> 415</pre></span><pre>			``values`` attributes&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 416</pre></span><pre>		sid = None</pre></div>
+<div class="cov"><span class="num"><pre> 417</pre></span><pre>		kid = key_id</pre></div>
+<div class="cov"><span class="num"><pre> 418</pre></span><pre>		if '.' in key_id:</pre></div>
+<div class="cov"><span class="num"><pre> 419</pre></span><pre>			sid, kid = key_id.split('.', 1)</pre></div>
+<div class="skip"><span class="num"><pre> 420</pre></span><pre>		# END split key id into section and key</pre></div>
+<div class="skip"><span class="num"><pre> 421</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 422</pre></span><pre>		if sid is None:</pre></div>
+<div class="cov"><span class="num"><pre> 423</pre></span><pre>			keys = self.keysByName(kid)</pre></div>
+<div class="cov"><span class="num"><pre> 424</pre></span><pre>			try:</pre></div>
+<div class="cov"><span class="num"><pre> 425</pre></span><pre>				return keys[0][0]</pre></div>
+<div class="cov"><span class="num"><pre> 426</pre></span><pre>			except IndexError:</pre></div>
+<div class="cov"><span class="num"><pre> 427</pre></span><pre>				if default is None:</pre></div>
+<div class="cov"><span class="num"><pre> 428</pre></span><pre>					raise NoOptionError(kid, sid)</pre></div>
+<div class="cov"><span class="num"><pre> 429</pre></span><pre>				else:</pre></div>
+<div class="cov"><span class="num"><pre> 430</pre></span><pre>					for section in self.sectionIterator():</pre></div>
+<div class="cov"><span class="num"><pre> 431</pre></span><pre>						return section.keyDefault(kid, default)[0]</pre></div>
+<div class="skip"><span class="num"><pre> 432</pre></span><pre>					# create default section </pre></div>
+<div class="nocov"><span class="num"><pre> 433</pre></span><pre>					return self.sectionDefault('default').keyDefault(kid, default)[0]</pre></div>
+<div class="skip"><span class="num"><pre> 434</pre></span><pre>				# END default handling</pre></div>
+<div class="skip"><span class="num"><pre> 435</pre></span><pre>			# END option exception handling</pre></div>
+<div class="cov"><span class="num"><pre> 436</pre></span><pre>		else:</pre></div>
+<div class="cov"><span class="num"><pre> 437</pre></span><pre>			if default is None:</pre></div>
+<div class="cov"><span class="num"><pre> 438</pre></span><pre>				return self.section(sid).key(kid)</pre></div>
+<div class="cov"><span class="num"><pre> 439</pre></span><pre>			else:</pre></div>
+<div class="cov"><span class="num"><pre> 440</pre></span><pre>				return self.keyDefault(sid, kid, default)</pre></div>
+<div class="skip"><span class="num"><pre> 441</pre></span><pre>			# END default handling </pre></div>
+<div class="skip"><span class="num"><pre> 442</pre></span><pre>		# END has section handling</pre></div>
+<div class="skip"><span class="num"><pre> 443</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre> 444</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre> 445</pre></span><pre>	#} END GROUP</pre></div>
+<div class="skip"><span class="num"><pre> 446</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 447</pre></span><pre>	#{ Operators</pre></div>
+<div class="cov"><span class="num"><pre> 448</pre></span><pre>	def __getitem__(self, key):</pre></div>
+<div class="cov"><span class="num"><pre> 449</pre></span><pre>		defaultvalue = None</pre></div>
+<div class="cov"><span class="num"><pre> 450</pre></span><pre>		if isinstance(key, tuple):</pre></div>
+<div class="cov"><span class="num"><pre> 451</pre></span><pre>			defaultvalue = key[1]</pre></div>
+<div class="cov"><span class="num"><pre> 452</pre></span><pre>			key = key[0]</pre></div>
+<div class="skip"><span class="num"><pre> 453</pre></span><pre>		# END default value handling</pre></div>
+<div class="skip"><span class="num"><pre> 454</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 455</pre></span><pre>		return self.get(key, defaultvalue)</pre></div>
+<div class="skip"><span class="num"><pre> 456</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 457</pre></span><pre>	#} END GROUP</pre></div>
+<div class="skip"><span class="num"><pre> 458</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 459</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 460</pre></span><pre>	#{ Structure Adjustments Respecting Writable State</pre></div>
+<div class="cov"><span class="num"><pre> 461</pre></span><pre>	def sectionDefault(self, section):</pre></div>
+<div class="cov"><span class="num"><pre> 462</pre></span><pre>		&quot;&quot;&quot;:return: section with given name.</pre></div>
+<div class="cov"><span class="num"><pre> 463</pre></span><pre>		:raise IOError: If section does not exist and it cannot be created as the configuration is readonly</pre></div>
+<div class="cov"><span class="num"><pre> 464</pre></span><pre>		:note: the section will be created if it does not yet exist</pre></div>
+<div class="cov"><span class="num"><pre> 465</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 466</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre> 467</pre></span><pre>			return self.section(section)</pre></div>
+<div class="cov"><span class="num"><pre> 468</pre></span><pre>		except:</pre></div>
+<div class="cov"><span class="num"><pre> 469</pre></span><pre>			pass</pre></div>
+<div class="skip"><span class="num"><pre> 470</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 471</pre></span><pre>		# find the first writable node and create the section there</pre></div>
+<div class="cov"><span class="num"><pre> 472</pre></span><pre>		for node in self._configChain:</pre></div>
+<div class="cov"><span class="num"><pre> 473</pre></span><pre>			if node.writable:</pre></div>
+<div class="cov"><span class="num"><pre> 474</pre></span><pre>				return node.sectionDefault(section)</pre></div>
+<div class="skip"><span class="num"><pre> 475</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 476</pre></span><pre>		# we did not find any writable node - fail</pre></div>
+<div class="nocov"><span class="num"><pre> 477</pre></span><pre>		raise IOError(&quot;Could not find a single writable configuration file&quot;)</pre></div>
+<div class="skip"><span class="num"><pre> 478</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 479</pre></span><pre>	def removeSection(	self, name):</pre></div>
+<div class="cov"><span class="num"><pre> 480</pre></span><pre>		&quot;&quot;&quot;Completely remove the given section name from all nodes in our configuration</pre></div>
+<div class="skip"><span class="num"><pre> 481</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 482</pre></span><pre>		:return: the number of nodes that did *not* allow the section to be removed as they are read-only, thus</pre></div>
+<div class="cov"><span class="num"><pre> 483</pre></span><pre>			0 will be returned if everything was alright&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 484</pre></span><pre>		numReadonly = 0</pre></div>
+<div class="cov"><span class="num"><pre> 485</pre></span><pre>		for node in self._configChain:</pre></div>
+<div class="cov"><span class="num"><pre> 486</pre></span><pre>			if not node.hasSection(name):</pre></div>
+<div class="cov"><span class="num"><pre> 487</pre></span><pre>				continue</pre></div>
+<div class="skip"><span class="num"><pre> 488</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 489</pre></span><pre>			# can we write it ?</pre></div>
+<div class="cov"><span class="num"><pre> 490</pre></span><pre>			if not node._isWritable():</pre></div>
+<div class="nocov"><span class="num"><pre> 491</pre></span><pre>				numReadonly += 1</pre></div>
+<div class="nocov"><span class="num"><pre> 492</pre></span><pre>				continue</pre></div>
+<div class="skip"><span class="num"><pre> 493</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 494</pre></span><pre>			node._sections.remove(name)</pre></div>
+<div class="skip"><span class="num"><pre> 495</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 496</pre></span><pre>		return numReadonly</pre></div>
+<div class="skip"><span class="num"><pre> 497</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 498</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 499</pre></span><pre>	def mergeSection(self, section):</pre></div>
+<div class="cov"><span class="num"><pre> 500</pre></span><pre>		&quot;&quot;&quot;Merge and/or add the given section into our chain of nodes. The first writable node will be used</pre></div>
+<div class="skip"><span class="num"><pre> 501</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 502</pre></span><pre>		:raise IOError: if no writable node was found</pre></div>
+<div class="cov"><span class="num"><pre> 503</pre></span><pre>		:return: name of the file source that has received the section&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 504</pre></span><pre>		for node in self._configChain:</pre></div>
+<div class="cov"><span class="num"><pre> 505</pre></span><pre>			if node._isWritable():</pre></div>
+<div class="cov"><span class="num"><pre> 506</pre></span><pre>				node.sectionDefault(str(section)).mergeWith(section)</pre></div>
+<div class="cov"><span class="num"><pre> 507</pre></span><pre>				return node._fp.name()</pre></div>
+<div class="skip"><span class="num"><pre> 508</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre> 509</pre></span><pre>		raise IOError(&quot;No writable section found for merge operation&quot;)</pre></div>
+<div class="skip"><span class="num"><pre> 510</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 511</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 512</pre></span><pre>	#} END GROUP</pre></div>
+<div class="skip"><span class="num"><pre> 513</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 514</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 515</pre></span><pre>class ConfigManager(object):</pre></div>
+<div class="cov"><span class="num"><pre> 516</pre></span><pre>	&quot;&quot;&quot; Cache Configurations for fast access and provide a convenient interface</pre></div>
+<div class="skip"><span class="num"><pre> 517</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 518</pre></span><pre>	The the ConfigAccessor has limited speed due to the hierarchical nature of </pre></div>
+<div class="cov"><span class="num"><pre> 519</pre></span><pre>	configuration chains.</pre></div>
+<div class="cov"><span class="num"><pre> 520</pre></span><pre>	The config manager flattens the chain providing fast access. Once it is being</pre></div>
+<div class="cov"><span class="num"><pre> 521</pre></span><pre>	deleted or if asked, it will find the differences between the fast cached</pre></div>
+<div class="cov"><span class="num"><pre> 522</pre></span><pre>	configuration and the original one, and apply the changes back to the original chain,</pre></div>
+<div class="cov"><span class="num"><pre> 523</pre></span><pre>	which will then write the changes back (if possible).</pre></div>
+<div class="skip"><span class="num"><pre> 524</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 525</pre></span><pre>	This class should be preferred over the direct congiguration accessor.</pre></div>
+<div class="cov"><span class="num"><pre> 526</pre></span><pre>	This class mimics the ConfigAccessor inteface as far as possible to improve ease of use.</pre></div>
+<div class="cov"><span class="num"><pre> 527</pre></span><pre>	Use self.config to directly access the configuration through the `ConfigAccessor` interface</pre></div>
+<div class="skip"><span class="num"><pre> 528</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 529</pre></span><pre>	To use this class, read a list of ini files and use configManager.config to access</pre></div>
+<div class="cov"><span class="num"><pre> 530</pre></span><pre>	the configuration.</pre></div>
+<div class="skip"><span class="num"><pre> 531</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 532</pre></span><pre>	For convenience, it will wire through all calls it cannot handle to its `ConfigAccessor`</pre></div>
+<div class="cov"><span class="num"><pre> 533</pre></span><pre>	stored at .config&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 534</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 535</pre></span><pre>	__slots__ = ('__config', 'config', '_writeBackOnDestruction', '_closeFp') </pre></div>
+<div class="skip"><span class="num"><pre> 536</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 537</pre></span><pre>	def __init__(self, filePointers=list(), write_back_on_desctruction=True, close_fp = True):</pre></div>
+<div class="cov"><span class="num"><pre> 538</pre></span><pre>		&quot;&quot;&quot;Initialize the class with a list of Extended File Classes</pre></div>
+<div class="skip"><span class="num"><pre> 539</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 540</pre></span><pre>		:param filePointers: Point to the actual configuration to use</pre></div>
+<div class="cov"><span class="num"><pre> 541</pre></span><pre>			If not given, you have to call the `readfp` function with filePointers respectively</pre></div>
+<div class="cov"><span class="num"><pre> 542</pre></span><pre>		:type filePointers: `ExtendedFileInterface`</pre></div>
+<div class="skip"><span class="num"><pre> 543</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 544</pre></span><pre>		:param close_fp: if true, the files will be closed and can thus be changed.</pre></div>
+<div class="cov"><span class="num"><pre> 545</pre></span><pre>			This should be the default as files might be located on the network as shared resource</pre></div>
+<div class="skip"><span class="num"><pre> 546</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 547</pre></span><pre>		:param write_back_on_desctruction: if True, the config chain and possible</pre></div>
+<div class="cov"><span class="num"><pre> 548</pre></span><pre>			changes will be written once this instance is being deleted. If false,</pre></div>
+<div class="cov"><span class="num"><pre> 549</pre></span><pre>			the changes must explicitly be written back using the write method&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 550</pre></span><pre>		self.__config = ConfigAccessor()</pre></div>
+<div class="cov"><span class="num"><pre> 551</pre></span><pre>		self.config = None					# will be set later</pre></div>
+<div class="cov"><span class="num"><pre> 552</pre></span><pre>		self._writeBackOnDestruction = write_back_on_desctruction</pre></div>
+<div class="cov"><span class="num"><pre> 553</pre></span><pre>		self._closeFp = close_fp</pre></div>
+<div class="skip"><span class="num"><pre> 554</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 555</pre></span><pre>		self.readfp(filePointers, close_fp=close_fp)</pre></div>
+<div class="skip"><span class="num"><pre> 556</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 557</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 558</pre></span><pre>	def __del__(self):</pre></div>
+<div class="cov"><span class="num"><pre> 559</pre></span><pre>		&quot;&quot;&quot; If we are supposed to write back the configuration, after merging</pre></div>
+<div class="cov"><span class="num"><pre> 560</pre></span><pre>		the differences back into the original configuration chain&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 561</pre></span><pre>		if self._writeBackOnDestruction:</pre></div>
+<div class="skip"><span class="num"><pre> 562</pre></span><pre>			# might trow - python will automatically ignore these issues</pre></div>
+<div class="nocov"><span class="num"><pre> 563</pre></span><pre>			self.write()</pre></div>
+<div class="skip"><span class="num"><pre> 564</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 565</pre></span><pre>	def __getattr__(self, attr):</pre></div>
+<div class="cov"><span class="num"><pre> 566</pre></span><pre>		&quot;&quot;&quot;Wire all queries we cannot handle to our config accessor&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 567</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre> 568</pre></span><pre>			return getattr(self.config, attr)</pre></div>
+<div class="cov"><span class="num"><pre> 569</pre></span><pre>		except Exception:</pre></div>
+<div class="cov"><span class="num"><pre> 570</pre></span><pre>			return object.__getattribute__(self, attr)</pre></div>
+<div class="skip"><span class="num"><pre> 571</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 572</pre></span><pre>	#{ IO Methods</pre></div>
+<div class="cov"><span class="num"><pre> 573</pre></span><pre>	def write(self):</pre></div>
+<div class="cov"><span class="num"><pre> 574</pre></span><pre>		&quot;&quot;&quot; Write the possibly changed configuration back to its sources.</pre></div>
+<div class="skip"><span class="num"><pre> 575</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 576</pre></span><pre>		:raise IOError: if at least one node could not be properly written.</pre></div>
+<div class="cov"><span class="num"><pre> 577</pre></span><pre>		:raise ValueError: if instance is not properly initialized.</pre></div>
+<div class="skip"><span class="num"><pre> 578</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 579</pre></span><pre>		:note: It could be the case that all nodes are marked read-only and</pre></div>
+<div class="cov"><span class="num"><pre> 580</pre></span><pre>			thus cannot be written - this will also raise as the request to write</pre></div>
+<div class="cov"><span class="num"><pre> 581</pre></span><pre>			the changes could not be accomodated.</pre></div>
+<div class="skip"><span class="num"><pre> 582</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 583</pre></span><pre>		:return: the names of the files that have been written as string list&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 584</pre></span><pre>		if self.config is None:</pre></div>
+<div class="nocov"><span class="num"><pre> 585</pre></span><pre>			raise ValueError(&quot;Internal configuration does not exist&quot;)</pre></div>
+<div class="skip"><span class="num"><pre> 586</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 587</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 588</pre></span><pre>		# apply the changes done to self.config to the original configuration</pre></div>
+<div class="cov"><span class="num"><pre> 589</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre> 590</pre></span><pre>			diff = ConfigDiffer(self.__config, self.config)</pre></div>
+<div class="cov"><span class="num"><pre> 591</pre></span><pre>			report = diff.applyTo(self.__config)</pre></div>
+<div class="cov"><span class="num"><pre> 592</pre></span><pre>			outwrittenfiles = self.__config.write(close_fp = self._closeFp)</pre></div>
+<div class="cov"><span class="num"><pre> 593</pre></span><pre>			return outwrittenfiles</pre></div>
+<div class="nocov"><span class="num"><pre> 594</pre></span><pre>		except Exception,e:</pre></div>
+<div class="nocov"><span class="num"><pre> 595</pre></span><pre>			log.error(str(e)) </pre></div>
+<div class="nocov"><span class="num"><pre> 596</pre></span><pre>			raise</pre></div>
+<div class="skip"><span class="num"><pre> 597</pre></span><pre>			# for now we reraise</pre></div>
+<div class="skip"><span class="num"><pre> 598</pre></span><pre>			# TODO: raise a proper error here as mentioned in the docs</pre></div>
+<div class="skip"><span class="num"><pre> 599</pre></span><pre>			# raise IOError()</pre></div>
+<div class="skip"><span class="num"><pre> 600</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 601</pre></span><pre>	def readfp(self, filefporlist, close_fp=True):</pre></div>
+<div class="cov"><span class="num"><pre> 602</pre></span><pre>		&quot;&quot;&quot; Read the configuration from the file pointers.</pre></div>
+<div class="skip"><span class="num"><pre> 603</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 604</pre></span><pre>		:raise ConfigParsingError:</pre></div>
+<div class="cov"><span class="num"><pre> 605</pre></span><pre>		:param filefporlist: single file like object or list of such</pre></div>
+<div class="cov"><span class="num"><pre> 606</pre></span><pre>		:return: the configuration that is meant to be used for accessing the configuration&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 607</pre></span><pre>		self.__config.readfp(filefporlist, close_fp = close_fp)</pre></div>
+<div class="skip"><span class="num"><pre> 608</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 609</pre></span><pre>		# flatten the list and attach it</pre></div>
+<div class="cov"><span class="num"><pre> 610</pre></span><pre>		self.config = self.__config.flatten(ConfigStringIO())</pre></div>
+<div class="cov"><span class="num"><pre> 611</pre></span><pre>		return self.config</pre></div>
+<div class="skip"><span class="num"><pre> 612</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 613</pre></span><pre>	#} End IO Methods</pre></div>
+<div class="skip"><span class="num"><pre> 614</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 615</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 616</pre></span><pre>	#{ Utilities</pre></div>
+<div class="cov"><span class="num"><pre> 617</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre> 618</pre></span><pre>	def taggedFileDescriptors(cls, directories, taglist, pattern=None):</pre></div>
+<div class="cov"><span class="num"><pre> 619</pre></span><pre>		&quot;&quot;&quot;Finds tagged configuration files in given directories and return them.</pre></div>
+<div class="skip"><span class="num"><pre> 620</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 621</pre></span><pre>		The files retrieved can be files like &quot;file.ext&quot; or can contain tags. Tags are '.'</pre></div>
+<div class="cov"><span class="num"><pre> 622</pre></span><pre>		separated files tags that are to be matched with the tags in taglist in order.</pre></div>
+<div class="skip"><span class="num"><pre> 623</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 624</pre></span><pre>		All tags must match to retrieve a filepointer to the respective file.</pre></div>
+<div class="skip"><span class="num"><pre> 625</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 626</pre></span><pre>		Example Usage: you could give two paths, one is a global one in a read-only location,</pre></div>
+<div class="cov"><span class="num"><pre> 627</pre></span><pre>		another is a local one in the user's home (where you might have precreated a file already).</pre></div>
+<div class="skip"><span class="num"><pre> 628</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 629</pre></span><pre>		The list of filepointers returned would be all matching files from the global path and</pre></div>
+<div class="cov"><span class="num"><pre> 630</pre></span><pre>		all matching files from the local one, sorted such that the file with the smallest amount</pre></div>
+<div class="cov"><span class="num"><pre> 631</pre></span><pre>		of tags come first, files with more tags (more specialized ones) will come after that.</pre></div>
+<div class="skip"><span class="num"><pre> 632</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 633</pre></span><pre>		If fed into the `readfp` or the `__init__` method, the individual file contents can override each other.</pre></div>
+<div class="cov"><span class="num"><pre> 634</pre></span><pre>		Once changes have been applied to the configuration, they can be written back to the writable</pre></div>
+<div class="cov"><span class="num"><pre> 635</pre></span><pre>		file pointers respectively.</pre></div>
+<div class="skip"><span class="num"><pre> 636</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 637</pre></span><pre>		:param directories: [string(path) ...] of directories to look in for files</pre></div>
+<div class="cov"><span class="num"><pre> 638</pre></span><pre>		:param taglist: [string(tag) ...] of tags, like a tag for the operating system, or the user name</pre></div>
+<div class="cov"><span class="num"><pre> 639</pre></span><pre>		:param pattern: simple fnmatch pattern as used for globs or a list of them (allowing to match several</pre></div>
+<div class="cov"><span class="num"><pre> 640</pre></span><pre>			different patterns at once)</pre></div>
+<div class="cov"><span class="num"><pre> 641</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 642</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 643</pre></span><pre>		# get patterns</pre></div>
+<div class="cov"><span class="num"><pre> 644</pre></span><pre>		workpatterns = list()</pre></div>
+<div class="cov"><span class="num"><pre> 645</pre></span><pre>		if isinstance(pattern, (list , set)):</pre></div>
+<div class="nocov"><span class="num"><pre> 646</pre></span><pre>			workpatterns.extend(pattern)</pre></div>
+<div class="cov"><span class="num"><pre> 647</pre></span><pre>		else:</pre></div>
+<div class="cov"><span class="num"><pre> 648</pre></span><pre>			workpatterns.append(pattern)</pre></div>
+<div class="skip"><span class="num"><pre> 649</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 650</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 651</pre></span><pre>		# GET ALL FILES IN THE GIVEN DIRECTORIES</pre></div>
+<div class="skip"><span class="num"><pre> 652</pre></span><pre>		########################################</pre></div>
+<div class="cov"><span class="num"><pre> 653</pre></span><pre>		from path import Path</pre></div>
+<div class="cov"><span class="num"><pre> 654</pre></span><pre>		matchedFiles = list()</pre></div>
+<div class="cov"><span class="num"><pre> 655</pre></span><pre>		for folder in directories:</pre></div>
+<div class="cov"><span class="num"><pre> 656</pre></span><pre>			for pattern in workpatterns:</pre></div>
+<div class="cov"><span class="num"><pre> 657</pre></span><pre>				matchedFiles.extend(Path(folder).files(pattern))</pre></div>
+<div class="skip"><span class="num"><pre> 658</pre></span><pre>			# END for each pattern/glob </pre></div>
+<div class="skip"><span class="num"><pre> 659</pre></span><pre>		# END for each directory</pre></div>
+<div class="skip"><span class="num"><pre> 660</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 661</pre></span><pre>		# APPLY THE PATTERN SEARCH</pre></div>
+<div class="skip"><span class="num"><pre> 662</pre></span><pre>		############################</pre></div>
+<div class="cov"><span class="num"><pre> 663</pre></span><pre>		tagMatchList = list()</pre></div>
+<div class="cov"><span class="num"><pre> 664</pre></span><pre>		for taggedFile in sorted(matchedFiles):</pre></div>
+<div class="cov"><span class="num"><pre> 665</pre></span><pre>			filetags = os.path.split(taggedFile)[1].split('.')[1:-1]</pre></div>
+<div class="skip"><span class="num"><pre> 666</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 667</pre></span><pre>			# match the tags - take the file if all can be found</pre></div>
+<div class="cov"><span class="num"><pre> 668</pre></span><pre>			numMatched = 0</pre></div>
+<div class="cov"><span class="num"><pre> 669</pre></span><pre>			for tag in taglist:</pre></div>
+<div class="cov"><span class="num"><pre> 670</pre></span><pre>				if tag in filetags:</pre></div>
+<div class="cov"><span class="num"><pre> 671</pre></span><pre>					numMatched += 1</pre></div>
+<div class="skip"><span class="num"><pre> 672</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 673</pre></span><pre>			if numMatched == len(filetags):</pre></div>
+<div class="cov"><span class="num"><pre> 674</pre></span><pre>				tagMatchList.append((numMatched, taggedFile))</pre></div>
+<div class="skip"><span class="num"><pre> 675</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 676</pre></span><pre>		# END for each tagged file</pre></div>
+<div class="skip"><span class="num"><pre> 677</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 678</pre></span><pre>		outDescriptors = list()</pre></div>
+<div class="cov"><span class="num"><pre> 679</pre></span><pre>		for numtags,taggedFile in sorted(tagMatchList):</pre></div>
+<div class="cov"><span class="num"><pre> 680</pre></span><pre>			outDescriptors.append(ConfigFile(taggedFile))	# just open for reading</pre></div>
+<div class="cov"><span class="num"><pre> 681</pre></span><pre>		return outDescriptors</pre></div>
+<div class="skip"><span class="num"><pre> 682</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 683</pre></span><pre>	#} end Utilities</pre></div>
+<div class="skip"><span class="num"><pre> 684</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 685</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 686</pre></span><pre>#}END GROUP</pre></div>
+<div class="skip"><span class="num"><pre> 687</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 688</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 689</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 690</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 691</pre></span><pre>#{Extended File Classes</pre></div>
+<div class="skip"><span class="num"><pre> 692</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 693</pre></span><pre>class ExtendedFileInterface(object):</pre></div>
+<div class="cov"><span class="num"><pre> 694</pre></span><pre>	&quot;&quot;&quot; Define additional methods required by the Configuration System</pre></div>
+<div class="cov"><span class="num"><pre> 695</pre></span><pre>	:warning: Additionally, readline and write must be supported - its not mentioned</pre></div>
+<div class="cov"><span class="num"><pre> 696</pre></span><pre>	here for reasons of speed</pre></div>
+<div class="cov"><span class="num"><pre> 697</pre></span><pre>	:note: override the methods with implementation&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 698</pre></span><pre>	__slots__ = tuple()</pre></div>
+<div class="skip"><span class="num"><pre> 699</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 700</pre></span><pre>	def isWritable(self):</pre></div>
+<div class="cov"><span class="num"><pre> 701</pre></span><pre>		&quot;&quot;&quot;:return: True if the file can be written to &quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 702</pre></span><pre>		raise False</pre></div>
+<div class="skip"><span class="num"><pre> 703</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 704</pre></span><pre>	def isClosed(self):</pre></div>
+<div class="cov"><span class="num"><pre> 705</pre></span><pre>		&quot;&quot;&quot;:return: True if the file has been closed, and needs to be reopened for writing &quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 706</pre></span><pre>		raise NotImplementedError</pre></div>
+<div class="skip"><span class="num"><pre> 707</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 708</pre></span><pre>	def name(self):</pre></div>
+<div class="cov"><span class="num"><pre> 709</pre></span><pre>		&quot;&quot;&quot; :return: a name for the file object &quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 710</pre></span><pre>		raise NotImplementedError</pre></div>
+<div class="skip"><span class="num"><pre> 711</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 712</pre></span><pre>	def openForWriting(self):</pre></div>
+<div class="cov"><span class="num"><pre> 713</pre></span><pre>		&quot;&quot;&quot; Open the file to write to it</pre></div>
+<div class="cov"><span class="num"><pre> 714</pre></span><pre>		:raise IOError: on failure&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 715</pre></span><pre>		raise NotImplementedError</pre></div>
+<div class="skip"><span class="num"><pre> 716</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 717</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 718</pre></span><pre>class ConfigFile(ExtendedFileInterface):</pre></div>
+<div class="cov"><span class="num"><pre> 719</pre></span><pre>	&quot;&quot;&quot; file object implementation of the ExtendedFileInterface&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 720</pre></span><pre>	__slots__ = ['_writable', '_fp']</pre></div>
+<div class="skip"><span class="num"><pre> 721</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 722</pre></span><pre>	def __init__(self, *args, **kwargs):</pre></div>
+<div class="cov"><span class="num"><pre> 723</pre></span><pre>		&quot;&quot;&quot; Initialize our caching values - additional values will be passed to 'file' constructor&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 724</pre></span><pre>		self._fp = file(*args, **kwargs)</pre></div>
+<div class="cov"><span class="num"><pre> 725</pre></span><pre>		self._writable = self._isWritable()</pre></div>
+<div class="skip"><span class="num"><pre> 726</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 727</pre></span><pre>	def __getattr__(self, attr):</pre></div>
+<div class="cov"><span class="num"><pre> 728</pre></span><pre>		return getattr(self._fp, attr)</pre></div>
+<div class="skip"><span class="num"><pre> 729</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 730</pre></span><pre>	def _modeSaysWritable(self):</pre></div>
+<div class="cov"><span class="num"><pre> 731</pre></span><pre>		return (self._fp.mode.find('w') != -1) or (self._fp.mode.find('a') != -1)</pre></div>
+<div class="skip"><span class="num"><pre> 732</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 733</pre></span><pre>	def _isWritable(self):</pre></div>
+<div class="cov"><span class="num"><pre> 734</pre></span><pre>		&quot;&quot;&quot; Check whether the file is effectively writable by opening it for writing</pre></div>
+<div class="cov"><span class="num"><pre> 735</pre></span><pre>		:todo: evaluate the usage of stat instead - would be faster, but I do not know whether it works on NT with user rights etc.&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 736</pre></span><pre>		if self._modeSaysWritable():</pre></div>
+<div class="cov"><span class="num"><pre> 737</pre></span><pre>			return True</pre></div>
+<div class="skip"><span class="num"><pre> 738</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 739</pre></span><pre>		wasClosed = self._fp.closed</pre></div>
+<div class="cov"><span class="num"><pre> 740</pre></span><pre>		lastMode = self._fp.mode</pre></div>
+<div class="cov"><span class="num"><pre> 741</pre></span><pre>		pos = self.tell()</pre></div>
+<div class="skip"><span class="num"><pre> 742</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 743</pre></span><pre>		if not self._fp.closed:</pre></div>
+<div class="cov"><span class="num"><pre> 744</pre></span><pre>			self.close()</pre></div>
+<div class="skip"><span class="num"><pre> 745</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 746</pre></span><pre>		# open in write append mode</pre></div>
+<div class="cov"><span class="num"><pre> 747</pre></span><pre>		rval = True</pre></div>
+<div class="cov"><span class="num"><pre> 748</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre> 749</pre></span><pre>			self._fp = file(self._fp.name, &quot;a&quot;)</pre></div>
+<div class="nocov"><span class="num"><pre> 750</pre></span><pre>		except IOError:</pre></div>
+<div class="nocov"><span class="num"><pre> 751</pre></span><pre>			rval = False</pre></div>
+<div class="skip"><span class="num"><pre> 752</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 753</pre></span><pre>		# reset original state</pre></div>
+<div class="cov"><span class="num"><pre> 754</pre></span><pre>		if wasClosed:</pre></div>
+<div class="nocov"><span class="num"><pre> 755</pre></span><pre>			self.close()</pre></div>
+<div class="nocov"><span class="num"><pre> 756</pre></span><pre>			self._fp.mode = lastMode</pre></div>
+<div class="cov"><span class="num"><pre> 757</pre></span><pre>		else:</pre></div>
+<div class="skip"><span class="num"><pre> 758</pre></span><pre>			# reopen with changed mode</pre></div>
+<div class="cov"><span class="num"><pre> 759</pre></span><pre>			self._fp = file(self._fp.name, lastMode)</pre></div>
+<div class="cov"><span class="num"><pre> 760</pre></span><pre>			self.seek(pos)</pre></div>
+<div class="skip"><span class="num"><pre> 761</pre></span><pre>		# END check was closed</pre></div>
+<div class="skip"><span class="num"><pre> 762</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 763</pre></span><pre>		return rval</pre></div>
+<div class="skip"><span class="num"><pre> 764</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 765</pre></span><pre>	def isWritable(self):</pre></div>
+<div class="cov"><span class="num"><pre> 766</pre></span><pre>		&quot;&quot;&quot;:return: True if the file is truly writable&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 767</pre></span><pre>		# return our cached value</pre></div>
+<div class="cov"><span class="num"><pre> 768</pre></span><pre>		return self._writable</pre></div>
+<div class="skip"><span class="num"><pre> 769</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 770</pre></span><pre>	def isClosed(self):</pre></div>
+<div class="nocov"><span class="num"><pre> 771</pre></span><pre>		return self._fp.closed</pre></div>
+<div class="skip"><span class="num"><pre> 772</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 773</pre></span><pre>	def name(self):</pre></div>
+<div class="cov"><span class="num"><pre> 774</pre></span><pre>		return self._fp.name</pre></div>
+<div class="skip"><span class="num"><pre> 775</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 776</pre></span><pre>	def openForWriting(self):</pre></div>
+<div class="cov"><span class="num"><pre> 777</pre></span><pre>		if self._fp.closed or not self._modeSaysWritable():</pre></div>
+<div class="cov"><span class="num"><pre> 778</pre></span><pre>			self._fp = file(self._fp.name, 'w')</pre></div>
+<div class="skip"><span class="num"><pre> 779</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 780</pre></span><pre>		# update writable value cache</pre></div>
+<div class="cov"><span class="num"><pre> 781</pre></span><pre>		self._writable = self._isWritable()</pre></div>
+<div class="skip"><span class="num"><pre> 782</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 783</pre></span><pre>class DictConfigINIFile(DictToINIFile, ExtendedFileInterface):</pre></div>
+<div class="cov"><span class="num"><pre> 784</pre></span><pre>	&quot;&quot;&quot; dict file object implementation of ExtendedFileInterface &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 785</pre></span><pre>	__slots__ = tuple()</pre></div>
+<div class="skip"><span class="num"><pre> 786</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 787</pre></span><pre>	def isClosed(self):</pre></div>
+<div class="nocov"><span class="num"><pre> 788</pre></span><pre>		return self.closed</pre></div>
+<div class="skip"><span class="num"><pre> 789</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 790</pre></span><pre>	def name(self):</pre></div>
+<div class="cov"><span class="num"><pre> 791</pre></span><pre>		&quot;&quot;&quot; We do not have a real name &quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 792</pre></span><pre>		return 'DictConfigINIFile'</pre></div>
+<div class="skip"><span class="num"><pre> 793</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 794</pre></span><pre>	def openForWriting(self):</pre></div>
+<div class="cov"><span class="num"><pre> 795</pre></span><pre>		&quot;&quot;&quot; We cannot be opened for writing, and are always read-only &quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 796</pre></span><pre>		raise IOError(&quot;DictINIFiles do not support writing&quot;)</pre></div>
+<div class="skip"><span class="num"><pre> 797</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 798</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 799</pre></span><pre>class ConfigStringIO(StringIO.StringIO, ExtendedFileInterface):</pre></div>
+<div class="cov"><span class="num"><pre> 800</pre></span><pre>	&quot;&quot;&quot; cStringIO object implementation of ExtendedFileInterface &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 801</pre></span><pre>	__slots__ = tuple()</pre></div>
+<div class="skip"><span class="num"><pre> 802</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 803</pre></span><pre>	def isWritable(self):</pre></div>
+<div class="cov"><span class="num"><pre> 804</pre></span><pre>		&quot;&quot;&quot; Once we are closed, we are not writable anymore &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 805</pre></span><pre>		return not self.closed</pre></div>
+<div class="skip"><span class="num"><pre> 806</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 807</pre></span><pre>	def isClosed(self):</pre></div>
+<div class="nocov"><span class="num"><pre> 808</pre></span><pre>		return self.closed</pre></div>
+<div class="skip"><span class="num"><pre> 809</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 810</pre></span><pre>	def name(self):</pre></div>
+<div class="cov"><span class="num"><pre> 811</pre></span><pre>		&quot;&quot;&quot; We do not have a real name &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 812</pre></span><pre>		return 'ConfigStringIO'</pre></div>
+<div class="skip"><span class="num"><pre> 813</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 814</pre></span><pre>	def openForWriting(self):</pre></div>
+<div class="cov"><span class="num"><pre> 815</pre></span><pre>		&quot;&quot;&quot; We if we are closed already, there is no way to reopen us &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 816</pre></span><pre>		if self.closed:</pre></div>
+<div class="nocov"><span class="num"><pre> 817</pre></span><pre>			raise IOError(&quot;cStringIO instances cannot be written once closed&quot;)</pre></div>
+<div class="skip"><span class="num"><pre> 818</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 819</pre></span><pre>#} END extended file interface </pre></div>
+<div class="skip"><span class="num"><pre> 820</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 821</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 822</pre></span><pre>#{ Utility Classes</pre></div>
+<div class="skip"><span class="num"><pre> 823</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 824</pre></span><pre>class _FixedConfigParser(RawConfigParser):</pre></div>
+<div class="cov"><span class="num"><pre> 825</pre></span><pre>	&quot;&quot;&quot;The RawConfigParser stores options lowercase - but we do not want that</pre></div>
+<div class="cov"><span class="num"><pre> 826</pre></span><pre>	and keep the case - for this we just need to override a method&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 827</pre></span><pre>	__slots__ = tuple()</pre></div>
+<div class="skip"><span class="num"><pre> 828</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 829</pre></span><pre>	def optionxform(self, option):</pre></div>
+<div class="cov"><span class="num"><pre> 830</pre></span><pre>		return option</pre></div>
+<div class="skip"><span class="num"><pre> 831</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 832</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 833</pre></span><pre>class ConfigChain(list):</pre></div>
+<div class="cov"><span class="num"><pre> 834</pre></span><pre>	&quot;&quot;&quot; A chain of config nodes</pre></div>
+<div class="skip"><span class="num"><pre> 835</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 836</pre></span><pre>	This utility class keeps several `ConfigNode` objects, but can be operated</pre></div>
+<div class="cov"><span class="num"><pre> 837</pre></span><pre>	like any other list.</pre></div>
+<div class="skip"><span class="num"><pre> 838</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 839</pre></span><pre>	:note: this solution is mainly fast to implement, but a linked-list like</pre></div>
+<div class="cov"><span class="num"><pre> 840</pre></span><pre>		behaviour is intended &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 841</pre></span><pre>	__slots__ = tuple()</pre></div>
+<div class="skip"><span class="num"><pre> 842</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre> 843</pre></span><pre>	#{ List Overridden Methods</pre></div>
+<div class="cov"><span class="num"><pre> 844</pre></span><pre>	def __init__(self):</pre></div>
+<div class="cov"><span class="num"><pre> 845</pre></span><pre>		&quot;&quot;&quot; Assures we can only create plain instances &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 846</pre></span><pre>		list.__init__(self)</pre></div>
+<div class="skip"><span class="num"><pre> 847</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 848</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre> 849</pre></span><pre>	def _checktype(cls, node):</pre></div>
+<div class="cov"><span class="num"><pre> 850</pre></span><pre>		if not isinstance(node, ConfigNode):</pre></div>
+<div class="nocov"><span class="num"><pre> 851</pre></span><pre>			raise TypeError(&quot;A ConfigNode instance is required&quot;, node)</pre></div>
+<div class="skip"><span class="num"><pre> 852</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 853</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 854</pre></span><pre>	def append(self, node):</pre></div>
+<div class="cov"><span class="num"><pre> 855</pre></span><pre>		&quot;&quot;&quot; Append a `ConfigNode` &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 856</pre></span><pre>		self._checktype(node)</pre></div>
+<div class="cov"><span class="num"><pre> 857</pre></span><pre>		list.append(self, node)</pre></div>
+<div class="skip"><span class="num"><pre> 858</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 859</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 860</pre></span><pre>	def insert(self, node, index):</pre></div>
+<div class="cov"><span class="num"><pre> 861</pre></span><pre>		&quot;&quot;&quot; Insert L?{ConfigNode} before index &quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 862</pre></span><pre>		self._checktype(node)</pre></div>
+<div class="nocov"><span class="num"><pre> 863</pre></span><pre>		list.insert(self, node, index)</pre></div>
+<div class="skip"><span class="num"><pre> 864</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 865</pre></span><pre>	def extend(self, *args, **kwargs):</pre></div>
+<div class="cov"><span class="num"><pre> 866</pre></span><pre>		&quot;&quot;&quot; :raise NotImplementedError: &quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 867</pre></span><pre>		raise NotImplementedError</pre></div>
+<div class="skip"><span class="num"><pre> 868</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 869</pre></span><pre>	def sort(self, *args, **kwargs):</pre></div>
+<div class="cov"><span class="num"><pre> 870</pre></span><pre>		&quot;&quot;&quot; :raise NotImplementedError: &quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 871</pre></span><pre>		raise NotImplementedError</pre></div>
+<div class="skip"><span class="num"><pre> 872</pre></span><pre>	#} END list overridden methodss</pre></div>
+<div class="skip"><span class="num"><pre> 873</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 874</pre></span><pre>	#{ Iterators</pre></div>
+<div class="cov"><span class="num"><pre> 875</pre></span><pre>	def sectionIterator(self):</pre></div>
+<div class="cov"><span class="num"><pre> 876</pre></span><pre>		&quot;&quot;&quot;:return: section iterator for whole configuration chain &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 877</pre></span><pre>		return (section for node in self for section in node._sections)</pre></div>
+<div class="skip"><span class="num"><pre> 878</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 879</pre></span><pre>	def keyIterator(self):</pre></div>
+<div class="cov"><span class="num"><pre> 880</pre></span><pre>		&quot;&quot;&quot;:return: iterator returning tuples of (key,section) pairs&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 881</pre></span><pre>		return ((key,section) for section in self.sectionIterator() for key in section)</pre></div>
+<div class="skip"><span class="num"><pre> 882</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 883</pre></span><pre>	def iterateKeysByName(self, name):</pre></div>
+<div class="cov"><span class="num"><pre> 884</pre></span><pre>		&quot;&quot;&quot;:param name: the name of the key you wish to find</pre></div>
+<div class="cov"><span class="num"><pre> 885</pre></span><pre>		:return: Iterator yielding (`Key`,`Section`) of key matching name found in section&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 886</pre></span><pre>		# note: we do not use iterators as we want to use sets for faster search !</pre></div>
+<div class="cov"><span class="num"><pre> 887</pre></span><pre>		return ((section.keys[name],section) for section in self.sectionIterator() if name in section.keys)</pre></div>
+<div class="skip"><span class="num"><pre> 888</pre></span><pre>	#} END ITERATORS</pre></div>
+<div class="skip"><span class="num"><pre> 889</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 890</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 891</pre></span><pre>def _checkString(string, re):</pre></div>
+<div class="cov"><span class="num"><pre> 892</pre></span><pre>	&quot;&quot;&quot;Check the given string with given re for correctness</pre></div>
+<div class="cov"><span class="num"><pre> 893</pre></span><pre>	:param re: must match the whole string for success</pre></div>
+<div class="cov"><span class="num"><pre> 894</pre></span><pre>	:return: the passed in and stripped string</pre></div>
+<div class="cov"><span class="num"><pre> 895</pre></span><pre>	:raise ValueError: &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 896</pre></span><pre>	string = string.strip()</pre></div>
+<div class="skip"><span class="num"><pre> 897</pre></span><pre>	# ALLOW EMPTY STRINGS AS VALUES</pre></div>
+<div class="cov"><span class="num"><pre> 898</pre></span><pre>	if not len(string):</pre></div>
+<div class="nocov"><span class="num"><pre> 899</pre></span><pre>		return string</pre></div>
+<div class="skip"><span class="num"><pre> 900</pre></span><pre>	#	raise ValueError(&quot;string must not be empty&quot;)</pre></div>
+<div class="skip"><span class="num"><pre> 901</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 902</pre></span><pre>	match = re.match(string)</pre></div>
+<div class="cov"><span class="num"><pre> 903</pre></span><pre>	if match is None or match.end() != len(string):</pre></div>
+<div class="cov"><span class="num"><pre> 904</pre></span><pre>		raise ValueError(_(&quot;'%s' Invalid Value Error&quot;) % string)</pre></div>
+<div class="skip"><span class="num"><pre> 905</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 906</pre></span><pre>	return string</pre></div>
+<div class="skip"><span class="num"><pre> 907</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 908</pre></span><pre>def _excmsgprefix(msg):</pre></div>
+<div class="cov"><span class="num"><pre> 909</pre></span><pre>	&quot;&quot;&quot; Put msg in front of current exception and reraise</pre></div>
+<div class="cov"><span class="num"><pre> 910</pre></span><pre>	:warning: use only within except blocks&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 911</pre></span><pre>	exc = sys.exc_info()[1]</pre></div>
+<div class="cov"><span class="num"><pre> 912</pre></span><pre>	if hasattr(exc, 'message'):</pre></div>
+<div class="cov"><span class="num"><pre> 913</pre></span><pre>		exc.message = msg + exc.message</pre></div>
+<div class="skip"><span class="num"><pre> 914</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 915</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 916</pre></span><pre>class BasicSet(set):</pre></div>
+<div class="cov"><span class="num"><pre> 917</pre></span><pre>	&quot;&quot;&quot; Set with ability to return the key which matches the requested one</pre></div>
+<div class="skip"><span class="num"><pre> 918</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 919</pre></span><pre>	This functionality is the built-in in default STL sets, and I do not understand</pre></div>
+<div class="cov"><span class="num"><pre> 920</pre></span><pre>	why it is not provided here ! Of course I want to define custom objects with overridden</pre></div>
+<div class="cov"><span class="num"><pre> 921</pre></span><pre>	hash functions, put them into a set, and finally retrieve the same object again !</pre></div>
+<div class="skip"><span class="num"><pre> 922</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 923</pre></span><pre>	:note: indexing a set is not the fastest because the matching key has to be searched.</pre></div>
+<div class="cov"><span class="num"><pre> 924</pre></span><pre>		Good news is that the actual 'is k in set' question can be answered quickly&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 925</pre></span><pre>	__slots__ = tuple()</pre></div>
+<div class="skip"><span class="num"><pre> 926</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 927</pre></span><pre>	def __getitem__(self, item):</pre></div>
+<div class="skip"><span class="num"><pre> 928</pre></span><pre>		# assure we have the item</pre></div>
+<div class="cov"><span class="num"><pre> 929</pre></span><pre>		if not item in self:</pre></div>
+<div class="cov"><span class="num"><pre> 930</pre></span><pre>			raise KeyError()</pre></div>
+<div class="skip"><span class="num"><pre> 931</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 932</pre></span><pre>		# find the actual keyitem</pre></div>
+<div class="cov"><span class="num"><pre> 933</pre></span><pre>		for key in iter(self):</pre></div>
+<div class="cov"><span class="num"><pre> 934</pre></span><pre>			if key == item:</pre></div>
+<div class="cov"><span class="num"><pre> 935</pre></span><pre>				return key</pre></div>
+<div class="skip"><span class="num"><pre> 936</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 937</pre></span><pre>		# should never come here !</pre></div>
+<div class="nocov"><span class="num"><pre> 938</pre></span><pre>		raise AssertionError(&quot;Should never have come here&quot;)</pre></div>
+<div class="skip"><span class="num"><pre> 939</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 940</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 941</pre></span><pre>class _PropertyHolderBase(object):</pre></div>
+<div class="cov"><span class="num"><pre> 942</pre></span><pre>	&quot;&quot;&quot;Simple Base defining how to deal with properties</pre></div>
+<div class="cov"><span class="num"><pre> 943</pre></span><pre>	:note: to use this interface, the subclass must have a 'name' field&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 944</pre></span><pre>	__slots__ = ('properties', 'name', 'order') </pre></div>
+<div class="skip"><span class="num"><pre> 945</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 946</pre></span><pre>	def __init__(self, name, order):</pre></div>
+<div class="skip"><span class="num"><pre> 947</pre></span><pre>		# assure we do not get recursive here</pre></div>
+<div class="cov"><span class="num"><pre> 948</pre></span><pre>		self.properties = None</pre></div>
+<div class="cov"><span class="num"><pre> 949</pre></span><pre>		self.name = name</pre></div>
+<div class="cov"><span class="num"><pre> 950</pre></span><pre>		self.order = order</pre></div>
+<div class="cov"><span class="num"><pre> 951</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre> 952</pre></span><pre>			if not isinstance(self, PropertySection):</pre></div>
+<div class="cov"><span class="num"><pre> 953</pre></span><pre>				self.properties = PropertySection(&quot;+&quot; + self.name, self.order+1) # default is to write our properties after ourselves		# will be created on demand to avoid recursion on creation</pre></div>
+<div class="nocov"><span class="num"><pre> 954</pre></span><pre>		except:</pre></div>
+<div class="nocov"><span class="num"><pre> 955</pre></span><pre>			pass</pre></div>
+<div class="skip"><span class="num"><pre> 956</pre></span><pre>		# END exception handling</pre></div>
+<div class="skip"><span class="num"><pre> 957</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 958</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 959</pre></span><pre>class Key(_PropertyHolderBase):</pre></div>
+<div class="cov"><span class="num"><pre> 960</pre></span><pre>	&quot;&quot;&quot; Key with an associated values and an optional set of propterties</pre></div>
+<div class="skip"><span class="num"><pre> 961</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 962</pre></span><pre>	:note: a key's value will be always be stripped if its a string</pre></div>
+<div class="cov"><span class="num"><pre> 963</pre></span><pre>	:note: a key's name will be stored stripped only, must not contain certain chars</pre></div>
+<div class="cov"><span class="num"><pre> 964</pre></span><pre>	:todo: add support for escpaing comas within quotes - currently it split at</pre></div>
+<div class="cov"><span class="num"><pre> 965</pre></span><pre>		comas, no matter what&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 966</pre></span><pre>	__slots__ = ('_name', '_values', 'values')</pre></div>
+<div class="cov"><span class="num"><pre> 967</pre></span><pre>	validchars = r'[\w\(\)]'</pre></div>
+<div class="cov"><span class="num"><pre> 968</pre></span><pre>	_re_checkName = re.compile(validchars+r'+')			# only word characters are allowed in key names, and paranthesis</pre></div>
+<div class="cov"><span class="num"><pre> 969</pre></span><pre>	_re_checkValue = re.compile(r'[^\n\t\r]+')					# be as open as possible</pre></div>
+<div class="skip"><span class="num"><pre> 970</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 971</pre></span><pre>	def __init__(self, name, value, order):</pre></div>
+<div class="cov"><span class="num"><pre> 972</pre></span><pre>		&quot;&quot;&quot; Basic Field Initialization</pre></div>
+<div class="skip"><span class="num"><pre> 973</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre> 974</pre></span><pre>		:param order: -1 = will be written to end of list, or to given position otherwise &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 975</pre></span><pre>		self._name			= ''</pre></div>
+<div class="cov"><span class="num"><pre> 976</pre></span><pre>		self._values 		= list()				# value will always be stored as a list</pre></div>
+<div class="cov"><span class="num"><pre> 977</pre></span><pre>		self.values 		= value				# store the value</pre></div>
+<div class="cov"><span class="num"><pre> 978</pre></span><pre>		_PropertyHolderBase.__init__(self, name, order)</pre></div>
+<div class="skip"><span class="num"><pre> 979</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 980</pre></span><pre>	def __hash__(self):</pre></div>
+<div class="cov"><span class="num"><pre> 981</pre></span><pre>		return self._name.__hash__()</pre></div>
+<div class="skip"><span class="num"><pre> 982</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 983</pre></span><pre>	def __eq__(self, other):</pre></div>
+<div class="cov"><span class="num"><pre> 984</pre></span><pre>		return self._name == str(other)</pre></div>
+<div class="skip"><span class="num"><pre> 985</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 986</pre></span><pre>	def __repr__(self):</pre></div>
+<div class="cov"><span class="num"><pre> 987</pre></span><pre>		&quot;&quot;&quot; :return: ini string representation &quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre> 988</pre></span><pre>		return self._name + &quot; = &quot; + ','.join([str(val) for val in self._values])</pre></div>
+<div class="skip"><span class="num"><pre> 989</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 990</pre></span><pre>	def __str__(self):</pre></div>
+<div class="cov"><span class="num"><pre> 991</pre></span><pre>		&quot;&quot;&quot; :return: key name &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 992</pre></span><pre>		return self._name</pre></div>
+<div class="skip"><span class="num"><pre> 993</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 994</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre> 995</pre></span><pre>	def _parseObject(cls, valuestr):</pre></div>
+<div class="cov"><span class="num"><pre> 996</pre></span><pre>		&quot;&quot;&quot; :return: int,float or str from valuestring &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 997</pre></span><pre>		types = (long, float)</pre></div>
+<div class="cov"><span class="num"><pre> 998</pre></span><pre>		for numtype in types:</pre></div>
+<div class="cov"><span class="num"><pre> 999</pre></span><pre>			try:</pre></div>
+<div class="cov"><span class="num"><pre>1000</pre></span><pre>				val = numtype(valuestr)</pre></div>
+<div class="skip"><span class="num"><pre>1001</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1002</pre></span><pre>				# truncated value ?</pre></div>
+<div class="cov"><span class="num"><pre>1003</pre></span><pre>				if val != float(valuestr):</pre></div>
+<div class="cov"><span class="num"><pre>1004</pre></span><pre>					continue</pre></div>
+<div class="skip"><span class="num"><pre>1005</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1006</pre></span><pre>				return val</pre></div>
+<div class="cov"><span class="num"><pre>1007</pre></span><pre>			except (ValueError,TypeError):</pre></div>
+<div class="cov"><span class="num"><pre>1008</pre></span><pre>				continue</pre></div>
+<div class="skip"><span class="num"><pre>1009</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1010</pre></span><pre>		if not isinstance(valuestr, basestring):</pre></div>
+<div class="nocov"><span class="num"><pre>1011</pre></span><pre>			raise TypeError(&quot;Invalid value type: only int, long, float and str are allowed&quot;, valuestr)</pre></div>
+<div class="skip"><span class="num"><pre>1012</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1013</pre></span><pre>		return _checkString(valuestr, cls._re_checkValue)</pre></div>
+<div class="skip"><span class="num"><pre>1014</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1015</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1016</pre></span><pre>	def _excPrependNameAndRaise(self):</pre></div>
+<div class="nocov"><span class="num"><pre>1017</pre></span><pre>		_excmsgprefix(&quot;Key = &quot; + self._name + &quot;: &quot;)</pre></div>
+<div class="nocov"><span class="num"><pre>1018</pre></span><pre>		raise</pre></div>
+<div class="skip"><span class="num"><pre>1019</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1020</pre></span><pre>	def _setName(self, name):</pre></div>
+<div class="cov"><span class="num"><pre>1021</pre></span><pre>		&quot;&quot;&quot; Set the name</pre></div>
+<div class="cov"><span class="num"><pre>1022</pre></span><pre>		:raise ValueError: incorrect name&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1023</pre></span><pre>		if not len(name):</pre></div>
+<div class="nocov"><span class="num"><pre>1024</pre></span><pre>			raise ValueError(&quot;Key names must not be empty&quot;)</pre></div>
+<div class="cov"><span class="num"><pre>1025</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre>1026</pre></span><pre>			self._name = _checkString(name, self._re_checkName)</pre></div>
+<div class="nocov"><span class="num"><pre>1027</pre></span><pre>		except (TypeError,ValueError):</pre></div>
+<div class="nocov"><span class="num"><pre>1028</pre></span><pre>			self._excPrependNameAndRaise()</pre></div>
+<div class="skip"><span class="num"><pre>1029</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1030</pre></span><pre>	def _getName(self):</pre></div>
+<div class="cov"><span class="num"><pre>1031</pre></span><pre>		return self._name</pre></div>
+<div class="skip"><span class="num"><pre>1032</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1033</pre></span><pre>	def _setValue(self, value):</pre></div>
+<div class="cov"><span class="num"><pre>1034</pre></span><pre>		&quot;&quot;&quot;:note: internally, we always store a list</pre></div>
+<div class="cov"><span class="num"><pre>1035</pre></span><pre>		:raise TypeError:</pre></div>
+<div class="cov"><span class="num"><pre>1036</pre></span><pre>		:raise ValueError: &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1037</pre></span><pre>		validvalues = value</pre></div>
+<div class="cov"><span class="num"><pre>1038</pre></span><pre>		if not isinstance(value, (list, tuple)):</pre></div>
+<div class="cov"><span class="num"><pre>1039</pre></span><pre>			validvalues = [value]</pre></div>
+<div class="skip"><span class="num"><pre>1040</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1041</pre></span><pre>		for i in xrange(0, len(validvalues)):</pre></div>
+<div class="cov"><span class="num"><pre>1042</pre></span><pre>			try:</pre></div>
+<div class="cov"><span class="num"><pre>1043</pre></span><pre>				validvalues[i] = self._parseObject(validvalues[i])</pre></div>
+<div class="nocov"><span class="num"><pre>1044</pre></span><pre>			except (ValueError,TypeError):</pre></div>
+<div class="nocov"><span class="num"><pre>1045</pre></span><pre>				 self._excPrependNameAndRaise()</pre></div>
+<div class="skip"><span class="num"><pre>1046</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1047</pre></span><pre>		# assure we have always a value - if we write zero values to file, we</pre></div>
+<div class="skip"><span class="num"><pre>1048</pre></span><pre>		# throw a parse error - thus we may not tolerate empty values</pre></div>
+<div class="skip"><span class="num"><pre>1049</pre></span><pre>		# NO: Allow that at runtime, simply drop these keys during file write</pre></div>
+<div class="skip"><span class="num"><pre>1050</pre></span><pre>		# to be consistent with section handling</pre></div>
+<div class="cov"><span class="num"><pre>1051</pre></span><pre>		self._values = validvalues</pre></div>
+<div class="skip"><span class="num"><pre>1052</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1053</pre></span><pre>	def _getValue(self): return self._values</pre></div>
+<div class="skip"><span class="num"><pre>1054</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1055</pre></span><pre>	def _getValueSingle(self): return self._values[0]</pre></div>
+<div class="skip"><span class="num"><pre>1056</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1057</pre></span><pre>	def _addRemoveValue(self, value, mode):</pre></div>
+<div class="cov"><span class="num"><pre>1058</pre></span><pre>		&quot;&quot;&quot;Append or remove value to/from our value according to mode</pre></div>
+<div class="skip"><span class="num"><pre>1059</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>1060</pre></span><pre>		:param mode: 0 = remove, 1 = add&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1061</pre></span><pre>		tmpvalues = value</pre></div>
+<div class="cov"><span class="num"><pre>1062</pre></span><pre>		if not isinstance(value, (list,tuple)):</pre></div>
+<div class="cov"><span class="num"><pre>1063</pre></span><pre>			tmpvalues = (value,)</pre></div>
+<div class="skip"><span class="num"><pre>1064</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1065</pre></span><pre>		finalvalues = self._values[:]</pre></div>
+<div class="cov"><span class="num"><pre>1066</pre></span><pre>		if mode:</pre></div>
+<div class="cov"><span class="num"><pre>1067</pre></span><pre>			finalvalues.extend(tmpvalues)</pre></div>
+<div class="cov"><span class="num"><pre>1068</pre></span><pre>		else:</pre></div>
+<div class="cov"><span class="num"><pre>1069</pre></span><pre>			for val in tmpvalues:</pre></div>
+<div class="cov"><span class="num"><pre>1070</pre></span><pre>				if val in finalvalues:</pre></div>
+<div class="cov"><span class="num"><pre>1071</pre></span><pre>					finalvalues.remove(val)</pre></div>
+<div class="skip"><span class="num"><pre>1072</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1073</pre></span><pre>		self.values = finalvalues</pre></div>
+<div class="skip"><span class="num"><pre>1074</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1075</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1076</pre></span><pre>	#{ Utilities</pre></div>
+<div class="cov"><span class="num"><pre>1077</pre></span><pre>	def appendValue(self, value):</pre></div>
+<div class="cov"><span class="num"><pre>1078</pre></span><pre>		&quot;&quot;&quot;Append the given value or list of values to the list of current values</pre></div>
+<div class="skip"><span class="num"><pre>1079</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>1080</pre></span><pre>		:param value: list, tuple or scalar value</pre></div>
+<div class="cov"><span class="num"><pre>1081</pre></span><pre>		:todo: this implementation could be faster (costing more code)&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1082</pre></span><pre>		self._addRemoveValue(value, True)</pre></div>
+<div class="skip"><span class="num"><pre>1083</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1084</pre></span><pre>	def removeValue(self, value):</pre></div>
+<div class="cov"><span class="num"><pre>1085</pre></span><pre>		&quot;&quot;&quot;remove the given value or list of values from the list of current values</pre></div>
+<div class="skip"><span class="num"><pre>1086</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>1087</pre></span><pre>		:param value: list, tuple or scalar value</pre></div>
+<div class="cov"><span class="num"><pre>1088</pre></span><pre>		:todo: this implementation could be faster (costing more code)&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1089</pre></span><pre>		self._addRemoveValue(value, False)</pre></div>
+<div class="skip"><span class="num"><pre>1090</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1091</pre></span><pre>	def valueString(self):</pre></div>
+<div class="cov"><span class="num"><pre>1092</pre></span><pre>		&quot;&quot;&quot; Convert our value to a string suitable for the INI format &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1093</pre></span><pre>		strtmp = [str(v) for v in self._values]</pre></div>
+<div class="cov"><span class="num"><pre>1094</pre></span><pre>		return ','.join(strtmp)</pre></div>
+<div class="skip"><span class="num"><pre>1095</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1096</pre></span><pre>	def mergeWith(self, otherkey):</pre></div>
+<div class="cov"><span class="num"><pre>1097</pre></span><pre>		&quot;&quot;&quot;Merge self with otherkey according to our properties</pre></div>
+<div class="skip"><span class="num"><pre>1098</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>1099</pre></span><pre>		:note: self will be altered&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>1100</pre></span><pre>		# merge properties</pre></div>
+<div class="cov"><span class="num"><pre>1101</pre></span><pre>		if self.properties != None:</pre></div>
+<div class="cov"><span class="num"><pre>1102</pre></span><pre>			self.properties.mergeWith(otherkey.properties)</pre></div>
+<div class="skip"><span class="num"><pre>1103</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1104</pre></span><pre>		#:todo: merge properly, default is setting the values</pre></div>
+<div class="cov"><span class="num"><pre>1105</pre></span><pre>		self._values = otherkey._values[:]</pre></div>
+<div class="skip"><span class="num"><pre>1106</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1107</pre></span><pre>	#} END utilities</pre></div>
+<div class="skip"><span class="num"><pre>1108</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1109</pre></span><pre>	#{Properties</pre></div>
+<div class="cov"><span class="num"><pre>1110</pre></span><pre>	name = property(_getName, _setName)</pre></div>
+<div class="cov"><span class="num"><pre>1111</pre></span><pre>	&quot;&quot;&quot; Access the name of the key&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1112</pre></span><pre>	values = property(_getValue, _setValue)</pre></div>
+<div class="cov"><span class="num"><pre>1113</pre></span><pre>	&quot;&quot;&quot; read: values of the key as list</pre></div>
+<div class="cov"><span class="num"><pre>1114</pre></span><pre>	write: write single values or llist of values &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1115</pre></span><pre>	value = property(_getValueSingle, _setValue)</pre></div>
+<div class="cov"><span class="num"><pre>1116</pre></span><pre>	&quot;&quot;&quot;read: first value if the key's values</pre></div>
+<div class="cov"><span class="num"><pre>1117</pre></span><pre>	write: same effect as write of 'values' &quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>1118</pre></span><pre>	#} END properties </pre></div>
+<div class="skip"><span class="num"><pre>1119</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1120</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1121</pre></span><pre>class Section(_PropertyHolderBase):</pre></div>
+<div class="cov"><span class="num"><pre>1122</pre></span><pre>	&quot;&quot;&quot; Class defininig an indivual section of a configuration file including</pre></div>
+<div class="cov"><span class="num"><pre>1123</pre></span><pre>	all its keys and section properties</pre></div>
+<div class="skip"><span class="num"><pre>1124</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1125</pre></span><pre>	:note: name will be stored stripped and must not contain certain chars &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1126</pre></span><pre>	__slots__ = ('_name', 'keys')</pre></div>
+<div class="cov"><span class="num"><pre>1127</pre></span><pre>	_re_checkName = re.compile(r'\+?\w+(:' + Key.validchars+ r'+)?')</pre></div>
+<div class="skip"><span class="num"><pre>1128</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1129</pre></span><pre>	def __iter__(self):</pre></div>
+<div class="cov"><span class="num"><pre>1130</pre></span><pre>		&quot;&quot;&quot;:return: key iterator&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1131</pre></span><pre>		return iter(self.keys)</pre></div>
+<div class="skip"><span class="num"><pre>1132</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1133</pre></span><pre>	def __init__(self, name, order):</pre></div>
+<div class="cov"><span class="num"><pre>1134</pre></span><pre>		&quot;&quot;&quot;Basic Field Initialization</pre></div>
+<div class="skip"><span class="num"><pre>1135</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>1136</pre></span><pre>		:param order: -1 = will be written to end of list, or to given position otherwise &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1137</pre></span><pre>		self._name 			= ''</pre></div>
+<div class="cov"><span class="num"><pre>1138</pre></span><pre>		self.keys 			= BasicSet()</pre></div>
+<div class="cov"><span class="num"><pre>1139</pre></span><pre>		_PropertyHolderBase.__init__(self, name, order)</pre></div>
+<div class="skip"><span class="num"><pre>1140</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1141</pre></span><pre>	def __hash__(self):</pre></div>
+<div class="cov"><span class="num"><pre>1142</pre></span><pre>		return self._name.__hash__()</pre></div>
+<div class="skip"><span class="num"><pre>1143</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1144</pre></span><pre>	def __eq__(self, other):</pre></div>
+<div class="cov"><span class="num"><pre>1145</pre></span><pre>		return self._name == str(other)</pre></div>
+<div class="skip"><span class="num"><pre>1146</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1147</pre></span><pre>	def __str__(self):</pre></div>
+<div class="cov"><span class="num"><pre>1148</pre></span><pre>		&quot;&quot;&quot; :return: section name &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1149</pre></span><pre>		return self._name</pre></div>
+<div class="skip"><span class="num"><pre>1150</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1151</pre></span><pre>	#def __getattr__(self, keyname):</pre></div>
+<div class="cov"><span class="num"><pre>1152</pre></span><pre>		&quot;&quot;&quot;:return: the key with the given name if it exists</pre></div>
+<div class="cov"><span class="num"><pre>1153</pre></span><pre>		:raise NoOptionError: &quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>1154</pre></span><pre>	#	return self.key(keyname)</pre></div>
+<div class="skip"><span class="num"><pre>1155</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1156</pre></span><pre>	#def __setattr__(self, keyname, value):</pre></div>
+<div class="cov"><span class="num"><pre>1157</pre></span><pre>		&quot;&quot;&quot;Assign the given value to the given key  - it will be created if required&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>1158</pre></span><pre>	#	self.keyDefault(keyname, value).values = value</pre></div>
+<div class="skip"><span class="num"><pre>1159</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1160</pre></span><pre>	def _excPrependNameAndRaise(self):</pre></div>
+<div class="cov"><span class="num"><pre>1161</pre></span><pre>		_excmsgprefix(&quot;Section = &quot; + self._name + &quot;: &quot;)</pre></div>
+<div class="cov"><span class="num"><pre>1162</pre></span><pre>		raise</pre></div>
+<div class="skip"><span class="num"><pre>1163</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1164</pre></span><pre>	def _setName(self, name):</pre></div>
+<div class="cov"><span class="num"><pre>1165</pre></span><pre>		&quot;&quot;&quot;:raise ValueError: if name contains invalid chars&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1166</pre></span><pre>		if not len(name):</pre></div>
+<div class="nocov"><span class="num"><pre>1167</pre></span><pre>			raise ValueError(&quot;Section names must not be empty&quot;)</pre></div>
+<div class="cov"><span class="num"><pre>1168</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre>1169</pre></span><pre>			self._name = _checkString(name, Section._re_checkName)</pre></div>
+<div class="cov"><span class="num"><pre>1170</pre></span><pre>		except (ValueError,TypeError):</pre></div>
+<div class="cov"><span class="num"><pre>1171</pre></span><pre>			self._excPrependNameAndRaise()</pre></div>
+<div class="skip"><span class="num"><pre>1172</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1173</pre></span><pre>	def _getName(self):</pre></div>
+<div class="cov"><span class="num"><pre>1174</pre></span><pre>		return self._name</pre></div>
+<div class="skip"><span class="num"><pre>1175</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1176</pre></span><pre>	def mergeWith(self, othersection):</pre></div>
+<div class="cov"><span class="num"><pre>1177</pre></span><pre>		&quot;&quot;&quot;Merge our section with othersection</pre></div>
+<div class="skip"><span class="num"><pre>1178</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>1179</pre></span><pre>		:note:self will be altered&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>1180</pre></span><pre>		# adjust name - the default name is mostly not going to work - property sections</pre></div>
+<div class="skip"><span class="num"><pre>1181</pre></span><pre>		# possibly have non-qualified property names</pre></div>
+<div class="cov"><span class="num"><pre>1182</pre></span><pre>		self.name = othersection.name</pre></div>
+<div class="skip"><span class="num"><pre>1183</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1184</pre></span><pre>		# merge properties</pre></div>
+<div class="cov"><span class="num"><pre>1185</pre></span><pre>		if othersection.properties is not None:</pre></div>
+<div class="cov"><span class="num"><pre>1186</pre></span><pre>			self.properties.mergeWith(othersection.properties)</pre></div>
+<div class="skip"><span class="num"><pre>1187</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1188</pre></span><pre>		for fkey in othersection.keys:</pre></div>
+<div class="cov"><span class="num"><pre>1189</pre></span><pre>			key,created = self.keyDefault(fkey.name, 1)</pre></div>
+<div class="cov"><span class="num"><pre>1190</pre></span><pre>			if created:</pre></div>
+<div class="cov"><span class="num"><pre>1191</pre></span><pre>				key._values = list()	# reset the value if key has been newly created</pre></div>
+<div class="skip"><span class="num"><pre>1192</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1193</pre></span><pre>			# merge the keys</pre></div>
+<div class="cov"><span class="num"><pre>1194</pre></span><pre>			key.mergeWith(fkey)</pre></div>
+<div class="skip"><span class="num"><pre>1195</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1196</pre></span><pre>	#{ Properties</pre></div>
+<div class="cov"><span class="num"><pre>1197</pre></span><pre>	name = property(_getName, _setName)</pre></div>
+<div class="skip"><span class="num"><pre>1198</pre></span><pre>	#}</pre></div>
+<div class="skip"><span class="num"><pre>1199</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1200</pre></span><pre>	#{Key Access</pre></div>
+<div class="cov"><span class="num"><pre>1201</pre></span><pre>	def key(self, name):</pre></div>
+<div class="cov"><span class="num"><pre>1202</pre></span><pre>		&quot;&quot;&quot;:return: `Key` with name</pre></div>
+<div class="cov"><span class="num"><pre>1203</pre></span><pre>		:raise NoOptionError: &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1204</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre>1205</pre></span><pre>			return self.keys[name]</pre></div>
+<div class="cov"><span class="num"><pre>1206</pre></span><pre>		except KeyError:</pre></div>
+<div class="cov"><span class="num"><pre>1207</pre></span><pre>			raise NoOptionError(name, self.name)</pre></div>
+<div class="skip"><span class="num"><pre>1208</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1209</pre></span><pre>	def keyDefault(self, name, value):</pre></div>
+<div class="cov"><span class="num"><pre>1210</pre></span><pre>		&quot;&quot;&quot;:param value: anything supported by `setKey`</pre></div>
+<div class="cov"><span class="num"><pre>1211</pre></span><pre>		:return: tuple: 0 = `Key` with name, create it if required with given value, 1 = true if newly created, false otherwise&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1212</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre>1213</pre></span><pre>			return (self.key(name), False)</pre></div>
+<div class="cov"><span class="num"><pre>1214</pre></span><pre>		except NoOptionError:</pre></div>
+<div class="cov"><span class="num"><pre>1215</pre></span><pre>			key = Key(name, value, -1)</pre></div>
+<div class="skip"><span class="num"><pre>1216</pre></span><pre>			# set properties None if we are a propertysection ourselves</pre></div>
+<div class="cov"><span class="num"><pre>1217</pre></span><pre>			if isinstance(self, PropertySection):</pre></div>
+<div class="cov"><span class="num"><pre>1218</pre></span><pre>				key.properties = None</pre></div>
+<div class="cov"><span class="num"><pre>1219</pre></span><pre>			self.keys.add(key)</pre></div>
+<div class="cov"><span class="num"><pre>1220</pre></span><pre>			return (key, True)</pre></div>
+<div class="skip"><span class="num"><pre>1221</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1222</pre></span><pre>	def setKey(self, name, value):</pre></div>
+<div class="cov"><span class="num"><pre>1223</pre></span><pre>		&quot;&quot;&quot; Set the value to key with name, or create a new key with name and value</pre></div>
+<div class="skip"><span class="num"><pre>1224</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>1225</pre></span><pre>		:param value: int, long, float, string or list of any of such</pre></div>
+<div class="cov"><span class="num"><pre>1226</pre></span><pre>		:raise ValueError: if key has incorrect value</pre></div>
+<div class="cov"><span class="num"><pre>1227</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1228</pre></span><pre>		k = self.keyDefault(name, value)[0]</pre></div>
+<div class="cov"><span class="num"><pre>1229</pre></span><pre>		k.values = value</pre></div>
+<div class="skip"><span class="num"><pre>1230</pre></span><pre>	#} END key acccess</pre></div>
+<div class="skip"><span class="num"><pre>1231</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1232</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1233</pre></span><pre>class PropertySection(Section):</pre></div>
+<div class="cov"><span class="num"><pre>1234</pre></span><pre>	&quot;&quot;&quot;Define a section containing keys that make up properties of somethingI&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1235</pre></span><pre>	__slots__ = tuple()</pre></div>
+<div class="skip"><span class="num"><pre>1236</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1237</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1238</pre></span><pre>class ConfigNode(object):</pre></div>
+<div class="cov"><span class="num"><pre>1239</pre></span><pre>	&quot;&quot;&quot; Represents node in the configuration chain</pre></div>
+<div class="skip"><span class="num"><pre>1240</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1241</pre></span><pre>	It keeps information about the origin of the configuration and all its data.</pre></div>
+<div class="cov"><span class="num"><pre>1242</pre></span><pre>	Additionally, it is aware of it being element of a chain, and can provide next</pre></div>
+<div class="cov"><span class="num"><pre>1243</pre></span><pre>	and previous elements respectively &quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>1244</pre></span><pre>	#{Construction/Destruction</pre></div>
+<div class="cov"><span class="num"><pre>1245</pre></span><pre>	__slots__ = ('_sections', '_fp')</pre></div>
+<div class="cov"><span class="num"><pre>1246</pre></span><pre>	def __init__(self, fp):</pre></div>
+<div class="cov"><span class="num"><pre>1247</pre></span><pre>		&quot;&quot;&quot; Initialize Class Instance&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1248</pre></span><pre>		self._sections	= BasicSet()			# associate sections with key holders</pre></div>
+<div class="cov"><span class="num"><pre>1249</pre></span><pre>		self._fp		= fp					# file-like object that we can read from and possibly write to</pre></div>
+<div class="skip"><span class="num"><pre>1250</pre></span><pre>	#}</pre></div>
+<div class="skip"><span class="num"><pre>1251</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1252</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1253</pre></span><pre>	def _isWritable(self):</pre></div>
+<div class="cov"><span class="num"><pre>1254</pre></span><pre>		return self._fp.isWritable()</pre></div>
+<div class="skip"><span class="num"><pre>1255</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1256</pre></span><pre>	#{Properties</pre></div>
+<div class="cov"><span class="num"><pre>1257</pre></span><pre>	writable = property(_isWritable)		# read-only attribute</pre></div>
+<div class="skip"><span class="num"><pre>1258</pre></span><pre>	#}</pre></div>
+<div class="skip"><span class="num"><pre>1259</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1260</pre></span><pre>	def _update(self, configparser):</pre></div>
+<div class="cov"><span class="num"><pre>1261</pre></span><pre>		&quot;&quot;&quot; Update our data with data from configparser &quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>1262</pre></span><pre>		# first get all data</pre></div>
+<div class="cov"><span class="num"><pre>1263</pre></span><pre>		snames = configparser.sections()</pre></div>
+<div class="cov"><span class="num"><pre>1264</pre></span><pre>		validsections = list()</pre></div>
+<div class="cov"><span class="num"><pre>1265</pre></span><pre>		for i in xrange(0, len(snames)):</pre></div>
+<div class="cov"><span class="num"><pre>1266</pre></span><pre>			sname = snames[i]</pre></div>
+<div class="cov"><span class="num"><pre>1267</pre></span><pre>			items = configparser.items(sname)</pre></div>
+<div class="cov"><span class="num"><pre>1268</pre></span><pre>			section = self.sectionDefault(sname)</pre></div>
+<div class="cov"><span class="num"><pre>1269</pre></span><pre>			section.order = i*2		# allows us to have ordering room to move items in - like properties</pre></div>
+<div class="cov"><span class="num"><pre>1270</pre></span><pre>			for k,v in items:</pre></div>
+<div class="cov"><span class="num"><pre>1271</pre></span><pre>				section.setKey(k, v.split(','))</pre></div>
+<div class="cov"><span class="num"><pre>1272</pre></span><pre>			validsections.append(section)</pre></div>
+<div class="skip"><span class="num"><pre>1273</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1274</pre></span><pre>		self._sections.update(set(validsections))</pre></div>
+<div class="skip"><span class="num"><pre>1275</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1276</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1277</pre></span><pre>	def parse(self):</pre></div>
+<div class="cov"><span class="num"><pre>1278</pre></span><pre>		&quot;&quot;&quot; parse default INI information into the extended structure</pre></div>
+<div class="skip"><span class="num"><pre>1279</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1280</pre></span><pre>		Parse the given INI file using a _FixedConfigParser, convert all information in it</pre></div>
+<div class="cov"><span class="num"><pre>1281</pre></span><pre>		into an internal format</pre></div>
+<div class="skip"><span class="num"><pre>1282</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>1283</pre></span><pre>		:raise ConfigParsingError: &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1284</pre></span><pre>		rcp = _FixedConfigParser()</pre></div>
+<div class="cov"><span class="num"><pre>1285</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre>1286</pre></span><pre>			rcp.readfp(self._fp)</pre></div>
+<div class="cov"><span class="num"><pre>1287</pre></span><pre>			self._update(rcp)</pre></div>
+<div class="cov"><span class="num"><pre>1288</pre></span><pre>		except (ValueError,TypeError,ParsingError):</pre></div>
+<div class="cov"><span class="num"><pre>1289</pre></span><pre>			name = self._fp.name()</pre></div>
+<div class="cov"><span class="num"><pre>1290</pre></span><pre>			exc = sys.exc_info()[1]</pre></div>
+<div class="skip"><span class="num"><pre>1291</pre></span><pre>			# if error is ours, prepend filename</pre></div>
+<div class="cov"><span class="num"><pre>1292</pre></span><pre>			if not isinstance(exc, ParsingError):</pre></div>
+<div class="cov"><span class="num"><pre>1293</pre></span><pre>				_excmsgprefix(&quot;File: &quot; + name + &quot;: &quot;)</pre></div>
+<div class="cov"><span class="num"><pre>1294</pre></span><pre>			raise ConfigParsingError(str(exc))</pre></div>
+<div class="skip"><span class="num"><pre>1295</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1296</pre></span><pre>		# cache whether we can possibly write to that destination x</pre></div>
+<div class="skip"><span class="num"><pre>1297</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1298</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre>1299</pre></span><pre>	def _check_and_append(cls, sectionsforwriting, section):</pre></div>
+<div class="cov"><span class="num"><pre>1300</pre></span><pre>		&quot;&quot;&quot;Assure we ignore empty sections</pre></div>
+<div class="skip"><span class="num"><pre>1301</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>1302</pre></span><pre>		:return: True if section has been appended, false otherwise&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1303</pre></span><pre>		if section is not None and len(section.keys):</pre></div>
+<div class="cov"><span class="num"><pre>1304</pre></span><pre>			sectionsforwriting.append(section)</pre></div>
+<div class="cov"><span class="num"><pre>1305</pre></span><pre>			return True</pre></div>
+<div class="cov"><span class="num"><pre>1306</pre></span><pre>		return False</pre></div>
+<div class="skip"><span class="num"><pre>1307</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1308</pre></span><pre>	def write(self, rcp, close_fp=True):</pre></div>
+<div class="cov"><span class="num"><pre>1309</pre></span><pre>		&quot;&quot;&quot; Write our contents to our file-like object</pre></div>
+<div class="skip"><span class="num"><pre>1310</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>1311</pre></span><pre>		:param rcp: RawConfigParser to use for writing</pre></div>
+<div class="cov"><span class="num"><pre>1312</pre></span><pre>		:return: the name of the written file</pre></div>
+<div class="cov"><span class="num"><pre>1313</pre></span><pre>		:raise IOError: if we are read-only&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1314</pre></span><pre>		if not self._fp.isWritable():</pre></div>
+<div class="nocov"><span class="num"><pre>1315</pre></span><pre>			raise IOError(self._fp.name() + &quot; is not writable&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>1316</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1317</pre></span><pre>		sectionsforwriting = list()		# keep sections - will be ordered later for actual writing operation</pre></div>
+<div class="cov"><span class="num"><pre>1318</pre></span><pre>		for section in iter(self._sections):</pre></div>
+<div class="skip"><span class="num"><pre>1319</pre></span><pre>			# skip 'old' property sections - they have been parsed to the</pre></div>
+<div class="skip"><span class="num"><pre>1320</pre></span><pre>			# respective object (otherwise we get duplicate section errors of rawconfig parser)</pre></div>
+<div class="cov"><span class="num"><pre>1321</pre></span><pre>			if ConfigAccessor._isProperty(section.name):</pre></div>
+<div class="cov"><span class="num"><pre>1322</pre></span><pre>				continue</pre></div>
+<div class="skip"><span class="num"><pre>1323</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1324</pre></span><pre>			# append section and possibly property sectionss</pre></div>
+<div class="cov"><span class="num"><pre>1325</pre></span><pre>			ConfigNode._check_and_append(sectionsforwriting, section)</pre></div>
+<div class="cov"><span class="num"><pre>1326</pre></span><pre>			ConfigNode._check_and_append(sectionsforwriting, section.properties)</pre></div>
+<div class="skip"><span class="num"><pre>1327</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1328</pre></span><pre>			# append key sections</pre></div>
+<div class="skip"><span class="num"><pre>1329</pre></span><pre>			# NOTE: we always use fully qualified property names if they have been</pre></div>
+<div class="skip"><span class="num"><pre>1330</pre></span><pre>			# automatically generated</pre></div>
+<div class="skip"><span class="num"><pre>1331</pre></span><pre>			# Autogenerated ones are not in the node's section list</pre></div>
+<div class="cov"><span class="num"><pre>1332</pre></span><pre>			for key in section.keys:</pre></div>
+<div class="cov"><span class="num"><pre>1333</pre></span><pre>				if ConfigNode._check_and_append(sectionsforwriting, key.properties):</pre></div>
+<div class="skip"><span class="num"><pre>1334</pre></span><pre>					# autocreated ?</pre></div>
+<div class="cov"><span class="num"><pre>1335</pre></span><pre>					if not key.properties in self._sections:</pre></div>
+<div class="cov"><span class="num"><pre>1336</pre></span><pre>						key.properties.name = &quot;+&quot;+section.name+&quot;:&quot;+key.name</pre></div>
+<div class="skip"><span class="num"><pre>1337</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1338</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1339</pre></span><pre>		# sort list and add sorted list</pre></div>
+<div class="cov"><span class="num"><pre>1340</pre></span><pre>		sectionsforwriting = sorted(sectionsforwriting, key=lambda x: -x.order)	# inverse order</pre></div>
+<div class="skip"><span class="num"><pre>1341</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1342</pre></span><pre>		for section in sectionsforwriting:</pre></div>
+<div class="cov"><span class="num"><pre>1343</pre></span><pre>			rcp.add_section(section.name)</pre></div>
+<div class="cov"><span class="num"><pre>1344</pre></span><pre>			for key in section.keys:</pre></div>
+<div class="cov"><span class="num"><pre>1345</pre></span><pre>				if len(key.values) == 0:</pre></div>
+<div class="nocov"><span class="num"><pre>1346</pre></span><pre>					continue</pre></div>
+<div class="cov"><span class="num"><pre>1347</pre></span><pre>				rcp.set(section.name, key.name, key.valueString())</pre></div>
+<div class="skip"><span class="num"><pre>1348</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1349</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1350</pre></span><pre>		self._fp.openForWriting()</pre></div>
+<div class="cov"><span class="num"><pre>1351</pre></span><pre>		rcp.write(self._fp)</pre></div>
+<div class="cov"><span class="num"><pre>1352</pre></span><pre>		if close_fp:</pre></div>
+<div class="cov"><span class="num"><pre>1353</pre></span><pre>			self._fp.close()</pre></div>
+<div class="skip"><span class="num"><pre>1354</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1355</pre></span><pre>		return self._fp.name()</pre></div>
+<div class="skip"><span class="num"><pre>1356</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1357</pre></span><pre>	#{Section Access</pre></div>
+<div class="skip"><span class="num"><pre>1358</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1359</pre></span><pre>	def listSections(self):</pre></div>
+<div class="cov"><span class="num"><pre>1360</pre></span><pre>		&quot;&quot;&quot; :return: list() with string names of available sections</pre></div>
+<div class="cov"><span class="num"><pre>1361</pre></span><pre>		:todo: return an iterator instead&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1362</pre></span><pre>		out = list()</pre></div>
+<div class="cov"><span class="num"><pre>1363</pre></span><pre>		for section in self._sections: out.append(str(section))</pre></div>
+<div class="cov"><span class="num"><pre>1364</pre></span><pre>		return out</pre></div>
+<div class="skip"><span class="num"><pre>1365</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1366</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1367</pre></span><pre>	def section(self, name):</pre></div>
+<div class="cov"><span class="num"><pre>1368</pre></span><pre>		&quot;&quot;&quot;:return: `Section` with name</pre></div>
+<div class="cov"><span class="num"><pre>1369</pre></span><pre>		:raise NoSectionError: &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1370</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre>1371</pre></span><pre>			return self._sections[name]</pre></div>
+<div class="cov"><span class="num"><pre>1372</pre></span><pre>		except KeyError:</pre></div>
+<div class="cov"><span class="num"><pre>1373</pre></span><pre>			raise NoSectionError(name)</pre></div>
+<div class="skip"><span class="num"><pre>1374</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1375</pre></span><pre>	def hasSection(self, name):</pre></div>
+<div class="cov"><span class="num"><pre>1376</pre></span><pre>		&quot;&quot;&quot;:return: True if the given section exists&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1377</pre></span><pre>		return name in self._sections</pre></div>
+<div class="skip"><span class="num"><pre>1378</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1379</pre></span><pre>	def sectionDefault(self, name):</pre></div>
+<div class="cov"><span class="num"><pre>1380</pre></span><pre>		&quot;&quot;&quot;:return: `Section` with name, create it if required&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1381</pre></span><pre>		name = name.strip()</pre></div>
+<div class="cov"><span class="num"><pre>1382</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre>1383</pre></span><pre>			return self.section(name)</pre></div>
+<div class="cov"><span class="num"><pre>1384</pre></span><pre>		except NoSectionError:</pre></div>
+<div class="cov"><span class="num"><pre>1385</pre></span><pre>			sectionclass = Section</pre></div>
+<div class="cov"><span class="num"><pre>1386</pre></span><pre>			if ConfigAccessor._isProperty(name):</pre></div>
+<div class="cov"><span class="num"><pre>1387</pre></span><pre>				sectionclass = PropertySection</pre></div>
+<div class="skip"><span class="num"><pre>1388</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1389</pre></span><pre>			section = sectionclass(name, -1)</pre></div>
+<div class="cov"><span class="num"><pre>1390</pre></span><pre>			self._sections.add(section)</pre></div>
+<div class="cov"><span class="num"><pre>1391</pre></span><pre>			return section</pre></div>
+<div class="skip"><span class="num"><pre>1392</pre></span><pre>			</pre></div>
+<div class="skip"><span class="num"><pre>1393</pre></span><pre>	#} END section access</pre></div>
+<div class="skip"><span class="num"><pre>1394</pre></span><pre>#} END utility classes</pre></div>
+<div class="skip"><span class="num"><pre>1395</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1396</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1397</pre></span><pre>#{ Configuration Diffing Classes</pre></div>
+<div class="skip"><span class="num"><pre>1398</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1399</pre></span><pre>class DiffData(object):</pre></div>
+<div class="cov"><span class="num"><pre>1400</pre></span><pre>	&quot;&quot;&quot; Struct keeping data about added, removed and/or changed data</pre></div>
+<div class="cov"><span class="num"><pre>1401</pre></span><pre>	Subclasses should override some private methods to automatically utilize some</pre></div>
+<div class="cov"><span class="num"><pre>1402</pre></span><pre>	basic functionality</pre></div>
+<div class="skip"><span class="num"><pre>1403</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>1404</pre></span><pre>	Class instances define the following values:</pre></div>
+<div class="cov"><span class="num"><pre>1405</pre></span><pre>	 * ivar added: Copies of all the sections that are only in B (as they have been added to B)</pre></div>
+<div class="cov"><span class="num"><pre>1406</pre></span><pre>	 * ivar removed: Copies of all the sections that are only in A (as they have been removed from B)</pre></div>
+<div class="cov"><span class="num"><pre>1407</pre></span><pre>	 * ivar changed: Copies of all the sections that are in A and B, but with changed keys and/or properties&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1408</pre></span><pre>	__slots__ = ('added', 'removed', 'changed', 'unchanged','properties','name')</pre></div>
+<div class="skip"><span class="num"><pre>1409</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1410</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1411</pre></span><pre>	def __init__(self , A, B):</pre></div>
+<div class="cov"><span class="num"><pre>1412</pre></span><pre>		&quot;&quot;&quot; Initialize this instance with the differences of B compared to A &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1413</pre></span><pre>		self.properties = None</pre></div>
+<div class="cov"><span class="num"><pre>1414</pre></span><pre>		self.added = list()</pre></div>
+<div class="cov"><span class="num"><pre>1415</pre></span><pre>		self.removed = list()</pre></div>
+<div class="cov"><span class="num"><pre>1416</pre></span><pre>		self.changed = list()</pre></div>
+<div class="cov"><span class="num"><pre>1417</pre></span><pre>		self.unchanged = list()</pre></div>
+<div class="cov"><span class="num"><pre>1418</pre></span><pre>		self.name = ''</pre></div>
+<div class="cov"><span class="num"><pre>1419</pre></span><pre>		self._populate(A, B)</pre></div>
+<div class="skip"><span class="num"><pre>1420</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1421</pre></span><pre>	def toStr(self, typename):</pre></div>
+<div class="cov"><span class="num"><pre>1422</pre></span><pre>		&quot;&quot;&quot; Convert own data representation to a string &quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>1423</pre></span><pre>		out = ''</pre></div>
+<div class="nocov"><span class="num"><pre>1424</pre></span><pre>		attrs = ['added','removed','changed','unchanged']</pre></div>
+<div class="nocov"><span class="num"><pre>1425</pre></span><pre>		for attr in attrs:</pre></div>
+<div class="nocov"><span class="num"><pre>1426</pre></span><pre>			attrobj = getattr(self, attr)</pre></div>
+<div class="nocov"><span class="num"><pre>1427</pre></span><pre>			try:</pre></div>
+<div class="nocov"><span class="num"><pre>1428</pre></span><pre>				if len(attrobj) == 0:</pre></div>
+<div class="skip"><span class="num"><pre>1429</pre></span><pre>					# out += &quot;No &quot; + attr + &quot; &quot; + typename + &quot;(s) found\n&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>1430</pre></span><pre>					pass</pre></div>
+<div class="nocov"><span class="num"><pre>1431</pre></span><pre>				else:</pre></div>
+<div class="nocov"><span class="num"><pre>1432</pre></span><pre>					out += str(len(attrobj)) + &quot; &quot; + attr + &quot; &quot; + typename + &quot;(s) found\n&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>1433</pre></span><pre>					if len(self.name):</pre></div>
+<div class="nocov"><span class="num"><pre>1434</pre></span><pre>						out += &quot;In '&quot; + self.name + &quot;':\n&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>1435</pre></span><pre>					for item in attrobj:</pre></div>
+<div class="nocov"><span class="num"><pre>1436</pre></span><pre>						out += &quot;'&quot; + str(item) + &quot;'\n&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>1437</pre></span><pre>			except:</pre></div>
+<div class="nocov"><span class="num"><pre>1438</pre></span><pre>				raise</pre></div>
+<div class="skip"><span class="num"><pre>1439</pre></span><pre>				# out += attr + &quot; &quot; + typename + &quot; is not set\n&quot;</pre></div>
+<div class="skip"><span class="num"><pre>1440</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1441</pre></span><pre>		# append properties</pre></div>
+<div class="nocov"><span class="num"><pre>1442</pre></span><pre>		if self.properties is not None:</pre></div>
+<div class="nocov"><span class="num"><pre>1443</pre></span><pre>			out += &quot;-- Properties --\n&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>1444</pre></span><pre>			out += str(self.properties)</pre></div>
+<div class="skip"><span class="num"><pre>1445</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>1446</pre></span><pre>		return out</pre></div>
+<div class="skip"><span class="num"><pre>1447</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1448</pre></span><pre>	def _populate(self, A, B):</pre></div>
+<div class="cov"><span class="num"><pre>1449</pre></span><pre>		&quot;&quot;&quot; Should be implemented by subclass &quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>1450</pre></span><pre>		pass</pre></div>
+<div class="skip"><span class="num"><pre>1451</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1452</pre></span><pre>	def hasDifferences(self):</pre></div>
+<div class="cov"><span class="num"><pre>1453</pre></span><pre>		&quot;&quot;&quot;:return: true if we have stored differences (A  is not equal to B)&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1454</pre></span><pre>		return  (len(self.added) or len(self.removed) or len (self.changed) or \</pre></div>
+<div class="cov"><span class="num"><pre>1455</pre></span><pre>				(self.properties is not None and self.properties.hasDifferences()))</pre></div>
+<div class="skip"><span class="num"><pre>1456</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1457</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1458</pre></span><pre>class DiffKey(DiffData):</pre></div>
+<div class="cov"><span class="num"><pre>1459</pre></span><pre>	&quot;&quot;&quot; Implements DiffData on Key level &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1460</pre></span><pre>	__slots__ = tuple()</pre></div>
+<div class="skip"><span class="num"><pre>1461</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>1462</pre></span><pre>	def __str__(self):</pre></div>
+<div class="nocov"><span class="num"><pre>1463</pre></span><pre>		return self.toStr(&quot;Key-Value&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>1464</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1465</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre>1466</pre></span><pre>	def _subtractLists(cls, a, b):</pre></div>
+<div class="cov"><span class="num"><pre>1467</pre></span><pre>		&quot;&quot;&quot;Subtract the values of b from a, return the list with the differences&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1468</pre></span><pre>		acopy = a[:]</pre></div>
+<div class="cov"><span class="num"><pre>1469</pre></span><pre>		for val in b:</pre></div>
+<div class="cov"><span class="num"><pre>1470</pre></span><pre>			try:</pre></div>
+<div class="cov"><span class="num"><pre>1471</pre></span><pre>				acopy.remove(val)</pre></div>
+<div class="cov"><span class="num"><pre>1472</pre></span><pre>			except ValueError:</pre></div>
+<div class="cov"><span class="num"><pre>1473</pre></span><pre>				pass</pre></div>
+<div class="skip"><span class="num"><pre>1474</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1475</pre></span><pre>		return acopy</pre></div>
+<div class="skip"><span class="num"><pre>1476</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1477</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre>1478</pre></span><pre>	def _matchLists(cls, a, b):</pre></div>
+<div class="cov"><span class="num"><pre>1479</pre></span><pre>		&quot;&quot;&quot;:return: list of values that are common to both lists&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>1480</pre></span><pre>		badded = cls._subtractLists(b, a)</pre></div>
+<div class="nocov"><span class="num"><pre>1481</pre></span><pre>		return cls._subtractLists(b, badded)</pre></div>
+<div class="skip"><span class="num"><pre>1482</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1483</pre></span><pre>	def _populate(self, A, B):</pre></div>
+<div class="cov"><span class="num"><pre>1484</pre></span><pre>		&quot;&quot;&quot; Find added and removed key values</pre></div>
+<div class="skip"><span class="num"><pre>1485</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>1486</pre></span><pre>		:note: currently the implementation is not index based, but set- and thus value based</pre></div>
+<div class="cov"><span class="num"><pre>1487</pre></span><pre>		:note: changed has no meaning in this case and will always be empty &quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>1488</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1489</pre></span><pre>		# compare based on string list, as this matches the actual representation in the file</pre></div>
+<div class="cov"><span class="num"><pre>1490</pre></span><pre>		avals = frozenset(str(val) for val in A._values )</pre></div>
+<div class="cov"><span class="num"><pre>1491</pre></span><pre>		bvals = frozenset(str(val) for val in B._values )</pre></div>
+<div class="skip"><span class="num"><pre>1492</pre></span><pre>		# we store real</pre></div>
+<div class="cov"><span class="num"><pre>1493</pre></span><pre>		self.added = self._subtractLists(B._values, A._values)</pre></div>
+<div class="cov"><span class="num"><pre>1494</pre></span><pre>		self.removed = self._subtractLists(A._values, B._values)</pre></div>
+<div class="cov"><span class="num"><pre>1495</pre></span><pre>		self.unchanged = self._subtractLists(B._values, self.added)	# this gets the commonalities</pre></div>
+<div class="cov"><span class="num"><pre>1496</pre></span><pre>		self.changed = list()			# always empty -</pre></div>
+<div class="cov"><span class="num"><pre>1497</pre></span><pre>		self.name = A.name</pre></div>
+<div class="skip"><span class="num"><pre>1498</pre></span><pre>		# diff the properties</pre></div>
+<div class="cov"><span class="num"><pre>1499</pre></span><pre>		if A.properties is not None:</pre></div>
+<div class="cov"><span class="num"><pre>1500</pre></span><pre>			propdiff = DiffSection(A.properties, B.properties)</pre></div>
+<div class="cov"><span class="num"><pre>1501</pre></span><pre>			self.properties = propdiff			# attach propdiff no matter what</pre></div>
+<div class="skip"><span class="num"><pre>1502</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1503</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1504</pre></span><pre>	def applyTo(self, key):</pre></div>
+<div class="cov"><span class="num"><pre>1505</pre></span><pre>		&quot;&quot;&quot;Apply our changes to the given Key&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>1506</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1507</pre></span><pre>		# simply remove removed values</pre></div>
+<div class="cov"><span class="num"><pre>1508</pre></span><pre>		for removedval in self.removed:</pre></div>
+<div class="cov"><span class="num"><pre>1509</pre></span><pre>			try:</pre></div>
+<div class="cov"><span class="num"><pre>1510</pre></span><pre>				key._values.remove(removedval)</pre></div>
+<div class="nocov"><span class="num"><pre>1511</pre></span><pre>			except ValueError:</pre></div>
+<div class="nocov"><span class="num"><pre>1512</pre></span><pre>				pass</pre></div>
+<div class="skip"><span class="num"><pre>1513</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1514</pre></span><pre>		# simply add added values</pre></div>
+<div class="cov"><span class="num"><pre>1515</pre></span><pre>		key._values.extend(self.added)</pre></div>
+<div class="skip"><span class="num"><pre>1516</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1517</pre></span><pre>		# there are never changed values as this cannot be tracked</pre></div>
+<div class="skip"><span class="num"><pre>1518</pre></span><pre>		# finally apply the properties if we have some</pre></div>
+<div class="cov"><span class="num"><pre>1519</pre></span><pre>		if self.properties is not None:</pre></div>
+<div class="cov"><span class="num"><pre>1520</pre></span><pre>			self.properties.applyTo(key.properties)</pre></div>
+<div class="skip"><span class="num"><pre>1521</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1522</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1523</pre></span><pre>class DiffSection(DiffData):</pre></div>
+<div class="cov"><span class="num"><pre>1524</pre></span><pre>	&quot;&quot;&quot; Implements DiffData on section level &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1525</pre></span><pre>	__slots__ = tuple()</pre></div>
+<div class="skip"><span class="num"><pre>1526</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>1527</pre></span><pre>	def __str__(self):</pre></div>
+<div class="nocov"><span class="num"><pre>1528</pre></span><pre>		return self.toStr(&quot;Key&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>1529</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1530</pre></span><pre>	def _populate(self, A, B ):</pre></div>
+<div class="cov"><span class="num"><pre>1531</pre></span><pre>		&quot;&quot;&quot; Find the difference between the respective &quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>1532</pre></span><pre>		# get property diff if possible</pre></div>
+<div class="cov"><span class="num"><pre>1533</pre></span><pre>		if A.properties is not None:</pre></div>
+<div class="cov"><span class="num"><pre>1534</pre></span><pre>			propdiff = DiffSection(A.properties, B.properties)</pre></div>
+<div class="cov"><span class="num"><pre>1535</pre></span><pre>			self.properties = propdiff			# attach propdiff no matter what</pre></div>
+<div class="cov"><span class="num"><pre>1536</pre></span><pre>		else:</pre></div>
+<div class="cov"><span class="num"><pre>1537</pre></span><pre>			self.properties = None	# leave it Nonw - one should simply not try to get propertydiffs of property diffs</pre></div>
+<div class="skip"><span class="num"><pre>1538</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>1539</pre></span><pre>		self.added = list(copy.deepcopy(B.keys - A.keys))</pre></div>
+<div class="cov"><span class="num"><pre>1540</pre></span><pre>		self.removed = list(copy.deepcopy(A.keys - B.keys))</pre></div>
+<div class="cov"><span class="num"><pre>1541</pre></span><pre>		self.changed = list()</pre></div>
+<div class="cov"><span class="num"><pre>1542</pre></span><pre>		self.unchanged = list()</pre></div>
+<div class="cov"><span class="num"><pre>1543</pre></span><pre>		self.name = A.name</pre></div>
+<div class="skip"><span class="num"><pre>1544</pre></span><pre>		# find and set changed keys</pre></div>
+<div class="cov"><span class="num"><pre>1545</pre></span><pre>		common = A.keys &amp; B.keys</pre></div>
+<div class="cov"><span class="num"><pre>1546</pre></span><pre>		for key in common:</pre></div>
+<div class="cov"><span class="num"><pre>1547</pre></span><pre>			akey = A.key(str(key))</pre></div>
+<div class="cov"><span class="num"><pre>1548</pre></span><pre>			bkey = B.key(str(key))</pre></div>
+<div class="cov"><span class="num"><pre>1549</pre></span><pre>			dkey = DiffKey(akey, bkey)</pre></div>
+<div class="skip"><span class="num"><pre>1550</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1551</pre></span><pre>			if dkey.hasDifferences(): self.changed.append(dkey)</pre></div>
+<div class="cov"><span class="num"><pre>1552</pre></span><pre>			else: self.unchanged.append(key)</pre></div>
+<div class="skip"><span class="num"><pre>1553</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1554</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre>1555</pre></span><pre>	def _getNewKey(cls, section, keyname):</pre></div>
+<div class="cov"><span class="num"><pre>1556</pre></span><pre>		&quot;&quot;&quot;:return: key from section - either existing or properly initialized without default value&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1557</pre></span><pre>		key,created = section.keyDefault(keyname, &quot;dummy&quot;)</pre></div>
+<div class="cov"><span class="num"><pre>1558</pre></span><pre>		if created: key._values = list()			# reset value if created to assure we have no dummy values in there</pre></div>
+<div class="cov"><span class="num"><pre>1559</pre></span><pre>		return key</pre></div>
+<div class="skip"><span class="num"><pre>1560</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1561</pre></span><pre>	def applyTo(self, targetSection):</pre></div>
+<div class="cov"><span class="num"><pre>1562</pre></span><pre>		&quot;&quot;&quot;Apply our changes to targetSection&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>1563</pre></span><pre>		# properties may be None</pre></div>
+<div class="cov"><span class="num"><pre>1564</pre></span><pre>		if targetSection is None:</pre></div>
+<div class="nocov"><span class="num"><pre>1565</pre></span><pre>			return</pre></div>
+<div class="skip"><span class="num"><pre>1566</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1567</pre></span><pre>		# add added keys - they could exist already, which is why they are being merged</pre></div>
+<div class="cov"><span class="num"><pre>1568</pre></span><pre>		for addedkey in self.added:</pre></div>
+<div class="cov"><span class="num"><pre>1569</pre></span><pre>			key = self._getNewKey(targetSection, addedkey.name)</pre></div>
+<div class="cov"><span class="num"><pre>1570</pre></span><pre>			key.mergeWith(addedkey)</pre></div>
+<div class="skip"><span class="num"><pre>1571</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1572</pre></span><pre>		# remove moved keys - simply delete them from the list</pre></div>
+<div class="cov"><span class="num"><pre>1573</pre></span><pre>		for removedkey in self.removed:</pre></div>
+<div class="cov"><span class="num"><pre>1574</pre></span><pre>			if removedkey in targetSection.keys:</pre></div>
+<div class="cov"><span class="num"><pre>1575</pre></span><pre>				targetSection.keys.remove(removedkey)</pre></div>
+<div class="skip"><span class="num"><pre>1576</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1577</pre></span><pre>		# handle changed keys - we will create a new key if this is required</pre></div>
+<div class="cov"><span class="num"><pre>1578</pre></span><pre>		for changedKeyDiff in self.changed:</pre></div>
+<div class="cov"><span class="num"><pre>1579</pre></span><pre>			key = self._getNewKey(targetSection, changedKeyDiff.name)</pre></div>
+<div class="cov"><span class="num"><pre>1580</pre></span><pre>			changedKeyDiff.applyTo(key)</pre></div>
+<div class="skip"><span class="num"><pre>1581</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1582</pre></span><pre>		# apply section property diff</pre></div>
+<div class="cov"><span class="num"><pre>1583</pre></span><pre>		if self.properties is not None:</pre></div>
+<div class="cov"><span class="num"><pre>1584</pre></span><pre>			self.properties.applyTo(targetSection.properties)</pre></div>
+<div class="skip"><span class="num"><pre>1585</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1586</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1587</pre></span><pre>class ConfigDiffer(DiffData):</pre></div>
+<div class="cov"><span class="num"><pre>1588</pre></span><pre>	&quot;&quot;&quot;Compares two configuration objects and allows retrieval of differences</pre></div>
+<div class="skip"><span class="num"><pre>1589</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1590</pre></span><pre>	Use this class to find added/removed sections or keys or differences in values</pre></div>
+<div class="cov"><span class="num"><pre>1591</pre></span><pre>	and properties.</pre></div>
+<div class="skip"><span class="num"><pre>1592</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1593</pre></span><pre>	**Example Applicance**:</pre></div>
+<div class="cov"><span class="num"><pre>1594</pre></span><pre>		Test use it to verify that reading and writing a (possibly) changed</pre></div>
+<div class="cov"><span class="num"><pre>1595</pre></span><pre>		configuration has the expected results</pre></div>
+<div class="cov"><span class="num"><pre>1596</pre></span><pre>		Programs interacting with the User by a GUI can easily determine whether</pre></div>
+<div class="cov"><span class="num"><pre>1597</pre></span><pre>		the user has actually changed something, applying actions only if required</pre></div>
+<div class="cov"><span class="num"><pre>1598</pre></span><pre>		alternatively, programs can simply be more efficient by acting only on</pre></div>
+<div class="cov"><span class="num"><pre>1599</pre></span><pre>		items that actually changed</pre></div>
+<div class="skip"><span class="num"><pre>1600</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>1601</pre></span><pre>	**Data Structure**:</pre></div>
+<div class="cov"><span class="num"><pre>1602</pre></span><pre>		* every object in the diffing structure has a 'name' attribute</pre></div>
+<div class="skip"><span class="num"><pre>1603</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>1604</pre></span><pre>		* ConfigDiffer.added|removed|unchanged: `Section` objects that have been added, removed</pre></div>
+<div class="cov"><span class="num"><pre>1605</pre></span><pre>		  or kept unchanged respectively</pre></div>
+<div class="skip"><span class="num"><pre>1606</pre></span><pre>		  </pre></div>
+<div class="cov"><span class="num"><pre>1607</pre></span><pre>		* ConfigDiffer.changed: `DiffSection` objects that indicate the changes in respective section</pre></div>
+<div class="skip"><span class="num"><pre>1608</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>1609</pre></span><pre>		 * DiffSection.added|removed|unchanged: `Key` objects that have been added, removed or kept unchanged respectively</pre></div>
+<div class="skip"><span class="num"><pre>1610</pre></span><pre>		 </pre></div>
+<div class="cov"><span class="num"><pre>1611</pre></span><pre>		 * DiffSection.changed: `DiffKey` objects that indicate the changes in the repsective key</pre></div>
+<div class="skip"><span class="num"><pre>1612</pre></span><pre>		 </pre></div>
+<div class="cov"><span class="num"><pre>1613</pre></span><pre>		  * DiffKey.added|removed: the key's values that have been added and/or removed respectively</pre></div>
+<div class="skip"><span class="num"><pre>1614</pre></span><pre>		  </pre></div>
+<div class="cov"><span class="num"><pre>1615</pre></span><pre>		  * DiffKey.properties: see DiffSection.properties</pre></div>
+<div class="skip"><span class="num"><pre>1616</pre></span><pre>		  </pre></div>
+<div class="cov"><span class="num"><pre>1617</pre></span><pre>		  * DiffSection.properties:None if this is a section diff, otherwise it contains a DiffSection with the respective differences</pre></div>
+<div class="cov"><span class="num"><pre>1618</pre></span><pre>	&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1619</pre></span><pre>	__slots__ = tuple()</pre></div>
+<div class="skip"><span class="num"><pre>1620</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>1621</pre></span><pre>	def __str__(self):</pre></div>
+<div class="cov"><span class="num"><pre>1622</pre></span><pre>		&quot;&quot;&quot; Print its own delta information - useful for debugging purposes &quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>1623</pre></span><pre>		return self.toStr('section')</pre></div>
+<div class="skip"><span class="num"><pre>1624</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1625</pre></span><pre>	@classmethod</pre></div>
+<div class="cov"><span class="num"><pre>1626</pre></span><pre>	def _getMergedSections(cls, configaccessor):</pre></div>
+<div class="cov"><span class="num"><pre>1627</pre></span><pre>		&quot;&quot;&quot;within config nodes, sections must be unique, between nodes,</pre></div>
+<div class="cov"><span class="num"><pre>1628</pre></span><pre>		this is not the case - sets would simply drop keys with the same name</pre></div>
+<div class="cov"><span class="num"><pre>1629</pre></span><pre>		leading to invalid results - thus we have to merge equally named sections</pre></div>
+<div class="skip"><span class="num"><pre>1630</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>1631</pre></span><pre>		:return: BasicSet with merged sections</pre></div>
+<div class="cov"><span class="num"><pre>1632</pre></span><pre>		:todo: make this algo work on sets instead of individual sections for performance&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1633</pre></span><pre>		sectionlist = list(configaccessor.sectionIterator())</pre></div>
+<div class="cov"><span class="num"><pre>1634</pre></span><pre>		if len(sectionlist) &lt; 2:</pre></div>
+<div class="cov"><span class="num"><pre>1635</pre></span><pre>			return BasicSet(sectionlist)</pre></div>
+<div class="skip"><span class="num"><pre>1636</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1637</pre></span><pre>		out = BasicSet()				# need a basic set for indexing</pre></div>
+<div class="cov"><span class="num"><pre>1638</pre></span><pre>		for section in sectionlist:</pre></div>
+<div class="skip"><span class="num"><pre>1639</pre></span><pre>			# skip property sections - they have been parsed into properties, but are</pre></div>
+<div class="skip"><span class="num"><pre>1640</pre></span><pre>			# still available as ordinary sections</pre></div>
+<div class="cov"><span class="num"><pre>1641</pre></span><pre>			if ConfigAccessor._isProperty(section.name):</pre></div>
+<div class="cov"><span class="num"><pre>1642</pre></span><pre>				continue</pre></div>
+<div class="skip"><span class="num"><pre>1643</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1644</pre></span><pre>			section_to_add = section</pre></div>
+<div class="cov"><span class="num"><pre>1645</pre></span><pre>			if section in out:</pre></div>
+<div class="skip"><span class="num"><pre>1646</pre></span><pre>				# get a copy of A and merge it with B</pre></div>
+<div class="skip"><span class="num"><pre>1647</pre></span><pre>				# assure the merge works left-to-right - previous to current</pre></div>
+<div class="skip"><span class="num"><pre>1648</pre></span><pre>				# NOTE: only the first copy makes sense - all the others that might follow are not required ...</pre></div>
+<div class="cov"><span class="num"><pre>1649</pre></span><pre>				merge_section = copy.deepcopy(out[section])	# copy section and all keys - they will be altered</pre></div>
+<div class="cov"><span class="num"><pre>1650</pre></span><pre>				merge_section.mergeWith(section)</pre></div>
+<div class="skip"><span class="num"><pre>1651</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1652</pre></span><pre>				#remove old and add copy</pre></div>
+<div class="cov"><span class="num"><pre>1653</pre></span><pre>				out.remove(section)</pre></div>
+<div class="cov"><span class="num"><pre>1654</pre></span><pre>				section_to_add = merge_section</pre></div>
+<div class="cov"><span class="num"><pre>1655</pre></span><pre>			out.add(section_to_add)</pre></div>
+<div class="cov"><span class="num"><pre>1656</pre></span><pre>		return out</pre></div>
+<div class="skip"><span class="num"><pre>1657</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1658</pre></span><pre>	def _populate(self, A, B):</pre></div>
+<div class="cov"><span class="num"><pre>1659</pre></span><pre>		&quot;&quot;&quot; Perform the acutal diffing operation to fill our data structures</pre></div>
+<div class="cov"><span class="num"><pre>1660</pre></span><pre>		:note: this method directly accesses ConfigAccessors internal datastructures &quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>1661</pre></span><pre>		# diff sections  - therefore we actually have to treat the chains</pre></div>
+<div class="skip"><span class="num"><pre>1662</pre></span><pre>		#  in a flattened manner</pre></div>
+<div class="skip"><span class="num"><pre>1663</pre></span><pre>		# built section sets !</pre></div>
+<div class="cov"><span class="num"><pre>1664</pre></span><pre>		asections = self._getMergedSections(A)</pre></div>
+<div class="cov"><span class="num"><pre>1665</pre></span><pre>		bsections = self._getMergedSections(B)</pre></div>
+<div class="skip"><span class="num"><pre>1666</pre></span><pre>		# assure we do not work on references !</pre></div>
+<div class="skip"><span class="num"><pre>1667</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>1668</pre></span><pre>		# Deepcopy can be 0 in case we are shutting down - deepcopy goes down too early </pre></div>
+<div class="skip"><span class="num"><pre>1669</pre></span><pre>		# for some reason</pre></div>
+<div class="cov"><span class="num"><pre>1670</pre></span><pre>		assert copy.deepcopy is not None, &quot;Deepcopy is not available&quot;</pre></div>
+<div class="cov"><span class="num"><pre>1671</pre></span><pre>		self.added = list(copy.deepcopy(bsections - asections))</pre></div>
+<div class="cov"><span class="num"><pre>1672</pre></span><pre>		self.removed = list(copy.deepcopy(asections - bsections))</pre></div>
+<div class="cov"><span class="num"><pre>1673</pre></span><pre>		self.changed = list()</pre></div>
+<div class="cov"><span class="num"><pre>1674</pre></span><pre>		self.unchanged = list()</pre></div>
+<div class="cov"><span class="num"><pre>1675</pre></span><pre>		self.name = ''</pre></div>
+<div class="cov"><span class="num"><pre>1676</pre></span><pre>		common = asections &amp; bsections		# will be copied later later on key level</pre></div>
+<div class="skip"><span class="num"><pre>1677</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>1678</pre></span><pre>		# get a deeper analysis of the common sections - added,removed,changed keys</pre></div>
+<div class="cov"><span class="num"><pre>1679</pre></span><pre>		for section in common:</pre></div>
+<div class="skip"><span class="num"><pre>1680</pre></span><pre>			# find out whether the section has changed</pre></div>
+<div class="cov"><span class="num"><pre>1681</pre></span><pre>			asection = asections[section]</pre></div>
+<div class="cov"><span class="num"><pre>1682</pre></span><pre>			bsection = bsections[section]</pre></div>
+<div class="cov"><span class="num"><pre>1683</pre></span><pre>			dsection = DiffSection(asection, bsection)</pre></div>
+<div class="cov"><span class="num"><pre>1684</pre></span><pre>			if dsection.hasDifferences(): </pre></div>
+<div class="cov"><span class="num"><pre>1685</pre></span><pre>				self.changed.append(dsection)</pre></div>
+<div class="cov"><span class="num"><pre>1686</pre></span><pre>			else: </pre></div>
+<div class="cov"><span class="num"><pre>1687</pre></span><pre>				self.unchanged.append(asection)</pre></div>
+<div class="skip"><span class="num"><pre>1688</pre></span><pre>		# END for each common section</pre></div>
+<div class="skip"><span class="num"><pre>1689</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1690</pre></span><pre>	def applyTo(self, ca):</pre></div>
+<div class="cov"><span class="num"><pre>1691</pre></span><pre>		&quot;&quot;&quot;Apply the stored differences in this ConfigDiffer instance to the given ConfigAccessor</pre></div>
+<div class="skip"><span class="num"><pre>1692</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1693</pre></span><pre>		If our diff contains the changes of A to B, then applying</pre></div>
+<div class="cov"><span class="num"><pre>1694</pre></span><pre>		ourselves to A would make A equal B.</pre></div>
+<div class="skip"><span class="num"><pre>1695</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1696</pre></span><pre>		:note: individual nodes reqpresenting an input source (like a file)</pre></div>
+<div class="cov"><span class="num"><pre>1697</pre></span><pre>			can be marked read-only. This means they cannot be altered - thus it can</pre></div>
+<div class="cov"><span class="num"><pre>1698</pre></span><pre>			be that section or key removal fails for them. Addition of elements normally</pre></div>
+<div class="cov"><span class="num"><pre>1699</pre></span><pre>			works as long as there is one writable node.</pre></div>
+<div class="skip"><span class="num"><pre>1700</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1701</pre></span><pre>		:param ca: The configacceesor to apply our differences to</pre></div>
+<div class="cov"><span class="num"><pre>1702</pre></span><pre>		:return: tuple of lists containing the sections that could not be added, removed or get</pre></div>
+<div class="cov"><span class="num"><pre>1703</pre></span><pre>			their changes applied</pre></div>
+<div class="skip"><span class="num"><pre>1704</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>1705</pre></span><pre>			 - [0] = list of `Section` s failed to be added</pre></div>
+<div class="skip"><span class="num"><pre>1706</pre></span><pre>			 </pre></div>
+<div class="cov"><span class="num"><pre>1707</pre></span><pre>			 - [1] = list of `Section` s failed to be removed</pre></div>
+<div class="skip"><span class="num"><pre>1708</pre></span><pre>			 </pre></div>
+<div class="cov"><span class="num"><pre>1709</pre></span><pre>			 - [2] = list of `DiffSection` s failed to apply their changes &quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>1710</pre></span><pre>			 </pre></div>
+<div class="skip"><span class="num"><pre>1711</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1712</pre></span><pre>		# merge the added sections - only to the first we find</pre></div>
+<div class="cov"><span class="num"><pre>1713</pre></span><pre>		rval = (list(),list(),list())</pre></div>
+<div class="cov"><span class="num"><pre>1714</pre></span><pre>		for addedsection in self.added:</pre></div>
+<div class="cov"><span class="num"><pre>1715</pre></span><pre>			try:</pre></div>
+<div class="cov"><span class="num"><pre>1716</pre></span><pre>				ca.mergeSection(addedsection)</pre></div>
+<div class="nocov"><span class="num"><pre>1717</pre></span><pre>			except IOError:</pre></div>
+<div class="nocov"><span class="num"><pre>1718</pre></span><pre>				rval[0].append(addedsection)</pre></div>
+<div class="skip"><span class="num"><pre>1719</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1720</pre></span><pre>		# remove removed sections - everywhere possible</pre></div>
+<div class="skip"><span class="num"><pre>1721</pre></span><pre>		# This is because diffs will only be done on merged lists</pre></div>
+<div class="cov"><span class="num"><pre>1722</pre></span><pre>		for removedsection in self.removed:</pre></div>
+<div class="cov"><span class="num"><pre>1723</pre></span><pre>			numfailedremoved = ca.removeSection(removedsection.name)</pre></div>
+<div class="cov"><span class="num"><pre>1724</pre></span><pre>			if numfailedremoved:</pre></div>
+<div class="nocov"><span class="num"><pre>1725</pre></span><pre>				rval[1].append(removedsection)</pre></div>
+<div class="skip"><span class="num"><pre>1726</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1727</pre></span><pre>		# handle the changed sections - here only keys or properties have changed</pre></div>
+<div class="skip"><span class="num"><pre>1728</pre></span><pre>		# respectively</pre></div>
+<div class="cov"><span class="num"><pre>1729</pre></span><pre>		for sectiondiff in self.changed:</pre></div>
+<div class="skip"><span class="num"><pre>1730</pre></span><pre>			# note: changes may only be applied once ! The diff works only on</pre></div>
+<div class="skip"><span class="num"><pre>1731</pre></span><pre>			# merged configuration chains - this means one secion only exists once</pre></div>
+<div class="skip"><span class="num"><pre>1732</pre></span><pre>			# here we have an unmerged config chain, and to get consistent results,</pre></div>
+<div class="skip"><span class="num"><pre>1733</pre></span><pre>			# the changes may only be applied to one section - we use the first we get</pre></div>
+<div class="cov"><span class="num"><pre>1734</pre></span><pre>			try:</pre></div>
+<div class="cov"><span class="num"><pre>1735</pre></span><pre>				targetSection = ca.sectionDefault(sectiondiff.name)</pre></div>
+<div class="cov"><span class="num"><pre>1736</pre></span><pre>				sectiondiff.applyTo(targetSection)</pre></div>
+<div class="nocov"><span class="num"><pre>1737</pre></span><pre>			except IOError:</pre></div>
+<div class="nocov"><span class="num"><pre>1738</pre></span><pre>				rval[2].append(sectiondiff)</pre></div>
+<div class="skip"><span class="num"><pre>1739</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>1740</pre></span><pre>		return rval</pre></div>
+<div class="skip"><span class="num"><pre>1741</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1742</pre></span><pre>#} END configuration diffing classes</pre></div>
+<div class="skip"><span class="num"><pre>1743</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>1744</pre></span><pre></pre></div>
+</div>
+</body>
+</html>

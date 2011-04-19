@@ -1,0 +1,893 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>mrv.maya.nt.anim &mdash; mrv v1.0.2-develop documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.2-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="mrv v1.0.2-develop documentation" href="../index.html" />
+    <link rel="next" title="mrv.maya.nt.util" href="mrv.maya.nt.util.html" />
+    <link rel="prev" title="mrv.maya.nt.apipatch" href="mrv.maya.nt.apipatch.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.nt.util.html" title="mrv.maya.nt.util"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.nt.apipatch.html" title="mrv.maya.nt.apipatch"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-mrv.maya.nt.anim">
+<h1><tt class="xref docutils literal"><span class="pre">mrv.maya.nt.anim</span></tt><a class="headerlink" href="#module-mrv.maya.nt.anim" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="api/mrv.maya.nt.anim-module.html">Epydoc: mrv.maya.nt.anim</a></p>
+<p>Contains implementations of animation specific types and utilities</p>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="api/mrv.maya.nt.anim.AnimCurve-class.html">Epydoc: mrv.maya.nt.anim.AnimCurve</a></p>
+<dl class="class">
+<dt id="mrv.maya.nt.anim.AnimCurve">
+<em class="property">class </em><tt class="descclassname">mrv.maya.nt.anim.</tt><tt class="descname">AnimCurve</tt><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">mrv.maya.nt.DependNode</span></tt></p>
+<p>Type representing a maya animation cuvrve, fixes existing MFnAnimCurve
+methods and provides new convenience methods as well</p>
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.addAttribute">
+<tt class="descname">addAttribute</tt><big>(</big><em>attr</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.addAttribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add the given attribute to the node as local dynamic attribute</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>attr</em> &#8211; MObject of attribute or Attribute instance as retrieved from
+a plug</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">plug to the newly added attribute</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">This method is explicitly not undoable as attributes are being deleted
+in memory right in the moment they are being removed, thus they cannot
+reside on the undo queue</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.maya.nt.anim.AnimCurve.addSep">
+<em class="property">classmethod </em><tt class="descname">addSep</tt><big>(</big><em>item</em>, <em>sep</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.addSep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">item with separator added to it ( just once )</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">operates best on strings</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>item</em> &#8211; item to add separator to</li>
+<li><em>sep</em> &#8211; the separator</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.addTo">
+<tt class="descname">addTo</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x44cffb0&gt; &gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.addTo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add ourselves to the given set</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">method is undoable</td>
+</tr>
+<tr class="field"><th class="field-name">See:</th><td class="field-body"><cite>sets.ObjectSet</cite></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.allocateFlag">
+<tt class="descname">allocateFlag</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.allocateFlag" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.apiObject">
+<tt class="descname">apiObject</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.apiObject" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the MObject attached to this Node</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.apiType">
+<tt class="descname">apiType</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.apiType" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the MFn Type id of the wrapped object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.basename">
+<tt class="descname">basename</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.basename" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">name of this instance</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">it is mainly for compatability with dagNodes which need this method 
+in order to return the name of their leaf node</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.children">
+<tt class="descname">children</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a39ed8&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.children" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of intermediate children of path, [ child1 , child2 ]</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; return True to include x in result</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">the child objects returned are supposed to be valid paths, not just relative paths</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.childrenDeep">
+<tt class="descname">childrenDeep</tt><big>(</big><em>order=1</em>, <em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c050&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.childrenDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of all children of path, [ child1 , child2 ]</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>order</em> &#8211; order enumeration</li>
+<li><em>predicate</em> &#8211; returns true if x may be returned</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">the child objects returned are supposed to be valid paths, not just relative paths</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.className">
+<tt class="descname">className</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.className" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.classification">
+<tt class="descname">classification</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.classification" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.connectedSets">
+<tt class="descname">connectedSets</tt><big>(</big><em>setFilter=(459</em>, <em>False</em>, <em>0)</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.connectedSets" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of object set compatible Nodes having self as member</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>setFilter</em> &#8211; tuple(apiType, use_exact_type) - the combination of the
+desired api type and the exact type flag allow precise control whether you which
+to get only renderable shading engines, only objectfSets (tuple[1] = True),
+or all objects supporting the given object type.
+Its preset to only return shading engines</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">the returned sets order is defined by the order connections to instObjGroups</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">only sets will be returned that have the whole object as member, thus you will not
+see sets having component assignments like per-compoent shader assignments or deformer sets</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.connections">
+<tt class="descname">connections</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.connections" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">MPlugArray of connected plugs</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.copyFrom">
+<tt class="descname">copyFrom</tt><big>(</big><em>other</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.copyFrom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy the data from other into self as good as possible
+Only copy the data that is unique to your specific class - the data of other
+classes will be taken care of by them !</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">you must support <tt class="docutils literal"><span class="pre">args</span></tt> and <tt class="docutils literal"><span class="pre">kwargs</span></tt> if one of your iDuplicate bases does</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.copyTo">
+<tt class="descname">copyTo</tt><big>(</big><em>instance</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.copyTo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy the values of ourselves onto the given instance which must be an
+instance of our class to be compatible.
+Only the common classes will be copied to instance</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">altered instance</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">instance will be altered during the process</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.copyToOther">
+<tt class="descname">copyToOther</tt><big>(</big><em>instance</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.copyToOther" title="Permalink to this definition">¶</a></dt>
+<dd>As <cite>copyTo</cite>, but does only require the objects to have a common base.
+It will match the actually compatible base classes and call <cite>copyFrom</cite>
+if possible.
+As more checking is performed, this method performs worse than <cite>copyTo</cite></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.createInstance">
+<tt class="descname">createInstance</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.createInstance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create and Initialize an instance of self.__class__( ... ) based on your own data</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">new instance of self</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">using self.__class__ instead of an explicit class allows derived
+classes that do not have anything to duplicate just to use your implementeation</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">you must support <tt class="docutils literal"><span class="pre">args</span></tt> and <tt class="docutils literal"><span class="pre">kwargs</span></tt> if one of your iDuplicate bases does</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.deallocateAllFlags">
+<tt class="descname">deallocateAllFlags</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.deallocateAllFlags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.deallocateFlag">
+<tt class="descname">deallocateFlag</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.deallocateFlag" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.delete">
+<tt class="descname">delete</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete this node</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">if the undo queue is enabled, the object becomes invalid, but stays alive until it
+drops off the queue</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">if you want to delete many nodes, its more efficient to delete them
+using the global <cite>delete</cite> method</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.dependencyInfo">
+<tt class="descname">dependencyInfo</tt><big>(</big><em>attribute</em>, <em>by=True</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.dependencyInfo" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of attributes that given attribute affects or that the given attribute
+is affected by
+if the attribute turns dirty.</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>attribute</em> &#8211; attribute instance or attribute name</li>
+<li><em>by</em> &#8211; if false, affected attributes will be returned, otherwise the attributes affecting this one</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">see also <cite>MPlug.affectedByPlugs</cite></p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">USING MEL: as api command and mObject array always crashed on me ... don&#8217;t know :(</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.duplicate">
+<tt class="descname">duplicate</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.duplicate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Duplicate our node and return a wrapped version to it</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>name</em> &#8211; if given, the newly created node will use the given name</li>
+<li><em>kwargs</em> &#8211; <ul>
+<li>renameOnClash: if Trrue, default True, clashes are prevented by renaming the new node</li>
+<li>autocreateNamespace: if True, default True, namespaces will be created if mentioned in the name</li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">the copyTo method may not have not-undoable side-effects to be a proper
+implementation</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">undo could be implemented for dg nodes - but for reasons of consistency, its disabled here -
+who knows how much it will crap out after a while as duplicate is not undoable (mel command)  -
+it never really worked to undo a mel command from within python, executed using a dgmodifier - unfortunately
+it does not return any result making it hard to find the newly duplicated object !</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.maya.nt.anim.AnimCurve.findAnimation">
+<em class="property">classmethod </em><tt class="descname">findAnimation</tt><big>(</big><em>iter_nodes</em>, <em>asNode=True</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.findAnimation" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list-compatible object containing animation curves attached to
+the nodes in the given object.</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>iter_nodes</em> &#8211; MSelection list or list of MObjects or Nodes containing
+whose animation you would like to retrieve.</li>
+<li><em>asNode</em> &#8211; If True, the animation curves will be wrapped, or 
+MObjects otherwise ( to gain performance )</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.fullChildName">
+<tt class="descname">fullChildName</tt><big>(</big><em>childname</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.fullChildName" title="Permalink to this definition">¶</a></dt>
+<dd>Add the given name to the string version of our instance
+:return: string with childname added like name _sep childname</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.maya.nt.anim.AnimCurve.getMFnClasses">
+<em class="property">classmethod </em><tt class="descname">getMFnClasses</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.getMFnClasses" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of all function set classes this node supports, most derived
+function set comes first</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.getTangent">
+<tt class="descname">getTangent</tt><big>(</big><em>index</em>, <em>isInTangent</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.getTangent" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">tuple(x,y) tuple containing the x and y positions of the 
+tangent at index:</p>
+<blockquote>
+<ul class="simple">
+<li>x is the x value of the slope of the tangent in seconds</li>
+<li>y is the absolute y value of the slope of the tangent</li>
+</ul>
+</blockquote>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>index</em> &#8211; Index of the key for which the tangent x,y value is required</li>
+<li><em>isInTangent</em> &#8211; If true, the in-tangent is returned, else, the out-tangent is returned</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.getTangentAsAngle">
+<tt class="descname">getTangentAsAngle</tt><big>(</big><em>index</em>, <em>isInTangent</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.getTangentAsAngle" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">tuple(MAngle, weight) tuple containing the angle and weight of
+the tangent.</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">See <cite>getTangent</cite> for all other parameters</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.hasFn">
+<tt class="descname">hasFn</tt><big>(</big><em>mfntype</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.hasFn" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if our object supports the given function set type</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.isAlive">
+<tt class="descname">isAlive</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.isAlive" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if the object exists in memory</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">objects on the undo queue are alive, but NOT valid</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.isMemberOf">
+<tt class="descname">isMemberOf</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x442aea0&gt; &gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.isMemberOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if self is part of setnode</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">method is undoable</td>
+</tr>
+<tr class="field"><th class="field-name">See:</th><td class="field-body"><cite>sets.ObjectSet</cite></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.isPartOf">
+<tt class="descname">isPartOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.isPartOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if self is a part of other, and thus can be found in other</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings only</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.isRoot">
+<tt class="descname">isRoot</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.isRoot" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this path is the root of the DAG</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.isRootOf">
+<tt class="descname">isRootOf</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.isRootOf" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True other starts with self</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">operates on strings</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">we assume other has the same type as self, thus the same separator</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.isValid">
+<tt class="descname">isValid</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.isValid" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if the object exists in the scene</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">objects on the undo queue are NOT valid, but alive</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.iterParents">
+<tt class="descname">iterParents</tt><big>(</big><em>predicate=&lt;function &lt;lambda&gt; at 0x2accd8a3c230&gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.iterParents" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">generator retrieving all parents up to the root</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>predicate</em> &#8211; returns True for all x that you want to be returned</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.object">
+<tt class="descname">object</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.object" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the MObject attached to this Node</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.parent">
+<tt class="descname">parent</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.parent" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">parent of this path, &#8216;/hello/world&#8217; -&gt; &#8216;/hello&#8217; or None if this path
+is the dag&#8217;s root</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.parentDeep">
+<tt class="descname">parentDeep</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.parentDeep" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">all parents of this path, &#8216;/hello/my/world&#8217; -&gt; [ &#8216;/hello/my&#8217;,&#8217;/hello&#8217; ]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.referenceFile">
+<tt class="descname">referenceFile</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.referenceFile" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">name (str) of file this node is coming from - it could contain
+a copy number as {x}</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">will raise if the node is not referenced, use isReferenced to figure
+that out</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.removeAttribute">
+<tt class="descname">removeAttribute</tt><big>(</big><em>attr</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.removeAttribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the given attribute from the node</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>attr</em> &#8211; see <cite>addAttribute</cite></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.removeFrom">
+<tt class="descname">removeFrom</tt><big>(</big><em>setnode</em>, <em>component=&lt;maya.OpenMaya.MObject; proxy of &lt;Swig Object of type 'MObject *' at 0x456f830&gt; &gt;</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.removeFrom" title="Permalink to this definition">¶</a></dt>
+<dd><p>remove ourselves to the given set</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">method is undoable</td>
+</tr>
+<tr class="field"><th class="field-name">See:</th><td class="field-body"><cite>sets.ObjectSet</cite></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.rename">
+<tt class="descname">rename</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.rename" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rename this node to newname</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>newname</em> &#8211; new name of the node</li>
+<li><em>autocreateNamespace</em> &#8211; if true, namespaces given in newpath will be created automatically, otherwise
+a RuntimeException will be thrown if a required namespace does not exist</li>
+<li><em>renameOnClash</em> &#8211; if true, clashing names will automatically be resolved by adjusting the name</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">renamed node which is the node itself</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">for safety reasons, this node is dagnode aware and uses a dag modifier for them !</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.root">
+<tt class="descname">root</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.root" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the root of the DAG - it has no further parents</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.setLocked">
+<tt class="descname">setLocked</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.setLocked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lock or unloack this node</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>state</em> &#8211; if True, the node is locked. Locked nodes cannot be deleted,
+renamed or reparented</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">you can query the lock state with <cite>isLocked</cite></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.setNamespace">
+<tt class="descname">setNamespace</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.setNamespace" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">self after being moved to the given namespace. This will effectively
+rename the object.</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>newns</em> &#8211; Namespace instance to put this Node into</li>
+<li><em>kwargs</em> &#8211; to be passed to <cite>rename</cite></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.sets">
+<tt class="descname">sets</tt><big>(</big><em>setFilter=(459</em>, <em>False</em>, <em>0)</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.sets" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of object set compatible Nodes having self as member</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>setFilter</em> &#8211; tuple(apiType, use_exact_type) - the combination of the
+desired api type and the exact type flag allow precise control whether you which
+to get only renderable shading engines, only objectfSets (tuple[1] = True),
+or all objects supporting the given object type.
+Its preset to only return shading engines</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">the returned sets order is defined by the order connections to instObjGroups</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">only sets will be returned that have the whole object as member, thus you will not
+see sets having component assignments like per-compoent shader assignments or deformer sets</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.nt.anim.AnimCurve.supports">
+<tt class="descname">supports</tt><big>(</big><em>interface_type</em><big>)</big><a class="headerlink" href="#mrv.maya.nt.anim.AnimCurve.supports" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if this instance supports the interface of the given type</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>interface_type</em> &#8211; Type of the interface you require this instance 
+to support</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">Must be used in case you only have a weak reference of your interface
+instance or proxy which is a case where the ordinary isinstance( obj, iInterface )
+will not work</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="../index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#"><tt class="docutils literal"><span class="pre">mrv.maya.nt.anim</span></tt></a><ul>
+<li><a class="reference external" href="#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="mrv.maya.nt.apipatch.html"
+                                  title="previous chapter"><tt class="docutils literal"><span class="pre">mrv.maya.nt.apipatch</span></tt></a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="mrv.maya.nt.util.html"
+                                  title="next chapter"><tt class="docutils literal"><span class="pre">mrv.maya.nt.util</span></tt></a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/generated/mrv.maya.nt.anim.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.nt.util.html" title="mrv.maya.nt.util"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.nt.apipatch.html" title="mrv.maya.nt.apipatch"
+             >previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Apr 19, 2011.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,769 @@
+<html>
+<head>
+<title>mrv.maya.undo</title>
+</head>
+<body>
+mrv.maya.undo
+<style>
+.coverage pre {float: left; margin: 0px 1em; border: none;
+               padding: 0px; }
+.num pre { margin: 0px }
+.nocov, .nocov pre {background-color: #faa}
+.cov, .cov pre {background-color: #cfc}
+div.coverage div { clear: both; height: 1.1em}
+</style>
+<div class="stats">
+Covered: 453 lines<br/>
+Missed: 40 lines<br/>
+Skipped 251 lines<br/>
+Percent: 91 %<br/>
+
+</div>
+<div class="coverage">
+<div class="skip"><span class="num"><pre>  1</pre></span><pre># -*- coding: utf-8 -*-</pre></div>
+<div class="cov"><span class="num"><pre>  2</pre></span><pre>&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  3</pre></span><pre>Contains the undo engine allowing to adjust the scene with api commands while</pre></div>
+<div class="cov"><span class="num"><pre>  4</pre></span><pre>providing full undo and redo support.</pre></div>
+<div class="skip"><span class="num"><pre>  5</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  6</pre></span><pre>Features</pre></div>
+<div class="cov"><span class="num"><pre>  7</pre></span><pre>--------</pre></div>
+<div class="cov"><span class="num"><pre>  8</pre></span><pre> - modify dag or dg using the undo-enabled DG and DAG modifiers</pre></div>
+<div class="cov"><span class="num"><pre>  9</pre></span><pre> - modify values using Nodes and their plugs (as the plugs are overridden</pre></div>
+<div class="cov"><span class="num"><pre> 10</pre></span><pre>   to store undo information)</pre></div>
+<div class="skip"><span class="num"><pre> 11</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 12</pre></span><pre>Limitations</pre></div>
+<div class="cov"><span class="num"><pre> 13</pre></span><pre>-----------</pre></div>
+<div class="skip"><span class="num"><pre> 14</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 15</pre></span><pre> - You cannot mix mel and API proprely unless you use an MDGModifier.commandToExecute</pre></div>
+<div class="skip"><span class="num"><pre> 16</pre></span><pre> </pre></div>
+<div class="cov"><span class="num"><pre> 17</pre></span><pre> - Calling operations that flush the undo queue from within an undoable method</pre></div>
+<div class="cov"><span class="num"><pre> 18</pre></span><pre>   causes the internal python undo stack not to be flushed, leaving dangling objects</pre></div>
+<div class="cov"><span class="num"><pre> 19</pre></span><pre>   that might crash maya once they are undon.</pre></div>
+<div class="skip"><span class="num"><pre> 20</pre></span><pre>  </pre></div>
+<div class="cov"><span class="num"><pre> 21</pre></span><pre>  - WORKAROUND: Mark these methods with @notundoable and assure they are not</pre></div>
+<div class="cov"><span class="num"><pre> 22</pre></span><pre>    called by an undoable method</pre></div>
+<div class="skip"><span class="num"><pre> 23</pre></span><pre>    </pre></div>
+<div class="cov"><span class="num"><pre> 24</pre></span><pre> - calling MFn methods on a node usually means that undo is not supported for it.</pre></div>
+<div class="skip"><span class="num"><pre> 25</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 26</pre></span><pre>Configuration</pre></div>
+<div class="cov"><span class="num"><pre> 27</pre></span><pre>-------------</pre></div>
+<div class="cov"><span class="num"><pre> 28</pre></span><pre>To globally disable the undo queue using cmds.undo will disable tracking of opeartions, but will</pre></div>
+<div class="cov"><span class="num"><pre> 29</pre></span><pre>still call the mel command.</pre></div>
+<div class="skip"><span class="num"><pre> 30</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 31</pre></span><pre>Disable the 'undoable' decorator effectively remove the surrounding mel script calls</pre></div>
+<div class="cov"><span class="num"><pre> 32</pre></span><pre>by setting the ``MRV_UNDO_ENABLED`` environment variable to 0 (default 1). </pre></div>
+<div class="cov"><span class="num"><pre> 33</pre></span><pre>Additionally it will turn off the maya undo queue as a convenience.</pre></div>
+<div class="skip"><span class="num"><pre> 34</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 35</pre></span><pre>If the mrv undo queue is disabled, MPlugs will not store undo information anymore</pre></div>
+<div class="cov"><span class="num"><pre> 36</pre></span><pre>and do not incur any overhead.</pre></div>
+<div class="skip"><span class="num"><pre> 37</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 38</pre></span><pre>Implementing an undoable method</pre></div>
+<div class="cov"><span class="num"><pre> 39</pre></span><pre>-------------------------------</pre></div>
+<div class="cov"><span class="num"><pre> 40</pre></span><pre>   - decorate with @undoable</pre></div>
+<div class="cov"><span class="num"><pre> 41</pre></span><pre>   - minimize probability that your operation will fail before creating an operation (for efficiency)</pre></div>
+<div class="cov"><span class="num"><pre> 42</pre></span><pre>   - only use operation's doIt() method to apply your changes</pre></div>
+<div class="cov"><span class="num"><pre> 43</pre></span><pre>   - if you raise, you should not have created an undo operation</pre></div>
+<div class="cov"><span class="num"><pre> 44</pre></span><pre>&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 45</pre></span><pre>__docformat__ = &quot;restructuredtext&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 46</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 47</pre></span><pre>import sys</pre></div>
+<div class="cov"><span class="num"><pre> 48</pre></span><pre>import os</pre></div>
+<div class="skip"><span class="num"><pre> 49</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 50</pre></span><pre>__all__ = (&quot;undoable&quot;, &quot;forceundoable&quot;, &quot;notundoable&quot;, &quot;MuteUndo&quot;, &quot;StartUndo&quot;, &quot;endUndo&quot;, &quot;undoAndClear&quot;, </pre></div>
+<div class="cov"><span class="num"><pre> 51</pre></span><pre>           &quot;UndoRecorder&quot;, &quot;Operation&quot;, &quot;GenericOperation&quot;, &quot;GenericOperationStack&quot;, &quot;DGModifier&quot;, </pre></div>
+<div class="cov"><span class="num"><pre> 52</pre></span><pre>           &quot;DagModifier&quot;)</pre></div>
+<div class="skip"><span class="num"><pre> 53</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 54</pre></span><pre>_undo_enabled_envvar = &quot;MRV_UNDO_ENABLED&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 55</pre></span><pre>_should_initialize_plugin = int(os.environ.get(_undo_enabled_envvar, True))</pre></div>
+<div class="skip"><span class="num"><pre> 56</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 57</pre></span><pre>#{ Initialization</pre></div>
+<div class="skip"><span class="num"><pre> 58</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 59</pre></span><pre>def __initialize():</pre></div>
+<div class="cov"><span class="num"><pre> 60</pre></span><pre>	&quot;&quot;&quot; Assure our plugin is loaded - called during module intialization</pre></div>
+<div class="skip"><span class="num"><pre> 61</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 62</pre></span><pre>	:note: will only load the plugin if the undo system is not disabled&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 63</pre></span><pre>	pluginpath = os.path.splitext(__file__)[0] + &quot;.py&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 64</pre></span><pre>	if _should_initialize_plugin and not cmds.pluginInfo(pluginpath, q=1, loaded=1):</pre></div>
+<div class="cov"><span class="num"><pre> 65</pre></span><pre>		cmds.loadPlugin(pluginpath)</pre></div>
+<div class="skip"><span class="num"><pre> 66</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 67</pre></span><pre>	# assure our decorator is available !</pre></div>
+<div class="cov"><span class="num"><pre> 68</pre></span><pre>	import __builtin__</pre></div>
+<div class="cov"><span class="num"><pre> 69</pre></span><pre>	setattr(__builtin__, 'undoable', undoable)</pre></div>
+<div class="cov"><span class="num"><pre> 70</pre></span><pre>	setattr(__builtin__, 'notundoable', notundoable)</pre></div>
+<div class="cov"><span class="num"><pre> 71</pre></span><pre>	setattr(__builtin__, 'forceundoable', forceundoable)</pre></div>
+<div class="skip"><span class="num"><pre> 72</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 73</pre></span><pre>	return _should_initialize_plugin</pre></div>
+<div class="skip"><span class="num"><pre> 74</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 75</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 76</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 77</pre></span><pre>#} END initialization</pre></div>
+<div class="skip"><span class="num"><pre> 78</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 79</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 80</pre></span><pre>#{ Undo Plugin</pre></div>
+<div class="skip"><span class="num"><pre> 81</pre></span><pre># when we are here, these have been imported already</pre></div>
+<div class="cov"><span class="num"><pre> 82</pre></span><pre>import maya.OpenMaya as api</pre></div>
+<div class="cov"><span class="num"><pre> 83</pre></span><pre>import maya.cmds as cmds</pre></div>
+<div class="cov"><span class="num"><pre> 84</pre></span><pre>import maya.mel as mel</pre></div>
+<div class="skip"><span class="num"><pre> 85</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 86</pre></span><pre># cache</pre></div>
+<div class="cov"><span class="num"><pre> 87</pre></span><pre>isUndoing = api.MGlobal.isUndoing</pre></div>
+<div class="cov"><span class="num"><pre> 88</pre></span><pre>undoInfo = cmds.undoInfo</pre></div>
+<div class="skip"><span class="num"><pre> 89</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 90</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 91</pre></span><pre># Use sys as general placeholder that will only exist once !</pre></div>
+<div class="skip"><span class="num"><pre> 92</pre></span><pre># Global vars do not really maintain their values as modules get reinitialized</pre></div>
+<div class="skip"><span class="num"><pre> 93</pre></span><pre># quite often it seems</pre></div>
+<div class="cov"><span class="num"><pre> 94</pre></span><pre>if not hasattr(sys, &quot;_maya_stack_depth&quot;):</pre></div>
+<div class="cov"><span class="num"><pre> 95</pre></span><pre>	sys._maya_stack_depth = 0</pre></div>
+<div class="cov"><span class="num"><pre> 96</pre></span><pre>	sys._maya_stack = []</pre></div>
+<div class="skip"><span class="num"><pre> 97</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 98</pre></span><pre>_maya_undo_enabled = int(os.environ.get(_undo_enabled_envvar, True))</pre></div>
+<div class="skip"><span class="num"><pre> 99</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>100</pre></span><pre>if not _maya_undo_enabled:</pre></div>
+<div class="nocov"><span class="num"><pre>101</pre></span><pre>	undoInfo(swf=0)</pre></div>
+<div class="skip"><span class="num"><pre>102</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>103</pre></span><pre># command - only generate code if we are to initialize undo</pre></div>
+<div class="skip"><span class="num"><pre>104</pre></span><pre># mpx takes .3 s to load and we can just safe that time</pre></div>
+<div class="cov"><span class="num"><pre>105</pre></span><pre>if _should_initialize_plugin:</pre></div>
+<div class="cov"><span class="num"><pre>106</pre></span><pre>	import maya.OpenMayaMPx as mpx</pre></div>
+<div class="cov"><span class="num"><pre>107</pre></span><pre>	class UndoCmd(mpx.MPxCommand):</pre></div>
+<div class="cov"><span class="num"><pre>108</pre></span><pre>		kCmdName = &quot;storeAPIUndo&quot;</pre></div>
+<div class="cov"><span class="num"><pre>109</pre></span><pre>		fId = &quot;-id&quot;</pre></div>
+<div class="skip"><span class="num"><pre>110</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>111</pre></span><pre>		def __init__(self):</pre></div>
+<div class="cov"><span class="num"><pre>112</pre></span><pre>			mpx.MPxCommand.__init__(self)</pre></div>
+<div class="cov"><span class="num"><pre>113</pre></span><pre>			self._operations = None</pre></div>
+<div class="skip"><span class="num"><pre>114</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>115</pre></span><pre>		#{ Command Methods</pre></div>
+<div class="cov"><span class="num"><pre>116</pre></span><pre>		def doIt(self,argList):</pre></div>
+<div class="cov"><span class="num"><pre>117</pre></span><pre>			&quot;&quot;&quot;Store out undo information on maya's undo stack&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>118</pre></span><pre>			# if we reach the starting level, we can actually store the undo buffer</pre></div>
+<div class="skip"><span class="num"><pre>119</pre></span><pre>			# and allow us to be placed on the undo queue</pre></div>
+<div class="cov"><span class="num"><pre>120</pre></span><pre>			if sys._maya_stack_depth == 0:</pre></div>
+<div class="cov"><span class="num"><pre>121</pre></span><pre>				self._operations = sys._maya_stack</pre></div>
+<div class="cov"><span class="num"><pre>122</pre></span><pre>				sys._maya_stack = list()					# clear the operations list</pre></div>
+<div class="cov"><span class="num"><pre>123</pre></span><pre>				return</pre></div>
+<div class="skip"><span class="num"><pre>124</pre></span><pre>			# END if stack 0</pre></div>
+<div class="skip"><span class="num"><pre>125</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>126</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>127</pre></span><pre>			# still here ?</pre></div>
+<div class="nocov"><span class="num"><pre>128</pre></span><pre>			msg = &quot;storeAPIUndo may only be called by the top-level function&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>129</pre></span><pre>			self.displayError(msg)</pre></div>
+<div class="nocov"><span class="num"><pre>130</pre></span><pre>			raise RuntimeError(msg)</pre></div>
+<div class="skip"><span class="num"><pre>131</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>132</pre></span><pre>		def redoIt(self):</pre></div>
+<div class="cov"><span class="num"><pre>133</pre></span><pre>			&quot;&quot;&quot;Called on once a redo is requested&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>134</pre></span><pre>			if not self._operations:</pre></div>
+<div class="nocov"><span class="num"><pre>135</pre></span><pre>				return</pre></div>
+<div class="skip"><span class="num"><pre>136</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>137</pre></span><pre>			for op in self._operations:</pre></div>
+<div class="cov"><span class="num"><pre>138</pre></span><pre>				op.doIt()</pre></div>
+<div class="skip"><span class="num"><pre>139</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>140</pre></span><pre>		def undoIt(self):</pre></div>
+<div class="cov"><span class="num"><pre>141</pre></span><pre>			&quot;&quot;&quot;Called once undo is requested&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>142</pre></span><pre>			if not self._operations:</pre></div>
+<div class="nocov"><span class="num"><pre>143</pre></span><pre>				return</pre></div>
+<div class="skip"><span class="num"><pre>144</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>145</pre></span><pre>			# run in reversed order !</pre></div>
+<div class="cov"><span class="num"><pre>146</pre></span><pre>			for op in reversed(self._operations):</pre></div>
+<div class="cov"><span class="num"><pre>147</pre></span><pre>				op.undoIt()</pre></div>
+<div class="skip"><span class="num"><pre>148</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>149</pre></span><pre>		def isUndoable(self):</pre></div>
+<div class="cov"><span class="num"><pre>150</pre></span><pre>			&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>151</pre></span><pre>			:return: True if we are undoable - it depends on the state of our</pre></div>
+<div class="cov"><span class="num"><pre>152</pre></span><pre>				undo stack</pre></div>
+<div class="cov"><span class="num"><pre>153</pre></span><pre>			:note: This doesn't really seem to have an effect as we will always end</pre></div>
+<div class="cov"><span class="num"><pre>154</pre></span><pre>				up on the undo-queue it seems&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>155</pre></span><pre>			return self._operations is not None</pre></div>
+<div class="skip"><span class="num"><pre>156</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>157</pre></span><pre>		# END command methods</pre></div>
+<div class="skip"><span class="num"><pre>158</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>159</pre></span><pre>		@staticmethod</pre></div>
+<div class="cov"><span class="num"><pre>160</pre></span><pre>		def creator():</pre></div>
+<div class="cov"><span class="num"><pre>161</pre></span><pre>			return mpx.asMPxPtr(UndoCmd())</pre></div>
+<div class="skip"><span class="num"><pre>162</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>163</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>164</pre></span><pre>		# Syntax creator</pre></div>
+<div class="cov"><span class="num"><pre>165</pre></span><pre>		@staticmethod</pre></div>
+<div class="cov"><span class="num"><pre>166</pre></span><pre>		def createSyntax():</pre></div>
+<div class="cov"><span class="num"><pre>167</pre></span><pre>			syntax = api.MSyntax()</pre></div>
+<div class="skip"><span class="num"><pre>168</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>169</pre></span><pre>			# id - just for information and debugging</pre></div>
+<div class="cov"><span class="num"><pre>170</pre></span><pre>			syntax.addFlag(UndoCmd.fId, &quot;-callInfo&quot;, syntax.kString)</pre></div>
+<div class="skip"><span class="num"><pre>171</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>172</pre></span><pre>			syntax.enableEdit()</pre></div>
+<div class="skip"><span class="num"><pre>173</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>174</pre></span><pre>			return syntax</pre></div>
+<div class="skip"><span class="num"><pre>175</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>176</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>177</pre></span><pre>	def initializePlugin(mobject):</pre></div>
+<div class="cov"><span class="num"><pre>178</pre></span><pre>		mplugin = mpx.MFnPlugin(mobject)</pre></div>
+<div class="cov"><span class="num"><pre>179</pre></span><pre>		mplugin.registerCommand(UndoCmd.kCmdName, UndoCmd.creator, UndoCmd.createSyntax)</pre></div>
+<div class="skip"><span class="num"><pre>180</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>181</pre></span><pre>	# Uninitialize the script plug-in</pre></div>
+<div class="cov"><span class="num"><pre>182</pre></span><pre>	def uninitializePlugin(mobject):</pre></div>
+<div class="nocov"><span class="num"><pre>183</pre></span><pre>		mplugin = mpx.MFnPlugin(mobject)</pre></div>
+<div class="nocov"><span class="num"><pre>184</pre></span><pre>		mplugin.deregisterCommand(UndoCmd.kCmdName)</pre></div>
+<div class="skip"><span class="num"><pre>185</pre></span><pre># END if plugin should be initialized</pre></div>
+<div class="skip"><span class="num"><pre>186</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>187</pre></span><pre>#} END plugin</pre></div>
+<div class="skip"><span class="num"><pre>188</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>189</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>190</pre></span><pre>#{ Utilities</pre></div>
+<div class="skip"><span class="num"><pre>191</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>192</pre></span><pre>def _incrStack():</pre></div>
+<div class="cov"><span class="num"><pre>193</pre></span><pre>	&quot;&quot;&quot;Indicate that a new method level was reached&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>194</pre></span><pre>	sys._maya_stack_depth += 1</pre></div>
+<div class="skip"><span class="num"><pre>195</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>196</pre></span><pre>def _decrStack(name = &quot;unnamed&quot;):</pre></div>
+<div class="cov"><span class="num"><pre>197</pre></span><pre>	&quot;&quot;&quot;Indicate that a method level was exitted - and cause the</pre></div>
+<div class="cov"><span class="num"><pre>198</pre></span><pre>	undo queue to be stored on the command if appropriate</pre></div>
+<div class="cov"><span class="num"><pre>199</pre></span><pre>	We try to call the command only if needed&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>200</pre></span><pre>	sys._maya_stack_depth -= 1</pre></div>
+<div class="skip"><span class="num"><pre>201</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>202</pre></span><pre>	# store our stack on the undo queue</pre></div>
+<div class="skip"><span class="num"><pre>203</pre></span><pre>	# Only store anything if we have something on the queue</pre></div>
+<div class="cov"><span class="num"><pre>204</pre></span><pre>	if sys._maya_stack_depth == 0 and sys._maya_stack:</pre></div>
+<div class="cov"><span class="num"><pre>205</pre></span><pre>		mel.eval(&quot;storeAPIUndo -id \&quot;&quot;+name+&quot;\&quot;&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>206</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>207</pre></span><pre>class MuteUndo(object):</pre></div>
+<div class="cov"><span class="num"><pre>208</pre></span><pre>	&quot;&quot;&quot;Instantiate this class to disable the maya undo queue - on deletion, the</pre></div>
+<div class="cov"><span class="num"><pre>209</pre></span><pre>	previous state will be restored</pre></div>
+<div class="skip"><span class="num"><pre>210</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>211</pre></span><pre>	:note: useful if you want to save the undo overhead involved in an operation,</pre></div>
+<div class="cov"><span class="num"><pre>212</pre></span><pre>		but assure that the previous state is always being reset&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>213</pre></span><pre>	__slots__ = (&quot;prevstate&quot;,)</pre></div>
+<div class="cov"><span class="num"><pre>214</pre></span><pre>	def __init__(self):</pre></div>
+<div class="nocov"><span class="num"><pre>215</pre></span><pre>		self.prevstate = cmds.undoInfo(q=1, st=1)</pre></div>
+<div class="nocov"><span class="num"><pre>216</pre></span><pre>		cmds.undoInfo(swf = 0)</pre></div>
+<div class="skip"><span class="num"><pre>217</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>218</pre></span><pre>	def __del__(self):</pre></div>
+<div class="nocov"><span class="num"><pre>219</pre></span><pre>		cmds.undoInfo(swf = self.prevstate)</pre></div>
+<div class="skip"><span class="num"><pre>220</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>221</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>222</pre></span><pre>class StartUndo(object):</pre></div>
+<div class="cov"><span class="num"><pre>223</pre></span><pre>	&quot;&quot;&quot;Utility class that will push the undo stack on __init__ and pop it on __del__</pre></div>
+<div class="skip"><span class="num"><pre>224</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>225</pre></span><pre>	:note: Prefer the undoable decorator over this one as they are easier to use and FASTER !</pre></div>
+<div class="cov"><span class="num"><pre>226</pre></span><pre>	:note: use this class to assure that you pop undo when your method exists&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>227</pre></span><pre>	__slots__ = (&quot;id&quot;,)</pre></div>
+<div class="cov"><span class="num"><pre>228</pre></span><pre>	def __init__(self, id = None):</pre></div>
+<div class="cov"><span class="num"><pre>229</pre></span><pre>		self.id = id</pre></div>
+<div class="cov"><span class="num"><pre>230</pre></span><pre>		_incrStack()</pre></div>
+<div class="skip"><span class="num"><pre>231</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>232</pre></span><pre>	def __del__(self):</pre></div>
+<div class="cov"><span class="num"><pre>233</pre></span><pre>		if self.id:</pre></div>
+<div class="nocov"><span class="num"><pre>234</pre></span><pre>			_decrStack(self.id)</pre></div>
+<div class="cov"><span class="num"><pre>235</pre></span><pre>		else:</pre></div>
+<div class="cov"><span class="num"><pre>236</pre></span><pre>			_decrStack()</pre></div>
+<div class="skip"><span class="num"><pre>237</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>238</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>239</pre></span><pre>def startUndo():</pre></div>
+<div class="cov"><span class="num"><pre>240</pre></span><pre>	&quot;&quot;&quot;Call before you start undoable operations</pre></div>
+<div class="skip"><span class="num"><pre>241</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>242</pre></span><pre>	:note: prefer the @undoable decorator&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>243</pre></span><pre>	_incrStack()</pre></div>
+<div class="skip"><span class="num"><pre>244</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>245</pre></span><pre>def endUndo():</pre></div>
+<div class="cov"><span class="num"><pre>246</pre></span><pre>	&quot;&quot;&quot;Call before your function with undoable operations ends</pre></div>
+<div class="skip"><span class="num"><pre>247</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>248</pre></span><pre>	:note: prefer the @undoable decorator&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>249</pre></span><pre>	_decrStack()</pre></div>
+<div class="skip"><span class="num"><pre>250</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>251</pre></span><pre>def undoAndClear():</pre></div>
+<div class="cov"><span class="num"><pre>252</pre></span><pre>	&quot;&quot;&quot;Undo all operations on the undo stack and clear it afterwards. The respective</pre></div>
+<div class="cov"><span class="num"><pre>253</pre></span><pre>	undo command will do nothing once undo, but would undo all future operations.</pre></div>
+<div class="cov"><span class="num"><pre>254</pre></span><pre>	The state of the undoqueue is well defined afterwards, but callers may stop functioning</pre></div>
+<div class="cov"><span class="num"><pre>255</pre></span><pre>	if their changes have been undone.</pre></div>
+<div class="skip"><span class="num"><pre>256</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>257</pre></span><pre>	:note: can be used if you need control over undo in very specific operations and in</pre></div>
+<div class="cov"><span class="num"><pre>258</pre></span><pre>		a well defined context&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>259</pre></span><pre>	operations = sys._maya_stack</pre></div>
+<div class="cov"><span class="num"><pre>260</pre></span><pre>	sys._maya_stack = list()</pre></div>
+<div class="skip"><span class="num"><pre>261</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>262</pre></span><pre>	# run in reversed order !</pre></div>
+<div class="cov"><span class="num"><pre>263</pre></span><pre>	for op in reversed(operations):</pre></div>
+<div class="cov"><span class="num"><pre>264</pre></span><pre>		op.undoIt()</pre></div>
+<div class="skip"><span class="num"><pre>265</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>266</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>267</pre></span><pre>class UndoRecorder(object):</pre></div>
+<div class="cov"><span class="num"><pre>268</pre></span><pre>	&quot;&quot;&quot;Utility class allowing to undo and redo operations on the python command </pre></div>
+<div class="cov"><span class="num"><pre>269</pre></span><pre>	stack so far to be undone and redone separately and independently of maya's </pre></div>
+<div class="cov"><span class="num"><pre>270</pre></span><pre>	undo queue.</pre></div>
+<div class="skip"><span class="num"><pre>271</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>272</pre></span><pre>	It can be used to define sections that need to be undone afterwards, for example</pre></div>
+<div class="cov"><span class="num"><pre>273</pre></span><pre>	to reset a scene to its original state after it was prepared for export.</pre></div>
+<div class="skip"><span class="num"><pre>274</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>275</pre></span><pre>	Use the `startRecording` method to record all future undoable operations </pre></div>
+<div class="cov"><span class="num"><pre>276</pre></span><pre>	onto the stack. `stopRecording` will finalize the operation, allowing </pre></div>
+<div class="cov"><span class="num"><pre>277</pre></span><pre>	the `undo` and `redo` methods to be used.</pre></div>
+<div class="skip"><span class="num"><pre>278</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>279</pre></span><pre>	If you never call startRecording, the instance does not do anything.</pre></div>
+<div class="cov"><span class="num"><pre>280</pre></span><pre>	If you call startRecording and stopRecording but do not call `undo`, it </pre></div>
+<div class="cov"><span class="num"><pre>281</pre></span><pre>	will integrate itself transparently with the default undo queue.</pre></div>
+<div class="skip"><span class="num"><pre>282</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>283</pre></span><pre>	:note: as opposed to `undoAndClear`, this utility may be used even if the </pre></div>
+<div class="cov"><span class="num"><pre>284</pre></span><pre>		user is not at the very beginning of an undoable operation.</pre></div>
+<div class="cov"><span class="num"><pre>285</pre></span><pre>	:note: If this utility is used incorrectly, the undo queue will be in an </pre></div>
+<div class="cov"><span class="num"><pre>286</pre></span><pre>		inconsistent state which may crash maya or cause unexpected behaviour</pre></div>
+<div class="cov"><span class="num"><pre>287</pre></span><pre>	:note: You may not interleave the start/stop recording areas of different </pre></div>
+<div class="cov"><span class="num"><pre>288</pre></span><pre>		instances which could happen easily in recursive calls.&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>289</pre></span><pre>	__slots__ = (&quot;_orig_stack&quot;, &quot;_recorded_commands&quot;, &quot;_undoable_helper&quot;, &quot;_undo_called&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>290</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>291</pre></span><pre>	# prevents recursive access</pre></div>
+<div class="cov"><span class="num"><pre>292</pre></span><pre>	_is_recording = False</pre></div>
+<div class="cov"><span class="num"><pre>293</pre></span><pre>	_disable_undo = False </pre></div>
+<div class="skip"><span class="num"><pre>294</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>295</pre></span><pre>	def __init__(self):</pre></div>
+<div class="cov"><span class="num"><pre>296</pre></span><pre>		self._orig_stack = None</pre></div>
+<div class="cov"><span class="num"><pre>297</pre></span><pre>		self._recorded_commands = None</pre></div>
+<div class="cov"><span class="num"><pre>298</pre></span><pre>		self._undoable_helper = None</pre></div>
+<div class="cov"><span class="num"><pre>299</pre></span><pre>		self._undo_called =False</pre></div>
+<div class="skip"><span class="num"><pre>300</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>301</pre></span><pre>	def __del__(self):</pre></div>
+<div class="cov"><span class="num"><pre>302</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre>303</pre></span><pre>			self.stopRecording()</pre></div>
+<div class="cov"><span class="num"><pre>304</pre></span><pre>		except AssertionError:</pre></div>
+<div class="skip"><span class="num"><pre>305</pre></span><pre>			# invalid isntances shouldn't bark</pre></div>
+<div class="cov"><span class="num"><pre>306</pre></span><pre>			pass</pre></div>
+<div class="skip"><span class="num"><pre>307</pre></span><pre>		# END exception handling</pre></div>
+<div class="skip"><span class="num"><pre>308</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>309</pre></span><pre>	#{ Interface </pre></div>
+<div class="skip"><span class="num"><pre>310</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>311</pre></span><pre>	def startRecording(self):</pre></div>
+<div class="cov"><span class="num"><pre>312</pre></span><pre>		&quot;&quot;&quot;Start recording all future undoable commands onto this stack.</pre></div>
+<div class="cov"><span class="num"><pre>313</pre></span><pre>		The previous stack will be safed and restored once this class gets destroyed</pre></div>
+<div class="cov"><span class="num"><pre>314</pre></span><pre>		or once `stopRecording` gets called.</pre></div>
+<div class="skip"><span class="num"><pre>315</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>316</pre></span><pre>		:note: this method may only be called once, subsequent calls have no effect</pre></div>
+<div class="cov"><span class="num"><pre>317</pre></span><pre>		:note: This will forcibly enable the undo queue if required until </pre></div>
+<div class="cov"><span class="num"><pre>318</pre></span><pre>			stopRecording is called.&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>319</pre></span><pre>		if self._orig_stack is not None:</pre></div>
+<div class="cov"><span class="num"><pre>320</pre></span><pre>			return</pre></div>
+<div class="skip"><span class="num"><pre>321</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre>322</pre></span><pre>		if self._is_recording:</pre></div>
+<div class="cov"><span class="num"><pre>323</pre></span><pre>			raise AssertionError(&quot;Another instance already started recording&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>324</pre></span><pre>			</pre></div>
+<div class="skip"><span class="num"><pre>325</pre></span><pre>		# force undo enabled</pre></div>
+<div class="cov"><span class="num"><pre>326</pre></span><pre>		if not undoInfo(q=1, st=1):</pre></div>
+<div class="cov"><span class="num"><pre>327</pre></span><pre>			self.__class__._disable_undo = True</pre></div>
+<div class="cov"><span class="num"><pre>328</pre></span><pre>			cmds.undoInfo(swf=1)</pre></div>
+<div class="skip"><span class="num"><pre>329</pre></span><pre>		# END undo info handling</pre></div>
+<div class="skip"><span class="num"><pre>330</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>331</pre></span><pre>		self._undoable_helper = StartUndo()			# assures we have a stack</pre></div>
+<div class="skip"><span class="num"><pre>332</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>333</pre></span><pre>		self.__class__._is_recording = True</pre></div>
+<div class="cov"><span class="num"><pre>334</pre></span><pre>		self._orig_stack = sys._maya_stack</pre></div>
+<div class="cov"><span class="num"><pre>335</pre></span><pre>		sys._maya_stack = list()			# will record future commands </pre></div>
+<div class="skip"><span class="num"><pre>336</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>337</pre></span><pre>		# put ourselves on the previous undo queue which allows us to integrate </pre></div>
+<div class="skip"><span class="num"><pre>338</pre></span><pre>		# with the original undo stack if that is required</pre></div>
+<div class="cov"><span class="num"><pre>339</pre></span><pre>		self._orig_stack.append(self)</pre></div>
+<div class="skip"><span class="num"><pre>340</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>341</pre></span><pre>	def stopRecording(self):</pre></div>
+<div class="cov"><span class="num"><pre>342</pre></span><pre>		&quot;&quot;&quot;Stop recording of undoable comamnds and restore the previous command stack.</pre></div>
+<div class="cov"><span class="num"><pre>343</pre></span><pre>		The instance is now ready to undo and redo the recorded commands</pre></div>
+<div class="skip"><span class="num"><pre>344</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>345</pre></span><pre>		:note: this method may only be called once, subsequent calls have no effect&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>346</pre></span><pre>		if self._recorded_commands is not None:</pre></div>
+<div class="cov"><span class="num"><pre>347</pre></span><pre>			return</pre></div>
+<div class="skip"><span class="num"><pre>348</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>349</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre>350</pre></span><pre>			if not self._is_recording:</pre></div>
+<div class="cov"><span class="num"><pre>351</pre></span><pre>				raise AssertionError(&quot;startRecording was not called&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>352</pre></span><pre>				</pre></div>
+<div class="cov"><span class="num"><pre>353</pre></span><pre>			if self._orig_stack is None:</pre></div>
+<div class="cov"><span class="num"><pre>354</pre></span><pre>				raise AssertionError(&quot;startRecording was not called on this instance, but on another one&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>355</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre>356</pre></span><pre>			self.__class__._is_recording = False</pre></div>
+<div class="cov"><span class="num"><pre>357</pre></span><pre>			self._recorded_commands = sys._maya_stack</pre></div>
+<div class="cov"><span class="num"><pre>358</pre></span><pre>			sys._maya_stack = self._orig_stack</pre></div>
+<div class="skip"><span class="num"><pre>359</pre></span><pre>			</pre></div>
+<div class="skip"><span class="num"><pre>360</pre></span><pre>			# restore previous undo queue state</pre></div>
+<div class="cov"><span class="num"><pre>361</pre></span><pre>			if self._disable_undo:</pre></div>
+<div class="cov"><span class="num"><pre>362</pre></span><pre>				self.__class__._disable_undo = False</pre></div>
+<div class="cov"><span class="num"><pre>363</pre></span><pre>				cmds.undoInfo(swf=0)</pre></div>
+<div class="skip"><span class="num"><pre>364</pre></span><pre>			# END handle undo</pre></div>
+<div class="cov"><span class="num"><pre>365</pre></span><pre>		finally:</pre></div>
+<div class="skip"><span class="num"><pre>366</pre></span><pre>			# tigger deletion</pre></div>
+<div class="cov"><span class="num"><pre>367</pre></span><pre>			self._undoable_helper = None</pre></div>
+<div class="skip"><span class="num"><pre>368</pre></span><pre>		# END assure we finish our undo</pre></div>
+<div class="skip"><span class="num"><pre>369</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>370</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>371</pre></span><pre>	def undo(self):</pre></div>
+<div class="cov"><span class="num"><pre>372</pre></span><pre>		&quot;&quot;&quot;Undo all stored operations</pre></div>
+<div class="skip"><span class="num"><pre>373</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>374</pre></span><pre>		:note: Must be called at the right time, otherwise the undo queue is in an </pre></div>
+<div class="cov"><span class="num"><pre>375</pre></span><pre>			inconsistent state.</pre></div>
+<div class="cov"><span class="num"><pre>376</pre></span><pre>		:note: If this method is never being called, the undo-stack will undo itself</pre></div>
+<div class="cov"><span class="num"><pre>377</pre></span><pre>			as part of mayas undo queue, and thus behaves transparently</pre></div>
+<div class="cov"><span class="num"><pre>378</pre></span><pre>		:raise AssertionError: if called before `stopRecording` as called&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>379</pre></span><pre>		if self._recorded_commands is None:</pre></div>
+<div class="nocov"><span class="num"><pre>380</pre></span><pre>			raise AssertionError(&quot;Undo called before stopRecording&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>381</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre>382</pre></span><pre>		for op in reversed(self._recorded_commands):</pre></div>
+<div class="cov"><span class="num"><pre>383</pre></span><pre>			op.undoIt()</pre></div>
+<div class="skip"><span class="num"><pre>384</pre></span><pre>		# END for each operation to undo</pre></div>
+<div class="cov"><span class="num"><pre>385</pre></span><pre>		self._undo_called = True</pre></div>
+<div class="skip"><span class="num"><pre>386</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>387</pre></span><pre>	def redo(self):</pre></div>
+<div class="cov"><span class="num"><pre>388</pre></span><pre>		&quot;&quot;&quot;Redo all stored operations after they have been undone</pre></div>
+<div class="cov"><span class="num"><pre>389</pre></span><pre>		:raise AssertionError: if called before `stopRecording`&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>390</pre></span><pre>		if self._recorded_commands is None:</pre></div>
+<div class="nocov"><span class="num"><pre>391</pre></span><pre>			raise AssertionError(&quot;Redo called before stopRecording&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>392</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre>393</pre></span><pre>		for op in self._recorded_commands:</pre></div>
+<div class="cov"><span class="num"><pre>394</pre></span><pre>			op.doIt()</pre></div>
+<div class="skip"><span class="num"><pre>395</pre></span><pre>		# END for each operation to redo</pre></div>
+<div class="skip"><span class="num"><pre>396</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>397</pre></span><pre>		# this reverts the effect of the undo</pre></div>
+<div class="cov"><span class="num"><pre>398</pre></span><pre>		self._undo_called = False</pre></div>
+<div class="skip"><span class="num"><pre>399</pre></span><pre>		</pre></div>
+<div class="skip"><span class="num"><pre>400</pre></span><pre>	#} END interface </pre></div>
+<div class="skip"><span class="num"><pre>401</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>402</pre></span><pre>	#{ Internal</pre></div>
+<div class="cov"><span class="num"><pre>403</pre></span><pre>	def doIt(self):</pre></div>
+<div class="cov"><span class="num"><pre>404</pre></span><pre>		&quot;&quot;&quot;Called only if the user didn't call undo&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>405</pre></span><pre>		if self._undo_called or not self._recorded_commands:</pre></div>
+<div class="cov"><span class="num"><pre>406</pre></span><pre>			return</pre></div>
+<div class="skip"><span class="num"><pre>407</pre></span><pre>			</pre></div>
+<div class="skip"><span class="num"><pre>408</pre></span><pre>		# we have not been called, and now the user hits redo on the whole </pre></div>
+<div class="skip"><span class="num"><pre>409</pre></span><pre>		# operation </pre></div>
+<div class="cov"><span class="num"><pre>410</pre></span><pre>		for op in self._recorded_commands:</pre></div>
+<div class="cov"><span class="num"><pre>411</pre></span><pre>			op.doIt()</pre></div>
+<div class="skip"><span class="num"><pre>412</pre></span><pre>		# END for each operation</pre></div>
+<div class="skip"><span class="num"><pre>413</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>414</pre></span><pre>	def undoIt(self):</pre></div>
+<div class="cov"><span class="num"><pre>415</pre></span><pre>		&quot;&quot;&quot;called only if the user didnt call undo&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>416</pre></span><pre>		if self._undo_called or not self._recorded_commands:</pre></div>
+<div class="cov"><span class="num"><pre>417</pre></span><pre>			return</pre></div>
+<div class="skip"><span class="num"><pre>418</pre></span><pre>			</pre></div>
+<div class="skip"><span class="num"><pre>419</pre></span><pre>		# we have not be undone, hence we are part of the default undo queue</pre></div>
+<div class="cov"><span class="num"><pre>420</pre></span><pre>		for op in reversed(self._recorded_commands):</pre></div>
+<div class="cov"><span class="num"><pre>421</pre></span><pre>			op.undoIt()</pre></div>
+<div class="skip"><span class="num"><pre>422</pre></span><pre>		# END for each operation</pre></div>
+<div class="skip"><span class="num"><pre>423</pre></span><pre>	#} END internal</pre></div>
+<div class="skip"><span class="num"><pre>424</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>425</pre></span><pre>#} END utilities</pre></div>
+<div class="skip"><span class="num"><pre>426</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>427</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>428</pre></span><pre>#{ Decorators</pre></div>
+<div class="skip"><span class="num"><pre>429</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>430</pre></span><pre>def undoable(func):</pre></div>
+<div class="cov"><span class="num"><pre>431</pre></span><pre>	&quot;&quot;&quot;Decorator wrapping func so that it will start undo when it begins and end undo</pre></div>
+<div class="cov"><span class="num"><pre>432</pre></span><pre>	when it ends. It assures that only toplevel undoable functions will actually produce</pre></div>
+<div class="cov"><span class="num"><pre>433</pre></span><pre>	an undo event</pre></div>
+<div class="cov"><span class="num"><pre>434</pre></span><pre>	To mark a function undoable, decorate it:</pre></div>
+<div class="skip"><span class="num"><pre>435</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>436</pre></span><pre>	&gt;&gt;&gt; @undoable</pre></div>
+<div class="cov"><span class="num"><pre>437</pre></span><pre>	&gt;&gt;&gt; def func():</pre></div>
+<div class="cov"><span class="num"><pre>438</pre></span><pre>	&gt;&gt;&gt; 	pass</pre></div>
+<div class="skip"><span class="num"><pre>439</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>440</pre></span><pre>	:note: Using decorated functions appears to be only FASTER  than implementing it</pre></div>
+<div class="cov"><span class="num"><pre>441</pre></span><pre>		manually, thus using these is will greatly improve code readability</pre></div>
+<div class="cov"><span class="num"><pre>442</pre></span><pre>	:note: if you use undoable functions, you should mark yourself undoable too - otherwise the</pre></div>
+<div class="cov"><span class="num"><pre>443</pre></span><pre>		functions you call will create individual undo steps</pre></div>
+<div class="cov"><span class="num"><pre>444</pre></span><pre>	:note: if the undo queue is disabled, the decorator does nothing&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>445</pre></span><pre>	if not _maya_undo_enabled:</pre></div>
+<div class="nocov"><span class="num"><pre>446</pre></span><pre>		return func</pre></div>
+<div class="skip"><span class="num"><pre>447</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>448</pre></span><pre>	name = &quot;unnamed&quot;</pre></div>
+<div class="cov"><span class="num"><pre>449</pre></span><pre>	if hasattr(func, &quot;__name__&quot;):</pre></div>
+<div class="cov"><span class="num"><pre>450</pre></span><pre>		name = func.__name__</pre></div>
+<div class="skip"><span class="num"><pre>451</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>452</pre></span><pre>	def undoableDecoratorWrapFunc(*args, **kwargs):</pre></div>
+<div class="cov"><span class="num"><pre>453</pre></span><pre>		&quot;&quot;&quot;This is the long version of the method as it is slightly faster than</pre></div>
+<div class="cov"><span class="num"><pre>454</pre></span><pre>		simply using the StartUndo helper&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>455</pre></span><pre>		_incrStack()</pre></div>
+<div class="cov"><span class="num"><pre>456</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre>457</pre></span><pre>			return func(*args, **kwargs)</pre></div>
+<div class="cov"><span class="num"><pre>458</pre></span><pre>		finally:</pre></div>
+<div class="cov"><span class="num"><pre>459</pre></span><pre>			_decrStack(name)</pre></div>
+<div class="skip"><span class="num"><pre>460</pre></span><pre>		# END try finally</pre></div>
+<div class="skip"><span class="num"><pre>461</pre></span><pre>	# END wrapFunc</pre></div>
+<div class="skip"><span class="num"><pre>462</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>463</pre></span><pre>	undoableDecoratorWrapFunc.__name__ = name</pre></div>
+<div class="cov"><span class="num"><pre>464</pre></span><pre>	undoableDecoratorWrapFunc.__doc__ = func.__doc__</pre></div>
+<div class="cov"><span class="num"><pre>465</pre></span><pre>	return undoableDecoratorWrapFunc</pre></div>
+<div class="skip"><span class="num"><pre>466</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>467</pre></span><pre>def forceundoable(func):</pre></div>
+<div class="cov"><span class="num"><pre>468</pre></span><pre>	&quot;&quot;&quot;As undoable, but will enable the undo queue if it is currently disabled. It will </pre></div>
+<div class="cov"><span class="num"><pre>469</pre></span><pre>	forcibly enable maya's undo queue.</pre></div>
+<div class="skip"><span class="num"><pre>470</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>471</pre></span><pre>	:note: can only be employed reasonably if used in conjunction with `undoAndClear`</pre></div>
+<div class="cov"><span class="num"><pre>472</pre></span><pre>		as it will restore the old state of the undoqueue afterwards, which might be off, thus</pre></div>
+<div class="cov"><span class="num"><pre>473</pre></span><pre>		rendering attempts to undo impossible&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>474</pre></span><pre>	undoable_func = undoable(func)</pre></div>
+<div class="cov"><span class="num"><pre>475</pre></span><pre>	def forcedUndo(*args, **kwargs):</pre></div>
+<div class="nocov"><span class="num"><pre>476</pre></span><pre>		disable = False</pre></div>
+<div class="nocov"><span class="num"><pre>477</pre></span><pre>		if not undoInfo(q=1, st=1):</pre></div>
+<div class="nocov"><span class="num"><pre>478</pre></span><pre>			disable = True</pre></div>
+<div class="nocov"><span class="num"><pre>479</pre></span><pre>			undoInfo(swf=1)</pre></div>
+<div class="skip"><span class="num"><pre>480</pre></span><pre>		# END undo info handling</pre></div>
+<div class="nocov"><span class="num"><pre>481</pre></span><pre>		try:</pre></div>
+<div class="nocov"><span class="num"><pre>482</pre></span><pre>			return undoable_func(*args, **kwargs)</pre></div>
+<div class="nocov"><span class="num"><pre>483</pre></span><pre>		finally:</pre></div>
+<div class="nocov"><span class="num"><pre>484</pre></span><pre>			if disable:</pre></div>
+<div class="nocov"><span class="num"><pre>485</pre></span><pre>				undoInfo(swf=0)</pre></div>
+<div class="skip"><span class="num"><pre>486</pre></span><pre>		# END exception handling</pre></div>
+<div class="skip"><span class="num"><pre>487</pre></span><pre>	# END forced undo function</pre></div>
+<div class="skip"><span class="num"><pre>488</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>489</pre></span><pre>	if hasattr(func, &quot;__name__&quot;):</pre></div>
+<div class="cov"><span class="num"><pre>490</pre></span><pre>		forcedUndo.__name__ = func.__name__</pre></div>
+<div class="skip"><span class="num"><pre>491</pre></span><pre>	# END assume name</pre></div>
+<div class="cov"><span class="num"><pre>492</pre></span><pre>	forcedUndo.__doc__ = func.__doc__</pre></div>
+<div class="skip"><span class="num"><pre>493</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>494</pre></span><pre>	return forcedUndo</pre></div>
+<div class="skip"><span class="num"><pre>495</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>496</pre></span><pre>def notundoable(func):</pre></div>
+<div class="cov"><span class="num"><pre>497</pre></span><pre>	&quot;&quot;&quot;Decorator wrapping a function into a muteUndo call, thus all undoable operations</pre></div>
+<div class="cov"><span class="num"><pre>498</pre></span><pre>	called from this method will not enter the UndoRecorder and thus pollute it.</pre></div>
+<div class="skip"><span class="num"><pre>499</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>500</pre></span><pre>	:note: use it if your method cannot support undo, butcalls undoable operations itself</pre></div>
+<div class="cov"><span class="num"><pre>501</pre></span><pre>	:note: all functions using a notundoable should be notundoable themselves</pre></div>
+<div class="cov"><span class="num"><pre>502</pre></span><pre>	:note: does nothing if the undo queue is globally disabled&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>503</pre></span><pre>	if not _maya_undo_enabled:</pre></div>
+<div class="nocov"><span class="num"><pre>504</pre></span><pre>		return func</pre></div>
+<div class="skip"><span class="num"><pre>505</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>506</pre></span><pre>	def notundoableDecoratorWrapFunc(*args, **kwargs):</pre></div>
+<div class="cov"><span class="num"><pre>507</pre></span><pre>		&quot;&quot;&quot;This is the long version of the method as it is slightly faster than</pre></div>
+<div class="cov"><span class="num"><pre>508</pre></span><pre>		simply using the StartUndo helper&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>509</pre></span><pre>		prevstate = undoInfo(q=1, st=1)</pre></div>
+<div class="cov"><span class="num"><pre>510</pre></span><pre>		undoInfo(swf = 0)</pre></div>
+<div class="cov"><span class="num"><pre>511</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre>512</pre></span><pre>			return func(*args, **kwargs)</pre></div>
+<div class="cov"><span class="num"><pre>513</pre></span><pre>		finally:</pre></div>
+<div class="cov"><span class="num"><pre>514</pre></span><pre>			undoInfo(swf = prevstate)</pre></div>
+<div class="skip"><span class="num"><pre>515</pre></span><pre>		# END exception handling</pre></div>
+<div class="skip"><span class="num"><pre>516</pre></span><pre>	# END wrapFunc</pre></div>
+<div class="skip"><span class="num"><pre>517</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>518</pre></span><pre>	if hasattr(func, &quot;__name__&quot;):</pre></div>
+<div class="cov"><span class="num"><pre>519</pre></span><pre>		notundoableDecoratorWrapFunc.__name__ = func.__name__</pre></div>
+<div class="skip"><span class="num"><pre>520</pre></span><pre>	# END assume name</pre></div>
+<div class="cov"><span class="num"><pre>521</pre></span><pre>	notundoableDecoratorWrapFunc.__doc__ = func.__doc__</pre></div>
+<div class="cov"><span class="num"><pre>522</pre></span><pre>	return notundoableDecoratorWrapFunc</pre></div>
+<div class="skip"><span class="num"><pre>523</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>524</pre></span><pre>#} END decorators</pre></div>
+<div class="skip"><span class="num"><pre>525</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>526</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>527</pre></span><pre>#{ Operations</pre></div>
+<div class="skip"><span class="num"><pre>528</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>529</pre></span><pre>class Operation(object):</pre></div>
+<div class="cov"><span class="num"><pre>530</pre></span><pre>	&quot;&quot;&quot;Simple command class as base for all operations</pre></div>
+<div class="cov"><span class="num"><pre>531</pre></span><pre>	All undoable/redoable operation must support it</pre></div>
+<div class="skip"><span class="num"><pre>532</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>533</pre></span><pre>	:note: only operations may be placed on the undo stack !&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>534</pre></span><pre>	__slots__ = tuple()</pre></div>
+<div class="skip"><span class="num"><pre>535</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>536</pre></span><pre>	def __init__(self):</pre></div>
+<div class="cov"><span class="num"><pre>537</pre></span><pre>		&quot;&quot;&quot;Operations will always be placed on the undo queue if undo is available</pre></div>
+<div class="cov"><span class="num"><pre>538</pre></span><pre>		This happens automatically upon creation</pre></div>
+<div class="skip"><span class="num"><pre>539</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>540</pre></span><pre>		:note: assure subclasses call the superclass init !&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>541</pre></span><pre>		if _maya_undo_enabled and not isUndoing() and undoInfo(q=1, st=1):</pre></div>
+<div class="skip"><span class="num"><pre>542</pre></span><pre>			# sanity check !</pre></div>
+<div class="cov"><span class="num"><pre>543</pre></span><pre>			if sys._maya_stack_depth &lt; 1:</pre></div>
+<div class="cov"><span class="num"><pre>544</pre></span><pre>				raise AssertionError(&quot;Undo-Stack was %i, but must be at least 1 before operations can be put - check your code !&quot; % sys._maya_stack_depth)</pre></div>
+<div class="skip"><span class="num"><pre>545</pre></span><pre>			# END sanity check</pre></div>
+<div class="cov"><span class="num"><pre>546</pre></span><pre>			sys._maya_stack.append(self)</pre></div>
+<div class="skip"><span class="num"><pre>547</pre></span><pre>		# END if not undoing and undo is enabled</pre></div>
+<div class="cov"><span class="num"><pre>548</pre></span><pre>	def doIt(self):</pre></div>
+<div class="cov"><span class="num"><pre>549</pre></span><pre>		&quot;&quot;&quot;Do whatever you do&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>550</pre></span><pre>		raise NotImplementedError</pre></div>
+<div class="skip"><span class="num"><pre>551</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>552</pre></span><pre>	def undoIt(self):</pre></div>
+<div class="cov"><span class="num"><pre>553</pre></span><pre>		&quot;&quot;&quot;Undo whatever you did&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>554</pre></span><pre>		raise NotImplementedError</pre></div>
+<div class="skip"><span class="num"><pre>555</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>556</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>557</pre></span><pre>class GenericOperation(Operation):</pre></div>
+<div class="cov"><span class="num"><pre>558</pre></span><pre>	&quot;&quot;&quot;Simple oeration allowing to use a generic doit and untoit call to be accessed</pre></div>
+<div class="cov"><span class="num"><pre>559</pre></span><pre>	using the operation interface.</pre></div>
+<div class="skip"><span class="num"><pre>560</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>561</pre></span><pre>	In other words: If you do not want to derive from operation just because you would like</pre></div>
+<div class="cov"><span class="num"><pre>562</pre></span><pre>	to have your own custom ( but simple) do it and undo it methods, you would just</pre></div>
+<div class="cov"><span class="num"><pre>563</pre></span><pre>	use this all-in-one operation&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>564</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>565</pre></span><pre>	__slots__ = ( &quot;_dofunc&quot;, &quot;_doargs&quot;, &quot;_dokwargs&quot;, &quot;_doitfailed&quot;,</pre></div>
+<div class="cov"><span class="num"><pre>566</pre></span><pre>					&quot;_undofunc&quot;, &quot;_undoargs&quot;, &quot;_undokwargs&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>567</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>568</pre></span><pre>	def __init__(self):</pre></div>
+<div class="cov"><span class="num"><pre>569</pre></span><pre>		&quot;&quot;&quot;intiialize our variables&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>570</pre></span><pre>		Operation.__init__(self)</pre></div>
+<div class="cov"><span class="num"><pre>571</pre></span><pre>		self._dofunc = None</pre></div>
+<div class="cov"><span class="num"><pre>572</pre></span><pre>		self._doargs = None</pre></div>
+<div class="cov"><span class="num"><pre>573</pre></span><pre>		self._dokwargs = None</pre></div>
+<div class="cov"><span class="num"><pre>574</pre></span><pre>		self._doitfailed = False	# keep track whether we may actually undo something</pre></div>
+<div class="skip"><span class="num"><pre>575</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>576</pre></span><pre>		self._undofunc = None</pre></div>
+<div class="cov"><span class="num"><pre>577</pre></span><pre>		self._undoargs = None</pre></div>
+<div class="cov"><span class="num"><pre>578</pre></span><pre>		self._undokwargs = None</pre></div>
+<div class="skip"><span class="num"><pre>579</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>580</pre></span><pre>	def setDoitCmd(self, func, *args, **kwargs):</pre></div>
+<div class="cov"><span class="num"><pre>581</pre></span><pre>		&quot;&quot;&quot;Add the doit call to our instance&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>582</pre></span><pre>		self._dofunc = func</pre></div>
+<div class="cov"><span class="num"><pre>583</pre></span><pre>		self._doargs = args</pre></div>
+<div class="cov"><span class="num"><pre>584</pre></span><pre>		self._dokwargs = kwargs</pre></div>
+<div class="skip"><span class="num"><pre>585</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>586</pre></span><pre>	def setUndoitCmd(self, func, *args, **kwargs):</pre></div>
+<div class="cov"><span class="num"><pre>587</pre></span><pre>			&quot;&quot;&quot;Add the undoit call to our instance&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>588</pre></span><pre>			self._undofunc = func</pre></div>
+<div class="cov"><span class="num"><pre>589</pre></span><pre>			self._undoargs = args</pre></div>
+<div class="cov"><span class="num"><pre>590</pre></span><pre>			self._undokwargs = kwargs</pre></div>
+<div class="skip"><span class="num"><pre>591</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>592</pre></span><pre>	def doIt(self):</pre></div>
+<div class="cov"><span class="num"><pre>593</pre></span><pre>		&quot;&quot;&quot;Execute the doit command</pre></div>
+<div class="skip"><span class="num"><pre>594</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>595</pre></span><pre>		:return: result of the doit command&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>596</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre>597</pre></span><pre>			return self._dofunc(*self._doargs, **self._dokwargs)</pre></div>
+<div class="cov"><span class="num"><pre>598</pre></span><pre>		except:</pre></div>
+<div class="cov"><span class="num"><pre>599</pre></span><pre>			self._doitfailed = True</pre></div>
+<div class="skip"><span class="num"><pre>600</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>601</pre></span><pre>	def undoIt(self):</pre></div>
+<div class="cov"><span class="num"><pre>602</pre></span><pre>		&quot;&quot;&quot;Execute undoit if doit did not fail&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>603</pre></span><pre>		if self._doitfailed:</pre></div>
+<div class="nocov"><span class="num"><pre>604</pre></span><pre>			return</pre></div>
+<div class="skip"><span class="num"><pre>605</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>606</pre></span><pre>		self._undofunc(*self._undoargs, **self._undokwargs)</pre></div>
+<div class="skip"><span class="num"><pre>607</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>608</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>609</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>610</pre></span><pre>class GenericOperationStack(Operation):</pre></div>
+<div class="cov"><span class="num"><pre>611</pre></span><pre>	&quot;&quot;&quot;Operation able to undo generic callable commands (one or multiple). It would be used</pre></div>
+<div class="cov"><span class="num"><pre>612</pre></span><pre>	whenever a simple generic operatino is not sufficient</pre></div>
+<div class="skip"><span class="num"><pre>613</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>614</pre></span><pre>	In your api command, create a GenericOperationStack operation instance, add your (mel) commands</pre></div>
+<div class="cov"><span class="num"><pre>615</pre></span><pre>	that should be executed in a row as Call. To apply them, call doIt once (and only once !).</pre></div>
+<div class="cov"><span class="num"><pre>616</pre></span><pre>	You can have only one command stored, or many if they should be executed in a row.</pre></div>
+<div class="cov"><span class="num"><pre>617</pre></span><pre>	The vital part is that with each do command, you supply an undo command.</pre></div>
+<div class="cov"><span class="num"><pre>618</pre></span><pre>	This way your operations can be undone and redone once undo / redo is requested</pre></div>
+<div class="skip"><span class="num"><pre>619</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>620</pre></span><pre>	:note: this class works well with `mrv.util.Call`</pre></div>
+<div class="cov"><span class="num"><pre>621</pre></span><pre>	:note: to execute the calls added, you must call `doIt` or `addCmdAndCall` - otherwise</pre></div>
+<div class="cov"><span class="num"><pre>622</pre></span><pre>		the undoqueue might brake if exceptions occour !</pre></div>
+<div class="cov"><span class="num"><pre>623</pre></span><pre>	:note: your calls may use MEL commands safely as the undo-queue will be torn off during execution</pre></div>
+<div class="cov"><span class="num"><pre>624</pre></span><pre>	:note: Undocommand will be applied in reversed order automatically&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>625</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>626</pre></span><pre>	__slots__ = (&quot;_docmds&quot;, &quot;_undocmds&quot;, &quot;_undocmds_tmp&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>627</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>628</pre></span><pre>	def __init__(self):</pre></div>
+<div class="cov"><span class="num"><pre>629</pre></span><pre>		&quot;&quot;&quot;intiialize our variables&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>630</pre></span><pre>		Operation.__init__(self)</pre></div>
+<div class="cov"><span class="num"><pre>631</pre></span><pre>		self._docmds = list()				# list of Calls</pre></div>
+<div class="cov"><span class="num"><pre>632</pre></span><pre>		self._undocmds = list()				# will store reversed list !</pre></div>
+<div class="cov"><span class="num"><pre>633</pre></span><pre>		self._undocmds_tmp = list()			# keeps undo until their do was verified !</pre></div>
+<div class="skip"><span class="num"><pre>634</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>635</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>636</pre></span><pre>	def doIt(self):</pre></div>
+<div class="cov"><span class="num"><pre>637</pre></span><pre>		&quot;&quot;&quot;Call all doIt commands stored in our instance after temporarily disabling the undo queue&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>638</pre></span><pre>		prevstate = undoInfo(q=1, st=1)</pre></div>
+<div class="cov"><span class="num"><pre>639</pre></span><pre>		undoInfo(swf=False)</pre></div>
+<div class="skip"><span class="num"><pre>640</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>641</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre>642</pre></span><pre>			if self._undocmds_tmp:</pre></div>
+<div class="skip"><span class="num"><pre>643</pre></span><pre>				# verify each doit command before we shedule undo</pre></div>
+<div class="skip"><span class="num"><pre>644</pre></span><pre>				# if it raies, we will not schedule the respective command for undo</pre></div>
+<div class="cov"><span class="num"><pre>645</pre></span><pre>				for i,call in enumerate(self._docmds):</pre></div>
+<div class="cov"><span class="num"><pre>646</pre></span><pre>					try:</pre></div>
+<div class="cov"><span class="num"><pre>647</pre></span><pre>						call()</pre></div>
+<div class="nocov"><span class="num"><pre>648</pre></span><pre>					except:</pre></div>
+<div class="skip"><span class="num"><pre>649</pre></span><pre>						# forget about this and all following commands and reraise</pre></div>
+<div class="nocov"><span class="num"><pre>650</pre></span><pre>						del(self._docmds[i:])</pre></div>
+<div class="nocov"><span class="num"><pre>651</pre></span><pre>						self._undocmds_tmp = None		# next time we only execute the cmds that worked (and will undo only them)</pre></div>
+<div class="nocov"><span class="num"><pre>652</pre></span><pre>						raise</pre></div>
+<div class="cov"><span class="num"><pre>653</pre></span><pre>					else:</pre></div>
+<div class="cov"><span class="num"><pre>654</pre></span><pre>						self._undocmds.insert(0, self._undocmds_tmp[i])	# push front</pre></div>
+<div class="skip"><span class="num"><pre>655</pre></span><pre>				# END for each call</pre></div>
+<div class="cov"><span class="num"><pre>656</pre></span><pre>				self._undocmds_tmp = None			# free memory</pre></div>
+<div class="cov"><span class="num"><pre>657</pre></span><pre>			else:</pre></div>
+<div class="cov"><span class="num"><pre>658</pre></span><pre>				for call in self._docmds:</pre></div>
+<div class="cov"><span class="num"><pre>659</pre></span><pre>					call()</pre></div>
+<div class="skip"><span class="num"><pre>660</pre></span><pre>				# END for each do calll</pre></div>
+<div class="skip"><span class="num"><pre>661</pre></span><pre>			# END if undo cmds have been verified</pre></div>
+<div class="cov"><span class="num"><pre>662</pre></span><pre>		finally:</pre></div>
+<div class="cov"><span class="num"><pre>663</pre></span><pre>			undoInfo(swf=prevstate)</pre></div>
+<div class="skip"><span class="num"><pre>664</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>665</pre></span><pre>	def undoIt(self):</pre></div>
+<div class="cov"><span class="num"><pre>666</pre></span><pre>		&quot;&quot;&quot;Call all undoIt commands stored in our instance after temporarily disabling the undo queue&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>667</pre></span><pre>		# NOTE: the undo list is already reversed !</pre></div>
+<div class="cov"><span class="num"><pre>668</pre></span><pre>		prevstate = undoInfo(q=1, st=1)</pre></div>
+<div class="cov"><span class="num"><pre>669</pre></span><pre>		undoInfo(swf=False)</pre></div>
+<div class="skip"><span class="num"><pre>670</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>671</pre></span><pre>		# sanity check</pre></div>
+<div class="cov"><span class="num"><pre>672</pre></span><pre>		try:</pre></div>
+<div class="cov"><span class="num"><pre>673</pre></span><pre>			if self._undocmds_tmp:</pre></div>
+<div class="nocov"><span class="num"><pre>674</pre></span><pre>				raise AssertionError(&quot;Tmp undo commands queue was not None on first undo call - this means doit has not been called before - check your code!&quot;)</pre></div>
+<div class="skip"><span class="num"><pre>675</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>676</pre></span><pre>			for call in self._undocmds:</pre></div>
+<div class="cov"><span class="num"><pre>677</pre></span><pre>				call()</pre></div>
+<div class="cov"><span class="num"><pre>678</pre></span><pre>		finally:</pre></div>
+<div class="cov"><span class="num"><pre>679</pre></span><pre>			undoInfo(swf=prevstate)</pre></div>
+<div class="skip"><span class="num"><pre>680</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>681</pre></span><pre>	def addCmd(self, doCall, undoCall):</pre></div>
+<div class="cov"><span class="num"><pre>682</pre></span><pre>		&quot;&quot;&quot;Add a command to the queue for later application</pre></div>
+<div class="skip"><span class="num"><pre>683</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>684</pre></span><pre>		:param doCall: instance supporting __call__ interface, called on doIt</pre></div>
+<div class="cov"><span class="num"><pre>685</pre></span><pre>		:param undoCall: instance supporting __call__ interface, called on undoIt&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>686</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>687</pre></span><pre>		self._docmds.append(doCall)		# push</pre></div>
+<div class="cov"><span class="num"><pre>688</pre></span><pre>		self._undocmds_tmp.append(undoCall)</pre></div>
+<div class="skip"><span class="num"><pre>689</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>690</pre></span><pre>	def addCmdAndCall(self, doCall, undoCall):</pre></div>
+<div class="cov"><span class="num"><pre>691</pre></span><pre>		&quot;&quot;&quot;Add commands to the queue and execute it right away - either always use</pre></div>
+<div class="cov"><span class="num"><pre>692</pre></span><pre>		this way to add your commands or the `addCmd` method, never mix them !</pre></div>
+<div class="skip"><span class="num"><pre>693</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>694</pre></span><pre>		:return: return value of the doCall</pre></div>
+<div class="cov"><span class="num"><pre>695</pre></span><pre>		:note: use this method if you need the return value of the doCall right away&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>696</pre></span><pre>		prevstate = undoInfo(q=1, st=1)</pre></div>
+<div class="nocov"><span class="num"><pre>697</pre></span><pre>		undoInfo(swf=False)</pre></div>
+<div class="skip"><span class="num"><pre>698</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>699</pre></span><pre>		rval = doCall()</pre></div>
+<div class="nocov"><span class="num"><pre>700</pre></span><pre>		self._docmds.append(doCall)</pre></div>
+<div class="nocov"><span class="num"><pre>701</pre></span><pre>		self._undocmds.insert(0, undoCall)</pre></div>
+<div class="skip"><span class="num"><pre>702</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>703</pre></span><pre>		undoInfo(swf=prevstate)</pre></div>
+<div class="nocov"><span class="num"><pre>704</pre></span><pre>		return rval</pre></div>
+<div class="skip"><span class="num"><pre>705</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>706</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>707</pre></span><pre>class DGModifier(Operation):</pre></div>
+<div class="cov"><span class="num"><pre>708</pre></span><pre>	&quot;&quot;&quot;Undo-aware DG Modifier - using it will automatically put it onto the API undo queue</pre></div>
+<div class="skip"><span class="num"><pre>709</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>710</pre></span><pre>	:note: You MUST call doIt() before once you have instantiated an instance, even though you</pre></div>
+<div class="cov"><span class="num"><pre>711</pre></span><pre>		have nothing on it. This requiredment is related to the undo queue mechanism</pre></div>
+<div class="cov"><span class="num"><pre>712</pre></span><pre>	:note: May NOT derive directly from dg modifier!&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>713</pre></span><pre>	__slots__ = (&quot;_modifier&quot;,)</pre></div>
+<div class="cov"><span class="num"><pre>714</pre></span><pre>	_modifier_class_ = api.MDGModifier		# do be overridden by subclasses</pre></div>
+<div class="skip"><span class="num"><pre>715</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>716</pre></span><pre>	def __init__(self):</pre></div>
+<div class="cov"><span class="num"><pre>717</pre></span><pre>		&quot;&quot;&quot;Initialize our base classes explicitly&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>718</pre></span><pre>		Operation.__init__(self)</pre></div>
+<div class="cov"><span class="num"><pre>719</pre></span><pre>		self._modifier = self._modifier_class_()</pre></div>
+<div class="skip"><span class="num"><pre>720</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>721</pre></span><pre>	def __getattr__(self , attr):</pre></div>
+<div class="cov"><span class="num"><pre>722</pre></span><pre>		&quot;&quot;&quot;Always return the attribute of the dg modifier - it is fully compatible</pre></div>
+<div class="cov"><span class="num"><pre>723</pre></span><pre>		to our operation interface&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>724</pre></span><pre>		return getattr(self._modifier, attr)</pre></div>
+<div class="skip"><span class="num"><pre>725</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>726</pre></span><pre>	def doIt(self):</pre></div>
+<div class="cov"><span class="num"><pre>727</pre></span><pre>		&quot;&quot;&quot;Override from Operation&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>728</pre></span><pre>		return self._modifier.doIt()</pre></div>
+<div class="skip"><span class="num"><pre>729</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>730</pre></span><pre>	def undoIt(self):</pre></div>
+<div class="cov"><span class="num"><pre>731</pre></span><pre>		&quot;&quot;&quot;Override from Operation&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>732</pre></span><pre>		return self._modifier.undoIt()</pre></div>
+<div class="skip"><span class="num"><pre>733</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>734</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>735</pre></span><pre>class DagModifier(DGModifier):</pre></div>
+<div class="cov"><span class="num"><pre>736</pre></span><pre>	&quot;&quot;&quot;undo-aware DAG modifier, copying all extra functions from DGModifier&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>737</pre></span><pre>	__slots__ = tuple()</pre></div>
+<div class="cov"><span class="num"><pre>738</pre></span><pre>	_modifier_class_ = api.MDagModifier</pre></div>
+<div class="skip"><span class="num"><pre>739</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>740</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>741</pre></span><pre>#} END operations</pre></div>
+<div class="skip"><span class="num"><pre>742</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>743</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>744</pre></span><pre></pre></div>
+</div>
+</body>
+</html>

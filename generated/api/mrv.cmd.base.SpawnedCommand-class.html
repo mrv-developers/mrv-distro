@@ -1,0 +1,738 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>mrv.cmd.base.SpawnedCommand</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="mrv-module.html">Package&nbsp;mrv</a> ::
+        <a href="mrv.cmd-module.html" onclick="show_private();">Package&nbsp;cmd</a> ::
+        <a href="mrv.cmd.base-module.html">Module&nbsp;base</a> ::
+        Class&nbsp;SpawnedCommand
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="mrv.cmd.base.SpawnedCommand-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class SpawnedCommand</h1><p class="nomargin-top"><span class="codelink"><a href="mrv.cmd.base-pysrc.html#SpawnedCommand">source&nbsp;code</a></span></p>
+<pre class="base-tree">
+object --+
+         |
+        <strong class="uidshort">SpawnedCommand</strong>
+</pre>
+
+<hr />
+<p>Implements a command which can be started easily by specifying a class path
+such as package.cmd.module.CommandClass whose instance should be started in
+a standalone process.</p>
+<p>The target command must be derived from this class and must implement the
+'execute' method.</p>
+<p>To use this class, derive from it and change the configuration variables
+accordingly.</p>
+<p>The instance will always own a logger instance at its member called 'log',
+the configuration will be applied according to k_log_application_id</p>
+<p>The parser used to parse all options is vailable at its member called 'parser',
+its set during <tt class="rst-docutils literal">option_parser</tt></p>
+<p>The instance may also be created within an existing process and
+executed manually - in that case it will not exit automatically if a
+serious event occours</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.cmd.base.SpawnedCommand-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      x.__init__(...) initializes x; see x.__class__.__doc__ for signature</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.cmd.base-pysrc.html#SpawnedCommand.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.cmd.base.SpawnedCommand-class.html#_preprocess_args" class="summary-sig-name" onclick="show_private();">_preprocess_args</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">options</span>,
+        <span class="summary-sig-arg">args</span>)</span><br />
+      The arguments can be preprocessed</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.cmd.base-pysrc.html#SpawnedCommand._preprocess_args">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.cmd.base.SpawnedCommand-class.html#_execute" class="summary-sig-name" onclick="show_private();">_execute</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>)</span><br />
+      internal method handling the basic arguments in a pre-process before
+calling <tt class="rst-docutils literal">execute</tt></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.cmd.base-pysrc.html#SpawnedCommand._execute">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__str__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Overridable</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.cmd.base.SpawnedCommand-class.html#execute" class="summary-sig-name">execute</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Method implementing the actual functionality of the command
+:param options: Values instance of the optparse module
+:param args: remaining positional arguments passed to the process on the commandline
+:note: if you like to terminate, raise an exception</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.cmd.base-pysrc.html#SpawnedCommand.execute">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.cmd.base.SpawnedCommand-class.html#option_parser" class="summary-sig-name">option_parser</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns:
+OptionParser Instance containing all supported options</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.cmd.base-pysrc.html#SpawnedCommand.option_parser">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS METHODS ==================== -->
+<a name="section-ClassMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.cmd.base.SpawnedCommand-class.html#spawn" class="summary-sig-name">spawn</a>(<span class="summary-sig-arg">cls</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Spawn a new standalone process of this command type
+Additional arguments passed to the command process</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.cmd.base-pysrc.html#SpawnedCommand.spawn">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.cmd.base.SpawnedCommand-class.html#daemonize" class="summary-sig-name">daemonize</a>(<span class="summary-sig-arg">cls</span>,
+        <span class="summary-sig-arg">*args</span>)</span><br />
+      Damonize the spawned command, passing <a href="#id1"><span class="rst-problematic" id="rst-id2">*</span></a>args to the instanciated command's
+execute method.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.cmd.base-pysrc.html#SpawnedCommand.daemonize">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_daemon_redirect_to"></a><span class="summary-name">_daemon_redirect_to</span> = <code title="'/dev/null'"><code class="variable-quote">'</code><code class="variable-string">/dev/null</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Configuration</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="k_log_application_id"></a><span class="summary-name">k_log_application_id</span> = <code title="None">None</code><br />
+      hash(x)
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="k_class_path"></a><span class="summary-name">k_class_path</span> = <code title="'package.module.YourClass'"><code class="variable-quote">'</code><code class="variable-string">package.module.YourClass</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="k_version"></a><span class="summary-name">k_version</span> = <code title="None">None</code><br />
+      hash(x)
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="mrv.cmd.base.SpawnedCommand-class.html#_exec_path" class="summary-name" onclick="show_private();">_exec_path</a> = <code title="'/media/truecrypt2/mainline/pipe/master/pipe/ext/mrv/mrv/bin/mrv'"><code class="variable-quote">'</code><code class="variable-string">/media/truecrypt2/mainline/pipe/master/pipe/ext/</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_mrv_info_dir"></a><span class="summary-name">_mrv_info_dir</span> = <code title="None">None</code><br />
+      hash(x)
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_add_args"></a><span class="summary-name">_add_args</span> = <code title="['--mrv-no-maya']"><code class="variable-group">[</code><code class="variable-quote">'</code><code class="variable-string">--mrv-no-maya</code><code class="variable-quote">'</code><code class="variable-group">]</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="k_usage"></a><span class="summary-name">k_usage</span> = <code title="None">None</code><br />
+      hash(x)
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="k_description"></a><span class="summary-name">k_description</span> = <code title="None">None</code><br />
+      hash(x)
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="k_program_name"></a><span class="summary-name">k_program_name</span> = <code title="None">None</code><br />
+      hash(x)
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_daemon_umask"></a><span class="summary-name">_daemon_umask</span> = <code title="None">None</code><br />
+      hash(x)
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_daemon_workdir"></a><span class="summary-name">_daemon_workdir</span> = <code title="None">None</code><br />
+      hash(x)
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_daemon_maxfd"></a><span class="summary-name">_daemon_maxfd</span> = <code title="64">64</code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="log"></a><span class="summary-name">log</span>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="parser"></a><span class="summary-name">parser</span>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.cmd.base-pysrc.html#SpawnedCommand.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>x.__init__(...) initializes x; see x.__class__.__doc__ for 
+  signature</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><p><strong class="pname"><code>_spawned</code></strong> - If True, default False, we assume we have our own process.
+Otherwise we will do nothing that would adjust the current process, such as:</p>
+<ul class="rst-simple">
+<li>sys.exit</li>
+<li>change configuration of logging system</li>
+</ul></li>
+    </ul></dd>
+    <dt>Overrides:
+        object.__init__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="spawn"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">spawn</span>(<span class="sig-arg">cls</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+    <br /><em class="fname">Class Method</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.cmd.base-pysrc.html#SpawnedCommand.spawn">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Spawn a new standalone process of this command type
+Additional arguments passed to the command process</p>
+<p>Returns: Subprocess.Popen instance</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>kwargs</code></strong> - Additional keyword arguments to be passed to Subprocess.Popen,
+use it to configure your IO</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="daemonize"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">daemonize</span>(<span class="sig-arg">cls</span>,
+        <span class="sig-arg">*args</span>)</span>
+    <br /><em class="fname">Class Method</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.cmd.base-pysrc.html#SpawnedCommand.daemonize">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Damonize the spawned command, passing <a href="#id1"><span class="rst-rst-problematic rst-problematic" id="rst-rst-id2">*</span></a>args to the instanciated command's
+execute method.
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>None in calling process, no return in the daemon
+as sys.exit will be called.</dd>
+  </dl>
+<div class="fields">      <strong>Notes:</strong>
+      <ul class="nomargin-top">
+        <li>
+        see configuration variables prefixed with _daemon_
+        </li>
+        <li>
+        based on Chad J. Schroeder createDaemon method,
+see <a class="rst-reference external" href="http://code.activestate.com/recipes/278731-creating-a-daemon-the-python-way" target="_top">http://code.activestate.com/recipes/278731-creating-a-daemon-the-python-way</a>
+        </li>
+      </ul>
+</div></td></tr></table>
+</div>
+<a name="_preprocess_args"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_preprocess_args</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">options</span>,
+        <span class="sig-arg">args</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.cmd.base-pysrc.html#SpawnedCommand._preprocess_args">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  The arguments can be preprocessed
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>tuple(options, args) tuple of parsed options and remaining args</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_execute"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_execute</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.cmd.base-pysrc.html#SpawnedCommand._execute">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>internal method handling the basic arguments in a pre-process before
+calling <tt class="rst-rst-docutils literal rst-docutils literal">execute</tt></p>
+<p>We will parse all options, process the default ones and pass on the
+call to the <tt class="rst-docutils literal">execute</tt> method</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="execute"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">execute</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.cmd.base-pysrc.html#SpawnedCommand.execute">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Method implementing the actual functionality of the command
+:param options: Values instance of the optparse module
+:param args: remaining positional arguments passed to the process on the commandline
+:note: if you like to terminate, raise an exception
+  <dl class="fields">
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@log_exception</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="option_parser"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">option_parser</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.cmd.base-pysrc.html#SpawnedCommand.option_parser">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>OptionParser Instance containing all supported options</dd>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        Should be overridden by subclass to add additional options and
+option groups themselves after calling the base class implementation
+      </p>
+</div></td></tr></table>
+</div>
+<br />
+<!-- ==================== CLASS VARIABLE DETAILS ==================== -->
+<a name="section-ClassVariableDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variable Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariableDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="_exec_path"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">_exec_path</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">/media/truecrypt2/mainline/pipe/master/pipe/ext/mrv/mrv/bin/mrv</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Apr 19 15:39:11 2011
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

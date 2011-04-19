@@ -1,0 +1,334 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Commandline Tools &mdash; mrv v1.0.2-develop documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '#',
+        VERSION:     '1.0.2-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="top" title="mrv v1.0.2-develop documentation" href="index.html" />
+    <link rel="next" title="History" href="history.html" />
+    <link rel="prev" title="Extensions" href="extend.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="history.html" title="History"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="extend.html" title="Extensions"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="commandline-tools">
+<h1>Commandline Tools<a class="headerlink" href="#commandline-tools" title="Permalink to this headline">¶</a></h1>
+<p>This document contains a full listing of the included commandline tools as well as how to use them.</p>
+<p>All production level programs are located in <tt class="docutils literal"><span class="pre">mrv/bin</span></tt>, all testing utilities can be found in <tt class="docutils literal"><span class="pre">mrv/test/bin</span></tt>.</p>
+<p>All examples are given using linux shell semantics, windows users usually only have to substitute &#8216;/&#8217; with &#8216;\&#8217; and prepend the <tt class="docutils literal"><span class="pre">python.exe</span></tt> interpreter which has to be used to launch the programs.</p>
+<div class="section" id="production-tools">
+<h2>Production Tools<a class="headerlink" href="#production-tools" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="mrv">
+<span id="mrv-label"></span><h3>mrv<a class="headerlink" href="#mrv" title="Permalink to this headline">¶</a></h3>
+<p>This tool will setup the environment to allow running MRV and derived projects together with Maya Standalone within your <em>system&#8217;s python interpreter</em>, <em>mayapy</em>, or <em>maya.bin</em>. The system interpreter will be used by default and is expected to be in your path. On Linux and OSX, it must be named <tt class="docutils literal"><span class="pre">python2.x</span></tt>. On Windows, the python interpreter&#8217;s executable is expected to be <tt class="docutils literal"><span class="pre">python2x</span></tt>.**x** can be 4,5 and 6 and depends on the maya version you would like to run.</p>
+<p>If no python interpreter can be found in your path, <tt class="docutils literal"><span class="pre">mrv</span></tt> will fallback to using <tt class="docutils literal"><span class="pre">mayapy</span></tt>.</p>
+<p>The first optional argument passed in to the tool names the Maya version you would like to run, these can be <em>8.5</em> to X, where X denotes the latest release. If no maya version is specified, the latest installed one will be launched.</p>
+<p>All additional arguments are passed to the python interpreter or maya.bin directly.</p>
+<p>It can easily be used to write standalone tools with maya support.</p>
+<p><strong>Sample Usage</strong>:</p>
+<div class="highlight-python"><pre>$ # start a python interpreter with maya 2011
+$ bin/mrv 2011
+
+$ # show the tools help
+$ bin/mrv --help
+
+$ # show the help of the underlying python interpreter
+$ bin/mrv 2011 -h</pre>
+</div>
+<div class="section" id="flags">
+<h4>Flags<a class="headerlink" href="#flags" title="Permalink to this headline">¶</a></h4>
+<ul>
+<li><dl class="cmdoption">
+<dt id="cmdoption--mrv-maya">
+<tt class="descname">--mrv-maya</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption--mrv-maya" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepares the environment of a default maya session using <tt class="docutils literal"><span class="pre">maya.bin</span></tt> to enable mrv support. All additional arguments will be interpreted by <tt class="docutils literal"><span class="pre">maya.bin</span></tt>:</p>
+<div class="highlight-python"><pre>$ # start a default maya 2011 session
+$ bin/mrv 2011 --mrv-maya
+
+$ # start maya 8.5 in prompt mode
+$ bin/mrv --mrv-maya -prompt</pre>
+</div>
+</dd></dl>
+
+</li>
+<li><dl class="cmdoption">
+<dt id="cmdoption--mrv-mayapy">
+<tt class="descname">--mrv-mayapy</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption--mrv-mayapy" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default, mrv will try to use the system&#8217;s python interpreter first, and mayapy if it could not be found. This can be problematic if the system&#8217; python interpreter is not suitable to run the given maya version. In that case, you may force mrv to use maya&#8217;s builtin python interpreter using the <tt class="docutils literal"><span class="pre">--mrv-mayapy</span></tt> flag. All remaining arguments will be passed to <tt class="docutils literal"><span class="pre">mayapy</span></tt>.</p>
+<p><strong>Enforce Mayapy Sample Usage</strong>:</p>
+<div class="highlight-python"><pre>$ # start mrv for maya 2010 using mayapy
+$ bin/mrv 2010 --mrv-mayapy</pre>
+</div>
+</dd></dl>
+
+</li>
+<li><dl class="cmdoption">
+<dt id="cmdoption--mrv-no-maya">
+<tt class="descname">--mrv-no-maya</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption--mrv-no-maya" title="Permalink to this definition">¶</a></dt>
+<dd><p>There may be occasions when you want to use mrv facilities which are not specific to maya at all, hence the <tt class="docutils literal"><span class="pre">mrv.maya</span></tt> module is not used. In this case you may specifiy which code to run using the default python <tt class="docutils literal"><span class="pre">-c</span></tt> and <tt class="docutils literal"><span class="pre">-m</span></tt> arguments which are expected to come before any other non-mrv arguments, or by providing a python module to execute. All remaining arguments will be set to <tt class="docutils literal"><span class="pre">sys.argv</span></tt> which can be read by your code subsequently.</p>
+<p><strong>Use the current python interpreter without maya support</strong>:</p>
+<div class="highlight-python"><pre>$ bin/mrv --mrv-no-maya -c "import mrv; print mrv" -given -via=sys.argv
+$ bin/mrv --mrv-no-maya my-script.py -arg-for-script=1</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The mrv command will use execv on non-windows system, but use spawn on windows to workaround some issues. This implies that scripts on linux/osx can natively use the mrv program, standardchannels are handled automatically. On windows the spawned process will be attached with all standardchannels of the parent python process, but its questionable whether this has the intended effect.</p>
+</div>
+</dd></dl>
+
+</li>
+</ul>
+</div>
+<div class="section" id="mrv-and-derived-projects">
+<h4><tt class="docutils literal"><span class="pre">mrv</span></tt> and derived Projects<a class="headerlink" href="#mrv-and-derived-projects" title="Permalink to this headline">¶</a></h4>
+<p><tt class="docutils literal"><span class="pre">mrv</span></tt>s main tasks are to adjust the python``sys.path`` to include mrv and to possible prepare the environment to start maya standalone inside the interpreter.</p>
+<p>To allow derived projects, which use MRV as a subproject, to be handled as well, the <a class="reference external" href="develop/distribute/pinfo.html"><em>info module</em></a> takes a key role in providing information about the project. To <tt class="docutils literal"><span class="pre">mrv</span></tt> it is no difference whether it prepares the environment for MRV or a derived projects as it relies in the <em>info module</em> in both cases.</p>
+<p>When searching for the info module, it tries to import it at the current working directory, moving upward the path until one is found. As the <em>info</em> module is supposed to be located in the project root, it must be possible to import the actual project by its <tt class="docutils literal"><span class="pre">root_package</span></tt> name. If this is the root package of a derived project, it is supposed to adjust <tt class="docutils literal"><span class="pre">sys.path</span></tt> once more to allow mrv to be imported as well.</p>
+<p>This allows derived projects to be started and used through <tt class="docutils literal"><span class="pre">mrv</span></tt> as long as your current working directory hints at it.</p>
+</div>
+</div>
+<div class="section" id="imrv">
+<span id="imrv-label"></span><h3>imrv<a class="headerlink" href="#imrv" title="Permalink to this headline">¶</a></h3>
+<p>This program is effectively nothing more than a customized IPython shell which provides a fully initialized MRV development environment. Additionally, it will attach all available functions to all types to aid auto-completion of methods - under normal conditions methods are only added to a type as you call the function.</p>
+<p><tt class="docutils literal"><span class="pre">imrv</span></tt> can be seen as the python version of <tt class="docutils literal"><span class="pre">maya</span> <span class="pre">-prompt</span></tt>.</p>
+<p>An introduction to using the tool can be found in <a class="reference external" href="develop/index.html"><em>Development</em></a>:</p>
+<div class="highlight-python"><pre>$ # get ipython with a fully initialized MRV in Maya 2011
+$ imrv 2011</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Will only work if you have the ipython package available in your python installation.</p>
+</div>
+</div>
+</div>
+<div class="section" id="test-utilities">
+<h2>Test Utilities<a class="headerlink" href="#test-utilities" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="tmrv">
+<span id="tmrv-label"></span><h3>tmrv<a class="headerlink" href="#tmrv" title="Permalink to this headline">¶</a></h3>
+<p>A MRV specific replacement for the <tt class="docutils literal"><span class="pre">nosetests</span></tt> utility which supports all arguments of <tt class="docutils literal"><span class="pre">nosetests</span></tt>, whereas the first argument may be the Maya release you want to run the tests in.</p>
+<p><strong>Sample Usage</strong>:</p>
+<div class="highlight-python"><pre>$ # run all tests in Maya 2011
+$ test/bin/tmrv 2011
+
+$ # run the given tests in Maya 2008
+$ test/bin/tmrv 2008 test/test_path.py test/maya
+
+$ # show all arguments supported by nosetests
+$ test/bin/tmrv --help</pre>
+</div>
+<div class="section" id="id1">
+<h4>Flags<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<ul>
+<li><dl class="cmdoption">
+<dt id="cmdoption--tmrv-coverage">
+<tt class="descname">--tmrv-coverage</tt><tt class="descclassname">[=packagename]</tt><a class="headerlink" href="#cmdoption--tmrv-coverage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a <a href="_downloads/index.html"><strong class="xref">coverage report</strong></a> using  nose coverage which must be available in your local nose installation. If you specify a package name, only code that ran within the given package will be included in the coverage report. It defaults to your project&#8217;s root package.</p>
+<p>As it is essentially a reconfigured nose, it supports all nose specific arguments as well:</p>
+<div class="highlight-python"><pre>$ # get a coverage report after running all tests in Maya 2011
+$ test/bin/tmrv 2011 --tmrv-coverage
+
+$ # show the report in a browser
+$ firefox coverage/index.html</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">On Windows when using cmd.exe, paths to the test modules and packages to run must be absolute. For example, the <em>test/maya</em> becomes something like &#8220;c:projectsmrvtestmaya&#8221; on windows. Additionally, an absolute path must be specified as opposed to the non-windows os&#8217;s which take the current directory as hint for where to find tests.</p>
+</div>
+</dd></dl>
+
+</li>
+</ul>
+</div>
+<div class="section" id="testing-user-interfaces">
+<h4>Testing User Interfaces<a class="headerlink" href="#testing-user-interfaces" title="Permalink to this headline">¶</a></h4>
+<p>In order to test user interfaces, you need to run the actual maya executable in UI mode, that is without &#8216;-batch&#8217; or &#8216;-prompt&#8217; specified. Using the <tt class="docutils literal"><span class="pre">--mrv-maya``flag</span> <span class="pre">that</span> <span class="pre">``mrv</span></tt> provides, you will get a maya UI session setup to run the specified nose tests with the given options:</p>
+<div class="highlight-python"><pre>$ # Run all UI tests in maya 2011
+$ test/bin/tmrv 2011 --mrv-maya test/maya/ui
+
+$ # Run all tests, including coverage, within maya 8.5
+$ test/bin/tmrv 2011 --mrv-maya --tmrv-coverage</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">nose must be installed for <tt class="docutils literal"><span class="pre">mayapy</span></tt> in order for the UI tests to work.</p>
+</div>
+</div>
+</div>
+<div class="section" id="tmrvr">
+<span id="tmrvr-label"></span><h3>tmrvr<a class="headerlink" href="#tmrvr" title="Permalink to this headline">¶</a></h3>
+<p>This tools allows automated full regression testing by running all tests for all available or specified maya versions. Use the <tt class="docutils literal"><span class="pre">--help</span></tt> flag for additional options.</p>
+<p><strong>Sample Usage</strong>:</p>
+<div class="highlight-python"><pre>$ # Run all tests for all available maya versions
+$ test/bin/tmrvr
+
+$ # Run all tests only for the given maya versions
+$ test/bin/tmrvr 8.5 2008</pre>
+</div>
+<div class="section" id="id2">
+<h4>Flags<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<ul>
+<li><dl class="cmdoption">
+<dt id="cmdoption--skip-single">
+<tt class="descname">--skip-single</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption--skip-single" title="Permalink to this definition">¶</a></dt>
+<dd><p>If you would like to shorten the regression test, you can skip the single tests which perform only one tests per maya session as they have to be run in an isolated fashion. In case you decide to do so, the final result of the regression test will be failure though. Single tests are identified by a filename matching <tt class="docutils literal"><span class="pre">test_single_*</span></tt>.</p>
+<blockquote>
+<p>$ # Run all tests, but skip the single tests
+$ test/bin/tmrvr &#8211;skip-single</p>
+</blockquote>
+</dd></dl>
+
+</li>
+<li><dl class="cmdoption">
+<dt id="cmdoption---mrv-mayapy">
+<tt class="descname">---mrv-mayapy</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption---mrv-mayapy" title="Permalink to this definition">¶</a></dt>
+<dd><p>If set, tmrvr will launch <tt class="docutils literal"><span class="pre">tmrv</span></tt> using mayapy instead of the system&#8217;s native python interpreter.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The first of the three <tt class="docutils literal"><span class="pre">-</span></tt> characters in <tt class="docutils literal"><span class="pre">---mrv-mayapy</span></tt> is just required for the documentation generator not to barf, and must be left out when using the flag.</p>
+</div>
+</dd></dl>
+
+</li>
+<li><dl class="cmdoption">
+<dt id="cmdoption--search-root">
+<tt class="descname">--search-root</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption--search-root" title="Permalink to this definition">¶</a></dt>
+<dd><p>If set, test cases will be searched in the given directory. Otherwise the projects root/test directory will be used instead.</p>
+</dd></dl>
+
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="release-tools">
+<h2>Release Tools<a class="headerlink" href="#release-tools" title="Permalink to this headline">¶</a></h2>
+<p>The set of tools and scripts required to do release is further described in the <a class="reference external" href="develop/distribute/index.html"><em>Distribution Manual</em></a></p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#">Commandline Tools</a><ul>
+<li><a class="reference external" href="#production-tools">Production Tools</a><ul>
+<li><a class="reference external" href="#mrv">mrv</a><ul>
+<li><a class="reference external" href="#flags">Flags</a></li>
+<li><a class="reference external" href="#mrv-and-derived-projects"><tt class="docutils literal"><span class="pre">mrv</span></tt> and derived Projects</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#imrv">imrv</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#test-utilities">Test Utilities</a><ul>
+<li><a class="reference external" href="#tmrv">tmrv</a><ul>
+<li><a class="reference external" href="#id1">Flags</a></li>
+<li><a class="reference external" href="#testing-user-interfaces">Testing User Interfaces</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#tmrvr">tmrvr</a><ul>
+<li><a class="reference external" href="#id2">Flags</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference external" href="#release-tools">Release Tools</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="extend.html"
+                                  title="previous chapter">Extensions</a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="history.html"
+                                  title="next chapter">History</a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="_sources/tools.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="history.html" title="History"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="extend.html" title="Extensions"
+             >previous</a> |</li>
+        <li><a href="index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Apr 19, 2011.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,862 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>mrv.dgfe._OIShell</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="mrv-module.html">Package&nbsp;mrv</a> ::
+        <a href="mrv.dgfe-module.html">Module&nbsp;dgfe</a> ::
+        Class&nbsp;_OIShell
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="mrv.dgfe._OIShell-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class _OIShell</h1><p class="nomargin-top"><span class="codelink"><a href="mrv.dgfe-pysrc.html#_OIShell">source&nbsp;code</a></span></p>
+<pre class="base-tree">
+object --+        
+         |        
+     tuple --+    
+             |    
+<a href="mrv.dge._PlugShell-class.html" onclick="show_private();">dge._PlugShell</a> --+
+                 |
+                <strong class="uidshort">_OIShell</strong>
+</pre>
+
+<hr />
+<p>All connections from and to the FacadeNode must actually start and end there.
+Iteration over internal plugShells is not allowed.
+Thus we override only the methods that matter and assure that the call is handed
+to the acutal internal plugshell.
+We know everything we require as we have been fed with an oiplug</p>
+<blockquote>
+<ul class="rst-simple">
+<li>node = facacde node</li>
+<li>plug = oiplug containing inode and iplug ( internal node and internal plug )</li>
+<li>The internal node allows us to hand in calls to the native internal shell</li>
+</ul>
+</blockquote>
+
+<!-- ==================== NESTED CLASSES ==================== -->
+<a name="section-NestedClasses"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Nested Classes</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-NestedClasses"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="mrv.dgfe._OIShellMeta-class.html" class="summary-name">__metaclass__</a><br />
+      Metaclass building the method wrappers for the _FacadeShell class - not
+all methods should be overridden, just the ones important to use
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dgfe._OIShell-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>)</span><br />
+      Sanity checking</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dgfe-pysrc.html#_OIShell.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dgfe._OIShell-class.html#_toIShell" class="summary-sig-name" onclick="show_private();">_toIShell</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns:
+convert ourselves to the real shell actually behind this facade plug</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dgfe-pysrc.html#_OIShell._toIShell">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>tuple</code></b>:
+      <code>__add__</code>,
+      <code>__contains__</code>,
+      <code>__eq__</code>,
+      <code>__ge__</code>,
+      <code>__getattribute__</code>,
+      <code>__getitem__</code>,
+      <code>__getnewargs__</code>,
+      <code>__getslice__</code>,
+      <code>__gt__</code>,
+      <code>__hash__</code>,
+      <code>__iter__</code>,
+      <code>__le__</code>,
+      <code>__len__</code>,
+      <code>__lt__</code>,
+      <code>__mul__</code>,
+      <code>__ne__</code>,
+      <code>__rmul__</code>,
+      <code>__sizeof__</code>,
+      <code>count</code>,
+      <code>index</code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__setattr__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Object Overrides</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dgfe._OIShell-class.html#__repr__" class="summary-sig-name">__repr__</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Cut away our name in the possible oiplug ( printing an unnecessary long name then )</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dgfe-pysrc.html#_OIShell.__repr__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.dge._PlugShell-class.html" onclick="show_private();">dge._PlugShell</a></code></b>:
+      <code><a href="mrv.dge._PlugShell-class.html#__getattr__">__getattr__</a></code>,
+      <code><a href="mrv.dge._PlugShell-class.html#__str__">__str__</a></code>
+      </p>
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Values</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dgfe._OIShell-class.html#get" class="summary-sig-name">get</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Returns:
+value of the plug</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dgfe-pysrc.html#_OIShell.get">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dgfe._OIShell-class.html#set" class="summary-sig-name">set</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Set the given value to be used in our plug
+:param ignore_connection: if True, the plug can be destination of a connection and
+will still get its value set - usually it would be overwritten by the value form the
+connection.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dgfe-pysrc.html#_OIShell.set">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.dge._PlugShell-class.html" onclick="show_private();">dge._PlugShell</a></code></b>:
+      <code><a href="mrv.dge._PlugShell-class.html#compatabilityRate">compatabilityRate</a></code>
+      </p>
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Connections</th></tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.dge._PlugShell-class.html" onclick="show_private();">dge._PlugShell</a></code></b>:
+      <code><a href="mrv.dge._PlugShell-class.html#connect">connect</a></code>,
+      <code><a href="mrv.dge._PlugShell-class.html#connections">connections</a></code>,
+      <code><a href="mrv.dge._PlugShell-class.html#disconnect">disconnect</a></code>,
+      <code><a href="mrv.dge._PlugShell-class.html#input">input</a></code>,
+      <code><a href="mrv.dge._PlugShell-class.html#isConnected">isConnected</a></code>,
+      <code><a href="mrv.dge._PlugShell-class.html#iterShells">iterShells</a></code>,
+      <code><a href="mrv.dge._PlugShell-class.html#outputs">outputs</a></code>
+      </p>
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Caching</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dgfe._OIShell-class.html#cache" class="summary-sig-name">cache</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Returns:
+the cached value or raise</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dgfe-pysrc.html#_OIShell.cache">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dgfe._OIShell-class.html#clearCache" class="summary-sig-name">clearCache</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Empty the cache of our plug
+:param clear_affected: if True, the caches of our affected plugs ( connections
+or affects relations ) will also be cleared
+This operation is recursive, and needs to be as different shells on different nodes
+might do things differently.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dgfe-pysrc.html#_OIShell.clearCache">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dgfe._OIShell-class.html#hasCache" class="summary-sig-name">hasCache</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Returns:
+True if currently store a cached value</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dgfe-pysrc.html#_OIShell.hasCache">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.dgfe._OIShell-class.html#setCache" class="summary-sig-name">setCache</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Set the given value to be stored in our cache
+:raise: TypeError if the value is not compatible to our defined type</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.dgfe-pysrc.html#_OIShell.setCache">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.dge._PlugShell-class.html" onclick="show_private();">dge._PlugShell</a></code></b> (private):
+      <code><a href="mrv.dge._PlugShell-class.html#_cachename" onclick="show_private();">_cachename</a></code>
+      </p></div>
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Name Overrides</th></tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.dge._PlugShell-class.html" onclick="show_private();">dge._PlugShell</a></code></b>:
+      <code><a href="mrv.dge._PlugShell-class.html#__rshift__">__rshift__</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== STATIC METHODS ==================== -->
+<a name="section-StaticMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Static Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-StaticMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Object Overrides</th></tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.dge._PlugShell-class.html" onclick="show_private();">dge._PlugShell</a></code></b>:
+      <code><a href="mrv.dge._PlugShell-class.html#__new__">__new__</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="mrv.dgfe._OIShell-class.html#__unfacade__" class="summary-name">__unfacade__</a> = <code title="['set', 'get', 'clearCache', 'hasCache', 'setCache', 'cache']"><code class="variable-group">[</code><code class="variable-quote">'</code><code class="variable-string">set</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">get</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">clearCache</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">hasCache</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">setCa</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="mrv.dgfe._OIShell-class.html#__facade__" class="summary-name">__facade__</a> = <code title="['connect',
+ 'disconnect',
+ 'input',
+ 'outputs',
+ 'connections',
+ 'iterShells']"><code class="variable-group">[</code><code class="variable-quote">'</code><code class="variable-string">connect</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">disconnect</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">input</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">outputs</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">co</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dgfe-pysrc.html#_OIShell.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Sanity checking
+  <dl class="fields">
+    <dt>Overrides:
+        object.__init__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__repr__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__repr__</span>(<span class="sig-arg">self</span>)</span>
+    <br /><em class="fname">(Representation operator)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dgfe-pysrc.html#_OIShell.__repr__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Cut away our name in the possible oiplug ( printing an unnecessary long name then )
+  <dl class="fields">
+    <dt>Overrides:
+        object.__repr__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_toIShell"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_toIShell</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dgfe-pysrc.html#_OIShell._toIShell">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>convert ourselves to the real shell actually behind this facade plug</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="cache"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">cache</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dgfe-pysrc.html#_OIShell.cache">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>the cached value or raise</dd>
+    <dt>Raises:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code><strong class='fraise'>ValueError</strong></code></li>
+    </ul></dd>
+    <dt>Overrides:
+        <a href="mrv.dge._PlugShell-class.html#cache">dge._PlugShell.cache</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="clearCache"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">clearCache</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dgfe-pysrc.html#_OIShell.clearCache">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Empty the cache of our plug
+:param clear_affected: if True, the caches of our affected plugs ( connections
+or affects relations ) will also be cleared
+This operation is recursive, and needs to be as different shells on different nodes
+might do things differently.
+:param cleared_shells_set: if set, it can be used to track which plugs have already been dirtied to
+prevent recursive loops
+Propagation will happen even if we do not have a cache to clear ourselves
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="mrv.dge._PlugShell-class.html#clearCache">dge._PlugShell.clearCache</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dgfe-pysrc.html#_OIShell.get">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>mode</code></strong> - optional arbitary value specifying the mode of the get attempt</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>value of the plug</dd>
+    <dt>Overrides:
+        <a href="mrv.dge._PlugShell-class.html#get">dge._PlugShell.get</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="hasCache"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">hasCache</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dgfe-pysrc.html#_OIShell.hasCache">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>True if currently store a cached value</dd>
+    <dt>Overrides:
+        <a href="mrv.dge._PlugShell-class.html#hasCache">dge._PlugShell.hasCache</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="set"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dgfe-pysrc.html#_OIShell.set">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Set the given value to be used in our plug
+:param ignore_connection: if True, the plug can be destination of a connection and
+will still get its value set - usually it would be overwritten by the value form the
+connection. The set value will be cleared if something upstream in it's connection chain
+changes.
+:raise AssertionError: the respective attribute must be cached, otherwise
+the value will be lost
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="mrv.dge._PlugShell-class.html#set">dge._PlugShell.set</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="setCache"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">setCache</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.dgfe-pysrc.html#_OIShell.setCache">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Set the given value to be stored in our cache
+:raise: TypeError if the value is not compatible to our defined type
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="mrv.dge._PlugShell-class.html#setCache">dge._PlugShell.setCache</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== CLASS VARIABLE DETAILS ==================== -->
+<a name="section-ClassVariableDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variable Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariableDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__unfacade__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">__unfacade__</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-group">[</code><code class="variable-quote">'</code><code class="variable-string">set</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">get</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">clearCache</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">hasCache</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">setCache</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">cache</code><code class="variable-quote">'</code><code class="variable-group">]</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__facade__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">__facade__</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-group">[</code><code class="variable-quote">'</code><code class="variable-string">connect</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">disconnect</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">input</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">outputs</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">connections</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">iterShells</code><code class="variable-quote">'</code><code class="variable-group">]</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Apr 19 15:39:12 2011
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

@@ -1,0 +1,2402 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>mrv.conf &mdash; mrv v1.0.2-develop documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.2-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="mrv v1.0.2-develop documentation" href="../index.html" />
+    <link rel="next" title="mrv.enum" href="mrv.enum.html" />
+    <link rel="prev" title="mrv.path" href="mrv.path.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.enum.html" title="mrv.enum"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mrv.path.html" title="mrv.path"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-mrv.conf">
+<h1><tt class="xref docutils literal"><span class="pre">mrv.conf</span></tt><a class="headerlink" href="#module-mrv.conf" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="api/mrv.conf-module.html">Epydoc: mrv.conf</a></p>
+<p>Contains implementation of the configuration system allowing to flexibly control
+the programs behaviour.</p>
+<blockquote>
+<ul class="simple">
+<li>read and write sections with key=value pairs from and to INI style file-like objects !</li>
+<li>Wrappers for these file-like objects allow virtually any source for the operation</li>
+<li>configuration inheritance</li>
+<li>allow precise control over the inheritance behaviour and inheritance
+defaults</li>
+<li>final results of the inheritance operation will be cached into the <cite>ConfigManager</cite></li>
+<li>Environment Variables can serve as final instance to override values using the <cite>DictConfigINIFile</cite></li>
+<li>Creation and Maintenance of individual configuration files as controlled by
+submodules of the application</li>
+<li>These configuration go to a default location, or to the given file-like object</li>
+<li>embed more complex data to be read by specialised classes using URLs</li>
+<li>its safe and easy to write back possibly altered values even if complex inheritance
+schemes are applied</li>
+</ul>
+</blockquote>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mrv.conf._checkString">
+<tt class="descclassname">mrv.conf.</tt><tt class="descname">_checkString</tt><big>(</big><em>string</em>, <em>re</em><big>)</big><a class="headerlink" href="#mrv.conf._checkString" title="Permalink to this definition">¶</a></dt>
+<dd>Check the given string with given re for correctness
+:param re: must match the whole string for success
+:return: the passed in and stripped string
+:raise ValueError:</dd></dl>
+
+<dl class="function">
+<dt id="mrv.conf._excmsgprefix">
+<tt class="descclassname">mrv.conf.</tt><tt class="descname">_excmsgprefix</tt><big>(</big><em>msg</em><big>)</big><a class="headerlink" href="#mrv.conf._excmsgprefix" title="Permalink to this definition">¶</a></dt>
+<dd>Put msg in front of current exception and reraise
+:warning: use only within except blocks</dd></dl>
+
+</div>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="api/mrv.conf.BasicSet-class.html">Epydoc: mrv.conf.BasicSet</a></p>
+<dl class="class">
+<dt id="mrv.conf.BasicSet">
+<em class="property">class </em><tt class="descclassname">mrv.conf.</tt><tt class="descname">BasicSet</tt><a class="headerlink" href="#mrv.conf.BasicSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">set</span></tt></p>
+<p>Set with ability to return the key which matches the requested one</p>
+<p>This functionality is the built-in in default STL sets, and I do not understand
+why it is not provided here ! Of course I want to define custom objects with overridden
+hash functions, put them into a set, and finally retrieve the same object again !</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">indexing a set is not the fastest because the matching key has to be searched.
+Good news is that the actual &#8216;is k in set&#8217; question can be answered quickly</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="mrv.conf.BasicSet.add">
+<tt class="descname">add</tt><a class="headerlink" href="#mrv.conf.BasicSet.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an element to a set.</p>
+<p>This has no effect if the element is already present.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.BasicSet.clear">
+<tt class="descname">clear</tt><a class="headerlink" href="#mrv.conf.BasicSet.clear" title="Permalink to this definition">¶</a></dt>
+<dd>Remove all elements from this set.</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.BasicSet.copy">
+<tt class="descname">copy</tt><a class="headerlink" href="#mrv.conf.BasicSet.copy" title="Permalink to this definition">¶</a></dt>
+<dd>Return a shallow copy of a set.</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.BasicSet.difference">
+<tt class="descname">difference</tt><a class="headerlink" href="#mrv.conf.BasicSet.difference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the difference of two or more sets as a new set.</p>
+<p>(i.e. all elements that are in this set but not the others.)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.BasicSet.difference_update">
+<tt class="descname">difference_update</tt><a class="headerlink" href="#mrv.conf.BasicSet.difference_update" title="Permalink to this definition">¶</a></dt>
+<dd>Remove all elements of another set from this set.</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.BasicSet.discard">
+<tt class="descname">discard</tt><a class="headerlink" href="#mrv.conf.BasicSet.discard" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove an element from a set if it is a member.</p>
+<p>If the element is not a member, do nothing.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.BasicSet.intersection">
+<tt class="descname">intersection</tt><a class="headerlink" href="#mrv.conf.BasicSet.intersection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the intersection of two or more sets as a new set.</p>
+<p>(i.e. elements that are common to all of the sets.)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.BasicSet.intersection_update">
+<tt class="descname">intersection_update</tt><a class="headerlink" href="#mrv.conf.BasicSet.intersection_update" title="Permalink to this definition">¶</a></dt>
+<dd>Update a set with the intersection of itself and another.</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.BasicSet.isdisjoint">
+<tt class="descname">isdisjoint</tt><a class="headerlink" href="#mrv.conf.BasicSet.isdisjoint" title="Permalink to this definition">¶</a></dt>
+<dd>Return True if two sets have a null intersection.</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.BasicSet.issubset">
+<tt class="descname">issubset</tt><a class="headerlink" href="#mrv.conf.BasicSet.issubset" title="Permalink to this definition">¶</a></dt>
+<dd>Report whether another set contains this set.</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.BasicSet.issuperset">
+<tt class="descname">issuperset</tt><a class="headerlink" href="#mrv.conf.BasicSet.issuperset" title="Permalink to this definition">¶</a></dt>
+<dd>Report whether this set contains another set.</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.BasicSet.pop">
+<tt class="descname">pop</tt><a class="headerlink" href="#mrv.conf.BasicSet.pop" title="Permalink to this definition">¶</a></dt>
+<dd>Remove and return an arbitrary set element.
+Raises KeyError if the set is empty.</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.BasicSet.remove">
+<tt class="descname">remove</tt><a class="headerlink" href="#mrv.conf.BasicSet.remove" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove an element from a set; it must be a member.</p>
+<p>If the element is not a member, raise a KeyError.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.BasicSet.symmetric_difference">
+<tt class="descname">symmetric_difference</tt><a class="headerlink" href="#mrv.conf.BasicSet.symmetric_difference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the symmetric difference of two sets as a new set.</p>
+<p>(i.e. all elements that are in exactly one of the sets.)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.BasicSet.symmetric_difference_update">
+<tt class="descname">symmetric_difference_update</tt><a class="headerlink" href="#mrv.conf.BasicSet.symmetric_difference_update" title="Permalink to this definition">¶</a></dt>
+<dd>Update a set with the symmetric difference of itself and another.</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.BasicSet.union">
+<tt class="descname">union</tt><a class="headerlink" href="#mrv.conf.BasicSet.union" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the union of sets as a new set.</p>
+<p>(i.e. all elements that are in either set.)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.BasicSet.update">
+<tt class="descname">update</tt><a class="headerlink" href="#mrv.conf.BasicSet.update" title="Permalink to this definition">¶</a></dt>
+<dd>Update a set with the union of itself and others.</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.conf.ConfigAccessor-class.html">Epydoc: mrv.conf.ConfigAccessor</a></p>
+<dl class="class">
+<dt id="mrv.conf.ConfigAccessor">
+<em class="property">class </em><tt class="descclassname">mrv.conf.</tt><tt class="descname">ConfigAccessor</tt><a class="headerlink" href="#mrv.conf.ConfigAccessor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>Provides full access to the Configuration</p>
+<dl class="docutils">
+<dt><strong>Differences to ConfigParser</strong>:</dt>
+<dd><p class="first">As the functionality and featureset is very different from the original
+ConfigParser implementation, this class does not support the interface directly.
+It contains functions to create original ConfigParser able to fully write and alter
+the contained data in an unchecked manner.</p>
+<p class="last">Additional Exceptions have been defined to cover extended functionality.</p>
+</dd>
+<dt><strong>Sources and Nodes</strong>:</dt>
+<dd>Each input providing configuration data is stored in a node. This node
+knows about its writable state. Nodes that are not writable can be altered in memory,
+but the changes cannot be written back to the source.
+This does not impose a problem though as changes will be applied as long as there is
+one writable node in the chain - due to the inheritance scheme applied by the configmanager,
+the final configuration result will match the changes applied at runtime.</dd>
+<dt><strong>Additional Information</strong>:</dt>
+<dd>The term configuration is rather complex though
+configuration is based on an extended INI file format
+its not fully compatible, but slightly more narrow regarding allowed input to support extended functionality
+configuration is read from file-like objects
+a list of file-like objects creates a configuration chain
+keys have properties attached to them defining how they behave when being overridden
+once all the INI configurations have been read and processed, one can access
+the configuration as if it was just in one file.
+Direct access is obtained though <cite>Key</cite> and <cite>Section</cite> objects
+Keys and Sections have property attributes of type <cite>Section</cite>
+Their keys and values are used to further define key merging behaviour for example</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">The configaccessor should only be used in conjunction with the <cite>ConfigManager</cite></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mrv.conf.ConfigAccessor.flatten">
+<tt class="descname">flatten</tt><big>(</big><em>fp</em><big>)</big><a class="headerlink" href="#mrv.conf.ConfigAccessor.flatten" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy all our members into a new ConfigAccessor which only has one node, instead of N nodes</p>
+<p>By default, a configuration can be made up of several different sources that create a chain.
+Each source can redefine and alter values previously defined by other sources.</p>
+<p>A flattened chain though does only conist of one of such node containing concrete values that
+can quickly be accessed.</p>
+<p>Flattened configurations are provided by the <cite>ConfigManager</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>fp</em> &#8211; file-like object that will be used as storage once the configuration is written</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">Flattened copy of self</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigAccessor.get">
+<tt class="descname">get</tt><big>(</big><em>key_id</em>, <em>default=None</em><big>)</big><a class="headerlink" href="#mrv.conf.ConfigAccessor.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convenience function allowing to easily specify the key you wish to retrieve
+with the option to provide a default value</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>key_id</em> &#8211; string specifying a key, either as <tt class="docutils literal"><span class="pre">sectionname.keyname</span></tt>
+or <tt class="docutils literal"><span class="pre">keyname</span></tt>.
+In case you specify a section, the key must reside in the given section, 
+if only a keyname is given, it may reside in any section</li>
+<li><em>default</em> &#8211; Default value to be given to a newly created key in case 
+there is no existing value. If None, the method may raise in case the given
+key_id does not exist.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><cite>Key</cite> instance whose value may be queried through its <tt class="docutils literal"><span class="pre">value</span></tt> or 
+<tt class="docutils literal"><span class="pre">values</span></tt> attributes</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigAccessor.hasSection">
+<tt class="descname">hasSection</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#mrv.conf.ConfigAccessor.hasSection" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if the given section exists</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigAccessor.isEmpty">
+<tt class="descname">isEmpty</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.ConfigAccessor.isEmpty" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if the accessor does not stor information</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigAccessor.iterateKeysByName">
+<tt class="descname">iterateKeysByName</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#mrv.conf.ConfigAccessor.iterateKeysByName" title="Permalink to this definition">¶</a></dt>
+<dd>As <cite>keysByName</cite>, but returns an iterator instead</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigAccessor.keyDefault">
+<tt class="descname">keyDefault</tt><big>(</big><em>sectionname</em>, <em>keyname</em>, <em>value</em><big>)</big><a class="headerlink" href="#mrv.conf.ConfigAccessor.keyDefault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convenience Function: get key with keyname in first section with sectionname with the key&#8217;s value being initialized to value if it did not exist.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>sectionname</em> &#8211; the name of the sectionname the key is supposed to be in - it will be created if needed</li>
+<li><em>keyname</em> &#8211; the name of the key you wish to find</li>
+<li><em>value</em> &#8211; the value you wish to receive as as default if the key has to be created.
+It can be a list of values as well, basically anything that <cite>Key</cite> allows as value</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><cite>Key</cite></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigAccessor.keyIterator">
+<tt class="descname">keyIterator</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.ConfigAccessor.keyIterator" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">iterator returning tuples of (<cite>Key</cite>,`Section`) pairs</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigAccessor.keysByName">
+<tt class="descname">keysByName</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#mrv.conf.ConfigAccessor.keysByName" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>name</em> &#8211; the name of the key you wish to find</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">List of  (<cite>Key</cite>,`Section`) tuples of key(s) matching name found in section, or empty list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigAccessor.mergeSection">
+<tt class="descname">mergeSection</tt><big>(</big><em>section</em><big>)</big><a class="headerlink" href="#mrv.conf.ConfigAccessor.mergeSection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Merge and/or add the given section into our chain of nodes. The first writable node will be used</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Raises IOError:</th><td class="field-body">if no writable node was found</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">name of the file source that has received the section</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigAccessor.readfp">
+<tt class="descname">readfp</tt><big>(</big><em>filefporlist</em>, <em>close_fp=True</em><big>)</big><a class="headerlink" href="#mrv.conf.ConfigAccessor.readfp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read the configuration from the file like object(s) representing INI files.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">This will overwrite and discard all existing configuration.</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>filefporlist</em> &#8211; single file like object or list of such</li>
+<li><em>close_fp</em> &#8211; if True, the file-like object will be closed before the method returns,
+but only for file-like objects that have actually been processed</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises <a title="mrv.conf.ConfigParsingError" class="reference internal" href="#mrv.conf.ConfigParsingError">ConfigParsingError</a>:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigAccessor.removeSection">
+<tt class="descname">removeSection</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#mrv.conf.ConfigAccessor.removeSection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Completely remove the given section name from all nodes in our configuration</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the number of nodes that did <em>not</em> allow the section to be removed as they are read-only, thus
+0 will be returned if everything was alright</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigAccessor.section">
+<tt class="descname">section</tt><big>(</big><em>section</em><big>)</big><a class="headerlink" href="#mrv.conf.ConfigAccessor.section" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">first section with name</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">as there might be several nodes defining the section for inheritance,
+you might not get the desired results unless this config accessor acts on a
+<cite>flatten</cite> ed list.</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises <a title="mrv.conf.NoSectionError" class="reference internal" href="#mrv.conf.NoSectionError">NoSectionError</a>:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if the requested section name does not exist</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigAccessor.sectionDefault">
+<tt class="descname">sectionDefault</tt><big>(</big><em>section</em><big>)</big><a class="headerlink" href="#mrv.conf.ConfigAccessor.sectionDefault" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">section with given name.</td>
+</tr>
+<tr class="field"><th class="field-name">Raises IOError:</th><td class="field-body">If section does not exist and it cannot be created as the configuration is readonly</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">the section will be created if it does not yet exist</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigAccessor.sectionIterator">
+<tt class="descname">sectionIterator</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.ConfigAccessor.sectionIterator" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">iterator returning all sections</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigAccessor.write">
+<tt class="descname">write</tt><big>(</big><em>close_fp=True</em><big>)</big><a class="headerlink" href="#mrv.conf.ConfigAccessor.write" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Write current state back to files.</dt>
+<dd>During initialization in <cite>readfp</cite>, <cite>ExtendedFileInterface</cite> objects have been passed in - these
+will now be used to write back the current state of the configuration - the files will be
+opened for writing if possible.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>close_fp</em> &#8211; close the file-object after writing to it</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of names of files that have actually been written - as files can be read-only
+this list might be smaller than the amount of nodes in the accessor.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.conf.ConfigChain-class.html">Epydoc: mrv.conf.ConfigChain</a></p>
+<dl class="class">
+<dt id="mrv.conf.ConfigChain">
+<em class="property">class </em><tt class="descclassname">mrv.conf.</tt><tt class="descname">ConfigChain</tt><a class="headerlink" href="#mrv.conf.ConfigChain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">list</span></tt></p>
+<p>A chain of config nodes</p>
+<p>This utility class keeps several <cite>ConfigNode</cite> objects, but can be operated
+like any other list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">this solution is mainly fast to implement, but a linked-list like
+behaviour is intended</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mrv.conf.ConfigChain.append">
+<tt class="descname">append</tt><big>(</big><em>node</em><big>)</big><a class="headerlink" href="#mrv.conf.ConfigChain.append" title="Permalink to this definition">¶</a></dt>
+<dd>Append a <cite>ConfigNode</cite></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.ConfigChain.count">
+<tt class="descname">count</tt><a class="headerlink" href="#mrv.conf.ConfigChain.count" title="Permalink to this definition">¶</a></dt>
+<dd>L.count(value) -&gt; integer &#8211; return number of occurrences of value</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigChain.extend">
+<tt class="descname">extend</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.conf.ConfigChain.extend" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name" colspan="2">Raises NotImplementedError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.ConfigChain.index">
+<tt class="descname">index</tt><a class="headerlink" href="#mrv.conf.ConfigChain.index" title="Permalink to this definition">¶</a></dt>
+<dd>L.index(value, [start, [stop]]) -&gt; integer &#8211; return first index of value.
+Raises ValueError if the value is not present.</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigChain.insert">
+<tt class="descname">insert</tt><big>(</big><em>node</em>, <em>index</em><big>)</big><a class="headerlink" href="#mrv.conf.ConfigChain.insert" title="Permalink to this definition">¶</a></dt>
+<dd>Insert L?{ConfigNode} before index</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigChain.iterateKeysByName">
+<tt class="descname">iterateKeysByName</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#mrv.conf.ConfigChain.iterateKeysByName" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>name</em> &#8211; the name of the key you wish to find</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">Iterator yielding (<cite>Key</cite>,`Section`) of key matching name found in section</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigChain.keyIterator">
+<tt class="descname">keyIterator</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.ConfigChain.keyIterator" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">iterator returning tuples of (key,section) pairs</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.ConfigChain.pop">
+<tt class="descname">pop</tt><a class="headerlink" href="#mrv.conf.ConfigChain.pop" title="Permalink to this definition">¶</a></dt>
+<dd>L.pop([index]) -&gt; item &#8211; remove and return item at index (default last).
+Raises IndexError if list is empty or index is out of range.</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.ConfigChain.remove">
+<tt class="descname">remove</tt><a class="headerlink" href="#mrv.conf.ConfigChain.remove" title="Permalink to this definition">¶</a></dt>
+<dd>L.remove(value) &#8211; remove first occurrence of value.
+Raises ValueError if the value is not present.</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.ConfigChain.reverse">
+<tt class="descname">reverse</tt><a class="headerlink" href="#mrv.conf.ConfigChain.reverse" title="Permalink to this definition">¶</a></dt>
+<dd>L.reverse() &#8211; reverse <em>IN PLACE</em></dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigChain.sectionIterator">
+<tt class="descname">sectionIterator</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.ConfigChain.sectionIterator" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">section iterator for whole configuration chain</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigChain.sort">
+<tt class="descname">sort</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.conf.ConfigChain.sort" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name" colspan="2">Raises NotImplementedError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.conf.ConfigDiffer-class.html">Epydoc: mrv.conf.ConfigDiffer</a></p>
+<dl class="class">
+<dt id="mrv.conf.ConfigDiffer">
+<em class="property">class </em><tt class="descclassname">mrv.conf.</tt><tt class="descname">ConfigDiffer</tt><big>(</big><em>A</em>, <em>B</em><big>)</big><a class="headerlink" href="#mrv.conf.ConfigDiffer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.conf.DiffData" class="reference internal" href="#mrv.conf.DiffData"><tt class="xref docutils literal"><span class="pre">mrv.conf.DiffData</span></tt></a></p>
+<p>Compares two configuration objects and allows retrieval of differences</p>
+<p>Use this class to find added/removed sections or keys or differences in values
+and properties.</p>
+<dl class="docutils">
+<dt><strong>Example Applicance</strong>:</dt>
+<dd>Test use it to verify that reading and writing a (possibly) changed
+configuration has the expected results
+Programs interacting with the User by a GUI can easily determine whether
+the user has actually changed something, applying actions only if required
+alternatively, programs can simply be more efficient by acting only on
+items that actually changed</dd>
+<dt><strong>Data Structure</strong>:</dt>
+<dd><ul class="first simple">
+<li>every object in the diffing structure has a &#8216;name&#8217; attribute</li>
+<li>ConfigDiffer.added|removed|unchanged: <cite>Section</cite> objects that have been added, removed
+or kept unchanged respectively</li>
+<li>ConfigDiffer.changed: <cite>DiffSection</cite> objects that indicate the changes in respective section</li>
+</ul>
+<blockquote class="last">
+<ul class="simple">
+<li>DiffSection.added|removed|unchanged: <cite>Key</cite> objects that have been added, removed or kept unchanged respectively</li>
+<li>DiffSection.changed: <cite>DiffKey</cite> objects that indicate the changes in the repsective key</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>DiffKey.added|removed: the key&#8217;s values that have been added and/or removed respectively</li>
+<li>DiffKey.properties: see DiffSection.properties</li>
+<li>DiffSection.properties:None if this is a section diff, otherwise it contains a DiffSection with the respective differences</li>
+</ul>
+</blockquote>
+</blockquote>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="mrv.conf.ConfigDiffer.added">
+<tt class="descname">added</tt><a class="headerlink" href="#mrv.conf.ConfigDiffer.added" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigDiffer.applyTo">
+<tt class="descname">applyTo</tt><big>(</big><em>ca</em><big>)</big><a class="headerlink" href="#mrv.conf.ConfigDiffer.applyTo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply the stored differences in this ConfigDiffer instance to the given ConfigAccessor</p>
+<p>If our diff contains the changes of A to B, then applying
+ourselves to A would make A equal B.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">individual nodes reqpresenting an input source (like a file)
+can be marked read-only. This means they cannot be altered - thus it can
+be that section or key removal fails for them. Addition of elements normally
+works as long as there is one writable node.</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><p class="first"><em>ca</em> &#8211; The configacceesor to apply our differences to</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">tuple of lists containing the sections that could not be added, removed or get
+their changes applied</p>
+<blockquote class="last">
+<ul class="simple">
+<li>[0] = list of <cite>Section</cite> s failed to be added</li>
+<li>[1] = list of <cite>Section</cite> s failed to be removed</li>
+<li>[2] = list of <cite>DiffSection</cite> s failed to apply their changes</li>
+</ul>
+</blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.ConfigDiffer.changed">
+<tt class="descname">changed</tt><a class="headerlink" href="#mrv.conf.ConfigDiffer.changed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigDiffer.hasDifferences">
+<tt class="descname">hasDifferences</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.ConfigDiffer.hasDifferences" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">true if we have stored differences (A  is not equal to B)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.ConfigDiffer.name">
+<tt class="descname">name</tt><a class="headerlink" href="#mrv.conf.ConfigDiffer.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.ConfigDiffer.properties">
+<tt class="descname">properties</tt><a class="headerlink" href="#mrv.conf.ConfigDiffer.properties" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.ConfigDiffer.removed">
+<tt class="descname">removed</tt><a class="headerlink" href="#mrv.conf.ConfigDiffer.removed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigDiffer.toStr">
+<tt class="descname">toStr</tt><big>(</big><em>typename</em><big>)</big><a class="headerlink" href="#mrv.conf.ConfigDiffer.toStr" title="Permalink to this definition">¶</a></dt>
+<dd>Convert own data representation to a string</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.ConfigDiffer.unchanged">
+<tt class="descname">unchanged</tt><a class="headerlink" href="#mrv.conf.ConfigDiffer.unchanged" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.conf.ConfigFile-class.html">Epydoc: mrv.conf.ConfigFile</a></p>
+<dl class="class">
+<dt id="mrv.conf.ConfigFile">
+<em class="property">class </em><tt class="descclassname">mrv.conf.</tt><tt class="descname">ConfigFile</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.conf.ConfigFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.conf.ExtendedFileInterface" class="reference internal" href="#mrv.conf.ExtendedFileInterface"><tt class="xref docutils literal"><span class="pre">mrv.conf.ExtendedFileInterface</span></tt></a></p>
+<p>file object implementation of the ExtendedFileInterface</p>
+<dl class="method">
+<dt id="mrv.conf.ConfigFile.isClosed">
+<tt class="descname">isClosed</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.ConfigFile.isClosed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigFile.isWritable">
+<tt class="descname">isWritable</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.ConfigFile.isWritable" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if the file is truly writable</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigFile.name">
+<tt class="descname">name</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.ConfigFile.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigFile.openForWriting">
+<tt class="descname">openForWriting</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.ConfigFile.openForWriting" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.conf.ConfigManager-class.html">Epydoc: mrv.conf.ConfigManager</a></p>
+<dl class="class">
+<dt id="mrv.conf.ConfigManager">
+<em class="property">class </em><tt class="descclassname">mrv.conf.</tt><tt class="descname">ConfigManager</tt><big>(</big><em>filePointers=</em><span class="optional">[</span><span class="optional">]</span>, <em>write_back_on_desctruction=True</em>, <em>close_fp=True</em><big>)</big><a class="headerlink" href="#mrv.conf.ConfigManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>Cache Configurations for fast access and provide a convenient interface</p>
+<p>The the ConfigAccessor has limited speed due to the hierarchical nature of 
+configuration chains.
+The config manager flattens the chain providing fast access. Once it is being
+deleted or if asked, it will find the differences between the fast cached
+configuration and the original one, and apply the changes back to the original chain,
+which will then write the changes back (if possible).</p>
+<p>This class should be preferred over the direct congiguration accessor.
+This class mimics the ConfigAccessor inteface as far as possible to improve ease of use.
+Use self.config to directly access the configuration through the <cite>ConfigAccessor</cite> interface</p>
+<p>To use this class, read a list of ini files and use configManager.config to access
+the configuration.</p>
+<p>For convenience, it will wire through all calls it cannot handle to its <cite>ConfigAccessor</cite>
+stored at .config</p>
+<dl class="attribute">
+<dt id="mrv.conf.ConfigManager.config">
+<tt class="descname">config</tt><a class="headerlink" href="#mrv.conf.ConfigManager.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigManager.readfp">
+<tt class="descname">readfp</tt><big>(</big><em>filefporlist</em>, <em>close_fp=True</em><big>)</big><a class="headerlink" href="#mrv.conf.ConfigManager.readfp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read the configuration from the file pointers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name" colspan="2">Raises <a title="mrv.conf.ConfigParsingError" class="reference internal" href="#mrv.conf.ConfigParsingError">ConfigParsingError</a>:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"></td>
+</tr>
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>filefporlist</em> &#8211; single file like object or list of such</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the configuration that is meant to be used for accessing the configuration</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.conf.ConfigManager.taggedFileDescriptors">
+<em class="property">classmethod </em><tt class="descname">taggedFileDescriptors</tt><big>(</big><em>directories</em>, <em>taglist</em>, <em>pattern=None</em><big>)</big><a class="headerlink" href="#mrv.conf.ConfigManager.taggedFileDescriptors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds tagged configuration files in given directories and return them.</p>
+<p>The files retrieved can be files like &#8220;file.ext&#8221; or can contain tags. Tags are &#8216;.&#8217;
+separated files tags that are to be matched with the tags in taglist in order.</p>
+<p>All tags must match to retrieve a filepointer to the respective file.</p>
+<p>Example Usage: you could give two paths, one is a global one in a read-only location,
+another is a local one in the user&#8217;s home (where you might have precreated a file already).</p>
+<p>The list of filepointers returned would be all matching files from the global path and
+all matching files from the local one, sorted such that the file with the smallest amount
+of tags come first, files with more tags (more specialized ones) will come after that.</p>
+<p>If fed into the <cite>readfp</cite> or the <cite>__init__</cite> method, the individual file contents can override each other.
+Once changes have been applied to the configuration, they can be written back to the writable
+file pointers respectively.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>directories</em> &#8211; [string(path) ...] of directories to look in for files</li>
+<li><em>taglist</em> &#8211; [string(tag) ...] of tags, like a tag for the operating system, or the user name</li>
+<li><em>pattern</em> &#8211; simple fnmatch pattern as used for globs or a list of them (allowing to match several
+different patterns at once)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigManager.write">
+<tt class="descname">write</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.ConfigManager.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write the possibly changed configuration back to its sources.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Raises IOError:</th><td class="field-body">if at least one node could not be properly written.</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises ValueError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if instance is not properly initialized.</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">It could be the case that all nodes are marked read-only and
+thus cannot be written - this will also raise as the request to write
+the changes could not be accomodated.</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the names of the files that have been written as string list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.conf.ConfigNode-class.html">Epydoc: mrv.conf.ConfigNode</a></p>
+<dl class="class">
+<dt id="mrv.conf.ConfigNode">
+<em class="property">class </em><tt class="descclassname">mrv.conf.</tt><tt class="descname">ConfigNode</tt><big>(</big><em>fp</em><big>)</big><a class="headerlink" href="#mrv.conf.ConfigNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>Represents node in the configuration chain</p>
+<p>It keeps information about the origin of the configuration and all its data.
+Additionally, it is aware of it being element of a chain, and can provide next
+and previous elements respectively</p>
+<dl class="method">
+<dt id="mrv.conf.ConfigNode.hasSection">
+<tt class="descname">hasSection</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#mrv.conf.ConfigNode.hasSection" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if the given section exists</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigNode.listSections">
+<tt class="descname">listSections</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.ConfigNode.listSections" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list() with string names of available sections</td>
+</tr>
+<tr class="field"><th class="field-name">Todo:</th><td class="field-body">return an iterator instead</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigNode.parse">
+<tt class="descname">parse</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.ConfigNode.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>parse default INI information into the extended structure</p>
+<p>Parse the given INI file using a _FixedConfigParser, convert all information in it
+into an internal format</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name" colspan="2">Raises <a title="mrv.conf.ConfigParsingError" class="reference internal" href="#mrv.conf.ConfigParsingError">ConfigParsingError</a>:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigNode.section">
+<tt class="descname">section</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#mrv.conf.ConfigNode.section" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><cite>Section</cite> with name</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises <a title="mrv.conf.NoSectionError" class="reference internal" href="#mrv.conf.NoSectionError">NoSectionError</a>:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigNode.sectionDefault">
+<tt class="descname">sectionDefault</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#mrv.conf.ConfigNode.sectionDefault" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><cite>Section</cite> with name, create it if required</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.ConfigNode.writable">
+<tt class="descname">writable</tt><a class="headerlink" href="#mrv.conf.ConfigNode.writable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigNode.write">
+<tt class="descname">write</tt><big>(</big><em>rcp</em>, <em>close_fp=True</em><big>)</big><a class="headerlink" href="#mrv.conf.ConfigNode.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write our contents to our file-like object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>rcp</em> &#8211; RawConfigParser to use for writing</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the name of the written file</td>
+</tr>
+<tr class="field"><th class="field-name">Raises IOError:</th><td class="field-body">if we are read-only</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.conf.ConfigStringIO-class.html">Epydoc: mrv.conf.ConfigStringIO</a></p>
+<dl class="class">
+<dt id="mrv.conf.ConfigStringIO">
+<em class="property">class </em><tt class="descclassname">mrv.conf.</tt><tt class="descname">ConfigStringIO</tt><big>(</big><em>buf=''</em><big>)</big><a class="headerlink" href="#mrv.conf.ConfigStringIO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">StringIO.StringIO</span></tt>, <a title="mrv.conf.ExtendedFileInterface" class="reference internal" href="#mrv.conf.ExtendedFileInterface"><tt class="xref docutils literal"><span class="pre">mrv.conf.ExtendedFileInterface</span></tt></a></p>
+<p>cStringIO object implementation of ExtendedFileInterface</p>
+<dl class="method">
+<dt id="mrv.conf.ConfigStringIO.close">
+<tt class="descname">close</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.ConfigStringIO.close" title="Permalink to this definition">¶</a></dt>
+<dd>Free the memory buffer.</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigStringIO.flush">
+<tt class="descname">flush</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.ConfigStringIO.flush" title="Permalink to this definition">¶</a></dt>
+<dd>Flush the internal buffer</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigStringIO.getvalue">
+<tt class="descname">getvalue</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.ConfigStringIO.getvalue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the entire contents of the &#8220;file&#8221; at any time before
+the StringIO object&#8217;s close() method is called.</p>
+<p>The StringIO object can accept either Unicode or 8-bit strings,
+but mixing the two may take some care. If both are used, 8-bit
+strings that cannot be interpreted as 7-bit ASCII (that use the
+8th bit) will cause a UnicodeError to be raised when getvalue()
+is called.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigStringIO.isClosed">
+<tt class="descname">isClosed</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.ConfigStringIO.isClosed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigStringIO.isWritable">
+<tt class="descname">isWritable</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.ConfigStringIO.isWritable" title="Permalink to this definition">¶</a></dt>
+<dd>Once we are closed, we are not writable anymore</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigStringIO.isatty">
+<tt class="descname">isatty</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.ConfigStringIO.isatty" title="Permalink to this definition">¶</a></dt>
+<dd>Returns False because StringIO objects are not connected to a
+tty-like device.</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigStringIO.name">
+<tt class="descname">name</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.ConfigStringIO.name" title="Permalink to this definition">¶</a></dt>
+<dd>We do not have a real name</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigStringIO.next">
+<tt class="descname">next</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.ConfigStringIO.next" title="Permalink to this definition">¶</a></dt>
+<dd>A file object is its own iterator, for example iter(f) returns f
+(unless f is closed). When a file is used as an iterator, typically
+in a for loop (for example, for line in f: print line), the next()
+method is called repeatedly. This method returns the next input line,
+or raises StopIteration when EOF is hit.</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigStringIO.openForWriting">
+<tt class="descname">openForWriting</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.ConfigStringIO.openForWriting" title="Permalink to this definition">¶</a></dt>
+<dd>We if we are closed already, there is no way to reopen us</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigStringIO.read">
+<tt class="descname">read</tt><big>(</big><em>n=-1</em><big>)</big><a class="headerlink" href="#mrv.conf.ConfigStringIO.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read at most size bytes from the file
+(less if the read hits EOF before obtaining size bytes).</p>
+<p>If the size argument is negative or omitted, read all data until EOF
+is reached. The bytes are returned as a string object. An empty
+string is returned when EOF is encountered immediately.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigStringIO.readline">
+<tt class="descname">readline</tt><big>(</big><em>length=None</em><big>)</big><a class="headerlink" href="#mrv.conf.ConfigStringIO.readline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read one entire line from the file.</p>
+<p>A trailing newline character is kept in the string (but may be absent
+when a file ends with an incomplete line). If the size argument is
+present and non-negative, it is a maximum byte count (including the
+trailing newline) and an incomplete line may be returned.</p>
+<p>An empty string is returned only when EOF is encountered immediately.</p>
+<p>Note: Unlike stdio&#8217;s fgets(), the returned string contains null
+characters (&#8216;0&#8217;) if they occurred in the input.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigStringIO.readlines">
+<tt class="descname">readlines</tt><big>(</big><em>sizehint=0</em><big>)</big><a class="headerlink" href="#mrv.conf.ConfigStringIO.readlines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read until EOF using readline() and return a list containing the
+lines thus read.</p>
+<p>If the optional sizehint argument is present, instead of reading up
+to EOF, whole lines totalling approximately sizehint bytes (or more
+to accommodate a final whole line).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigStringIO.seek">
+<tt class="descname">seek</tt><big>(</big><em>pos</em>, <em>mode=0</em><big>)</big><a class="headerlink" href="#mrv.conf.ConfigStringIO.seek" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the file&#8217;s current position.</p>
+<p>The mode argument is optional and defaults to 0 (absolute file
+positioning); other values are 1 (seek relative to the current
+position) and 2 (seek relative to the file&#8217;s end).</p>
+<p>There is no return value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigStringIO.tell">
+<tt class="descname">tell</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.ConfigStringIO.tell" title="Permalink to this definition">¶</a></dt>
+<dd>Return the file&#8217;s current position.</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigStringIO.truncate">
+<tt class="descname">truncate</tt><big>(</big><em>size=None</em><big>)</big><a class="headerlink" href="#mrv.conf.ConfigStringIO.truncate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Truncate the file&#8217;s size.</p>
+<p>If the optional size argument is present, the file is truncated to
+(at most) that size. The size defaults to the current position.
+The current file position is not changed unless the position
+is beyond the new file size.</p>
+<p>If the specified size exceeds the file&#8217;s current size, the
+file remains unchanged.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigStringIO.write">
+<tt class="descname">write</tt><big>(</big><em>s</em><big>)</big><a class="headerlink" href="#mrv.conf.ConfigStringIO.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a string to the file.</p>
+<p>There is no return value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ConfigStringIO.writelines">
+<tt class="descname">writelines</tt><big>(</big><em>iterable</em><big>)</big><a class="headerlink" href="#mrv.conf.ConfigStringIO.writelines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a sequence of strings to the file. The sequence can be any
+iterable object producing strings, typically a list of strings. There
+is no return value.</p>
+<p>(The name is intended to match readlines(); writelines() does not add
+line separators.)</p>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.conf.DictConfigINIFile-class.html">Epydoc: mrv.conf.DictConfigINIFile</a></p>
+<dl class="class">
+<dt id="mrv.conf.DictConfigINIFile">
+<em class="property">class </em><tt class="descclassname">mrv.conf.</tt><tt class="descname">DictConfigINIFile</tt><big>(</big><em>option_dict</em>, <em>section='DEFAULT'</em>, <em>description=''</em><big>)</big><a class="headerlink" href="#mrv.conf.DictConfigINIFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.conf.DictToINIFile" class="reference internal" href="#mrv.conf.DictToINIFile"><tt class="xref docutils literal"><span class="pre">mrv.conf.DictToINIFile</span></tt></a>, <a title="mrv.conf.ExtendedFileInterface" class="reference internal" href="#mrv.conf.ExtendedFileInterface"><tt class="xref docutils literal"><span class="pre">mrv.conf.ExtendedFileInterface</span></tt></a></p>
+<p>dict file object implementation of ExtendedFileInterface</p>
+<dl class="method">
+<dt id="mrv.conf.DictConfigINIFile.close">
+<tt class="descname">close</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.DictConfigINIFile.close" title="Permalink to this definition">¶</a></dt>
+<dd>Free the memory buffer.</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.DictConfigINIFile.flush">
+<tt class="descname">flush</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.DictConfigINIFile.flush" title="Permalink to this definition">¶</a></dt>
+<dd>Flush the internal buffer</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.DictConfigINIFile.getvalue">
+<tt class="descname">getvalue</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.DictConfigINIFile.getvalue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the entire contents of the &#8220;file&#8221; at any time before
+the StringIO object&#8217;s close() method is called.</p>
+<p>The StringIO object can accept either Unicode or 8-bit strings,
+but mixing the two may take some care. If both are used, 8-bit
+strings that cannot be interpreted as 7-bit ASCII (that use the
+8th bit) will cause a UnicodeError to be raised when getvalue()
+is called.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.DictConfigINIFile.isClosed">
+<tt class="descname">isClosed</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.DictConfigINIFile.isClosed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.DictConfigINIFile.isWritable">
+<tt class="descname">isWritable</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.DictConfigINIFile.isWritable" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if the file can be written to</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.DictConfigINIFile.isatty">
+<tt class="descname">isatty</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.DictConfigINIFile.isatty" title="Permalink to this definition">¶</a></dt>
+<dd>Returns False because StringIO objects are not connected to a
+tty-like device.</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.DictConfigINIFile.name">
+<tt class="descname">name</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.DictConfigINIFile.name" title="Permalink to this definition">¶</a></dt>
+<dd>We do not have a real name</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.DictConfigINIFile.next">
+<tt class="descname">next</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.DictConfigINIFile.next" title="Permalink to this definition">¶</a></dt>
+<dd>A file object is its own iterator, for example iter(f) returns f
+(unless f is closed). When a file is used as an iterator, typically
+in a for loop (for example, for line in f: print line), the next()
+method is called repeatedly. This method returns the next input line,
+or raises StopIteration when EOF is hit.</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.DictConfigINIFile.openForWriting">
+<tt class="descname">openForWriting</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.DictConfigINIFile.openForWriting" title="Permalink to this definition">¶</a></dt>
+<dd>We cannot be opened for writing, and are always read-only</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.DictConfigINIFile.read">
+<tt class="descname">read</tt><big>(</big><em>n=-1</em><big>)</big><a class="headerlink" href="#mrv.conf.DictConfigINIFile.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read at most size bytes from the file
+(less if the read hits EOF before obtaining size bytes).</p>
+<p>If the size argument is negative or omitted, read all data until EOF
+is reached. The bytes are returned as a string object. An empty
+string is returned when EOF is encountered immediately.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.DictConfigINIFile.readline">
+<tt class="descname">readline</tt><big>(</big><em>length=None</em><big>)</big><a class="headerlink" href="#mrv.conf.DictConfigINIFile.readline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read one entire line from the file.</p>
+<p>A trailing newline character is kept in the string (but may be absent
+when a file ends with an incomplete line). If the size argument is
+present and non-negative, it is a maximum byte count (including the
+trailing newline) and an incomplete line may be returned.</p>
+<p>An empty string is returned only when EOF is encountered immediately.</p>
+<p>Note: Unlike stdio&#8217;s fgets(), the returned string contains null
+characters (&#8216;0&#8217;) if they occurred in the input.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.DictConfigINIFile.readlines">
+<tt class="descname">readlines</tt><big>(</big><em>sizehint=0</em><big>)</big><a class="headerlink" href="#mrv.conf.DictConfigINIFile.readlines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read until EOF using readline() and return a list containing the
+lines thus read.</p>
+<p>If the optional sizehint argument is present, instead of reading up
+to EOF, whole lines totalling approximately sizehint bytes (or more
+to accommodate a final whole line).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.DictConfigINIFile.seek">
+<tt class="descname">seek</tt><big>(</big><em>pos</em>, <em>mode=0</em><big>)</big><a class="headerlink" href="#mrv.conf.DictConfigINIFile.seek" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the file&#8217;s current position.</p>
+<p>The mode argument is optional and defaults to 0 (absolute file
+positioning); other values are 1 (seek relative to the current
+position) and 2 (seek relative to the file&#8217;s end).</p>
+<p>There is no return value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.DictConfigINIFile.tell">
+<tt class="descname">tell</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.DictConfigINIFile.tell" title="Permalink to this definition">¶</a></dt>
+<dd>Return the file&#8217;s current position.</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.DictConfigINIFile.truncate">
+<tt class="descname">truncate</tt><big>(</big><em>size=None</em><big>)</big><a class="headerlink" href="#mrv.conf.DictConfigINIFile.truncate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Truncate the file&#8217;s size.</p>
+<p>If the optional size argument is present, the file is truncated to
+(at most) that size. The size defaults to the current position.
+The current file position is not changed unless the position
+is beyond the new file size.</p>
+<p>If the specified size exceeds the file&#8217;s current size, the
+file remains unchanged.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.DictConfigINIFile.write">
+<tt class="descname">write</tt><big>(</big><em>s</em><big>)</big><a class="headerlink" href="#mrv.conf.DictConfigINIFile.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a string to the file.</p>
+<p>There is no return value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.DictConfigINIFile.writelines">
+<tt class="descname">writelines</tt><big>(</big><em>iterable</em><big>)</big><a class="headerlink" href="#mrv.conf.DictConfigINIFile.writelines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a sequence of strings to the file. The sequence can be any
+iterable object producing strings, typically a list of strings. There
+is no return value.</p>
+<p>(The name is intended to match readlines(); writelines() does not add
+line separators.)</p>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.conf.DictToINIFile-class.html">Epydoc: mrv.conf.DictToINIFile</a></p>
+<dl class="class">
+<dt id="mrv.conf.DictToINIFile">
+<em class="property">class </em><tt class="descclassname">mrv.conf.</tt><tt class="descname">DictToINIFile</tt><big>(</big><em>option_dict</em>, <em>section='DEFAULT'</em>, <em>description=''</em><big>)</big><a class="headerlink" href="#mrv.conf.DictToINIFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">StringIO.StringIO</span></tt></p>
+<p>Wraps a dictionary into an objects returning an INI file when read</p>
+<p>This class can be used to make configuration information as supplied by os.environ
+natively available to the configuration system</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">writing back values to the object will not alter the original dict</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">the current implementation caches the dict&#8217;s INI representation, data
+is not generated on demand</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">implementation speed has been preferred over runtime speed</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mrv.conf.DictToINIFile.close">
+<tt class="descname">close</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.DictToINIFile.close" title="Permalink to this definition">¶</a></dt>
+<dd>Free the memory buffer.</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.DictToINIFile.flush">
+<tt class="descname">flush</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.DictToINIFile.flush" title="Permalink to this definition">¶</a></dt>
+<dd>Flush the internal buffer</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.DictToINIFile.getvalue">
+<tt class="descname">getvalue</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.DictToINIFile.getvalue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the entire contents of the &#8220;file&#8221; at any time before
+the StringIO object&#8217;s close() method is called.</p>
+<p>The StringIO object can accept either Unicode or 8-bit strings,
+but mixing the two may take some care. If both are used, 8-bit
+strings that cannot be interpreted as 7-bit ASCII (that use the
+8th bit) will cause a UnicodeError to be raised when getvalue()
+is called.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.DictToINIFile.isatty">
+<tt class="descname">isatty</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.DictToINIFile.isatty" title="Permalink to this definition">¶</a></dt>
+<dd>Returns False because StringIO objects are not connected to a
+tty-like device.</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.DictToINIFile.next">
+<tt class="descname">next</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.DictToINIFile.next" title="Permalink to this definition">¶</a></dt>
+<dd>A file object is its own iterator, for example iter(f) returns f
+(unless f is closed). When a file is used as an iterator, typically
+in a for loop (for example, for line in f: print line), the next()
+method is called repeatedly. This method returns the next input line,
+or raises StopIteration when EOF is hit.</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.DictToINIFile.read">
+<tt class="descname">read</tt><big>(</big><em>n=-1</em><big>)</big><a class="headerlink" href="#mrv.conf.DictToINIFile.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read at most size bytes from the file
+(less if the read hits EOF before obtaining size bytes).</p>
+<p>If the size argument is negative or omitted, read all data until EOF
+is reached. The bytes are returned as a string object. An empty
+string is returned when EOF is encountered immediately.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.DictToINIFile.readline">
+<tt class="descname">readline</tt><big>(</big><em>length=None</em><big>)</big><a class="headerlink" href="#mrv.conf.DictToINIFile.readline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read one entire line from the file.</p>
+<p>A trailing newline character is kept in the string (but may be absent
+when a file ends with an incomplete line). If the size argument is
+present and non-negative, it is a maximum byte count (including the
+trailing newline) and an incomplete line may be returned.</p>
+<p>An empty string is returned only when EOF is encountered immediately.</p>
+<p>Note: Unlike stdio&#8217;s fgets(), the returned string contains null
+characters (&#8216;0&#8217;) if they occurred in the input.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.DictToINIFile.readlines">
+<tt class="descname">readlines</tt><big>(</big><em>sizehint=0</em><big>)</big><a class="headerlink" href="#mrv.conf.DictToINIFile.readlines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read until EOF using readline() and return a list containing the
+lines thus read.</p>
+<p>If the optional sizehint argument is present, instead of reading up
+to EOF, whole lines totalling approximately sizehint bytes (or more
+to accommodate a final whole line).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.DictToINIFile.seek">
+<tt class="descname">seek</tt><big>(</big><em>pos</em>, <em>mode=0</em><big>)</big><a class="headerlink" href="#mrv.conf.DictToINIFile.seek" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the file&#8217;s current position.</p>
+<p>The mode argument is optional and defaults to 0 (absolute file
+positioning); other values are 1 (seek relative to the current
+position) and 2 (seek relative to the file&#8217;s end).</p>
+<p>There is no return value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.DictToINIFile.tell">
+<tt class="descname">tell</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.DictToINIFile.tell" title="Permalink to this definition">¶</a></dt>
+<dd>Return the file&#8217;s current position.</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.DictToINIFile.truncate">
+<tt class="descname">truncate</tt><big>(</big><em>size=None</em><big>)</big><a class="headerlink" href="#mrv.conf.DictToINIFile.truncate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Truncate the file&#8217;s size.</p>
+<p>If the optional size argument is present, the file is truncated to
+(at most) that size. The size defaults to the current position.
+The current file position is not changed unless the position
+is beyond the new file size.</p>
+<p>If the specified size exceeds the file&#8217;s current size, the
+file remains unchanged.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.DictToINIFile.write">
+<tt class="descname">write</tt><big>(</big><em>s</em><big>)</big><a class="headerlink" href="#mrv.conf.DictToINIFile.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a string to the file.</p>
+<p>There is no return value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.DictToINIFile.writelines">
+<tt class="descname">writelines</tt><big>(</big><em>iterable</em><big>)</big><a class="headerlink" href="#mrv.conf.DictToINIFile.writelines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a sequence of strings to the file. The sequence can be any
+iterable object producing strings, typically a list of strings. There
+is no return value.</p>
+<p>(The name is intended to match readlines(); writelines() does not add
+line separators.)</p>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.conf.DiffData-class.html">Epydoc: mrv.conf.DiffData</a></p>
+<dl class="class">
+<dt id="mrv.conf.DiffData">
+<em class="property">class </em><tt class="descclassname">mrv.conf.</tt><tt class="descname">DiffData</tt><big>(</big><em>A</em>, <em>B</em><big>)</big><a class="headerlink" href="#mrv.conf.DiffData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>Struct keeping data about added, removed and/or changed data
+Subclasses should override some private methods to automatically utilize some
+basic functionality</p>
+<dl class="docutils">
+<dt>Class instances define the following values:</dt>
+<dd><ul class="first last simple">
+<li>ivar added: Copies of all the sections that are only in B (as they have been added to B)</li>
+<li>ivar removed: Copies of all the sections that are only in A (as they have been removed from B)</li>
+<li>ivar changed: Copies of all the sections that are in A and B, but with changed keys and/or properties</li>
+</ul>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="mrv.conf.DiffData.added">
+<tt class="descname">added</tt><a class="headerlink" href="#mrv.conf.DiffData.added" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.DiffData.changed">
+<tt class="descname">changed</tt><a class="headerlink" href="#mrv.conf.DiffData.changed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.DiffData.hasDifferences">
+<tt class="descname">hasDifferences</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.DiffData.hasDifferences" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">true if we have stored differences (A  is not equal to B)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.DiffData.name">
+<tt class="descname">name</tt><a class="headerlink" href="#mrv.conf.DiffData.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.DiffData.properties">
+<tt class="descname">properties</tt><a class="headerlink" href="#mrv.conf.DiffData.properties" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.DiffData.removed">
+<tt class="descname">removed</tt><a class="headerlink" href="#mrv.conf.DiffData.removed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.DiffData.toStr">
+<tt class="descname">toStr</tt><big>(</big><em>typename</em><big>)</big><a class="headerlink" href="#mrv.conf.DiffData.toStr" title="Permalink to this definition">¶</a></dt>
+<dd>Convert own data representation to a string</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.DiffData.unchanged">
+<tt class="descname">unchanged</tt><a class="headerlink" href="#mrv.conf.DiffData.unchanged" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.conf.DiffKey-class.html">Epydoc: mrv.conf.DiffKey</a></p>
+<dl class="class">
+<dt id="mrv.conf.DiffKey">
+<em class="property">class </em><tt class="descclassname">mrv.conf.</tt><tt class="descname">DiffKey</tt><big>(</big><em>A</em>, <em>B</em><big>)</big><a class="headerlink" href="#mrv.conf.DiffKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.conf.DiffData" class="reference internal" href="#mrv.conf.DiffData"><tt class="xref docutils literal"><span class="pre">mrv.conf.DiffData</span></tt></a></p>
+<p>Implements DiffData on Key level</p>
+<dl class="attribute">
+<dt id="mrv.conf.DiffKey.added">
+<tt class="descname">added</tt><a class="headerlink" href="#mrv.conf.DiffKey.added" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.DiffKey.applyTo">
+<tt class="descname">applyTo</tt><big>(</big><em>key</em><big>)</big><a class="headerlink" href="#mrv.conf.DiffKey.applyTo" title="Permalink to this definition">¶</a></dt>
+<dd>Apply our changes to the given Key</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.DiffKey.changed">
+<tt class="descname">changed</tt><a class="headerlink" href="#mrv.conf.DiffKey.changed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.DiffKey.hasDifferences">
+<tt class="descname">hasDifferences</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.DiffKey.hasDifferences" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">true if we have stored differences (A  is not equal to B)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.DiffKey.name">
+<tt class="descname">name</tt><a class="headerlink" href="#mrv.conf.DiffKey.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.DiffKey.properties">
+<tt class="descname">properties</tt><a class="headerlink" href="#mrv.conf.DiffKey.properties" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.DiffKey.removed">
+<tt class="descname">removed</tt><a class="headerlink" href="#mrv.conf.DiffKey.removed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.DiffKey.toStr">
+<tt class="descname">toStr</tt><big>(</big><em>typename</em><big>)</big><a class="headerlink" href="#mrv.conf.DiffKey.toStr" title="Permalink to this definition">¶</a></dt>
+<dd>Convert own data representation to a string</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.DiffKey.unchanged">
+<tt class="descname">unchanged</tt><a class="headerlink" href="#mrv.conf.DiffKey.unchanged" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.conf.DiffSection-class.html">Epydoc: mrv.conf.DiffSection</a></p>
+<dl class="class">
+<dt id="mrv.conf.DiffSection">
+<em class="property">class </em><tt class="descclassname">mrv.conf.</tt><tt class="descname">DiffSection</tt><big>(</big><em>A</em>, <em>B</em><big>)</big><a class="headerlink" href="#mrv.conf.DiffSection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.conf.DiffData" class="reference internal" href="#mrv.conf.DiffData"><tt class="xref docutils literal"><span class="pre">mrv.conf.DiffData</span></tt></a></p>
+<p>Implements DiffData on section level</p>
+<dl class="attribute">
+<dt id="mrv.conf.DiffSection.added">
+<tt class="descname">added</tt><a class="headerlink" href="#mrv.conf.DiffSection.added" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.DiffSection.applyTo">
+<tt class="descname">applyTo</tt><big>(</big><em>targetSection</em><big>)</big><a class="headerlink" href="#mrv.conf.DiffSection.applyTo" title="Permalink to this definition">¶</a></dt>
+<dd>Apply our changes to targetSection</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.DiffSection.changed">
+<tt class="descname">changed</tt><a class="headerlink" href="#mrv.conf.DiffSection.changed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.DiffSection.hasDifferences">
+<tt class="descname">hasDifferences</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.DiffSection.hasDifferences" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">true if we have stored differences (A  is not equal to B)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.DiffSection.name">
+<tt class="descname">name</tt><a class="headerlink" href="#mrv.conf.DiffSection.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.DiffSection.properties">
+<tt class="descname">properties</tt><a class="headerlink" href="#mrv.conf.DiffSection.properties" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.DiffSection.removed">
+<tt class="descname">removed</tt><a class="headerlink" href="#mrv.conf.DiffSection.removed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.DiffSection.toStr">
+<tt class="descname">toStr</tt><big>(</big><em>typename</em><big>)</big><a class="headerlink" href="#mrv.conf.DiffSection.toStr" title="Permalink to this definition">¶</a></dt>
+<dd>Convert own data representation to a string</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.DiffSection.unchanged">
+<tt class="descname">unchanged</tt><a class="headerlink" href="#mrv.conf.DiffSection.unchanged" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.conf.ExtendedFileInterface-class.html">Epydoc: mrv.conf.ExtendedFileInterface</a></p>
+<dl class="class">
+<dt id="mrv.conf.ExtendedFileInterface">
+<em class="property">class </em><tt class="descclassname">mrv.conf.</tt><tt class="descname">ExtendedFileInterface</tt><a class="headerlink" href="#mrv.conf.ExtendedFileInterface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>Define additional methods required by the Configuration System
+:warning: Additionally, readline and write must be supported - its not mentioned
+here for reasons of speed
+:note: override the methods with implementation</p>
+<dl class="method">
+<dt id="mrv.conf.ExtendedFileInterface.isClosed">
+<tt class="descname">isClosed</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.ExtendedFileInterface.isClosed" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if the file has been closed, and needs to be reopened for writing</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ExtendedFileInterface.isWritable">
+<tt class="descname">isWritable</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.ExtendedFileInterface.isWritable" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if the file can be written to</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ExtendedFileInterface.name">
+<tt class="descname">name</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.ExtendedFileInterface.name" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">a name for the file object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.ExtendedFileInterface.openForWriting">
+<tt class="descname">openForWriting</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.ExtendedFileInterface.openForWriting" title="Permalink to this definition">¶</a></dt>
+<dd>Open the file to write to it
+:raise IOError: on failure</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.conf.Key-class.html">Epydoc: mrv.conf.Key</a></p>
+<dl class="class">
+<dt id="mrv.conf.Key">
+<em class="property">class </em><tt class="descclassname">mrv.conf.</tt><tt class="descname">Key</tt><big>(</big><em>name</em>, <em>value</em>, <em>order</em><big>)</big><a class="headerlink" href="#mrv.conf.Key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.conf._PropertyHolderBase" class="reference internal" href="#mrv.conf._PropertyHolderBase"><tt class="xref docutils literal"><span class="pre">mrv.conf._PropertyHolderBase</span></tt></a></p>
+<p>Key with an associated values and an optional set of propterties</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">a key&#8217;s value will be always be stripped if its a string</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">a key&#8217;s name will be stored stripped only, must not contain certain chars</td>
+</tr>
+<tr class="field"><th class="field-name">Todo:</th><td class="field-body">add support for escpaing comas within quotes - currently it split at
+comas, no matter what</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mrv.conf.Key.appendValue">
+<tt class="descname">appendValue</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#mrv.conf.Key.appendValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Append the given value or list of values to the list of current values</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>value</em> &#8211; list, tuple or scalar value</td>
+</tr>
+<tr class="field"><th class="field-name">Todo:</th><td class="field-body">this implementation could be faster (costing more code)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.Key.mergeWith">
+<tt class="descname">mergeWith</tt><big>(</big><em>otherkey</em><big>)</big><a class="headerlink" href="#mrv.conf.Key.mergeWith" title="Permalink to this definition">¶</a></dt>
+<dd><p>Merge self with otherkey according to our properties</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">self will be altered</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.Key.name">
+<tt class="descname">name</tt><a class="headerlink" href="#mrv.conf.Key.name" title="Permalink to this definition">¶</a></dt>
+<dd>Access the name of the key</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.Key.order">
+<tt class="descname">order</tt><a class="headerlink" href="#mrv.conf.Key.order" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.Key.properties">
+<tt class="descname">properties</tt><a class="headerlink" href="#mrv.conf.Key.properties" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.Key.removeValue">
+<tt class="descname">removeValue</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#mrv.conf.Key.removeValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>remove the given value or list of values from the list of current values</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>value</em> &#8211; list, tuple or scalar value</td>
+</tr>
+<tr class="field"><th class="field-name">Todo:</th><td class="field-body">this implementation could be faster (costing more code)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.Key.value">
+<tt class="descname">value</tt><a class="headerlink" href="#mrv.conf.Key.value" title="Permalink to this definition">¶</a></dt>
+<dd>read: first value if the key&#8217;s values
+write: same effect as write of &#8216;values&#8217;</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.Key.valueString">
+<tt class="descname">valueString</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.Key.valueString" title="Permalink to this definition">¶</a></dt>
+<dd>Convert our value to a string suitable for the INI format</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.Key.values">
+<tt class="descname">values</tt><a class="headerlink" href="#mrv.conf.Key.values" title="Permalink to this definition">¶</a></dt>
+<dd>read: values of the key as list
+write: write single values or llist of values</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.conf.PropertySection-class.html">Epydoc: mrv.conf.PropertySection</a></p>
+<dl class="class">
+<dt id="mrv.conf.PropertySection">
+<em class="property">class </em><tt class="descclassname">mrv.conf.</tt><tt class="descname">PropertySection</tt><big>(</big><em>name</em>, <em>order</em><big>)</big><a class="headerlink" href="#mrv.conf.PropertySection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.conf.Section" class="reference internal" href="#mrv.conf.Section"><tt class="xref docutils literal"><span class="pre">mrv.conf.Section</span></tt></a></p>
+<p>Define a section containing keys that make up properties of somethingI</p>
+<dl class="method">
+<dt id="mrv.conf.PropertySection.key">
+<tt class="descname">key</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#mrv.conf.PropertySection.key" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><cite>Key</cite> with name</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises <a title="mrv.conf.NoOptionError" class="reference internal" href="#mrv.conf.NoOptionError">NoOptionError</a>:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.PropertySection.keyDefault">
+<tt class="descname">keyDefault</tt><big>(</big><em>name</em>, <em>value</em><big>)</big><a class="headerlink" href="#mrv.conf.PropertySection.keyDefault" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>value</em> &#8211; anything supported by <cite>setKey</cite></td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">tuple: 0 = <cite>Key</cite> with name, create it if required with given value, 1 = true if newly created, false otherwise</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.PropertySection.keys">
+<tt class="descname">keys</tt><a class="headerlink" href="#mrv.conf.PropertySection.keys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.PropertySection.mergeWith">
+<tt class="descname">mergeWith</tt><big>(</big><em>othersection</em><big>)</big><a class="headerlink" href="#mrv.conf.PropertySection.mergeWith" title="Permalink to this definition">¶</a></dt>
+<dd><p>Merge our section with othersection</p>
+<p>:note:self will be altered</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.PropertySection.name">
+<tt class="descname">name</tt><a class="headerlink" href="#mrv.conf.PropertySection.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.PropertySection.order">
+<tt class="descname">order</tt><a class="headerlink" href="#mrv.conf.PropertySection.order" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.PropertySection.properties">
+<tt class="descname">properties</tt><a class="headerlink" href="#mrv.conf.PropertySection.properties" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.PropertySection.setKey">
+<tt class="descname">setKey</tt><big>(</big><em>name</em>, <em>value</em><big>)</big><a class="headerlink" href="#mrv.conf.PropertySection.setKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the value to key with name, or create a new key with name and value</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>value</em> &#8211; int, long, float, string or list of any of such</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises ValueError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if key has incorrect value</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.conf-module.html#RawConfigParser">Epydoc: mrv.conf</a></p>
+<dl class="class">
+<dt id="mrv.conf.RawConfigParser">
+<em class="property">class </em><tt class="descclassname">mrv.conf.</tt><tt class="descname">RawConfigParser</tt><big>(</big><em>defaults=None</em>, <em>dict_type=&lt;type 'dict'&gt;</em><big>)</big><a class="headerlink" href="#mrv.conf.RawConfigParser" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="mrv.conf.RawConfigParser.add_section">
+<tt class="descname">add_section</tt><big>(</big><em>section</em><big>)</big><a class="headerlink" href="#mrv.conf.RawConfigParser.add_section" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new section in the configuration.</p>
+<p>Raise DuplicateSectionError if a section by the specified name
+already exists. Raise ValueError if name is DEFAULT or any of it&#8217;s
+case-insensitive variants.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.RawConfigParser.defaults">
+<tt class="descname">defaults</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.RawConfigParser.defaults" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.RawConfigParser.get">
+<tt class="descname">get</tt><big>(</big><em>section</em>, <em>option</em><big>)</big><a class="headerlink" href="#mrv.conf.RawConfigParser.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.RawConfigParser.getboolean">
+<tt class="descname">getboolean</tt><big>(</big><em>section</em>, <em>option</em><big>)</big><a class="headerlink" href="#mrv.conf.RawConfigParser.getboolean" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.RawConfigParser.getfloat">
+<tt class="descname">getfloat</tt><big>(</big><em>section</em>, <em>option</em><big>)</big><a class="headerlink" href="#mrv.conf.RawConfigParser.getfloat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.RawConfigParser.getint">
+<tt class="descname">getint</tt><big>(</big><em>section</em>, <em>option</em><big>)</big><a class="headerlink" href="#mrv.conf.RawConfigParser.getint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.RawConfigParser.has_option">
+<tt class="descname">has_option</tt><big>(</big><em>section</em>, <em>option</em><big>)</big><a class="headerlink" href="#mrv.conf.RawConfigParser.has_option" title="Permalink to this definition">¶</a></dt>
+<dd>Check for the existence of a given option in a given section.</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.RawConfigParser.has_section">
+<tt class="descname">has_section</tt><big>(</big><em>section</em><big>)</big><a class="headerlink" href="#mrv.conf.RawConfigParser.has_section" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicate whether the named section is present in the configuration.</p>
+<p>The DEFAULT section is not acknowledged.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.RawConfigParser.items">
+<tt class="descname">items</tt><big>(</big><em>section</em><big>)</big><a class="headerlink" href="#mrv.conf.RawConfigParser.items" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.RawConfigParser.options">
+<tt class="descname">options</tt><big>(</big><em>section</em><big>)</big><a class="headerlink" href="#mrv.conf.RawConfigParser.options" title="Permalink to this definition">¶</a></dt>
+<dd>Return a list of option names for the given section name.</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.RawConfigParser.optionxform">
+<tt class="descname">optionxform</tt><big>(</big><em>optionstr</em><big>)</big><a class="headerlink" href="#mrv.conf.RawConfigParser.optionxform" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.RawConfigParser.read">
+<tt class="descname">read</tt><big>(</big><em>filenames</em><big>)</big><a class="headerlink" href="#mrv.conf.RawConfigParser.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read and parse a filename or a list of filenames.</p>
+<p>Files that cannot be opened are silently ignored; this is
+designed so that you can specify a list of potential
+configuration file locations (e.g. current directory, user&#8217;s
+home directory, systemwide directory), and all existing
+configuration files in the list will be read.  A single
+filename may also be given.</p>
+<p>Return list of successfully read files.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.RawConfigParser.readfp">
+<tt class="descname">readfp</tt><big>(</big><em>fp</em>, <em>filename=None</em><big>)</big><a class="headerlink" href="#mrv.conf.RawConfigParser.readfp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Like read() but the argument must be a file-like object.</p>
+<p>The <a href="#id1"><span class="problematic" id="id2">`</span></a>fp&#8217; argument must have a <a href="#id3"><span class="problematic" id="id4">`</span></a>readline&#8217; method.  Optional
+second argument is the <a href="#id5"><span class="problematic" id="id6">`</span></a>filename&#8217;, which if not given, is
+taken from fp.name.  If fp has no <a href="#id7"><span class="problematic" id="id8">`</span></a>name&#8217; attribute, <a href="#id9"><span class="problematic" id="id10">`</span></a>&lt;???&gt;&#8217; is
+used.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.RawConfigParser.remove_option">
+<tt class="descname">remove_option</tt><big>(</big><em>section</em>, <em>option</em><big>)</big><a class="headerlink" href="#mrv.conf.RawConfigParser.remove_option" title="Permalink to this definition">¶</a></dt>
+<dd>Remove an option.</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.RawConfigParser.remove_section">
+<tt class="descname">remove_section</tt><big>(</big><em>section</em><big>)</big><a class="headerlink" href="#mrv.conf.RawConfigParser.remove_section" title="Permalink to this definition">¶</a></dt>
+<dd>Remove a file section.</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.RawConfigParser.sections">
+<tt class="descname">sections</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf.RawConfigParser.sections" title="Permalink to this definition">¶</a></dt>
+<dd>Return a list of section names, excluding [DEFAULT]</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.RawConfigParser.set">
+<tt class="descname">set</tt><big>(</big><em>section</em>, <em>option</em>, <em>value</em><big>)</big><a class="headerlink" href="#mrv.conf.RawConfigParser.set" title="Permalink to this definition">¶</a></dt>
+<dd>Set an option.</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.RawConfigParser.write">
+<tt class="descname">write</tt><big>(</big><em>fp</em><big>)</big><a class="headerlink" href="#mrv.conf.RawConfigParser.write" title="Permalink to this definition">¶</a></dt>
+<dd>Write an .ini-format representation of the configuration state.</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.conf.Section-class.html">Epydoc: mrv.conf.Section</a></p>
+<dl class="class">
+<dt id="mrv.conf.Section">
+<em class="property">class </em><tt class="descclassname">mrv.conf.</tt><tt class="descname">Section</tt><big>(</big><em>name</em>, <em>order</em><big>)</big><a class="headerlink" href="#mrv.conf.Section" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.conf._PropertyHolderBase" class="reference internal" href="#mrv.conf._PropertyHolderBase"><tt class="xref docutils literal"><span class="pre">mrv.conf._PropertyHolderBase</span></tt></a></p>
+<p>Class defininig an indivual section of a configuration file including
+all its keys and section properties</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">name will be stored stripped and must not contain certain chars</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mrv.conf.Section.key">
+<tt class="descname">key</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#mrv.conf.Section.key" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><cite>Key</cite> with name</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises <a title="mrv.conf.NoOptionError" class="reference internal" href="#mrv.conf.NoOptionError">NoOptionError</a>:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.Section.keyDefault">
+<tt class="descname">keyDefault</tt><big>(</big><em>name</em>, <em>value</em><big>)</big><a class="headerlink" href="#mrv.conf.Section.keyDefault" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>value</em> &#8211; anything supported by <cite>setKey</cite></td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">tuple: 0 = <cite>Key</cite> with name, create it if required with given value, 1 = true if newly created, false otherwise</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.Section.keys">
+<tt class="descname">keys</tt><a class="headerlink" href="#mrv.conf.Section.keys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.Section.mergeWith">
+<tt class="descname">mergeWith</tt><big>(</big><em>othersection</em><big>)</big><a class="headerlink" href="#mrv.conf.Section.mergeWith" title="Permalink to this definition">¶</a></dt>
+<dd><p>Merge our section with othersection</p>
+<p>:note:self will be altered</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.Section.name">
+<tt class="descname">name</tt><a class="headerlink" href="#mrv.conf.Section.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.Section.order">
+<tt class="descname">order</tt><a class="headerlink" href="#mrv.conf.Section.order" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.Section.properties">
+<tt class="descname">properties</tt><a class="headerlink" href="#mrv.conf.Section.properties" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf.Section.setKey">
+<tt class="descname">setKey</tt><big>(</big><em>name</em>, <em>value</em><big>)</big><a class="headerlink" href="#mrv.conf.Section.setKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the value to key with name, or create a new key with name and value</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>value</em> &#8211; int, long, float, string or list of any of such</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises ValueError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if key has incorrect value</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.conf._FixedConfigParser-class.html">Epydoc: mrv.conf._FixedConfigParser</a></p>
+<dl class="class">
+<dt id="mrv.conf._FixedConfigParser">
+<em class="property">class </em><tt class="descclassname">mrv.conf.</tt><tt class="descname">_FixedConfigParser</tt><big>(</big><em>defaults=None</em>, <em>dict_type=&lt;type 'dict'&gt;</em><big>)</big><a class="headerlink" href="#mrv.conf._FixedConfigParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">ConfigParser.RawConfigParser</span></tt></p>
+<p>The RawConfigParser stores options lowercase - but we do not want that
+and keep the case - for this we just need to override a method</p>
+<dl class="method">
+<dt id="mrv.conf._FixedConfigParser.add_section">
+<tt class="descname">add_section</tt><big>(</big><em>section</em><big>)</big><a class="headerlink" href="#mrv.conf._FixedConfigParser.add_section" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new section in the configuration.</p>
+<p>Raise DuplicateSectionError if a section by the specified name
+already exists. Raise ValueError if name is DEFAULT or any of it&#8217;s
+case-insensitive variants.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf._FixedConfigParser.defaults">
+<tt class="descname">defaults</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf._FixedConfigParser.defaults" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf._FixedConfigParser.get">
+<tt class="descname">get</tt><big>(</big><em>section</em>, <em>option</em><big>)</big><a class="headerlink" href="#mrv.conf._FixedConfigParser.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf._FixedConfigParser.getboolean">
+<tt class="descname">getboolean</tt><big>(</big><em>section</em>, <em>option</em><big>)</big><a class="headerlink" href="#mrv.conf._FixedConfigParser.getboolean" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf._FixedConfigParser.getfloat">
+<tt class="descname">getfloat</tt><big>(</big><em>section</em>, <em>option</em><big>)</big><a class="headerlink" href="#mrv.conf._FixedConfigParser.getfloat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf._FixedConfigParser.getint">
+<tt class="descname">getint</tt><big>(</big><em>section</em>, <em>option</em><big>)</big><a class="headerlink" href="#mrv.conf._FixedConfigParser.getint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf._FixedConfigParser.has_option">
+<tt class="descname">has_option</tt><big>(</big><em>section</em>, <em>option</em><big>)</big><a class="headerlink" href="#mrv.conf._FixedConfigParser.has_option" title="Permalink to this definition">¶</a></dt>
+<dd>Check for the existence of a given option in a given section.</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf._FixedConfigParser.has_section">
+<tt class="descname">has_section</tt><big>(</big><em>section</em><big>)</big><a class="headerlink" href="#mrv.conf._FixedConfigParser.has_section" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicate whether the named section is present in the configuration.</p>
+<p>The DEFAULT section is not acknowledged.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf._FixedConfigParser.items">
+<tt class="descname">items</tt><big>(</big><em>section</em><big>)</big><a class="headerlink" href="#mrv.conf._FixedConfigParser.items" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf._FixedConfigParser.options">
+<tt class="descname">options</tt><big>(</big><em>section</em><big>)</big><a class="headerlink" href="#mrv.conf._FixedConfigParser.options" title="Permalink to this definition">¶</a></dt>
+<dd>Return a list of option names for the given section name.</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf._FixedConfigParser.optionxform">
+<tt class="descname">optionxform</tt><big>(</big><em>option</em><big>)</big><a class="headerlink" href="#mrv.conf._FixedConfigParser.optionxform" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf._FixedConfigParser.read">
+<tt class="descname">read</tt><big>(</big><em>filenames</em><big>)</big><a class="headerlink" href="#mrv.conf._FixedConfigParser.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read and parse a filename or a list of filenames.</p>
+<p>Files that cannot be opened are silently ignored; this is
+designed so that you can specify a list of potential
+configuration file locations (e.g. current directory, user&#8217;s
+home directory, systemwide directory), and all existing
+configuration files in the list will be read.  A single
+filename may also be given.</p>
+<p>Return list of successfully read files.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf._FixedConfigParser.readfp">
+<tt class="descname">readfp</tt><big>(</big><em>fp</em>, <em>filename=None</em><big>)</big><a class="headerlink" href="#mrv.conf._FixedConfigParser.readfp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Like read() but the argument must be a file-like object.</p>
+<p>The <a href="#id11"><span class="problematic" id="id12">`</span></a>fp&#8217; argument must have a <a href="#id13"><span class="problematic" id="id14">`</span></a>readline&#8217; method.  Optional
+second argument is the <a href="#id15"><span class="problematic" id="id16">`</span></a>filename&#8217;, which if not given, is
+taken from fp.name.  If fp has no <a href="#id17"><span class="problematic" id="id18">`</span></a>name&#8217; attribute, <a href="#id19"><span class="problematic" id="id20">`</span></a>&lt;???&gt;&#8217; is
+used.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf._FixedConfigParser.remove_option">
+<tt class="descname">remove_option</tt><big>(</big><em>section</em>, <em>option</em><big>)</big><a class="headerlink" href="#mrv.conf._FixedConfigParser.remove_option" title="Permalink to this definition">¶</a></dt>
+<dd>Remove an option.</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf._FixedConfigParser.remove_section">
+<tt class="descname">remove_section</tt><big>(</big><em>section</em><big>)</big><a class="headerlink" href="#mrv.conf._FixedConfigParser.remove_section" title="Permalink to this definition">¶</a></dt>
+<dd>Remove a file section.</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf._FixedConfigParser.sections">
+<tt class="descname">sections</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.conf._FixedConfigParser.sections" title="Permalink to this definition">¶</a></dt>
+<dd>Return a list of section names, excluding [DEFAULT]</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf._FixedConfigParser.set">
+<tt class="descname">set</tt><big>(</big><em>section</em>, <em>option</em>, <em>value</em><big>)</big><a class="headerlink" href="#mrv.conf._FixedConfigParser.set" title="Permalink to this definition">¶</a></dt>
+<dd>Set an option.</dd></dl>
+
+<dl class="method">
+<dt id="mrv.conf._FixedConfigParser.write">
+<tt class="descname">write</tt><big>(</big><em>fp</em><big>)</big><a class="headerlink" href="#mrv.conf._FixedConfigParser.write" title="Permalink to this definition">¶</a></dt>
+<dd>Write an .ini-format representation of the configuration state.</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.conf._PropertyHolderBase-class.html">Epydoc: mrv.conf._PropertyHolderBase</a></p>
+<dl class="class">
+<dt id="mrv.conf._PropertyHolderBase">
+<em class="property">class </em><tt class="descclassname">mrv.conf.</tt><tt class="descname">_PropertyHolderBase</tt><big>(</big><em>name</em>, <em>order</em><big>)</big><a class="headerlink" href="#mrv.conf._PropertyHolderBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>Simple Base defining how to deal with properties
+:note: to use this interface, the subclass must have a &#8216;name&#8217; field</p>
+<dl class="attribute">
+<dt id="mrv.conf._PropertyHolderBase.name">
+<tt class="descname">name</tt><a class="headerlink" href="#mrv.conf._PropertyHolderBase.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf._PropertyHolderBase.order">
+<tt class="descname">order</tt><a class="headerlink" href="#mrv.conf._PropertyHolderBase.order" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf._PropertyHolderBase.properties">
+<tt class="descname">properties</tt><a class="headerlink" href="#mrv.conf._PropertyHolderBase.properties" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="exceptions">
+<h2>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="api/mrv.conf.ConfigParsingError-class.html">Epydoc: mrv.conf.ConfigParsingError</a></p>
+<dl class="class">
+<dt id="mrv.conf.ConfigParsingError">
+<em class="property">class </em><tt class="descclassname">mrv.conf.</tt><tt class="descname">ConfigParsingError</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.conf.ConfigParsingError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.exc.MRVError" class="reference external" href="mrv.exc.html#mrv.exc.MRVError"><tt class="xref docutils literal"><span class="pre">mrv.exc.MRVError</span></tt></a></p>
+<p>Indicates that the parsing failed</p>
+<dl class="attribute">
+<dt id="mrv.conf.ConfigParsingError.args">
+<tt class="descname">args</tt><a class="headerlink" href="#mrv.conf.ConfigParsingError.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.ConfigParsingError.message">
+<tt class="descname">message</tt><a class="headerlink" href="#mrv.conf.ConfigParsingError.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.conf.ConfigParsingPropertyError-class.html">Epydoc: mrv.conf.ConfigParsingPropertyError</a></p>
+<dl class="class">
+<dt id="mrv.conf.ConfigParsingPropertyError">
+<em class="property">class </em><tt class="descclassname">mrv.conf.</tt><tt class="descname">ConfigParsingPropertyError</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.conf.ConfigParsingPropertyError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.conf.ConfigParsingError" class="reference internal" href="#mrv.conf.ConfigParsingError"><tt class="xref docutils literal"><span class="pre">mrv.conf.ConfigParsingError</span></tt></a></p>
+<p>Indicates that the property-parsing encountered a problem</p>
+<dl class="attribute">
+<dt id="mrv.conf.ConfigParsingPropertyError.args">
+<tt class="descname">args</tt><a class="headerlink" href="#mrv.conf.ConfigParsingPropertyError.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.ConfigParsingPropertyError.message">
+<tt class="descname">message</tt><a class="headerlink" href="#mrv.conf.ConfigParsingPropertyError.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.conf-module.html#MRVError">Epydoc: mrv.conf</a></p>
+<dl class="class">
+<dt id="mrv.conf.MRVError">
+<em class="property">class </em><tt class="descclassname">mrv.conf.</tt><tt class="descname">MRVError</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.conf.MRVError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+<p>Base Class for all exceptions that the mrv framework throws</p>
+<dl class="attribute">
+<dt id="mrv.conf.MRVError.args">
+<tt class="descname">args</tt><a class="headerlink" href="#mrv.conf.MRVError.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.MRVError.message">
+<tt class="descname">message</tt><a class="headerlink" href="#mrv.conf.MRVError.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.conf-module.html#NoOptionError">Epydoc: mrv.conf</a></p>
+<dl class="class">
+<dt id="mrv.conf.NoOptionError">
+<em class="property">class </em><tt class="descclassname">mrv.conf.</tt><tt class="descname">NoOptionError</tt><big>(</big><em>option</em>, <em>section</em><big>)</big><a class="headerlink" href="#mrv.conf.NoOptionError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">ConfigParser.Error</span></tt></p>
+<p>A requested option was not found.</p>
+<dl class="attribute">
+<dt id="mrv.conf.NoOptionError.args">
+<tt class="descname">args</tt><a class="headerlink" href="#mrv.conf.NoOptionError.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.NoOptionError.message">
+<tt class="descname">message</tt><a class="headerlink" href="#mrv.conf.NoOptionError.message" title="Permalink to this definition">¶</a></dt>
+<dd>Getter for &#8216;message&#8217;; needed only to override deprecation in
+BaseException.</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.conf-module.html#NoSectionError">Epydoc: mrv.conf</a></p>
+<dl class="class">
+<dt id="mrv.conf.NoSectionError">
+<em class="property">class </em><tt class="descclassname">mrv.conf.</tt><tt class="descname">NoSectionError</tt><big>(</big><em>section</em><big>)</big><a class="headerlink" href="#mrv.conf.NoSectionError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">ConfigParser.Error</span></tt></p>
+<p>Raised when no section matches a requested option.</p>
+<dl class="attribute">
+<dt id="mrv.conf.NoSectionError.args">
+<tt class="descname">args</tt><a class="headerlink" href="#mrv.conf.NoSectionError.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.NoSectionError.message">
+<tt class="descname">message</tt><a class="headerlink" href="#mrv.conf.NoSectionError.message" title="Permalink to this definition">¶</a></dt>
+<dd>Getter for &#8216;message&#8217;; needed only to override deprecation in
+BaseException.</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.conf-module.html#ParsingError">Epydoc: mrv.conf</a></p>
+<dl class="class">
+<dt id="mrv.conf.ParsingError">
+<em class="property">class </em><tt class="descclassname">mrv.conf.</tt><tt class="descname">ParsingError</tt><big>(</big><em>filename</em><big>)</big><a class="headerlink" href="#mrv.conf.ParsingError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">ConfigParser.Error</span></tt></p>
+<p>Raised when a configuration file does not follow legal syntax.</p>
+<dl class="method">
+<dt id="mrv.conf.ParsingError.append">
+<tt class="descname">append</tt><big>(</big><em>lineno</em>, <em>line</em><big>)</big><a class="headerlink" href="#mrv.conf.ParsingError.append" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.ParsingError.args">
+<tt class="descname">args</tt><a class="headerlink" href="#mrv.conf.ParsingError.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.conf.ParsingError.message">
+<tt class="descname">message</tt><a class="headerlink" href="#mrv.conf.ParsingError.message" title="Permalink to this definition">¶</a></dt>
+<dd>Getter for &#8216;message&#8217;; needed only to override deprecation in
+BaseException.</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="../index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#"><tt class="docutils literal"><span class="pre">mrv.conf</span></tt></a><ul>
+<li><a class="reference external" href="#functions">Functions</a></li>
+<li><a class="reference external" href="#classes">Classes</a></li>
+<li><a class="reference external" href="#exceptions">Exceptions</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="mrv.path.html"
+                                  title="previous chapter"><tt class="docutils literal docutils literal"><span class="pre">mrv.path</span></tt></a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="mrv.enum.html"
+                                  title="next chapter"><tt class="docutils literal"><span class="pre">mrv.enum</span></tt></a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/generated/mrv.conf.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.enum.html" title="mrv.enum"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mrv.path.html" title="mrv.path"
+             >previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Apr 19, 2011.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

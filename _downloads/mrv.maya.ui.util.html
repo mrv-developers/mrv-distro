@@ -1,0 +1,383 @@
+<html>
+<head>
+<title>mrv.maya.ui.util</title>
+</head>
+<body>
+mrv.maya.ui.util
+<style>
+.coverage pre {float: left; margin: 0px 1em; border: none;
+               padding: 0px; }
+.num pre { margin: 0px }
+.nocov, .nocov pre {background-color: #faa}
+.cov, .cov pre {background-color: #cfc}
+div.coverage div { clear: both; height: 1.1em}
+</style>
+<div class="stats">
+Covered: 176 lines<br/>
+Missed: 66 lines<br/>
+Skipped 116 lines<br/>
+Percent: 72 %<br/>
+
+</div>
+<div class="coverage">
+<div class="skip"><span class="num"><pre>  1</pre></span><pre># -*- coding: utf-8 -*-</pre></div>
+<div class="cov"><span class="num"><pre>  2</pre></span><pre>&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  3</pre></span><pre>Utilities and classes useful for user interfaces</pre></div>
+<div class="cov"><span class="num"><pre>  4</pre></span><pre>&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  5</pre></span><pre>__docformat__ = &quot;restructuredtext&quot;</pre></div>
+<div class="skip"><span class="num"><pre>  6</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  7</pre></span><pre>from mrv.util import EventSender, Event, Call, WeakInstFunction</pre></div>
+<div class="cov"><span class="num"><pre>  8</pre></span><pre>import maya.cmds as cmds</pre></div>
+<div class="cov"><span class="num"><pre>  9</pre></span><pre>from mrv.enum import create as enum</pre></div>
+<div class="cov"><span class="num"><pre> 10</pre></span><pre>import weakref</pre></div>
+<div class="skip"><span class="num"><pre> 11</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 12</pre></span><pre>#{ MEL Function Wrappers</pre></div>
+<div class="skip"><span class="num"><pre> 13</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 14</pre></span><pre>def makeEditOrQueryMethod( flag, isEdit=False, methodName=None ):</pre></div>
+<div class="cov"><span class="num"><pre> 15</pre></span><pre>	&quot;&quot;&quot;Create a function calling inFunc with an edit or query flag set.</pre></div>
+<div class="skip"><span class="num"><pre> 16</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 17</pre></span><pre>	:note: only works on mrv wrapped ui elements</pre></div>
+<div class="cov"><span class="num"><pre> 18</pre></span><pre>	:note: THIS IS MOSTLY A DUPLICATION OF PROVEN CODE FROM ``mrv.maya.util`` !</pre></div>
+<div class="cov"><span class="num"><pre> 19</pre></span><pre>	:param flag: name of the query or edit flag</pre></div>
+<div class="cov"><span class="num"><pre> 20</pre></span><pre>	:param isEdit: If not False, the method returned will be an edit function</pre></div>
+<div class="cov"><span class="num"><pre> 21</pre></span><pre>	:param methodName: the name of the method returned, defaults to inCmd name&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 22</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 23</pre></span><pre>	func = None</pre></div>
+<div class="cov"><span class="num"><pre> 24</pre></span><pre>	if isEdit:</pre></div>
+<div class="cov"><span class="num"><pre> 25</pre></span><pre>		def editFunc(self, val, **kwargs):</pre></div>
+<div class="cov"><span class="num"><pre> 26</pre></span><pre>			kwargs[ 'edit' ] = True</pre></div>
+<div class="cov"><span class="num"><pre> 27</pre></span><pre>			kwargs[ flag ] = val</pre></div>
+<div class="cov"><span class="num"><pre> 28</pre></span><pre>			return self.__melcmd__( self, **kwargs )</pre></div>
+<div class="skip"><span class="num"><pre> 29</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 30</pre></span><pre>		func = editFunc</pre></div>
+<div class="skip"><span class="num"><pre> 31</pre></span><pre>	# END if edit</pre></div>
+<div class="cov"><span class="num"><pre> 32</pre></span><pre>	else:</pre></div>
+<div class="cov"><span class="num"><pre> 33</pre></span><pre>		def queryFunc(self, **kwargs):</pre></div>
+<div class="cov"><span class="num"><pre> 34</pre></span><pre>			kwargs[ 'query' ] = True</pre></div>
+<div class="cov"><span class="num"><pre> 35</pre></span><pre>			kwargs[ flag ] = True</pre></div>
+<div class="cov"><span class="num"><pre> 36</pre></span><pre>			return self.__melcmd__( self, **kwargs )</pre></div>
+<div class="skip"><span class="num"><pre> 37</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 38</pre></span><pre>		func = queryFunc</pre></div>
+<div class="skip"><span class="num"><pre> 39</pre></span><pre>	# END if query</pre></div>
+<div class="skip"><span class="num"><pre> 40</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 41</pre></span><pre>	if not methodName:</pre></div>
+<div class="cov"><span class="num"><pre> 42</pre></span><pre>		methodName = flag</pre></div>
+<div class="cov"><span class="num"><pre> 43</pre></span><pre>	func.__name__ = methodName</pre></div>
+<div class="skip"><span class="num"><pre> 44</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 45</pre></span><pre>	return func</pre></div>
+<div class="skip"><span class="num"><pre> 46</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 47</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 48</pre></span><pre>def queryMethod( flag, methodName = None ):</pre></div>
+<div class="cov"><span class="num"><pre> 49</pre></span><pre>	&quot;&quot;&quot; Shorthand query version of makeEditOrQueryMethod &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 50</pre></span><pre>	return makeEditOrQueryMethod( flag, isEdit=False, methodName=methodName )</pre></div>
+<div class="skip"><span class="num"><pre> 51</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 52</pre></span><pre>def editMethod( flag, methodName = None ):</pre></div>
+<div class="cov"><span class="num"><pre> 53</pre></span><pre>	&quot;&quot;&quot; Shorthand edit version of makeEditOrQueryMethod &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 54</pre></span><pre>	return makeEditOrQueryMethod( flag, isEdit=True, methodName=methodName )</pre></div>
+<div class="skip"><span class="num"><pre> 55</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 56</pre></span><pre>def propertyQE( flag, methodName = None ):</pre></div>
+<div class="cov"><span class="num"><pre> 57</pre></span><pre>	&quot;&quot;&quot; Shorthand for simple query and edit properties &quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 58</pre></span><pre>	editFunc = editMethod( flag, methodName = methodName )</pre></div>
+<div class="cov"><span class="num"><pre> 59</pre></span><pre>	queryFunc = queryMethod( flag, methodName = methodName )</pre></div>
+<div class="cov"><span class="num"><pre> 60</pre></span><pre>	return property( queryFunc, editFunc )</pre></div>
+<div class="skip"><span class="num"><pre> 61</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 62</pre></span><pre>#}</pre></div>
+<div class="skip"><span class="num"><pre> 63</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 64</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 65</pre></span><pre>class Signal( Event ):</pre></div>
+<div class="cov"><span class="num"><pre> 66</pre></span><pre>	&quot;&quot;&quot;User interface signal which keeps assigned functions as strong reference to</pre></div>
+<div class="cov"><span class="num"><pre> 67</pre></span><pre>	assure we can always call it. This implies that we may leave many dangling objects</pre></div>
+<div class="cov"><span class="num"><pre> 68</pre></span><pre>	unless we are being properly cleaned up on deletion.</pre></div>
+<div class="skip"><span class="num"><pre> 69</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre> 70</pre></span><pre>	Calls generated from this event will not put the sender as first argument, but </pre></div>
+<div class="cov"><span class="num"><pre> 71</pre></span><pre>	you may retrieve it using ``self.sender()``.&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 72</pre></span><pre>	#{ Configuration </pre></div>
+<div class="cov"><span class="num"><pre> 73</pre></span><pre>	use_weakref = False</pre></div>
+<div class="cov"><span class="num"><pre> 74</pre></span><pre>	remove_on_error = False</pre></div>
+<div class="cov"><span class="num"><pre> 75</pre></span><pre>	sender_as_argument = False</pre></div>
+<div class="skip"><span class="num"><pre> 76</pre></span><pre>	#} END configuration </pre></div>
+<div class="skip"><span class="num"><pre> 77</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 78</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 79</pre></span><pre>class EventSenderUI( EventSender ):</pre></div>
+<div class="cov"><span class="num"><pre> 80</pre></span><pre>	&quot;&quot;&quot;Allows registration of a typical UI callback</pre></div>
+<div class="cov"><span class="num"><pre> 81</pre></span><pre>	It basically streamlines the registration for a callback such that any</pre></div>
+<div class="cov"><span class="num"><pre> 82</pre></span><pre>	number of listeners can be called when an event occours - this works by</pre></div>
+<div class="cov"><span class="num"><pre> 83</pre></span><pre>	keeping an own list of callbacks registered for a specific event, and calling them</pre></div>
+<div class="cov"><span class="num"><pre> 84</pre></span><pre>	whenever the maya ui callback has been triggered</pre></div>
+<div class="skip"><span class="num"><pre> 85</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 86</pre></span><pre>	To use this class , see the documentation of ``EventSender``, but use the Event</pre></div>
+<div class="cov"><span class="num"><pre> 87</pre></span><pre>	instead.</pre></div>
+<div class="cov"><span class="num"><pre> 88</pre></span><pre>	If you want to add your own events, use your own ``Signal`` s.</pre></div>
+<div class="skip"><span class="num"><pre> 89</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 90</pre></span><pre>	The class does NOT use weakreferences for the main callbacks to make it easier to use.</pre></div>
+<div class="cov"><span class="num"><pre> 91</pre></span><pre>	Use the ``WeakFunction`` to properly and weakly bind an instance function</pre></div>
+<div class="skip"><span class="num"><pre> 92</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 93</pre></span><pre>	When registered for an event, the sender will be provided to each callback as first</pre></div>
+<div class="cov"><span class="num"><pre> 94</pre></span><pre>	argument.</pre></div>
+<div class="cov"><span class="num"><pre> 95</pre></span><pre>	&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre> 96</pre></span><pre>	#( Configuration</pre></div>
+<div class="skip"><span class="num"><pre> 97</pre></span><pre>	# we are to be put as first arguemnt, allowing listeners to do something</pre></div>
+<div class="skip"><span class="num"><pre> 98</pre></span><pre>	# with the sender when handling the event</pre></div>
+<div class="cov"><span class="num"><pre> 99</pre></span><pre>	sender_as_argument = True</pre></div>
+<div class="cov"><span class="num"><pre>100</pre></span><pre>	reraise_on_error  =True</pre></div>
+<div class="skip"><span class="num"><pre>101</pre></span><pre>	#} END configuration</pre></div>
+<div class="skip"><span class="num"><pre>102</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>103</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>104</pre></span><pre>	class _UIEvent( Event ):</pre></div>
+<div class="cov"><span class="num"><pre>105</pre></span><pre>		&quot;&quot;&quot;Event suitable to deal with user interface callback&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>106</pre></span><pre>		#( Configuration</pre></div>
+<div class="cov"><span class="num"><pre>107</pre></span><pre>		use_weakref = False</pre></div>
+<div class="cov"><span class="num"><pre>108</pre></span><pre>		remove_on_error = True</pre></div>
+<div class="skip"><span class="num"><pre>109</pre></span><pre>		#) END configuration</pre></div>
+<div class="skip"><span class="num"><pre>110</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>111</pre></span><pre>		def __init__( self, eventname, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>112</pre></span><pre>			&quot;&quot;&quot;Allows to set additional arguments to be given when a callback</pre></div>
+<div class="cov"><span class="num"><pre>113</pre></span><pre>			is actually set&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>114</pre></span><pre>			super( EventSenderUI._UIEvent, self ).__init__( **kwargs )</pre></div>
+<div class="cov"><span class="num"><pre>115</pre></span><pre>			self._name =eventname</pre></div>
+<div class="cov"><span class="num"><pre>116</pre></span><pre>			self._kwargs = kwargs</pre></div>
+<div class="skip"><span class="num"><pre>117</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>118</pre></span><pre>		def send( self, inst, *args, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>119</pre></span><pre>			&quot;&quot;&quot;Sets our instance prior to calling the super class&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>120</pre></span><pre>			self._last_inst_ref = weakref.ref(inst)</pre></div>
+<div class="nocov"><span class="num"><pre>121</pre></span><pre>			super(EventSenderUI._UIEvent, self).send(*args, **kwargs)</pre></div>
+<div class="skip"><span class="num"><pre>122</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>123</pre></span><pre>		def __set__(  self, inst, eventfunc ):</pre></div>
+<div class="cov"><span class="num"><pre>124</pre></span><pre>			&quot;&quot;&quot;Set the given event to be called when this event is being triggered&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>125</pre></span><pre>			eventset = self._getFunctionSet( inst )</pre></div>
+<div class="skip"><span class="num"><pre>126</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>127</pre></span><pre>			# REGISTER TO MEL IF THIS IS THE FIRST EVENT</pre></div>
+<div class="skip"><span class="num"><pre>128</pre></span><pre>			# do we have to register the callback ?</pre></div>
+<div class="cov"><span class="num"><pre>129</pre></span><pre>			if not eventset:</pre></div>
+<div class="cov"><span class="num"><pre>130</pre></span><pre>				kwargs = dict()</pre></div>
+<div class="skip"><span class="num"><pre>131</pre></span><pre>				# generic call that will receive maya's own arguments and pass them on</pre></div>
+<div class="cov"><span class="num"><pre>132</pre></span><pre>				dyncall = lambda *args, **kwargs: self.send(inst, *args, **kwargs)</pre></div>
+<div class="skip"><span class="num"><pre>133</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>134</pre></span><pre>				kwargs[ 'e' ] = 1</pre></div>
+<div class="cov"><span class="num"><pre>135</pre></span><pre>				kwargs[ self._name ] = dyncall</pre></div>
+<div class="cov"><span class="num"><pre>136</pre></span><pre>				kwargs.update( self._kwargs )		# allow user kwargs</pre></div>
+<div class="cov"><span class="num"><pre>137</pre></span><pre>				inst.__melcmd__( str( inst ) , **kwargs )</pre></div>
+<div class="skip"><span class="num"><pre>138</pre></span><pre>			# END create event</pre></div>
+<div class="skip"><span class="num"><pre>139</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>140</pre></span><pre>			super( EventSenderUI._UIEvent, self ).__set__( inst, eventfunc )</pre></div>
+<div class="skip"><span class="num"><pre>141</pre></span><pre>	# END _UIEvent</pre></div>
+<div class="skip"><span class="num"><pre>142</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>143</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>144</pre></span><pre>class UIContainerBase( object ):</pre></div>
+<div class="cov"><span class="num"><pre>145</pre></span><pre>	&quot;&quot;&quot;A ui container is a base for all classes that can have child controls or</pre></div>
+<div class="cov"><span class="num"><pre>146</pre></span><pre>	other containers.</pre></div>
+<div class="skip"><span class="num"><pre>147</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>148</pre></span><pre>	This class is just supposed to keep references to it's children so that additional</pre></div>
+<div class="cov"><span class="num"><pre>149</pre></span><pre>	information stored in python will not get lost</pre></div>
+<div class="skip"><span class="num"><pre>150</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>151</pre></span><pre>	Child-Instances are always unique, thus adding them several times will not</pre></div>
+<div class="cov"><span class="num"><pre>152</pre></span><pre>	keep them several times , but just once&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>153</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>154</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>155</pre></span><pre>	def __init__( self, *args, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>156</pre></span><pre>		self._children = list()</pre></div>
+<div class="cov"><span class="num"><pre>157</pre></span><pre>		super( UIContainerBase, self ).__init__( *args, **kwargs )</pre></div>
+<div class="skip"><span class="num"><pre>158</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>159</pre></span><pre>	def __getitem__( self, key ):</pre></div>
+<div class="cov"><span class="num"><pre>160</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>161</pre></span><pre>		:return: the child with the given name, see `childByName`</pre></div>
+<div class="cov"><span class="num"><pre>162</pre></span><pre>		:param key: if integer, will return the given list index, if string, the child</pre></div>
+<div class="cov"><span class="num"><pre>163</pre></span><pre>			matching the id&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>164</pre></span><pre>		if isinstance( key, basestring ):</pre></div>
+<div class="nocov"><span class="num"><pre>165</pre></span><pre>			return self.childByName( key )</pre></div>
+<div class="nocov"><span class="num"><pre>166</pre></span><pre>		else:</pre></div>
+<div class="nocov"><span class="num"><pre>167</pre></span><pre>			return self._children[ key ]</pre></div>
+<div class="skip"><span class="num"><pre>168</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>169</pre></span><pre>	def __enter__(self):</pre></div>
+<div class="nocov"><span class="num"><pre>170</pre></span><pre>		return self</pre></div>
+<div class="skip"><span class="num"><pre>171</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>172</pre></span><pre>	def __exit__(self, type, value, traceback):</pre></div>
+<div class="nocov"><span class="num"><pre>173</pre></span><pre>		if type is None and hasattr(self, 'setParentActive'):</pre></div>
+<div class="nocov"><span class="num"><pre>174</pre></span><pre>			self.setParentActive()</pre></div>
+<div class="skip"><span class="num"><pre>175</pre></span><pre>		# END only undo parenting if there is no exception</pre></div>
+<div class="skip"><span class="num"><pre>176</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>177</pre></span><pre>	def add( self, child, set_self_active = False, revert_to_previous_parent = True ):</pre></div>
+<div class="cov"><span class="num"><pre>178</pre></span><pre>		&quot;&quot;&quot;Add the given child UI item to our list of children</pre></div>
+<div class="skip"><span class="num"><pre>179</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>180</pre></span><pre>		:param set_self_active: if True, we explicitly make ourselves the current parent</pre></div>
+<div class="cov"><span class="num"><pre>181</pre></span><pre>			for newly created UI elements</pre></div>
+<div class="cov"><span class="num"><pre>182</pre></span><pre>		:param revert_to_previous_parent: if True, the previous parent will be restored</pre></div>
+<div class="cov"><span class="num"><pre>183</pre></span><pre>			once we are done, if False we keep the parent - only effective if set_self_active is True</pre></div>
+<div class="cov"><span class="num"><pre>184</pre></span><pre>		:return: the newly added child, allowing contructs like</pre></div>
+<div class="cov"><span class="num"><pre>185</pre></span><pre>			button = layout.addChild( Button( ) )&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>186</pre></span><pre>		if child in self._children:</pre></div>
+<div class="nocov"><span class="num"><pre>187</pre></span><pre>			return child</pre></div>
+<div class="skip"><span class="num"><pre>188</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>189</pre></span><pre>		prevparent = None</pre></div>
+<div class="nocov"><span class="num"><pre>190</pre></span><pre>		if set_self_active:</pre></div>
+<div class="nocov"><span class="num"><pre>191</pre></span><pre>			prevparent = self.activeParent()</pre></div>
+<div class="nocov"><span class="num"><pre>192</pre></span><pre>			self.setActive( )</pre></div>
+<div class="skip"><span class="num"><pre>193</pre></span><pre>		# END set active handling</pre></div>
+<div class="skip"><span class="num"><pre>194</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>195</pre></span><pre>		self._children.append( child )</pre></div>
+<div class="skip"><span class="num"><pre>196</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>197</pre></span><pre>		if revert_to_previous_parent and prevparent:</pre></div>
+<div class="nocov"><span class="num"><pre>198</pre></span><pre>			prevparent.setActive()</pre></div>
+<div class="skip"><span class="num"><pre>199</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>200</pre></span><pre>		return child</pre></div>
+<div class="skip"><span class="num"><pre>201</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>202</pre></span><pre>	def removeChild( self, child ):</pre></div>
+<div class="cov"><span class="num"><pre>203</pre></span><pre>		&quot;&quot;&quot;Remove the given child from our list</pre></div>
+<div class="skip"><span class="num"><pre>204</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>205</pre></span><pre>		:return: True if the child was found and has been removed, False otherwise&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>206</pre></span><pre>		try:</pre></div>
+<div class="nocov"><span class="num"><pre>207</pre></span><pre>			self._children.remove( child )</pre></div>
+<div class="nocov"><span class="num"><pre>208</pre></span><pre>			return True</pre></div>
+<div class="nocov"><span class="num"><pre>209</pre></span><pre>		except ValueError:</pre></div>
+<div class="nocov"><span class="num"><pre>210</pre></span><pre>			return False</pre></div>
+<div class="skip"><span class="num"><pre>211</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>212</pre></span><pre>	def deleteChild( self, child ):</pre></div>
+<div class="cov"><span class="num"><pre>213</pre></span><pre>		&quot;&quot;&quot;Delete the given child ui physically so it will not be shown anymore</pre></div>
+<div class="cov"><span class="num"><pre>214</pre></span><pre>		after removing it from our list of children&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>215</pre></span><pre>		if self.removeChild( child ):</pre></div>
+<div class="nocov"><span class="num"><pre>216</pre></span><pre>			child.delete()</pre></div>
+<div class="skip"><span class="num"><pre>217</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>218</pre></span><pre>	def listChildren( self, predicate = lambda c: True ):</pre></div>
+<div class="cov"><span class="num"><pre>219</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>220</pre></span><pre>		:return: list with our child instances</pre></div>
+<div class="cov"><span class="num"><pre>221</pre></span><pre>		:param predicate: function returning True for each child to include in result,</pre></div>
+<div class="cov"><span class="num"><pre>222</pre></span><pre>			allows to easily filter children</pre></div>
+<div class="cov"><span class="num"><pre>223</pre></span><pre>		:note: it's a copy, so you can freely act on the list</pre></div>
+<div class="cov"><span class="num"><pre>224</pre></span><pre>		:note: children will be returned in the order in which they have been added&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>225</pre></span><pre>		return [ c for c in self._children if predicate( c ) ]</pre></div>
+<div class="skip"><span class="num"><pre>226</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>227</pre></span><pre>	def childByName( self, childname ):</pre></div>
+<div class="cov"><span class="num"><pre>228</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>229</pre></span><pre>		:return: stored child instance, specified either as short name ( without pipes )</pre></div>
+<div class="cov"><span class="num"><pre>230</pre></span><pre>			or fully qualified ( i.e. mychild or parent|subparent|mychild&quot; )</pre></div>
+<div class="cov"><span class="num"><pre>231</pre></span><pre>		:raise KeyError: if a child with that name does not exist&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>232</pre></span><pre>		if &quot;|&quot; in childname:</pre></div>
+<div class="nocov"><span class="num"><pre>233</pre></span><pre>			for child in self._children:</pre></div>
+<div class="nocov"><span class="num"><pre>234</pre></span><pre>				if child == childname:</pre></div>
+<div class="nocov"><span class="num"><pre>235</pre></span><pre>					return child</pre></div>
+<div class="skip"><span class="num"><pre>236</pre></span><pre>			# END for each chld</pre></div>
+<div class="skip"><span class="num"><pre>237</pre></span><pre>		# END fqn handling</pre></div>
+<div class="skip"><span class="num"><pre>238</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>239</pre></span><pre>		childname = childname.split( '|' )[-1]		# |hello|world -&gt; world</pre></div>
+<div class="nocov"><span class="num"><pre>240</pre></span><pre>		for child in self._children:</pre></div>
+<div class="nocov"><span class="num"><pre>241</pre></span><pre>			if child.basename() == childname:</pre></div>
+<div class="nocov"><span class="num"><pre>242</pre></span><pre>				return child</pre></div>
+<div class="skip"><span class="num"><pre>243</pre></span><pre>		# END non- fqn handling</pre></div>
+<div class="skip"><span class="num"><pre>244</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>245</pre></span><pre>		raise KeyError( &quot;Child named %s could not be found below %s&quot; % ( childname, self ) )</pre></div>
+<div class="skip"><span class="num"><pre>246</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>247</pre></span><pre>	def setActive( self ):</pre></div>
+<div class="cov"><span class="num"><pre>248</pre></span><pre>		&quot;&quot;&quot;Set this container active, such that newly created items will be children</pre></div>
+<div class="cov"><span class="num"><pre>249</pre></span><pre>		of this layout</pre></div>
+<div class="skip"><span class="num"><pre>250</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>251</pre></span><pre>		:return: self</pre></div>
+<div class="cov"><span class="num"><pre>252</pre></span><pre>		:note: always use the addChild function to add the children !&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>253</pre></span><pre>		cmds.setParent( self )</pre></div>
+<div class="nocov"><span class="num"><pre>254</pre></span><pre>		return self</pre></div>
+<div class="skip"><span class="num"><pre>255</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>256</pre></span><pre>	def clearChildren( self ):</pre></div>
+<div class="cov"><span class="num"><pre>257</pre></span><pre>		&quot;&quot;&quot;Clear our child arrays to quickly forget about our children&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>258</pre></span><pre>		self._children = list()</pre></div>
+<div class="skip"><span class="num"><pre>259</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>260</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>261</pre></span><pre>class iItemSet( object ):</pre></div>
+<div class="cov"><span class="num"><pre>262</pre></span><pre>	&quot;&quot;&quot;Interface allowing to dynamically add, update and remove items to a layout</pre></div>
+<div class="cov"><span class="num"><pre>263</pre></span><pre>	to match a given input set of item ids.</pre></div>
+<div class="cov"><span class="num"><pre>264</pre></span><pre>	Its abstacted to be implemented by subclasses&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>265</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>266</pre></span><pre>	# identify the type of event to handle as called during setItems</pre></div>
+<div class="cov"><span class="num"><pre>267</pre></span><pre>	eSetItemCBID = enum( &quot;preCreate&quot;, &quot;preUpdate&quot;, &quot;preRemove&quot;, &quot;postCreate&quot;, &quot;postUpdate&quot;, &quot;postRemove&quot; )</pre></div>
+<div class="skip"><span class="num"><pre>268</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>269</pre></span><pre>	#{ Interface</pre></div>
+<div class="cov"><span class="num"><pre>270</pre></span><pre>	def setItems( self, item_ids, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>271</pre></span><pre>		&quot;&quot;&quot;Set the UI to display items identified by the given item_ids</pre></div>
+<div class="skip"><span class="num"><pre>272</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>273</pre></span><pre>		:param item_ids: ids behaving appropriately if put into a set</pre></div>
+<div class="cov"><span class="num"><pre>274</pre></span><pre>		:param kwargs: passed on to the handler methods ( which are implemented by the subclass ).</pre></div>
+<div class="cov"><span class="num"><pre>275</pre></span><pre>			Use these to pass on additional data that you might want to use to keep additional information about</pre></div>
+<div class="cov"><span class="num"><pre>276</pre></span><pre>			your item ids</pre></div>
+<div class="cov"><span class="num"><pre>277</pre></span><pre>		:note: you are responsible for generating a list of item_ids and call this</pre></div>
+<div class="cov"><span class="num"><pre>278</pre></span><pre>			method to trigger the update</pre></div>
+<div class="cov"><span class="num"><pre>279</pre></span><pre>		:return: tuple( SetOfDeletedItemIds, SetOfCreatedItemIds ) &quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>280</pre></span><pre>		existing_items = set( self.currentItemIds( **kwargs ) )</pre></div>
+<div class="nocov"><span class="num"><pre>281</pre></span><pre>		todo_items = set( item_ids )</pre></div>
+<div class="skip"><span class="num"><pre>282</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>283</pre></span><pre>		items_to_create = todo_items - existing_items</pre></div>
+<div class="nocov"><span class="num"><pre>284</pre></span><pre>		items_to_remove = existing_items - todo_items</pre></div>
+<div class="skip"><span class="num"><pre>285</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>286</pre></span><pre>		# REMOVE OBSOLETE</pre></div>
+<div class="skip"><span class="num"><pre>287</pre></span><pre>		##################</pre></div>
+<div class="nocov"><span class="num"><pre>288</pre></span><pre>		if items_to_remove:</pre></div>
+<div class="nocov"><span class="num"><pre>289</pre></span><pre>			self.handleEvent( self.eSetItemCBID.preRemove, **kwargs )</pre></div>
+<div class="nocov"><span class="num"><pre>290</pre></span><pre>			for item in items_to_remove:</pre></div>
+<div class="nocov"><span class="num"><pre>291</pre></span><pre>				self.removeItem( item, **kwargs )</pre></div>
+<div class="nocov"><span class="num"><pre>292</pre></span><pre>			self.handleEvent( self.eSetItemCBID.postRemove, **kwargs )</pre></div>
+<div class="skip"><span class="num"><pre>293</pre></span><pre>		# END if there are items to remove</pre></div>
+<div class="skip"><span class="num"><pre>294</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>295</pre></span><pre>		# CREATE NEW</pre></div>
+<div class="skip"><span class="num"><pre>296</pre></span><pre>		##############</pre></div>
+<div class="nocov"><span class="num"><pre>297</pre></span><pre>		if items_to_create:</pre></div>
+<div class="nocov"><span class="num"><pre>298</pre></span><pre>			self.handleEvent( self.eSetItemCBID.preCreate, **kwargs )</pre></div>
+<div class="nocov"><span class="num"><pre>299</pre></span><pre>			for item in items_to_create:</pre></div>
+<div class="nocov"><span class="num"><pre>300</pre></span><pre>				result = self.createItem( item, **kwargs )</pre></div>
+<div class="skip"><span class="num"><pre>301</pre></span><pre>				# something didnt work, assure we do not proceed with this one</pre></div>
+<div class="nocov"><span class="num"><pre>302</pre></span><pre>				if result is None:</pre></div>
+<div class="nocov"><span class="num"><pre>303</pre></span><pre>					todo_items.remove( item )</pre></div>
+<div class="skip"><span class="num"><pre>304</pre></span><pre>			# END for each item to create</pre></div>
+<div class="nocov"><span class="num"><pre>305</pre></span><pre>			self.handleEvent( self.eSetItemCBID.postCreate, **kwargs )</pre></div>
+<div class="skip"><span class="num"><pre>306</pre></span><pre>		# END if there are items to create</pre></div>
+<div class="skip"><span class="num"><pre>307</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>308</pre></span><pre>		# UPDATE EXISTING</pre></div>
+<div class="skip"><span class="num"><pre>309</pre></span><pre>		##################</pre></div>
+<div class="nocov"><span class="num"><pre>310</pre></span><pre>		if todo_items:</pre></div>
+<div class="nocov"><span class="num"><pre>311</pre></span><pre>			self.handleEvent( self.eSetItemCBID.preUpdate, **kwargs )</pre></div>
+<div class="nocov"><span class="num"><pre>312</pre></span><pre>			for item in todo_items:</pre></div>
+<div class="nocov"><span class="num"><pre>313</pre></span><pre>				self.updateItem( item, **kwargs )</pre></div>
+<div class="nocov"><span class="num"><pre>314</pre></span><pre>			self.handleEvent( self.eSetItemCBID.postUpdate, **kwargs )</pre></div>
+<div class="skip"><span class="num"><pre>315</pre></span><pre>		# END if there are items to update</pre></div>
+<div class="skip"><span class="num"><pre>316</pre></span><pre></pre></div>
+<div class="nocov"><span class="num"><pre>317</pre></span><pre>		return ( items_to_remove, items_to_create )</pre></div>
+<div class="skip"><span class="num"><pre>318</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>319</pre></span><pre>	#} END interace</pre></div>
+<div class="skip"><span class="num"><pre>320</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>321</pre></span><pre>	#{ SubClass Implementation</pre></div>
+<div class="skip"><span class="num"><pre>322</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>323</pre></span><pre>	def currentItemIds( self, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>324</pre></span><pre>		&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>325</pre></span><pre>		:return: list of item ids that are currently available in your layout.</pre></div>
+<div class="cov"><span class="num"><pre>326</pre></span><pre>			They will be passed around to the `createItem`, `updateItem` and`removeItem`</pre></div>
+<div class="cov"><span class="num"><pre>327</pre></span><pre>			methods and is the foundation of the `setItems` method. Ids returned here</pre></div>
+<div class="cov"><span class="num"><pre>328</pre></span><pre>			must be compatible to the ids passed in to `setItems`&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>329</pre></span><pre>		raise NotImplementedError( &quot;To be implemented by subClass&quot; )</pre></div>
+<div class="skip"><span class="num"><pre>330</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>331</pre></span><pre>	def handleEvent( self, eventid, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>332</pre></span><pre>		&quot;&quot;&quot;Called whenever a block of items is being handled for an operation identified</pre></div>
+<div class="cov"><span class="num"><pre>333</pre></span><pre>		by eventid, allowing you to prepare for such a block or finish it</pre></div>
+<div class="skip"><span class="num"><pre>334</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>335</pre></span><pre>		:param eventid: eSetItemCBID identifying the event to handle&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>336</pre></span><pre>		pass</pre></div>
+<div class="skip"><span class="num"><pre>337</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>338</pre></span><pre>	def createItem( self, itemid, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>339</pre></span><pre>		&quot;&quot;&quot;Create an item identified by the given itemid and add it to your layout</pre></div>
+<div class="skip"><span class="num"><pre>340</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>341</pre></span><pre>		:return: created item or None to indicate error. On error, the item will not</pre></div>
+<div class="cov"><span class="num"><pre>342</pre></span><pre>			be updated anymore&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>343</pre></span><pre>		raise NotImplementedError( &quot;To be implemented by subClass&quot; )</pre></div>
+<div class="skip"><span class="num"><pre>344</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>345</pre></span><pre>	def updateItem( self, itemid, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>346</pre></span><pre>		&quot;&quot;&quot;Update the item identified by the given itemid so that it represents the</pre></div>
+<div class="cov"><span class="num"><pre>347</pre></span><pre>		current state of the application&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>348</pre></span><pre>		raise NotImplementedError( &quot;To be implemented by subClass&quot; )</pre></div>
+<div class="skip"><span class="num"><pre>349</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>350</pre></span><pre>	def removeItem( self, itemid, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>351</pre></span><pre>		&quot;&quot;&quot;Remove the given item identified by itemid so it does not show up in this</pre></div>
+<div class="cov"><span class="num"><pre>352</pre></span><pre>		layout anymore</pre></div>
+<div class="skip"><span class="num"><pre>353</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>354</pre></span><pre>		:note: its up to you how you remove the item, as long as it is not visible anymore&quot;&quot;&quot;</pre></div>
+<div class="nocov"><span class="num"><pre>355</pre></span><pre>		raise NotImplementedError( &quot;To be implemented by subClass&quot; )</pre></div>
+<div class="skip"><span class="num"><pre>356</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>357</pre></span><pre>	#} END subclass implementation</pre></div>
+<div class="skip"><span class="num"><pre>358</pre></span><pre></pre></div>
+</div>
+</body>
+</html>

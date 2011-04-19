@@ -1,0 +1,940 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>mrv.mdp &mdash; mrv v1.0.2-develop documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.2-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="mrv v1.0.2-develop documentation" href="../index.html" />
+    <link rel="next" title="mrv.util" href="mrv.util.html" />
+    <link rel="prev" title="mrv.enum" href="mrv.enum.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.util.html" title="mrv.util"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mrv.enum.html" title="mrv.enum"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-mrv.mdp">
+<h1><tt class="xref docutils literal"><span class="pre">mrv.mdp</span></tt><a class="headerlink" href="#module-mrv.mdp" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="api/mrv.mdp-module.html">Epydoc: mrv.mdp</a></p>
+<p>Module containing the commandline interface for the Maya Depdendency Parser</p>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mrv.mdp._usageAndExit">
+<tt class="descclassname">mrv.mdp.</tt><tt class="descname">_usageAndExit</tt><big>(</big><em>msg=None</em><big>)</big><a class="headerlink" href="#mrv.mdp._usageAndExit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mrv.mdp.iterNetworkxGraph">
+<tt class="descclassname">mrv.mdp.</tt><tt class="descname">iterNetworkxGraph</tt><big>(</big><em>graph</em>, <em>startItem</em>, <em>direction=0</em>, <em>prune=&lt;function &lt;lambda&gt; at 0x1aeaaa0&gt;</em>, <em>stop=&lt;function &lt;lambda&gt; at 0x1aeab18&gt;</em>, <em>depth=-1</em>, <em>branch_first=True</em>, <em>visit_once=True</em>, <em>ignore_startitem=1</em><big>)</big><a class="headerlink" href="#mrv.mdp.iterNetworkxGraph" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">iterator yielding pairs of depth, item</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>direction</em> &#8211; specifies search direction, either :
+0 = items being successors of startItem
+1 = items being predecessors of startItem</li>
+<li><em>prune</em> &#8211; return True if item d,i in graph g should be pruned from result.
+d is the depth of item i</li>
+<li><em>stop</em> &#8211; return True if item d,i in graph g, d is the depth of item i
+stop the search in that direction. It will not be returned.</li>
+<li><em>depth</em> &#8211; define at which level the iteration should not go deeper
+if -1, there is no limit
+if 0, you would only get startitem.
+i.e. if 1, you would only get the startitem and the first level of predessessors/successors</li>
+<li><em>branch_first</em> &#8211; if True, items will be returned branch first, otherwise depth first</li>
+<li><em>visit_once</em> &#8211; if True, items will only be returned once, although they might be encountered
+several times</li>
+<li><em>ignore_startitem</em> &#8211; if True, the startItem will be ignored and automatically pruned from
+the result</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first last">this is an adjusted version of <cite>dge.iterShells</cite></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.mdp.main">
+<tt class="descclassname">mrv.mdp.</tt><tt class="descname">main</tt><big>(</big><em>fileList</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.mdp.main" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Called if this module is called directly, creating a file containing</dt>
+<dd>dependency information</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>kwargs</em> &#8211; will be passed directly to <cite>createFromFiles</cite></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.mdp.make_path">
+<tt class="descclassname">mrv.mdp.</tt><tt class="descname">make_path</tt><big>(</big><em>path</em><big>)</big><a class="headerlink" href="#mrv.mdp.make_path" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">A path instance of the correct type</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">use this constructor if you use the Path.set_separator method at runtime
+to assure you will always create instances of the actual type, and not only
+of the type you imported last</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mrv.mdp.tokensToRemapFunc">
+<tt class="descclassname">mrv.mdp.</tt><tt class="descname">tokensToRemapFunc</tt><big>(</big><em>tokenstring</em><big>)</big><a class="headerlink" href="#mrv.mdp.tokensToRemapFunc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a function applying remapping as defined by tokenstring</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">it also applies a mapping from mb to ma, no matter what.
+Thus we currently only store .ma files as keys even though it might be mb files</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="api/mrv.mdp-module.html#DiGraph">Epydoc: mrv.mdp</a></p>
+<dl class="class">
+<dt id="mrv.mdp.DiGraph">
+<em class="property">class </em><tt class="descclassname">mrv.mdp.</tt><tt class="descname">DiGraph</tt><big>(</big><em>data=None</em>, <em>name=''</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">networkx.classes.graph.Graph</span></tt></p>
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.add_cycle">
+<tt class="descname">add_cycle</tt><big>(</big><em>nlist</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.add_cycle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.add_edge">
+<tt class="descname">add_edge</tt><big>(</big><em>u</em>, <em>v</em>, <em>attr_dict=None</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.add_edge" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.add_edges_from">
+<tt class="descname">add_edges_from</tt><big>(</big><em>ebunch</em>, <em>attr_dict=None</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.add_edges_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.add_node">
+<tt class="descname">add_node</tt><big>(</big><em>n</em>, <em>attr_dict=None</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.add_node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.add_nodes_from">
+<tt class="descname">add_nodes_from</tt><big>(</big><em>nodes</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.add_nodes_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.add_path">
+<tt class="descname">add_path</tt><big>(</big><em>nlist</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.add_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.add_star">
+<tt class="descname">add_star</tt><big>(</big><em>nlist</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.add_star" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.add_weighted_edges_from">
+<tt class="descname">add_weighted_edges_from</tt><big>(</big><em>ebunch</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.add_weighted_edges_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.adjacency_iter">
+<tt class="descname">adjacency_iter</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.adjacency_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.adjacency_list">
+<tt class="descname">adjacency_list</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.adjacency_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.clear">
+<tt class="descname">clear</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.clear" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.copy">
+<tt class="descname">copy</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.copy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.degree">
+<tt class="descname">degree</tt><big>(</big><em>nbunch=None</em>, <em>with_labels=False</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.degree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.degree_iter">
+<tt class="descname">degree_iter</tt><big>(</big><em>nbunch=None</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.degree_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.edges">
+<tt class="descname">edges</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.edges_iter">
+<tt class="descname">edges_iter</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.edges_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.get_edge_data">
+<tt class="descname">get_edge_data</tt><big>(</big><em>u</em>, <em>v</em>, <em>default=None</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.get_edge_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.has_edge">
+<tt class="descname">has_edge</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.has_edge" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.has_node">
+<tt class="descname">has_node</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.has_node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.has_predecessor">
+<tt class="descname">has_predecessor</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.has_predecessor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.has_successor">
+<tt class="descname">has_successor</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.has_successor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.in_degree">
+<tt class="descname">in_degree</tt><big>(</big><em>nbunch=None</em>, <em>with_labels=False</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.in_degree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.in_degree_iter">
+<tt class="descname">in_degree_iter</tt><big>(</big><em>nbunch=None</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.in_degree_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.in_edges">
+<tt class="descname">in_edges</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.in_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.in_edges_iter">
+<tt class="descname">in_edges_iter</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.in_edges_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.is_directed">
+<tt class="descname">is_directed</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.is_directed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.is_multigraph">
+<tt class="descname">is_multigraph</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.is_multigraph" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.nbunch_iter">
+<tt class="descname">nbunch_iter</tt><big>(</big><em>nbunch=None</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.nbunch_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.neighbors">
+<tt class="descname">neighbors</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.neighbors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.neighbors_iter">
+<tt class="descname">neighbors_iter</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.neighbors_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.nodes">
+<tt class="descname">nodes</tt><big>(</big><em>data=False</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.nodes_iter">
+<tt class="descname">nodes_iter</tt><big>(</big><em>data=False</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.nodes_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.nodes_with_selfloops">
+<tt class="descname">nodes_with_selfloops</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.nodes_with_selfloops" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.number_of_edges">
+<tt class="descname">number_of_edges</tt><big>(</big><em>u=None</em>, <em>v=None</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.number_of_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.number_of_nodes">
+<tt class="descname">number_of_nodes</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.number_of_nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.number_of_selfloops">
+<tt class="descname">number_of_selfloops</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.number_of_selfloops" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.order">
+<tt class="descname">order</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.order" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.out_degree">
+<tt class="descname">out_degree</tt><big>(</big><em>nbunch=None</em>, <em>with_labels=False</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.out_degree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.out_degree_iter">
+<tt class="descname">out_degree_iter</tt><big>(</big><em>nbunch=None</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.out_degree_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.out_edges">
+<tt class="descname">out_edges</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.out_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.out_edges_iter">
+<tt class="descname">out_edges_iter</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.out_edges_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.predecessors">
+<tt class="descname">predecessors</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.predecessors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.predecessors_iter">
+<tt class="descname">predecessors_iter</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.predecessors_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.remove_edge">
+<tt class="descname">remove_edge</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.remove_edge" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.remove_edges_from">
+<tt class="descname">remove_edges_from</tt><big>(</big><em>ebunch</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.remove_edges_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.remove_node">
+<tt class="descname">remove_node</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.remove_node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.remove_nodes_from">
+<tt class="descname">remove_nodes_from</tt><big>(</big><em>nbunch</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.remove_nodes_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.reverse">
+<tt class="descname">reverse</tt><big>(</big><em>copy=True</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.reverse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.selfloop_edges">
+<tt class="descname">selfloop_edges</tt><big>(</big><em>data=False</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.selfloop_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.size">
+<tt class="descname">size</tt><big>(</big><em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.subgraph">
+<tt class="descname">subgraph</tt><big>(</big><em>nbunch</em>, <em>copy=True</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.subgraph" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.successors">
+<tt class="descname">successors</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.successors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.successors_iter">
+<tt class="descname">successors_iter</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.successors_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.to_directed">
+<tt class="descname">to_directed</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.to_directed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.DiGraph.to_undirected">
+<tt class="descname">to_undirected</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.mdp.DiGraph.to_undirected" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.mdp-module.html#MayaFileGraph">Epydoc: mrv.mdp</a></p>
+<dl class="class">
+<dt id="mrv.mdp.MayaFileGraph">
+<em class="property">class </em><tt class="descclassname">mrv.mdp.</tt><tt class="descname">MayaFileGraph</tt><big>(</big><em>data=None</em>, <em>name=''</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">networkx.classes.digraph.DiGraph</span></tt></p>
+<p>Contains dependnecies between maya files including utility functions
+allowing to more easily find what you are looking for</p>
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.addFromFiles">
+<tt class="descname">addFromFiles</tt><big>(</big><em>mafiles</em>, <em>parse_all_paths=False</em>, <em>to_os_path=&lt;function &lt;lambda&gt; at 0x4b9aed8&gt;</em>, <em>os_path_to_db_key=&lt;function &lt;lambda&gt; at 0x4b9af50&gt;</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.addFromFiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the dependencies from the given maya ascii files and add them to
+this graph</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">the more files are given, the more efficient the method can be</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>parse_all_paths</em> &#8211; if True, default False, all paths found in the file will be used.
+This will slow down the parsing as the whole file will be searched for references
+instead of just the header of the file</li>
+<li><em>to_os_path</em> &#8211; functor returning an MA file from given posssibly parsed file
+that should be existing on the system parsing the files.
+The passed in file could also be an mb file ( which cannot be parsed ), thus it
+would be advantageous to return a corresponding ma file
+This is required as references can have environment variables inside of them</li>
+<li><em>os_path_to_db_key</em> &#8211; converts the given path as used in the filesystem into
+a path to be used as key in the database. It should be general.
+Ideally, os_path_to_db_key is the inverse as to_os_path.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body"><p class="first">if the parsed path contain environment variables you must start the
+tool such that these can be resolved by the system. Otherwise files might
+not be found</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Todo:</th><td class="field-body"><p class="first last">parse_all_paths still to be implemented</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.add_cycle">
+<tt class="descname">add_cycle</tt><big>(</big><em>nlist</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.add_cycle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.add_edge">
+<tt class="descname">add_edge</tt><big>(</big><em>u</em>, <em>v</em>, <em>attr_dict=None</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.add_edge" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.add_edges_from">
+<tt class="descname">add_edges_from</tt><big>(</big><em>ebunch</em>, <em>attr_dict=None</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.add_edges_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.add_node">
+<tt class="descname">add_node</tt><big>(</big><em>n</em>, <em>attr_dict=None</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.add_node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.add_nodes_from">
+<tt class="descname">add_nodes_from</tt><big>(</big><em>nodes</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.add_nodes_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.add_path">
+<tt class="descname">add_path</tt><big>(</big><em>nlist</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.add_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.add_star">
+<tt class="descname">add_star</tt><big>(</big><em>nlist</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.add_star" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.add_weighted_edges_from">
+<tt class="descname">add_weighted_edges_from</tt><big>(</big><em>ebunch</em>, <em>**attr</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.add_weighted_edges_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.adjacency_iter">
+<tt class="descname">adjacency_iter</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.adjacency_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.adjacency_list">
+<tt class="descname">adjacency_list</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.adjacency_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.clear">
+<tt class="descname">clear</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.clear" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.copy">
+<tt class="descname">copy</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.copy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.mdp.MayaFileGraph.createFromFiles">
+<em class="property">classmethod </em><tt class="descname">createFromFiles</tt><big>(</big><em>fileList</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.createFromFiles" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">MayaFileGraph providing dependency information about the files
+in fileList and their subReference.</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>fileList</em> &#8211; iterable providing the filepaths to be parsed and added
+to this graph</li>
+<li><em>kwargs</em> &#8211; alll arguemnts of <cite>addFromFiles</cite> are supported</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.degree">
+<tt class="descname">degree</tt><big>(</big><em>nbunch=None</em>, <em>with_labels=False</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.degree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.degree_iter">
+<tt class="descname">degree_iter</tt><big>(</big><em>nbunch=None</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.degree_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.depends">
+<tt class="descname">depends</tt><big>(</big><em>filePath</em>, <em>direction=0</em>, <em>to_os_path=&lt;function &lt;lambda&gt; at 0x4b9e0c8&gt;</em>, <em>os_path_to_db_key=&lt;function &lt;lambda&gt; at 0x4b9e140&gt;</em>, <em>return_unresolved=False</em>, <em>invalid_only=False</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.depends" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of paths ( converted to os paths ) that are related to
+the given filePath</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>direction</em> &#8211; specifies search direction, either :
+kAffects = Files that filePath affects
+kAffectedBy = Files that affect filePath</li>
+<li><em>return_unresolved</em> &#8211; if True, the output paths will not be translated to
+an os paths and you get the paths as stored in the graph.
+Please not that the to_os_path function is still needed to generate
+a valid key, depending on the format of filepaths stored in this graph</li>
+<li><em>invalid_only</em> &#8211; if True, only invalid dependencies will be returned, all
+including the invalid ones otherwise</li>
+<li><em>to_os_path</em> &#8211; see <cite>addFromFiles</cite></li>
+<li><em>os_path_to_db_key</em> &#8211; see <cite>addFromFiles</cite></li>
+<li><em>kwargs</em> &#8211; passed to <cite>iterNetworkxGraph</cite></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.edges">
+<tt class="descname">edges</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.edges_iter">
+<tt class="descname">edges_iter</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.edges_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.get_edge_data">
+<tt class="descname">get_edge_data</tt><big>(</big><em>u</em>, <em>v</em>, <em>default=None</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.get_edge_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.has_edge">
+<tt class="descname">has_edge</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.has_edge" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.has_node">
+<tt class="descname">has_node</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.has_node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.has_predecessor">
+<tt class="descname">has_predecessor</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.has_predecessor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.has_successor">
+<tt class="descname">has_successor</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.has_successor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.in_degree">
+<tt class="descname">in_degree</tt><big>(</big><em>nbunch=None</em>, <em>with_labels=False</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.in_degree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.in_degree_iter">
+<tt class="descname">in_degree_iter</tt><big>(</big><em>nbunch=None</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.in_degree_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.in_edges">
+<tt class="descname">in_edges</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.in_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.in_edges_iter">
+<tt class="descname">in_edges_iter</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.in_edges_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.invalidFiles">
+<tt class="descname">invalidFiles</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.invalidFiles" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of filePaths that could not be parsed, most probably
+because they could not be found by the system</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.is_directed">
+<tt class="descname">is_directed</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.is_directed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.is_multigraph">
+<tt class="descname">is_multigraph</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.is_multigraph" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.nbunch_iter">
+<tt class="descname">nbunch_iter</tt><big>(</big><em>nbunch=None</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.nbunch_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.neighbors">
+<tt class="descname">neighbors</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.neighbors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.neighbors_iter">
+<tt class="descname">neighbors_iter</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.neighbors_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.nodes">
+<tt class="descname">nodes</tt><big>(</big><em>data=False</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.nodes_iter">
+<tt class="descname">nodes_iter</tt><big>(</big><em>data=False</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.nodes_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.nodes_with_selfloops">
+<tt class="descname">nodes_with_selfloops</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.nodes_with_selfloops" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.number_of_edges">
+<tt class="descname">number_of_edges</tt><big>(</big><em>u=None</em>, <em>v=None</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.number_of_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.number_of_nodes">
+<tt class="descname">number_of_nodes</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.number_of_nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.number_of_selfloops">
+<tt class="descname">number_of_selfloops</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.number_of_selfloops" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.order">
+<tt class="descname">order</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.order" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.out_degree">
+<tt class="descname">out_degree</tt><big>(</big><em>nbunch=None</em>, <em>with_labels=False</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.out_degree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.out_degree_iter">
+<tt class="descname">out_degree_iter</tt><big>(</big><em>nbunch=None</em>, <em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.out_degree_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.out_edges">
+<tt class="descname">out_edges</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.out_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.out_edges_iter">
+<tt class="descname">out_edges_iter</tt><big>(</big><em>nbunch=None</em>, <em>data=False</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.out_edges_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.predecessors">
+<tt class="descname">predecessors</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.predecessors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.predecessors_iter">
+<tt class="descname">predecessors_iter</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.predecessors_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.remove_edge">
+<tt class="descname">remove_edge</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.remove_edge" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.remove_edges_from">
+<tt class="descname">remove_edges_from</tt><big>(</big><em>ebunch</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.remove_edges_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.remove_node">
+<tt class="descname">remove_node</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.remove_node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.remove_nodes_from">
+<tt class="descname">remove_nodes_from</tt><big>(</big><em>nbunch</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.remove_nodes_from" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.reverse">
+<tt class="descname">reverse</tt><big>(</big><em>copy=True</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.reverse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.selfloop_edges">
+<tt class="descname">selfloop_edges</tt><big>(</big><em>data=False</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.selfloop_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.size">
+<tt class="descname">size</tt><big>(</big><em>weighted=False</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.subgraph">
+<tt class="descname">subgraph</tt><big>(</big><em>nbunch</em>, <em>copy=True</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.subgraph" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.successors">
+<tt class="descname">successors</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.successors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.successors_iter">
+<tt class="descname">successors_iter</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.successors_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.to_directed">
+<tt class="descname">to_directed</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.to_directed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.mdp.MayaFileGraph.to_undirected">
+<tt class="descname">to_undirected</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.mdp.MayaFileGraph.to_undirected" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.mdp-module.html#chain">Epydoc: mrv.mdp</a></p>
+<dl class="class">
+<dt id="mrv.mdp.chain">
+<em class="property">class </em><tt class="descclassname">mrv.mdp.</tt><tt class="descname">chain</tt><a class="headerlink" href="#mrv.mdp.chain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<p>chain(<a href="#id1"><span class="problematic" id="id2">*</span></a>iterables) &#8211;&gt; chain object</p>
+<p>Return a chain object whose .next() method returns elements from the
+first iterable until it is exhausted, then elements from the next
+iterable, until all of the iterables are exhausted.</p>
+<dl class="staticmethod">
+<dt id="mrv.mdp.chain.from_iterable">
+<em class="property">static </em><tt class="descname">from_iterable</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.mdp.chain.from_iterable" title="Permalink to this definition">¶</a></dt>
+<dd><p>chain.from_iterable(iterable) &#8211;&gt; chain object</p>
+<p>Alternate chain() contructor taking a single iterable argument
+that evaluates lazily.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.mdp.chain.next">
+<tt class="descname">next</tt><a class="headerlink" href="#mrv.mdp.chain.next" title="Permalink to this definition">¶</a></dt>
+<dd>x.next() -&gt; the next value, or raise StopIteration</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="exceptions">
+<h2>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="api/mrv.mdp-module.html#NetworkXError">Epydoc: mrv.mdp</a></p>
+<dl class="class">
+<dt id="mrv.mdp.NetworkXError">
+<em class="property">class </em><tt class="descclassname">mrv.mdp.</tt><tt class="descname">NetworkXError</tt><a class="headerlink" href="#mrv.mdp.NetworkXError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">networkx.exception.NetworkXException</span></tt></p>
+<p>Exception for a serious error in NetworkX</p>
+<dl class="attribute">
+<dt id="mrv.mdp.NetworkXError.args">
+<tt class="descname">args</tt><a class="headerlink" href="#mrv.mdp.NetworkXError.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.mdp.NetworkXError.message">
+<tt class="descname">message</tt><a class="headerlink" href="#mrv.mdp.NetworkXError.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="../index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#"><tt class="docutils literal"><span class="pre">mrv.mdp</span></tt></a><ul>
+<li><a class="reference external" href="#functions">Functions</a></li>
+<li><a class="reference external" href="#classes">Classes</a></li>
+<li><a class="reference external" href="#exceptions">Exceptions</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="mrv.enum.html"
+                                  title="previous chapter"><tt class="docutils literal docutils literal docutils literal"><span class="pre">mrv.enum</span></tt></a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="mrv.util.html"
+                                  title="next chapter"><tt class="docutils literal docutils literal"><span class="pre">mrv.util</span></tt></a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/generated/mrv.mdp.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.util.html" title="mrv.util"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mrv.enum.html" title="mrv.enum"
+             >previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Apr 19, 2011.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

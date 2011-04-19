@@ -1,0 +1,774 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>mrv.automation.process.WorkflowProcessBase</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="mrv-module.html">Package&nbsp;mrv</a> ::
+        <a href="mrv.automation-module.html">Package&nbsp;automation</a> ::
+        <a href="mrv.automation.process-module.html">Module&nbsp;process</a> ::
+        Class&nbsp;WorkflowProcessBase
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="mrv.automation.process.WorkflowProcessBase-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class WorkflowProcessBase</h1><p class="nomargin-top"><span class="codelink"><a href="mrv.automation.process-pysrc.html#WorkflowProcessBase">source&nbsp;code</a></span></p>
+<pre class="base-tree">
+         object --+                    
+                  |                    
+<a href="mrv.interface.Interface-class.html">interface.Interface</a> --+                
+                      |                
+<a href="mrv.interface.iDuplicatable-class.html">interface.iDuplicatable</a> --+            
+                          |            
+               <a href="mrv.dge.NodeBase-class.html">dge.NodeBase</a> --+        
+                              |        
+            <a href="mrv.dgfe.FacadeNodeBase-class.html">dgfe.FacadeNodeBase</a> --+    
+                                  |    
+                 <a href="mrv.dgfe.GraphNodeBase-class.html">dgfe.GraphNodeBase</a> --+
+                                      |
+             object --+               |
+                      |               |
+    <a href="mrv.interface.Interface-class.html">interface.Interface</a> --+           |
+                          |           |
+    <a href="mrv.interface.iDuplicatable-class.html">interface.iDuplicatable</a> --+       |
+                              |       |
+                   <a href="mrv.dge.NodeBase-class.html">dge.NodeBase</a> --+   |
+                                  |   |
+                        <a href="mrv.automation.process.ProcessBase-class.html">ProcessBase</a> --+
+                                      |
+                                     <strong class="uidshort">WorkflowProcessBase</strong>
+</pre>
+
+<hr />
+<p>A process wrapping a workflow, allowing workflows to be nested
+Derive from this class and initialize it with the workflow you would like to have wrapped
+The process works by transmitting relevant calls to its underlying workflow, allowing
+nodeInsideNestedWorkflow -&gt; thisworkflow.node.plug connections</p>
+<p>Workflows are standin nodes - they can connect anything their wrapped nodes can connect</p>
+
+<hr />
+<div class="fields">      <p><strong>Note:</strong>
+        to prevent dependency issues, the workflow instance will be bound on first use
+      </p>
+</div><!-- ==================== NESTED CLASSES ==================== -->
+<a name="section-NestedClasses"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Nested Classes</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-NestedClasses"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.dgfe.FacadeNodeBase-class.html">dgfe.FacadeNodeBase</a></code></b>:
+      <code><a href="mrv.dgfe._OIShell-class.html">shellcls</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.dge.NodeBase-class.html">dge.NodeBase</a></code></b>:
+      <code><a href="mrv.dge._NodeBaseCheckMeta-class.html">__metaclass__</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.automation.process.WorkflowProcessBase-class.html#_createWrappedWfl" class="summary-sig-name" onclick="show_private();">_createWrappedWfl</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">wfldir</span>,
+        <span class="summary-sig-arg">wflname</span>)</span><br />
+      Returns:
+our wrapped workflow instance as created by a method loading a workflow
+from a file</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.automation.process-pysrc.html#WorkflowProcessBase._createWrappedWfl">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.dgfe.GraphNodeBase-class.html">dgfe.GraphNodeBase</a></code></b> (private):
+      <code><a href="mrv.dgfe.GraphNodeBase-class.html#_addIncludeNodePlugs" onclick="show_private();">_addIncludeNodePlugs</a></code>,
+      <code><a href="mrv.dgfe.GraphNodeBase-class.html#_removeExcludedPlugs" onclick="show_private();">_removeExcludedPlugs</a></code>
+      </p></div>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.dgfe.FacadeNodeBase-class.html">dgfe.FacadeNodeBase</a></code></b>:
+      <code><a href="mrv.dgfe.FacadeNodeBase-class.html#__getattr__">__getattr__</a></code>,
+      <code><a href="mrv.dgfe.FacadeNodeBase-class.html#clearPlugCache">clearPlugCache</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.interface.iDuplicatable-class.html">interface.iDuplicatable</a></code></b>:
+      <code><a href="mrv.interface.iDuplicatable-class.html#copyTo">copyTo</a></code>,
+      <code><a href="mrv.interface.iDuplicatable-class.html#copyToOther">copyToOther</a></code>,
+      <code><a href="mrv.interface.iDuplicatable-class.html#duplicate">duplicate</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.interface.Interface-class.html">interface.Interface</a></code></b>:
+      <code><a href="mrv.interface.Interface-class.html#supports">supports</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8"  class="private">
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Base Methods</th></tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.automation.process.WorkflowProcessBase-class.html#_iterNodes" class="summary-sig-name" onclick="show_private();">_iterNodes</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns:
+generator for nodes that have no output connections or no input connections</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.automation.process-pysrc.html#WorkflowProcessBase._iterNodes">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8"  class="private">
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;To be Subclass-Implemented</th></tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.automation.process.WorkflowProcessBase-class.html#_getNodePlugs" class="summary-sig-name" onclick="show_private();">_getNodePlugs</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Override the base method, filtering it's output so that only unconnected plugs
+will be returned</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.automation.process-pysrc.html#WorkflowProcessBase._getNodePlugs">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;iDuplicatable Interface</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.automation.process.WorkflowProcessBase-class.html#createInstance" class="summary-sig-name">createInstance</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Create a copy of self and return it - required due to our very special constructor</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.automation.process-pysrc.html#WorkflowProcessBase.createInstance">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.dgfe.FacadeNodeBase-class.html">dgfe.FacadeNodeBase</a></code></b>:
+      <code><a href="mrv.dgfe.FacadeNodeBase-class.html#copyFrom">copyFrom</a></code>
+      </p>
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Query</th></tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.automation.process.ProcessBase-class.html">ProcessBase</a></code></b>:
+      <code><a href="mrv.automation.process.ProcessBase-class.html#supportedTargetTypes">supportedTargetTypes</a></code>,
+      <code><a href="mrv.automation.process.ProcessBase-class.html#targetRating">targetRating</a></code>
+      </p>
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Interface</th></tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.automation.process.ProcessBase-class.html">ProcessBase</a></code></b>:
+      <code><a href="mrv.automation.process.ProcessBase-class.html#compute">compute</a></code>,
+      <code><a href="mrv.automation.process.ProcessBase-class.html#evaluateState">evaluateState</a></code>
+      </p>
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Base</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.automation.process.WorkflowProcessBase-class.html#prepareProcess" class="summary-sig-name">prepareProcess</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      As we have different callgraphs, but want proper reports, just swap in the
+callgraph of our own workflow to allow it to be maintained correctly when the nodes
+of the wrapped graph evaluate.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.automation.process-pysrc.html#WorkflowProcessBase.prepareProcess">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.dgfe.FacadeNodeBase-class.html">dgfe.FacadeNodeBase</a></code></b>:
+      <code><a href="mrv.dgfe.FacadeNodeBase-class.html#plugs">plugs</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.automation.process.ProcessBase-class.html">ProcessBase</a></code></b>:
+      <code><a href="mrv.automation.process.ProcessBase-class.html#workflow">workflow</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.dge.NodeBase-class.html">dge.NodeBase</a></code></b>:
+      <code><a href="mrv.dge.NodeBase-class.html#clearCache">clearCache</a></code>,
+      <code><a href="mrv.dge.NodeBase-class.html#connections">connections</a></code>,
+      <code><a href="mrv.dge.NodeBase-class.html#inputPlugs">inputPlugs</a></code>,
+      <code><a href="mrv.dge.NodeBase-class.html#outputPlugs">outputPlugs</a></code>,
+      <code><a href="mrv.dge.NodeBase-class.html#toShell">toShell</a></code>,
+      <code><a href="mrv.dge.NodeBase-class.html#toShells">toShells</a></code>
+      </p>
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Overridden from Object</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="mrv.automation.process.WorkflowProcessBase-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">id</span>,
+        <span class="summary-sig-arg">wflInstance</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Will take all important configuration variables from its class variables
+- you should override these with your subclass</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="mrv.automation.process-pysrc.html#WorkflowProcessBase.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.dge.NodeBase-class.html">dge.NodeBase</a></code></b>:
+      <code><a href="mrv.dge.NodeBase-class.html#__del__">__del__</a></code>,
+      <code><a href="mrv.dge.NodeBase-class.html#__str__">__str__</a></code>
+      </p>
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;ID Handling</th></tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.dge.NodeBase-class.html">dge.NodeBase</a></code></b>:
+      <code><a href="mrv.dge.NodeBase-class.html#id">id</a></code>,
+      <code><a href="mrv.dge.NodeBase-class.html#setID">setID</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS METHODS ==================== -->
+<a name="section-ClassMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Base</th></tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.dge.NodeBase-class.html">dge.NodeBase</a></code></b>:
+      <code><a href="mrv.dge.NodeBase-class.html#filterCompatiblePlugs">filterCompatiblePlugs</a></code>,
+      <code><a href="mrv.dge.NodeBase-class.html#inputPlugsStatic">inputPlugsStatic</a></code>,
+      <code><a href="mrv.dge.NodeBase-class.html#outputPlugsStatic">outputPlugsStatic</a></code>,
+      <code><a href="mrv.dge.NodeBase-class.html#plugsStatic">plugsStatic</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="mrv.automation.process.WorkflowProcessBase-class.html#workflow_file" class="summary-name">workflow_file</a> = <code title="'name of the workflow dot file ( incl. extension )'"><code class="variable-quote">'</code><code class="variable-string">name of the workflow dot file ( incl. extensi</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="workflow_directory"></a><span class="summary-name">workflow_directory</span> = <code title="'directory containing workflows to load '"><code class="variable-quote">'</code><code class="variable-string">directory containing workflows to load </code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="exclude_connected_plugs"></a><span class="summary-name">exclude_connected_plugs</span> = <code title="True">True</code>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.automation.process.ProcessBase-class.html">ProcessBase</a></code></b>:
+      <code><a href="mrv.automation.process.ProcessBase-class.html#dirty_check">dirty_check</a></code>,
+      <code><a href="mrv.automation.process.ProcessBase-class.html#is_state">is_state</a></code>,
+      <code><a href="mrv.automation.process.ProcessBase-class.html#kGood">kGood</a></code>,
+      <code><a href="mrv.automation.process.ProcessBase-class.html#kNo">kNo</a></code>,
+      <code><a href="mrv.automation.process.ProcessBase-class.html#kPerfect">kPerfect</a></code>,
+      <code><a href="mrv.automation.process.ProcessBase-class.html#noun">noun</a></code>,
+      <code><a href="mrv.automation.process.ProcessBase-class.html#target_state">target_state</a></code>,
+      <code><a href="mrv.automation.process.ProcessBase-class.html#verb">verb</a></code>
+      </p>
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Configuration</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="duplicate_wrapped_graph"></a><span class="summary-name">duplicate_wrapped_graph</span> = <code title="False">False</code><br />
+      hash(x)
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.dgfe.GraphNodeBase-class.html">dgfe.GraphNodeBase</a></code></b>:
+      <code><a href="mrv.dgfe.GraphNodeBase-class.html#allow_auto_plugs">allow_auto_plugs</a></code>,
+      <code><a href="mrv.dgfe.GraphNodeBase-class.html#exclude">exclude</a></code>,
+      <code><a href="mrv.dgfe.GraphNodeBase-class.html#ignore_failed_includes">ignore_failed_includes</a></code>,
+      <code><a href="mrv.dgfe.GraphNodeBase-class.html#include">include</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.dgfe.FacadeNodeBase-class.html">dgfe.FacadeNodeBase</a></code></b>:
+      <code><a href="mrv.dgfe.FacadeNodeBase-class.html#caching_enabled">caching_enabled</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="mrv.automation.process.ProcessBase-class.html">ProcessBase</a></code></b>:
+      <code><a href="mrv.automation.process.ProcessBase-class.html#track_compute_calls">track_compute_calls</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">id</span>,
+        <span class="sig-arg">wflInstance</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.automation.process-pysrc.html#WorkflowProcessBase.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Will take all important configuration variables from its class variables
+- you should override these with your subclass
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>wflInstance</code></strong> - if given, this instance will be used instead of creating
+a new workflow. Used by copy constructor.</li>
+        <li><strong class="pname"><code>kwargs</code></strong> - all arguments required to initialize the ProcessBase</li>
+    </ul></dd>
+    <dt>Overrides:
+        object.__init__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="createInstance"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">createInstance</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.automation.process-pysrc.html#WorkflowProcessBase.createInstance">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Create a copy of self and return it - required due to our very special constructor
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>new instance of self</dd>
+    <dt>Overrides:
+        <a href="mrv.interface.iDuplicatable-class.html#createInstance">interface.iDuplicatable.createInstance</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_createWrappedWfl"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_createWrappedWfl</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">wfldir</span>,
+        <span class="sig-arg">wflname</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.automation.process-pysrc.html#WorkflowProcessBase._createWrappedWfl">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>our wrapped workflow instance as created by a method loading a workflow
+from a file</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="prepareProcess"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">prepareProcess</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.automation.process-pysrc.html#WorkflowProcessBase.prepareProcess">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  As we have different callgraphs, but want proper reports, just swap in the
+callgraph of our own workflow to allow it to be maintained correctly when the nodes
+of the wrapped graph evaluate.
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="mrv.automation.process.ProcessBase-class.html#prepareProcess">ProcessBase.prepareProcess</a>
+    </dt>
+  </dl>
+<div class="fields">      <p><strong>Note:</strong>
+        this requires that we get called after the callgraph has bene initialized
+      </p>
+</div></td></tr></table>
+</div>
+<a name="_iterNodes"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_iterNodes</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.automation.process-pysrc.html#WorkflowProcessBase._iterNodes">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>generator for nodes that have no output connections or no input connections</dd>
+    <dt>Overrides:
+        <a href="mrv.dgfe.GraphNodeBase-class.html#_iterNodes" onclick="show_private();">dgfe.GraphNodeBase._iterNodes</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_getNodePlugs"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_getNodePlugs</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="mrv.automation.process-pysrc.html#WorkflowProcessBase._getNodePlugs">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Override the base method, filtering it's output so that only unconnected plugs
+will be returned
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd>all plugs on nodes we wrap ( as node,plug tuple )</dd>
+    <dt>Overrides:
+        <a href="mrv.dgfe.FacadeNodeBase-class.html#_getNodePlugs" onclick="show_private();">dgfe.FacadeNodeBase._getNodePlugs</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== CLASS VARIABLE DETAILS ==================== -->
+<a name="section-ClassVariableDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variable Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariableDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="workflow_file"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">workflow_file</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">name of the workflow dot file ( incl. extension )</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Apr 19 15:39:11 2011
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

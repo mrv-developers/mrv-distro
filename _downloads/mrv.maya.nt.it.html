@@ -1,0 +1,508 @@
+<html>
+<head>
+<title>mrv.maya.nt.it</title>
+</head>
+<body>
+mrv.maya.nt.it
+<style>
+.coverage pre {float: left; margin: 0px 1em; border: none;
+               padding: 0px; }
+.num pre { margin: 0px }
+.nocov, .nocov pre {background-color: #faa}
+.cov, .cov pre {background-color: #cfc}
+div.coverage div { clear: both; height: 1.1em}
+</style>
+<div class="stats">
+Covered: 345 lines<br/>
+Missed: 11 lines<br/>
+Skipped 127 lines<br/>
+Percent: 96 %<br/>
+
+</div>
+<div class="coverage">
+<div class="skip"><span class="num"><pre>  1</pre></span><pre># -*- coding: utf-8 -*-</pre></div>
+<div class="cov"><span class="num"><pre>  2</pre></span><pre>&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  3</pre></span><pre>Contains different multi-purpose iterators allowing to conveniently walk the dg and</pre></div>
+<div class="cov"><span class="num"><pre>  4</pre></span><pre>dag.</pre></div>
+<div class="cov"><span class="num"><pre>  5</pre></span><pre>&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>  6</pre></span><pre>__docformat__ = &quot;restructuredtext&quot;</pre></div>
+<div class="skip"><span class="num"><pre>  7</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>  8</pre></span><pre>import maya.OpenMaya as api</pre></div>
+<div class="cov"><span class="num"><pre>  9</pre></span><pre>import maya.cmds as cmds</pre></div>
+<div class="cov"><span class="num"><pre> 10</pre></span><pre>from maya.OpenMaya import MDagPath, MObject</pre></div>
+<div class="cov"><span class="num"><pre> 11</pre></span><pre>from base import Node, DagNode, NodeFromObj, Component</pre></div>
+<div class="skip"><span class="num"><pre> 12</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 13</pre></span><pre>__all__ = (&quot;dgIterator&quot;, &quot;dagIterator&quot;, &quot;graphIterator&quot;, &quot;selectionListIterator&quot;, </pre></div>
+<div class="cov"><span class="num"><pre> 14</pre></span><pre>           &quot;iterDgNodes&quot;, &quot;iterDagNodes&quot;, &quot;iterGraph&quot;, &quot;iterSelectionList&quot;)</pre></div>
+<div class="skip"><span class="num"><pre> 15</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 16</pre></span><pre>def _argsToFilter( args ):</pre></div>
+<div class="cov"><span class="num"><pre> 17</pre></span><pre>	&quot;&quot;&quot;convert the MFnTypes in args list to the respective typeFilter&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 18</pre></span><pre>	typeFilter = api.MIteratorType( )</pre></div>
+<div class="cov"><span class="num"><pre> 19</pre></span><pre>	if args:</pre></div>
+<div class="cov"><span class="num"><pre> 20</pre></span><pre>		if len(args) == 1 :</pre></div>
+<div class="cov"><span class="num"><pre> 21</pre></span><pre>			typeFilter.setFilterType ( args[0] )</pre></div>
+<div class="cov"><span class="num"><pre> 22</pre></span><pre>		else :</pre></div>
+<div class="skip"><span class="num"><pre> 23</pre></span><pre>			# annoying argument conversion for Maya API non standard C types</pre></div>
+<div class="cov"><span class="num"><pre> 24</pre></span><pre>			scriptUtil = api.MScriptUtil()</pre></div>
+<div class="cov"><span class="num"><pre> 25</pre></span><pre>			typeIntM = api.MIntArray()</pre></div>
+<div class="cov"><span class="num"><pre> 26</pre></span><pre>			scriptUtil.createIntArrayFromList( args,  typeIntM )</pre></div>
+<div class="cov"><span class="num"><pre> 27</pre></span><pre>			typeFilter.setFilterList( typeIntM )</pre></div>
+<div class="skip"><span class="num"><pre> 28</pre></span><pre>		# we will iterate on dependancy nodes, not dagPaths or plugs</pre></div>
+<div class="cov"><span class="num"><pre> 29</pre></span><pre>		typeFilter.setObjectType( api.MIteratorType.kMObject )</pre></div>
+<div class="skip"><span class="num"><pre> 30</pre></span><pre>	# create iterator with (possibly empty) typeFilter</pre></div>
+<div class="cov"><span class="num"><pre> 31</pre></span><pre>	return typeFilter</pre></div>
+<div class="skip"><span class="num"><pre> 32</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 33</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 34</pre></span><pre>#{ Iterator Creators</pre></div>
+<div class="skip"><span class="num"><pre> 35</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 36</pre></span><pre>def dgIterator( *args, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre> 37</pre></span><pre>	&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 38</pre></span><pre>	:return: MItDependencyNodes configured according to args - see docs at</pre></div>
+<div class="cov"><span class="num"><pre> 39</pre></span><pre>		`iterDgNodes`.</pre></div>
+<div class="cov"><span class="num"><pre> 40</pre></span><pre>	:note: use this method if you want to use more advanced features of the iterator&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 41</pre></span><pre>	typeFilter = _argsToFilter( args )</pre></div>
+<div class="cov"><span class="num"><pre> 42</pre></span><pre>	iterObj = api.MItDependencyNodes( typeFilter )</pre></div>
+<div class="cov"><span class="num"><pre> 43</pre></span><pre>	return iterObj</pre></div>
+<div class="skip"><span class="num"><pre> 44</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 45</pre></span><pre>def dagIterator( *args, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre> 46</pre></span><pre>	&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 47</pre></span><pre>	:return: MItDagIterator configured according to args - see docs at</pre></div>
+<div class="cov"><span class="num"><pre> 48</pre></span><pre>		`iterDagNodes`.</pre></div>
+<div class="cov"><span class="num"><pre> 49</pre></span><pre>	:note: use this method if you want to use more advanced features of the iterator&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 50</pre></span><pre>	depth = kwargs.get('depth', True)</pre></div>
+<div class="cov"><span class="num"><pre> 51</pre></span><pre>	underworld = kwargs.get('underworld', False)</pre></div>
+<div class="cov"><span class="num"><pre> 52</pre></span><pre>	root = kwargs.get('root', None )</pre></div>
+<div class="cov"><span class="num"><pre> 53</pre></span><pre>	typeFilter = _argsToFilter( args )</pre></div>
+<div class="skip"><span class="num"><pre> 54</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 55</pre></span><pre>	# SETUP TYPE FILTER - reset needs to work with root</pre></div>
+<div class="cov"><span class="num"><pre> 56</pre></span><pre>	if root is not None:</pre></div>
+<div class="cov"><span class="num"><pre> 57</pre></span><pre>		if isinstance( root, (MDagPath, DagNode) ):</pre></div>
+<div class="cov"><span class="num"><pre> 58</pre></span><pre>			typeFilter.setObjectType( api.MIteratorType.kMDagPathObject )</pre></div>
+<div class="cov"><span class="num"><pre> 59</pre></span><pre>		else :</pre></div>
+<div class="cov"><span class="num"><pre> 60</pre></span><pre>			typeFilter.setObjectType( api.MIteratorType.kMObject )</pre></div>
+<div class="skip"><span class="num"><pre> 61</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 62</pre></span><pre>	# create iterator with (possibly empty) filter list and flags</pre></div>
+<div class="cov"><span class="num"><pre> 63</pre></span><pre>	if depth :</pre></div>
+<div class="cov"><span class="num"><pre> 64</pre></span><pre>		traversal = api.MItDag.kDepthFirst</pre></div>
+<div class="cov"><span class="num"><pre> 65</pre></span><pre>	else :</pre></div>
+<div class="cov"><span class="num"><pre> 66</pre></span><pre>		traversal =	 api.MItDag.kBreadthFirst</pre></div>
+<div class="skip"><span class="num"><pre> 67</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 68</pre></span><pre>	iterObj = api.MItDag( typeFilter, traversal )</pre></div>
+<div class="skip"><span class="num"><pre> 69</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 70</pre></span><pre>	# set start object</pre></div>
+<div class="cov"><span class="num"><pre> 71</pre></span><pre>	if root is not None :</pre></div>
+<div class="cov"><span class="num"><pre> 72</pre></span><pre>		startObj = startPath = None</pre></div>
+<div class="cov"><span class="num"><pre> 73</pre></span><pre>		if isinstance( root, MDagPath):</pre></div>
+<div class="cov"><span class="num"><pre> 74</pre></span><pre>			startPath = root</pre></div>
+<div class="cov"><span class="num"><pre> 75</pre></span><pre>		elif isinstance( root, DagNode ):</pre></div>
+<div class="cov"><span class="num"><pre> 76</pre></span><pre>			startPath = root.dagPath()</pre></div>
+<div class="cov"><span class="num"><pre> 77</pre></span><pre>		elif isinstance( root, Node ):</pre></div>
+<div class="nocov"><span class="num"><pre> 78</pre></span><pre>			startObj = root.object()</pre></div>
+<div class="cov"><span class="num"><pre> 79</pre></span><pre>		else:</pre></div>
+<div class="cov"><span class="num"><pre> 80</pre></span><pre>			startObj = root</pre></div>
+<div class="skip"><span class="num"><pre> 81</pre></span><pre>		# END handle obj type</pre></div>
+<div class="cov"><span class="num"><pre> 82</pre></span><pre>		iterObj.reset( typeFilter, startObj, startPath, traversal )</pre></div>
+<div class="skip"><span class="num"><pre> 83</pre></span><pre>	# END if root is set</pre></div>
+<div class="skip"><span class="num"><pre> 84</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 85</pre></span><pre>	if underworld :</pre></div>
+<div class="nocov"><span class="num"><pre> 86</pre></span><pre>		iterObj.traverseUnderWorld( True )</pre></div>
+<div class="cov"><span class="num"><pre> 87</pre></span><pre>	else :</pre></div>
+<div class="cov"><span class="num"><pre> 88</pre></span><pre>		iterObj.traverseUnderWorld( False )</pre></div>
+<div class="skip"><span class="num"><pre> 89</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre> 90</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 91</pre></span><pre>	return iterObj</pre></div>
+<div class="skip"><span class="num"><pre> 92</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre> 93</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre> 94</pre></span><pre>def graphIterator( nodeOrPlug, *args, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre> 95</pre></span><pre>	&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre> 96</pre></span><pre>	:return: MItDependencyGraph configured according to args - see docs at</pre></div>
+<div class="cov"><span class="num"><pre> 97</pre></span><pre>		`iterGraph`.</pre></div>
+<div class="cov"><span class="num"><pre> 98</pre></span><pre>	:note: use this method if you want to use more advanced features of the iterator</pre></div>
+<div class="cov"><span class="num"><pre> 99</pre></span><pre>	:raise RuntimeError: if the filter types does not allow any nodes to be returned.</pre></div>
+<div class="cov"><span class="num"><pre>100</pre></span><pre>		This is a bug in that sense as it should just return nothing. It also shows that</pre></div>
+<div class="cov"><span class="num"><pre>101</pre></span><pre>		maya pre-parses the result and then just iterates over a list with the iterator in</pre></div>
+<div class="cov"><span class="num"><pre>102</pre></span><pre>		question&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>103</pre></span><pre>	startObj = startPlug = None</pre></div>
+<div class="skip"><span class="num"><pre>104</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>105</pre></span><pre>	if isinstance( nodeOrPlug, api.MPlug ):</pre></div>
+<div class="cov"><span class="num"><pre>106</pre></span><pre>		startPlug = nodeOrPlug</pre></div>
+<div class="cov"><span class="num"><pre>107</pre></span><pre>		startObj = MObject()</pre></div>
+<div class="cov"><span class="num"><pre>108</pre></span><pre>	elif isinstance( nodeOrPlug, Node ):</pre></div>
+<div class="cov"><span class="num"><pre>109</pre></span><pre>		startObj = nodeOrPlug.object()</pre></div>
+<div class="cov"><span class="num"><pre>110</pre></span><pre>		startPlug = nullplugarray[0]</pre></div>
+<div class="nocov"><span class="num"><pre>111</pre></span><pre>	else:</pre></div>
+<div class="nocov"><span class="num"><pre>112</pre></span><pre>		startObj = nodeOrPlug</pre></div>
+<div class="nocov"><span class="num"><pre>113</pre></span><pre>		startPlug = nullplugarray[0]</pre></div>
+<div class="skip"><span class="num"><pre>114</pre></span><pre>	# END traversal root</pre></div>
+<div class="skip"><span class="num"><pre>115</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>116</pre></span><pre>	inputPlugs = kwargs.get('input', False)</pre></div>
+<div class="cov"><span class="num"><pre>117</pre></span><pre>	breadth = kwargs.get('breadth', False)</pre></div>
+<div class="cov"><span class="num"><pre>118</pre></span><pre>	plug = kwargs.get('plug', False)</pre></div>
+<div class="cov"><span class="num"><pre>119</pre></span><pre>	prune = kwargs.get('prune', False)</pre></div>
+<div class="cov"><span class="num"><pre>120</pre></span><pre>	typeFilter = _argsToFilter( args )</pre></div>
+<div class="skip"><span class="num"><pre>121</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>122</pre></span><pre>	if startPlug is not None :</pre></div>
+<div class="cov"><span class="num"><pre>123</pre></span><pre>		typeFilter.setObjectType( api.MIteratorType.kMPlugObject )</pre></div>
+<div class="nocov"><span class="num"><pre>124</pre></span><pre>	else :</pre></div>
+<div class="nocov"><span class="num"><pre>125</pre></span><pre>		typeFilter.setObjectType( api.MIteratorType.kMObject )</pre></div>
+<div class="skip"><span class="num"><pre>126</pre></span><pre>	# END handle object type</pre></div>
+<div class="skip"><span class="num"><pre>127</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>128</pre></span><pre>	direction = api.MItDependencyGraph.kDownstream</pre></div>
+<div class="cov"><span class="num"><pre>129</pre></span><pre>	if inputPlugs :</pre></div>
+<div class="cov"><span class="num"><pre>130</pre></span><pre>		direction = api.MItDependencyGraph.kUpstream</pre></div>
+<div class="skip"><span class="num"><pre>131</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>132</pre></span><pre>	traversal =	 api.MItDependencyGraph.kDepthFirst</pre></div>
+<div class="cov"><span class="num"><pre>133</pre></span><pre>	if breadth :</pre></div>
+<div class="cov"><span class="num"><pre>134</pre></span><pre>		traversal = api.MItDependencyGraph.kBreadthFirst</pre></div>
+<div class="skip"><span class="num"><pre>135</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>136</pre></span><pre>	level = api.MItDependencyGraph.kNodeLevel</pre></div>
+<div class="cov"><span class="num"><pre>137</pre></span><pre>	if plug :</pre></div>
+<div class="cov"><span class="num"><pre>138</pre></span><pre>		level = api.MItDependencyGraph.kPlugLevel</pre></div>
+<div class="skip"><span class="num"><pre>139</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>140</pre></span><pre>	iterObj = api.MItDependencyGraph( startObj, startPlug, typeFilter, direction, traversal, level )</pre></div>
+<div class="skip"><span class="num"><pre>141</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>142</pre></span><pre>	iterObj.disablePruningOnFilter()</pre></div>
+<div class="cov"><span class="num"><pre>143</pre></span><pre>	if prune :</pre></div>
+<div class="cov"><span class="num"><pre>144</pre></span><pre>		iterObj.enablePruningOnFilter()</pre></div>
+<div class="skip"><span class="num"><pre>145</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>146</pre></span><pre>	return iterObj</pre></div>
+<div class="skip"><span class="num"><pre>147</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>148</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>149</pre></span><pre>def selectionListIterator( sellist, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>150</pre></span><pre>	&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>151</pre></span><pre>	:return: iterator suitable to iterate given selection list - for more info see</pre></div>
+<div class="cov"><span class="num"><pre>152</pre></span><pre>		`iterSelectionList`&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>153</pre></span><pre>	filtertype = kwargs.get( &quot;filterType&quot;, api.MFn.kInvalid )</pre></div>
+<div class="cov"><span class="num"><pre>154</pre></span><pre>	iterator = api.MItSelectionList( sellist, filtertype )</pre></div>
+<div class="cov"><span class="num"><pre>155</pre></span><pre>	return iterator</pre></div>
+<div class="skip"><span class="num"><pre>156</pre></span><pre>	</pre></div>
+<div class="skip"><span class="num"><pre>157</pre></span><pre>#} END iterator creators </pre></div>
+<div class="skip"><span class="num"><pre>158</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>159</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>160</pre></span><pre>def iterDgNodes( *args, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>161</pre></span><pre>	&quot;&quot;&quot; Iterator on MObjects or Nodes of the specified api.MFn types</pre></div>
+<div class="skip"><span class="num"><pre>162</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>163</pre></span><pre>	:param args: type as found in MFn.k... to optionally restrict the set of nodes the iterator operates upon.</pre></div>
+<div class="cov"><span class="num"><pre>164</pre></span><pre>		All nodes of a type included in the args will be iterated on.</pre></div>
+<div class="cov"><span class="num"><pre>165</pre></span><pre>		args is empty, all nodes of the scene will be iterated on which may include DAG nodes as well.</pre></div>
+<div class="cov"><span class="num"><pre>166</pre></span><pre>	:param kwargs:</pre></div>
+<div class="cov"><span class="num"><pre>167</pre></span><pre>		 * asNode: </pre></div>
+<div class="cov"><span class="num"><pre>168</pre></span><pre>		 	if True, default True, the returned value will be wrapped as node</pre></div>
+<div class="cov"><span class="num"><pre>169</pre></span><pre>		 * predicate: </pre></div>
+<div class="cov"><span class="num"><pre>170</pre></span><pre>		 	returns True for every iteration element that may be returned by the iteration,</pre></div>
+<div class="cov"><span class="num"><pre>171</pre></span><pre>			default : lambda x: True&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>172</pre></span><pre>	iterator = dgIterator( *args, **kwargs )</pre></div>
+<div class="cov"><span class="num"><pre>173</pre></span><pre>	predicate = kwargs.get( &quot;predicate&quot;, lambda x: True )</pre></div>
+<div class="cov"><span class="num"><pre>174</pre></span><pre>	asNode = kwargs.get( &quot;asNode&quot;, True )</pre></div>
+<div class="skip"><span class="num"><pre>175</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>176</pre></span><pre>	isDone = iterator.isDone</pre></div>
+<div class="cov"><span class="num"><pre>177</pre></span><pre>	thisNode = iterator.thisNode</pre></div>
+<div class="cov"><span class="num"><pre>178</pre></span><pre>	next = iterator.next</pre></div>
+<div class="skip"><span class="num"><pre>179</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>180</pre></span><pre>	while not isDone() :</pre></div>
+<div class="cov"><span class="num"><pre>181</pre></span><pre>		node = thisNode()</pre></div>
+<div class="cov"><span class="num"><pre>182</pre></span><pre>		if asNode:</pre></div>
+<div class="cov"><span class="num"><pre>183</pre></span><pre>			node = NodeFromObj( node )</pre></div>
+<div class="cov"><span class="num"><pre>184</pre></span><pre>		if predicate( node ):</pre></div>
+<div class="cov"><span class="num"><pre>185</pre></span><pre>			yield node</pre></div>
+<div class="cov"><span class="num"><pre>186</pre></span><pre>		next()</pre></div>
+<div class="skip"><span class="num"><pre>187</pre></span><pre>	# END for each obj in iteration</pre></div>
+<div class="skip"><span class="num"><pre>188</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>189</pre></span><pre># Iterators on dag nodes hierarchies using MItDag (ie listRelatives)</pre></div>
+<div class="cov"><span class="num"><pre>190</pre></span><pre>def iterDagNodes( *args, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>191</pre></span><pre>	&quot;&quot;&quot; Iterate over the hierarchy under a root dag node, if root is None, will iterate on whole Maya scene</pre></div>
+<div class="cov"><span class="num"><pre>192</pre></span><pre>	If a list of types is provided, then only nodes of these types will be returned,</pre></div>
+<div class="cov"><span class="num"><pre>193</pre></span><pre>	if no type is provided all dag nodes under the root will be iterated on.</pre></div>
+<div class="cov"><span class="num"><pre>194</pre></span><pre>	Types are specified as Maya API types being a member of api.MFn</pre></div>
+<div class="cov"><span class="num"><pre>195</pre></span><pre>	The following keywords will affect order and behavior of traversal:</pre></div>
+<div class="skip"><span class="num"><pre>196</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>197</pre></span><pre>	:param kwargs:</pre></div>
+<div class="cov"><span class="num"><pre>198</pre></span><pre>		 * dagpath:</pre></div>
+<div class="cov"><span class="num"><pre>199</pre></span><pre>		 	if True, default True, MDagPaths will be returned</pre></div>
+<div class="cov"><span class="num"><pre>200</pre></span><pre>			If False, MObjects will be returned - it will return each object only once in case they</pre></div>
+<div class="cov"><span class="num"><pre>201</pre></span><pre>			occour in multiple paths.</pre></div>
+<div class="cov"><span class="num"><pre>202</pre></span><pre>		 * depth: </pre></div>
+<div class="cov"><span class="num"><pre>203</pre></span><pre>		 	if True, default True, Nodes will be returned as a depth first traversal of the hierarchy tree</pre></div>
+<div class="cov"><span class="num"><pre>204</pre></span><pre>			if False as a post-order (breadth first)</pre></div>
+<div class="cov"><span class="num"><pre>205</pre></span><pre>		 * underworld: </pre></div>
+<div class="cov"><span class="num"><pre>206</pre></span><pre>		 	if True, default False, traversal will include a shape's underworld </pre></div>
+<div class="cov"><span class="num"><pre>207</pre></span><pre>			(dag object parented to the shape), if False the underworld will not be traversed,</pre></div>
+<div class="cov"><span class="num"><pre>208</pre></span><pre>		 * asNode: </pre></div>
+<div class="cov"><span class="num"><pre>209</pre></span><pre>		 	if True, default True, the returned item will be wrapped into a Node</pre></div>
+<div class="cov"><span class="num"><pre>210</pre></span><pre>		 * root: </pre></div>
+<div class="cov"><span class="num"><pre>211</pre></span><pre>			MObject or MDagPath or Node of the object you would like to start iteration on, or None to</pre></div>
+<div class="cov"><span class="num"><pre>212</pre></span><pre>			start on the scene root. The root node will also be returned by the iteration !</pre></div>
+<div class="cov"><span class="num"><pre>213</pre></span><pre>			Please note that if an MObject is given, it needs to be an instanced DAG node to have an effect.</pre></div>
+<div class="cov"><span class="num"><pre>214</pre></span><pre>		 * predicate: </pre></div>
+<div class="cov"><span class="num"><pre>215</pre></span><pre>		 	method returning True if passed in iteration element can be yielded</pre></div>
+<div class="cov"><span class="num"><pre>216</pre></span><pre>			default: lambda x: True&quot;&quot;&quot;</pre></div>
+<div class="skip"><span class="num"><pre>217</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>218</pre></span><pre>	# Must define dPath in loop or the iterator will yield</pre></div>
+<div class="skip"><span class="num"><pre>219</pre></span><pre>	# them as several references to the same object (thus with the same value each time)</pre></div>
+<div class="skip"><span class="num"><pre>220</pre></span><pre>	# instances must not be returned multiple times</pre></div>
+<div class="skip"><span class="num"><pre>221</pre></span><pre>	# could use a dict but it requires &quot;obj1 is obj2&quot; and not only &quot;obj1 == obj2&quot; to return true to</pre></div>
+<div class="cov"><span class="num"><pre>222</pre></span><pre>	iterator = dagIterator( *args, **kwargs )</pre></div>
+<div class="cov"><span class="num"><pre>223</pre></span><pre>	isDone = iterator.isDone</pre></div>
+<div class="cov"><span class="num"><pre>224</pre></span><pre>	next = iterator.next</pre></div>
+<div class="skip"><span class="num"><pre>225</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>226</pre></span><pre>	dagpath = kwargs.get('dagpath', True)</pre></div>
+<div class="cov"><span class="num"><pre>227</pre></span><pre>	asNode = kwargs.get('asNode', True )</pre></div>
+<div class="cov"><span class="num"><pre>228</pre></span><pre>	predicate = kwargs.get('predicate', lambda x: True )</pre></div>
+<div class="skip"><span class="num"><pre>229</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>230</pre></span><pre>	if dagpath:</pre></div>
+<div class="cov"><span class="num"><pre>231</pre></span><pre>		getPath = iterator.getPath</pre></div>
+<div class="cov"><span class="num"><pre>232</pre></span><pre>		while not isDone( ) :</pre></div>
+<div class="cov"><span class="num"><pre>233</pre></span><pre>			rval = MDagPath( )</pre></div>
+<div class="cov"><span class="num"><pre>234</pre></span><pre>			getPath( rval )</pre></div>
+<div class="cov"><span class="num"><pre>235</pre></span><pre>			if asNode:</pre></div>
+<div class="cov"><span class="num"><pre>236</pre></span><pre>				rval = NodeFromObj( rval )</pre></div>
+<div class="cov"><span class="num"><pre>237</pre></span><pre>			if predicate( rval ):</pre></div>
+<div class="cov"><span class="num"><pre>238</pre></span><pre>				yield rval</pre></div>
+<div class="skip"><span class="num"><pre>239</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre>240</pre></span><pre>			next()</pre></div>
+<div class="skip"><span class="num"><pre>241</pre></span><pre>		# END while not is done</pre></div>
+<div class="skip"><span class="num"><pre>242</pre></span><pre>	# END if using dag paths</pre></div>
+<div class="cov"><span class="num"><pre>243</pre></span><pre>	else:</pre></div>
+<div class="skip"><span class="num"><pre>244</pre></span><pre>		# NOTE: sets don't work here, as more than == comparison is required</pre></div>
+<div class="cov"><span class="num"><pre>245</pre></span><pre>		instanceset = list()</pre></div>
+<div class="cov"><span class="num"><pre>246</pre></span><pre>		currentItem = iterator.currentItem</pre></div>
+<div class="cov"><span class="num"><pre>247</pre></span><pre>		isInstanced = iterator.isInstanced</pre></div>
+<div class="skip"><span class="num"><pre>248</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>249</pre></span><pre>		while not isDone() :</pre></div>
+<div class="cov"><span class="num"><pre>250</pre></span><pre>			rval = currentItem()</pre></div>
+<div class="cov"><span class="num"><pre>251</pre></span><pre>			if isInstanced( True ):</pre></div>
+<div class="cov"><span class="num"><pre>252</pre></span><pre>				if rval not in instanceset:</pre></div>
+<div class="cov"><span class="num"><pre>253</pre></span><pre>					instanceset.append( rval )</pre></div>
+<div class="cov"><span class="num"><pre>254</pre></span><pre>				else:</pre></div>
+<div class="cov"><span class="num"><pre>255</pre></span><pre>					next()</pre></div>
+<div class="cov"><span class="num"><pre>256</pre></span><pre>					continue</pre></div>
+<div class="skip"><span class="num"><pre>257</pre></span><pre>				# END if object not yet returned</pre></div>
+<div class="skip"><span class="num"><pre>258</pre></span><pre>			# END handle instances</pre></div>
+<div class="skip"><span class="num"><pre>259</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre>260</pre></span><pre>			if asNode:</pre></div>
+<div class="cov"><span class="num"><pre>261</pre></span><pre>				rval = NodeFromObj(rval)</pre></div>
+<div class="cov"><span class="num"><pre>262</pre></span><pre>			if predicate( rval ):</pre></div>
+<div class="cov"><span class="num"><pre>263</pre></span><pre>				yield rval</pre></div>
+<div class="skip"><span class="num"><pre>264</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre>265</pre></span><pre>			next()</pre></div>
+<div class="skip"><span class="num"><pre>266</pre></span><pre>		# END while not is done</pre></div>
+<div class="skip"><span class="num"><pre>267</pre></span><pre>	# END if using mobjects</pre></div>
+<div class="skip"><span class="num"><pre>268</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>269</pre></span><pre>def iterGraph( nodeOrPlug, *args, **kwargs ):</pre></div>
+<div class="cov"><span class="num"><pre>270</pre></span><pre>	&quot;&quot;&quot; Iterate Dependency Graph (DG) Nodes or Plugs starting at a specified root Node or Plug.</pre></div>
+<div class="cov"><span class="num"><pre>271</pre></span><pre>	The iteration _includes_ the root node or plug.</pre></div>
+<div class="cov"><span class="num"><pre>272</pre></span><pre>	The following keywords will affect order and behavior of traversal:</pre></div>
+<div class="skip"><span class="num"><pre>273</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>274</pre></span><pre>	:param nodeOrPlug: Node, MObject or MPlug to start the iteration at</pre></div>
+<div class="cov"><span class="num"><pre>275</pre></span><pre>	:param args: list of MFn node types</pre></div>
+<div class="cov"><span class="num"><pre>276</pre></span><pre>		If a list of types is provided, only nodes of these types will be returned,</pre></div>
+<div class="cov"><span class="num"><pre>277</pre></span><pre>		if no type is provided all connected nodes will be iterated on.</pre></div>
+<div class="cov"><span class="num"><pre>278</pre></span><pre>	:param kwargs:</pre></div>
+<div class="cov"><span class="num"><pre>279</pre></span><pre>		 * input: </pre></div>
+<div class="cov"><span class="num"><pre>280</pre></span><pre>		 	if True connections will be followed from destination to source,</pre></div>
+<div class="cov"><span class="num"><pre>281</pre></span><pre>			if False from source to destination</pre></div>
+<div class="cov"><span class="num"><pre>282</pre></span><pre>			default is False (downstream)</pre></div>
+<div class="cov"><span class="num"><pre>283</pre></span><pre>		 * breadth: </pre></div>
+<div class="cov"><span class="num"><pre>284</pre></span><pre>		 	if True nodes will be returned as a breadth first traversal of the connection graph,</pre></div>
+<div class="cov"><span class="num"><pre>285</pre></span><pre>			if False as a preorder (depth first)</pre></div>
+<div class="cov"><span class="num"><pre>286</pre></span><pre>			default is False (depth first)</pre></div>
+<div class="cov"><span class="num"><pre>287</pre></span><pre>		 * plug: </pre></div>
+<div class="cov"><span class="num"><pre>288</pre></span><pre>		 	if True traversal will be at plug level (no plug will be traversed more than once),</pre></div>
+<div class="cov"><span class="num"><pre>289</pre></span><pre>			if False at node level (no node will be traversed more than once),</pre></div>
+<div class="cov"><span class="num"><pre>290</pre></span><pre>			default is False (node level)</pre></div>
+<div class="cov"><span class="num"><pre>291</pre></span><pre>		 * prune: </pre></div>
+<div class="cov"><span class="num"><pre>292</pre></span><pre>		 	if True, the iteration will stop on nodes that do not fit the types list,</pre></div>
+<div class="cov"><span class="num"><pre>293</pre></span><pre>			if False these nodes will be traversed but not returned</pre></div>
+<div class="cov"><span class="num"><pre>294</pre></span><pre>			default is False (do not prune)</pre></div>
+<div class="cov"><span class="num"><pre>295</pre></span><pre>		 * asNode: </pre></div>
+<div class="cov"><span class="num"><pre>296</pre></span><pre>		 	if True, default True, and if the iteration is on node level, </pre></div>
+<div class="cov"><span class="num"><pre>297</pre></span><pre>			Nodes ( wrapped MObjects ) will be returned</pre></div>
+<div class="cov"><span class="num"><pre>298</pre></span><pre>			If False, MObjects will be returned</pre></div>
+<div class="cov"><span class="num"><pre>299</pre></span><pre>		 * predicate: </pre></div>
+<div class="cov"><span class="num"><pre>300</pre></span><pre>		 	method returning True if passed in iteration element can be yielded</pre></div>
+<div class="cov"><span class="num"><pre>301</pre></span><pre>			default: lambda x: True</pre></div>
+<div class="cov"><span class="num"><pre>302</pre></span><pre>	:return: Iterator yielding MObject, Node or Plug depending on the configuration flags, first yielded item is </pre></div>
+<div class="cov"><span class="num"><pre>303</pre></span><pre>		always the root node or plug.&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>304</pre></span><pre>	try:</pre></div>
+<div class="cov"><span class="num"><pre>305</pre></span><pre>		iterator = graphIterator( nodeOrPlug, *args, **kwargs )</pre></div>
+<div class="nocov"><span class="num"><pre>306</pre></span><pre>	except RuntimeError:</pre></div>
+<div class="skip"><span class="num"><pre>307</pre></span><pre>		# may raise if iteration would yield no results</pre></div>
+<div class="nocov"><span class="num"><pre>308</pre></span><pre>		raise StopIteration()</pre></div>
+<div class="skip"><span class="num"><pre>309</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>310</pre></span><pre>	retrievePlugs = not iterator.atNodeLevel( )</pre></div>
+<div class="cov"><span class="num"><pre>311</pre></span><pre>	asNode = kwargs.get( &quot;asNode&quot;, True )</pre></div>
+<div class="cov"><span class="num"><pre>312</pre></span><pre>	predicate = kwargs.get( 'predicate', lambda x: True )</pre></div>
+<div class="skip"><span class="num"><pre>313</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>314</pre></span><pre>	isDone = iterator.isDone</pre></div>
+<div class="cov"><span class="num"><pre>315</pre></span><pre>	next = iterator.next</pre></div>
+<div class="cov"><span class="num"><pre>316</pre></span><pre>	thisPlug = iterator.thisPlug</pre></div>
+<div class="cov"><span class="num"><pre>317</pre></span><pre>	currentItem = iterator.currentItem</pre></div>
+<div class="skip"><span class="num"><pre>318</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>319</pre></span><pre>	# iterates and yields MObjects</pre></div>
+<div class="cov"><span class="num"><pre>320</pre></span><pre>	rval = None</pre></div>
+<div class="skip"><span class="num"><pre>321</pre></span><pre>	# if node filters are used, it easily threw NULL Object returned errors</pre></div>
+<div class="skip"><span class="num"><pre>322</pre></span><pre>	# just because the iteration is depleted - catching this now</pre></div>
+<div class="cov"><span class="num"><pre>323</pre></span><pre>	try:</pre></div>
+<div class="cov"><span class="num"><pre>324</pre></span><pre>		while not isDone():</pre></div>
+<div class="cov"><span class="num"><pre>325</pre></span><pre>			if retrievePlugs:</pre></div>
+<div class="cov"><span class="num"><pre>326</pre></span><pre>				rval = thisPlug()</pre></div>
+<div class="cov"><span class="num"><pre>327</pre></span><pre>			else:</pre></div>
+<div class="cov"><span class="num"><pre>328</pre></span><pre>				rval = currentItem()</pre></div>
+<div class="cov"><span class="num"><pre>329</pre></span><pre>				if asNode:</pre></div>
+<div class="cov"><span class="num"><pre>330</pre></span><pre>					rval = NodeFromObj( rval )</pre></div>
+<div class="skip"><span class="num"><pre>331</pre></span><pre>				# END handle asNode</pre></div>
+<div class="skip"><span class="num"><pre>332</pre></span><pre>			# END if return on node level</pre></div>
+<div class="skip"><span class="num"><pre>333</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre>334</pre></span><pre>			if predicate( rval ):</pre></div>
+<div class="cov"><span class="num"><pre>335</pre></span><pre>				yield rval</pre></div>
+<div class="skip"><span class="num"><pre>336</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>337</pre></span><pre>			next()</pre></div>
+<div class="skip"><span class="num"><pre>338</pre></span><pre>		# END of iteration</pre></div>
+<div class="cov"><span class="num"><pre>339</pre></span><pre>	except RuntimeError:</pre></div>
+<div class="nocov"><span class="num"><pre>340</pre></span><pre>		raise StopIteration()</pre></div>
+<div class="skip"><span class="num"><pre>341</pre></span><pre>	# END handle possible iteration error</pre></div>
+<div class="skip"><span class="num"><pre>342</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>343</pre></span><pre></pre></div>
+<div class="cov"><span class="num"><pre>344</pre></span><pre>nullplugarray = api.MPlugArray()</pre></div>
+<div class="cov"><span class="num"><pre>345</pre></span><pre>nullplugarray.setLength( 1 )</pre></div>
+<div class="cov"><span class="num"><pre>346</pre></span><pre>def iterSelectionList( sellist, filterType = api.MFn.kInvalid, predicate = lambda x: True,</pre></div>
+<div class="cov"><span class="num"><pre>347</pre></span><pre>					  	asNode = True, handlePlugs = True, handleComponents = False ):</pre></div>
+<div class="cov"><span class="num"><pre>348</pre></span><pre>	&quot;&quot;&quot;Iterate the given selection list</pre></div>
+<div class="skip"><span class="num"><pre>349</pre></span><pre>	</pre></div>
+<div class="cov"><span class="num"><pre>350</pre></span><pre>	:param sellist: MSelectionList to iterate</pre></div>
+<div class="cov"><span class="num"><pre>351</pre></span><pre>	:param filterType: MFnType id acting as simple type filter to ignore all objects which do not</pre></div>
+<div class="cov"><span class="num"><pre>352</pre></span><pre>		have the given object type</pre></div>
+<div class="cov"><span class="num"><pre>353</pre></span><pre>	:param asNode: if True, returned MObjects or DagPaths will be wrapped as Node, compoents will be</pre></div>
+<div class="cov"><span class="num"><pre>354</pre></span><pre>		wrapped as Component. </pre></div>
+<div class="cov"><span class="num"><pre>355</pre></span><pre>		Otherwise they will be returned as MObjects and MDagPaths respectively.</pre></div>
+<div class="cov"><span class="num"><pre>356</pre></span><pre>	:param handlePlugs: if True, plugs can be part of the selection list and will be returned. This</pre></div>
+<div class="cov"><span class="num"><pre>357</pre></span><pre>		implicitly means that the selection list will be iterated without an iterator, and MFnType filters</pre></div>
+<div class="cov"><span class="num"><pre>358</pre></span><pre>		will be slower as it is implemented in python. If components are enabled, the tuple returned will be</pre></div>
+<div class="cov"><span class="num"><pre>359</pre></span><pre>		( Plug, MObject() )</pre></div>
+<div class="cov"><span class="num"><pre>360</pre></span><pre>	:param predicate: method returninng True if passed in iteration element can be yielded</pre></div>
+<div class="cov"><span class="num"><pre>361</pre></span><pre>		default: lambda x: True</pre></div>
+<div class="cov"><span class="num"><pre>362</pre></span><pre>	:param handleComponents: if True, possibly selected components of dagNodes will be returned</pre></div>
+<div class="cov"><span class="num"><pre>363</pre></span><pre>		as well. This forces the return value into tuple(Node, Component)</pre></div>
+<div class="cov"><span class="num"><pre>364</pre></span><pre>	:return: Node or Plug on each iteration step</pre></div>
+<div class="cov"><span class="num"><pre>365</pre></span><pre>		If handleComponents is True, for each Object, a tuple will be returned as tuple( Node, Component ) where</pre></div>
+<div class="cov"><span class="num"><pre>366</pre></span><pre>		component is NullObject ( MObject ) if the whole object is on the list.</pre></div>
+<div class="cov"><span class="num"><pre>367</pre></span><pre>		If the original object was a plug, it will be in the tuples first slot, whereas the component </pre></div>
+<div class="cov"><span class="num"><pre>368</pre></span><pre>		will be a NullObject&quot;&quot;&quot;</pre></div>
+<div class="cov"><span class="num"><pre>369</pre></span><pre>	kNullObj = MObject()</pre></div>
+<div class="cov"><span class="num"><pre>370</pre></span><pre>	if handlePlugs:</pre></div>
+<div class="skip"><span class="num"><pre>371</pre></span><pre>		# version compatibility - maya 8.5 still defines a plug ptr class that maya 2005 lacks</pre></div>
+<div class="cov"><span class="num"><pre>372</pre></span><pre>		plug_types = api.MPlug</pre></div>
+<div class="cov"><span class="num"><pre>373</pre></span><pre>		if cmds.about( v=1 ).startswith( &quot;8.5&quot; ):</pre></div>
+<div class="nocov"><span class="num"><pre>374</pre></span><pre>			plug_types = ( api.MPlug, api.MPlugPtr )</pre></div>
+<div class="skip"><span class="num"><pre>375</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>376</pre></span><pre>		# SELECTION LIST MODE</pre></div>
+<div class="cov"><span class="num"><pre>377</pre></span><pre>		kInvalid = api.MFn.kInvalid</pre></div>
+<div class="cov"><span class="num"><pre>378</pre></span><pre>		getDagPath = sellist.getDagPath</pre></div>
+<div class="cov"><span class="num"><pre>379</pre></span><pre>		getPlug = sellist.getPlug</pre></div>
+<div class="cov"><span class="num"><pre>380</pre></span><pre>		getDependNode = sellist.getDependNode</pre></div>
+<div class="cov"><span class="num"><pre>381</pre></span><pre>		for i in xrange( sellist.length() ):</pre></div>
+<div class="skip"><span class="num"><pre>382</pre></span><pre>			# DAG PATH</pre></div>
+<div class="cov"><span class="num"><pre>383</pre></span><pre>			rval = None</pre></div>
+<div class="cov"><span class="num"><pre>384</pre></span><pre>			component = kNullObj</pre></div>
+<div class="cov"><span class="num"><pre>385</pre></span><pre>			try:</pre></div>
+<div class="cov"><span class="num"><pre>386</pre></span><pre>				rval = MDagPath( )</pre></div>
+<div class="cov"><span class="num"><pre>387</pre></span><pre>				if handleComponents:</pre></div>
+<div class="cov"><span class="num"><pre>388</pre></span><pre>					component = MObject()</pre></div>
+<div class="cov"><span class="num"><pre>389</pre></span><pre>					getDagPath( i, rval, component )</pre></div>
+<div class="cov"><span class="num"><pre>390</pre></span><pre>					if asNode and not component.isNull():</pre></div>
+<div class="cov"><span class="num"><pre>391</pre></span><pre>						component = Component( component )</pre></div>
+<div class="skip"><span class="num"><pre>392</pre></span><pre>					# END handle asNode</pre></div>
+<div class="cov"><span class="num"><pre>393</pre></span><pre>				else:</pre></div>
+<div class="cov"><span class="num"><pre>394</pre></span><pre>					getDagPath( i, rval )</pre></div>
+<div class="skip"><span class="num"><pre>395</pre></span><pre>				# END handle components in DagPaths</pre></div>
+<div class="cov"><span class="num"><pre>396</pre></span><pre>			except RuntimeError:</pre></div>
+<div class="skip"><span class="num"><pre>397</pre></span><pre>				# TRY PLUG - first as the object could be returned as well if called</pre></div>
+<div class="skip"><span class="num"><pre>398</pre></span><pre>				# for DependNode</pre></div>
+<div class="cov"><span class="num"><pre>399</pre></span><pre>				try:</pre></div>
+<div class="cov"><span class="num"><pre>400</pre></span><pre>					rval = nullplugarray[0]</pre></div>
+<div class="cov"><span class="num"><pre>401</pre></span><pre>					getPlug( i, rval )</pre></div>
+<div class="skip"><span class="num"><pre>402</pre></span><pre>					# try to access the attribute - if it is not really a plug, it will</pre></div>
+<div class="skip"><span class="num"><pre>403</pre></span><pre>					# fail and throw - for some reason maya can put just the depend node into</pre></div>
+<div class="skip"><span class="num"><pre>404</pre></span><pre>					# a plug</pre></div>
+<div class="cov"><span class="num"><pre>405</pre></span><pre>					rval.attribute()</pre></div>
+<div class="cov"><span class="num"><pre>406</pre></span><pre>				except RuntimeError:</pre></div>
+<div class="skip"><span class="num"><pre>407</pre></span><pre>				# TRY DG NODE</pre></div>
+<div class="cov"><span class="num"><pre>408</pre></span><pre>					rval = MObject( )</pre></div>
+<div class="cov"><span class="num"><pre>409</pre></span><pre>					getDependNode( i, rval )</pre></div>
+<div class="skip"><span class="num"><pre>410</pre></span><pre>				# END its not an MObject</pre></div>
+<div class="skip"><span class="num"><pre>411</pre></span><pre>			# END handle dagnodes/plugs/dg nodes</pre></div>
+<div class="skip"><span class="num"><pre>412</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>413</pre></span><pre>			# should have rval now</pre></div>
+<div class="cov"><span class="num"><pre>414</pre></span><pre>			if isinstance( rval, plug_types ):</pre></div>
+<div class="skip"><span class="num"><pre>415</pre></span><pre>				# apply filter</pre></div>
+<div class="cov"><span class="num"><pre>416</pre></span><pre>				if filterType != kInvalid and rval.node().apiType() != filterType:</pre></div>
+<div class="cov"><span class="num"><pre>417</pre></span><pre>					continue</pre></div>
+<div class="skip"><span class="num"><pre>418</pre></span><pre>					# END apply filter type</pre></div>
+<div class="cov"><span class="num"><pre>419</pre></span><pre>			else:</pre></div>
+<div class="cov"><span class="num"><pre>420</pre></span><pre>				if filterType != kInvalid:</pre></div>
+<div class="skip"><span class="num"><pre>421</pre></span><pre>					# must be MDagPath or MObject</pre></div>
+<div class="cov"><span class="num"><pre>422</pre></span><pre>					if rval.apiType() != filterType:</pre></div>
+<div class="cov"><span class="num"><pre>423</pre></span><pre>						continue</pre></div>
+<div class="skip"><span class="num"><pre>424</pre></span><pre>				# END filter handling</pre></div>
+<div class="skip"><span class="num"><pre>425</pre></span><pre>				</pre></div>
+<div class="cov"><span class="num"><pre>426</pre></span><pre>				if asNode:</pre></div>
+<div class="cov"><span class="num"><pre>427</pre></span><pre>					rval = NodeFromObj( rval )</pre></div>
+<div class="skip"><span class="num"><pre>428</pre></span><pre>			# END plug handling</pre></div>
+<div class="skip"><span class="num"><pre>429</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre>430</pre></span><pre>			if handleComponents:</pre></div>
+<div class="cov"><span class="num"><pre>431</pre></span><pre>				rval = ( rval, component )</pre></div>
+<div class="skip"><span class="num"><pre>432</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre>433</pre></span><pre>			if predicate( rval ):</pre></div>
+<div class="cov"><span class="num"><pre>434</pre></span><pre>				yield rval</pre></div>
+<div class="skip"><span class="num"><pre>435</pre></span><pre>		# END for each element</pre></div>
+<div class="cov"><span class="num"><pre>436</pre></span><pre>	else:</pre></div>
+<div class="skip"><span class="num"><pre>437</pre></span><pre>		# ITERATOR MODE</pre></div>
+<div class="skip"><span class="num"><pre>438</pre></span><pre>		# the code above can handle it all, this one might be faster though </pre></div>
+<div class="cov"><span class="num"><pre>439</pre></span><pre>		iterator = selectionListIterator( sellist, filterType = filterType )</pre></div>
+<div class="cov"><span class="num"><pre>440</pre></span><pre>		kDagSelectionItem = api.MItSelectionList.kDagSelectionItem</pre></div>
+<div class="cov"><span class="num"><pre>441</pre></span><pre>		kDNselectionItem = api.MItSelectionList.kDNselectionItem</pre></div>
+<div class="cov"><span class="num"><pre>442</pre></span><pre>		rval = None</pre></div>
+<div class="skip"><span class="num"><pre>443</pre></span><pre>		</pre></div>
+<div class="cov"><span class="num"><pre>444</pre></span><pre>		isDone = iterator.isDone</pre></div>
+<div class="cov"><span class="num"><pre>445</pre></span><pre>		itemType = iterator.itemType</pre></div>
+<div class="cov"><span class="num"><pre>446</pre></span><pre>		getDagPath = iterator.getDagPath</pre></div>
+<div class="cov"><span class="num"><pre>447</pre></span><pre>		getDependNode = iterator.getDependNode</pre></div>
+<div class="cov"><span class="num"><pre>448</pre></span><pre>		next = iterator.next</pre></div>
+<div class="cov"><span class="num"><pre>449</pre></span><pre>		while not isDone():</pre></div>
+<div class="skip"><span class="num"><pre>450</pre></span><pre>			# try dag object</pre></div>
+<div class="cov"><span class="num"><pre>451</pre></span><pre>			component = kNullObj</pre></div>
+<div class="cov"><span class="num"><pre>452</pre></span><pre>			itemtype = itemType( )</pre></div>
+<div class="cov"><span class="num"><pre>453</pre></span><pre>			if itemtype == kDagSelectionItem:</pre></div>
+<div class="cov"><span class="num"><pre>454</pre></span><pre>				rval = MDagPath( )</pre></div>
+<div class="cov"><span class="num"><pre>455</pre></span><pre>				if handleComponents:</pre></div>
+<div class="cov"><span class="num"><pre>456</pre></span><pre>					component = MObject( )</pre></div>
+<div class="cov"><span class="num"><pre>457</pre></span><pre>					getDagPath( rval, component )</pre></div>
+<div class="cov"><span class="num"><pre>458</pre></span><pre>					if asNode and not component.isNull():</pre></div>
+<div class="cov"><span class="num"><pre>459</pre></span><pre>						component = Component( component )</pre></div>
+<div class="skip"><span class="num"><pre>460</pre></span><pre>					# END handle component conversion</pre></div>
+<div class="cov"><span class="num"><pre>461</pre></span><pre>				else:</pre></div>
+<div class="cov"><span class="num"><pre>462</pre></span><pre>					getDagPath( rval )</pre></div>
+<div class="skip"><span class="num"><pre>463</pre></span><pre>				# END handle components</pre></div>
+<div class="cov"><span class="num"><pre>464</pre></span><pre>			else:</pre></div>
+<div class="cov"><span class="num"><pre>465</pre></span><pre>				rval = MObject()</pre></div>
+<div class="cov"><span class="num"><pre>466</pre></span><pre>				getDependNode( rval )</pre></div>
+<div class="skip"><span class="num"><pre>467</pre></span><pre>			# END handle item type</pre></div>
+<div class="skip"><span class="num"><pre>468</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre>469</pre></span><pre>			if asNode:</pre></div>
+<div class="cov"><span class="num"><pre>470</pre></span><pre>				rval = NodeFromObj( rval )</pre></div>
+<div class="skip"><span class="num"><pre>471</pre></span><pre>			# END handle as node</pre></div>
+<div class="skip"><span class="num"><pre>472</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre>473</pre></span><pre>			if handleComponents:</pre></div>
+<div class="cov"><span class="num"><pre>474</pre></span><pre>				rval = ( rval, component )</pre></div>
+<div class="skip"><span class="num"><pre>475</pre></span><pre>			# END handle component</pre></div>
+<div class="skip"><span class="num"><pre>476</pre></span><pre>				</pre></div>
+<div class="cov"><span class="num"><pre>477</pre></span><pre>			if predicate( rval ):</pre></div>
+<div class="cov"><span class="num"><pre>478</pre></span><pre>				yield rval</pre></div>
+<div class="skip"><span class="num"><pre>479</pre></span><pre>			</pre></div>
+<div class="cov"><span class="num"><pre>480</pre></span><pre>			next()</pre></div>
+<div class="skip"><span class="num"><pre>481</pre></span><pre>		# END while not done</pre></div>
+<div class="skip"><span class="num"><pre>482</pre></span><pre></pre></div>
+<div class="skip"><span class="num"><pre>483</pre></span><pre></pre></div>
+</div>
+</body>
+</html>

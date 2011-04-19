@@ -1,0 +1,691 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>mrv.maya.nt.it</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="mrv-module.html">Package&nbsp;mrv</a> ::
+        <a href="mrv.maya-module.html">Package&nbsp;maya</a> ::
+        <a href="mrv.maya.nt-module.html">Package&nbsp;nt</a> ::
+        Module&nbsp;it
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="mrv.maya.nt.it-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="mrv.maya.nt.it-module.html">Module mrv.maya.nt.it</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment"># -*- coding: utf-8 -*-</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-docstring">Contains different multi-purpose iterators allowing to conveniently walk the dg and</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-docstring">dag.</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-name">__docformat__</tt> <tt class="py-op">=</tt> <tt class="py-string">"restructuredtext"</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-0" class="py-name" targets="Package mrv.maya=mrv.maya-module.html"><a title="mrv.maya" class="py-name" href="#" onclick="return doclink('link-0', 'maya', 'link-0');">maya</a></tt><tt class="py-op">.</tt><tt class="py-name">OpenMaya</tt> <tt class="py-keyword">as</tt> <tt class="py-name">api</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-1" class="py-name"><a title="mrv.maya" class="py-name" href="#" onclick="return doclink('link-1', 'maya', 'link-0');">maya</a></tt><tt class="py-op">.</tt><tt class="py-name">cmds</tt> <tt class="py-keyword">as</tt> <tt class="py-name">cmds</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-2" class="py-name"><a title="mrv.maya" class="py-name" href="#" onclick="return doclink('link-2', 'maya', 'link-0');">maya</a></tt><tt class="py-op">.</tt><tt class="py-name">OpenMaya</tt> <tt class="py-keyword">import</tt> <tt class="py-name">MDagPath</tt><tt class="py-op">,</tt> <tt class="py-name">MObject</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-3" class="py-name" targets="Module mrv.automation.base=mrv.automation.base-module.html,Module mrv.cmd.base=mrv.cmd.base-module.html,Module mrv.doc.base=mrv.doc.base-module.html,Module mrv.maya.nt.base=mrv.maya.nt.base-module.html,Module mrv.maya.ui.base=mrv.maya.ui.base-module.html"><a title="mrv.automation.base
+mrv.cmd.base
+mrv.doc.base
+mrv.maya.nt.base
+mrv.maya.ui.base" class="py-name" href="#" onclick="return doclink('link-3', 'base', 'link-3');">base</a></tt> <tt class="py-keyword">import</tt> <tt id="link-4" class="py-name" targets="Class mrv.maya.nt.base.Node=mrv.maya.nt.base.Node-class.html"><a title="mrv.maya.nt.base.Node" class="py-name" href="#" onclick="return doclink('link-4', 'Node', 'link-4');">Node</a></tt><tt class="py-op">,</tt> <tt id="link-5" class="py-name" targets="Class mrv.maya.nt.base.DagNode=mrv.maya.nt.base.DagNode-class.html"><a title="mrv.maya.nt.base.DagNode" class="py-name" href="#" onclick="return doclink('link-5', 'DagNode', 'link-5');">DagNode</a></tt><tt class="py-op">,</tt> <tt id="link-6" class="py-name" targets="Class mrv.maya.nt.base.NodeFromObj=mrv.maya.nt.base.NodeFromObj-class.html"><a title="mrv.maya.nt.base.NodeFromObj" class="py-name" href="#" onclick="return doclink('link-6', 'NodeFromObj', 'link-6');">NodeFromObj</a></tt><tt class="py-op">,</tt> <tt id="link-7" class="py-name" targets="Class mrv.maya.nt.base.Component=mrv.maya.nt.base.Component-class.html"><a title="mrv.maya.nt.base.Component" class="py-name" href="#" onclick="return doclink('link-7', 'Component', 'link-7');">Component</a></tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt id="link-8" class="py-name" targets="Variable mrv.batch.__all__=mrv.batch-module.html#__all__,Variable mrv.mdp.__all__=mrv.mdp-module.html#__all__"><a title="mrv.batch.__all__
+mrv.mdp.__all__" class="py-name" href="#" onclick="return doclink('link-8', '__all__', 'link-8');">__all__</a></tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt><tt class="py-string">"dgIterator"</tt><tt class="py-op">,</tt> <tt class="py-string">"dagIterator"</tt><tt class="py-op">,</tt> <tt class="py-string">"graphIterator"</tt><tt class="py-op">,</tt> <tt class="py-string">"selectionListIterator"</tt><tt class="py-op">,</tt>  </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line">           <tt class="py-string">"iterDgNodes"</tt><tt class="py-op">,</tt> <tt class="py-string">"iterDagNodes"</tt><tt class="py-op">,</tt> <tt class="py-string">"iterGraph"</tt><tt class="py-op">,</tt> <tt class="py-string">"iterSelectionList"</tt><tt class="py-op">)</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"> </tt>
+<a name="_argsToFilter"></a><div id="_argsToFilter-def"><a name="L16"></a><tt class="py-lineno"> 16</tt> <a class="py-toggle" href="#" id="_argsToFilter-toggle" onclick="return toggle('_argsToFilter');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.nt.it-module.html#_argsToFilter">_argsToFilter</a><tt class="py-op">(</tt> <tt class="py-param">args</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_argsToFilter-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_argsToFilter-expanded"><a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line">        <tt class="py-docstring">"""convert the MFnTypes in args list to the respective typeFilter"""</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line">        <tt class="py-name">typeFilter</tt> <tt class="py-op">=</tt> <tt class="py-name">api</tt><tt class="py-op">.</tt><tt class="py-name">MIteratorType</tt><tt class="py-op">(</tt> <tt class="py-op">)</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-9" class="py-name" targets="Variable mrv.util.Call.args=mrv.util.Call-class.html#args"><a title="mrv.util.Call.args" class="py-name" href="#" onclick="return doclink('link-9', 'args', 'link-9');">args</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt id="link-10" class="py-name"><a title="mrv.util.Call.args" class="py-name" href="#" onclick="return doclink('link-10', 'args', 'link-9');">args</a></tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-number">1</tt> <tt class="py-op">:</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line">                        <tt class="py-name">typeFilter</tt><tt class="py-op">.</tt><tt class="py-name">setFilterType</tt> <tt class="py-op">(</tt> <tt id="link-11" class="py-name"><a title="mrv.util.Call.args" class="py-name" href="#" onclick="return doclink('link-11', 'args', 'link-9');">args</a></tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> <tt class="py-op">)</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line">                <tt class="py-keyword">else</tt> <tt class="py-op">:</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line">                        <tt class="py-comment"># annoying argument conversion for Maya API non standard C types</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line">                        <tt class="py-name">scriptUtil</tt> <tt class="py-op">=</tt> <tt class="py-name">api</tt><tt class="py-op">.</tt><tt id="link-12" class="py-name" targets="Variable mrv.maya.nt.util.MScriptUtil=mrv.maya.nt.util-module.html#MScriptUtil"><a title="mrv.maya.nt.util.MScriptUtil" class="py-name" href="#" onclick="return doclink('link-12', 'MScriptUtil', 'link-12');">MScriptUtil</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line">                        <tt class="py-name">typeIntM</tt> <tt class="py-op">=</tt> <tt class="py-name">api</tt><tt class="py-op">.</tt><tt id="link-13" class="py-name" targets="Class mrv.maya.nt.apipatch.MIntArray=mrv.maya.nt.apipatch.MIntArray-class.html"><a title="mrv.maya.nt.apipatch.MIntArray" class="py-name" href="#" onclick="return doclink('link-13', 'MIntArray', 'link-13');">MIntArray</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line">                        <tt class="py-name">scriptUtil</tt><tt class="py-op">.</tt><tt class="py-name">createIntArrayFromList</tt><tt class="py-op">(</tt> <tt id="link-14" class="py-name"><a title="mrv.util.Call.args" class="py-name" href="#" onclick="return doclink('link-14', 'args', 'link-9');">args</a></tt><tt class="py-op">,</tt>  <tt class="py-name">typeIntM</tt> <tt class="py-op">)</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line">                        <tt class="py-name">typeFilter</tt><tt class="py-op">.</tt><tt class="py-name">setFilterList</tt><tt class="py-op">(</tt> <tt class="py-name">typeIntM</tt> <tt class="py-op">)</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line">                <tt class="py-comment"># we will iterate on dependancy nodes, not dagPaths or plugs</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line">                <tt class="py-name">typeFilter</tt><tt class="py-op">.</tt><tt class="py-name">setObjectType</tt><tt class="py-op">(</tt> <tt class="py-name">api</tt><tt class="py-op">.</tt><tt class="py-name">MIteratorType</tt><tt class="py-op">.</tt><tt class="py-name">kMObject</tt> <tt class="py-op">)</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line">        <tt class="py-comment"># create iterator with (possibly empty) typeFilter</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">typeFilter</tt> </tt>
+</div><a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"><tt class="py-comment">#{ Iterator Creators</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"> </tt>
+<a name="dgIterator"></a><div id="dgIterator-def"><a name="L36"></a><tt class="py-lineno"> 36</tt> <a class="py-toggle" href="#" id="dgIterator-toggle" onclick="return toggle('dgIterator');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.nt.it-module.html#dgIterator">dgIterator</a><tt class="py-op">(</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="dgIterator-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="dgIterator-expanded"><a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line"><tt class="py-docstring">        :return: MItDependencyNodes configured according to args - see docs at</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line"><tt class="py-docstring">                `iterDgNodes`.</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"><tt class="py-docstring">        :note: use this method if you want to use more advanced features of the iterator"""</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line">        <tt class="py-name">typeFilter</tt> <tt class="py-op">=</tt> <tt class="py-name">_argsToFilter</tt><tt class="py-op">(</tt> <tt id="link-15" class="py-name"><a title="mrv.util.Call.args" class="py-name" href="#" onclick="return doclink('link-15', 'args', 'link-9');">args</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line">        <tt class="py-name">iterObj</tt> <tt class="py-op">=</tt> <tt class="py-name">api</tt><tt class="py-op">.</tt><tt class="py-name">MItDependencyNodes</tt><tt class="py-op">(</tt> <tt class="py-name">typeFilter</tt> <tt class="py-op">)</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">iterObj</tt> </tt>
+</div><a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"> </tt>
+<a name="dagIterator"></a><div id="dagIterator-def"><a name="L45"></a><tt class="py-lineno"> 45</tt> <a class="py-toggle" href="#" id="dagIterator-toggle" onclick="return toggle('dagIterator');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.nt.it-module.html#dagIterator">dagIterator</a><tt class="py-op">(</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="dagIterator-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="dagIterator-expanded"><a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line"><tt class="py-docstring">        :return: MItDagIterator configured according to args - see docs at</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line"><tt class="py-docstring">                `iterDagNodes`.</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line"><tt class="py-docstring">        :note: use this method if you want to use more advanced features of the iterator"""</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">        <tt class="py-name">depth</tt> <tt class="py-op">=</tt> <tt id="link-16" class="py-name" targets="Variable mrv.util.Call.kwargs=mrv.util.Call-class.html#kwargs"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-16', 'kwargs', 'link-16');">kwargs</a></tt><tt class="py-op">.</tt><tt id="link-17" class="py-name" targets="Method mrv.conf.ConfigAccessor.get()=mrv.conf.ConfigAccessor-class.html#get,Method mrv.dge._PlugShell.get()=mrv.dge._PlugShell-class.html#get,Method mrv.dgfe._IOShell.get()=mrv.dgfe._IOShell-class.html#get,Method mrv.dgfe._OIShell.get()=mrv.dgfe._OIShell-class.html#get,Method mrv.interface.iProgressIndicator.get()=mrv.interface.iProgressIndicator-class.html#get,Method mrv.maya.util.OptionVarDict.get()=mrv.maya.util.OptionVarDict-class.html#get"><a title="mrv.conf.ConfigAccessor.get
+mrv.dge._PlugShell.get
+mrv.dgfe._IOShell.get
+mrv.dgfe._OIShell.get
+mrv.interface.iProgressIndicator.get
+mrv.maya.util.OptionVarDict.get" class="py-name" href="#" onclick="return doclink('link-17', 'get', 'link-17');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">'depth'</tt><tt class="py-op">,</tt> <tt class="py-name">True</tt><tt class="py-op">)</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">        <tt class="py-name">underworld</tt> <tt class="py-op">=</tt> <tt id="link-18" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-18', 'kwargs', 'link-16');">kwargs</a></tt><tt class="py-op">.</tt><tt id="link-19" class="py-name"><a title="mrv.conf.ConfigAccessor.get
+mrv.dge._PlugShell.get
+mrv.dgfe._IOShell.get
+mrv.dgfe._OIShell.get
+mrv.interface.iProgressIndicator.get
+mrv.maya.util.OptionVarDict.get" class="py-name" href="#" onclick="return doclink('link-19', 'get', 'link-17');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">'underworld'</tt><tt class="py-op">,</tt> <tt class="py-name">False</tt><tt class="py-op">)</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line">        <tt id="link-20" class="py-name" targets="Method mrv.interface.iDagItem.root()=mrv.interface.iDagItem-class.html#root,Method mrv.maya.ui.browse.interface.iFinderProvider.root()=mrv.maya.ui.browse.interface.iFinderProvider-class.html#root"><a title="mrv.interface.iDagItem.root
+mrv.maya.ui.browse.interface.iFinderProvider.root" class="py-name" href="#" onclick="return doclink('link-20', 'root', 'link-20');">root</a></tt> <tt class="py-op">=</tt> <tt id="link-21" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-21', 'kwargs', 'link-16');">kwargs</a></tt><tt class="py-op">.</tt><tt id="link-22" class="py-name"><a title="mrv.conf.ConfigAccessor.get
+mrv.dge._PlugShell.get
+mrv.dgfe._IOShell.get
+mrv.dgfe._OIShell.get
+mrv.interface.iProgressIndicator.get
+mrv.maya.util.OptionVarDict.get" class="py-name" href="#" onclick="return doclink('link-22', 'get', 'link-17');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">'root'</tt><tt class="py-op">,</tt> <tt class="py-name">None</tt> <tt class="py-op">)</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">        <tt class="py-name">typeFilter</tt> <tt class="py-op">=</tt> <tt class="py-name">_argsToFilter</tt><tt class="py-op">(</tt> <tt id="link-23" class="py-name"><a title="mrv.util.Call.args" class="py-name" href="#" onclick="return doclink('link-23', 'args', 'link-9');">args</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line"> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">        <tt class="py-comment"># SETUP TYPE FILTER - reset needs to work with root</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-24" class="py-name"><a title="mrv.interface.iDagItem.root
+mrv.maya.ui.browse.interface.iFinderProvider.root" class="py-name" href="#" onclick="return doclink('link-24', 'root', 'link-20');">root</a></tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt id="link-25" class="py-name" targets="Function unittest.isinstance()=unittest-module.html#isinstance"><a title="unittest.isinstance" class="py-name" href="#" onclick="return doclink('link-25', 'isinstance', 'link-25');">isinstance</a></tt><tt class="py-op">(</tt> <tt id="link-26" class="py-name"><a title="mrv.interface.iDagItem.root
+mrv.maya.ui.browse.interface.iFinderProvider.root" class="py-name" href="#" onclick="return doclink('link-26', 'root', 'link-20');">root</a></tt><tt class="py-op">,</tt> <tt class="py-op">(</tt><tt class="py-name">MDagPath</tt><tt class="py-op">,</tt> <tt id="link-27" class="py-name"><a title="mrv.maya.nt.base.DagNode" class="py-name" href="#" onclick="return doclink('link-27', 'DagNode', 'link-5');">DagNode</a></tt><tt class="py-op">)</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">                        <tt class="py-name">typeFilter</tt><tt class="py-op">.</tt><tt class="py-name">setObjectType</tt><tt class="py-op">(</tt> <tt class="py-name">api</tt><tt class="py-op">.</tt><tt class="py-name">MIteratorType</tt><tt class="py-op">.</tt><tt class="py-name">kMDagPathObject</tt> <tt class="py-op">)</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">                <tt class="py-keyword">else</tt> <tt class="py-op">:</tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">                        <tt class="py-name">typeFilter</tt><tt class="py-op">.</tt><tt class="py-name">setObjectType</tt><tt class="py-op">(</tt> <tt class="py-name">api</tt><tt class="py-op">.</tt><tt class="py-name">MIteratorType</tt><tt class="py-op">.</tt><tt class="py-name">kMObject</tt> <tt class="py-op">)</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line"> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">        <tt class="py-comment"># create iterator with (possibly empty) filter list and flags</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">depth</tt> <tt class="py-op">:</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">                <tt class="py-name">traversal</tt> <tt class="py-op">=</tt> <tt class="py-name">api</tt><tt class="py-op">.</tt><tt class="py-name">MItDag</tt><tt class="py-op">.</tt><tt class="py-name">kDepthFirst</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt> <tt class="py-op">:</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">                <tt class="py-name">traversal</tt> <tt class="py-op">=</tt>      <tt class="py-name">api</tt><tt class="py-op">.</tt><tt class="py-name">MItDag</tt><tt class="py-op">.</tt><tt class="py-name">kBreadthFirst</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line"> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">        <tt class="py-name">iterObj</tt> <tt class="py-op">=</tt> <tt class="py-name">api</tt><tt class="py-op">.</tt><tt class="py-name">MItDag</tt><tt class="py-op">(</tt> <tt class="py-name">typeFilter</tt><tt class="py-op">,</tt> <tt class="py-name">traversal</tt> <tt class="py-op">)</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line"> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">        <tt class="py-comment"># set start object</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-28" class="py-name"><a title="mrv.interface.iDagItem.root
+mrv.maya.ui.browse.interface.iFinderProvider.root" class="py-name" href="#" onclick="return doclink('link-28', 'root', 'link-20');">root</a></tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt> <tt class="py-op">:</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">                <tt class="py-name">startObj</tt> <tt class="py-op">=</tt> <tt class="py-name">startPath</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt id="link-29" class="py-name"><a title="unittest.isinstance" class="py-name" href="#" onclick="return doclink('link-29', 'isinstance', 'link-25');">isinstance</a></tt><tt class="py-op">(</tt> <tt id="link-30" class="py-name"><a title="mrv.interface.iDagItem.root
+mrv.maya.ui.browse.interface.iFinderProvider.root" class="py-name" href="#" onclick="return doclink('link-30', 'root', 'link-20');">root</a></tt><tt class="py-op">,</tt> <tt class="py-name">MDagPath</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">                        <tt class="py-name">startPath</tt> <tt class="py-op">=</tt> <tt id="link-31" class="py-name"><a title="mrv.interface.iDagItem.root
+mrv.maya.ui.browse.interface.iFinderProvider.root" class="py-name" href="#" onclick="return doclink('link-31', 'root', 'link-20');">root</a></tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">                <tt class="py-keyword">elif</tt> <tt id="link-32" class="py-name"><a title="unittest.isinstance" class="py-name" href="#" onclick="return doclink('link-32', 'isinstance', 'link-25');">isinstance</a></tt><tt class="py-op">(</tt> <tt id="link-33" class="py-name"><a title="mrv.interface.iDagItem.root
+mrv.maya.ui.browse.interface.iFinderProvider.root" class="py-name" href="#" onclick="return doclink('link-33', 'root', 'link-20');">root</a></tt><tt class="py-op">,</tt> <tt id="link-34" class="py-name"><a title="mrv.maya.nt.base.DagNode" class="py-name" href="#" onclick="return doclink('link-34', 'DagNode', 'link-5');">DagNode</a></tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">                        <tt class="py-name">startPath</tt> <tt class="py-op">=</tt> <tt id="link-35" class="py-name"><a title="mrv.interface.iDagItem.root
+mrv.maya.ui.browse.interface.iFinderProvider.root" class="py-name" href="#" onclick="return doclink('link-35', 'root', 'link-20');">root</a></tt><tt class="py-op">.</tt><tt id="link-36" class="py-name" targets="Method mrv.maya.nt.base.DagNode.dagPath()=mrv.maya.nt.base.DagNode-class.html#dagPath"><a title="mrv.maya.nt.base.DagNode.dagPath" class="py-name" href="#" onclick="return doclink('link-36', 'dagPath', 'link-36');">dagPath</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">                <tt class="py-keyword">elif</tt> <tt id="link-37" class="py-name"><a title="unittest.isinstance" class="py-name" href="#" onclick="return doclink('link-37', 'isinstance', 'link-25');">isinstance</a></tt><tt class="py-op">(</tt> <tt id="link-38" class="py-name"><a title="mrv.interface.iDagItem.root
+mrv.maya.ui.browse.interface.iFinderProvider.root" class="py-name" href="#" onclick="return doclink('link-38', 'root', 'link-20');">root</a></tt><tt class="py-op">,</tt> <tt id="link-39" class="py-name"><a title="mrv.maya.nt.base.Node" class="py-name" href="#" onclick="return doclink('link-39', 'Node', 'link-4');">Node</a></tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">                        <tt class="py-name">startObj</tt> <tt class="py-op">=</tt> <tt id="link-40" class="py-name"><a title="mrv.interface.iDagItem.root
+mrv.maya.ui.browse.interface.iFinderProvider.root" class="py-name" href="#" onclick="return doclink('link-40', 'root', 'link-20');">root</a></tt><tt class="py-op">.</tt><tt id="link-41" class="py-name" targets="Method mrv.maya.nt.base.DependNode.object()=mrv.maya.nt.base.DependNode-class.html#object"><a title="mrv.maya.nt.base.DependNode.object" class="py-name" href="#" onclick="return doclink('link-41', 'object', 'link-41');">object</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">                <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">                        <tt class="py-name">startObj</tt> <tt class="py-op">=</tt> <tt id="link-42" class="py-name"><a title="mrv.interface.iDagItem.root
+mrv.maya.ui.browse.interface.iFinderProvider.root" class="py-name" href="#" onclick="return doclink('link-42', 'root', 'link-20');">root</a></tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">                <tt class="py-comment"># END handle obj type</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">                <tt class="py-name">iterObj</tt><tt class="py-op">.</tt><tt class="py-name">reset</tt><tt class="py-op">(</tt> <tt class="py-name">typeFilter</tt><tt class="py-op">,</tt> <tt class="py-name">startObj</tt><tt class="py-op">,</tt> <tt class="py-name">startPath</tt><tt class="py-op">,</tt> <tt class="py-name">traversal</tt> <tt class="py-op">)</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">        <tt class="py-comment"># END if root is set</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line"> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">underworld</tt> <tt class="py-op">:</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">                <tt class="py-name">iterObj</tt><tt class="py-op">.</tt><tt class="py-name">traverseUnderWorld</tt><tt class="py-op">(</tt> <tt class="py-name">True</tt> <tt class="py-op">)</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt> <tt class="py-op">:</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">                <tt class="py-name">iterObj</tt><tt class="py-op">.</tt><tt class="py-name">traverseUnderWorld</tt><tt class="py-op">(</tt> <tt class="py-name">False</tt> <tt class="py-op">)</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line"> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line"> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">iterObj</tt> </tt>
+</div><a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">         </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line"> </tt>
+<a name="graphIterator"></a><div id="graphIterator-def"><a name="L94"></a><tt class="py-lineno"> 94</tt> <a class="py-toggle" href="#" id="graphIterator-toggle" onclick="return toggle('graphIterator');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.nt.it-module.html#graphIterator">graphIterator</a><tt class="py-op">(</tt> <tt class="py-param">nodeOrPlug</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="graphIterator-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="graphIterator-expanded"><a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line"><tt class="py-docstring">        :return: MItDependencyGraph configured according to args - see docs at</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line"><tt class="py-docstring">                `iterGraph`.</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line"><tt class="py-docstring">        :note: use this method if you want to use more advanced features of the iterator</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line"><tt class="py-docstring">        :raise RuntimeError: if the filter types does not allow any nodes to be returned.</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line"><tt class="py-docstring">                This is a bug in that sense as it should just return nothing. It also shows that</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line"><tt class="py-docstring">                maya pre-parses the result and then just iterates over a list with the iterator in</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line"><tt class="py-docstring">                question"""</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">        <tt class="py-name">startObj</tt> <tt class="py-op">=</tt> <tt class="py-name">startPlug</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line"> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-43" class="py-name"><a title="unittest.isinstance" class="py-name" href="#" onclick="return doclink('link-43', 'isinstance', 'link-25');">isinstance</a></tt><tt class="py-op">(</tt> <tt class="py-name">nodeOrPlug</tt><tt class="py-op">,</tt> <tt class="py-name">api</tt><tt class="py-op">.</tt><tt id="link-44" class="py-name" targets="Class mrv.maya.nt.apipatch.MPlug=mrv.maya.nt.apipatch.MPlug-class.html"><a title="mrv.maya.nt.apipatch.MPlug" class="py-name" href="#" onclick="return doclink('link-44', 'MPlug', 'link-44');">MPlug</a></tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">                <tt class="py-name">startPlug</tt> <tt class="py-op">=</tt> <tt class="py-name">nodeOrPlug</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">                <tt class="py-name">startObj</tt> <tt class="py-op">=</tt> <tt class="py-name">MObject</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt id="link-45" class="py-name"><a title="unittest.isinstance" class="py-name" href="#" onclick="return doclink('link-45', 'isinstance', 'link-25');">isinstance</a></tt><tt class="py-op">(</tt> <tt class="py-name">nodeOrPlug</tt><tt class="py-op">,</tt> <tt id="link-46" class="py-name"><a title="mrv.maya.nt.base.Node" class="py-name" href="#" onclick="return doclink('link-46', 'Node', 'link-4');">Node</a></tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">                <tt class="py-name">startObj</tt> <tt class="py-op">=</tt> <tt class="py-name">nodeOrPlug</tt><tt class="py-op">.</tt><tt id="link-47" class="py-name"><a title="mrv.maya.nt.base.DependNode.object" class="py-name" href="#" onclick="return doclink('link-47', 'object', 'link-41');">object</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">                <tt class="py-name">startPlug</tt> <tt class="py-op">=</tt> <tt id="link-48" class="py-name" targets="Variable mrv.maya.nt.it.nullplugarray=mrv.maya.nt.it-module.html#nullplugarray"><a title="mrv.maya.nt.it.nullplugarray" class="py-name" href="#" onclick="return doclink('link-48', 'nullplugarray', 'link-48');">nullplugarray</a></tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">                <tt class="py-name">startObj</tt> <tt class="py-op">=</tt> <tt class="py-name">nodeOrPlug</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">                <tt class="py-name">startPlug</tt> <tt class="py-op">=</tt> <tt id="link-49" class="py-name"><a title="mrv.maya.nt.it.nullplugarray" class="py-name" href="#" onclick="return doclink('link-49', 'nullplugarray', 'link-48');">nullplugarray</a></tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">        <tt class="py-comment"># END traversal root</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line"> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">        <tt id="link-50" class="py-name" targets="Method mrv.dge.NodeBase.inputPlugs()=mrv.dge.NodeBase-class.html#inputPlugs"><a title="mrv.dge.NodeBase.inputPlugs" class="py-name" href="#" onclick="return doclink('link-50', 'inputPlugs', 'link-50');">inputPlugs</a></tt> <tt class="py-op">=</tt> <tt id="link-51" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-51', 'kwargs', 'link-16');">kwargs</a></tt><tt class="py-op">.</tt><tt id="link-52" class="py-name"><a title="mrv.conf.ConfigAccessor.get
+mrv.dge._PlugShell.get
+mrv.dgfe._IOShell.get
+mrv.dgfe._OIShell.get
+mrv.interface.iProgressIndicator.get
+mrv.maya.util.OptionVarDict.get" class="py-name" href="#" onclick="return doclink('link-52', 'get', 'link-17');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">'input'</tt><tt class="py-op">,</tt> <tt class="py-name">False</tt><tt class="py-op">)</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">        <tt class="py-name">breadth</tt> <tt class="py-op">=</tt> <tt id="link-53" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-53', 'kwargs', 'link-16');">kwargs</a></tt><tt class="py-op">.</tt><tt id="link-54" class="py-name"><a title="mrv.conf.ConfigAccessor.get
+mrv.dge._PlugShell.get
+mrv.dgfe._IOShell.get
+mrv.dgfe._OIShell.get
+mrv.interface.iProgressIndicator.get
+mrv.maya.util.OptionVarDict.get" class="py-name" href="#" onclick="return doclink('link-54', 'get', 'link-17');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">'breadth'</tt><tt class="py-op">,</tt> <tt class="py-name">False</tt><tt class="py-op">)</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line">        <tt id="link-55" class="py-name" targets="Variable mrv.automation.workflow.Workflow.ProcessData.plug=mrv.automation.workflow.Workflow.ProcessData-class.html#plug,Class mrv.dge.plug=mrv.dge.plug-class.html"><a title="mrv.automation.workflow.Workflow.ProcessData.plug
+mrv.dge.plug" class="py-name" href="#" onclick="return doclink('link-55', 'plug', 'link-55');">plug</a></tt> <tt class="py-op">=</tt> <tt id="link-56" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-56', 'kwargs', 'link-16');">kwargs</a></tt><tt class="py-op">.</tt><tt id="link-57" class="py-name"><a title="mrv.conf.ConfigAccessor.get
+mrv.dge._PlugShell.get
+mrv.dgfe._IOShell.get
+mrv.dgfe._OIShell.get
+mrv.interface.iProgressIndicator.get
+mrv.maya.util.OptionVarDict.get" class="py-name" href="#" onclick="return doclink('link-57', 'get', 'link-17');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">'plug'</tt><tt class="py-op">,</tt> <tt class="py-name">False</tt><tt class="py-op">)</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line">        <tt class="py-name">prune</tt> <tt class="py-op">=</tt> <tt id="link-58" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-58', 'kwargs', 'link-16');">kwargs</a></tt><tt class="py-op">.</tt><tt id="link-59" class="py-name"><a title="mrv.conf.ConfigAccessor.get
+mrv.dge._PlugShell.get
+mrv.dgfe._IOShell.get
+mrv.dgfe._OIShell.get
+mrv.interface.iProgressIndicator.get
+mrv.maya.util.OptionVarDict.get" class="py-name" href="#" onclick="return doclink('link-59', 'get', 'link-17');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">'prune'</tt><tt class="py-op">,</tt> <tt class="py-name">False</tt><tt class="py-op">)</tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line">        <tt class="py-name">typeFilter</tt> <tt class="py-op">=</tt> <tt class="py-name">_argsToFilter</tt><tt class="py-op">(</tt> <tt id="link-60" class="py-name"><a title="mrv.util.Call.args" class="py-name" href="#" onclick="return doclink('link-60', 'args', 'link-9');">args</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line"> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">startPlug</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt> <tt class="py-op">:</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line">                <tt class="py-name">typeFilter</tt><tt class="py-op">.</tt><tt class="py-name">setObjectType</tt><tt class="py-op">(</tt> <tt class="py-name">api</tt><tt class="py-op">.</tt><tt class="py-name">MIteratorType</tt><tt class="py-op">.</tt><tt class="py-name">kMPlugObject</tt> <tt class="py-op">)</tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt> <tt class="py-op">:</tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">                <tt class="py-name">typeFilter</tt><tt class="py-op">.</tt><tt class="py-name">setObjectType</tt><tt class="py-op">(</tt> <tt class="py-name">api</tt><tt class="py-op">.</tt><tt class="py-name">MIteratorType</tt><tt class="py-op">.</tt><tt class="py-name">kMObject</tt> <tt class="py-op">)</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line">        <tt class="py-comment"># END handle object type</tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line"> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line">        <tt class="py-name">direction</tt> <tt class="py-op">=</tt> <tt class="py-name">api</tt><tt class="py-op">.</tt><tt class="py-name">MItDependencyGraph</tt><tt class="py-op">.</tt><tt class="py-name">kDownstream</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-61" class="py-name"><a title="mrv.dge.NodeBase.inputPlugs" class="py-name" href="#" onclick="return doclink('link-61', 'inputPlugs', 'link-50');">inputPlugs</a></tt> <tt class="py-op">:</tt> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line">                <tt class="py-name">direction</tt> <tt class="py-op">=</tt> <tt class="py-name">api</tt><tt class="py-op">.</tt><tt class="py-name">MItDependencyGraph</tt><tt class="py-op">.</tt><tt class="py-name">kUpstream</tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line"> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line">        <tt class="py-name">traversal</tt> <tt class="py-op">=</tt>      <tt class="py-name">api</tt><tt class="py-op">.</tt><tt class="py-name">MItDependencyGraph</tt><tt class="py-op">.</tt><tt class="py-name">kDepthFirst</tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">breadth</tt> <tt class="py-op">:</tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line">                <tt class="py-name">traversal</tt> <tt class="py-op">=</tt> <tt class="py-name">api</tt><tt class="py-op">.</tt><tt class="py-name">MItDependencyGraph</tt><tt class="py-op">.</tt><tt class="py-name">kBreadthFirst</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line"> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line">        <tt class="py-name">level</tt> <tt class="py-op">=</tt> <tt class="py-name">api</tt><tt class="py-op">.</tt><tt class="py-name">MItDependencyGraph</tt><tt class="py-op">.</tt><tt class="py-name">kNodeLevel</tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-62" class="py-name"><a title="mrv.automation.workflow.Workflow.ProcessData.plug
+mrv.dge.plug" class="py-name" href="#" onclick="return doclink('link-62', 'plug', 'link-55');">plug</a></tt> <tt class="py-op">:</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line">                <tt class="py-name">level</tt> <tt class="py-op">=</tt> <tt class="py-name">api</tt><tt class="py-op">.</tt><tt class="py-name">MItDependencyGraph</tt><tt class="py-op">.</tt><tt class="py-name">kPlugLevel</tt> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line"> </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line">        <tt class="py-name">iterObj</tt> <tt class="py-op">=</tt> <tt class="py-name">api</tt><tt class="py-op">.</tt><tt class="py-name">MItDependencyGraph</tt><tt class="py-op">(</tt> <tt class="py-name">startObj</tt><tt class="py-op">,</tt> <tt class="py-name">startPlug</tt><tt class="py-op">,</tt> <tt class="py-name">typeFilter</tt><tt class="py-op">,</tt> <tt class="py-name">direction</tt><tt class="py-op">,</tt> <tt class="py-name">traversal</tt><tt class="py-op">,</tt> <tt class="py-name">level</tt> <tt class="py-op">)</tt> </tt>
+<a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line"> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line">        <tt class="py-name">iterObj</tt><tt class="py-op">.</tt><tt class="py-name">disablePruningOnFilter</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">prune</tt> <tt class="py-op">:</tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line">                <tt class="py-name">iterObj</tt><tt class="py-op">.</tt><tt class="py-name">enablePruningOnFilter</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line"> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">iterObj</tt> </tt>
+</div><a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line">         </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line"> </tt>
+<a name="selectionListIterator"></a><div id="selectionListIterator-def"><a name="L149"></a><tt class="py-lineno">149</tt> <a class="py-toggle" href="#" id="selectionListIterator-toggle" onclick="return toggle('selectionListIterator');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.nt.it-module.html#selectionListIterator">selectionListIterator</a><tt class="py-op">(</tt> <tt class="py-param">sellist</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="selectionListIterator-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="selectionListIterator-expanded"><a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line"><tt class="py-docstring">        :return: iterator suitable to iterate given selection list - for more info see</tt> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line"><tt class="py-docstring">                `iterSelectionList`"""</tt> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line">        <tt class="py-name">filtertype</tt> <tt class="py-op">=</tt> <tt id="link-63" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-63', 'kwargs', 'link-16');">kwargs</a></tt><tt class="py-op">.</tt><tt id="link-64" class="py-name"><a title="mrv.conf.ConfigAccessor.get
+mrv.dge._PlugShell.get
+mrv.dgfe._IOShell.get
+mrv.dgfe._OIShell.get
+mrv.interface.iProgressIndicator.get
+mrv.maya.util.OptionVarDict.get" class="py-name" href="#" onclick="return doclink('link-64', 'get', 'link-17');">get</a></tt><tt class="py-op">(</tt> <tt class="py-string">"filterType"</tt><tt class="py-op">,</tt> <tt class="py-name">api</tt><tt class="py-op">.</tt><tt class="py-name">MFn</tt><tt class="py-op">.</tt><tt class="py-name">kInvalid</tt> <tt class="py-op">)</tt> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line">        <tt id="link-65" class="py-name" targets="Method mrv.maya.nt.geometry._SingleIndexedComponentIterator.iterator()=mrv.maya.nt.geometry._SingleIndexedComponentIterator-class.html#iterator"><a title="mrv.maya.nt.geometry._SingleIndexedComponentIterator.iterator" class="py-name" href="#" onclick="return doclink('link-65', 'iterator', 'link-65');">iterator</a></tt> <tt class="py-op">=</tt> <tt class="py-name">api</tt><tt class="py-op">.</tt><tt class="py-name">MItSelectionList</tt><tt class="py-op">(</tt> <tt class="py-name">sellist</tt><tt class="py-op">,</tt> <tt class="py-name">filtertype</tt> <tt class="py-op">)</tt> </tt>
+<a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-66" class="py-name"><a title="mrv.maya.nt.geometry._SingleIndexedComponentIterator.iterator" class="py-name" href="#" onclick="return doclink('link-66', 'iterator', 'link-65');">iterator</a></tt> </tt>
+</div><a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line">         </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line"><tt class="py-comment">#} END iterator creators </tt> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line"> </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line"> </tt>
+<a name="iterDgNodes"></a><div id="iterDgNodes-def"><a name="L160"></a><tt class="py-lineno">160</tt> <a class="py-toggle" href="#" id="iterDgNodes-toggle" onclick="return toggle('iterDgNodes');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.nt.it-module.html#iterDgNodes">iterDgNodes</a><tt class="py-op">(</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="iterDgNodes-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="iterDgNodes-expanded"><a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line">        <tt class="py-docstring">""" Iterator on MObjects or Nodes of the specified api.MFn types</tt> </tt>
+<a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line"><tt class="py-docstring">        :param args: type as found in MFn.k... to optionally restrict the set of nodes the iterator operates upon.</tt> </tt>
+<a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line"><tt class="py-docstring">                All nodes of a type included in the args will be iterated on.</tt> </tt>
+<a name="L165"></a><tt class="py-lineno">165</tt>  <tt class="py-line"><tt class="py-docstring">                args is empty, all nodes of the scene will be iterated on which may include DAG nodes as well.</tt> </tt>
+<a name="L166"></a><tt class="py-lineno">166</tt>  <tt class="py-line"><tt class="py-docstring">        :param kwargs:</tt> </tt>
+<a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line"><tt class="py-docstring">                 * asNode: </tt> </tt>
+<a name="L168"></a><tt class="py-lineno">168</tt>  <tt class="py-line"><tt class="py-docstring">                        if True, default True, the returned value will be wrapped as node</tt> </tt>
+<a name="L169"></a><tt class="py-lineno">169</tt>  <tt class="py-line"><tt class="py-docstring">                 * predicate: </tt> </tt>
+<a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line"><tt class="py-docstring">                        returns True for every iteration element that may be returned by the iteration,</tt> </tt>
+<a name="L171"></a><tt class="py-lineno">171</tt>  <tt class="py-line"><tt class="py-docstring">                        default : lambda x: True"""</tt> </tt>
+<a name="L172"></a><tt class="py-lineno">172</tt>  <tt class="py-line">        <tt id="link-67" class="py-name"><a title="mrv.maya.nt.geometry._SingleIndexedComponentIterator.iterator" class="py-name" href="#" onclick="return doclink('link-67', 'iterator', 'link-65');">iterator</a></tt> <tt class="py-op">=</tt> <tt class="py-name">dgIterator</tt><tt class="py-op">(</tt> <tt class="py-op">*</tt><tt id="link-68" class="py-name"><a title="mrv.util.Call.args" class="py-name" href="#" onclick="return doclink('link-68', 'args', 'link-9');">args</a></tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt id="link-69" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-69', 'kwargs', 'link-16');">kwargs</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L173"></a><tt class="py-lineno">173</tt>  <tt class="py-line">        <tt class="py-name">predicate</tt> <tt class="py-op">=</tt> <tt id="link-70" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-70', 'kwargs', 'link-16');">kwargs</a></tt><tt class="py-op">.</tt><tt id="link-71" class="py-name"><a title="mrv.conf.ConfigAccessor.get
+mrv.dge._PlugShell.get
+mrv.dgfe._IOShell.get
+mrv.dgfe._OIShell.get
+mrv.interface.iProgressIndicator.get
+mrv.maya.util.OptionVarDict.get" class="py-name" href="#" onclick="return doclink('link-71', 'get', 'link-17');">get</a></tt><tt class="py-op">(</tt> <tt class="py-string">"predicate"</tt><tt class="py-op">,</tt> <tt class="py-keyword">lambda</tt> <tt class="py-name">x</tt><tt class="py-op">:</tt> <tt class="py-name">True</tt> <tt class="py-op">)</tt> </tt>
+<a name="L174"></a><tt class="py-lineno">174</tt>  <tt class="py-line">        <tt class="py-name">asNode</tt> <tt class="py-op">=</tt> <tt id="link-72" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-72', 'kwargs', 'link-16');">kwargs</a></tt><tt class="py-op">.</tt><tt id="link-73" class="py-name"><a title="mrv.conf.ConfigAccessor.get
+mrv.dge._PlugShell.get
+mrv.dgfe._IOShell.get
+mrv.dgfe._OIShell.get
+mrv.interface.iProgressIndicator.get
+mrv.maya.util.OptionVarDict.get" class="py-name" href="#" onclick="return doclink('link-73', 'get', 'link-17');">get</a></tt><tt class="py-op">(</tt> <tt class="py-string">"asNode"</tt><tt class="py-op">,</tt> <tt class="py-name">True</tt> <tt class="py-op">)</tt> </tt>
+<a name="L175"></a><tt class="py-lineno">175</tt>  <tt class="py-line">         </tt>
+<a name="L176"></a><tt class="py-lineno">176</tt>  <tt class="py-line">        <tt class="py-name">isDone</tt> <tt class="py-op">=</tt> <tt id="link-74" class="py-name"><a title="mrv.maya.nt.geometry._SingleIndexedComponentIterator.iterator" class="py-name" href="#" onclick="return doclink('link-74', 'iterator', 'link-65');">iterator</a></tt><tt class="py-op">.</tt><tt class="py-name">isDone</tt> </tt>
+<a name="L177"></a><tt class="py-lineno">177</tt>  <tt class="py-line">        <tt class="py-name">thisNode</tt> <tt class="py-op">=</tt> <tt id="link-75" class="py-name"><a title="mrv.maya.nt.geometry._SingleIndexedComponentIterator.iterator" class="py-name" href="#" onclick="return doclink('link-75', 'iterator', 'link-65');">iterator</a></tt><tt class="py-op">.</tt><tt class="py-name">thisNode</tt> </tt>
+<a name="L178"></a><tt class="py-lineno">178</tt>  <tt class="py-line">        <tt id="link-76" class="py-name" targets="Method mrv.enum.Enumeration.next()=mrv.enum.Enumeration-class.html#next"><a title="mrv.enum.Enumeration.next" class="py-name" href="#" onclick="return doclink('link-76', 'next', 'link-76');">next</a></tt> <tt class="py-op">=</tt> <tt id="link-77" class="py-name"><a title="mrv.maya.nt.geometry._SingleIndexedComponentIterator.iterator" class="py-name" href="#" onclick="return doclink('link-77', 'iterator', 'link-65');">iterator</a></tt><tt class="py-op">.</tt><tt id="link-78" class="py-name"><a title="mrv.enum.Enumeration.next" class="py-name" href="#" onclick="return doclink('link-78', 'next', 'link-76');">next</a></tt> </tt>
+<a name="L179"></a><tt class="py-lineno">179</tt>  <tt class="py-line">         </tt>
+<a name="L180"></a><tt class="py-lineno">180</tt>  <tt class="py-line">        <tt class="py-keyword">while</tt> <tt class="py-keyword">not</tt> <tt class="py-name">isDone</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-op">:</tt> </tt>
+<a name="L181"></a><tt class="py-lineno">181</tt>  <tt class="py-line">                <tt class="py-name">node</tt> <tt class="py-op">=</tt> <tt class="py-name">thisNode</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L182"></a><tt class="py-lineno">182</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">asNode</tt><tt class="py-op">:</tt> </tt>
+<a name="L183"></a><tt class="py-lineno">183</tt>  <tt class="py-line">                        <tt class="py-name">node</tt> <tt class="py-op">=</tt> <tt id="link-79" class="py-name"><a title="mrv.maya.nt.base.NodeFromObj" class="py-name" href="#" onclick="return doclink('link-79', 'NodeFromObj', 'link-6');">NodeFromObj</a></tt><tt class="py-op">(</tt> <tt class="py-name">node</tt> <tt class="py-op">)</tt> </tt>
+<a name="L184"></a><tt class="py-lineno">184</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">predicate</tt><tt class="py-op">(</tt> <tt class="py-name">node</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L185"></a><tt class="py-lineno">185</tt>  <tt class="py-line">                        <tt class="py-keyword">yield</tt> <tt class="py-name">node</tt> </tt>
+<a name="L186"></a><tt class="py-lineno">186</tt>  <tt class="py-line">                <tt id="link-80" class="py-name"><a title="mrv.enum.Enumeration.next" class="py-name" href="#" onclick="return doclink('link-80', 'next', 'link-76');">next</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L187"></a><tt class="py-lineno">187</tt>  <tt class="py-line">        <tt class="py-comment"># END for each obj in iteration</tt> </tt>
+<a name="L188"></a><tt class="py-lineno">188</tt>  <tt class="py-line"> </tt>
+<a name="L189"></a><tt class="py-lineno">189</tt>  <tt class="py-line"><tt class="py-comment"># Iterators on dag nodes hierarchies using MItDag (ie listRelatives)</tt> </tt>
+<a name="iterDagNodes"></a><div id="iterDagNodes-def"><a name="L190"></a><tt class="py-lineno">190</tt> <a class="py-toggle" href="#" id="iterDagNodes-toggle" onclick="return toggle('iterDagNodes');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.nt.it-module.html#iterDagNodes">iterDagNodes</a><tt class="py-op">(</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="iterDagNodes-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="iterDagNodes-expanded"><a name="L191"></a><tt class="py-lineno">191</tt>  <tt class="py-line">        <tt class="py-docstring">""" Iterate over the hierarchy under a root dag node, if root is None, will iterate on whole Maya scene</tt> </tt>
+<a name="L192"></a><tt class="py-lineno">192</tt>  <tt class="py-line"><tt class="py-docstring">        If a list of types is provided, then only nodes of these types will be returned,</tt> </tt>
+<a name="L193"></a><tt class="py-lineno">193</tt>  <tt class="py-line"><tt class="py-docstring">        if no type is provided all dag nodes under the root will be iterated on.</tt> </tt>
+<a name="L194"></a><tt class="py-lineno">194</tt>  <tt class="py-line"><tt class="py-docstring">        Types are specified as Maya API types being a member of api.MFn</tt> </tt>
+<a name="L195"></a><tt class="py-lineno">195</tt>  <tt class="py-line"><tt class="py-docstring">        The following keywords will affect order and behavior of traversal:</tt> </tt>
+<a name="L196"></a><tt class="py-lineno">196</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L197"></a><tt class="py-lineno">197</tt>  <tt class="py-line"><tt class="py-docstring">        :param kwargs:</tt> </tt>
+<a name="L198"></a><tt class="py-lineno">198</tt>  <tt class="py-line"><tt class="py-docstring">                 * dagpath:</tt> </tt>
+<a name="L199"></a><tt class="py-lineno">199</tt>  <tt class="py-line"><tt class="py-docstring">                        if True, default True, MDagPaths will be returned</tt> </tt>
+<a name="L200"></a><tt class="py-lineno">200</tt>  <tt class="py-line"><tt class="py-docstring">                        If False, MObjects will be returned - it will return each object only once in case they</tt> </tt>
+<a name="L201"></a><tt class="py-lineno">201</tt>  <tt class="py-line"><tt class="py-docstring">                        occour in multiple paths.</tt> </tt>
+<a name="L202"></a><tt class="py-lineno">202</tt>  <tt class="py-line"><tt class="py-docstring">                 * depth: </tt> </tt>
+<a name="L203"></a><tt class="py-lineno">203</tt>  <tt class="py-line"><tt class="py-docstring">                        if True, default True, Nodes will be returned as a depth first traversal of the hierarchy tree</tt> </tt>
+<a name="L204"></a><tt class="py-lineno">204</tt>  <tt class="py-line"><tt class="py-docstring">                        if False as a post-order (breadth first)</tt> </tt>
+<a name="L205"></a><tt class="py-lineno">205</tt>  <tt class="py-line"><tt class="py-docstring">                 * underworld: </tt> </tt>
+<a name="L206"></a><tt class="py-lineno">206</tt>  <tt class="py-line"><tt class="py-docstring">                        if True, default False, traversal will include a shape's underworld </tt> </tt>
+<a name="L207"></a><tt class="py-lineno">207</tt>  <tt class="py-line"><tt class="py-docstring">                        (dag object parented to the shape), if False the underworld will not be traversed,</tt> </tt>
+<a name="L208"></a><tt class="py-lineno">208</tt>  <tt class="py-line"><tt class="py-docstring">                 * asNode: </tt> </tt>
+<a name="L209"></a><tt class="py-lineno">209</tt>  <tt class="py-line"><tt class="py-docstring">                        if True, default True, the returned item will be wrapped into a Node</tt> </tt>
+<a name="L210"></a><tt class="py-lineno">210</tt>  <tt class="py-line"><tt class="py-docstring">                 * root: </tt> </tt>
+<a name="L211"></a><tt class="py-lineno">211</tt>  <tt class="py-line"><tt class="py-docstring">                        MObject or MDagPath or Node of the object you would like to start iteration on, or None to</tt> </tt>
+<a name="L212"></a><tt class="py-lineno">212</tt>  <tt class="py-line"><tt class="py-docstring">                        start on the scene root. The root node will also be returned by the iteration !</tt> </tt>
+<a name="L213"></a><tt class="py-lineno">213</tt>  <tt class="py-line"><tt class="py-docstring">                        Please note that if an MObject is given, it needs to be an instanced DAG node to have an effect.</tt> </tt>
+<a name="L214"></a><tt class="py-lineno">214</tt>  <tt class="py-line"><tt class="py-docstring">                 * predicate: </tt> </tt>
+<a name="L215"></a><tt class="py-lineno">215</tt>  <tt class="py-line"><tt class="py-docstring">                        method returning True if passed in iteration element can be yielded</tt> </tt>
+<a name="L216"></a><tt class="py-lineno">216</tt>  <tt class="py-line"><tt class="py-docstring">                        default: lambda x: True"""</tt> </tt>
+<a name="L217"></a><tt class="py-lineno">217</tt>  <tt class="py-line"> </tt>
+<a name="L218"></a><tt class="py-lineno">218</tt>  <tt class="py-line">        <tt class="py-comment"># Must define dPath in loop or the iterator will yield</tt> </tt>
+<a name="L219"></a><tt class="py-lineno">219</tt>  <tt class="py-line">        <tt class="py-comment"># them as several references to the same object (thus with the same value each time)</tt> </tt>
+<a name="L220"></a><tt class="py-lineno">220</tt>  <tt class="py-line">        <tt class="py-comment"># instances must not be returned multiple times</tt> </tt>
+<a name="L221"></a><tt class="py-lineno">221</tt>  <tt class="py-line">        <tt class="py-comment"># could use a dict but it requires "obj1 is obj2" and not only "obj1 == obj2" to return true to</tt> </tt>
+<a name="L222"></a><tt class="py-lineno">222</tt>  <tt class="py-line">        <tt id="link-81" class="py-name"><a title="mrv.maya.nt.geometry._SingleIndexedComponentIterator.iterator" class="py-name" href="#" onclick="return doclink('link-81', 'iterator', 'link-65');">iterator</a></tt> <tt class="py-op">=</tt> <tt class="py-name">dagIterator</tt><tt class="py-op">(</tt> <tt class="py-op">*</tt><tt id="link-82" class="py-name"><a title="mrv.util.Call.args" class="py-name" href="#" onclick="return doclink('link-82', 'args', 'link-9');">args</a></tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt id="link-83" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-83', 'kwargs', 'link-16');">kwargs</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L223"></a><tt class="py-lineno">223</tt>  <tt class="py-line">        <tt class="py-name">isDone</tt> <tt class="py-op">=</tt> <tt id="link-84" class="py-name"><a title="mrv.maya.nt.geometry._SingleIndexedComponentIterator.iterator" class="py-name" href="#" onclick="return doclink('link-84', 'iterator', 'link-65');">iterator</a></tt><tt class="py-op">.</tt><tt class="py-name">isDone</tt> </tt>
+<a name="L224"></a><tt class="py-lineno">224</tt>  <tt class="py-line">        <tt id="link-85" class="py-name"><a title="mrv.enum.Enumeration.next" class="py-name" href="#" onclick="return doclink('link-85', 'next', 'link-76');">next</a></tt> <tt class="py-op">=</tt> <tt id="link-86" class="py-name"><a title="mrv.maya.nt.geometry._SingleIndexedComponentIterator.iterator" class="py-name" href="#" onclick="return doclink('link-86', 'iterator', 'link-65');">iterator</a></tt><tt class="py-op">.</tt><tt id="link-87" class="py-name"><a title="mrv.enum.Enumeration.next" class="py-name" href="#" onclick="return doclink('link-87', 'next', 'link-76');">next</a></tt> </tt>
+<a name="L225"></a><tt class="py-lineno">225</tt>  <tt class="py-line">         </tt>
+<a name="L226"></a><tt class="py-lineno">226</tt>  <tt class="py-line">        <tt class="py-name">dagpath</tt> <tt class="py-op">=</tt> <tt id="link-88" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-88', 'kwargs', 'link-16');">kwargs</a></tt><tt class="py-op">.</tt><tt id="link-89" class="py-name"><a title="mrv.conf.ConfigAccessor.get
+mrv.dge._PlugShell.get
+mrv.dgfe._IOShell.get
+mrv.dgfe._OIShell.get
+mrv.interface.iProgressIndicator.get
+mrv.maya.util.OptionVarDict.get" class="py-name" href="#" onclick="return doclink('link-89', 'get', 'link-17');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">'dagpath'</tt><tt class="py-op">,</tt> <tt class="py-name">True</tt><tt class="py-op">)</tt> </tt>
+<a name="L227"></a><tt class="py-lineno">227</tt>  <tt class="py-line">        <tt class="py-name">asNode</tt> <tt class="py-op">=</tt> <tt id="link-90" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-90', 'kwargs', 'link-16');">kwargs</a></tt><tt class="py-op">.</tt><tt id="link-91" class="py-name"><a title="mrv.conf.ConfigAccessor.get
+mrv.dge._PlugShell.get
+mrv.dgfe._IOShell.get
+mrv.dgfe._OIShell.get
+mrv.interface.iProgressIndicator.get
+mrv.maya.util.OptionVarDict.get" class="py-name" href="#" onclick="return doclink('link-91', 'get', 'link-17');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">'asNode'</tt><tt class="py-op">,</tt> <tt class="py-name">True</tt> <tt class="py-op">)</tt> </tt>
+<a name="L228"></a><tt class="py-lineno">228</tt>  <tt class="py-line">        <tt class="py-name">predicate</tt> <tt class="py-op">=</tt> <tt id="link-92" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-92', 'kwargs', 'link-16');">kwargs</a></tt><tt class="py-op">.</tt><tt id="link-93" class="py-name"><a title="mrv.conf.ConfigAccessor.get
+mrv.dge._PlugShell.get
+mrv.dgfe._IOShell.get
+mrv.dgfe._OIShell.get
+mrv.interface.iProgressIndicator.get
+mrv.maya.util.OptionVarDict.get" class="py-name" href="#" onclick="return doclink('link-93', 'get', 'link-17');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">'predicate'</tt><tt class="py-op">,</tt> <tt class="py-keyword">lambda</tt> <tt class="py-name">x</tt><tt class="py-op">:</tt> <tt class="py-name">True</tt> <tt class="py-op">)</tt> </tt>
+<a name="L229"></a><tt class="py-lineno">229</tt>  <tt class="py-line">         </tt>
+<a name="L230"></a><tt class="py-lineno">230</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">dagpath</tt><tt class="py-op">:</tt> </tt>
+<a name="L231"></a><tt class="py-lineno">231</tt>  <tt class="py-line">                <tt class="py-name">getPath</tt> <tt class="py-op">=</tt> <tt id="link-94" class="py-name"><a title="mrv.maya.nt.geometry._SingleIndexedComponentIterator.iterator" class="py-name" href="#" onclick="return doclink('link-94', 'iterator', 'link-65');">iterator</a></tt><tt class="py-op">.</tt><tt class="py-name">getPath</tt> </tt>
+<a name="L232"></a><tt class="py-lineno">232</tt>  <tt class="py-line">                <tt class="py-keyword">while</tt> <tt class="py-keyword">not</tt> <tt class="py-name">isDone</tt><tt class="py-op">(</tt> <tt class="py-op">)</tt> <tt class="py-op">:</tt> </tt>
+<a name="L233"></a><tt class="py-lineno">233</tt>  <tt class="py-line">                        <tt class="py-name">rval</tt> <tt class="py-op">=</tt> <tt class="py-name">MDagPath</tt><tt class="py-op">(</tt> <tt class="py-op">)</tt> </tt>
+<a name="L234"></a><tt class="py-lineno">234</tt>  <tt class="py-line">                        <tt class="py-name">getPath</tt><tt class="py-op">(</tt> <tt class="py-name">rval</tt> <tt class="py-op">)</tt> </tt>
+<a name="L235"></a><tt class="py-lineno">235</tt>  <tt class="py-line">                        <tt class="py-keyword">if</tt> <tt class="py-name">asNode</tt><tt class="py-op">:</tt> </tt>
+<a name="L236"></a><tt class="py-lineno">236</tt>  <tt class="py-line">                                <tt class="py-name">rval</tt> <tt class="py-op">=</tt> <tt id="link-95" class="py-name"><a title="mrv.maya.nt.base.NodeFromObj" class="py-name" href="#" onclick="return doclink('link-95', 'NodeFromObj', 'link-6');">NodeFromObj</a></tt><tt class="py-op">(</tt> <tt class="py-name">rval</tt> <tt class="py-op">)</tt> </tt>
+<a name="L237"></a><tt class="py-lineno">237</tt>  <tt class="py-line">                        <tt class="py-keyword">if</tt> <tt class="py-name">predicate</tt><tt class="py-op">(</tt> <tt class="py-name">rval</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L238"></a><tt class="py-lineno">238</tt>  <tt class="py-line">                                <tt class="py-keyword">yield</tt> <tt class="py-name">rval</tt> </tt>
+<a name="L239"></a><tt class="py-lineno">239</tt>  <tt class="py-line">                         </tt>
+<a name="L240"></a><tt class="py-lineno">240</tt>  <tt class="py-line">                        <tt id="link-96" class="py-name"><a title="mrv.enum.Enumeration.next" class="py-name" href="#" onclick="return doclink('link-96', 'next', 'link-76');">next</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L241"></a><tt class="py-lineno">241</tt>  <tt class="py-line">                <tt class="py-comment"># END while not is done</tt> </tt>
+<a name="L242"></a><tt class="py-lineno">242</tt>  <tt class="py-line">        <tt class="py-comment"># END if using dag paths</tt> </tt>
+<a name="L243"></a><tt class="py-lineno">243</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L244"></a><tt class="py-lineno">244</tt>  <tt class="py-line">                <tt class="py-comment"># NOTE: sets don't work here, as more than == comparison is required</tt> </tt>
+<a name="L245"></a><tt class="py-lineno">245</tt>  <tt class="py-line">                <tt class="py-name">instanceset</tt> <tt class="py-op">=</tt> <tt class="py-name">list</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L246"></a><tt class="py-lineno">246</tt>  <tt class="py-line">                <tt class="py-name">currentItem</tt> <tt class="py-op">=</tt> <tt id="link-97" class="py-name"><a title="mrv.maya.nt.geometry._SingleIndexedComponentIterator.iterator" class="py-name" href="#" onclick="return doclink('link-97', 'iterator', 'link-65');">iterator</a></tt><tt class="py-op">.</tt><tt class="py-name">currentItem</tt> </tt>
+<a name="L247"></a><tt class="py-lineno">247</tt>  <tt class="py-line">                <tt class="py-name">isInstanced</tt> <tt class="py-op">=</tt> <tt id="link-98" class="py-name"><a title="mrv.maya.nt.geometry._SingleIndexedComponentIterator.iterator" class="py-name" href="#" onclick="return doclink('link-98', 'iterator', 'link-65');">iterator</a></tt><tt class="py-op">.</tt><tt class="py-name">isInstanced</tt> </tt>
+<a name="L248"></a><tt class="py-lineno">248</tt>  <tt class="py-line">                 </tt>
+<a name="L249"></a><tt class="py-lineno">249</tt>  <tt class="py-line">                <tt class="py-keyword">while</tt> <tt class="py-keyword">not</tt> <tt class="py-name">isDone</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-op">:</tt> </tt>
+<a name="L250"></a><tt class="py-lineno">250</tt>  <tt class="py-line">                        <tt class="py-name">rval</tt> <tt class="py-op">=</tt> <tt class="py-name">currentItem</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L251"></a><tt class="py-lineno">251</tt>  <tt class="py-line">                        <tt class="py-keyword">if</tt> <tt class="py-name">isInstanced</tt><tt class="py-op">(</tt> <tt class="py-name">True</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L252"></a><tt class="py-lineno">252</tt>  <tt class="py-line">                                <tt class="py-keyword">if</tt> <tt class="py-name">rval</tt> <tt class="py-keyword">not</tt> <tt class="py-keyword">in</tt> <tt class="py-name">instanceset</tt><tt class="py-op">:</tt> </tt>
+<a name="L253"></a><tt class="py-lineno">253</tt>  <tt class="py-line">                                        <tt class="py-name">instanceset</tt><tt class="py-op">.</tt><tt id="link-99" class="py-name" targets="Method mrv.conf.ConfigChain.append()=mrv.conf.ConfigChain-class.html#append"><a title="mrv.conf.ConfigChain.append" class="py-name" href="#" onclick="return doclink('link-99', 'append', 'link-99');">append</a></tt><tt class="py-op">(</tt> <tt class="py-name">rval</tt> <tt class="py-op">)</tt> </tt>
+<a name="L254"></a><tt class="py-lineno">254</tt>  <tt class="py-line">                                <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L255"></a><tt class="py-lineno">255</tt>  <tt class="py-line">                                        <tt id="link-100" class="py-name"><a title="mrv.enum.Enumeration.next" class="py-name" href="#" onclick="return doclink('link-100', 'next', 'link-76');">next</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L256"></a><tt class="py-lineno">256</tt>  <tt class="py-line">                                        <tt class="py-keyword">continue</tt> </tt>
+<a name="L257"></a><tt class="py-lineno">257</tt>  <tt class="py-line">                                <tt class="py-comment"># END if object not yet returned</tt> </tt>
+<a name="L258"></a><tt class="py-lineno">258</tt>  <tt class="py-line">                        <tt class="py-comment"># END handle instances</tt> </tt>
+<a name="L259"></a><tt class="py-lineno">259</tt>  <tt class="py-line">                         </tt>
+<a name="L260"></a><tt class="py-lineno">260</tt>  <tt class="py-line">                        <tt class="py-keyword">if</tt> <tt class="py-name">asNode</tt><tt class="py-op">:</tt> </tt>
+<a name="L261"></a><tt class="py-lineno">261</tt>  <tt class="py-line">                                <tt class="py-name">rval</tt> <tt class="py-op">=</tt> <tt id="link-101" class="py-name"><a title="mrv.maya.nt.base.NodeFromObj" class="py-name" href="#" onclick="return doclink('link-101', 'NodeFromObj', 'link-6');">NodeFromObj</a></tt><tt class="py-op">(</tt><tt class="py-name">rval</tt><tt class="py-op">)</tt> </tt>
+<a name="L262"></a><tt class="py-lineno">262</tt>  <tt class="py-line">                        <tt class="py-keyword">if</tt> <tt class="py-name">predicate</tt><tt class="py-op">(</tt> <tt class="py-name">rval</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L263"></a><tt class="py-lineno">263</tt>  <tt class="py-line">                                <tt class="py-keyword">yield</tt> <tt class="py-name">rval</tt> </tt>
+<a name="L264"></a><tt class="py-lineno">264</tt>  <tt class="py-line">                         </tt>
+<a name="L265"></a><tt class="py-lineno">265</tt>  <tt class="py-line">                        <tt id="link-102" class="py-name"><a title="mrv.enum.Enumeration.next" class="py-name" href="#" onclick="return doclink('link-102', 'next', 'link-76');">next</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L266"></a><tt class="py-lineno">266</tt>  <tt class="py-line">                <tt class="py-comment"># END while not is done</tt> </tt>
+<a name="L267"></a><tt class="py-lineno">267</tt>  <tt class="py-line">        <tt class="py-comment"># END if using mobjects</tt> </tt>
+<a name="L268"></a><tt class="py-lineno">268</tt>  <tt class="py-line"> </tt>
+<a name="iterGraph"></a><div id="iterGraph-def"><a name="L269"></a><tt class="py-lineno">269</tt> <a class="py-toggle" href="#" id="iterGraph-toggle" onclick="return toggle('iterGraph');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.nt.it-module.html#iterGraph">iterGraph</a><tt class="py-op">(</tt> <tt class="py-param">nodeOrPlug</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="iterGraph-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="iterGraph-expanded"><a name="L270"></a><tt class="py-lineno">270</tt>  <tt class="py-line">        <tt class="py-docstring">""" Iterate Dependency Graph (DG) Nodes or Plugs starting at a specified root Node or Plug.</tt> </tt>
+<a name="L271"></a><tt class="py-lineno">271</tt>  <tt class="py-line"><tt class="py-docstring">        The iteration _includes_ the root node or plug.</tt> </tt>
+<a name="L272"></a><tt class="py-lineno">272</tt>  <tt class="py-line"><tt class="py-docstring">        The following keywords will affect order and behavior of traversal:</tt> </tt>
+<a name="L273"></a><tt class="py-lineno">273</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L274"></a><tt class="py-lineno">274</tt>  <tt class="py-line"><tt class="py-docstring">        :param nodeOrPlug: Node, MObject or MPlug to start the iteration at</tt> </tt>
+<a name="L275"></a><tt class="py-lineno">275</tt>  <tt class="py-line"><tt class="py-docstring">        :param args: list of MFn node types</tt> </tt>
+<a name="L276"></a><tt class="py-lineno">276</tt>  <tt class="py-line"><tt class="py-docstring">                If a list of types is provided, only nodes of these types will be returned,</tt> </tt>
+<a name="L277"></a><tt class="py-lineno">277</tt>  <tt class="py-line"><tt class="py-docstring">                if no type is provided all connected nodes will be iterated on.</tt> </tt>
+<a name="L278"></a><tt class="py-lineno">278</tt>  <tt class="py-line"><tt class="py-docstring">        :param kwargs:</tt> </tt>
+<a name="L279"></a><tt class="py-lineno">279</tt>  <tt class="py-line"><tt class="py-docstring">                 * input: </tt> </tt>
+<a name="L280"></a><tt class="py-lineno">280</tt>  <tt class="py-line"><tt class="py-docstring">                        if True connections will be followed from destination to source,</tt> </tt>
+<a name="L281"></a><tt class="py-lineno">281</tt>  <tt class="py-line"><tt class="py-docstring">                        if False from source to destination</tt> </tt>
+<a name="L282"></a><tt class="py-lineno">282</tt>  <tt class="py-line"><tt class="py-docstring">                        default is False (downstream)</tt> </tt>
+<a name="L283"></a><tt class="py-lineno">283</tt>  <tt class="py-line"><tt class="py-docstring">                 * breadth: </tt> </tt>
+<a name="L284"></a><tt class="py-lineno">284</tt>  <tt class="py-line"><tt class="py-docstring">                        if True nodes will be returned as a breadth first traversal of the connection graph,</tt> </tt>
+<a name="L285"></a><tt class="py-lineno">285</tt>  <tt class="py-line"><tt class="py-docstring">                        if False as a preorder (depth first)</tt> </tt>
+<a name="L286"></a><tt class="py-lineno">286</tt>  <tt class="py-line"><tt class="py-docstring">                        default is False (depth first)</tt> </tt>
+<a name="L287"></a><tt class="py-lineno">287</tt>  <tt class="py-line"><tt class="py-docstring">                 * plug: </tt> </tt>
+<a name="L288"></a><tt class="py-lineno">288</tt>  <tt class="py-line"><tt class="py-docstring">                        if True traversal will be at plug level (no plug will be traversed more than once),</tt> </tt>
+<a name="L289"></a><tt class="py-lineno">289</tt>  <tt class="py-line"><tt class="py-docstring">                        if False at node level (no node will be traversed more than once),</tt> </tt>
+<a name="L290"></a><tt class="py-lineno">290</tt>  <tt class="py-line"><tt class="py-docstring">                        default is False (node level)</tt> </tt>
+<a name="L291"></a><tt class="py-lineno">291</tt>  <tt class="py-line"><tt class="py-docstring">                 * prune: </tt> </tt>
+<a name="L292"></a><tt class="py-lineno">292</tt>  <tt class="py-line"><tt class="py-docstring">                        if True, the iteration will stop on nodes that do not fit the types list,</tt> </tt>
+<a name="L293"></a><tt class="py-lineno">293</tt>  <tt class="py-line"><tt class="py-docstring">                        if False these nodes will be traversed but not returned</tt> </tt>
+<a name="L294"></a><tt class="py-lineno">294</tt>  <tt class="py-line"><tt class="py-docstring">                        default is False (do not prune)</tt> </tt>
+<a name="L295"></a><tt class="py-lineno">295</tt>  <tt class="py-line"><tt class="py-docstring">                 * asNode: </tt> </tt>
+<a name="L296"></a><tt class="py-lineno">296</tt>  <tt class="py-line"><tt class="py-docstring">                        if True, default True, and if the iteration is on node level, </tt> </tt>
+<a name="L297"></a><tt class="py-lineno">297</tt>  <tt class="py-line"><tt class="py-docstring">                        Nodes ( wrapped MObjects ) will be returned</tt> </tt>
+<a name="L298"></a><tt class="py-lineno">298</tt>  <tt class="py-line"><tt class="py-docstring">                        If False, MObjects will be returned</tt> </tt>
+<a name="L299"></a><tt class="py-lineno">299</tt>  <tt class="py-line"><tt class="py-docstring">                 * predicate: </tt> </tt>
+<a name="L300"></a><tt class="py-lineno">300</tt>  <tt class="py-line"><tt class="py-docstring">                        method returning True if passed in iteration element can be yielded</tt> </tt>
+<a name="L301"></a><tt class="py-lineno">301</tt>  <tt class="py-line"><tt class="py-docstring">                        default: lambda x: True</tt> </tt>
+<a name="L302"></a><tt class="py-lineno">302</tt>  <tt class="py-line"><tt class="py-docstring">        :return: Iterator yielding MObject, Node or Plug depending on the configuration flags, first yielded item is </tt> </tt>
+<a name="L303"></a><tt class="py-lineno">303</tt>  <tt class="py-line"><tt class="py-docstring">                always the root node or plug."""</tt> </tt>
+<a name="L304"></a><tt class="py-lineno">304</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L305"></a><tt class="py-lineno">305</tt>  <tt class="py-line">                <tt id="link-103" class="py-name"><a title="mrv.maya.nt.geometry._SingleIndexedComponentIterator.iterator" class="py-name" href="#" onclick="return doclink('link-103', 'iterator', 'link-65');">iterator</a></tt> <tt class="py-op">=</tt> <tt class="py-name">graphIterator</tt><tt class="py-op">(</tt> <tt class="py-name">nodeOrPlug</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt id="link-104" class="py-name"><a title="mrv.util.Call.args" class="py-name" href="#" onclick="return doclink('link-104', 'args', 'link-9');">args</a></tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt id="link-105" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-105', 'kwargs', 'link-16');">kwargs</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L306"></a><tt class="py-lineno">306</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt> <tt class="py-name">RuntimeError</tt><tt class="py-op">:</tt> </tt>
+<a name="L307"></a><tt class="py-lineno">307</tt>  <tt class="py-line">                <tt class="py-comment"># may raise if iteration would yield no results</tt> </tt>
+<a name="L308"></a><tt class="py-lineno">308</tt>  <tt class="py-line">                <tt class="py-keyword">raise</tt> <tt class="py-name">StopIteration</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L309"></a><tt class="py-lineno">309</tt>  <tt class="py-line"> </tt>
+<a name="L310"></a><tt class="py-lineno">310</tt>  <tt class="py-line">        <tt class="py-name">retrievePlugs</tt> <tt class="py-op">=</tt> <tt class="py-keyword">not</tt> <tt id="link-106" class="py-name"><a title="mrv.maya.nt.geometry._SingleIndexedComponentIterator.iterator" class="py-name" href="#" onclick="return doclink('link-106', 'iterator', 'link-65');">iterator</a></tt><tt class="py-op">.</tt><tt class="py-name">atNodeLevel</tt><tt class="py-op">(</tt> <tt class="py-op">)</tt> </tt>
+<a name="L311"></a><tt class="py-lineno">311</tt>  <tt class="py-line">        <tt class="py-name">asNode</tt> <tt class="py-op">=</tt> <tt id="link-107" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-107', 'kwargs', 'link-16');">kwargs</a></tt><tt class="py-op">.</tt><tt id="link-108" class="py-name"><a title="mrv.conf.ConfigAccessor.get
+mrv.dge._PlugShell.get
+mrv.dgfe._IOShell.get
+mrv.dgfe._OIShell.get
+mrv.interface.iProgressIndicator.get
+mrv.maya.util.OptionVarDict.get" class="py-name" href="#" onclick="return doclink('link-108', 'get', 'link-17');">get</a></tt><tt class="py-op">(</tt> <tt class="py-string">"asNode"</tt><tt class="py-op">,</tt> <tt class="py-name">True</tt> <tt class="py-op">)</tt> </tt>
+<a name="L312"></a><tt class="py-lineno">312</tt>  <tt class="py-line">        <tt class="py-name">predicate</tt> <tt class="py-op">=</tt> <tt id="link-109" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-109', 'kwargs', 'link-16');">kwargs</a></tt><tt class="py-op">.</tt><tt id="link-110" class="py-name"><a title="mrv.conf.ConfigAccessor.get
+mrv.dge._PlugShell.get
+mrv.dgfe._IOShell.get
+mrv.dgfe._OIShell.get
+mrv.interface.iProgressIndicator.get
+mrv.maya.util.OptionVarDict.get" class="py-name" href="#" onclick="return doclink('link-110', 'get', 'link-17');">get</a></tt><tt class="py-op">(</tt> <tt class="py-string">'predicate'</tt><tt class="py-op">,</tt> <tt class="py-keyword">lambda</tt> <tt class="py-name">x</tt><tt class="py-op">:</tt> <tt class="py-name">True</tt> <tt class="py-op">)</tt> </tt>
+<a name="L313"></a><tt class="py-lineno">313</tt>  <tt class="py-line"> </tt>
+<a name="L314"></a><tt class="py-lineno">314</tt>  <tt class="py-line">        <tt class="py-name">isDone</tt> <tt class="py-op">=</tt> <tt id="link-111" class="py-name"><a title="mrv.maya.nt.geometry._SingleIndexedComponentIterator.iterator" class="py-name" href="#" onclick="return doclink('link-111', 'iterator', 'link-65');">iterator</a></tt><tt class="py-op">.</tt><tt class="py-name">isDone</tt> </tt>
+<a name="L315"></a><tt class="py-lineno">315</tt>  <tt class="py-line">        <tt id="link-112" class="py-name"><a title="mrv.enum.Enumeration.next" class="py-name" href="#" onclick="return doclink('link-112', 'next', 'link-76');">next</a></tt> <tt class="py-op">=</tt> <tt id="link-113" class="py-name"><a title="mrv.maya.nt.geometry._SingleIndexedComponentIterator.iterator" class="py-name" href="#" onclick="return doclink('link-113', 'iterator', 'link-65');">iterator</a></tt><tt class="py-op">.</tt><tt id="link-114" class="py-name"><a title="mrv.enum.Enumeration.next" class="py-name" href="#" onclick="return doclink('link-114', 'next', 'link-76');">next</a></tt> </tt>
+<a name="L316"></a><tt class="py-lineno">316</tt>  <tt class="py-line">        <tt class="py-name">thisPlug</tt> <tt class="py-op">=</tt> <tt id="link-115" class="py-name"><a title="mrv.maya.nt.geometry._SingleIndexedComponentIterator.iterator" class="py-name" href="#" onclick="return doclink('link-115', 'iterator', 'link-65');">iterator</a></tt><tt class="py-op">.</tt><tt class="py-name">thisPlug</tt> </tt>
+<a name="L317"></a><tt class="py-lineno">317</tt>  <tt class="py-line">        <tt class="py-name">currentItem</tt> <tt class="py-op">=</tt> <tt id="link-116" class="py-name"><a title="mrv.maya.nt.geometry._SingleIndexedComponentIterator.iterator" class="py-name" href="#" onclick="return doclink('link-116', 'iterator', 'link-65');">iterator</a></tt><tt class="py-op">.</tt><tt class="py-name">currentItem</tt> </tt>
+<a name="L318"></a><tt class="py-lineno">318</tt>  <tt class="py-line"> </tt>
+<a name="L319"></a><tt class="py-lineno">319</tt>  <tt class="py-line">        <tt class="py-comment"># iterates and yields MObjects</tt> </tt>
+<a name="L320"></a><tt class="py-lineno">320</tt>  <tt class="py-line">        <tt class="py-name">rval</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L321"></a><tt class="py-lineno">321</tt>  <tt class="py-line">        <tt class="py-comment"># if node filters are used, it easily threw NULL Object returned errors</tt> </tt>
+<a name="L322"></a><tt class="py-lineno">322</tt>  <tt class="py-line">        <tt class="py-comment"># just because the iteration is depleted - catching this now</tt> </tt>
+<a name="L323"></a><tt class="py-lineno">323</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L324"></a><tt class="py-lineno">324</tt>  <tt class="py-line">                <tt class="py-keyword">while</tt> <tt class="py-keyword">not</tt> <tt class="py-name">isDone</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L325"></a><tt class="py-lineno">325</tt>  <tt class="py-line">                        <tt class="py-keyword">if</tt> <tt class="py-name">retrievePlugs</tt><tt class="py-op">:</tt> </tt>
+<a name="L326"></a><tt class="py-lineno">326</tt>  <tt class="py-line">                                <tt class="py-name">rval</tt> <tt class="py-op">=</tt> <tt class="py-name">thisPlug</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L327"></a><tt class="py-lineno">327</tt>  <tt class="py-line">                        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L328"></a><tt class="py-lineno">328</tt>  <tt class="py-line">                                <tt class="py-name">rval</tt> <tt class="py-op">=</tt> <tt class="py-name">currentItem</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L329"></a><tt class="py-lineno">329</tt>  <tt class="py-line">                                <tt class="py-keyword">if</tt> <tt class="py-name">asNode</tt><tt class="py-op">:</tt> </tt>
+<a name="L330"></a><tt class="py-lineno">330</tt>  <tt class="py-line">                                        <tt class="py-name">rval</tt> <tt class="py-op">=</tt> <tt id="link-117" class="py-name"><a title="mrv.maya.nt.base.NodeFromObj" class="py-name" href="#" onclick="return doclink('link-117', 'NodeFromObj', 'link-6');">NodeFromObj</a></tt><tt class="py-op">(</tt> <tt class="py-name">rval</tt> <tt class="py-op">)</tt> </tt>
+<a name="L331"></a><tt class="py-lineno">331</tt>  <tt class="py-line">                                <tt class="py-comment"># END handle asNode</tt> </tt>
+<a name="L332"></a><tt class="py-lineno">332</tt>  <tt class="py-line">                        <tt class="py-comment"># END if return on node level</tt> </tt>
+<a name="L333"></a><tt class="py-lineno">333</tt>  <tt class="py-line">                         </tt>
+<a name="L334"></a><tt class="py-lineno">334</tt>  <tt class="py-line">                        <tt class="py-keyword">if</tt> <tt class="py-name">predicate</tt><tt class="py-op">(</tt> <tt class="py-name">rval</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L335"></a><tt class="py-lineno">335</tt>  <tt class="py-line">                                <tt class="py-keyword">yield</tt> <tt class="py-name">rval</tt> </tt>
+<a name="L336"></a><tt class="py-lineno">336</tt>  <tt class="py-line">         </tt>
+<a name="L337"></a><tt class="py-lineno">337</tt>  <tt class="py-line">                        <tt id="link-118" class="py-name"><a title="mrv.enum.Enumeration.next" class="py-name" href="#" onclick="return doclink('link-118', 'next', 'link-76');">next</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L338"></a><tt class="py-lineno">338</tt>  <tt class="py-line">                <tt class="py-comment"># END of iteration</tt> </tt>
+<a name="L339"></a><tt class="py-lineno">339</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt> <tt class="py-name">RuntimeError</tt><tt class="py-op">:</tt> </tt>
+<a name="L340"></a><tt class="py-lineno">340</tt>  <tt class="py-line">                <tt class="py-keyword">raise</tt> <tt class="py-name">StopIteration</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L341"></a><tt class="py-lineno">341</tt>  <tt class="py-line">        <tt class="py-comment"># END handle possible iteration error</tt> </tt>
+<a name="L342"></a><tt class="py-lineno">342</tt>  <tt class="py-line"> </tt>
+<a name="L343"></a><tt class="py-lineno">343</tt>  <tt class="py-line"> </tt>
+<a name="L344"></a><tt class="py-lineno">344</tt>  <tt class="py-line"><tt id="link-119" class="py-name"><a title="mrv.maya.nt.it.nullplugarray" class="py-name" href="#" onclick="return doclink('link-119', 'nullplugarray', 'link-48');">nullplugarray</a></tt> <tt class="py-op">=</tt> <tt class="py-name">api</tt><tt class="py-op">.</tt><tt id="link-120" class="py-name" targets="Class mrv.maya.nt.apipatch.MPlugArray=mrv.maya.nt.apipatch.MPlugArray-class.html"><a title="mrv.maya.nt.apipatch.MPlugArray" class="py-name" href="#" onclick="return doclink('link-120', 'MPlugArray', 'link-120');">MPlugArray</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L345"></a><tt class="py-lineno">345</tt>  <tt class="py-line"><tt id="link-121" class="py-name"><a title="mrv.maya.nt.it.nullplugarray" class="py-name" href="#" onclick="return doclink('link-121', 'nullplugarray', 'link-48');">nullplugarray</a></tt><tt class="py-op">.</tt><tt class="py-name">setLength</tt><tt class="py-op">(</tt> <tt class="py-number">1</tt> <tt class="py-op">)</tt> </tt>
+<a name="iterSelectionList"></a><div id="iterSelectionList-def"><a name="L346"></a><tt class="py-lineno">346</tt> <a class="py-toggle" href="#" id="iterSelectionList-toggle" onclick="return toggle('iterSelectionList');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.nt.it-module.html#iterSelectionList">iterSelectionList</a><tt class="py-op">(</tt> <tt class="py-param">sellist</tt><tt class="py-op">,</tt> <tt class="py-param">filterType</tt> <tt class="py-op">=</tt> <tt class="py-name">api</tt><tt class="py-op">.</tt><tt class="py-name">MFn</tt><tt class="py-op">.</tt><tt class="py-name">kInvalid</tt><tt class="py-op">,</tt> <tt class="py-param">predicate</tt> <tt class="py-op">=</tt> <tt class="py-keyword">lambda</tt> <tt class="py-name">x</tt><tt class="py-op">:</tt> <tt class="py-name">True</tt><tt class="py-op">,</tt> </tt>
+<a name="L347"></a><tt class="py-lineno">347</tt>  <tt class="py-line">                                                <tt class="py-name">asNode</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt><tt class="py-op">,</tt> <tt class="py-name">handlePlugs</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt><tt class="py-op">,</tt> <tt class="py-name">handleComponents</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="iterSelectionList-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="iterSelectionList-expanded"><a name="L348"></a><tt class="py-lineno">348</tt>  <tt class="py-line">        <tt class="py-docstring">"""Iterate the given selection list</tt> </tt>
+<a name="L349"></a><tt class="py-lineno">349</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L350"></a><tt class="py-lineno">350</tt>  <tt class="py-line"><tt class="py-docstring">        :param sellist: MSelectionList to iterate</tt> </tt>
+<a name="L351"></a><tt class="py-lineno">351</tt>  <tt class="py-line"><tt class="py-docstring">        :param filterType: MFnType id acting as simple type filter to ignore all objects which do not</tt> </tt>
+<a name="L352"></a><tt class="py-lineno">352</tt>  <tt class="py-line"><tt class="py-docstring">                have the given object type</tt> </tt>
+<a name="L353"></a><tt class="py-lineno">353</tt>  <tt class="py-line"><tt class="py-docstring">        :param asNode: if True, returned MObjects or DagPaths will be wrapped as Node, compoents will be</tt> </tt>
+<a name="L354"></a><tt class="py-lineno">354</tt>  <tt class="py-line"><tt class="py-docstring">                wrapped as Component. </tt> </tt>
+<a name="L355"></a><tt class="py-lineno">355</tt>  <tt class="py-line"><tt class="py-docstring">                Otherwise they will be returned as MObjects and MDagPaths respectively.</tt> </tt>
+<a name="L356"></a><tt class="py-lineno">356</tt>  <tt class="py-line"><tt class="py-docstring">        :param handlePlugs: if True, plugs can be part of the selection list and will be returned. This</tt> </tt>
+<a name="L357"></a><tt class="py-lineno">357</tt>  <tt class="py-line"><tt class="py-docstring">                implicitly means that the selection list will be iterated without an iterator, and MFnType filters</tt> </tt>
+<a name="L358"></a><tt class="py-lineno">358</tt>  <tt class="py-line"><tt class="py-docstring">                will be slower as it is implemented in python. If components are enabled, the tuple returned will be</tt> </tt>
+<a name="L359"></a><tt class="py-lineno">359</tt>  <tt class="py-line"><tt class="py-docstring">                ( Plug, MObject() )</tt> </tt>
+<a name="L360"></a><tt class="py-lineno">360</tt>  <tt class="py-line"><tt class="py-docstring">        :param predicate: method returninng True if passed in iteration element can be yielded</tt> </tt>
+<a name="L361"></a><tt class="py-lineno">361</tt>  <tt class="py-line"><tt class="py-docstring">                default: lambda x: True</tt> </tt>
+<a name="L362"></a><tt class="py-lineno">362</tt>  <tt class="py-line"><tt class="py-docstring">        :param handleComponents: if True, possibly selected components of dagNodes will be returned</tt> </tt>
+<a name="L363"></a><tt class="py-lineno">363</tt>  <tt class="py-line"><tt class="py-docstring">                as well. This forces the return value into tuple(Node, Component)</tt> </tt>
+<a name="L364"></a><tt class="py-lineno">364</tt>  <tt class="py-line"><tt class="py-docstring">        :return: Node or Plug on each iteration step</tt> </tt>
+<a name="L365"></a><tt class="py-lineno">365</tt>  <tt class="py-line"><tt class="py-docstring">                If handleComponents is True, for each Object, a tuple will be returned as tuple( Node, Component ) where</tt> </tt>
+<a name="L366"></a><tt class="py-lineno">366</tt>  <tt class="py-line"><tt class="py-docstring">                component is NullObject ( MObject ) if the whole object is on the list.</tt> </tt>
+<a name="L367"></a><tt class="py-lineno">367</tt>  <tt class="py-line"><tt class="py-docstring">                If the original object was a plug, it will be in the tuples first slot, whereas the component </tt> </tt>
+<a name="L368"></a><tt class="py-lineno">368</tt>  <tt class="py-line"><tt class="py-docstring">                will be a NullObject"""</tt> </tt>
+<a name="L369"></a><tt class="py-lineno">369</tt>  <tt class="py-line">        <tt class="py-name">kNullObj</tt> <tt class="py-op">=</tt> <tt class="py-name">MObject</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L370"></a><tt class="py-lineno">370</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">handlePlugs</tt><tt class="py-op">:</tt> </tt>
+<a name="L371"></a><tt class="py-lineno">371</tt>  <tt class="py-line">                <tt class="py-comment"># version compatibility - maya 8.5 still defines a plug ptr class that maya 2005 lacks</tt> </tt>
+<a name="L372"></a><tt class="py-lineno">372</tt>  <tt class="py-line">                <tt class="py-name">plug_types</tt> <tt class="py-op">=</tt> <tt class="py-name">api</tt><tt class="py-op">.</tt><tt id="link-122" class="py-name"><a title="mrv.maya.nt.apipatch.MPlug" class="py-name" href="#" onclick="return doclink('link-122', 'MPlug', 'link-44');">MPlug</a></tt> </tt>
+<a name="L373"></a><tt class="py-lineno">373</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">cmds</tt><tt class="py-op">.</tt><tt class="py-name">about</tt><tt class="py-op">(</tt> <tt class="py-name">v</tt><tt class="py-op">=</tt><tt class="py-number">1</tt> <tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">startswith</tt><tt class="py-op">(</tt> <tt class="py-string">"8.5"</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L374"></a><tt class="py-lineno">374</tt>  <tt class="py-line">                        <tt class="py-name">plug_types</tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt> <tt class="py-name">api</tt><tt class="py-op">.</tt><tt id="link-123" class="py-name"><a title="mrv.maya.nt.apipatch.MPlug" class="py-name" href="#" onclick="return doclink('link-123', 'MPlug', 'link-44');">MPlug</a></tt><tt class="py-op">,</tt> <tt class="py-name">api</tt><tt class="py-op">.</tt><tt class="py-name">MPlugPtr</tt> <tt class="py-op">)</tt> </tt>
+<a name="L375"></a><tt class="py-lineno">375</tt>  <tt class="py-line"> </tt>
+<a name="L376"></a><tt class="py-lineno">376</tt>  <tt class="py-line">                <tt class="py-comment"># SELECTION LIST MODE</tt> </tt>
+<a name="L377"></a><tt class="py-lineno">377</tt>  <tt class="py-line">                <tt class="py-name">kInvalid</tt> <tt class="py-op">=</tt> <tt class="py-name">api</tt><tt class="py-op">.</tt><tt class="py-name">MFn</tt><tt class="py-op">.</tt><tt class="py-name">kInvalid</tt> </tt>
+<a name="L378"></a><tt class="py-lineno">378</tt>  <tt class="py-line">                <tt class="py-name">getDagPath</tt> <tt class="py-op">=</tt> <tt class="py-name">sellist</tt><tt class="py-op">.</tt><tt class="py-name">getDagPath</tt> </tt>
+<a name="L379"></a><tt class="py-lineno">379</tt>  <tt class="py-line">                <tt class="py-name">getPlug</tt> <tt class="py-op">=</tt> <tt class="py-name">sellist</tt><tt class="py-op">.</tt><tt class="py-name">getPlug</tt> </tt>
+<a name="L380"></a><tt class="py-lineno">380</tt>  <tt class="py-line">                <tt class="py-name">getDependNode</tt> <tt class="py-op">=</tt> <tt class="py-name">sellist</tt><tt class="py-op">.</tt><tt class="py-name">getDependNode</tt> </tt>
+<a name="L381"></a><tt class="py-lineno">381</tt>  <tt class="py-line">                <tt class="py-keyword">for</tt> <tt class="py-name">i</tt> <tt class="py-keyword">in</tt> <tt class="py-name">xrange</tt><tt class="py-op">(</tt> <tt class="py-name">sellist</tt><tt class="py-op">.</tt><tt id="link-124" class="py-name" targets="Method mrv.maya.nt.apipatch.MPlug.length()=mrv.maya.nt.apipatch.MPlug-class.html#length"><a title="mrv.maya.nt.apipatch.MPlug.length" class="py-name" href="#" onclick="return doclink('link-124', 'length', 'link-124');">length</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L382"></a><tt class="py-lineno">382</tt>  <tt class="py-line">                        <tt class="py-comment"># DAG PATH</tt> </tt>
+<a name="L383"></a><tt class="py-lineno">383</tt>  <tt class="py-line">                        <tt class="py-name">rval</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L384"></a><tt class="py-lineno">384</tt>  <tt class="py-line">                        <tt id="link-125" class="py-name" targets="Method mrv.maya.nt.geometry.Mesh.component()=mrv.maya.nt.geometry.Mesh-class.html#component"><a title="mrv.maya.nt.geometry.Mesh.component" class="py-name" href="#" onclick="return doclink('link-125', 'component', 'link-125');">component</a></tt> <tt class="py-op">=</tt> <tt class="py-name">kNullObj</tt> </tt>
+<a name="L385"></a><tt class="py-lineno">385</tt>  <tt class="py-line">                        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L386"></a><tt class="py-lineno">386</tt>  <tt class="py-line">                                <tt class="py-name">rval</tt> <tt class="py-op">=</tt> <tt class="py-name">MDagPath</tt><tt class="py-op">(</tt> <tt class="py-op">)</tt> </tt>
+<a name="L387"></a><tt class="py-lineno">387</tt>  <tt class="py-line">                                <tt class="py-keyword">if</tt> <tt class="py-name">handleComponents</tt><tt class="py-op">:</tt> </tt>
+<a name="L388"></a><tt class="py-lineno">388</tt>  <tt class="py-line">                                        <tt id="link-126" class="py-name"><a title="mrv.maya.nt.geometry.Mesh.component" class="py-name" href="#" onclick="return doclink('link-126', 'component', 'link-125');">component</a></tt> <tt class="py-op">=</tt> <tt class="py-name">MObject</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L389"></a><tt class="py-lineno">389</tt>  <tt class="py-line">                                        <tt class="py-name">getDagPath</tt><tt class="py-op">(</tt> <tt class="py-name">i</tt><tt class="py-op">,</tt> <tt class="py-name">rval</tt><tt class="py-op">,</tt> <tt id="link-127" class="py-name"><a title="mrv.maya.nt.geometry.Mesh.component" class="py-name" href="#" onclick="return doclink('link-127', 'component', 'link-125');">component</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L390"></a><tt class="py-lineno">390</tt>  <tt class="py-line">                                        <tt class="py-keyword">if</tt> <tt class="py-name">asNode</tt> <tt class="py-keyword">and</tt> <tt class="py-keyword">not</tt> <tt id="link-128" class="py-name"><a title="mrv.maya.nt.geometry.Mesh.component" class="py-name" href="#" onclick="return doclink('link-128', 'component', 'link-125');">component</a></tt><tt class="py-op">.</tt><tt id="link-129" class="py-name" targets="Method mrv.automation.qa.QACheckResult.isNull()=mrv.automation.qa.QACheckResult-class.html#isNull"><a title="mrv.automation.qa.QACheckResult.isNull" class="py-name" href="#" onclick="return doclink('link-129', 'isNull', 'link-129');">isNull</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L391"></a><tt class="py-lineno">391</tt>  <tt class="py-line">                                                <tt id="link-130" class="py-name"><a title="mrv.maya.nt.geometry.Mesh.component" class="py-name" href="#" onclick="return doclink('link-130', 'component', 'link-125');">component</a></tt> <tt class="py-op">=</tt> <tt id="link-131" class="py-name"><a title="mrv.maya.nt.base.Component" class="py-name" href="#" onclick="return doclink('link-131', 'Component', 'link-7');">Component</a></tt><tt class="py-op">(</tt> <tt id="link-132" class="py-name"><a title="mrv.maya.nt.geometry.Mesh.component" class="py-name" href="#" onclick="return doclink('link-132', 'component', 'link-125');">component</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L392"></a><tt class="py-lineno">392</tt>  <tt class="py-line">                                        <tt class="py-comment"># END handle asNode</tt> </tt>
+<a name="L393"></a><tt class="py-lineno">393</tt>  <tt class="py-line">                                <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L394"></a><tt class="py-lineno">394</tt>  <tt class="py-line">                                        <tt class="py-name">getDagPath</tt><tt class="py-op">(</tt> <tt class="py-name">i</tt><tt class="py-op">,</tt> <tt class="py-name">rval</tt> <tt class="py-op">)</tt> </tt>
+<a name="L395"></a><tt class="py-lineno">395</tt>  <tt class="py-line">                                <tt class="py-comment"># END handle components in DagPaths</tt> </tt>
+<a name="L396"></a><tt class="py-lineno">396</tt>  <tt class="py-line">                        <tt class="py-keyword">except</tt> <tt class="py-name">RuntimeError</tt><tt class="py-op">:</tt> </tt>
+<a name="L397"></a><tt class="py-lineno">397</tt>  <tt class="py-line">                                <tt class="py-comment"># TRY PLUG - first as the object could be returned as well if called</tt> </tt>
+<a name="L398"></a><tt class="py-lineno">398</tt>  <tt class="py-line">                                <tt class="py-comment"># for DependNode</tt> </tt>
+<a name="L399"></a><tt class="py-lineno">399</tt>  <tt class="py-line">                                <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L400"></a><tt class="py-lineno">400</tt>  <tt class="py-line">                                        <tt class="py-name">rval</tt> <tt class="py-op">=</tt> <tt id="link-133" class="py-name"><a title="mrv.maya.nt.it.nullplugarray" class="py-name" href="#" onclick="return doclink('link-133', 'nullplugarray', 'link-48');">nullplugarray</a></tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L401"></a><tt class="py-lineno">401</tt>  <tt class="py-line">                                        <tt class="py-name">getPlug</tt><tt class="py-op">(</tt> <tt class="py-name">i</tt><tt class="py-op">,</tt> <tt class="py-name">rval</tt> <tt class="py-op">)</tt> </tt>
+<a name="L402"></a><tt class="py-lineno">402</tt>  <tt class="py-line">                                        <tt class="py-comment"># try to access the attribute - if it is not really a plug, it will</tt> </tt>
+<a name="L403"></a><tt class="py-lineno">403</tt>  <tt class="py-line">                                        <tt class="py-comment"># fail and throw - for some reason maya can put just the depend node into</tt> </tt>
+<a name="L404"></a><tt class="py-lineno">404</tt>  <tt class="py-line">                                        <tt class="py-comment"># a plug</tt> </tt>
+<a name="L405"></a><tt class="py-lineno">405</tt>  <tt class="py-line">                                        <tt class="py-name">rval</tt><tt class="py-op">.</tt><tt class="py-name">attribute</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L406"></a><tt class="py-lineno">406</tt>  <tt class="py-line">                                <tt class="py-keyword">except</tt> <tt class="py-name">RuntimeError</tt><tt class="py-op">:</tt> </tt>
+<a name="L407"></a><tt class="py-lineno">407</tt>  <tt class="py-line">                                <tt class="py-comment"># TRY DG NODE</tt> </tt>
+<a name="L408"></a><tt class="py-lineno">408</tt>  <tt class="py-line">                                        <tt class="py-name">rval</tt> <tt class="py-op">=</tt> <tt class="py-name">MObject</tt><tt class="py-op">(</tt> <tt class="py-op">)</tt> </tt>
+<a name="L409"></a><tt class="py-lineno">409</tt>  <tt class="py-line">                                        <tt class="py-name">getDependNode</tt><tt class="py-op">(</tt> <tt class="py-name">i</tt><tt class="py-op">,</tt> <tt class="py-name">rval</tt> <tt class="py-op">)</tt> </tt>
+<a name="L410"></a><tt class="py-lineno">410</tt>  <tt class="py-line">                                <tt class="py-comment"># END its not an MObject</tt> </tt>
+<a name="L411"></a><tt class="py-lineno">411</tt>  <tt class="py-line">                        <tt class="py-comment"># END handle dagnodes/plugs/dg nodes</tt> </tt>
+<a name="L412"></a><tt class="py-lineno">412</tt>  <tt class="py-line"> </tt>
+<a name="L413"></a><tt class="py-lineno">413</tt>  <tt class="py-line">                        <tt class="py-comment"># should have rval now</tt> </tt>
+<a name="L414"></a><tt class="py-lineno">414</tt>  <tt class="py-line">                        <tt class="py-keyword">if</tt> <tt id="link-134" class="py-name"><a title="unittest.isinstance" class="py-name" href="#" onclick="return doclink('link-134', 'isinstance', 'link-25');">isinstance</a></tt><tt class="py-op">(</tt> <tt class="py-name">rval</tt><tt class="py-op">,</tt> <tt class="py-name">plug_types</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L415"></a><tt class="py-lineno">415</tt>  <tt class="py-line">                                <tt class="py-comment"># apply filter</tt> </tt>
+<a name="L416"></a><tt class="py-lineno">416</tt>  <tt class="py-line">                                <tt class="py-keyword">if</tt> <tt class="py-name">filterType</tt> <tt class="py-op">!=</tt> <tt class="py-name">kInvalid</tt> <tt class="py-keyword">and</tt> <tt class="py-name">rval</tt><tt class="py-op">.</tt><tt class="py-name">node</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-135" class="py-name" targets="Method mrv.maya.nt.base.Node.apiType()=mrv.maya.nt.base.Node-class.html#apiType"><a title="mrv.maya.nt.base.Node.apiType" class="py-name" href="#" onclick="return doclink('link-135', 'apiType', 'link-135');">apiType</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-op">!=</tt> <tt class="py-name">filterType</tt><tt class="py-op">:</tt> </tt>
+<a name="L417"></a><tt class="py-lineno">417</tt>  <tt class="py-line">                                        <tt class="py-keyword">continue</tt> </tt>
+<a name="L418"></a><tt class="py-lineno">418</tt>  <tt class="py-line">                                        <tt class="py-comment"># END apply filter type</tt> </tt>
+<a name="L419"></a><tt class="py-lineno">419</tt>  <tt class="py-line">                        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L420"></a><tt class="py-lineno">420</tt>  <tt class="py-line">                                <tt class="py-keyword">if</tt> <tt class="py-name">filterType</tt> <tt class="py-op">!=</tt> <tt class="py-name">kInvalid</tt><tt class="py-op">:</tt> </tt>
+<a name="L421"></a><tt class="py-lineno">421</tt>  <tt class="py-line">                                        <tt class="py-comment"># must be MDagPath or MObject</tt> </tt>
+<a name="L422"></a><tt class="py-lineno">422</tt>  <tt class="py-line">                                        <tt class="py-keyword">if</tt> <tt class="py-name">rval</tt><tt class="py-op">.</tt><tt id="link-136" class="py-name"><a title="mrv.maya.nt.base.Node.apiType" class="py-name" href="#" onclick="return doclink('link-136', 'apiType', 'link-135');">apiType</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-op">!=</tt> <tt class="py-name">filterType</tt><tt class="py-op">:</tt> </tt>
+<a name="L423"></a><tt class="py-lineno">423</tt>  <tt class="py-line">                                                <tt class="py-keyword">continue</tt> </tt>
+<a name="L424"></a><tt class="py-lineno">424</tt>  <tt class="py-line">                                <tt class="py-comment"># END filter handling</tt> </tt>
+<a name="L425"></a><tt class="py-lineno">425</tt>  <tt class="py-line">                                 </tt>
+<a name="L426"></a><tt class="py-lineno">426</tt>  <tt class="py-line">                                <tt class="py-keyword">if</tt> <tt class="py-name">asNode</tt><tt class="py-op">:</tt> </tt>
+<a name="L427"></a><tt class="py-lineno">427</tt>  <tt class="py-line">                                        <tt class="py-name">rval</tt> <tt class="py-op">=</tt> <tt id="link-137" class="py-name"><a title="mrv.maya.nt.base.NodeFromObj" class="py-name" href="#" onclick="return doclink('link-137', 'NodeFromObj', 'link-6');">NodeFromObj</a></tt><tt class="py-op">(</tt> <tt class="py-name">rval</tt> <tt class="py-op">)</tt> </tt>
+<a name="L428"></a><tt class="py-lineno">428</tt>  <tt class="py-line">                        <tt class="py-comment"># END plug handling</tt> </tt>
+<a name="L429"></a><tt class="py-lineno">429</tt>  <tt class="py-line">                         </tt>
+<a name="L430"></a><tt class="py-lineno">430</tt>  <tt class="py-line">                        <tt class="py-keyword">if</tt> <tt class="py-name">handleComponents</tt><tt class="py-op">:</tt> </tt>
+<a name="L431"></a><tt class="py-lineno">431</tt>  <tt class="py-line">                                <tt class="py-name">rval</tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt> <tt class="py-name">rval</tt><tt class="py-op">,</tt> <tt id="link-138" class="py-name"><a title="mrv.maya.nt.geometry.Mesh.component" class="py-name" href="#" onclick="return doclink('link-138', 'component', 'link-125');">component</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L432"></a><tt class="py-lineno">432</tt>  <tt class="py-line">                         </tt>
+<a name="L433"></a><tt class="py-lineno">433</tt>  <tt class="py-line">                        <tt class="py-keyword">if</tt> <tt class="py-name">predicate</tt><tt class="py-op">(</tt> <tt class="py-name">rval</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L434"></a><tt class="py-lineno">434</tt>  <tt class="py-line">                                <tt class="py-keyword">yield</tt> <tt class="py-name">rval</tt> </tt>
+<a name="L435"></a><tt class="py-lineno">435</tt>  <tt class="py-line">                <tt class="py-comment"># END for each element</tt> </tt>
+<a name="L436"></a><tt class="py-lineno">436</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L437"></a><tt class="py-lineno">437</tt>  <tt class="py-line">                <tt class="py-comment"># ITERATOR MODE</tt> </tt>
+<a name="L438"></a><tt class="py-lineno">438</tt>  <tt class="py-line">                <tt class="py-comment"># the code above can handle it all, this one might be faster though </tt> </tt>
+<a name="L439"></a><tt class="py-lineno">439</tt>  <tt class="py-line">                <tt id="link-139" class="py-name"><a title="mrv.maya.nt.geometry._SingleIndexedComponentIterator.iterator" class="py-name" href="#" onclick="return doclink('link-139', 'iterator', 'link-65');">iterator</a></tt> <tt class="py-op">=</tt> <tt class="py-name">selectionListIterator</tt><tt class="py-op">(</tt> <tt class="py-name">sellist</tt><tt class="py-op">,</tt> <tt class="py-name">filterType</tt> <tt class="py-op">=</tt> <tt class="py-name">filterType</tt> <tt class="py-op">)</tt> </tt>
+<a name="L440"></a><tt class="py-lineno">440</tt>  <tt class="py-line">                <tt class="py-name">kDagSelectionItem</tt> <tt class="py-op">=</tt> <tt class="py-name">api</tt><tt class="py-op">.</tt><tt class="py-name">MItSelectionList</tt><tt class="py-op">.</tt><tt class="py-name">kDagSelectionItem</tt> </tt>
+<a name="L441"></a><tt class="py-lineno">441</tt>  <tt class="py-line">                <tt class="py-name">kDNselectionItem</tt> <tt class="py-op">=</tt> <tt class="py-name">api</tt><tt class="py-op">.</tt><tt class="py-name">MItSelectionList</tt><tt class="py-op">.</tt><tt class="py-name">kDNselectionItem</tt> </tt>
+<a name="L442"></a><tt class="py-lineno">442</tt>  <tt class="py-line">                <tt class="py-name">rval</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L443"></a><tt class="py-lineno">443</tt>  <tt class="py-line">                 </tt>
+<a name="L444"></a><tt class="py-lineno">444</tt>  <tt class="py-line">                <tt class="py-name">isDone</tt> <tt class="py-op">=</tt> <tt id="link-140" class="py-name"><a title="mrv.maya.nt.geometry._SingleIndexedComponentIterator.iterator" class="py-name" href="#" onclick="return doclink('link-140', 'iterator', 'link-65');">iterator</a></tt><tt class="py-op">.</tt><tt class="py-name">isDone</tt> </tt>
+<a name="L445"></a><tt class="py-lineno">445</tt>  <tt class="py-line">                <tt class="py-name">itemType</tt> <tt class="py-op">=</tt> <tt id="link-141" class="py-name"><a title="mrv.maya.nt.geometry._SingleIndexedComponentIterator.iterator" class="py-name" href="#" onclick="return doclink('link-141', 'iterator', 'link-65');">iterator</a></tt><tt class="py-op">.</tt><tt class="py-name">itemType</tt> </tt>
+<a name="L446"></a><tt class="py-lineno">446</tt>  <tt class="py-line">                <tt class="py-name">getDagPath</tt> <tt class="py-op">=</tt> <tt id="link-142" class="py-name"><a title="mrv.maya.nt.geometry._SingleIndexedComponentIterator.iterator" class="py-name" href="#" onclick="return doclink('link-142', 'iterator', 'link-65');">iterator</a></tt><tt class="py-op">.</tt><tt class="py-name">getDagPath</tt> </tt>
+<a name="L447"></a><tt class="py-lineno">447</tt>  <tt class="py-line">                <tt class="py-name">getDependNode</tt> <tt class="py-op">=</tt> <tt id="link-143" class="py-name"><a title="mrv.maya.nt.geometry._SingleIndexedComponentIterator.iterator" class="py-name" href="#" onclick="return doclink('link-143', 'iterator', 'link-65');">iterator</a></tt><tt class="py-op">.</tt><tt class="py-name">getDependNode</tt> </tt>
+<a name="L448"></a><tt class="py-lineno">448</tt>  <tt class="py-line">                <tt id="link-144" class="py-name"><a title="mrv.enum.Enumeration.next" class="py-name" href="#" onclick="return doclink('link-144', 'next', 'link-76');">next</a></tt> <tt class="py-op">=</tt> <tt id="link-145" class="py-name"><a title="mrv.maya.nt.geometry._SingleIndexedComponentIterator.iterator" class="py-name" href="#" onclick="return doclink('link-145', 'iterator', 'link-65');">iterator</a></tt><tt class="py-op">.</tt><tt id="link-146" class="py-name"><a title="mrv.enum.Enumeration.next" class="py-name" href="#" onclick="return doclink('link-146', 'next', 'link-76');">next</a></tt> </tt>
+<a name="L449"></a><tt class="py-lineno">449</tt>  <tt class="py-line">                <tt class="py-keyword">while</tt> <tt class="py-keyword">not</tt> <tt class="py-name">isDone</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L450"></a><tt class="py-lineno">450</tt>  <tt class="py-line">                        <tt class="py-comment"># try dag object</tt> </tt>
+<a name="L451"></a><tt class="py-lineno">451</tt>  <tt class="py-line">                        <tt id="link-147" class="py-name"><a title="mrv.maya.nt.geometry.Mesh.component" class="py-name" href="#" onclick="return doclink('link-147', 'component', 'link-125');">component</a></tt> <tt class="py-op">=</tt> <tt class="py-name">kNullObj</tt> </tt>
+<a name="L452"></a><tt class="py-lineno">452</tt>  <tt class="py-line">                        <tt class="py-name">itemtype</tt> <tt class="py-op">=</tt> <tt class="py-name">itemType</tt><tt class="py-op">(</tt> <tt class="py-op">)</tt> </tt>
+<a name="L453"></a><tt class="py-lineno">453</tt>  <tt class="py-line">                        <tt class="py-keyword">if</tt> <tt class="py-name">itemtype</tt> <tt class="py-op">==</tt> <tt class="py-name">kDagSelectionItem</tt><tt class="py-op">:</tt> </tt>
+<a name="L454"></a><tt class="py-lineno">454</tt>  <tt class="py-line">                                <tt class="py-name">rval</tt> <tt class="py-op">=</tt> <tt class="py-name">MDagPath</tt><tt class="py-op">(</tt> <tt class="py-op">)</tt> </tt>
+<a name="L455"></a><tt class="py-lineno">455</tt>  <tt class="py-line">                                <tt class="py-keyword">if</tt> <tt class="py-name">handleComponents</tt><tt class="py-op">:</tt> </tt>
+<a name="L456"></a><tt class="py-lineno">456</tt>  <tt class="py-line">                                        <tt id="link-148" class="py-name"><a title="mrv.maya.nt.geometry.Mesh.component" class="py-name" href="#" onclick="return doclink('link-148', 'component', 'link-125');">component</a></tt> <tt class="py-op">=</tt> <tt class="py-name">MObject</tt><tt class="py-op">(</tt> <tt class="py-op">)</tt> </tt>
+<a name="L457"></a><tt class="py-lineno">457</tt>  <tt class="py-line">                                        <tt class="py-name">getDagPath</tt><tt class="py-op">(</tt> <tt class="py-name">rval</tt><tt class="py-op">,</tt> <tt id="link-149" class="py-name"><a title="mrv.maya.nt.geometry.Mesh.component" class="py-name" href="#" onclick="return doclink('link-149', 'component', 'link-125');">component</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L458"></a><tt class="py-lineno">458</tt>  <tt class="py-line">                                        <tt class="py-keyword">if</tt> <tt class="py-name">asNode</tt> <tt class="py-keyword">and</tt> <tt class="py-keyword">not</tt> <tt id="link-150" class="py-name"><a title="mrv.maya.nt.geometry.Mesh.component" class="py-name" href="#" onclick="return doclink('link-150', 'component', 'link-125');">component</a></tt><tt class="py-op">.</tt><tt id="link-151" class="py-name"><a title="mrv.automation.qa.QACheckResult.isNull" class="py-name" href="#" onclick="return doclink('link-151', 'isNull', 'link-129');">isNull</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L459"></a><tt class="py-lineno">459</tt>  <tt class="py-line">                                                <tt id="link-152" class="py-name"><a title="mrv.maya.nt.geometry.Mesh.component" class="py-name" href="#" onclick="return doclink('link-152', 'component', 'link-125');">component</a></tt> <tt class="py-op">=</tt> <tt id="link-153" class="py-name"><a title="mrv.maya.nt.base.Component" class="py-name" href="#" onclick="return doclink('link-153', 'Component', 'link-7');">Component</a></tt><tt class="py-op">(</tt> <tt id="link-154" class="py-name"><a title="mrv.maya.nt.geometry.Mesh.component" class="py-name" href="#" onclick="return doclink('link-154', 'component', 'link-125');">component</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L460"></a><tt class="py-lineno">460</tt>  <tt class="py-line">                                        <tt class="py-comment"># END handle component conversion</tt> </tt>
+<a name="L461"></a><tt class="py-lineno">461</tt>  <tt class="py-line">                                <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L462"></a><tt class="py-lineno">462</tt>  <tt class="py-line">                                        <tt class="py-name">getDagPath</tt><tt class="py-op">(</tt> <tt class="py-name">rval</tt> <tt class="py-op">)</tt> </tt>
+<a name="L463"></a><tt class="py-lineno">463</tt>  <tt class="py-line">                                <tt class="py-comment"># END handle components</tt> </tt>
+<a name="L464"></a><tt class="py-lineno">464</tt>  <tt class="py-line">                        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L465"></a><tt class="py-lineno">465</tt>  <tt class="py-line">                                <tt class="py-name">rval</tt> <tt class="py-op">=</tt> <tt class="py-name">MObject</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L466"></a><tt class="py-lineno">466</tt>  <tt class="py-line">                                <tt class="py-name">getDependNode</tt><tt class="py-op">(</tt> <tt class="py-name">rval</tt> <tt class="py-op">)</tt> </tt>
+<a name="L467"></a><tt class="py-lineno">467</tt>  <tt class="py-line">                        <tt class="py-comment"># END handle item type</tt> </tt>
+<a name="L468"></a><tt class="py-lineno">468</tt>  <tt class="py-line">                         </tt>
+<a name="L469"></a><tt class="py-lineno">469</tt>  <tt class="py-line">                        <tt class="py-keyword">if</tt> <tt class="py-name">asNode</tt><tt class="py-op">:</tt> </tt>
+<a name="L470"></a><tt class="py-lineno">470</tt>  <tt class="py-line">                                <tt class="py-name">rval</tt> <tt class="py-op">=</tt> <tt id="link-155" class="py-name"><a title="mrv.maya.nt.base.NodeFromObj" class="py-name" href="#" onclick="return doclink('link-155', 'NodeFromObj', 'link-6');">NodeFromObj</a></tt><tt class="py-op">(</tt> <tt class="py-name">rval</tt> <tt class="py-op">)</tt> </tt>
+<a name="L471"></a><tt class="py-lineno">471</tt>  <tt class="py-line">                        <tt class="py-comment"># END handle as node</tt> </tt>
+<a name="L472"></a><tt class="py-lineno">472</tt>  <tt class="py-line">                         </tt>
+<a name="L473"></a><tt class="py-lineno">473</tt>  <tt class="py-line">                        <tt class="py-keyword">if</tt> <tt class="py-name">handleComponents</tt><tt class="py-op">:</tt> </tt>
+<a name="L474"></a><tt class="py-lineno">474</tt>  <tt class="py-line">                                <tt class="py-name">rval</tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt> <tt class="py-name">rval</tt><tt class="py-op">,</tt> <tt id="link-156" class="py-name"><a title="mrv.maya.nt.geometry.Mesh.component" class="py-name" href="#" onclick="return doclink('link-156', 'component', 'link-125');">component</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L475"></a><tt class="py-lineno">475</tt>  <tt class="py-line">                        <tt class="py-comment"># END handle component</tt> </tt>
+<a name="L476"></a><tt class="py-lineno">476</tt>  <tt class="py-line">                                 </tt>
+<a name="L477"></a><tt class="py-lineno">477</tt>  <tt class="py-line">                        <tt class="py-keyword">if</tt> <tt class="py-name">predicate</tt><tt class="py-op">(</tt> <tt class="py-name">rval</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L478"></a><tt class="py-lineno">478</tt>  <tt class="py-line">                                <tt class="py-keyword">yield</tt> <tt class="py-name">rval</tt> </tt>
+<a name="L479"></a><tt class="py-lineno">479</tt>  <tt class="py-line">                         </tt>
+<a name="L480"></a><tt class="py-lineno">480</tt>  <tt class="py-line">                        <tt id="link-157" class="py-name"><a title="mrv.enum.Enumeration.next" class="py-name" href="#" onclick="return doclink('link-157', 'next', 'link-76');">next</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L481"></a><tt class="py-lineno">481</tt>  <tt class="py-line">                <tt class="py-comment"># END while not done</tt> </tt>
+<a name="L482"></a><tt class="py-lineno">482</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Apr 19 15:39:21 2011
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

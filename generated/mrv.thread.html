@@ -1,0 +1,390 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>mrv.thread &mdash; mrv v1.0.2-develop documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.2-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="mrv v1.0.2-develop documentation" href="../index.html" />
+    <link rel="next" title="mrv.info" href="mrv.info.html" />
+    <link rel="prev" title="mrv.dge" href="mrv.dge.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.info.html" title="mrv.info"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mrv.dge.html" title="mrv.dge"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-mrv.thread">
+<h1><tt class="xref docutils literal"><span class="pre">mrv.thread</span></tt><a class="headerlink" href="#module-mrv.thread" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="api/mrv.thread-module.html">Epydoc: mrv.thread</a></p>
+<p>Module with threading utilities</p>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mrv.thread.do_terminate_threads">
+<tt class="descclassname">mrv.thread.</tt><tt class="descname">do_terminate_threads</tt><big>(</big><em>whitelist=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#mrv.thread.do_terminate_threads" title="Permalink to this definition">¶</a></dt>
+<dd>Simple function which terminates all of our threads
+:param whitelist: If whitelist is given, only the given threads will be terminated</dd></dl>
+
+<dl class="function">
+<dt id="mrv.thread.terminate_threads">
+<tt class="descclassname">mrv.thread.</tt><tt class="descname">terminate_threads</tt><big>(</big><em>func</em><big>)</big><a class="headerlink" href="#mrv.thread.terminate_threads" title="Permalink to this definition">¶</a></dt>
+<dd>Kills all worker threads the method has created by sending the quit signal.
+This takes over in case of an error in the main function</dd></dl>
+
+</div>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="api/mrv.thread.TerminatableThread-class.html">Epydoc: mrv.thread.TerminatableThread</a></p>
+<dl class="class">
+<dt id="mrv.thread.TerminatableThread">
+<em class="property">class </em><tt class="descclassname">mrv.thread.</tt><tt class="descname">TerminatableThread</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.thread.TerminatableThread" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">threading.Thread</span></tt></p>
+<p>A simple thread able to terminate itself on behalf of the user.</p>
+<p>Terminate a thread as follows:</p>
+<p>t.stop_and_join()</p>
+<p>Derived classes call _should_terminate() to determine whether they should 
+abort gracefully</p>
+<dl class="attribute">
+<dt id="mrv.thread.TerminatableThread.daemon">
+<tt class="descname">daemon</tt><a class="headerlink" href="#mrv.thread.TerminatableThread.daemon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.thread.TerminatableThread.getName">
+<tt class="descname">getName</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.thread.TerminatableThread.getName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.thread.TerminatableThread.ident">
+<tt class="descname">ident</tt><a class="headerlink" href="#mrv.thread.TerminatableThread.ident" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.thread.TerminatableThread.isAlive">
+<tt class="descname">isAlive</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.thread.TerminatableThread.isAlive" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.thread.TerminatableThread.isDaemon">
+<tt class="descname">isDaemon</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.thread.TerminatableThread.isDaemon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.thread.TerminatableThread.is_alive">
+<tt class="descname">is_alive</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.thread.TerminatableThread.is_alive" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.thread.TerminatableThread.join">
+<tt class="descname">join</tt><big>(</big><em>timeout=None</em><big>)</big><a class="headerlink" href="#mrv.thread.TerminatableThread.join" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.thread.TerminatableThread.name">
+<tt class="descname">name</tt><a class="headerlink" href="#mrv.thread.TerminatableThread.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.thread.TerminatableThread.run">
+<tt class="descname">run</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.thread.TerminatableThread.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.thread.TerminatableThread.schedule_termination">
+<tt class="descname">schedule_termination</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.thread.TerminatableThread.schedule_termination" title="Permalink to this definition">¶</a></dt>
+<dd>Schedule this thread to be terminated as soon as possible.
+:note: this method does not block.</dd></dl>
+
+<dl class="method">
+<dt id="mrv.thread.TerminatableThread.setDaemon">
+<tt class="descname">setDaemon</tt><big>(</big><em>daemonic</em><big>)</big><a class="headerlink" href="#mrv.thread.TerminatableThread.setDaemon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.thread.TerminatableThread.setName">
+<tt class="descname">setName</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#mrv.thread.TerminatableThread.setName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.thread.TerminatableThread.start">
+<tt class="descname">start</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.thread.TerminatableThread.start" title="Permalink to this definition">¶</a></dt>
+<dd>Start the thread and return self</dd></dl>
+
+<dl class="method">
+<dt id="mrv.thread.TerminatableThread.stop_and_join">
+<tt class="descname">stop_and_join</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.thread.TerminatableThread.stop_and_join" title="Permalink to this definition">¶</a></dt>
+<dd>Ask the thread to stop its operation and wait for it to terminate
+:note: Depending on the implenetation, this might block a moment</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.thread.WorkerThread-class.html">Epydoc: mrv.thread.WorkerThread</a></p>
+<dl class="class">
+<dt id="mrv.thread.WorkerThread">
+<em class="property">class </em><tt class="descclassname">mrv.thread.</tt><tt class="descname">WorkerThread</tt><big>(</big><em>inq=None</em>, <em>outq=None</em><big>)</big><a class="headerlink" href="#mrv.thread.WorkerThread" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.thread.TerminatableThread" class="reference internal" href="#mrv.thread.TerminatableThread"><tt class="xref docutils literal"><span class="pre">mrv.thread.TerminatableThread</span></tt></a></p>
+<p>This base allows to call functions on class instances natively and retrieve
+their results asynchronously using a queue.
+The thread runs forever unless it receives the terminate signal using 
+its task queue.</p>
+<p>Tasks could be anything, but should usually be class methods and arguments to
+allow the following:</p>
+<p>inq = Queue()
+outq = Queue()
+w = WorkerThread(inq, outq)
+w.start()
+inq.put((WorkerThread.&lt;method&gt;, args, kwargs))
+res = outq.get()</p>
+<p>finally we call quit to terminate asap.</p>
+<p>alternatively, you can make a call more intuitively - the output is the output queue
+allowing you to get the result right away or later
+w.call(arg, kwarg=&#8217;value&#8217;).get()</p>
+<p>inq.put(WorkerThread.quit)
+w.join()</p>
+<p>You may provide the following tuples as task:
+t[0] = class method, function or instance method
+t[1] = optional, tuple or list of arguments to pass to the routine
+t[2] = optional, dictionary of keyword arguments to pass to the routine</p>
+<dl class="exception">
+<dt id="mrv.thread.WorkerThread.InvalidRoutineError">
+<em class="property">exception </em><tt class="descname">InvalidRoutineError</tt><a class="headerlink" href="#mrv.thread.WorkerThread.InvalidRoutineError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+<p>Class sent as return value in case of an error</p>
+<dl class="attribute">
+<dt id="mrv.thread.WorkerThread.InvalidRoutineError.args">
+<tt class="descname">args</tt><a class="headerlink" href="#mrv.thread.WorkerThread.InvalidRoutineError.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.thread.WorkerThread.InvalidRoutineError.message">
+<tt class="descname">message</tt><a class="headerlink" href="#mrv.thread.WorkerThread.InvalidRoutineError.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.thread.WorkerThread.call">
+<tt class="descclassname">WorkerThread.</tt><tt class="descname">call</tt><big>(</big><em>function</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.thread.WorkerThread.call" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method that makes the call to the worker using the input queue, 
+returning our output queue</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>funciton</em> &#8211; can be a standalone function unrelated to this class, 
+a class method of this class or any instance method.
+If it is a string, it will be considered a function residing on this instance</li>
+<li><em>args</em> &#8211; arguments to pass to function</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Parma **kwargs<a href="#id1"><span class="problematic" id="id2">**</span></a>kwargs:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">kwargs to pass to function</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.thread.WorkerThread.daemon">
+<tt class="descclassname">WorkerThread.</tt><tt class="descname">daemon</tt><a class="headerlink" href="#mrv.thread.WorkerThread.daemon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.thread.WorkerThread.getName">
+<tt class="descclassname">WorkerThread.</tt><tt class="descname">getName</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.thread.WorkerThread.getName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.thread.WorkerThread.ident">
+<tt class="descclassname">WorkerThread.</tt><tt class="descname">ident</tt><a class="headerlink" href="#mrv.thread.WorkerThread.ident" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.thread.WorkerThread.inq">
+<tt class="descclassname">WorkerThread.</tt><tt class="descname">inq</tt><a class="headerlink" href="#mrv.thread.WorkerThread.inq" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.thread.WorkerThread.isAlive">
+<tt class="descclassname">WorkerThread.</tt><tt class="descname">isAlive</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.thread.WorkerThread.isAlive" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.thread.WorkerThread.isDaemon">
+<tt class="descclassname">WorkerThread.</tt><tt class="descname">isDaemon</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.thread.WorkerThread.isDaemon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.thread.WorkerThread.is_alive">
+<tt class="descclassname">WorkerThread.</tt><tt class="descname">is_alive</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.thread.WorkerThread.is_alive" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.thread.WorkerThread.join">
+<tt class="descclassname">WorkerThread.</tt><tt class="descname">join</tt><big>(</big><em>timeout=None</em><big>)</big><a class="headerlink" href="#mrv.thread.WorkerThread.join" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.thread.WorkerThread.name">
+<tt class="descclassname">WorkerThread.</tt><tt class="descname">name</tt><a class="headerlink" href="#mrv.thread.WorkerThread.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.thread.WorkerThread.outq">
+<tt class="descclassname">WorkerThread.</tt><tt class="descname">outq</tt><a class="headerlink" href="#mrv.thread.WorkerThread.outq" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.thread.WorkerThread.quit">
+<tt class="descclassname">WorkerThread.</tt><tt class="descname">quit</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.thread.WorkerThread.quit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.thread.WorkerThread.run">
+<tt class="descclassname">WorkerThread.</tt><tt class="descname">run</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.thread.WorkerThread.run" title="Permalink to this definition">¶</a></dt>
+<dd>Process input tasks until we receive the quit signal</dd></dl>
+
+<dl class="method">
+<dt id="mrv.thread.WorkerThread.schedule_termination">
+<tt class="descclassname">WorkerThread.</tt><tt class="descname">schedule_termination</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.thread.WorkerThread.schedule_termination" title="Permalink to this definition">¶</a></dt>
+<dd>Schedule this thread to be terminated as soon as possible.
+:note: this method does not block.</dd></dl>
+
+<dl class="method">
+<dt id="mrv.thread.WorkerThread.setDaemon">
+<tt class="descclassname">WorkerThread.</tt><tt class="descname">setDaemon</tt><big>(</big><em>daemonic</em><big>)</big><a class="headerlink" href="#mrv.thread.WorkerThread.setDaemon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.thread.WorkerThread.setName">
+<tt class="descclassname">WorkerThread.</tt><tt class="descname">setName</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#mrv.thread.WorkerThread.setName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.thread.WorkerThread.start">
+<tt class="descclassname">WorkerThread.</tt><tt class="descname">start</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.thread.WorkerThread.start" title="Permalink to this definition">¶</a></dt>
+<dd>Start the thread and return self</dd></dl>
+
+<dl class="method">
+<dt id="mrv.thread.WorkerThread.stop_and_join">
+<tt class="descclassname">WorkerThread.</tt><tt class="descname">stop_and_join</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.thread.WorkerThread.stop_and_join" title="Permalink to this definition">¶</a></dt>
+<dd>Send the stop signal to terminate, then join</dd></dl>
+
+<dl class="method">
+<dt id="mrv.thread.WorkerThread.wait_until_idle">
+<tt class="descclassname">WorkerThread.</tt><tt class="descname">wait_until_idle</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.thread.WorkerThread.wait_until_idle" title="Permalink to this definition">¶</a></dt>
+<dd>wait until the input queue is empty, in the meanwhile, take all 
+results off the output queue.</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="../index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#"><tt class="docutils literal"><span class="pre">mrv.thread</span></tt></a><ul>
+<li><a class="reference external" href="#functions">Functions</a></li>
+<li><a class="reference external" href="#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="mrv.dge.html"
+                                  title="previous chapter"><tt class="docutils literal docutils literal docutils literal"><span class="pre">mrv.dge</span></tt></a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="mrv.info.html"
+                                  title="next chapter"><tt class="docutils literal docutils literal docutils literal"><span class="pre">mrv.info</span></tt></a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/generated/mrv.thread.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.info.html" title="mrv.info"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mrv.dge.html" title="mrv.dge"
+             >previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Apr 19, 2011.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

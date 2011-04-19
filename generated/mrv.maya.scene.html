@@ -1,0 +1,633 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>mrv.maya.scene &mdash; mrv v1.0.2-develop documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.2-develop',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="mrv v1.0.2-develop documentation" href="../index.html" />
+    <link rel="next" title="mrv.maya.undo" href="mrv.maya.undo.html" />
+    <link rel="prev" title="mrv.maya.ns" href="mrv.maya.ns.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.undo.html" title="mrv.maya.undo"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.ns.html" title="mrv.maya.ns"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-mrv.maya.scene">
+<h1><tt class="xref docutils literal"><span class="pre">mrv.maya.scene</span></tt><a class="headerlink" href="#module-mrv.maya.scene" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="api/mrv.maya.scene-module.html">Epydoc: mrv.maya.scene</a></p>
+<p>Provides methodes to query and alter the currently loaded scene. It covers
+most of the functionality of the &#8216;file&#8217; command, but has been renamed to scene
+as disambiguation to a filesystem file.</p>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mrv.maya.scene.make_path">
+<tt class="descclassname">mrv.maya.scene.</tt><tt class="descname">make_path</tt><big>(</big><em>path</em><big>)</big><a class="headerlink" href="#mrv.maya.scene.make_path" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">A path instance of the correct type</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">use this constructor if you use the Path.set_separator method at runtime
+to assure you will always create instances of the actual type, and not only
+of the type you imported last</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="api/mrv.maya.scene.Scene-class.html">Epydoc: mrv.maya.scene.Scene</a></p>
+<dl class="class">
+<dt id="mrv.maya.scene.Scene">
+<em class="property">class </em><tt class="descclassname">mrv.maya.scene.</tt><tt class="descname">Scene</tt><a class="headerlink" href="#mrv.maya.scene.Scene" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.util.Singleton" class="reference external" href="mrv.util.html#mrv.util.Singleton"><tt class="xref docutils literal"><span class="pre">mrv.util.Singleton</span></tt></a>, <a title="mrv.util.EventSender" class="reference external" href="mrv.util.html#mrv.util.EventSender"><tt class="xref docutils literal"><span class="pre">mrv.util.EventSender</span></tt></a></p>
+<p>Singleton Class allowing access to the maya scene</p>
+<p>You can register all events available in MSceneMessage easily usnig the following 
+syntax:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">scene</span><span class="o">.</span><span class="n">beforeSoftwareRender</span> <span class="o">=</span> <span class="n">myFunctionObject</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.afterCreateReference">
+<tt class="descname">afterCreateReference</tt><a class="headerlink" href="#mrv.maya.scene.Scene.afterCreateReference" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.afterExport">
+<tt class="descname">afterExport</tt><a class="headerlink" href="#mrv.maya.scene.Scene.afterExport" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.afterExportReference">
+<tt class="descname">afterExportReference</tt><a class="headerlink" href="#mrv.maya.scene.Scene.afterExportReference" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.afterImport">
+<tt class="descname">afterImport</tt><a class="headerlink" href="#mrv.maya.scene.Scene.afterImport" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.afterImportReference">
+<tt class="descname">afterImportReference</tt><a class="headerlink" href="#mrv.maya.scene.Scene.afterImportReference" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.afterLoadReference">
+<tt class="descname">afterLoadReference</tt><a class="headerlink" href="#mrv.maya.scene.Scene.afterLoadReference" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.afterNew">
+<tt class="descname">afterNew</tt><a class="headerlink" href="#mrv.maya.scene.Scene.afterNew" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.afterOpen">
+<tt class="descname">afterOpen</tt><a class="headerlink" href="#mrv.maya.scene.Scene.afterOpen" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.afterPluginLoad">
+<tt class="descname">afterPluginLoad</tt><a class="headerlink" href="#mrv.maya.scene.Scene.afterPluginLoad" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.afterPluginUnload">
+<tt class="descname">afterPluginUnload</tt><a class="headerlink" href="#mrv.maya.scene.Scene.afterPluginUnload" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.afterReference">
+<tt class="descname">afterReference</tt><a class="headerlink" href="#mrv.maya.scene.Scene.afterReference" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.afterRemoveReference">
+<tt class="descname">afterRemoveReference</tt><a class="headerlink" href="#mrv.maya.scene.Scene.afterRemoveReference" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.afterSave">
+<tt class="descname">afterSave</tt><a class="headerlink" href="#mrv.maya.scene.Scene.afterSave" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.afterSoftwareFrameRender">
+<tt class="descname">afterSoftwareFrameRender</tt><a class="headerlink" href="#mrv.maya.scene.Scene.afterSoftwareFrameRender" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.afterSoftwareRender">
+<tt class="descname">afterSoftwareRender</tt><a class="headerlink" href="#mrv.maya.scene.Scene.afterSoftwareRender" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.afterUnloadReference">
+<tt class="descname">afterUnloadReference</tt><a class="headerlink" href="#mrv.maya.scene.Scene.afterUnloadReference" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.beforeCreateReference">
+<tt class="descname">beforeCreateReference</tt><a class="headerlink" href="#mrv.maya.scene.Scene.beforeCreateReference" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.beforeCreateReferenceCheck">
+<tt class="descname">beforeCreateReferenceCheck</tt><a class="headerlink" href="#mrv.maya.scene.Scene.beforeCreateReferenceCheck" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.beforeExport">
+<tt class="descname">beforeExport</tt><a class="headerlink" href="#mrv.maya.scene.Scene.beforeExport" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.beforeExportCheck">
+<tt class="descname">beforeExportCheck</tt><a class="headerlink" href="#mrv.maya.scene.Scene.beforeExportCheck" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.beforeExportReference">
+<tt class="descname">beforeExportReference</tt><a class="headerlink" href="#mrv.maya.scene.Scene.beforeExportReference" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.beforeImport">
+<tt class="descname">beforeImport</tt><a class="headerlink" href="#mrv.maya.scene.Scene.beforeImport" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.beforeImportCheck">
+<tt class="descname">beforeImportCheck</tt><a class="headerlink" href="#mrv.maya.scene.Scene.beforeImportCheck" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.beforeImportReference">
+<tt class="descname">beforeImportReference</tt><a class="headerlink" href="#mrv.maya.scene.Scene.beforeImportReference" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.beforeLoadReference">
+<tt class="descname">beforeLoadReference</tt><a class="headerlink" href="#mrv.maya.scene.Scene.beforeLoadReference" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.beforeLoadReferenceCheck">
+<tt class="descname">beforeLoadReferenceCheck</tt><a class="headerlink" href="#mrv.maya.scene.Scene.beforeLoadReferenceCheck" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.beforeNew">
+<tt class="descname">beforeNew</tt><a class="headerlink" href="#mrv.maya.scene.Scene.beforeNew" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.beforeNewCheck">
+<tt class="descname">beforeNewCheck</tt><a class="headerlink" href="#mrv.maya.scene.Scene.beforeNewCheck" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.beforeOpen">
+<tt class="descname">beforeOpen</tt><a class="headerlink" href="#mrv.maya.scene.Scene.beforeOpen" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.beforeOpenCheck">
+<tt class="descname">beforeOpenCheck</tt><a class="headerlink" href="#mrv.maya.scene.Scene.beforeOpenCheck" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.beforePluginLoad">
+<tt class="descname">beforePluginLoad</tt><a class="headerlink" href="#mrv.maya.scene.Scene.beforePluginLoad" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.beforePluginUnload">
+<tt class="descname">beforePluginUnload</tt><a class="headerlink" href="#mrv.maya.scene.Scene.beforePluginUnload" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.beforeReference">
+<tt class="descname">beforeReference</tt><a class="headerlink" href="#mrv.maya.scene.Scene.beforeReference" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.beforeReferenceCheck">
+<tt class="descname">beforeReferenceCheck</tt><a class="headerlink" href="#mrv.maya.scene.Scene.beforeReferenceCheck" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.beforeRemoveReference">
+<tt class="descname">beforeRemoveReference</tt><a class="headerlink" href="#mrv.maya.scene.Scene.beforeRemoveReference" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.beforeSave">
+<tt class="descname">beforeSave</tt><a class="headerlink" href="#mrv.maya.scene.Scene.beforeSave" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.beforeSaveCheck">
+<tt class="descname">beforeSaveCheck</tt><a class="headerlink" href="#mrv.maya.scene.Scene.beforeSaveCheck" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.beforeSoftwareFrameRender">
+<tt class="descname">beforeSoftwareFrameRender</tt><a class="headerlink" href="#mrv.maya.scene.Scene.beforeSoftwareFrameRender" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.beforeSoftwareRender">
+<tt class="descname">beforeSoftwareRender</tt><a class="headerlink" href="#mrv.maya.scene.Scene.beforeSoftwareRender" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.beforeUnloadReference">
+<tt class="descname">beforeUnloadReference</tt><a class="headerlink" href="#mrv.maya.scene.Scene.beforeUnloadReference" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.scene.Scene.clearAllEvents">
+<tt class="descname">clearAllEvents</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.scene.Scene.clearAllEvents" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all event receivers for all events registered in this instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">This usually doesn&#8217;t need to be called directly, but might be useful 
+in conjunction with other system that do not release your strongly bound 
+instance</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.maya.scene.Scene.deleteUnknownNodes">
+<em class="property">classmethod </em><tt class="descname">deleteUnknownNodes</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.scene.Scene.deleteUnknownNodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes all unknown nodes in the scene</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">only do this if you are about to change the type of the scene during
+save or export - otherwise the operation would fail if there are still unknown nodes
+in the scene</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.maya.scene.Scene.export">
+<em class="property">classmethod </em><tt class="descname">export</tt><big>(</big><em>outputFile</em>, <em>nodeListOrIterable=None</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.scene.Scene.export" title="Permalink to this definition">¶</a></dt>
+<dd><p>Export the given nodes or everything into the file at path</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>outputFile</em> &#8211; Path object or path string to which the data should 
+be written to. Parent directories will be created as needed</li>
+<li><em>nodeListOrIterable</em> &#8211; if None, everything will be exported. 
+Otherwise it may be an MSelectionList ( recommended ), or a list of
+Nodes, MObjects or MDagPaths</li>
+<li><em>kwargs</em> &#8211; passed to cmds.file, see the mel docs for modifying flags</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Path to which the data was exported</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.exportStarted">
+<tt class="descname">exportStarted</tt><a class="headerlink" href="#mrv.maya.scene.Scene.exportStarted" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.maya.scene.Scene.isModified">
+<em class="property">classmethod </em><tt class="descname">isModified</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.scene.Scene.isModified" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.last">
+<tt class="descname">last</tt><a class="headerlink" href="#mrv.maya.scene.Scene.last" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.maya.scene.Scene.listEventNames">
+<em class="property">classmethod </em><tt class="descname">listEventNames</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.scene.Scene.listEventNames" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of event ids that exist on our class</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.mayaExiting">
+<tt class="descname">mayaExiting</tt><a class="headerlink" href="#mrv.maya.scene.Scene.mayaExiting" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.mayaInitialized">
+<tt class="descname">mayaInitialized</tt><a class="headerlink" href="#mrv.maya.scene.Scene.mayaInitialized" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.maya.scene.Scene.name">
+<em class="property">classmethod </em><tt class="descname">name</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.scene.Scene.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.maya.scene.Scene.new">
+<em class="property">classmethod </em><tt class="descname">new</tt><big>(</big><em>force=False</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.scene.Scene.new" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new scene</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>force</em> &#8211; if True, the new scene will be created even though there
+are unsaved modifications</li>
+<li><em>kwargs</em> &#8211; passed to <em>cmds.file</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Path with name of the new file</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.maya.scene.Scene.open">
+<em class="property">classmethod </em><tt class="descname">open</tt><big>(</big><em>scenepath=None</em>, <em>force=False</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.scene.Scene.open" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open the scene at the given scenepath</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>scenepath</em> &#8211; The path to the file to be opened
+If None, the currently loaded file will reopened</li>
+<li><em>force</em> &#8211; if True, the new scene will be loaded although currently
+loaded contains unsaved changes</li>
+<li><em>kwargs</em> &#8211; passed to <em>cmds.file</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a Path to the loaded scene</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.maya.scene.Scene.rename">
+<em class="property">classmethod </em><tt class="descname">rename</tt><big>(</big><em>scenepath</em><big>)</big><a class="headerlink" href="#mrv.maya.scene.Scene.rename" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rename the currently loaded file to be the file at scenepath</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>scenepath</em> &#8211; string or Path pointing describing the new location of the scene.</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">Path to scenepath</td>
+</tr>
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">as opposed to the normal file -rename it will also adjust the extension</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises RuntimeError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if the scene&#8217;s extension is not supported.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mrv.maya.scene.Scene.save">
+<em class="property">classmethod </em><tt class="descname">save</tt><big>(</big><em>scenepath=None</em>, <em>autodeleteUnknown=False</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.scene.Scene.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the currently opened scene under scenepath in the respective format</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><em>scenepath</em> &#8211; if None, the currently opened scene will be saved, otherwise 
+the name will be changed. Paths leading to the file will automatically be created.</li>
+<li><em>autodeleteUnknown</em> &#8211; if true, unknown nodes will automatically be deleted
+before an attempt is made to change the maya file&#8217;s type</li>
+<li><em>kwargs</em> &#8211; passed to cmds.file</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Path at which the scene has been saved.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.sceneUpdate">
+<tt class="descname">sceneUpdate</tt><a class="headerlink" href="#mrv.maya.scene.Scene.sceneUpdate" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.scene.Scene.sender">
+<tt class="descname">sender</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.scene.Scene.sender" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">instance which sent the event you are currently processing</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises ValueError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">if no event is currently in progress</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mrv.maya.scene.Scene.softwareRenderInterrupted">
+<tt class="descname">softwareRenderInterrupted</tt><a class="headerlink" href="#mrv.maya.scene.Scene.softwareRenderInterrupted" title="Permalink to this definition">¶</a></dt>
+<dd>Implements Scene Callbacks</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference external" href="api/mrv.maya.scene._SceneEvent-class.html">Epydoc: mrv.maya.scene._SceneEvent</a></p>
+<dl class="class">
+<dt id="mrv.maya.scene._SceneEvent">
+<em class="property">class </em><tt class="descclassname">mrv.maya.scene.</tt><tt class="descname">_SceneEvent</tt><big>(</big><em>eventId</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.scene._SceneEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="mrv.maya.util.CallbackEventBase" class="reference external" href="mrv.maya.util.html#mrv.maya.util.CallbackEventBase"><tt class="xref docutils literal"><span class="pre">mrv.maya.util.CallbackEventBase</span></tt></a></p>
+<p>Implements Scene Callbacks</p>
+<dl class="class">
+<dt id="mrv.maya.scene._SceneEvent.CBStorageFunction">
+<em class="property">class </em><tt class="descname">CBStorageFunction</tt><big>(</big><em>callbackID=None</em><big>)</big><a class="headerlink" href="#mrv.maya.scene._SceneEvent.CBStorageFunction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">object</span></tt></p>
+<dl class="method">
+<dt id="mrv.maya.scene._SceneEvent.CBStorageFunction.callbackID">
+<tt class="descname">callbackID</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.scene._SceneEvent.CBStorageFunction.callbackID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.scene._SceneEvent.CBStorageFunction.removeCallback">
+<tt class="descname">removeCallback</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.scene._SceneEvent.CBStorageFunction.removeCallback" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.scene._SceneEvent.CBStorageFunction.setCallbackID">
+<tt class="descname">setCallbackID</tt><big>(</big><em>callbackID</em><big>)</big><a class="headerlink" href="#mrv.maya.scene._SceneEvent.CBStorageFunction.setCallbackID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.scene._SceneEvent.duplicate">
+<tt class="descclassname">_SceneEvent.</tt><tt class="descname">duplicate</tt><big>(</big><big>)</big><a class="headerlink" href="#mrv.maya.scene._SceneEvent.duplicate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.scene._SceneEvent.remove">
+<tt class="descclassname">_SceneEvent.</tt><tt class="descname">remove</tt><big>(</big><em>eventfunc</em><big>)</big><a class="headerlink" href="#mrv.maya.scene._SceneEvent.remove" title="Permalink to this definition">¶</a></dt>
+<dd>Also removes our callback if the last receiver is gone</dd></dl>
+
+<dl class="method">
+<dt id="mrv.maya.scene._SceneEvent.send">
+<tt class="descclassname">_SceneEvent.</tt><tt class="descname">send</tt><big>(</big><em>inst</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mrv.maya.scene._SceneEvent.send" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets our instance prior to calling the super class</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Note:</th><td class="field-body">must not be called manually</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="../index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="#"><tt class="docutils literal"><span class="pre">mrv.maya.scene</span></tt></a><ul>
+<li><a class="reference external" href="#functions">Functions</a></li>
+<li><a class="reference external" href="#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="mrv.maya.ns.html"
+                                  title="previous chapter"><tt class="docutils literal docutils literal docutils literal"><span class="pre">mrv.maya.ns</span></tt></a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="mrv.maya.undo.html"
+                                  title="next chapter"><tt class="docutils literal docutils literal"><span class="pre">mrv.maya.undo</span></tt></a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/generated/mrv.maya.scene.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../modindex.html" title="Global Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.undo.html" title="mrv.maya.undo"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mrv.maya.ns.html" title="mrv.maya.ns"
+             >previous</a> |</li>
+        <li><a href="../index.html">mrv v1.0.2-develop documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright Sebastian Thiel.
+      Last updated on Apr 19, 2011.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5.
+    </div>
+  </body>
+</html>

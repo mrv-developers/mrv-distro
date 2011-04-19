@@ -1,0 +1,1025 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>mrv.maya.ui.layout</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="mrv-module.html">Package&nbsp;mrv</a> ::
+        <a href="mrv.maya-module.html">Package&nbsp;maya</a> ::
+        <a href="mrv.maya.ui-module.html">Package&nbsp;ui</a> ::
+        Module&nbsp;layout
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="mrv.maya.ui.layout-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="mrv.maya.ui.layout-module.html">Module mrv.maya.ui.layout</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment"># -*- coding: utf-8 -*-</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-docstring">Contains the most important mel-layouts wrapped into easy to use python classes</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-docstring">These are specialized and thus more powerful than the default wraps</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-name">__docformat__</tt> <tt class="py-op">=</tt> <tt class="py-string">"restructuredtext"</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-0" class="py-name" targets="Module mrv.automation.base=mrv.automation.base-module.html,Module mrv.cmd.base=mrv.cmd.base-module.html,Module mrv.doc.base=mrv.doc.base-module.html,Module mrv.maya.nt.base=mrv.maya.nt.base-module.html,Module mrv.maya.ui.base=mrv.maya.ui.base-module.html"><a title="mrv.automation.base
+mrv.cmd.base
+mrv.doc.base
+mrv.maya.nt.base
+mrv.maya.ui.base" class="py-name" href="#" onclick="return doclink('link-0', 'base', 'link-0');">base</a></tt> <tt class="py-keyword">as</tt> <tt class="py-name">uibase</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-1" class="py-name" targets="Package mrv.maya=mrv.maya-module.html"><a title="mrv.maya" class="py-name" href="#" onclick="return doclink('link-1', 'maya', 'link-1');">maya</a></tt><tt class="py-op">.</tt><tt class="py-name">cmds</tt> <tt class="py-keyword">as</tt> <tt class="py-name">cmds</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-2" class="py-name" targets="Package mrv=mrv-module.html,Function mrv.cmd.startup.mrv()=mrv.cmd.startup-module.html#mrv"><a title="mrv
+mrv.cmd.startup.mrv" class="py-name" href="#" onclick="return doclink('link-2', 'mrv', 'link-2');">mrv</a></tt><tt class="py-op">.</tt><tt id="link-3" class="py-name"><a title="mrv.maya" class="py-name" href="#" onclick="return doclink('link-3', 'maya', 'link-1');">maya</a></tt><tt class="py-op">.</tt><tt id="link-4" class="py-name" targets="Module mrv.maya.nt.util=mrv.maya.nt.util-module.html,Module mrv.maya.ui.browse.util=mrv.maya.ui.browse.util-module.html,Module mrv.maya.ui.util=mrv.maya.ui.util-module.html,Module mrv.maya.util=mrv.maya.util-module.html,Module mrv.util=mrv.util-module.html"><a title="mrv.maya.nt.util
+mrv.maya.ui.browse.util
+mrv.maya.ui.util
+mrv.maya.util
+mrv.util" class="py-name" href="#" onclick="return doclink('link-4', 'util', 'link-4');">util</a></tt> <tt class="py-keyword">as</tt> <tt class="py-name">mutil</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-5" class="py-name"><a title="mrv.maya.nt.util
+mrv.maya.ui.browse.util
+mrv.maya.ui.util
+mrv.maya.util
+mrv.util" class="py-name" href="#" onclick="return doclink('link-5', 'util', 'link-4');">util</a></tt> <tt class="py-keyword">as</tt> <tt class="py-name">uiutil</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"> </tt>
+<a name="Layout"></a><div id="Layout-def"><a name="L13"></a><tt class="py-lineno"> 13</tt> <a class="py-toggle" href="#" id="Layout-toggle" onclick="return toggle('Layout');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.layout.Layout-class.html">Layout</a><tt class="py-op">(</tt> <tt class="py-base-class">uibase</tt><tt class="py-op">.</tt><tt class="py-base-class">SizedControl</tt><tt class="py-op">,</tt> <tt class="py-base-class">uiutil</tt><tt class="py-op">.</tt><tt class="py-base-class">UIContainerBase</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Layout-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Layout-expanded"><a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line">        <tt class="py-docstring">""" Structural base  for all Layouts allowing general queries and name handling</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-docstring">        Layouts may track their children</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line">        <tt id="link-6" class="py-name" targets="Variable mrv.maya.ui.base.Menu._properties_=mrv.maya.ui.base.Menu-class.html#_properties_,Variable mrv.maya.ui.base.MenuBase._properties_=mrv.maya.ui.base.MenuBase-class.html#_properties_,Variable mrv.maya.ui.base.MenuItem._properties_=mrv.maya.ui.base.MenuItem-class.html#_properties_,Variable mrv.maya.ui.base.PopupMenu._properties_=mrv.maya.ui.base.PopupMenu-class.html#_properties_,Variable mrv.maya.ui.base.SizedControl._properties_=mrv.maya.ui.base.SizedControl-class.html#_properties_,Variable mrv.maya.ui.base.Window._properties_=mrv.maya.ui.base.Window-class.html#_properties_,Variable mrv.maya.ui.control.BooleanGroupBase._properties_=mrv.maya.ui.control.BooleanGroupBase-class.html#_properties_,Variable mrv.maya.ui.control.Button._properties_=mrv.maya.ui.control.Button-class.html#_properties_,Variable mrv.maya.ui.control.ButtonGroupBase._properties_=mrv.maya.ui.control.ButtonGroupBase-class.html#_properties_,Variable mrv.maya.ui.control.CheckBoxBase._properties_=mrv.maya.ui.control.CheckBoxBase-class.html#_properties_,Variable mrv.maya.ui.control.CheckBoxGrp._properties_=mrv.maya.ui.control.CheckBoxGrp-class.html#_properties_,Variable mrv.maya.ui.control.FieldBase._properties_=mrv.maya.ui.control.FieldBase-class.html#_properties_,Variable mrv.maya.ui.control.GroupBase._properties_=mrv.maya.ui.control.GroupBase-class.html#_properties_,Variable mrv.maya.ui.control.IconTextBase._properties_=mrv.maya.ui.control.IconTextBase-class.html#_properties_,Variable mrv.maya.ui.control.LabelBase._properties_=mrv.maya.ui.control.LabelBase-class.html#_properties_,Variable mrv.maya.ui.control.OptionMenuBase._properties_=mrv.maya.ui.control.OptionMenuBase-class.html#_properties_,Variable mrv.maya.ui.control.RadioButtonBase._properties_=mrv.maya.ui.control.RadioButtonBase-class.html#_properties_,Variable mrv.maya.ui.control.RadioCollectionBase._properties_=mrv.maya.ui.control.RadioCollectionBase-class.html#_properties_,Variable mrv.maya.ui.control.ScrollField._properties_=mrv.maya.ui.control.ScrollField-class.html#_properties_,Variable mrv.maya.ui.control.Separator._properties_=mrv.maya.ui.control.Separator-class.html#_properties_,Variable mrv.maya.ui.control.SliderBase._properties_=mrv.maya.ui.control.SliderBase-class.html#_properties_,Variable mrv.maya.ui.control.SliderGroupBase._properties_=mrv.maya.ui.control.SliderGroupBase-class.html#_properties_,Variable mrv.maya.ui.control.Text._properties_=mrv.maya.ui.control.Text-class.html#_properties_,Variable mrv.maya.ui.control.TextFieldBase._properties_=mrv.maya.ui.control.TextFieldBase-class.html#_properties_,Variable mrv.maya.ui.control.TextScrollList._properties_=mrv.maya.ui.control.TextScrollList-class.html#_properties_,Variable mrv.maya.ui.editor.AnimCurveEditor._properties_=mrv.maya.ui.editor.AnimCurveEditor-class.html#_properties_,Variable mrv.maya.ui.editor.AnimEditorBase._properties_=mrv.maya.ui.editor.AnimEditorBase-class.html#_properties_,Variable mrv.maya.ui.editor.BlendShapeEditor._properties_=mrv.maya.ui.editor.BlendShapeEditor-class.html#_properties_,Variable mrv.maya.ui.editor.ClipEditor._properties_=mrv.maya.ui.editor.ClipEditor-class.html#_properties_,Variable mrv.maya.ui.editor.ColorEditor._properties_=mrv.maya.ui.editor.ColorEditor-class.html#_properties_,Variable mrv.maya.ui.editor.ComponentEditor._properties_=mrv.maya.ui.editor.ComponentEditor-class.html#_properties_,Variable mrv.maya.ui.editor.DeviceEditor._properties_=mrv.maya.ui.editor.DeviceEditor-class.html#_properties_,Variable mrv.maya.ui.editor.DynPaintEditor._properties_=mrv.maya.ui.editor.DynPaintEditor-class.html#_properties_,Variable mrv.maya.ui.editor.EditorBase._properties_=mrv.maya.ui.editor.EditorBase-class.html#_properties_,Variable mrv.maya.ui.editor.GlRenderEditor._properties_=mrv.maya.ui.editor.GlRenderEditor-class.html#_properties_,Variable mrv.maya.ui.editor.ItemFilter._properties_=mrv.maya.ui.editor.ItemFilter-class.html#_properties_,Variable mrv.maya.ui.editor.ItemFilterAttr._properties_=mrv.maya.ui.editor.ItemFilterAttr-class.html#_properties_,Variable mrv.maya.ui.editor.ItemFilterBase._properties_=mrv.maya.ui.editor.ItemFilterBase-class.html#_properties_,Variable mrv.maya.ui.editor.ItemFilterRender._properties_=mrv.maya.ui.editor.ItemFilterRender-class.html#_properties_,Variable mrv.maya.ui.editor.ModelEditor._properties_=mrv.maya.ui.editor.ModelEditor-class.html#_properties_,Variable mrv.maya.ui.editor.OutlinerEditor._properties_=mrv.maya.ui.editor.OutlinerEditor-class.html#_properties_,Variable mrv.maya.ui.editor.RenderEditorBase._properties_=mrv.maya.ui.editor.RenderEditorBase-class.html#_properties_,Variable mrv.maya.ui.editor.RenderWindowEditor._properties_=mrv.maya.ui.editor.RenderWindowEditor-class.html#_properties_,Variable mrv.maya.ui.editor.SelectionConnection._properties_=mrv.maya.ui.editor.SelectionConnection-class.html#_properties_,Variable mrv.maya.ui.layout.ColumnLayout._properties_=mrv.maya.ui.layout.ColumnLayout-class.html#_properties_,Variable mrv.maya.ui.layout.ColumnLayoutBase._properties_=mrv.maya.ui.layout.ColumnLayoutBase-class.html#_properties_,Variable mrv.maya.ui.layout.FrameLayout._properties_=mrv.maya.ui.layout.FrameLayout-class.html#_properties_,Variable mrv.maya.ui.layout.Layout._properties_=mrv.maya.ui.layout.Layout-class.html#_properties_,Variable mrv.maya.ui.layout.PaneLayout._properties_=mrv.maya.ui.layout.PaneLayout-class.html#_properties_,Variable mrv.maya.ui.layout.RowColumnLayout._properties_=mrv.maya.ui.layout.RowColumnLayout-class.html#_properties_,Variable mrv.maya.ui.layout.RowLayout._properties_=mrv.maya.ui.layout.RowLayout-class.html#_properties_,Variable mrv.maya.ui.layout.ScrollLayout._properties_=mrv.maya.ui.layout.ScrollLayout-class.html#_properties_,Variable mrv.maya.ui.layout.TabLayout._properties_=mrv.maya.ui.layout.TabLayout-class.html#_properties_"><a title="mrv.maya.ui.base.Menu._properties_
+mrv.maya.ui.base.MenuBase._properties_
+mrv.maya.ui.base.MenuItem._properties_
+mrv.maya.ui.base.PopupMenu._properties_
+mrv.maya.ui.base.SizedControl._properties_
+mrv.maya.ui.base.Window._properties_
+mrv.maya.ui.control.BooleanGroupBase._properties_
+mrv.maya.ui.control.Button._properties_
+mrv.maya.ui.control.ButtonGroupBase._properties_
+mrv.maya.ui.control.CheckBoxBase._properties_
+mrv.maya.ui.control.CheckBoxGrp._properties_
+mrv.maya.ui.control.FieldBase._properties_
+mrv.maya.ui.control.GroupBase._properties_
+mrv.maya.ui.control.IconTextBase._properties_
+mrv.maya.ui.control.LabelBase._properties_
+mrv.maya.ui.control.OptionMenuBase._properties_
+mrv.maya.ui.control.RadioButtonBase._properties_
+mrv.maya.ui.control.RadioCollectionBase._properties_
+mrv.maya.ui.control.ScrollField._properties_
+mrv.maya.ui.control.Separator._properties_
+mrv.maya.ui.control.SliderBase._properties_
+mrv.maya.ui.control.SliderGroupBase._properties_
+mrv.maya.ui.control.Text._properties_
+mrv.maya.ui.control.TextFieldBase._properties_
+mrv.maya.ui.control.TextScrollList._properties_
+mrv.maya.ui.editor.AnimCurveEditor._properties_
+mrv.maya.ui.editor.AnimEditorBase._properties_
+mrv.maya.ui.editor.BlendShapeEditor._properties_
+mrv.maya.ui.editor.ClipEditor._properties_
+mrv.maya.ui.editor.ColorEditor._properties_
+mrv.maya.ui.editor.ComponentEditor._properties_
+mrv.maya.ui.editor.DeviceEditor._properties_
+mrv.maya.ui.editor.DynPaintEditor._properties_
+mrv.maya.ui.editor.EditorBase._properties_
+mrv.maya.ui.editor.GlRenderEditor._properties_
+mrv.maya.ui.editor.ItemFilter._properties_
+mrv.maya.ui.editor.ItemFilterAttr._properties_
+mrv.maya.ui.editor.ItemFilterBase._properties_
+mrv.maya.ui.editor.ItemFilterRender._properties_
+mrv.maya.ui.editor.ModelEditor._properties_
+mrv.maya.ui.editor.OutlinerEditor._properties_
+mrv.maya.ui.editor.RenderEditorBase._properties_
+mrv.maya.ui.editor.RenderWindowEditor._properties_
+mrv.maya.ui.editor.SelectionConnection._properties_
+mrv.maya.ui.layout.ColumnLayout._properties_
+mrv.maya.ui.layout.ColumnLayoutBase._properties_
+mrv.maya.ui.layout.FrameLayout._properties_
+mrv.maya.ui.layout.Layout._properties_
+mrv.maya.ui.layout.PaneLayout._properties_
+mrv.maya.ui.layout.RowColumnLayout._properties_
+mrv.maya.ui.layout.RowLayout._properties_
+mrv.maya.ui.layout.ScrollLayout._properties_
+mrv.maya.ui.layout.TabLayout._properties_" class="py-name" href="#" onclick="return doclink('link-6', '_properties_', 'link-6');">_properties_</a></tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt> <tt class="py-string">"nch"</tt><tt class="py-op">,</tt> <tt class="py-string">"numberOfChildren"</tt><tt class="py-op">)</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"> </tt>
+<a name="Layout.__init__"></a><div id="Layout.__init__-def"><a name="L19"></a><tt class="py-lineno"> 19</tt> <a class="py-toggle" href="#" id="Layout.__init__-toggle" onclick="return toggle('Layout.__init__');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.layout.Layout-class.html#__init__">__init__</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Layout.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="Layout.__init__-expanded"><a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line">                <tt class="py-docstring">"""Initialize the layout"""</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line">                <tt class="py-name">super</tt><tt class="py-op">(</tt> <tt id="link-7" class="py-name" targets="Class mrv.maya.ui.layout.Layout=mrv.maya.ui.layout.Layout-class.html"><a title="mrv.maya.ui.layout.Layout" class="py-name" href="#" onclick="return doclink('link-7', 'Layout', 'link-7');">Layout</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt> <tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-8" class="py-name" targets="Method mrv.automation.attributes.RegexStringAttr.__init__()=mrv.automation.attributes.RegexStringAttr-class.html#__init__,Method mrv.automation.process.ProcessBase.__init__()=mrv.automation.process.ProcessBase-class.html#__init__,Method mrv.automation.process.WorkflowProcessBase.__init__()=mrv.automation.process.WorkflowProcessBase-class.html#__init__,Method mrv.automation.qa.QACheck.__init__()=mrv.automation.qa.QACheck-class.html#__init__,Method mrv.automation.qa.QACheckAttribute.__init__()=mrv.automation.qa.QACheckAttribute-class.html#__init__,Method mrv.automation.qa.QACheckResult.__init__()=mrv.automation.qa.QACheckResult-class.html#__init__,Method mrv.automation.qa.QAWorkflow.__init__()=mrv.automation.qa.QAWorkflow-class.html#__init__,Method mrv.automation.report.ReportBase.__init__()=mrv.automation.report.ReportBase-class.html#__init__,Method mrv.automation.workflow.DirtyException.__init__()=mrv.automation.workflow.DirtyException-class.html#__init__,Method mrv.automation.workflow.Workflow.CallGraph.__init__()=mrv.automation.workflow.Workflow.CallGraph-class.html#__init__,Method mrv.automation.workflow.Workflow.ProcessData.__init__()=mrv.automation.workflow.Workflow.ProcessData-class.html#__init__,Method mrv.automation.workflow.Workflow.__init__()=mrv.automation.workflow.Workflow-class.html#__init__,Method mrv.cmd.base.SpawnedCommand.__init__()=mrv.cmd.base.SpawnedCommand-class.html#__init__,Method mrv.cmd.base.SpawnedOptionParser.__init__()=mrv.cmd.base.SpawnedOptionParser-class.html#__init__,Method mrv.conf.ConfigAccessor.__init__()=mrv.conf.ConfigAccessor-class.html#__init__,Method mrv.conf.ConfigChain.__init__()=mrv.conf.ConfigChain-class.html#__init__,Method mrv.conf.ConfigFile.__init__()=mrv.conf.ConfigFile-class.html#__init__,Method mrv.conf.ConfigManager.__init__()=mrv.conf.ConfigManager-class.html#__init__,Method mrv.conf.ConfigNode.__init__()=mrv.conf.ConfigNode-class.html#__init__,Method mrv.conf.DictToINIFile.__init__()=mrv.conf.DictToINIFile-class.html#__init__,Method mrv.conf.DiffData.__init__()=mrv.conf.DiffData-class.html#__init__,Method mrv.conf.Key.__init__()=mrv.conf.Key-class.html#__init__,Method mrv.conf.Section.__init__()=mrv.conf.Section-class.html#__init__,Method mrv.conf._PropertyHolderBase.__init__()=mrv.conf._PropertyHolderBase-class.html#__init__,Method mrv.dge.Attribute.__init__()=mrv.dge.Attribute-class.html#__init__,Method mrv.dge.Graph.__init__()=mrv.dge.Graph-class.html#__init__,Method mrv.dge.NodeBase.__init__()=mrv.dge.NodeBase-class.html#__init__,Method mrv.dge.plug.__init__()=mrv.dge.plug-class.html#__init__,Method mrv.dgfe.FacadeNodeBase.__init__()=mrv.dgfe.FacadeNodeBase-class.html#__init__,Method mrv.dgfe.GraphNodeBase.__init__()=mrv.dgfe.GraphNodeBase-class.html#__init__,Method mrv.dgfe._IOShell.__init__()=mrv.dgfe._IOShell-class.html#__init__,Method mrv.dgfe._OIShell.__init__()=mrv.dgfe._OIShell-class.html#__init__,Method mrv.doc.base.DocGenerator.__init__()=mrv.doc.base.DocGenerator-class.html#__init__,Method mrv.enum.Element.__init__()=mrv.enum.Element-class.html#__init__,Method mrv.enum.Enumeration.__init__()=mrv.enum.Enumeration-class.html#__init__,Method mrv.exc.MRVError.__init__()=mrv.exc.MRVError-class.html#__init__,Method mrv.interface.iChoiceDialog.__init__()=mrv.interface.iChoiceDialog-class.html#__init__,Method mrv.interface.iProgressIndicator.__init__()=mrv.interface.iProgressIndicator-class.html#__init__,Method mrv.interface.iPrompt.__init__()=mrv.interface.iPrompt-class.html#__init__,Method mrv.maya.mdb.MEnumDescriptor.__init__()=mrv.maya.mdb.MEnumDescriptor-class.html#__init__,Method mrv.maya.mdb.MFnCodeGeneratorBase.__init__()=mrv.maya.mdb.MFnCodeGeneratorBase-class.html#__init__,Method mrv.maya.mdb.MMemberMap.__init__()=mrv.maya.mdb.MMemberMap-class.html#__init__,Method mrv.maya.mdb.MMethodDescriptor.__init__()=mrv.maya.mdb.MMethodDescriptor-class.html#__init__,Method mrv.maya.nt.PluginDB.__init__()=mrv.maya.nt.PluginDB-class.html#__init__,Method mrv.maya.nt.geometry._SingleIndexedComponentGenerator.__init__()=mrv.maya.nt.geometry._SingleIndexedComponentGenerator-class.html#__init__,Method mrv.maya.nt.persistence.PyPickleData.__init__()=mrv.maya.nt.persistence.PyPickleData-class.html#__init__,Method mrv.maya.nt.persistence.StoragePluginNode.__init__()=mrv.maya.nt.persistence.StoragePluginNode-class.html#__init__,Method mrv.maya.nt.set.ObjectSet._TmpSet.__init__()=mrv.maya.nt.set.ObjectSet._TmpSet-class.html#__init__,Method mrv.maya.nt.storage.StorageBase.PyPickleValue.__init__()=mrv.maya.nt.storage.StorageBase.PyPickleValue-class.html#__init__,Method mrv.maya.nt.storage.StorageBase.__init__()=mrv.maya.nt.storage.StorageBase-class.html#__init__,Method mrv.maya.nt.storage.StorageNode.__init__()=mrv.maya.nt.storage.StorageNode-class.html#__init__,Method mrv.maya.ref.FileReference.__init__()=mrv.maya.ref.FileReference-class.html#__init__,Method mrv.maya.ui.base.BaseUI.__init__()=mrv.maya.ui.base.BaseUI-class.html#__init__,Method mrv.maya.ui.base.NamedUI.__init__()=mrv.maya.ui.base.NamedUI-class.html#__init__,Method mrv.maya.ui.browse.control.BookmarkControl.__init__()=mrv.maya.ui.browse.control.BookmarkControl-class.html#__init__,Method mrv.maya.ui.browse.control.FilePathControlEditable.__init__()=mrv.maya.ui.browse.control.FilePathControlEditable-class.html#__init__,Method mrv.maya.ui.browse.control.FileProvider.__init__()=mrv.maya.ui.browse.control.FileProvider-class.html#__init__,Method mrv.maya.ui.browse.control.FileRootSelectorControl.__init__()=mrv.maya.ui.browse.control.FileRootSelectorControl-class.html#__init__,Method mrv.maya.ui.browse.control.StackControlBase.__init__()=mrv.maya.ui.browse.control.StackControlBase-class.html#__init__,Method mrv.maya.ui.browse.finder.Finder.__init__()=mrv.maya.ui.browse.finder.Finder-class.html#__init__,Method mrv.maya.ui.browse.interface.iFinderProvider.__init__()=mrv.maya.ui.browse.interface.iFinderProvider-class.html#__init__,Method mrv.maya.ui.browse.layout.FileOpenFinder.__init__()=mrv.maya.ui.browse.layout.FileOpenFinder-class.html#__init__,Method mrv.maya.ui.browse.layout.FileReferenceFinder.__init__()=mrv.maya.ui.browse.layout.FileReferenceFinder-class.html#__init__,Method mrv.maya.ui.browse.layout.FileSaveFinder.__init__()=mrv.maya.ui.browse.layout.FileSaveFinder-class.html#__init__,Method mrv.maya.ui.browse.layout.FinderLayout.__init__()=mrv.maya.ui.browse.layout.FinderLayout-class.html#__init__,Method mrv.maya.ui.browse.option.FileOpenOptions.__init__()=mrv.maya.ui.browse.option.FileOpenOptions-class.html#__init__,Method mrv.maya.ui.dialog.ProgressWindow.__init__()=mrv.maya.ui.dialog.ProgressWindow-class.html#__init__,Method mrv.maya.ui.dialog.PromptDialog.__init__()=mrv.maya.ui.dialog.PromptDialog-class.html#__init__,Method mrv.maya.ui.layout.Layout.__init__()=mrv.maya.ui.layout.Layout-class.html#__init__,Method mrv.maya.ui.qa.QACheckLayout.__init__()=mrv.maya.ui.qa.QACheckLayout-class.html#__init__,Method mrv.maya.ui.qa.QALayout.__init__()=mrv.maya.ui.qa.QALayout-class.html#__init__,Method mrv.maya.ui.util.EventSenderUI._UIEvent.__init__()=mrv.maya.ui.util.EventSenderUI._UIEvent-class.html#__init__,Method mrv.maya.ui.util.UIContainerBase.__init__()=mrv.maya.ui.util.UIContainerBase-class.html#__init__,Method mrv.maya.undo.DGModifier.__init__()=mrv.maya.undo.DGModifier-class.html#__init__,Method mrv.maya.undo.GenericOperation.__init__()=mrv.maya.undo.GenericOperation-class.html#__init__,Method mrv.maya.undo.GenericOperationStack.__init__()=mrv.maya.undo.GenericOperationStack-class.html#__init__,Method mrv.maya.undo.MuteUndo.__init__()=mrv.maya.undo.MuteUndo-class.html#__init__,Method mrv.maya.undo.Operation.__init__()=mrv.maya.undo.Operation-class.html#__init__,Method mrv.maya.undo.StartUndo.__init__()=mrv.maya.undo.StartUndo-class.html#__init__,Method mrv.maya.undo.UndoCmd.__init__()=mrv.maya.undo.UndoCmd-class.html#__init__,Method mrv.maya.undo.UndoRecorder.__init__()=mrv.maya.undo.UndoRecorder-class.html#__init__,Method mrv.maya.util.CallbackEventBase.CBStorageFunction.__init__()=mrv.maya.util.CallbackEventBase.CBStorageFunction-class.html#__init__,Method mrv.maya.util.CallbackEventBase.__init__()=mrv.maya.util.CallbackEventBase-class.html#__init__,Method mrv.maya.util.StandinClass.__init__()=mrv.maya.util.StandinClass-class.html#__init__,Method mrv.thread.TerminatableThread.__init__()=mrv.thread.TerminatableThread-class.html#__init__,Method mrv.thread.WorkerThread.__init__()=mrv.thread.WorkerThread-class.html#__init__,Method mrv.util.And.__init__()=mrv.util.And-class.html#__init__,Method mrv.util.Call.__init__()=mrv.util.Call-class.html#__init__,Method mrv.util.CallAdv.__init__()=mrv.util.CallAdv-class.html#__init__,Method mrv.util.CallOnDeletion.__init__()=mrv.util.CallOnDeletion-class.html#__init__,Method mrv.util.Event.__init__()=mrv.util.Event-class.html#__init__,Method mrv.util.InterfaceMaster.InterfaceBase.__init__()=mrv.util.InterfaceMaster.InterfaceBase-class.html#__init__,Method mrv.util.InterfaceMaster.InterfaceDescriptor.__init__()=mrv.util.InterfaceMaster.InterfaceDescriptor-class.html#__init__,Method mrv.util.InterfaceMaster._InterfaceHandler.__init__()=mrv.util.InterfaceMaster._InterfaceHandler-class.html#__init__,Method mrv.util.InterfaceMaster.__init__()=mrv.util.InterfaceMaster-class.html#__init__,Method mrv.util.Or.__init__()=mrv.util.Or-class.html#__init__,Method mrv.util.PipeSeparatedFile.__init__()=mrv.util.PipeSeparatedFile-class.html#__init__,Method mrv.util.WeakInstFunction.__init__()=mrv.util.WeakInstFunction-class.html#__init__,Method unittest.FunctionTestCase.__init__()=unittest.FunctionTestCase-class.html#__init__,Method unittest.TestCase.__init__()=unittest.TestCase-class.html#__init__,Method unittest.TestProgram.__init__()=unittest.TestProgram-class.html#__init__,Method unittest.TestResult.__init__()=unittest.TestResult-class.html#__init__,Method unittest.TestSuite.__init__()=unittest.TestSuite-class.html#__init__,Method unittest.TextTestRunner.__init__()=unittest.TextTestRunner-class.html#__init__,Method unittest._TextTestResult.__init__()=unittest._TextTestResult-class.html#__init__,Method unittest._WritelnDecorator.__init__()=unittest._WritelnDecorator-class.html#__init__"><a title="mrv.automation.attributes.RegexStringAttr.__init__
+mrv.automation.process.ProcessBase.__init__
+mrv.automation.process.WorkflowProcessBase.__init__
+mrv.automation.qa.QACheck.__init__
+mrv.automation.qa.QACheckAttribute.__init__
+mrv.automation.qa.QACheckResult.__init__
+mrv.automation.qa.QAWorkflow.__init__
+mrv.automation.report.ReportBase.__init__
+mrv.automation.workflow.DirtyException.__init__
+mrv.automation.workflow.Workflow.CallGraph.__init__
+mrv.automation.workflow.Workflow.ProcessData.__init__
+mrv.automation.workflow.Workflow.__init__
+mrv.cmd.base.SpawnedCommand.__init__
+mrv.cmd.base.SpawnedOptionParser.__init__
+mrv.conf.ConfigAccessor.__init__
+mrv.conf.ConfigChain.__init__
+mrv.conf.ConfigFile.__init__
+mrv.conf.ConfigManager.__init__
+mrv.conf.ConfigNode.__init__
+mrv.conf.DictToINIFile.__init__
+mrv.conf.DiffData.__init__
+mrv.conf.Key.__init__
+mrv.conf.Section.__init__
+mrv.conf._PropertyHolderBase.__init__
+mrv.dge.Attribute.__init__
+mrv.dge.Graph.__init__
+mrv.dge.NodeBase.__init__
+mrv.dge.plug.__init__
+mrv.dgfe.FacadeNodeBase.__init__
+mrv.dgfe.GraphNodeBase.__init__
+mrv.dgfe._IOShell.__init__
+mrv.dgfe._OIShell.__init__
+mrv.doc.base.DocGenerator.__init__
+mrv.enum.Element.__init__
+mrv.enum.Enumeration.__init__
+mrv.exc.MRVError.__init__
+mrv.interface.iChoiceDialog.__init__
+mrv.interface.iProgressIndicator.__init__
+mrv.interface.iPrompt.__init__
+mrv.maya.mdb.MEnumDescriptor.__init__
+mrv.maya.mdb.MFnCodeGeneratorBase.__init__
+mrv.maya.mdb.MMemberMap.__init__
+mrv.maya.mdb.MMethodDescriptor.__init__
+mrv.maya.nt.PluginDB.__init__
+mrv.maya.nt.geometry._SingleIndexedComponentGenerator.__init__
+mrv.maya.nt.persistence.PyPickleData.__init__
+mrv.maya.nt.persistence.StoragePluginNode.__init__
+mrv.maya.nt.set.ObjectSet._TmpSet.__init__
+mrv.maya.nt.storage.StorageBase.PyPickleValue.__init__
+mrv.maya.nt.storage.StorageBase.__init__
+mrv.maya.nt.storage.StorageNode.__init__
+mrv.maya.ref.FileReference.__init__
+mrv.maya.ui.base.BaseUI.__init__
+mrv.maya.ui.base.NamedUI.__init__
+mrv.maya.ui.browse.control.BookmarkControl.__init__
+mrv.maya.ui.browse.control.FilePathControlEditable.__init__
+mrv.maya.ui.browse.control.FileProvider.__init__
+mrv.maya.ui.browse.control.FileRootSelectorControl.__init__
+mrv.maya.ui.browse.control.StackControlBase.__init__
+mrv.maya.ui.browse.finder.Finder.__init__
+mrv.maya.ui.browse.interface.iFinderProvider.__init__
+mrv.maya.ui.browse.layout.FileOpenFinder.__init__
+mrv.maya.ui.browse.layout.FileReferenceFinder.__init__
+mrv.maya.ui.browse.layout.FileSaveFinder.__init__
+mrv.maya.ui.browse.layout.FinderLayout.__init__
+mrv.maya.ui.browse.option.FileOpenOptions.__init__
+mrv.maya.ui.dialog.ProgressWindow.__init__
+mrv.maya.ui.dialog.PromptDialog.__init__
+mrv.maya.ui.layout.Layout.__init__
+mrv.maya.ui.qa.QACheckLayout.__init__
+mrv.maya.ui.qa.QALayout.__init__
+mrv.maya.ui.util.EventSenderUI._UIEvent.__init__
+mrv.maya.ui.util.UIContainerBase.__init__
+mrv.maya.undo.DGModifier.__init__
+mrv.maya.undo.GenericOperation.__init__
+mrv.maya.undo.GenericOperationStack.__init__
+mrv.maya.undo.MuteUndo.__init__
+mrv.maya.undo.Operation.__init__
+mrv.maya.undo.StartUndo.__init__
+mrv.maya.undo.UndoCmd.__init__
+mrv.maya.undo.UndoRecorder.__init__
+mrv.maya.util.CallbackEventBase.CBStorageFunction.__init__
+mrv.maya.util.CallbackEventBase.__init__
+mrv.maya.util.StandinClass.__init__
+mrv.thread.TerminatableThread.__init__
+mrv.thread.WorkerThread.__init__
+mrv.util.And.__init__
+mrv.util.Call.__init__
+mrv.util.CallAdv.__init__
+mrv.util.CallOnDeletion.__init__
+mrv.util.Event.__init__
+mrv.util.InterfaceMaster.InterfaceBase.__init__
+mrv.util.InterfaceMaster.InterfaceDescriptor.__init__
+mrv.util.InterfaceMaster._InterfaceHandler.__init__
+mrv.util.InterfaceMaster.__init__
+mrv.util.Or.__init__
+mrv.util.PipeSeparatedFile.__init__
+mrv.util.WeakInstFunction.__init__
+unittest.FunctionTestCase.__init__
+unittest.TestCase.__init__
+unittest.TestProgram.__init__
+unittest.TestResult.__init__
+unittest.TestSuite.__init__
+unittest.TextTestRunner.__init__
+unittest._TextTestResult.__init__
+unittest._WritelnDecorator.__init__" class="py-name" href="#" onclick="return doclink('link-8', '__init__', 'link-8');">__init__</a></tt><tt class="py-op">(</tt> <tt class="py-op">*</tt><tt id="link-9" class="py-name" targets="Variable mrv.util.Call.args=mrv.util.Call-class.html#args"><a title="mrv.util.Call.args" class="py-name" href="#" onclick="return doclink('link-9', 'args', 'link-9');">args</a></tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt id="link-10" class="py-name" targets="Variable mrv.util.Call.kwargs=mrv.util.Call-class.html#kwargs"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-10', 'kwargs', 'link-10');">kwargs</a></tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"> </tt>
+<a name="Layout.__getitem__"></a><div id="Layout.__getitem__-def"><a name="L23"></a><tt class="py-lineno"> 23</tt> <a class="py-toggle" href="#" id="Layout.__getitem__-toggle" onclick="return toggle('Layout.__getitem__');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.layout.Layout-class.html#__getitem__">__getitem__</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">key</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Layout.__getitem__-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="Layout.__getitem__-expanded"><a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line">                <tt class="py-docstring">"""Implemented by `UIContainerBase`"""</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">uiutil</tt><tt class="py-op">.</tt><tt id="link-11" class="py-name" targets="Class mrv.maya.ui.util.UIContainerBase=mrv.maya.ui.util.UIContainerBase-class.html"><a title="mrv.maya.ui.util.UIContainerBase" class="py-name" href="#" onclick="return doclink('link-11', 'UIContainerBase', 'link-11');">UIContainerBase</a></tt><tt class="py-op">.</tt><tt id="link-12" class="py-name" targets="Method mrv.conf.BasicSet.__getitem__()=mrv.conf.BasicSet-class.html#__getitem__,Method mrv.conf.ConfigAccessor.__getitem__()=mrv.conf.ConfigAccessor-class.html#__getitem__,Method mrv.maya.nt.apipatch.MObjectArray.__getitem__()=mrv.maya.nt.apipatch.MObjectArray-class.html#__getitem__,Method mrv.maya.nt.apipatch.MPlugArray.__getitem__()=mrv.maya.nt.apipatch.MPlugArray-class.html#__getitem__,Method mrv.maya.nt.base.ComponentListData.__getitem__()=mrv.maya.nt.base.ComponentListData-class.html#__getitem__,Method mrv.maya.nt.base.DagNode.__getitem__()=mrv.maya.nt.base.DagNode-class.html#__getitem__,Method mrv.maya.nt.geometry._SingleIndexedComponentGenerator.__getitem__()=mrv.maya.nt.geometry._SingleIndexedComponentGenerator-class.html#__getitem__,Method mrv.maya.nt.geometry._SingleIndexedComponentIterator.__getitem__()=mrv.maya.nt.geometry._SingleIndexedComponentIterator-class.html#__getitem__,Method mrv.maya.nt.storage.StorageBase.PyPickleValue.__getitem__()=mrv.maya.nt.storage.StorageBase.PyPickleValue-class.html#__getitem__,Method mrv.maya.ui.layout.Layout.__getitem__()=mrv.maya.ui.layout.Layout-class.html#__getitem__,Method mrv.maya.ui.util.UIContainerBase.__getitem__()=mrv.maya.ui.util.UIContainerBase-class.html#__getitem__,Method mrv.maya.util.OptionVarDict.__getitem__()=mrv.maya.util.OptionVarDict-class.html#__getitem__"><a title="mrv.conf.BasicSet.__getitem__
+mrv.conf.ConfigAccessor.__getitem__
+mrv.maya.nt.apipatch.MObjectArray.__getitem__
+mrv.maya.nt.apipatch.MPlugArray.__getitem__
+mrv.maya.nt.base.ComponentListData.__getitem__
+mrv.maya.nt.base.DagNode.__getitem__
+mrv.maya.nt.geometry._SingleIndexedComponentGenerator.__getitem__
+mrv.maya.nt.geometry._SingleIndexedComponentIterator.__getitem__
+mrv.maya.nt.storage.StorageBase.PyPickleValue.__getitem__
+mrv.maya.ui.layout.Layout.__getitem__
+mrv.maya.ui.util.UIContainerBase.__getitem__
+mrv.maya.util.OptionVarDict.__getitem__" class="py-name" href="#" onclick="return doclink('link-12', '__getitem__', 'link-12');">__getitem__</a></tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">,</tt> <tt id="link-13" class="py-name" targets="Method mrv.conf.Section.key()=mrv.conf.Section-class.html#key"><a title="mrv.conf.Section.key" class="py-name" href="#" onclick="return doclink('link-13', 'key', 'link-13');">key</a></tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"> </tt>
+<a name="Layout.children"></a><div id="Layout.children-def"><a name="L27"></a><tt class="py-lineno"> 27</tt> <a class="py-toggle" href="#" id="Layout.children-toggle" onclick="return toggle('Layout.children');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.layout.Layout-class.html#children">children</a><tt class="py-op">(</tt> <tt class="py-param">self</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Layout.children-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="Layout.children-expanded"><a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line">                <tt class="py-docstring">""" :return: children of this layout """</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line">                <tt class="py-name">childnames</tt> <tt class="py-op">=</tt> <tt class="py-name">mutil</tt><tt class="py-op">.</tt><tt id="link-14" class="py-name" targets="Function mrv.maya.util.noneToList()=mrv.maya.util-module.html#noneToList"><a title="mrv.maya.util.noneToList" class="py-name" href="#" onclick="return doclink('link-14', 'noneToList', 'link-14');">noneToList</a></tt><tt class="py-op">(</tt> <tt class="py-name">cmds</tt><tt class="py-op">.</tt><tt id="link-15" class="py-name" targets="Method mrv.maya.ui.browse.finder.Finder.layout()=mrv.maya.ui.browse.finder.Finder-class.html#layout,Module mrv.maya.ui.browse.layout=mrv.maya.ui.browse.layout-module.html,Module mrv.maya.ui.layout=mrv.maya.ui.layout-module.html"><a title="mrv.maya.ui.browse.finder.Finder.layout
+mrv.maya.ui.browse.layout
+mrv.maya.ui.layout" class="py-name" href="#" onclick="return doclink('link-15', 'layout', 'link-15');">layout</a></tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">q</tt><tt class="py-op">=</tt><tt class="py-number">1</tt><tt class="py-op">,</tt> <tt class="py-name">ca</tt><tt class="py-op">=</tt><tt class="py-number">1</tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line">                <tt class="py-comment"># assure we have long names to ensure uniqueness</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">uibase</tt><tt class="py-op">.</tt><tt class="py-name">wrapUI</tt><tt class="py-op">(</tt> <tt class="py-op">[</tt> <tt class="py-string">"%s|%s"</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">c</tt> <tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">c</tt> <tt class="py-keyword">in</tt> <tt class="py-name">childnames</tt> <tt class="py-op">]</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"> </tt>
+<a name="Layout.setParentActive"></a><div id="Layout.setParentActive-def"><a name="L33"></a><tt class="py-lineno"> 33</tt> <a class="py-toggle" href="#" id="Layout.setParentActive-toggle" onclick="return toggle('Layout.setParentActive');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.layout.Layout-class.html#setParentActive">setParentActive</a><tt class="py-op">(</tt> <tt class="py-param">self</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Layout.setParentActive-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="Layout.setParentActive-expanded"><a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line">                <tt class="py-docstring">"""Set the parent ( layout ) of this layout active - newly created items</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"><tt class="py-docstring">                will be children of the parent layout</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"><tt class="py-docstring">                </tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"><tt class="py-docstring">                :return: self</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line"><tt class="py-docstring">                :note: can safely be called several times """</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line">                <tt class="py-name">cmds</tt><tt class="py-op">.</tt><tt id="link-16" class="py-name" targets="Method mrv.maya.nt.base.DagNode.setParent()=mrv.maya.nt.base.DagNode-class.html#setParent"><a title="mrv.maya.nt.base.DagNode.setParent" class="py-name" href="#" onclick="return doclink('link-16', 'setParent', 'link-16');">setParent</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-17" class="py-name" targets="Method mrv.maya.ui.base.NamedUI._parentString()=mrv.maya.ui.base.NamedUI-class.html#_parentString"><a title="mrv.maya.ui.base.NamedUI._parentString" class="py-name" href="#" onclick="return doclink('link-17', '_parentString', 'link-17');">_parentString</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">self</tt> </tt>
+</div><a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line">        <tt class="py-comment">#{ Properties</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line">        <tt id="link-18" class="py-name" targets="Method mrv.maya.ui.layout.Layout.p_ca()=mrv.maya.ui.layout.Layout-class.html#p_ca"><a title="mrv.maya.ui.layout.Layout.p_ca" class="py-name" href="#" onclick="return doclink('link-18', 'p_ca', 'link-18');">p_ca</a></tt> <tt class="py-op">=</tt> <tt class="py-name">property</tt><tt class="py-op">(</tt><tt id="link-19" class="py-name" targets="Method mrv.interface.iDagItem.children()=mrv.interface.iDagItem-class.html#children,Method mrv.maya.ns.Namespace.children()=mrv.maya.ns.Namespace-class.html#children,Method mrv.maya.nt.base.DagNode.children()=mrv.maya.nt.base.DagNode-class.html#children,Method mrv.maya.ref.FileReference.children()=mrv.maya.ref.FileReference-class.html#children,Method mrv.maya.ui.base.NamedUI.children()=mrv.maya.ui.base.NamedUI-class.html#children,Method mrv.maya.ui.layout.Layout.children()=mrv.maya.ui.layout.Layout-class.html#children,Method mrv.path.Path.children()=mrv.path.Path-class.html#children,Method mrv.util.DAGTree.children()=mrv.util.DAGTree-class.html#children"><a title="mrv.interface.iDagItem.children
+mrv.maya.ns.Namespace.children
+mrv.maya.nt.base.DagNode.children
+mrv.maya.ref.FileReference.children
+mrv.maya.ui.base.NamedUI.children
+mrv.maya.ui.layout.Layout.children
+mrv.path.Path.children
+mrv.util.DAGTree.children" class="py-name" href="#" onclick="return doclink('link-19', 'children', 'link-19');">children</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line">        <tt class="py-name">p_childArray</tt> <tt class="py-op">=</tt> <tt id="link-20" class="py-name"><a title="mrv.maya.ui.layout.Layout.p_ca" class="py-name" href="#" onclick="return doclink('link-20', 'p_ca', 'link-18');">p_ca</a></tt> </tt>
+</div><a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line">        <tt class="py-comment">#} End Properties</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line"> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line"> </tt>
+<a name="FormLayout"></a><div id="FormLayout-def"><a name="L48"></a><tt class="py-lineno"> 48</tt> <a class="py-toggle" href="#" id="FormLayout-toggle" onclick="return toggle('FormLayout');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.layout.FormLayout-class.html">FormLayout</a><tt class="py-op">(</tt> <tt class="py-base-class">Layout</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="FormLayout-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="FormLayout-expanded"><a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">        <tt class="py-docstring">""" Wrapper class for maya form layout """</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">        <tt class="py-comment"># tuple with side strings - to quickly define your attachments, assign it to letters</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">        <tt class="py-comment"># like : t,b,l,r = kSides</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line">        <tt class="py-comment"># and use the letters accordingly to save space and make the layout easier to read</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">        <tt id="link-21" class="py-name" targets="Variable mrv.maya.ui.layout.FormLayout.kSides=mrv.maya.ui.layout.FormLayout-class.html#kSides"><a title="mrv.maya.ui.layout.FormLayout.kSides" class="py-name" href="#" onclick="return doclink('link-21', 'kSides', 'link-21');">kSides</a></tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt> <tt class="py-string">"top"</tt><tt class="py-op">,</tt> <tt class="py-string">"bottom"</tt><tt class="py-op">,</tt> <tt class="py-string">"left"</tt><tt class="py-op">,</tt> <tt class="py-string">"right"</tt> <tt class="py-op">)</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line"> </tt>
+<a name="FormLayout.FormConstraint"></a><div id="FormLayout.FormConstraint-def"><a name="L55"></a><tt class="py-lineno"> 55</tt> <a class="py-toggle" href="#" id="FormLayout.FormConstraint-toggle" onclick="return toggle('FormLayout.FormConstraint');">-</a><tt class="py-line">        <tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.layout.FormLayout.FormConstraint-class.html">FormConstraint</a><tt class="py-op">(</tt> <tt class="py-base-class">object</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="FormLayout.FormConstraint-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="FormLayout.FormConstraint-expanded"><a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">                <tt class="py-docstring">""" defines the way a child is constrained, possibly to other children</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line"><tt class="py-docstring">                </tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line"><tt class="py-docstring">                :todo: proper constraint system, but could be complicated to make it really easy to use"""</tt> </tt>
+</div><a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line"> </tt>
+<a name="FormLayout.setup"></a><div id="FormLayout.setup-def"><a name="L60"></a><tt class="py-lineno"> 60</tt> <a class="py-toggle" href="#" id="FormLayout.setup-toggle" onclick="return toggle('FormLayout.setup');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="mrv.maya.ui.layout.FormLayout-class.html#setup">setup</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="FormLayout.setup-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="FormLayout.setup-expanded"><a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line">                <tt class="py-docstring">"""Apply the given setup to the form layout, specified using kwargs</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line"><tt class="py-docstring">                </tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line"><tt class="py-docstring">                :param kwargs: arguments you would set use to setup the form layout"""</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-22" class="py-name" targets="Variable mrv.maya.ui.base.BaseUI.__melcmd__=mrv.maya.ui.base.BaseUI-class.html#__melcmd__"><a title="mrv.maya.ui.base.BaseUI.__melcmd__" class="py-name" href="#" onclick="return doclink('link-22', '__melcmd__', 'link-22');">__melcmd__</a></tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">e</tt><tt class="py-op">=</tt><tt class="py-number">1</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt id="link-23" class="py-name"><a title="mrv.util.Call.kwargs" class="py-name" href="#" onclick="return doclink('link-23', 'kwargs', 'link-10');">kwargs</a></tt> <tt class="py-op">)</tt> </tt>
+</div></div><a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line"> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line"> </tt>
+<a name="FrameLayout"></a><div id="FrameLayout-def"><a name="L67"></a><tt class="py-lineno"> 67</tt> <a class="py-toggle" href="#" id="FrameLayout-toggle" onclick="return toggle('FrameLayout');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.layout.FrameLayout-class.html">FrameLayout</a><tt class="py-op">(</tt> <tt class="py-base-class">Layout</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="FrameLayout-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="FrameLayout-expanded"><a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">        <tt class="py-docstring">"""Simple wrapper for a frame layout"""</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">        <tt id="link-24" class="py-name"><a title="mrv.maya.ui.base.Menu._properties_
+mrv.maya.ui.base.MenuBase._properties_
+mrv.maya.ui.base.MenuItem._properties_
+mrv.maya.ui.base.PopupMenu._properties_
+mrv.maya.ui.base.SizedControl._properties_
+mrv.maya.ui.base.Window._properties_
+mrv.maya.ui.control.BooleanGroupBase._properties_
+mrv.maya.ui.control.Button._properties_
+mrv.maya.ui.control.ButtonGroupBase._properties_
+mrv.maya.ui.control.CheckBoxBase._properties_
+mrv.maya.ui.control.CheckBoxGrp._properties_
+mrv.maya.ui.control.FieldBase._properties_
+mrv.maya.ui.control.GroupBase._properties_
+mrv.maya.ui.control.IconTextBase._properties_
+mrv.maya.ui.control.LabelBase._properties_
+mrv.maya.ui.control.OptionMenuBase._properties_
+mrv.maya.ui.control.RadioButtonBase._properties_
+mrv.maya.ui.control.RadioCollectionBase._properties_
+mrv.maya.ui.control.ScrollField._properties_
+mrv.maya.ui.control.Separator._properties_
+mrv.maya.ui.control.SliderBase._properties_
+mrv.maya.ui.control.SliderGroupBase._properties_
+mrv.maya.ui.control.Text._properties_
+mrv.maya.ui.control.TextFieldBase._properties_
+mrv.maya.ui.control.TextScrollList._properties_
+mrv.maya.ui.editor.AnimCurveEditor._properties_
+mrv.maya.ui.editor.AnimEditorBase._properties_
+mrv.maya.ui.editor.BlendShapeEditor._properties_
+mrv.maya.ui.editor.ClipEditor._properties_
+mrv.maya.ui.editor.ColorEditor._properties_
+mrv.maya.ui.editor.ComponentEditor._properties_
+mrv.maya.ui.editor.DeviceEditor._properties_
+mrv.maya.ui.editor.DynPaintEditor._properties_
+mrv.maya.ui.editor.EditorBase._properties_
+mrv.maya.ui.editor.GlRenderEditor._properties_
+mrv.maya.ui.editor.ItemFilter._properties_
+mrv.maya.ui.editor.ItemFilterAttr._properties_
+mrv.maya.ui.editor.ItemFilterBase._properties_
+mrv.maya.ui.editor.ItemFilterRender._properties_
+mrv.maya.ui.editor.ModelEditor._properties_
+mrv.maya.ui.editor.OutlinerEditor._properties_
+mrv.maya.ui.editor.RenderEditorBase._properties_
+mrv.maya.ui.editor.RenderWindowEditor._properties_
+mrv.maya.ui.editor.SelectionConnection._properties_
+mrv.maya.ui.layout.ColumnLayout._properties_
+mrv.maya.ui.layout.ColumnLayoutBase._properties_
+mrv.maya.ui.layout.FrameLayout._properties_
+mrv.maya.ui.layout.Layout._properties_
+mrv.maya.ui.layout.PaneLayout._properties_
+mrv.maya.ui.layout.RowColumnLayout._properties_
+mrv.maya.ui.layout.RowLayout._properties_
+mrv.maya.ui.layout.ScrollLayout._properties_
+mrv.maya.ui.layout.TabLayout._properties_" class="py-name" href="#" onclick="return doclink('link-24', '_properties_', 'link-6');">_properties_</a></tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt>        <tt class="py-string">"bw"</tt><tt class="py-op">,</tt> <tt class="py-string">"borderVisible"</tt><tt class="py-op">,</tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">                                                <tt class="py-string">"bs"</tt><tt class="py-op">,</tt>  <tt class="py-string">"borderStyle"</tt><tt class="py-op">,</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">                                                <tt class="py-string">"cl"</tt><tt class="py-op">,</tt> <tt class="py-string">"collapse"</tt><tt class="py-op">,</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">                                                <tt class="py-string">"cll"</tt><tt class="py-op">,</tt> <tt class="py-string">"collapsable"</tt><tt class="py-op">,</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">                                                <tt class="py-string">"l"</tt><tt class="py-op">,</tt> <tt class="py-string">"label"</tt><tt class="py-op">,</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">                                                <tt class="py-string">"lw"</tt><tt class="py-op">,</tt> <tt class="py-string">"labelWidth"</tt><tt class="py-op">,</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">                                                <tt class="py-string">"lv"</tt><tt class="py-op">,</tt> <tt class="py-string">"labelVisible"</tt><tt class="py-op">,</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">                                                <tt class="py-string">"la"</tt><tt class="py-op">,</tt> <tt class="py-string">"labelAlign"</tt><tt class="py-op">,</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">                                                <tt class="py-string">"li"</tt><tt class="py-op">,</tt> <tt class="py-string">"labelIndent"</tt><tt class="py-op">,</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">                                                <tt class="py-string">"fn"</tt><tt class="py-op">,</tt> <tt class="py-string">"font"</tt><tt class="py-op">,</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">                                                <tt class="py-string">"mw"</tt><tt class="py-op">,</tt> <tt class="py-string">"marginWidth"</tt><tt class="py-op">,</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">                                                <tt class="py-string">"mh"</tt><tt class="py-op">,</tt> <tt class="py-string">"marginHeight"</tt> <tt class="py-op">)</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line"> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">        <tt id="link-25" class="py-name" targets="Variable mrv.maya.ui.base.MenuBase._events_=mrv.maya.ui.base.MenuBase-class.html#_events_,Variable mrv.maya.ui.base.MenuItem._events_=mrv.maya.ui.base.MenuItem-class.html#_events_,Variable mrv.maya.ui.base.PopupMenu._events_=mrv.maya.ui.base.PopupMenu-class.html#_events_,Variable mrv.maya.ui.base.SizedControl._events_=mrv.maya.ui.base.SizedControl-class.html#_events_,Variable mrv.maya.ui.base.Window._events_=mrv.maya.ui.base.Window-class.html#_events_,Variable mrv.maya.ui.control.BooleanBase._events_=mrv.maya.ui.control.BooleanBase-class.html#_events_,Variable mrv.maya.ui.control.BooleanGroupBase._events_=mrv.maya.ui.control.BooleanGroupBase-class.html#_events_,Variable mrv.maya.ui.control.Button._events_=mrv.maya.ui.control.Button-class.html#_events_,Variable mrv.maya.ui.control.ButtonGroupBase._events_=mrv.maya.ui.control.ButtonGroupBase-class.html#_events_,Variable mrv.maya.ui.control.FieldBase._events_=mrv.maya.ui.control.FieldBase-class.html#_events_,Variable mrv.maya.ui.control.IconTextBase._events_=mrv.maya.ui.control.IconTextBase-class.html#_events_,Variable mrv.maya.ui.control.IconTextButton._events_=mrv.maya.ui.control.IconTextButton-class.html#_events_,Variable mrv.maya.ui.control.OptionMenuBase._events_=mrv.maya.ui.control.OptionMenuBase-class.html#_events_,Variable mrv.maya.ui.control.ScrollField._events_=mrv.maya.ui.control.ScrollField-class.html#_events_,Variable mrv.maya.ui.control.SliderBase._events_=mrv.maya.ui.control.SliderBase-class.html#_events_,Variable mrv.maya.ui.control.TextFieldGroupBase._events_=mrv.maya.ui.control.TextFieldGroupBase-class.html#_events_,Variable mrv.maya.ui.control.TextScrollList._events_=mrv.maya.ui.control.TextScrollList-class.html#_events_,Variable mrv.maya.ui.editor.AnimCurveEditor._events_=mrv.maya.ui.editor.AnimCurveEditor-class.html#_events_,Variable mrv.maya.ui.editor.ClipEditor._events_=mrv.maya.ui.editor.ClipEditor-class.html#_events_,Variable mrv.maya.ui.editor.ItemFilterBase._events_=mrv.maya.ui.editor.ItemFilterBase-class.html#_events_,Variable mrv.maya.ui.editor.OutlinerEditor._events_=mrv.maya.ui.editor.OutlinerEditor-class.html#_events_,Variable mrv.maya.ui.editor.RenderWindowEditor._events_=mrv.maya.ui.editor.RenderWindowEditor-class.html#_events_,Variable mrv.maya.ui.editor.SelectionConnection._events_=mrv.maya.ui.editor.SelectionConnection-class.html#_events_,Variable mrv.maya.ui.layout.FrameLayout._events_=mrv.maya.ui.layout.FrameLayout-class.html#_events_,Variable mrv.maya.ui.layout.PaneLayout._events_=mrv.maya.ui.layout.PaneLayout-class.html#_events_,Variable mrv.maya.ui.layout.TabLayout._events_=mrv.maya.ui.layout.TabLayout-class.html#_events_"><a title="mrv.maya.ui.base.MenuBase._events_
+mrv.maya.ui.base.MenuItem._events_
+mrv.maya.ui.base.PopupMenu._events_
+mrv.maya.ui.base.SizedControl._events_
+mrv.maya.ui.base.Window._events_
+mrv.maya.ui.control.BooleanBase._events_
+mrv.maya.ui.control.BooleanGroupBase._events_
+mrv.maya.ui.control.Button._events_
+mrv.maya.ui.control.ButtonGroupBase._events_
+mrv.maya.ui.control.FieldBase._events_
+mrv.maya.ui.control.IconTextBase._events_
+mrv.maya.ui.control.IconTextButton._events_
+mrv.maya.ui.control.OptionMenuBase._events_
+mrv.maya.ui.control.ScrollField._events_
+mrv.maya.ui.control.SliderBase._events_
+mrv.maya.ui.control.TextFieldGroupBase._events_
+mrv.maya.ui.control.TextScrollList._events_
+mrv.maya.ui.editor.AnimCurveEditor._events_
+mrv.maya.ui.editor.ClipEditor._events_
+mrv.maya.ui.editor.ItemFilterBase._events_
+mrv.maya.ui.editor.OutlinerEditor._events_
+mrv.maya.ui.editor.RenderWindowEditor._events_
+mrv.maya.ui.editor.SelectionConnection._events_
+mrv.maya.ui.layout.FrameLayout._events_
+mrv.maya.ui.layout.PaneLayout._events_
+mrv.maya.ui.layout.TabLayout._events_" class="py-name" href="#" onclick="return doclink('link-25', '_events_', 'link-25');">_events_</a></tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt>    <tt class="py-string">"cc"</tt><tt class="py-op">,</tt> <tt class="py-string">"collapseCommand"</tt><tt class="py-op">,</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">                                        <tt class="py-string">"ec"</tt><tt class="py-op">,</tt> <tt class="py-string">"expandCommand"</tt><tt class="py-op">,</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">                                        <tt class="py-string">"pcc"</tt><tt class="py-op">,</tt> <tt class="py-string">"preCollapseCommand"</tt><tt class="py-op">,</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">                                        <tt class="py-string">"pec"</tt><tt class="py-op">,</tt> <tt class="py-string">"preExpandCommand"</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line"> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line"> </tt>
+<a name="RowLayout"></a><div id="RowLayout-def"><a name="L88"></a><tt class="py-lineno"> 88</tt> <a class="py-toggle" href="#" id="RowLayout-toggle" onclick="return toggle('RowLayout');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.layout.RowLayout-class.html">RowLayout</a><tt class="py-op">(</tt> <tt class="py-base-class">Layout</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="RowLayout-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="RowLayout-expanded"><a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">        <tt class="py-docstring">"""Wrapper for row column layout"""</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">        <tt id="link-26" class="py-name"><a title="mrv.maya.ui.base.Menu._properties_
+mrv.maya.ui.base.MenuBase._properties_
+mrv.maya.ui.base.MenuItem._properties_
+mrv.maya.ui.base.PopupMenu._properties_
+mrv.maya.ui.base.SizedControl._properties_
+mrv.maya.ui.base.Window._properties_
+mrv.maya.ui.control.BooleanGroupBase._properties_
+mrv.maya.ui.control.Button._properties_
+mrv.maya.ui.control.ButtonGroupBase._properties_
+mrv.maya.ui.control.CheckBoxBase._properties_
+mrv.maya.ui.control.CheckBoxGrp._properties_
+mrv.maya.ui.control.FieldBase._properties_
+mrv.maya.ui.control.GroupBase._properties_
+mrv.maya.ui.control.IconTextBase._properties_
+mrv.maya.ui.control.LabelBase._properties_
+mrv.maya.ui.control.OptionMenuBase._properties_
+mrv.maya.ui.control.RadioButtonBase._properties_
+mrv.maya.ui.control.RadioCollectionBase._properties_
+mrv.maya.ui.control.ScrollField._properties_
+mrv.maya.ui.control.Separator._properties_
+mrv.maya.ui.control.SliderBase._properties_
+mrv.maya.ui.control.SliderGroupBase._properties_
+mrv.maya.ui.control.Text._properties_
+mrv.maya.ui.control.TextFieldBase._properties_
+mrv.maya.ui.control.TextScrollList._properties_
+mrv.maya.ui.editor.AnimCurveEditor._properties_
+mrv.maya.ui.editor.AnimEditorBase._properties_
+mrv.maya.ui.editor.BlendShapeEditor._properties_
+mrv.maya.ui.editor.ClipEditor._properties_
+mrv.maya.ui.editor.ColorEditor._properties_
+mrv.maya.ui.editor.ComponentEditor._properties_
+mrv.maya.ui.editor.DeviceEditor._properties_
+mrv.maya.ui.editor.DynPaintEditor._properties_
+mrv.maya.ui.editor.EditorBase._properties_
+mrv.maya.ui.editor.GlRenderEditor._properties_
+mrv.maya.ui.editor.ItemFilter._properties_
+mrv.maya.ui.editor.ItemFilterAttr._properties_
+mrv.maya.ui.editor.ItemFilterBase._properties_
+mrv.maya.ui.editor.ItemFilterRender._properties_
+mrv.maya.ui.editor.ModelEditor._properties_
+mrv.maya.ui.editor.OutlinerEditor._properties_
+mrv.maya.ui.editor.RenderEditorBase._properties_
+mrv.maya.ui.editor.RenderWindowEditor._properties_
+mrv.maya.ui.editor.SelectionConnection._properties_
+mrv.maya.ui.layout.ColumnLayout._properties_
+mrv.maya.ui.layout.ColumnLayoutBase._properties_
+mrv.maya.ui.layout.FrameLayout._properties_
+mrv.maya.ui.layout.Layout._properties_
+mrv.maya.ui.layout.PaneLayout._properties_
+mrv.maya.ui.layout.RowColumnLayout._properties_
+mrv.maya.ui.layout.RowLayout._properties_
+mrv.maya.ui.layout.ScrollLayout._properties_
+mrv.maya.ui.layout.TabLayout._properties_" class="py-name" href="#" onclick="return doclink('link-26', '_properties_', 'link-6');">_properties_</a></tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt>        <tt class="py-string">"columnWidth"</tt><tt class="py-op">,</tt> <tt class="py-string">"cw"</tt><tt class="py-op">,</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">                                                <tt class="py-string">"columnAttach"</tt><tt class="py-op">,</tt> <tt class="py-string">"cat"</tt><tt class="py-op">,</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">                                                <tt class="py-string">"rowAttach"</tt><tt class="py-op">,</tt> <tt class="py-string">"rat"</tt><tt class="py-op">,</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">                                                <tt class="py-string">"columnAlign"</tt><tt class="py-op">,</tt> <tt class="py-string">"cal"</tt><tt class="py-op">,</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">                                                <tt class="py-string">"adjustableColumn"</tt><tt class="py-op">,</tt> <tt class="py-string">"adj"</tt><tt class="py-op">,</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">                                                <tt class="py-string">"numberOfColumns"</tt><tt class="py-op">,</tt> <tt class="py-string">"nc"</tt> <tt class="py-op">]</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line"> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">flag</tt> <tt class="py-keyword">in</tt> <tt class="py-op">(</tt>   <tt class="py-string">"columnWidth"</tt><tt class="py-op">,</tt> <tt class="py-string">"cw"</tt><tt class="py-op">,</tt> <tt class="py-string">"columnAttach"</tt><tt class="py-op">,</tt> <tt class="py-string">"ct"</tt><tt class="py-op">,</tt> <tt class="py-string">"columnOffset"</tt><tt class="py-op">,</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">                                        <tt class="py-string">"co"</tt><tt class="py-op">,</tt> <tt class="py-string">"columnAlign"</tt><tt class="py-op">,</tt> <tt class="py-string">"cl"</tt><tt class="py-op">,</tt> <tt class="py-string">"adjustableColumn"</tt><tt class="py-op">,</tt> <tt class="py-string">"ad"</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">                <tt class="py-keyword">for</tt> <tt class="py-name">i</tt> <tt class="py-keyword">in</tt> <tt id="link-27" class="py-name" targets="Method mrv.interface.iProgressIndicator.range()=mrv.interface.iProgressIndicator-class.html#range"><a title="mrv.interface.iProgressIndicator.range" class="py-name" href="#" onclick="return doclink('link-27', 'range', 'link-27');">range</a></tt><tt class="py-op">(</tt> <tt class="py-number">1</tt><tt class="py-op">,</tt> <tt class="py-number">7</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">                        <tt id="link-28" class="py-name"><a title="mrv.maya.ui.base.Menu._properties_
+mrv.maya.ui.base.MenuBase._properties_
+mrv.maya.ui.base.MenuItem._properties_
+mrv.maya.ui.base.PopupMenu._properties_
+mrv.maya.ui.base.SizedControl._properties_
+mrv.maya.ui.base.Window._properties_
+mrv.maya.ui.control.BooleanGroupBase._properties_
+mrv.maya.ui.control.Button._properties_
+mrv.maya.ui.control.ButtonGroupBase._properties_
+mrv.maya.ui.control.CheckBoxBase._properties_
+mrv.maya.ui.control.CheckBoxGrp._properties_
+mrv.maya.ui.control.FieldBase._properties_
+mrv.maya.ui.control.GroupBase._properties_
+mrv.maya.ui.control.IconTextBase._properties_
+mrv.maya.ui.control.LabelBase._properties_
+mrv.maya.ui.control.OptionMenuBase._properties_
+mrv.maya.ui.control.RadioButtonBase._properties_
+mrv.maya.ui.control.RadioCollectionBase._properties_
+mrv.maya.ui.control.ScrollField._properties_
+mrv.maya.ui.control.Separator._properties_
+mrv.maya.ui.control.SliderBase._properties_
+mrv.maya.ui.control.SliderGroupBase._properties_
+mrv.maya.ui.control.Text._properties_
+mrv.maya.ui.control.TextFieldBase._properties_
+mrv.maya.ui.control.TextScrollList._properties_
+mrv.maya.ui.editor.AnimCurveEditor._properties_
+mrv.maya.ui.editor.AnimEditorBase._properties_
+mrv.maya.ui.editor.BlendShapeEditor._properties_
+mrv.maya.ui.editor.ClipEditor._properties_
+mrv.maya.ui.editor.ColorEditor._properties_
+mrv.maya.ui.editor.ComponentEditor._properties_
+mrv.maya.ui.editor.DeviceEditor._properties_
+mrv.maya.ui.editor.DynPaintEditor._properties_
+mrv.maya.ui.editor.EditorBase._properties_
+mrv.maya.ui.editor.GlRenderEditor._properties_
+mrv.maya.ui.editor.ItemFilter._properties_
+mrv.maya.ui.editor.ItemFilterAttr._properties_
+mrv.maya.ui.editor.ItemFilterBase._properties_
+mrv.maya.ui.editor.ItemFilterRender._properties_
+mrv.maya.ui.editor.ModelEditor._properties_
+mrv.maya.ui.editor.OutlinerEditor._properties_
+mrv.maya.ui.editor.RenderEditorBase._properties_
+mrv.maya.ui.editor.RenderWindowEditor._properties_
+mrv.maya.ui.editor.SelectionConnection._properties_
+mrv.maya.ui.layout.ColumnLayout._properties_
+mrv.maya.ui.layout.ColumnLayoutBase._properties_
+mrv.maya.ui.layout.FrameLayout._properties_
+mrv.maya.ui.layout.Layout._properties_
+mrv.maya.ui.layout.PaneLayout._properties_
+mrv.maya.ui.layout.RowColumnLayout._properties_
+mrv.maya.ui.layout.RowLayout._properties_
+mrv.maya.ui.layout.ScrollLayout._properties_
+mrv.maya.ui.layout.TabLayout._properties_" class="py-name" href="#" onclick="return doclink('link-28', '_properties_', 'link-6');">_properties_</a></tt><tt class="py-op">.</tt><tt id="link-29" class="py-name" targets="Method mrv.conf.ConfigChain.append()=mrv.conf.ConfigChain-class.html#append"><a title="mrv.conf.ConfigChain.append" class="py-name" href="#" onclick="return doclink('link-29', 'append', 'link-29');">append</a></tt><tt class="py-op">(</tt> <tt class="py-name">flag</tt> <tt class="py-op">+</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt> <tt class="py-name">i</tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line"> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line"> </tt>
+<a name="ColumnLayoutBase"></a><div id="ColumnLayoutBase-def"><a name="L103"></a><tt class="py-lineno">103</tt> <a class="py-toggle" href="#" id="ColumnLayoutBase-toggle" onclick="return toggle('ColumnLayoutBase');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.layout.ColumnLayoutBase-class.html">ColumnLayoutBase</a><tt class="py-op">(</tt> <tt class="py-base-class">Layout</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ColumnLayoutBase-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="ColumnLayoutBase-expanded"><a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">        <tt id="link-30" class="py-name"><a title="mrv.maya.ui.base.Menu._properties_
+mrv.maya.ui.base.MenuBase._properties_
+mrv.maya.ui.base.MenuItem._properties_
+mrv.maya.ui.base.PopupMenu._properties_
+mrv.maya.ui.base.SizedControl._properties_
+mrv.maya.ui.base.Window._properties_
+mrv.maya.ui.control.BooleanGroupBase._properties_
+mrv.maya.ui.control.Button._properties_
+mrv.maya.ui.control.ButtonGroupBase._properties_
+mrv.maya.ui.control.CheckBoxBase._properties_
+mrv.maya.ui.control.CheckBoxGrp._properties_
+mrv.maya.ui.control.FieldBase._properties_
+mrv.maya.ui.control.GroupBase._properties_
+mrv.maya.ui.control.IconTextBase._properties_
+mrv.maya.ui.control.LabelBase._properties_
+mrv.maya.ui.control.OptionMenuBase._properties_
+mrv.maya.ui.control.RadioButtonBase._properties_
+mrv.maya.ui.control.RadioCollectionBase._properties_
+mrv.maya.ui.control.ScrollField._properties_
+mrv.maya.ui.control.Separator._properties_
+mrv.maya.ui.control.SliderBase._properties_
+mrv.maya.ui.control.SliderGroupBase._properties_
+mrv.maya.ui.control.Text._properties_
+mrv.maya.ui.control.TextFieldBase._properties_
+mrv.maya.ui.control.TextScrollList._properties_
+mrv.maya.ui.editor.AnimCurveEditor._properties_
+mrv.maya.ui.editor.AnimEditorBase._properties_
+mrv.maya.ui.editor.BlendShapeEditor._properties_
+mrv.maya.ui.editor.ClipEditor._properties_
+mrv.maya.ui.editor.ColorEditor._properties_
+mrv.maya.ui.editor.ComponentEditor._properties_
+mrv.maya.ui.editor.DeviceEditor._properties_
+mrv.maya.ui.editor.DynPaintEditor._properties_
+mrv.maya.ui.editor.EditorBase._properties_
+mrv.maya.ui.editor.GlRenderEditor._properties_
+mrv.maya.ui.editor.ItemFilter._properties_
+mrv.maya.ui.editor.ItemFilterAttr._properties_
+mrv.maya.ui.editor.ItemFilterBase._properties_
+mrv.maya.ui.editor.ItemFilterRender._properties_
+mrv.maya.ui.editor.ModelEditor._properties_
+mrv.maya.ui.editor.OutlinerEditor._properties_
+mrv.maya.ui.editor.RenderEditorBase._properties_
+mrv.maya.ui.editor.RenderWindowEditor._properties_
+mrv.maya.ui.editor.SelectionConnection._properties_
+mrv.maya.ui.layout.ColumnLayout._properties_
+mrv.maya.ui.layout.ColumnLayoutBase._properties_
+mrv.maya.ui.layout.FrameLayout._properties_
+mrv.maya.ui.layout.Layout._properties_
+mrv.maya.ui.layout.PaneLayout._properties_
+mrv.maya.ui.layout.RowColumnLayout._properties_
+mrv.maya.ui.layout.RowLayout._properties_
+mrv.maya.ui.layout.ScrollLayout._properties_
+mrv.maya.ui.layout.TabLayout._properties_" class="py-name" href="#" onclick="return doclink('link-30', '_properties_', 'link-6');">_properties_</a></tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt>        <tt class="py-string">"columnAlign"</tt><tt class="py-op">,</tt> <tt class="py-string">"cal"</tt><tt class="py-op">,</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">                                                <tt class="py-string">"columnAttach"</tt><tt class="py-op">,</tt> <tt class="py-string">"cat"</tt><tt class="py-op">,</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">                                                <tt class="py-string">"columnOffset"</tt><tt class="py-op">,</tt> <tt class="py-string">"co"</tt> <tt class="py-op">,</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">                                                <tt class="py-string">"columnWidth"</tt><tt class="py-op">,</tt> <tt class="py-string">"cw"</tt><tt class="py-op">,</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line">                                                <tt class="py-string">"rowSpacing"</tt><tt class="py-op">,</tt> <tt class="py-string">"rs"</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line"> </tt>
+<a name="RowColumnLayout"></a><div id="RowColumnLayout-def"><a name="L110"></a><tt class="py-lineno">110</tt> <a class="py-toggle" href="#" id="RowColumnLayout-toggle" onclick="return toggle('RowColumnLayout');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.layout.RowColumnLayout-class.html">RowColumnLayout</a><tt class="py-op">(</tt> <tt class="py-base-class">ColumnLayoutBase</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="RowColumnLayout-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="RowColumnLayout-expanded"><a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">        <tt class="py-docstring">"""Wrapper for row column layout"""</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">        <tt id="link-31" class="py-name"><a title="mrv.maya.ui.base.Menu._properties_
+mrv.maya.ui.base.MenuBase._properties_
+mrv.maya.ui.base.MenuItem._properties_
+mrv.maya.ui.base.PopupMenu._properties_
+mrv.maya.ui.base.SizedControl._properties_
+mrv.maya.ui.base.Window._properties_
+mrv.maya.ui.control.BooleanGroupBase._properties_
+mrv.maya.ui.control.Button._properties_
+mrv.maya.ui.control.ButtonGroupBase._properties_
+mrv.maya.ui.control.CheckBoxBase._properties_
+mrv.maya.ui.control.CheckBoxGrp._properties_
+mrv.maya.ui.control.FieldBase._properties_
+mrv.maya.ui.control.GroupBase._properties_
+mrv.maya.ui.control.IconTextBase._properties_
+mrv.maya.ui.control.LabelBase._properties_
+mrv.maya.ui.control.OptionMenuBase._properties_
+mrv.maya.ui.control.RadioButtonBase._properties_
+mrv.maya.ui.control.RadioCollectionBase._properties_
+mrv.maya.ui.control.ScrollField._properties_
+mrv.maya.ui.control.Separator._properties_
+mrv.maya.ui.control.SliderBase._properties_
+mrv.maya.ui.control.SliderGroupBase._properties_
+mrv.maya.ui.control.Text._properties_
+mrv.maya.ui.control.TextFieldBase._properties_
+mrv.maya.ui.control.TextScrollList._properties_
+mrv.maya.ui.editor.AnimCurveEditor._properties_
+mrv.maya.ui.editor.AnimEditorBase._properties_
+mrv.maya.ui.editor.BlendShapeEditor._properties_
+mrv.maya.ui.editor.ClipEditor._properties_
+mrv.maya.ui.editor.ColorEditor._properties_
+mrv.maya.ui.editor.ComponentEditor._properties_
+mrv.maya.ui.editor.DeviceEditor._properties_
+mrv.maya.ui.editor.DynPaintEditor._properties_
+mrv.maya.ui.editor.EditorBase._properties_
+mrv.maya.ui.editor.GlRenderEditor._properties_
+mrv.maya.ui.editor.ItemFilter._properties_
+mrv.maya.ui.editor.ItemFilterAttr._properties_
+mrv.maya.ui.editor.ItemFilterBase._properties_
+mrv.maya.ui.editor.ItemFilterRender._properties_
+mrv.maya.ui.editor.ModelEditor._properties_
+mrv.maya.ui.editor.OutlinerEditor._properties_
+mrv.maya.ui.editor.RenderEditorBase._properties_
+mrv.maya.ui.editor.RenderWindowEditor._properties_
+mrv.maya.ui.editor.SelectionConnection._properties_
+mrv.maya.ui.layout.ColumnLayout._properties_
+mrv.maya.ui.layout.ColumnLayoutBase._properties_
+mrv.maya.ui.layout.FrameLayout._properties_
+mrv.maya.ui.layout.Layout._properties_
+mrv.maya.ui.layout.PaneLayout._properties_
+mrv.maya.ui.layout.RowColumnLayout._properties_
+mrv.maya.ui.layout.RowLayout._properties_
+mrv.maya.ui.layout.ScrollLayout._properties_
+mrv.maya.ui.layout.TabLayout._properties_" class="py-name" href="#" onclick="return doclink('link-31', '_properties_', 'link-6');">_properties_</a></tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt>        <tt class="py-string">"numberOfColumns"</tt><tt class="py-op">,</tt> <tt class="py-string">"nc"</tt><tt class="py-op">,</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">                                                <tt class="py-string">"numberOfRows"</tt><tt class="py-op">,</tt> <tt class="py-string">"nr"</tt><tt class="py-op">,</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">                                                <tt class="py-string">"rowHeight"</tt><tt class="py-op">,</tt> <tt class="py-string">"rh"</tt><tt class="py-op">,</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">                                                <tt class="py-string">"rowOffset"</tt><tt class="py-op">,</tt> <tt class="py-string">"ro"</tt><tt class="py-op">,</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">                                                <tt class="py-string">"rowSpacing"</tt><tt class="py-op">,</tt> <tt class="py-string">"rs"</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line"> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line"> </tt>
+<a name="ColumnLayout"></a><div id="ColumnLayout-def"><a name="L119"></a><tt class="py-lineno">119</tt> <a class="py-toggle" href="#" id="ColumnLayout-toggle" onclick="return toggle('ColumnLayout');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.layout.ColumnLayout-class.html">ColumnLayout</a><tt class="py-op">(</tt> <tt class="py-base-class">ColumnLayoutBase</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ColumnLayout-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="ColumnLayout-expanded"><a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line">        <tt class="py-docstring">"""Wrapper class for a simple column layout"""</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line"> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">        <tt id="link-32" class="py-name"><a title="mrv.maya.ui.base.Menu._properties_
+mrv.maya.ui.base.MenuBase._properties_
+mrv.maya.ui.base.MenuItem._properties_
+mrv.maya.ui.base.PopupMenu._properties_
+mrv.maya.ui.base.SizedControl._properties_
+mrv.maya.ui.base.Window._properties_
+mrv.maya.ui.control.BooleanGroupBase._properties_
+mrv.maya.ui.control.Button._properties_
+mrv.maya.ui.control.ButtonGroupBase._properties_
+mrv.maya.ui.control.CheckBoxBase._properties_
+mrv.maya.ui.control.CheckBoxGrp._properties_
+mrv.maya.ui.control.FieldBase._properties_
+mrv.maya.ui.control.GroupBase._properties_
+mrv.maya.ui.control.IconTextBase._properties_
+mrv.maya.ui.control.LabelBase._properties_
+mrv.maya.ui.control.OptionMenuBase._properties_
+mrv.maya.ui.control.RadioButtonBase._properties_
+mrv.maya.ui.control.RadioCollectionBase._properties_
+mrv.maya.ui.control.ScrollField._properties_
+mrv.maya.ui.control.Separator._properties_
+mrv.maya.ui.control.SliderBase._properties_
+mrv.maya.ui.control.SliderGroupBase._properties_
+mrv.maya.ui.control.Text._properties_
+mrv.maya.ui.control.TextFieldBase._properties_
+mrv.maya.ui.control.TextScrollList._properties_
+mrv.maya.ui.editor.AnimCurveEditor._properties_
+mrv.maya.ui.editor.AnimEditorBase._properties_
+mrv.maya.ui.editor.BlendShapeEditor._properties_
+mrv.maya.ui.editor.ClipEditor._properties_
+mrv.maya.ui.editor.ColorEditor._properties_
+mrv.maya.ui.editor.ComponentEditor._properties_
+mrv.maya.ui.editor.DeviceEditor._properties_
+mrv.maya.ui.editor.DynPaintEditor._properties_
+mrv.maya.ui.editor.EditorBase._properties_
+mrv.maya.ui.editor.GlRenderEditor._properties_
+mrv.maya.ui.editor.ItemFilter._properties_
+mrv.maya.ui.editor.ItemFilterAttr._properties_
+mrv.maya.ui.editor.ItemFilterBase._properties_
+mrv.maya.ui.editor.ItemFilterRender._properties_
+mrv.maya.ui.editor.ModelEditor._properties_
+mrv.maya.ui.editor.OutlinerEditor._properties_
+mrv.maya.ui.editor.RenderEditorBase._properties_
+mrv.maya.ui.editor.RenderWindowEditor._properties_
+mrv.maya.ui.editor.SelectionConnection._properties_
+mrv.maya.ui.layout.ColumnLayout._properties_
+mrv.maya.ui.layout.ColumnLayoutBase._properties_
+mrv.maya.ui.layout.FrameLayout._properties_
+mrv.maya.ui.layout.Layout._properties_
+mrv.maya.ui.layout.PaneLayout._properties_
+mrv.maya.ui.layout.RowColumnLayout._properties_
+mrv.maya.ui.layout.RowLayout._properties_
+mrv.maya.ui.layout.ScrollLayout._properties_
+mrv.maya.ui.layout.TabLayout._properties_" class="py-name" href="#" onclick="return doclink('link-32', '_properties_', 'link-6');">_properties_</a></tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt>        <tt class="py-string">"adjustableColumn"</tt><tt class="py-op">,</tt> <tt class="py-string">"adj"</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line"> </tt>
+<a name="ScrollLayout"></a><div id="ScrollLayout-def"><a name="L124"></a><tt class="py-lineno">124</tt> <a class="py-toggle" href="#" id="ScrollLayout-toggle" onclick="return toggle('ScrollLayout');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.layout.ScrollLayout-class.html">ScrollLayout</a><tt class="py-op">(</tt> <tt class="py-base-class">Layout</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ScrollLayout-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="ScrollLayout-expanded"><a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">        <tt class="py-docstring">"""Wrapper for a scroll layout"""</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line">        <tt id="link-33" class="py-name"><a title="mrv.maya.ui.base.Menu._properties_
+mrv.maya.ui.base.MenuBase._properties_
+mrv.maya.ui.base.MenuItem._properties_
+mrv.maya.ui.base.PopupMenu._properties_
+mrv.maya.ui.base.SizedControl._properties_
+mrv.maya.ui.base.Window._properties_
+mrv.maya.ui.control.BooleanGroupBase._properties_
+mrv.maya.ui.control.Button._properties_
+mrv.maya.ui.control.ButtonGroupBase._properties_
+mrv.maya.ui.control.CheckBoxBase._properties_
+mrv.maya.ui.control.CheckBoxGrp._properties_
+mrv.maya.ui.control.FieldBase._properties_
+mrv.maya.ui.control.GroupBase._properties_
+mrv.maya.ui.control.IconTextBase._properties_
+mrv.maya.ui.control.LabelBase._properties_
+mrv.maya.ui.control.OptionMenuBase._properties_
+mrv.maya.ui.control.RadioButtonBase._properties_
+mrv.maya.ui.control.RadioCollectionBase._properties_
+mrv.maya.ui.control.ScrollField._properties_
+mrv.maya.ui.control.Separator._properties_
+mrv.maya.ui.control.SliderBase._properties_
+mrv.maya.ui.control.SliderGroupBase._properties_
+mrv.maya.ui.control.Text._properties_
+mrv.maya.ui.control.TextFieldBase._properties_
+mrv.maya.ui.control.TextScrollList._properties_
+mrv.maya.ui.editor.AnimCurveEditor._properties_
+mrv.maya.ui.editor.AnimEditorBase._properties_
+mrv.maya.ui.editor.BlendShapeEditor._properties_
+mrv.maya.ui.editor.ClipEditor._properties_
+mrv.maya.ui.editor.ColorEditor._properties_
+mrv.maya.ui.editor.ComponentEditor._properties_
+mrv.maya.ui.editor.DeviceEditor._properties_
+mrv.maya.ui.editor.DynPaintEditor._properties_
+mrv.maya.ui.editor.EditorBase._properties_
+mrv.maya.ui.editor.GlRenderEditor._properties_
+mrv.maya.ui.editor.ItemFilter._properties_
+mrv.maya.ui.editor.ItemFilterAttr._properties_
+mrv.maya.ui.editor.ItemFilterBase._properties_
+mrv.maya.ui.editor.ItemFilterRender._properties_
+mrv.maya.ui.editor.ModelEditor._properties_
+mrv.maya.ui.editor.OutlinerEditor._properties_
+mrv.maya.ui.editor.RenderEditorBase._properties_
+mrv.maya.ui.editor.RenderWindowEditor._properties_
+mrv.maya.ui.editor.SelectionConnection._properties_
+mrv.maya.ui.layout.ColumnLayout._properties_
+mrv.maya.ui.layout.ColumnLayoutBase._properties_
+mrv.maya.ui.layout.FrameLayout._properties_
+mrv.maya.ui.layout.Layout._properties_
+mrv.maya.ui.layout.PaneLayout._properties_
+mrv.maya.ui.layout.RowColumnLayout._properties_
+mrv.maya.ui.layout.RowLayout._properties_
+mrv.maya.ui.layout.ScrollLayout._properties_
+mrv.maya.ui.layout.TabLayout._properties_" class="py-name" href="#" onclick="return doclink('link-33', '_properties_', 'link-6');">_properties_</a></tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt>        <tt class="py-string">"scrollAreaWIdth"</tt><tt class="py-op">,</tt> <tt class="py-string">"saw"</tt><tt class="py-op">,</tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line">                                                <tt class="py-string">"scrollAreaHeight"</tt><tt class="py-op">,</tt> <tt class="py-string">"sah"</tt><tt class="py-op">,</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line">                                                <tt class="py-string">"scrollAreaValue"</tt><tt class="py-op">,</tt> <tt class="py-string">"sav"</tt><tt class="py-op">,</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line">                                                <tt class="py-string">"minChildWidth"</tt><tt class="py-op">,</tt> <tt class="py-string">"mcw"</tt><tt class="py-op">,</tt> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line">                                                <tt class="py-string">"scrollPage"</tt><tt class="py-op">,</tt> <tt class="py-string">"sp"</tt><tt class="py-op">,</tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line">                                                <tt class="py-string">"scrollByPixel"</tt><tt class="py-op">,</tt> <tt class="py-string">"sbp"</tt>  <tt class="py-op">)</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line"> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line">        <tt id="link-34" class="py-name" targets="Variable mrv.maya.ui.layout.ScrollLayout._event_=mrv.maya.ui.layout.ScrollLayout-class.html#_event_"><a title="mrv.maya.ui.layout.ScrollLayout._event_" class="py-name" href="#" onclick="return doclink('link-34', '_event_', 'link-34');">_event_</a></tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt> <tt class="py-string">"resizeCommand"</tt><tt class="py-op">,</tt> <tt class="py-string">"rc"</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line">         </tt>
+<a name="TabLayout"></a><div id="TabLayout-def"><a name="L135"></a><tt class="py-lineno">135</tt> <a class="py-toggle" href="#" id="TabLayout-toggle" onclick="return toggle('TabLayout');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.layout.TabLayout-class.html">TabLayout</a><tt class="py-op">(</tt> <tt class="py-base-class">Layout</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="TabLayout-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="TabLayout-expanded"><a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line">        <tt class="py-docstring">"""Simple wrapper for a tab layout"""</tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">        <tt id="link-35" class="py-name"><a title="mrv.maya.ui.base.Menu._properties_
+mrv.maya.ui.base.MenuBase._properties_
+mrv.maya.ui.base.MenuItem._properties_
+mrv.maya.ui.base.PopupMenu._properties_
+mrv.maya.ui.base.SizedControl._properties_
+mrv.maya.ui.base.Window._properties_
+mrv.maya.ui.control.BooleanGroupBase._properties_
+mrv.maya.ui.control.Button._properties_
+mrv.maya.ui.control.ButtonGroupBase._properties_
+mrv.maya.ui.control.CheckBoxBase._properties_
+mrv.maya.ui.control.CheckBoxGrp._properties_
+mrv.maya.ui.control.FieldBase._properties_
+mrv.maya.ui.control.GroupBase._properties_
+mrv.maya.ui.control.IconTextBase._properties_
+mrv.maya.ui.control.LabelBase._properties_
+mrv.maya.ui.control.OptionMenuBase._properties_
+mrv.maya.ui.control.RadioButtonBase._properties_
+mrv.maya.ui.control.RadioCollectionBase._properties_
+mrv.maya.ui.control.ScrollField._properties_
+mrv.maya.ui.control.Separator._properties_
+mrv.maya.ui.control.SliderBase._properties_
+mrv.maya.ui.control.SliderGroupBase._properties_
+mrv.maya.ui.control.Text._properties_
+mrv.maya.ui.control.TextFieldBase._properties_
+mrv.maya.ui.control.TextScrollList._properties_
+mrv.maya.ui.editor.AnimCurveEditor._properties_
+mrv.maya.ui.editor.AnimEditorBase._properties_
+mrv.maya.ui.editor.BlendShapeEditor._properties_
+mrv.maya.ui.editor.ClipEditor._properties_
+mrv.maya.ui.editor.ColorEditor._properties_
+mrv.maya.ui.editor.ComponentEditor._properties_
+mrv.maya.ui.editor.DeviceEditor._properties_
+mrv.maya.ui.editor.DynPaintEditor._properties_
+mrv.maya.ui.editor.EditorBase._properties_
+mrv.maya.ui.editor.GlRenderEditor._properties_
+mrv.maya.ui.editor.ItemFilter._properties_
+mrv.maya.ui.editor.ItemFilterAttr._properties_
+mrv.maya.ui.editor.ItemFilterBase._properties_
+mrv.maya.ui.editor.ItemFilterRender._properties_
+mrv.maya.ui.editor.ModelEditor._properties_
+mrv.maya.ui.editor.OutlinerEditor._properties_
+mrv.maya.ui.editor.RenderEditorBase._properties_
+mrv.maya.ui.editor.RenderWindowEditor._properties_
+mrv.maya.ui.editor.SelectionConnection._properties_
+mrv.maya.ui.layout.ColumnLayout._properties_
+mrv.maya.ui.layout.ColumnLayoutBase._properties_
+mrv.maya.ui.layout.FrameLayout._properties_
+mrv.maya.ui.layout.Layout._properties_
+mrv.maya.ui.layout.PaneLayout._properties_
+mrv.maya.ui.layout.RowColumnLayout._properties_
+mrv.maya.ui.layout.RowLayout._properties_
+mrv.maya.ui.layout.ScrollLayout._properties_
+mrv.maya.ui.layout.TabLayout._properties_" class="py-name" href="#" onclick="return doclink('link-35', '_properties_', 'link-6');">_properties_</a></tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt>        <tt class="py-string">"tv"</tt><tt class="py-op">,</tt> <tt class="py-string">"tabsVisible"</tt><tt class="py-op">,</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line">                                                <tt class="py-string">"st"</tt><tt class="py-op">,</tt>  <tt class="py-string">"selectTab"</tt><tt class="py-op">,</tt> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line">                                                <tt class="py-string">"sti"</tt><tt class="py-op">,</tt> <tt class="py-string">"selectTabIndex"</tt><tt class="py-op">,</tt> </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line">                                                <tt class="py-string">"tl"</tt><tt class="py-op">,</tt> <tt class="py-string">"tabLabel"</tt><tt class="py-op">,</tt> </tt>
+<a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line">                                                <tt class="py-string">"tli"</tt><tt class="py-op">,</tt> <tt class="py-string">"tabLabelIndex"</tt><tt class="py-op">,</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line">                                                <tt class="py-string">"scr"</tt><tt class="py-op">,</tt> <tt class="py-string">"scrollable"</tt><tt class="py-op">,</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line">                                                <tt class="py-string">"hst"</tt><tt class="py-op">,</tt> <tt class="py-string">"horizontalScrollBarThickness"</tt><tt class="py-op">,</tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line">                                                <tt class="py-string">"vst"</tt><tt class="py-op">,</tt> <tt class="py-string">"verticalScrollBarThickness"</tt><tt class="py-op">,</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line">                                                <tt class="py-string">"imw"</tt><tt class="py-op">,</tt> <tt class="py-string">"innerMarginWidth"</tt><tt class="py-op">,</tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line">                                                <tt class="py-string">"imh"</tt><tt class="py-op">,</tt> <tt class="py-string">"innerMarginHeight"</tt><tt class="py-op">,</tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line">                                                <tt class="py-string">"i"</tt><tt class="py-op">,</tt> <tt class="py-string">"image"</tt><tt class="py-op">,</tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line">                                                <tt class="py-string">"iv"</tt><tt class="py-op">,</tt> <tt class="py-string">"imageVisible"</tt><tt class="py-op">,</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line">                                                <tt class="py-string">"cr"</tt><tt class="py-op">,</tt> <tt class="py-string">"childResizable"</tt><tt class="py-op">,</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line">                                                <tt class="py-string">"mcw"</tt><tt class="py-op">,</tt> <tt class="py-string">"minChildWidth"</tt><tt class="py-op">,</tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line">                                                <tt class="py-string">"mt"</tt><tt class="py-op">,</tt> <tt class="py-string">"moveTab"</tt> <tt class="py-op">)</tt> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line"> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line">        <tt id="link-36" class="py-name"><a title="mrv.maya.ui.base.MenuBase._events_
+mrv.maya.ui.base.MenuItem._events_
+mrv.maya.ui.base.PopupMenu._events_
+mrv.maya.ui.base.SizedControl._events_
+mrv.maya.ui.base.Window._events_
+mrv.maya.ui.control.BooleanBase._events_
+mrv.maya.ui.control.BooleanGroupBase._events_
+mrv.maya.ui.control.Button._events_
+mrv.maya.ui.control.ButtonGroupBase._events_
+mrv.maya.ui.control.FieldBase._events_
+mrv.maya.ui.control.IconTextBase._events_
+mrv.maya.ui.control.IconTextButton._events_
+mrv.maya.ui.control.OptionMenuBase._events_
+mrv.maya.ui.control.ScrollField._events_
+mrv.maya.ui.control.SliderBase._events_
+mrv.maya.ui.control.TextFieldGroupBase._events_
+mrv.maya.ui.control.TextScrollList._events_
+mrv.maya.ui.editor.AnimCurveEditor._events_
+mrv.maya.ui.editor.ClipEditor._events_
+mrv.maya.ui.editor.ItemFilterBase._events_
+mrv.maya.ui.editor.OutlinerEditor._events_
+mrv.maya.ui.editor.RenderWindowEditor._events_
+mrv.maya.ui.editor.SelectionConnection._events_
+mrv.maya.ui.layout.FrameLayout._events_
+mrv.maya.ui.layout.PaneLayout._events_
+mrv.maya.ui.layout.TabLayout._events_" class="py-name" href="#" onclick="return doclink('link-36', '_events_', 'link-25');">_events_</a></tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt>    <tt class="py-string">"cc"</tt><tt class="py-op">,</tt> <tt class="py-string">"changeCommand"</tt><tt class="py-op">,</tt> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line">                                        <tt class="py-string">"sc"</tt><tt class="py-op">,</tt> <tt class="py-string">"selectCommand"</tt><tt class="py-op">,</tt> </tt>
+<a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line">                                        <tt class="py-string">"psc"</tt><tt class="py-op">,</tt> <tt class="py-string">"preSelectCommand"</tt><tt class="py-op">,</tt> </tt>
+<a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line">                                        <tt class="py-string">"dcc"</tt><tt class="py-op">,</tt> <tt class="py-string">"doubleClickCommand"</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line"> </tt>
+<a name="PaneLayout"></a><div id="PaneLayout-def"><a name="L158"></a><tt class="py-lineno">158</tt> <a class="py-toggle" href="#" id="PaneLayout-toggle" onclick="return toggle('PaneLayout');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="mrv.maya.ui.layout.PaneLayout-class.html">PaneLayout</a><tt class="py-op">(</tt><tt class="py-base-class">Layout</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="PaneLayout-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="PaneLayout-expanded"><a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line">        <tt class="py-docstring">"""Simple wrapper for a pane layout"""</tt> </tt>
+<a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line">        <tt id="link-37" class="py-name"><a title="mrv.maya.ui.base.Menu._properties_
+mrv.maya.ui.base.MenuBase._properties_
+mrv.maya.ui.base.MenuItem._properties_
+mrv.maya.ui.base.PopupMenu._properties_
+mrv.maya.ui.base.SizedControl._properties_
+mrv.maya.ui.base.Window._properties_
+mrv.maya.ui.control.BooleanGroupBase._properties_
+mrv.maya.ui.control.Button._properties_
+mrv.maya.ui.control.ButtonGroupBase._properties_
+mrv.maya.ui.control.CheckBoxBase._properties_
+mrv.maya.ui.control.CheckBoxGrp._properties_
+mrv.maya.ui.control.FieldBase._properties_
+mrv.maya.ui.control.GroupBase._properties_
+mrv.maya.ui.control.IconTextBase._properties_
+mrv.maya.ui.control.LabelBase._properties_
+mrv.maya.ui.control.OptionMenuBase._properties_
+mrv.maya.ui.control.RadioButtonBase._properties_
+mrv.maya.ui.control.RadioCollectionBase._properties_
+mrv.maya.ui.control.ScrollField._properties_
+mrv.maya.ui.control.Separator._properties_
+mrv.maya.ui.control.SliderBase._properties_
+mrv.maya.ui.control.SliderGroupBase._properties_
+mrv.maya.ui.control.Text._properties_
+mrv.maya.ui.control.TextFieldBase._properties_
+mrv.maya.ui.control.TextScrollList._properties_
+mrv.maya.ui.editor.AnimCurveEditor._properties_
+mrv.maya.ui.editor.AnimEditorBase._properties_
+mrv.maya.ui.editor.BlendShapeEditor._properties_
+mrv.maya.ui.editor.ClipEditor._properties_
+mrv.maya.ui.editor.ColorEditor._properties_
+mrv.maya.ui.editor.ComponentEditor._properties_
+mrv.maya.ui.editor.DeviceEditor._properties_
+mrv.maya.ui.editor.DynPaintEditor._properties_
+mrv.maya.ui.editor.EditorBase._properties_
+mrv.maya.ui.editor.GlRenderEditor._properties_
+mrv.maya.ui.editor.ItemFilter._properties_
+mrv.maya.ui.editor.ItemFilterAttr._properties_
+mrv.maya.ui.editor.ItemFilterBase._properties_
+mrv.maya.ui.editor.ItemFilterRender._properties_
+mrv.maya.ui.editor.ModelEditor._properties_
+mrv.maya.ui.editor.OutlinerEditor._properties_
+mrv.maya.ui.editor.RenderEditorBase._properties_
+mrv.maya.ui.editor.RenderWindowEditor._properties_
+mrv.maya.ui.editor.SelectionConnection._properties_
+mrv.maya.ui.layout.ColumnLayout._properties_
+mrv.maya.ui.layout.ColumnLayoutBase._properties_
+mrv.maya.ui.layout.FrameLayout._properties_
+mrv.maya.ui.layout.Layout._properties_
+mrv.maya.ui.layout.PaneLayout._properties_
+mrv.maya.ui.layout.RowColumnLayout._properties_
+mrv.maya.ui.layout.RowLayout._properties_
+mrv.maya.ui.layout.ScrollLayout._properties_
+mrv.maya.ui.layout.TabLayout._properties_" class="py-name" href="#" onclick="return doclink('link-37', '_properties_', 'link-6');">_properties_</a></tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt> </tt>
+<a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line">                                                <tt class="py-string">"cn"</tt><tt class="py-op">,</tt> <tt class="py-string">"configuration"</tt><tt class="py-op">,</tt>  </tt>
+<a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line">                                                <tt class="py-string">"sp"</tt><tt class="py-op">,</tt> <tt class="py-string">"setPane"</tt><tt class="py-op">,</tt>  </tt>
+<a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line">                                                <tt class="py-string">"ap"</tt><tt class="py-op">,</tt> <tt class="py-string">"activePane"</tt><tt class="py-op">,</tt>  </tt>
+<a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line">                                                <tt class="py-string">"api"</tt><tt class="py-op">,</tt> <tt class="py-string">"activePaneIndex"</tt><tt class="py-op">,</tt>  </tt>
+<a name="L165"></a><tt class="py-lineno">165</tt>  <tt class="py-line">                                                <tt class="py-string">"aft"</tt><tt class="py-op">,</tt> <tt class="py-string">"activeFrameThickness"</tt><tt class="py-op">,</tt>  </tt>
+<a name="L166"></a><tt class="py-lineno">166</tt>  <tt class="py-line">                                                <tt class="py-string">"st"</tt><tt class="py-op">,</tt> <tt class="py-string">"separatorThickness"</tt><tt class="py-op">,</tt>  </tt>
+<a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line">                                                <tt class="py-string">"ps"</tt><tt class="py-op">,</tt> <tt class="py-string">"paneSize"</tt><tt class="py-op">,</tt>  </tt>
+<a name="L168"></a><tt class="py-lineno">168</tt>  <tt class="py-line">                                                <tt class="py-string">"p1"</tt><tt class="py-op">,</tt> <tt class="py-string">"p2"</tt><tt class="py-op">,</tt> <tt class="py-string">"p3"</tt><tt class="py-op">,</tt> <tt class="py-string">"p4"</tt><tt class="py-op">,</tt> <tt class="py-string">"pane1"</tt><tt class="py-op">,</tt> <tt class="py-string">"pane2"</tt><tt class="py-op">,</tt> <tt class="py-string">"pane3"</tt><tt class="py-op">,</tt> <tt class="py-string">"pane4"</tt><tt class="py-op">,</tt>  </tt>
+<a name="L169"></a><tt class="py-lineno">169</tt>  <tt class="py-line">                                                <tt class="py-string">"pup"</tt><tt class="py-op">,</tt> <tt class="py-string">"paneUnderPointer"</tt><tt class="py-op">,</tt> </tt>
+<a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line">                                                <tt class="py-string">"nvp"</tt><tt class="py-op">,</tt> <tt class="py-string">"numberOfVisiblePanes"</tt><tt class="py-op">,</tt>  </tt>
+<a name="L171"></a><tt class="py-lineno">171</tt>  <tt class="py-line">                                                <tt class="py-comment"># maya &gt;= 2011</tt> </tt>
+<a name="L172"></a><tt class="py-lineno">172</tt>  <tt class="py-line">                                                <tt class="py-string">"swp"</tt><tt class="py-op">,</tt> <tt class="py-string">"staticWidthPane"</tt><tt class="py-op">,</tt>  </tt>
+<a name="L173"></a><tt class="py-lineno">173</tt>  <tt class="py-line">                                                <tt class="py-string">"shp"</tt><tt class="py-op">,</tt> <tt class="py-string">"staticHeightPane"</tt> </tt>
+<a name="L174"></a><tt class="py-lineno">174</tt>  <tt class="py-line">                                        <tt class="py-op">)</tt> </tt>
+<a name="L175"></a><tt class="py-lineno">175</tt>  <tt class="py-line">        <tt id="link-38" class="py-name"><a title="mrv.maya.ui.base.MenuBase._events_
+mrv.maya.ui.base.MenuItem._events_
+mrv.maya.ui.base.PopupMenu._events_
+mrv.maya.ui.base.SizedControl._events_
+mrv.maya.ui.base.Window._events_
+mrv.maya.ui.control.BooleanBase._events_
+mrv.maya.ui.control.BooleanGroupBase._events_
+mrv.maya.ui.control.Button._events_
+mrv.maya.ui.control.ButtonGroupBase._events_
+mrv.maya.ui.control.FieldBase._events_
+mrv.maya.ui.control.IconTextBase._events_
+mrv.maya.ui.control.IconTextButton._events_
+mrv.maya.ui.control.OptionMenuBase._events_
+mrv.maya.ui.control.ScrollField._events_
+mrv.maya.ui.control.SliderBase._events_
+mrv.maya.ui.control.TextFieldGroupBase._events_
+mrv.maya.ui.control.TextScrollList._events_
+mrv.maya.ui.editor.AnimCurveEditor._events_
+mrv.maya.ui.editor.ClipEditor._events_
+mrv.maya.ui.editor.ItemFilterBase._events_
+mrv.maya.ui.editor.OutlinerEditor._events_
+mrv.maya.ui.editor.RenderWindowEditor._events_
+mrv.maya.ui.editor.SelectionConnection._events_
+mrv.maya.ui.layout.FrameLayout._events_
+mrv.maya.ui.layout.PaneLayout._events_
+mrv.maya.ui.layout.TabLayout._events_" class="py-name" href="#" onclick="return doclink('link-38', '_events_', 'link-25');">_events_</a></tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt><tt class="py-string">"smc"</tt><tt class="py-op">,</tt> <tt class="py-string">"separatorMovedCommand"</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L176"></a><tt class="py-lineno">176</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="https://github.com/Byron/mrv">mrv</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Apr 19 15:39:22 2011
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
